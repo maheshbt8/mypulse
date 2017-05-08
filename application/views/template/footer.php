@@ -1,6 +1,6 @@
         <div class="page-footer">
             <div class="row">
-            <span class="no-s"><?php echo date("Y");?> &copy; Techcrista.in</span>
+            <span class="no-s"><?php echo date("Y");?> &copy; JagruMs Technologies</span>
             <span class="pull-right">Developed By : <a href="http://techcrista.in">Techcrista</a></span>
             </div>
         </div>

@@ -99,6 +99,13 @@ class Users_model extends CI_Model {
                 $data = $_POST;
                 $data['password'] = md5($data['password']);
                 $data['created_date']= date('Y-m-d H:i:s');
+                $name = explode(" ",$data['first_name']);
+                
+                $data['first_name'] = $name[0];
+                if(isset($name[1])){
+                    $data['last_name'] = $name[1];
+                }
+
                 $this->db->insert($this->tblname,$data);
                 return true;
             }

@@ -58,12 +58,13 @@
                                     <div class="form-group">
                                         <input type="password" name="password" class="form-control" placeholder="Password" required>
                                     </div>
+                                    <a style="margin-bottom: 10px;float: right;margin-top: 0px" href="<?php echo site_url();?>/index/forgot" class="display-block text-center m-t-md text-sm">Forgot Password?</a>
                                     <button type="submit" class="btn btn-success btn-block">Login</button>
-                                    <a href="<?php echo site_url();?>/index/forgot" class="display-block text-center m-t-md text-sm">Forgot Password?</a>
+                                    
                                     <p class="text-center m-t-xs text-sm">Do not have an account?</p>
                                     <a href="<?php echo site_url();?>/index/registration" class="btn btn-default btn-block m-t-md">Create an account</a>
                                 </form>
-                                <p class="text-center m-t-xs text-sm"><?php echo date('Y'); ?> &copy; <?php echo ucfirst($this->config->item('title'));?>.</p>
+                                <p class="text-center m-t-xs text-sm"><?php echo date('Y'); ?> &copy; JagruMs Technologies.</p>
                             </div>
                         </div>
                     </div><!-- Row -->

@@ -52,17 +52,8 @@
                                 <p class="text-center m-t-md">Create a account</p>
                                 <form class="m-t-md"  method="post" action="<?php echo site_url().'/index/doReg' ?>">
                                     <div class="form-group">
-                                        <input type="name" name="first_name" class="form-control" placeholder="Name" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="email" name="useremail" class="form-control" placeholder="Email" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" class="form-control" placeholder="Password" required>
-                                    </div>
-                                    <div class="form-group">
                                         <label>Register As</label>
-                                        <select class="form-control" name="role">
+                                        <select class="form-control" name="role" id="role">
                                             <option value="2">Hospital Admin</option>
                                             <option value="3">Doctor</option>
                                             <option value="4">Nurse</option>
@@ -70,6 +61,29 @@
                                             <option value="6">Patient</option>
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <input type="text" name="first_name" class="form-control" placeholder="Name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="aadhaar_number" class="form-control" placeholder="Aadhaar Number" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" name="useremail" class="form-control" placeholder="Email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group" id="hospital_div">
+                                        <label>Select Hospital</label>
+                                        <select class="form-control" name="hospital">
+                                            <option value="2">Hospital 1</option>
+                                            <option value="3">Hospital 2</option>
+                                        </select>
+                                    </div>
+                                    
                                     <label>
                                         <input type="checkbox"> Agree the terms and policy
                                     </label>
@@ -86,6 +100,7 @@
         </main><!-- Page Content -->
     
 
+
         <!-- Javascripts -->
         <script src="<?php echo base_url();?>public/assets/plugins/jquery/jquery-2.1.3.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -100,6 +115,17 @@
         <script src="<?php echo base_url();?>public/assets/plugins/waves/waves.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/main.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/modern.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#role").change(function(){
+                    if($(this).val() == 6){
+                        $("#hospital_div").hide();
+                    }else{
+                        $("#hospital_div").show();
+                    }
+                });
+            });
+        </script>
         
     </body>
 
