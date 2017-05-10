@@ -91,7 +91,7 @@
                                     <p class="text-center m-t-xs text-sm">Already have an account?</p>
                                     <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-xs">Login</a>
                                 </form>
-                                 <p class="text-center m-t-xs text-sm"><?php echo date('Y'); ?> &copy; <?php echo ucfirst($this->config->item('title'));?>.</p>
+                                <p class="text-center m-t-xs text-sm"><?php echo date('Y'); ?> &copy; JagruMs Technologies.</p>
                             </div>
                         </div>
                     </div><!-- Row -->

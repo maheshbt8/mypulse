@@ -31,10 +31,17 @@ class Auth {
     }
 
     public function getRoleText(){
-      $u = $this->CI->session->all_userdata();
-      if(isset($u['role']))
-        return $u['role'];
-      return "";
+        $u = $this->CI->session->all_userdata();
+        if(isset($u['role']))
+            return $u['role'];
+        return "";
+    }
+
+    public function getRole(){
+        $u = $this->CI->session->all_userdata();
+        if(isset($u['role']))
+            return $u['role'];
+        return 0;   
     }
 
     public function getProfileImg(){

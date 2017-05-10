@@ -15,6 +15,21 @@
                     <ul class="menu accordion-menu">
                         <li id="li1"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p>Dashboard</p></a></li>
 
+                        <?php
+
+                        switch ($this->auth->getRole()) {
+                            case 1:
+                                //Admin
+                        ?>
+                            <li id="li2"><a href="<?php echo site_url();?>/hospitals" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p>Hospitals</p></a></li>
+                        <?php                                
+                                break;
+                            default:
+                                break;
+                        }
+
+                        ?>
+
                         <!-- <li><a href="<?php echo site_url();?>/index/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li> -->
 
                         <!-- <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Mailbox</p><span class="arrow"></span></a>
