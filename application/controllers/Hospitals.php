@@ -68,7 +68,8 @@ class Hospitals extends CI_Controller {
             $columns = array(array("db" => "name", "dt" => 0, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "license_status", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
+                return '<span class="label label-info">Not Register</span>';
+                //return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "city", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
