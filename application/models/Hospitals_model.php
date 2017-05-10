@@ -31,7 +31,7 @@ class Hospitals_model extends CI_Model {
         if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", strtotime($data["created_date"]));
+        $data["created_date"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {
@@ -44,7 +44,7 @@ class Hospitals_model extends CI_Model {
         if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", $data["created_date"]);
+        
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
             return true;
