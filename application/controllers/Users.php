@@ -33,6 +33,7 @@ class Users extends CI_Controller {
             }
             $this->session->set_flashdata('data', $data);
             redirect('users/index');
+            
         } else redirect('index/login');
     }
     public function update() {
