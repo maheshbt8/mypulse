@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     
-<!-- Mirrored from lambdathemes.in/modern/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2015 11:11:14 GMT -->
+
 <head>
         <!-- Title -->
         <title><?php echo $this->config->item('title');?> | Sign Up</title>

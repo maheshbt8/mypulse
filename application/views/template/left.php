@@ -1,4 +1,5 @@
-<div class="horizontal-bar sidebar">
+<!-- horizontal-bar -->
+<div class="page-sidebar  sidebar">
                 <div class="page-sidebar-inner slimscroll">
                     <div class="sidebar-header">
                         <div class="sidebar-profile">
@@ -21,7 +22,24 @@
                             case 1:
                                 //Admin
                         ?>
-                            <li id="li2"><a href="<?php echo site_url();?>/hospitals" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p>Hospitals</p></a></li>
+                            <li id="li2" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p>Hospitals</p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li><a href="<?php echo site_url();?>/hospitals">Hospitals</a></li>
+                                    <li><a href="<?php echo site_url();?>">Departments</a></li>
+                                    <li><a href="<?php echo site_url();?>">Nurshes</a></li>
+                                    <li><a href="<?php echo site_url();?>">MedLab</a></li>
+                                    <li><a href="<?php echo site_url();?>">Medical Store</a></li>
+                                </ul>
+                            </li>
+
+                            <li id="li3" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon fa fa-user-md"></span><p>Doctors</p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li><a href="<?php echo site_url();?>">Doctors</a></li>
+                                    <li><a href="<?php echo site_url();?>">Receptionist</a></li>
+                                </ul>
+                            </li>
+                            <li id=""><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-user "></span><p>Patients</p></a></li>
+                            <li id=""><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog "></span><p>Settings</p></a></li>
                         <?php                                
                                 break;
                             default:

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     
-<!-- Mirrored from lambdathemes.in/modern/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2015 11:05:13 GMT -->
 <head>
         
         <!-- Title -->

@@ -45,7 +45,8 @@
         </style>
         
     </head>
-    <body class="page-header-fixed page-horizontal-bar">
+    <!-- page-horizontal-bar -->
+    <body class="page-header-fixed sidebar">
         <div class="overlay"></div>
         
         
