@@ -59,7 +59,7 @@
                         </a>
                     </div>
                     <div class="logo-box">
-                        <a href="<?php echo site_url();?>" class="logo-text"><span>HMS</span></a>
+                        <a href="<?php echo site_url();?>" class="logo-text"><span><?php echo ucfirst($this->config->item('title'));?></span></a>
                     </div><!-- Logo Box -->
                   
                     <div class="topmenu-outer">

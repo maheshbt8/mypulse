@@ -24,8 +24,8 @@
                         ?>
                             <li id="li2" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p>Hospitals</p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="<?php echo site_url();?>/hospitals">Hospitals</a></li>
-                                    <li><a href="<?php echo site_url();?>">Departments</a></li>
+                                    <li id="li201"><a href="<?php echo site_url();?>/hospitals">Hospitals</a></li>
+                                    <li id="li202"><a href="<?php echo site_url();?>/departments">Departments</a></li>
                                     <li><a href="<?php echo site_url();?>">Nurshes</a></li>
                                     <li><a href="<?php echo site_url();?>">MedLab</a></li>
                                     <li><a href="<?php echo site_url();?>">Medical Store</a></li>

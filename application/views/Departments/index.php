@@ -7,19 +7,19 @@ $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
 		<input type="hidden" id="left_active_menu" value="2" />
-		<input type="hidden" id="left_active_sub_menu" value="201" />
+		<input type="hidden" id="left_active_sub_menu" value="202" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Hospitals</h4>
+	                        <h4 class="panel-title">Departments</h4>
 	                    </div>
 	                    <div class="panel-body">
 	                       <div class="table-responsive">
-	                            <table id="hospitals" class="display table" cellspacing="0" width="100%">
+	                            <table id="departments" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Name</th><th>License Status</th><th>City</th><th>Action</th>
+	                                    <tr><th>Hospital Name</th><th>Department Name</th><th>Action</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -35,63 +35,29 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/hospitals/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/departments/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Department</h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
 				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>Name</label>
-									<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Address</label>
-									<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
-								</div>
-				  			</div>
-				  			<div class="col-md-12">
-				  				<!-- <div class="form-group col-md-6">
-										<label>Logo</label>
-										<input class="form-control " type="text" placeholder="Logo" name="logo" id="logo" />					
-									</div> -->
-								<div class="form-group col-md-6">
-									<label>Email</label>
-									<input class="form-control " type="text" placeholder="Email" name="email" id="email" />
-								</div>	
-								<div class="form-group col-md-6">
-									<label>Phone Numbers</label>
-									<input class="form-control " type="text" placeholder="Phone Numbers" name="phone_numbers" id="phone_numbers" />
-								</div>
-				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>Country</label>
-									<input class="form-control " type="text" placeholder="Country" name="country" id="country" />
-								</div>
-								
-								<div class="form-group col-md-6">
-									<label>State</label>
-									<input class="form-control " type="text" placeholder="State" name="state" id="state" />
-								</div>
-								
-				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>District</label>
-									<input class="form-control " type="text" placeholder="District" name="district" id="district" />					
-								</div>
-								<div class="form-group col-md-6">
-									<label>City</label>
-									<input class="form-control " type="text" placeholder="City" name="city" id="city" />
-								</div>
-				  			</div>
-						</div>
-					</div>
+				  			<div class="form-group col-md-6">
+					<label>Hospital Name</label>
+					<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
+					</select>
+					
+		</div><div class="form-group col-md-6">
+					<label>Department Name</label>
+					<input class="form-control " type="text" placeholder="Department Name" name="department_name" id="department_name" />
+					
+		</div>
+				  		</div>
+				  		
+					</div></div>
 				  	<div>
 				  		<hr>
 				  		<div class="row">
@@ -138,72 +104,10 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-
-				var validator = $("#form").validate({
-					
-			        rules: {
-			        	
-			        	name: {
-			        		required : true
-			        	},
-			        	address: {
-			        		required: true
-			        	},
-			        	email:{
-			        		required:true,
-			        		email:true
-			        	},
-			        	phone_numbers:{
-			        		required:true
-			        	},
-			        	country:{
-			        		required:true
-			        	},
-			        	state:{
-			        		required:true
-			        	},
-			        	district:{
-			        		required:true
-			        	},
-			        	city:{
-			        		required:true
-			        	}
-			        },
-			        messages: {
-			        	
-			        	name:{
-			        		required: "Enter hospital name"
-			        	},
-			        	address:{
-			        		required: "Enter hospital address"
-			        	},
-			        	email:{
-			        		required: "Enter email address",
-			        		email: "Enter valid email address"
-			        	},
-			        	phone_numbers:{
-			        		required: "Enter phone number"
-			        	},
-			        	country:{
-			        		required:"Enter country"
-			        	},
-			        	state:{
-			        		required:"Enter state"
-			        	},
-			        	district:{
-			        		required:"Enter district"
-			        	},
-			        	city:{
-			        		required:"Enter city"
-			        	}
-			        }
-				});
-
-
-				$("#hospitals").DataTable({
+				$("#departments").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/hospitals/getDThospitals"
+		            "ajax": "<?php echo site_url(); ?>/departments/getDTdepartments"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
@@ -212,74 +116,62 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Add New Hospitals");
+			    	$("#Edit-Heading").html("Add New Department");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/hospitals/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/departments/add");
 			    	$("#edit").modal("show");
 			    });
 
-				$("#hospitals").on("click",".editbtn",function(){
+				$("#departments").on("click",".editbtn",function(){
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
-			    	loadData(id,true);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/hospitals/update");
+			    	loadData(id);
+			    	$("#form").attr("action","<?php echo site_url(); ?>/departments/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Hospital Data");
+			    	$("#Edit-Heading").html("Edit Department");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
 
-			    function loadData(id,isEdit){
-			    	$.post("<?php echo site_url(); ?>/hospitals/gethospitals",{ id: id },function(data){
+			    function loadData(id){
+			    	$.post("<?php echo site_url(); ?>/departments/getdepartments",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-						$("#name").val(data.name);
-						if(isEdit)
-							$("#Edit-Heading").html("Edit "+data.name+" Information");
-						else
-							$("#Edit-Heading").html(data.name+" Information");
-
-						$("#address").val(data.address);
-						
-						$("#logo").val(data.logo);
-						
-						$("#phone_numbers").val(data.phone_numbers);
-						
-						$("#email").val(data.email);
-						
-						$("#city").val(data.city);
-						
-						$("#district").val(data.district);
-						
-						$("#state").val(data.state);
-						
-						$("#country").val(data.country);
+					var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+					tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+					tempselectize_hospital_id.refreshItems();
+					tempselectize_hospital_id.setValue(data.hospital_id);
 					
+					$("#department_name").val(data.department_name);
+					
+
+			    		/*$.each(JSON.parse(data), function(key, value){
+						    $("#"+key).val(value);
+						});*/
 			    	});
 			    }
 
-			    $("#hospitals").on("click",".viewbtn",function(){
+			    $("#departments").on("click",".viewbtn",function(){
+			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Detailed View");
-			    	loadData($(this).attr("data-id"),false);
-
+			    	$("#Edit-Heading").html("Department Info");
 			    });
 
 
-			    $("#hospitals").on("click",".delbtn",function(){
+			    $("#departments").on("click",".delbtn",function(){
 			    	$("#cur_del").val($(this).attr("data-id"));
 			    });
 			    
 			    $("#del_yes").click(function(){
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/hospitals/delete",{id:id},function(){
+			    		$.post("<?php echo site_url(); ?>/departments/delete",{id:id},function(){
 			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
 			    			$("#delete").modal("hide");	
 			    		});
@@ -289,6 +181,60 @@ $this->load->view("template/footer.php");
 			    	}
 			    	$(".modal-backdrop").hide();
 			    });
+
+			    var validator = $("#form").validate({
+					
+			        rules: {
+			        	
+			        	department_name: {
+			        		required : true
+			        	},
+			        	hospital_id:{
+			        		required: true
+			        	}
+			        },
+			        messages: {
+			        	
+			        	department_name:{
+			        		required: "Enter department name"
+			        	},
+			        	hospital_id:{
+			        		required: "Select Hospital"
+			        	}
+			        }
+				});
+
+				var $selectize_hospital_id = $("#hospital_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    },
+				    load: function(query, callback) {
+				        //if (!query.length) return callback();
+				        $.ajax({
+				            url: "<?php echo site_url(); ?>/hospitals/search",
+				            type: "GET",
+				            data: {"q":query,"f":"name"},
+				            error: function() {
+				                callback();
+				            },
+				            success: function(res) {
+				                callback($.parseJSON(res));
+				            }
+				        });
+				    }
+				});
+
+					
 
 			});
 
