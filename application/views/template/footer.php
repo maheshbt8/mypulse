@@ -1,6 +1,6 @@
-        <div class="page-footer" >
+        <div class="page-footer">
             <div class="row">
-            <span class="no-s"><?php echo date("Y");?> &copy; JagruMs Technologies</span>
+            <span class="no-s"><?php echo date("Y");?> &copy; JagruMs Technologies Pvt Limited</span>
             <span class="pull-right" style="display: none">Developed By : <a href="http://techcrista.in">Techcrista</a></span>
             </div>
         </div>
@@ -43,7 +43,6 @@
                 autoclose: true
             });
             var pos = $("#left_active_menu").val();
-            
             $("#li"+pos).addClass('active');
             if($("#li"+pos).find('ul').length > 0) {
                 $("#li"+pos).children()[0].click();

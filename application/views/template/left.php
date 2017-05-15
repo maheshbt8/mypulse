@@ -1,5 +1,4 @@
-<!-- horizontal-bar -->
-<div class="page-sidebar  sidebar">
+<div class="page-sidebar sidebar">
                 <div class="page-sidebar-inner slimscroll">
                     <div class="sidebar-header">
                         <div class="sidebar-profile">
@@ -22,24 +21,20 @@
                             case 1:
                                 //Admin
                         ?>
-                            <li id="li2" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p>Hospitals</p><span class="arrow"></span></a>
-                                <ul class="sub-menu">
-                                    <li id="li201"><a href="<?php echo site_url();?>/hospitals">Hospitals</a></li>
-                                    <li id="li202"><a href="<?php echo site_url();?>/departments">Departments</a></li>
-                                    <li><a href="<?php echo site_url();?>">Nurshes</a></li>
-                                    <li><a href="<?php echo site_url();?>">MedLab</a></li>
-                                    <li><a href="<?php echo site_url();?>">Medical Store</a></li>
-                                </ul>
-                            </li>
+                            <li id="li2"><a href="<?php echo site_url();?>/hospitals" class="waves-effect waves-button"><span class="menu-icon fa  fa-hospital-o"></span><p>Hospitals</p></a></li>
+                            <li id="li3"><a href="<?php echo site_url();?>/departments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p>Departments</p></a></li>
+                            <li id="li4"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p>Doctors</p></a></li>
+                            <li id="li5"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p>Nurses</p></a></li>
+                            <li id="li6"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-user-following "></span><p>Receptionists</p></a></li>
+                            <li id="li7"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon icon-users "></span><p>Patients</p></a></li>
+                            <li id="li8"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-medkit "></span><p>Medical Stores</p></a></li>
+                            <li id="li9"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa  fa-plus-square "></span><p>Medical Labs</p></a></li>
+                            <li id="li10"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-edit "></span><p>Appointments</p></a></li>
+                            <li id="li11"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p>Payments</p></a></li>
+                            <li id="li12"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart "></span><p>Reports and Services</p></a></li>
+                            <li id="li13"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog "></span><p>Settings</p></a></li>
 
-                            <li id="li3" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon fa fa-user-md"></span><p>Doctors</p><span class="arrow"></span></a>
-                                <ul class="sub-menu">
-                                    <li><a href="<?php echo site_url();?>">Doctors</a></li>
-                                    <li><a href="<?php echo site_url();?>">Receptionist</a></li>
-                                </ul>
-                            </li>
-                            <li id=""><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-user "></span><p>Patients</p></a></li>
-                            <li id=""><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog "></span><p>Settings</p></a></li>
+                            
                         <?php                                
                                 break;
                             default:
@@ -47,16 +42,6 @@
                         }
 
                         ?>
-
-                        <!-- <li><a href="<?php echo site_url();?>/index/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p>Profile</p></a></li> -->
-
-                        <!-- <li class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-envelope"></span><p>Mailbox</p><span class="arrow"></span></a>
-                            <ul class="sub-menu">
-                                <li><a href="inbox.html">Inbox</a></li>
-                                <li><a href="message-view.html">View Message</a></li>
-                                <li><a href="compose.html">Compose</a></li>
-                            </ul>
-                        </li> -->
                         
                     </ul>
                 </div><!-- Page Sidebar Inner -->

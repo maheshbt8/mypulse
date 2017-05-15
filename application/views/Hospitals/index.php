@@ -7,7 +7,6 @@ $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
 		<input type="hidden" id="left_active_menu" value="2" />
-		<input type="hidden" id="left_active_sub_menu" value="201" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -212,7 +211,7 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Add New Hospitals");
+			    	$("#Edit-Heading").html("Add New Hospital");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
