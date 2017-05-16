@@ -89,6 +89,39 @@ $this->load->view("template/left.php");
 									<input class="form-control " type="text" placeholder="City" name="city" id="city" />
 								</div>
 				  			</div>
+				  			<div class="col-md-12">
+				  				<div class="form-group col-md-6">
+									<label>Select License</label>
+									<select class="form-control" name="license_category" id="license_category">					
+										<?php 
+											foreach ($license as $key => $value) {
+												echo "<option value='$value[license_code]'>$value[name]</option>";
+											}
+										?>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label>License Status</label>
+									<select class="form-control" name="license_status" id="license_status">
+										<option value="1">Active</option>
+										<option value="0">In-Active</option>
+									</select>
+								</div>
+				  			</div>
+				  			<div class="col-md-12">
+				  				<div class="col-md-6 form-group">
+				  					<label>Select Hospital Admin</label>
+				  					<select name="hospital_id" id="hospital_id" class=" form-control">
+				  						<option value="-1">Select Hospital Admin</option>
+				  						<?php
+				  							foreach ($hospital_admins as $key => $value) {
+				  								echo "<option value='$value[id]'>$value[first_name] $value[last_name]</option>";
+				  							}
+				  						?>
+									</select>
+				  				</div>
+				  				
+				  			</div>
 						</div>
 					</div>
 				  	<div>

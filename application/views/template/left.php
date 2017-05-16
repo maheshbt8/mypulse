@@ -32,8 +32,12 @@
                             <li id="li10"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-edit "></span><p>Appointments</p></a></li>
                             <li id="li11"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p>Payments</p></a></li>
                             <li id="li12"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart "></span><p>Reports and Services</p></a></li>
-                            <li id="li13"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog "></span><p>Settings</p></a></li>
-
+                            
+                            <li id="li13" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p>Settings</p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li id="li1301"><a href="<?php echo site_url();?>/license/" >License Category</a></li>
+                                </ul>
+                            </li>
                             
                         <?php                                
                                 break;

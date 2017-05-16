@@ -58,8 +58,8 @@ class Auth {
       return $u['user_id'];
     }
     
-   public function LoggedOut()
-   {
+    public function LoggedOut()
+    {
    		$array_items = array('user_name' => '',
 							 'user_id' => '',
 							 'logged_in' => '0'
@@ -67,7 +67,31 @@ class Auth {
 	   	$this->CI->session->unset_userdata($array_items);
 	    $this->CI->session->sess_destroy();
 		return true;
-   }
+    }
+
+    public function getAdminRoleType(){
+        return 1;
+    }
+
+    public function getHospitalAdminRoleType(){
+        return 2;
+    }
+
+    public function getDoctorRoleType(){
+        return 3;
+    }
+
+    public function getNurseRoleType(){
+        return 4;
+    }
+
+    public function getReceptienstRoleType(){
+        return 5;
+    }
+
+    public function getPatientRoleType(){
+        return 6;
+    }
 
 }
 

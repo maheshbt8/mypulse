@@ -45,6 +45,15 @@ class Users_model extends CI_Model {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
+
+     public function getUsersByType($type=6){
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $this->db->where('role',$type);
+        $res = $this->db->get($this->tblname);
+        return $res->result_array();
+    }
+
     function search($q, $field) {
         $field = explode(",", $field);
         foreach ($field as $f) {

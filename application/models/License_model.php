@@ -3,15 +3,15 @@
  * @author Yogesh Patel
  * @email  yogesh@techcrista.in
  */
-class Hospitals_model extends CI_Model {
-    var $tblname = "hms_hospitals";
-    function getAllhospitals() {
+class License_model extends CI_Model {
+    var $tblname = "hms_license";
+    function getAlllicense() {
         $this->db->where("isDeleted", "0");
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
-    function gethospitalsById($id) {
+    function getlicenseById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
@@ -28,17 +28,6 @@ class Hospitals_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
-        if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
-        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-
-        if(isset($_POST['hospital_id']) && $_POST['hospital_id'] != -1){
-
-        }else{
-            unset($data['hospital_id']);
-        }
-
-        $data["created_date"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {
@@ -48,14 +37,6 @@ class Hospitals_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
-        if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
-        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if(isset($_POST['hospital_id']) && $_POST['hospital_id'] != -1){
-
-        }else{
-            unset($data['hospital_id']);
-        }
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
             return true;

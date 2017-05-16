@@ -7,10 +7,13 @@ class Hospitals extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('hospitals_model');
+        $this->load->model('license_model');
+        $this->load->model('users_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
-            $data['hospitalss'] = $this->hospitals_model->getAllhospitals();
+            $data['license'] = $this->license_model->getAlllicense();
+            $data['hospital_admins'] = $this->users_model->getUsersByType($this->auth->getHospitalAdminRoleType());
             $data["page_title"] = "Hospitals";
             $data["breadcrumb"] = array(site_url() => "Home", null => "Hospitals");
             $this->load->view('Hospitals/index', $data);
