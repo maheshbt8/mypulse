@@ -60,7 +60,7 @@ class Departments extends CI_Controller {
             echo json_encode($this->departments_model->getdepartmentsById($id));
         }
     }
-    public function getDTdepartments() {
+    public function getDTdepartments($hospital_id=null) {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_departments";
@@ -78,6 +78,13 @@ class Departments extends CI_Controller {
             }));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            if($hospital_id!=null){
+                $this->tbl->setTwID("hospital_id=$hospital_id");
+                //echo "<pre>";
+                //var_dump($columns);
+                array_pop($columns);
+                //var_dump($columns);exit;
+            }
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }

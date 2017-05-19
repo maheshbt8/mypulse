@@ -43,85 +43,133 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>Name</label>
-									<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Address</label>
-									<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
-								</div>
-				  			</div>
-				  			<div class="col-md-12">
-				  				<!-- <div class="form-group col-md-6">
-										<label>Logo</label>
-										<input class="form-control " type="text" placeholder="Logo" name="logo" id="logo" />					
-									</div> -->
-								<div class="form-group col-md-6">
-									<label>Email</label>
-									<input class="form-control " type="text" placeholder="Email" name="email" id="email" />
-								</div>	
-								<div class="form-group col-md-6">
-									<label>Phone Numbers</label>
-									<input class="form-control " type="text" placeholder="Phone Numbers" name="phone_numbers" id="phone_numbers" />
-								</div>
-				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>Country</label>
-									<input class="form-control " type="text" placeholder="Country" name="country" id="country" />
-								</div>
-								
-								<div class="form-group col-md-6">
-									<label>State</label>
-									<input class="form-control " type="text" placeholder="State" name="state" id="state" />
-								</div>
-								
-				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>District</label>
-									<input class="form-control " type="text" placeholder="District" name="district" id="district" />					
-								</div>
-								<div class="form-group col-md-6">
-									<label>City</label>
-									<input class="form-control " type="text" placeholder="City" name="city" id="city" />
-								</div>
-				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label>License</label>
-									<select class="form-control" name="license_category" id="license_category">					
-										<?php 
-											foreach ($license as $key => $value) {
-												echo "<option value='$value[license_code]'>$value[name]</option>";
-											}
-										?>
-									</select>
-								</div>
-								<div class="form-group col-md-6">
-									<label>License Status</label>
-									<select class="form-control" name="license_status" id="license_status">
-										<option value="1">Active</option>
-										<option value="0">In-Active</option>
-									</select>
-								</div>
-				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="col-md-6 form-group">
-				  					<label>Hospital Admin</label>
-				  					<select name="hospital_id" id="hospital_id" class=" form-control">
-				  						<option value="-1">Hospital Admin</option>
-				  						<?php
-				  							foreach ($hospital_admins as $key => $value) {
-				  								echo "<option value='$value[id]'>$value[first_name] $value[last_name]</option>";
-				  							}
-				  						?>
-									</select>
-				  				</div>
-				  				
-				  			</div>
+
+				  			 <div role="tabpanel">
+                                <ul class="nav  nav-pills" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
+                                    <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab">Branches</a></li>
+                                    <li role="presentation"><a href="#tab3" id="deplin" aria-controls="messages" role="tab" data-toggle="tab">Departments</a></li>
+                                    <li role="presentation"><a href="#tab4" aria-controls="settings" role="tab" data-toggle="tab">Wards</a></li>
+                                    <li role="presentation"><a href="#tab5" aria-controls="settings" role="tab" data-toggle="tab">Beds</a></li>
+                                    <li role="presentation"><a href="#tab6" aria-controls="settings" role="tab" data-toggle="tab">Doctors</a></li>
+                                    <li role="presentation"><a href="#tab7" aria-controls="settings" role="tab" data-toggle="tab">Nurses</a></li>
+                                    <li role="presentation"><a href="#tab8" aria-controls="settings" role="tab" data-toggle="tab">Receptionists</a></li>
+                                    <li role="presentation"><a href="#tab9" aria-controls="settings" role="tab" data-toggle="tab">Med. Stores</a></li>
+                                    <li role="presentation"><a href="#tab10" aria-controls="settings" role="tab" data-toggle="tab">Med. Labs</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
+                            			<div class="col-md-12">
+							  				<div class="form-group col-md-6">
+												<label>Name</label>
+												<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Address</label>
+												<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+											</div>
+							  			</div>
+							  			<div class="col-md-12">
+							  				<!-- <div class="form-group col-md-6">
+													<label>Logo</label>
+													<input class="form-control " type="text" placeholder="Logo" name="logo" id="logo" />					
+												</div> -->
+											<div class="form-group col-md-6">
+												<label>Email</label>
+												<input class="form-control " type="text" placeholder="Email" name="email" id="email" />
+											</div>	
+											<div class="form-group col-md-6">
+												<label>Phone Numbers</label>
+												<input class="form-control " type="text" placeholder="Phone Numbers" name="phone_numbers" id="phone_numbers" />
+											</div>
+							  			</div>
+							  			<div class="col-md-12">
+							  				<div class="form-group col-md-6">
+												<label>Country</label>
+												<input class="form-control " type="text" placeholder="Country" name="country" id="country" />
+											</div>
+											
+											<div class="form-group col-md-6">
+												<label>State</label>
+												<input class="form-control " type="text" placeholder="State" name="state" id="state" />
+											</div>
+							  			</div>
+							  			<div class="col-md-12">
+							  				<div class="form-group col-md-6">
+												<label>District</label>
+												<input class="form-control " type="text" placeholder="District" name="district" id="district" />					
+											</div>
+											<div class="form-group col-md-6">
+												<label>City</label>
+												<input class="form-control " type="text" placeholder="City" name="city" id="city" />
+											</div>
+							  			</div>
+							  			<div class="col-md-12">
+							  				<div class="form-group col-md-6">
+												<label>License</label>
+												<select class="form-control" name="license_category" id="license_category">					
+													<?php 
+														foreach ($license as $key => $value) {
+															echo "<option value='$value[license_code]'>$value[name]</option>";
+														}
+													?>
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label>License Status</label>
+												<select class="form-control" name="license_status" id="license_status">
+													<option value="1">Active</option>
+													<option value="0">In-Active</option>
+												</select>
+											</div>
+							  			</div>
+							  			
+							  			<div class="col-md-12">
+							  			<hr>
+							  				<div class="form-group col-md-6">
+												<label>Owner/MD Name</label>
+												<input class="form-control " type="text" placeholder="Owner/MD Name" name="md_name" id="md_name" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Owner/MD Phone number</label>
+												<input class="form-control " type="text" placeholder="Owner/MD Phone Numbers" name="md_contact_number" id="md_contact_number" />
+											</div>
+							  			</div>
+							  			<div class="col-md-12">
+							  				<div class="col-md-6 form-group">
+							  					<label>Hospital Admin</label>
+							  					<select name="hospital_id" id="hospital_id" class=" form-control">
+							  						<option value="-1">Hospital Admin</option>
+							  						<?php
+							  							foreach ($hospital_admins as $key => $value) {
+							  								echo "<option value='$value[id]'>$value[first_name] $value[last_name]</option>";
+							  							}
+							  						?>
+												</select>
+							  				</div>
+							  				
+							  			</div>            
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab2"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab3">
+                                    	<table id="departments" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>Hospital</th><th>Department</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table>  
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab4"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab5"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab6"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab7"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab8"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab9"></div>
+                                    <div role="tabpanel" class="tab-pane active fade in" id="tab10"></div>
+                                </div>
+                            </div>                
+				  			
 						</div>
 					</div>
 				  	<div>
@@ -170,6 +218,20 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
+
+				$("#deplin").click(function(){
+					var id = $("#eidt_gf_id").val();
+					$("#departments").dataTable().fnDestroy();
+					$("#departments").DataTable({
+						"processing": true,
+			            "serverSide": true,
+			            "paging":   false,
+				        "ordering": false,
+				        "info":     false,
+			            "ajax": "<?php echo site_url(); ?>/departments/getDTdepartments/"+id
+					});
+					$("#departments_filter").hide();
+				});
 
 				var validator = $("#form").validate({
 					
