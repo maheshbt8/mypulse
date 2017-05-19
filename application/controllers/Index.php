@@ -14,8 +14,8 @@ class Index extends CI_Controller {
 	function index()
 	{
 		if($this->auth->isLoggedIn()){
-			$data['page_title'] = "Dashboard";
-			$data['breadcrumb'] = array(site_url()=>"Home",null=>'Dashboard');
+			$data['page_title'] = $this->lang->line('dashboard');
+			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
 			$this->load->view($this->index_page,$data);
 		}
 		else{
@@ -25,8 +25,8 @@ class Index extends CI_Controller {
 	
 	function registration(){
 		if($this->auth->isLoggedIn()){
-			$data['page_title'] = "Dashboard";
-			$data['breadcrumb'] = array(site_url()=>"Home",null=>'Dashboard');
+			$data['page_title'] = $this->lang->line('dashboard');
+			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
 			$this->load->view($this->index_page,$data);
 		}
 		else{
@@ -36,8 +36,8 @@ class Index extends CI_Controller {
 	
 	function login(){
 		if($this->auth->isLoggedIn()){
-			$data['page_title'] = "Dashboard";
-			$data['breadcrumb'] = array(site_url()=>"Home",null=>'Dashboard');
+			$data['page_title'] = $this->lang->line('dashboard');
+			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
 			$this->load->view($this->index_page,$data);
 		}
 		else
@@ -47,16 +47,16 @@ class Index extends CI_Controller {
 	function doLogin(){
 		$st = $this->users_model->doLogin();
 		if($st === true){
-			$data['infos']=array('Welcome '.$this->auth->getUsername());
+			$data['infos']= array( sprintf($this->lang->line('msg_welcome'),$this->auth->getUsername()));
 			$this->session->set_flashdata('data', $data);
 			redirect('index');
 		}else if($st == -1){
-			$data['errors']=array('Please verify your account.');
+			$data['errors'] = array($this->lang->line("user_account_verify"));
 			$this->session->set_flashdata('data', $data);
 			redirect($this->login_page);
 		}
 		else{
-			$data['errors']=array('Please Enter Valid Username and Password !!!');
+			$data['errors']=array($this->lang->line('usr_acc_invalid_credential'));
 			$this->session->set_flashdata('data', $data);
 			redirect($this->login_page);
 		}
@@ -65,17 +65,17 @@ class Index extends CI_Controller {
 	function doReg(){
 		$cn = $this->users_model->doReg();
 		if($cn === true){
-			$data['success']=array('Registration completed successfully...!!!');
+			$data['success']=array($this->lang->line('reg_completed'));
 			$this->session->set_flashdata('data', $data);
 			redirect($this->login_page);
 		}
 		else if($cn == -1){
-			$data['errors']=array('This email id is already registration with us. Please try to login.');
+			$data['errors']=array($this->lang->line('msg_email_exist'));
 			$this->session->set_flashdata('data', $data);
 			$this->load->view('index/registration');
 		}
 		else{
-			$data['errors']=array('Please Try Again...!!!');
+			$data['errors']=array($this->lang->line('msg_try_again'));
 			$this->session->set_flashdata('data', $data);
 			$this->load->view('index/registration');
 		}
@@ -84,10 +84,10 @@ class Index extends CI_Controller {
 	function update(){
 		if($this->auth->isLoggedIn()){
 			if($this->users_model->update()){
-				$data['success']=array('Profile updated successfully...!!!');
+				$data['success']=array($this->lang->line('msg_profile_udpated'));
 			}
 			else{
-				$data['errors']=array('Please Try Again...!!!');
+				$data['errors']=array($this->lang->line('msg_try_again'));
 			}
 			$this->session->set_flashdata('data', $data);
 			redirect('index');
@@ -118,15 +118,15 @@ class Index extends CI_Controller {
 			
 			if($mail->sendRegMail($data))
 			{
-				$temp['success'] = array('Please Check Your Mailbox');
+				$temp['success'] = array($this->lang->line('msg_check_email'));
 				$this->session->set_flashdata('data', $temp);
 				redirect($this->login_page);
 			}
 			else
-				$temp['errors'] = array('Unable to send you EMail. Please try again after sometime.');
+				$temp['errors'] = array($this->lang->line('msg_email_send_error'));
 		}
 		else
-			$temp['errors']=array('Please Enter Valid Username');
+			$temp['errors']=array($this->lang->line('usr_invalid_user'));
 	
 		$this->session->set_flashdata('data', $temp);
 		redirect('index/forgot');		
@@ -143,12 +143,12 @@ class Index extends CI_Controller {
 	{
 		$temp = array();
 		if($this->users_model->resetPassword()){
-			$temp['success'] = array('Password Successfully Change');
+			$temp['success'] = array($this->lang->line('msg_password_change'));
 			$this->session->set_flashdata('data', $temp);
 			$this->load->view($this->login_page);
 		}
 		else{
-			$temp['errors'] = array('Key Does Not Match');
+			$temp['errors'] = array($this->lang->line('msg_key_not_match'));
 			$temp['key']=null;
 			$this->session->set_flashdata('data', $temp);
 			$this->load->view('index/resetPassword',$temp);

@@ -14,8 +14,8 @@ class Hospitals extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $data['license'] = $this->license_model->getAlllicense();
             $data['hospital_admins'] = $this->users_model->getUsersByType($this->auth->getHospitalAdminRoleType());
-            $data["page_title"] = "Hospitals";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Hospitals");
+            $data["page_title"] = $this->lang->line('hospitals');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('hospitals'));
             $this->load->view('Hospitals/index', $data);
         } else redirect('index/login');
     }
@@ -30,9 +30,9 @@ class Hospitals extends CI_Controller {
     public function add() {
         if ($this->auth->isLoggedIn()) {
             if ($this->hospitals_model->add()) {
-                $data['success'] = array("Hospitals Added Successfully");
+                $data['success'] = array($this->lang->line('msg_hospital_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('hospitals/index');
@@ -43,9 +43,9 @@ class Hospitals extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->hospitals_model->update($id)) {
-                $data['success'] = array("Hospitals Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_hospital_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('hospitals/index');

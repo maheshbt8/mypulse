@@ -11,25 +11,25 @@ class Users extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['userss'] = $this->users_model->getAllusers();
-            $data["page_title"] = "Users";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Users");
+            $data["page_title"] = $this->lang->line('users');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('users'));
             $this->load->view('Users/index', $data);
         } else redirect('index/login');
     }
-    public function search() {
+    public function search($role=0) {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
-            $result = $this->users_model->search($q, $f);
+            $result = $this->users_model->search($q, $f,$role);
             echo json_encode($result);
         }
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
             if ($this->users_model->add()) {
-                $data['success'] = array("Users Added Successfully");
+                $data['success'] = array($this->lang->line('msg_user_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('users/index');
@@ -41,9 +41,9 @@ class Users extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->users_model->update($id)) {
-                $data['success'] = array("Users Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_user_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('users/index');

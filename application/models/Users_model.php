@@ -54,8 +54,11 @@ class Users_model extends CI_Model {
         return $res->result_array();
     }
 
-    function search($q, $field) {
+    function search($q, $field,$role) {
         $field = explode(",", $field);
+        if($role > 0){
+            $this->db->where('role',$role);
+        }
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }

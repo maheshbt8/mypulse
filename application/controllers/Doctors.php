@@ -3,72 +3,76 @@
  * @author Yogesh Patel
  * @email  yogesh@techcrista.in
  */
-class License extends CI_Controller {
+class Doctors extends CI_Controller {
     function __construct() {
         parent::__construct();
-        $this->load->model('license_model');
+        $this->load->model('doctors_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
-            $data['licenses'] = $this->license_model->getAlllicense();
-            $data["page_title"] = $this->lang->line('license');
-            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('license'));
-            $this->load->view('License/index', $data);
+            $data['doctorss'] = $this->doctors_model->getAlldoctors();
+            $data["page_title"] = "Doctors";
+            $data["breadcrumb"] = array(site_url() => "Home", null => "Doctors");
+            $this->load->view('Doctors/index', $data);
         } else redirect('index/login');
     }
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
-            $result = $this->license_model->search($q, $f);
+            $result = $this->doctors_model->search($q, $f);
             echo json_encode($result);
         }
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            if ($this->license_model->add()) {
-                $data['success'] = array($this->lang->line('msg_license_added'));
+            if ($this->doctors_model->add()) {
+                $data['success'] = array("Doctors Added Successfully");
             } else {
-                $data['errors'] = array($this->lang->line('msg_license_updated'));
+                $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('license/index');
+            redirect('doctors/index');
         } else redirect('index/login');
     }
     public function update() {
         if ($this->auth->isLoggedIn()) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
-            if ($this->license_model->update($id)) {
-                $data['success'] = array($this->lang->line('msg_try_again'));
+            if ($this->doctors_model->update($id)) {
+                $data['success'] = array("Doctors Updated Successfully");
             } else {
-                $data['errors'] = array($this->lang->line('msg_try_again'));
+                $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('license/index');
+            redirect('doctors/index');
         } else redirect('index/login');
     }
     public function delete() {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
-            echo $this->license_model->delete($id);
+            echo $this->doctors_model->delete($id);
         }
     }
-    public function getlicense() {
+    public function getdoctors() {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
-            echo json_encode($this->license_model->getlicenseById($id));
+            echo json_encode($this->doctors_model->getdoctorsById($id));
         }
     }
-    public function getDTlicense() {
+    public function getDTdoctors() {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
-            $table = "hms_license";
+            $table = "hms_doctors";
             $primaryKey = "id";
-            $columns = array(array("db" => "license_code", "dt" => 0, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "name", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
+            $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
+                $this->load->model("users_model");
+                $temp = $this->users_model->getusersById($d);
+                return $temp["users"];
+            }), array("db" => "hospital_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $this->load->model("hospitals_model");
+                $temp = $this->hospitals_model->gethospitalsById($d);
+                return $temp["hospitals"];
             }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
                 return "<button class=\"btn btn-info editbtn\" data-toggle=\"modal\" data-target=\"#edit\" type=\"button\" data-toggle=\"tooltip\" data-id=\"$d\" title=\"Edit\"><i class=\"fa fa-edit\"></i></button>
 		        	<button class=\"btn btn-danger delbtn\" type=\"button\" data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"fa fa-trash-o\"></i></button>

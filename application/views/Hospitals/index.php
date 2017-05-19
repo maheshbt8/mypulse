@@ -91,7 +91,7 @@ $this->load->view("template/left.php");
 				  			</div>
 				  			<div class="col-md-12">
 				  				<div class="form-group col-md-6">
-									<label>Select License</label>
+									<label>License</label>
 									<select class="form-control" name="license_category" id="license_category">					
 										<?php 
 											foreach ($license as $key => $value) {
@@ -110,9 +110,9 @@ $this->load->view("template/left.php");
 				  			</div>
 				  			<div class="col-md-12">
 				  				<div class="col-md-6 form-group">
-				  					<label>Select Hospital Admin</label>
+				  					<label>Hospital Admin</label>
 				  					<select name="hospital_id" id="hospital_id" class=" form-control">
-				  						<option value="-1">Select Hospital Admin</option>
+				  						<option value="-1">Hospital Admin</option>
 				  						<?php
 				  							foreach ($hospital_admins as $key => $value) {
 				  								echo "<option value='$value[id]'>$value[first_name] $value[last_name]</option>";
