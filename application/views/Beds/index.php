@@ -1,24 +1,24 @@
 <?php
 /**
- * @author Yogesh Patel
- * @email  yogesh@techcrista.in
+ * @author Ramesh Patel
+ * @email  ramesh@techcrista.in
  */
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="3" />
+			<input type="hidden" id="left_active_menu" value="14" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Departments</h4>
+	                        <h4 class="panel-title">Beds</h4>
 	                    </div>
 	                    <div class="panel-body">
 	                       <div class="table-responsive">
-	                            <table id="departments" class="display table" cellspacing="0" width="100%">
+	                            <table id="beds" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Branch</th><th>Department Name</th><th width="20px">#</th>
+	                                    <tr><th>Department</th><th>Bed</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -35,7 +35,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/departments/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/beds/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -46,13 +46,13 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 				  			<div class="col-md-12">
 				  			<div class="form-group col-md-6">
-					<label>Branch</label>
-					<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
+					<label>Department</label>
+					<select name="department_id" id="department_id" class=" form-control" style="width: 100%">
 					</select>
 					
 		</div><div class="form-group col-md-6">
-					<label>Department Name</label>
-					<input class="form-control " type="text" placeholder="Department Name" name="department_name" id="department_name" />
+					<label>Bed</label>
+					<input class="form-control " type="text" placeholder="Bed" name="bed" id="bed" />
 					
 		</div>
 				  		</div>
@@ -104,10 +104,10 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-				$("#departments").DataTable({
+				$("#beds").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/departments/getDTdepartments"
+		            "ajax": "<?php echo site_url(); ?>/beds/getDTbeds"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
@@ -116,36 +116,36 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Add New Branch");
+			    	$("#Edit-Heading").html("Add New Bed");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/departments/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/beds/add");
 			    	$("#edit").modal("show");
 			    });
 
-				$("#departments").on("click",".editbtn",function(){
+				$("#beds").on("click",".editbtn",function(){
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/departments/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/beds/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Branch Details");
+			    	$("#Edit-Heading").html("Edit Bed Detail");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
 
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/departments/getdepartments",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/beds/getbeds",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-					tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_id}]);
-					tempselectize_branch_id.refreshItems();
-					tempselectize_branch_id.setValue(data.branch_id);
+					var tempselectize_department_id = $selectize_department_id[0].selectize;
+					tempselectize_department_id.addOption([{"id":data.department_id,"text":data.department_id}]);
+					tempselectize_department_id.refreshItems();
+					tempselectize_department_id.setValue(data.department_id);
 					
-					$("#department_name").val(data.department_name);
+					$("#bed").val(data.bed);
 					
 
 			    		/*$.each(JSON.parse(data), function(key, value){
@@ -154,25 +154,25 @@ $this->load->view("template/footer.php");
 			    	});
 			    }
 
-			    $("#departments").on("click",".viewbtn",function(){
+			    $("#beds").on("click",".viewbtn",function(){
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Branch Details");
+			    	$("#Edit-Heading").html("Bed Detail");
 
 			    });
 
 
-			    $("#departments").on("click",".delbtn",function(){
+			    $("#beds").on("click",".delbtn",function(){
 			    	$("#cur_del").val($(this).attr("data-id"));
 			    });
 			    
 			    $("#del_yes").click(function(){
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/departments/delete",{id:id},function(){
+			    		$.post("<?php echo site_url(); ?>/beds/delete",{id:id},function(){
 			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
 			    			$("#delete").modal("hide");	
 			    		});
@@ -183,7 +183,7 @@ $this->load->view("template/footer.php");
 			    	$(".modal-backdrop").hide();
 			    });
 
-				var $selectize_branch_id = $("#branch_id").selectize({
+				var $selectize_department_id = $("#department_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -200,9 +200,9 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/branches/search",
+				            url: "<?php echo site_url(); ?>/departments/search",
 				            type: "GET",
-				            data: {"q":query,"f":"branch_name"},
+				            data: {"q":query,"f":"department_name"},
 				            error: function() {
 				                callback();
 				            },

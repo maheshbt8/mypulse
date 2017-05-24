@@ -3,87 +3,97 @@
  * @author Yogesh Patel
  * @email  yogesh@techcrista.in
  */
-class Departments extends CI_Controller {
+class Beds extends CI_Controller {
     function __construct() {
         parent::__construct();
-        $this->load->model('departments_model');
+        $this->load->model('beds_model');
         $this->load->model('branches_model');
+        $this->load->model('departments_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
-            $data['departmentss'] = $this->departments_model->getAlldepartments();
-            $data["page_title"] = "Departments";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Departments");
-            $this->load->view('Departments/index', $data);
+            $data['bedss'] = $this->beds_model->getAllbeds();
+            $data["page_title"] = "Beds";
+            $data["breadcrumb"] = array(site_url() => "Home", null => "Beds");
+            $this->load->view('Beds/index', $data);
         } else redirect('index/login');
     }
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
-            $result = $this->departments_model->search($q, $f);
+            $result = $this->beds_model->search($q, $f);
             echo json_encode($result);
         }
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            if ($this->departments_model->add()) {
-                $data['success'] = array("Departments Added Successfully");
+            if ($this->beds_model->add()) {
+                $data['success'] = array("Beds Added Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('departments/index');
+            redirect('beds/index');
         } else redirect('index/login');
     }
     public function update() {
         if ($this->auth->isLoggedIn()) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
-            if ($this->departments_model->update($id)) {
-                $data['success'] = array("Departments Updated Successfully");
+            if ($this->beds_model->update($id)) {
+                $data['success'] = array("Beds Updated Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('departments/index');
+            redirect('beds/index');
         } else redirect('index/login');
     }
     public function delete() {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
-            echo $this->departments_model->delete($id);
+            echo $this->beds_model->delete($id);
         }
     }
-    public function getdepartments() {
+    public function getbeds() {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
-            echo json_encode($this->departments_model->getdepartmentsById($id));
+            echo json_encode($this->beds_model->getbedsById($id));
         }
     }
-    public function getDTdepartments($hospital_id=null) {
+    public function getDTbeds($hospital_id=null) {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
-            $table = "hms_departments";
+            $table = "hms_beds";
             $primaryKey = "id";
-            $columns = array(array("db" => "branch_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $this->load->model("branches_model");
-                $temp = $this->branches_model->getbranchesById($d);
-                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$temp['branch_name']."</a>";
-            }), array("db" => "department_name", "dt" => 1, "formatter" => function ($d, $row) {
+            $columns = array(array("db" => "department_id", "dt" => 0, "formatter" => function ($d, $row) {
+                $this->load->model("departments_model");
+                $temp = $this->departments_model->getdepartmentsById($d);
+                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$temp['department_name']."</a>";
+            }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             if($hospital_id!=null){
-                $ids = $this->branches_model->getBracheIds($hospital_id);
+                $ids = $this->departments_model->getDepartmentIdsFromHospital($hospital_id);
                 $ids = implode(",", $ids);
-                $this->tbl->setTwID("branch_id in (".$ids.")");
-                $columns = array($columns[0],$columns[1]);
-                $columns[0]['formatter'] = function ($d, $row) {
-                    $this->load->model("branches_model");
-                    $temp = $this->branches_model->getbranchesById($d);
-                    return $temp['branch_name'];
+                $this->tbl->setTwID("department_id in (".$ids.")");
+                $columns = array(
+                    array("db" => "department_id", "dt" => 0, "formatter" => function ($d, $row) {
+                        $this->load->model("departments_model");
+                        $temp = $this->departments_model->getBranch($d);
+                        return $temp['branch_name'];
+                    }),      
+                    $columns[0],$columns[1]
+                );
+                $columns[1]['dt'] = 1;
+                $columns[2]['dt'] = 2;
+                $columns[1]['formatter'] =  function ($d, $row) {
+                    $this->load->model("departments_model");
+                    $temp = $this->departments_model->getdepartmentsById($d);
+                    return $temp['department_name'];
                 };
                 $this->tbl->setIndexColumn(true);
             }

@@ -1,24 +1,24 @@
 <?php
 /**
- * @author Yogesh Patel
- * @email  yogesh@techcrista.in
+ * @author Ramesh Patel
+ * @email  ramesh@techcrista.in
  */
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="3" />
+			<input type="hidden" id="left_active_menu" value="13" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Departments</h4>
+	                        <h4 class="panel-title">Branches</h4>
 	                    </div>
 	                    <div class="panel-body">
 	                       <div class="table-responsive">
-	                            <table id="departments" class="display table" cellspacing="0" width="100%">
+	                            <table id="branches" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Branch</th><th>Department Name</th><th width="20px">#</th>
+	                                    <tr><th>Hospital </th><th>Branch Name</th><th>Phone Number</th><th>City</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -35,7 +35,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/departments/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/branches/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -46,13 +46,50 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 				  			<div class="col-md-12">
 				  			<div class="form-group col-md-6">
-					<label>Branch</label>
-					<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
+					<label>Hospital</label>
+					<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
 					</select>
 					
 		</div><div class="form-group col-md-6">
-					<label>Department Name</label>
-					<input class="form-control " type="text" placeholder="Department Name" name="department_name" id="department_name" />
+					<label>Branch Name</label>
+					<input class="form-control " type="text" placeholder="Branch Name" name="branch_name" id="branch_name" />
+					
+		</div>
+				  					</div>
+				  					<div class="col-md-12">
+				  				<div class="form-group col-md-6">
+					<label>Phone Number</label>
+					<input class="form-control " type="text" placeholder="Phone Number" name="phone_number" id="phone_number" />
+					
+		</div><div class="form-group col-md-6">
+					<label>Email</label>
+					<input class="form-control " type="text" placeholder="Email" name="email" id="email" />
+					
+		</div>
+				  					</div>
+				  					<div class="col-md-12">
+				  				<div class="form-group col-md-6">
+					<label>Address</label>
+					<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+					
+		</div><div class="form-group col-md-6">
+					<label>City</label>
+					<input class="form-control " type="text" placeholder="City" name="city" id="city" />
+					
+		</div>
+				  					</div>
+				  					<div class="col-md-12">
+				  				<div class="form-group col-md-6">
+					<label>District</label>
+					<input class="form-control " type="text" placeholder="District" name="district" id="district" />
+					
+		</div><div class="form-group col-md-6">
+					<label>State</label>
+					<input class="form-control " type="text" placeholder="State" name="state" id="state" />
+					
+		</div><div class="form-group col-md-6">
+					<label>Country</label>
+					<input class="form-control " type="text" placeholder="Country" name="country" id="country" />
 					
 		</div>
 				  		</div>
@@ -104,10 +141,10 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-				$("#departments").DataTable({
+				$("#branches").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/departments/getDTdepartments"
+		            "ajax": "<?php echo site_url(); ?>/branches/getDTbranches"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
@@ -121,15 +158,15 @@ $this->load->view("template/footer.php");
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/departments/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/branches/add");
 			    	$("#edit").modal("show");
 			    });
 
-				$("#departments").on("click",".editbtn",function(){
+				$("#branches").on("click",".editbtn",function(){
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/departments/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/branches/update");
 			    	$("#form input").attr("disabled",false);
 			    	$("#Edit-Heading").html("Edit Branch Details");
 			    	$("#action-add-btn").parent().hide();
@@ -137,24 +174,34 @@ $this->load->view("template/footer.php");
 			    });
 
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/departments/getdepartments",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/branches/getbranches",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-					tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_id}]);
-					tempselectize_branch_id.refreshItems();
-					tempselectize_branch_id.setValue(data.branch_id);
-					
-					$("#department_name").val(data.department_name);
-					
-
-			    		/*$.each(JSON.parse(data), function(key, value){
-						    $("#"+key).val(value);
-						});*/
+						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+						tempselectize_hospital_id.refreshItems();
+						tempselectize_hospital_id.setValue(data.hospital_id);
+						
+						$("#branch_name").val(data.branch_name);
+						
+						$("#phone_number").val(data.phone_number);
+						
+						$("#email").val(data.email);
+						
+						$("#address").val(data.address);
+						
+						$("#city").val(data.city);
+						
+						$("#district").val(data.district);
+						
+						$("#state").val(data.state);
+						
+						$("#country").val(data.country);
+						
 			    	});
 			    }
 
-			    $("#departments").on("click",".viewbtn",function(){
+			    $("#branches").on("click",".viewbtn",function(){
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
@@ -165,14 +212,14 @@ $this->load->view("template/footer.php");
 			    });
 
 
-			    $("#departments").on("click",".delbtn",function(){
+			    $("#branches").on("click",".delbtn",function(){
 			    	$("#cur_del").val($(this).attr("data-id"));
 			    });
 			    
 			    $("#del_yes").click(function(){
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/departments/delete",{id:id},function(){
+			    		$.post("<?php echo site_url(); ?>/branches/delete",{id:id},function(){
 			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
 			    			$("#delete").modal("hide");	
 			    		});
@@ -183,7 +230,7 @@ $this->load->view("template/footer.php");
 			    	$(".modal-backdrop").hide();
 			    });
 
-				var $selectize_branch_id = $("#branch_id").selectize({
+				var $selectize_hospital_id = $("#hospital_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -200,9 +247,9 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/branches/search",
+				            url: "<?php echo site_url(); ?>/hospitals/search",
 				            type: "GET",
-				            data: {"q":query,"f":"branch_name"},
+				            data: {"q":query,"f":"name"},
 				            error: function() {
 				                callback();
 				            },

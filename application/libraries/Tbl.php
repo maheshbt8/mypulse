@@ -10,27 +10,41 @@ class Tbl {
 	 */
 
 	public static $other;
+	public static $include_number_index_column = false;
 
 	public function setTwID($d){
 		self::$other = $d;
 	}
 
+	public function setIndexColumn($s=false){
+		self::$include_number_index_column = $s;
+	}
+
 	static function data_output ( $columns, $data )
 	{
 		$out = array();
+		$cnt = 1;
 		for ( $i=0, $ien=count($data) ; $i<$ien ; $i++ ) {
 			$row = array();
 			for ( $j=0, $jen=count($columns) ; $j<$jen ; $j++ ) {
 				$column = $columns[$j];
+				$dt = $column['dt'];
+				if(self::$include_number_index_column){
+					$dt++;
+					if($j==0){
+						$row[0] = $cnt;
+					}
+				}
 				// Is there a formatter?
 				if ( isset( $column['formatter'] ) ) {
-					$row[ $column['dt'] ] = $column['formatter']( $data[$i][ $column['db'] ], $data[$i] );
+					$row[ $dt ] = $column['formatter']( $data[$i][ $column['db'] ], $data[$i] );
 				}
 				else {
-					$row[ $column['dt'] ] = $data[$i][ $columns[$j]['db'] ];
+					$row[ $dt ] = $data[$i][ $columns[$j]['db'] ];
 				}
 			}
 			$out[] = $row;
+			$cnt++;
 		}
 		return $out;
 	}

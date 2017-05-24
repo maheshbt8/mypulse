@@ -6,7 +6,7 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="4" />
+			<input type="hidden" id="left_active_menu" value="1" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -18,9 +18,10 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Doctor</th><th>Hospital</th><th>Action</th>
+	                                    <tr><th>User Id</th><th>Branch Id</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
+	                                
 	                                <tbody>
 	                                </tbody>
 	                            </table>  
@@ -39,19 +40,19 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading">Assign Doctor</h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
 				  			<div class="col-md-12">
 				  			<div class="form-group col-md-6">
-					<label>Doctor</label>
+					<label>User Id</label>
 					<select name="user_id" id="user_id" class=" form-control" style="width: 100%">
 					</select>
 					
 		</div><div class="form-group col-md-6">
-					<label>Hospital</label>
-					<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
+					<label>Branch Id</label>
+					<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
 					</select>
 					
 		</div>
@@ -116,7 +117,7 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Assign Doctor");
+			    	$("#Edit-Heading").html("Add New Record");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
@@ -131,7 +132,7 @@ $this->load->view("template/footer.php");
 			    	loadData(id);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/doctors/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit");
+			    	$("#Edit-Heading").html("Edit Your Data");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
@@ -145,10 +146,10 @@ $this->load->view("template/footer.php");
 					tempselectize_user_id.refreshItems();
 					tempselectize_user_id.setValue(data.user_id);
 					
-					var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-					tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
-					tempselectize_hospital_id.refreshItems();
-					tempselectize_hospital_id.setValue(data.hospital_id);
+					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
+					tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_id}]);
+					tempselectize_branch_id.refreshItems();
+					tempselectize_branch_id.setValue(data.branch_id);
 					
 
 			    		/*$.each(JSON.parse(data), function(key, value){
@@ -203,9 +204,9 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/users/search/3",
+				            url: "<?php echo site_url(); ?>/users/search",
 				            type: "GET",
-				            data: {"q":query,"f":"first_name,last_name"},
+				            data: {"q":query,"f":"id"},
 				            error: function() {
 				                callback();
 				            },
@@ -218,7 +219,7 @@ $this->load->view("template/footer.php");
 
 					
 
-				var $selectize_hospital_id = $("#hospital_id").selectize({
+				var $selectize_branch_id = $("#branch_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -235,9 +236,9 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/hospitals/search",
+				            url: "<?php echo site_url(); ?>/branches/search",
 				            type: "GET",
-				            data: {"q":query,"f":"name"},
+				            data: {"q":query,"f":"id"},
 				            error: function() {
 				                callback();
 				            },

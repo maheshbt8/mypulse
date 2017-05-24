@@ -16,7 +16,10 @@ class Index extends CI_Controller {
 		if($this->auth->isLoggedIn()){
 			$data['page_title'] = $this->lang->line('dashboard');
 			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
-			$this->load->view($this->index_page,$data);
+			if($this->auth->getRole() == 1)
+				$this->load->view($this->index_page,$data);
+			else if($this->auth->getRole() == 2)
+				$this->load->view('index/admindashboard',$data);
 		}
 		else{
 			redirect($this->login_page);

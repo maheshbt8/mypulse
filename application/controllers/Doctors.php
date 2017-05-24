@@ -69,14 +69,12 @@ class Doctors extends CI_Controller {
                 $this->load->model("users_model");
                 $temp = $this->users_model->getusersById($d);
                 return $temp["users"];
-            }), array("db" => "hospital_id", "dt" => 1, "formatter" => function ($d, $row) {
-                $this->load->model("hospitals_model");
-                $temp = $this->hospitals_model->gethospitalsById($d);
-                return $temp["hospitals"];
+            }), array("db" => "branch_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $this->load->model("branches_model");
+                $temp = $this->branches_model->getbranchesById($d);
+                return $temp["branches"];
             }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
-                return "<button class=\"btn btn-info editbtn\" data-toggle=\"modal\" data-target=\"#edit\" type=\"button\" data-toggle=\"tooltip\" data-id=\"$d\" title=\"Edit\"><i class=\"fa fa-edit\"></i></button>
-		        	<button class=\"btn btn-danger delbtn\" type=\"button\" data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"fa fa-trash-o\"></i></button>
-		        	<button class=\"btn btn-info viewbtn\" type=\"button\" data-toggle=\"modal\" data-target=\"#edit\" data-toggle=\"tooltip\" data-id=\"$d\" title=\"View\"><i class=\"fa fa-binoculars\"></i></button><span id=\"tr_$d\"></span>";
+                return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));

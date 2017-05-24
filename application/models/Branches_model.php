@@ -3,15 +3,15 @@
  * @author Yogesh Patel
  * @email  yogesh@techcrista.in
  */
-class Departments_model extends CI_Model {
-    var $tblname = "hms_departments";
-    function getAlldepartments() {
+class Branches_model extends CI_Model {
+    var $tblname = "hms_branches";
+    function getAllbranches() {
         $this->db->where("isDeleted", "0");
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
-    function getdepartmentsById($id) {
+    function getbranchesById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
@@ -28,6 +28,7 @@ class Departments_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", strtotime($data["created_date"]));
         if ($this->db->insert($this->tblname, $data)) {
             return true;
@@ -38,6 +39,7 @@ class Departments_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", $data["created_date"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
@@ -54,28 +56,16 @@ class Departments_model extends CI_Model {
         } else return false;
     }
 
-    function getDepartmentIdsFromHospital($hospital_id=0){
-        $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id");
+    function getBracheIds($hospital_id = 0){
+        $this->db->where('hospital_id',$hospital_id);
+        $this->db->where('isActive',1);
+        $this->db->where('isDeleted',0);
+        $res = $this->db->get($this->tblname);
         $res = $res->result_array();
         $ids = array();
         foreach ($res as $key => $value) {
             $ids[] = $value['id'];
         }
         return $ids;
-    }
-
-    function getBranch($department_id=0){
-        $this->db->where('id',$department_id);
-        $this->db->where('isActive',1);
-        $this->db->where('isDeleted',0);
-        $res = $this->db->get($this->tblname);
-        $res = $res->row_array();
-
-        $this->db->where('id',$res['branch_id']);
-        $this->db->where('isActive',1);
-        $this->db->where('isDeleted',0);
-        $branch = $this->db->get("hms_branches");
-        $branch = $branch->row_array();
-        return $branch;
     }
 }

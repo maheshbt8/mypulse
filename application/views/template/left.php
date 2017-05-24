@@ -22,12 +22,12 @@
 
                         switch ($this->auth->getRole()) {
                             case 1:
-                                //Admin
+                            //Super Admin
                         ?>
                             <li id="li2"><a href="<?php echo site_url();?>/hospitals" class="waves-effect waves-button"><span class="menu-icon fa  fa-hospital-o"></span><p><?php echo $menu['main_hospitals'];?></p></a></li>
                             <!-- <li id="li3"><a href="<?php echo site_url();?>/departments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_departments'];?></p></a></li> -->
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
-                            <li id="li5"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p><?php echo $menu['main_nurses'];?></p></a></li>
+                            <li id="li5"><a href="<?php echo site_url();?>/" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p><?php echo $menu['main_nurses'];?></p></a></li>
                             <li id="li6"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-user-following "></span><p><?php echo $menu['main_receptionists'];?></p></a></li>
                             <li id="li7"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon icon-users "></span><p><?php echo $menu['main_patients'];?></p></a></li>
                             <li id="li8"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-medkit "></span><p><?php echo $menu['main_medical_stores'];?></p></a></li>
@@ -50,8 +50,40 @@
                                 </ul>
                             </li>
                             
-                        <?php                                
-                                break;
+                        <?php
+                            break;
+                            case 2:
+                            //Hospital Admin                                
+                        ?>
+
+                            <li id="li13"><a href="<?php echo site_url();?>/branches" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_branches'];?></p></a></li>
+                            <li id="li3"><a href="<?php echo site_url();?>/departments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_departments'];?></p></a></li>
+                            <li id="li14"><a href="<?php echo site_url();?>/beds" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_beds'];?></p></a></li>
+                            <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
+                            <li id="li5"><a href="<?php echo site_url();?>/" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p><?php echo $menu['main_nurses'];?></p></a></li>
+                            <li id="li6"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-user-following "></span><p><?php echo $menu['main_receptionists'];?></p></a></li>
+                            <li id="li7"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon icon-users "></span><p><?php echo $menu['main_patients'];?></p></a></li>
+                            <li id="li8"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-medkit "></span><p><?php echo $menu['main_medical_stores'];?></p></a></li>
+                            <li id="li9"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa  fa-plus-square "></span><p><?php echo $menu['main_medical_labs'];?></p></a></li>
+                            <li id="li10"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-edit "></span><p><?php echo $menu['main_appointments'];?></p></a></li>
+                            <li id="li11"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>
+                            <li id="li12"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart "></span><p><?php echo $menu['main_reports'];?></p></a></li>
+                      
+                            <li id="li12" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon  glyphicon glyphicon-bullhorn"></span><p><?php echo $menu['main_services'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li id="li1201"><a href="<?php echo site_url();?>/" ><?php echo $menu['main_ambulance'];?></a></li>
+                                    <li id="li1201"><a href="<?php echo site_url();?>/" ><?php echo $menu['main_bood_bank'];?></a></li>
+                                    <li id="li1201"><a href="<?php echo site_url();?>/" ><?php echo $menu['main_insurance'];?></a></li>
+                                </ul>
+                            </li>
+
+                            <li id="li13" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <!-- <li id="li1301"><a href="<?php echo site_url();?>/license/" ><?php echo $menu['main_license_category'];?></a></li> -->
+                                </ul>
+                            </li>
+                        <?php
+                            break;
                             default:
                                 break;
                         }

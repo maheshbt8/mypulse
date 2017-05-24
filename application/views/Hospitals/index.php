@@ -18,7 +18,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="hospitals" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Name</th><th>License Status</th><th>City</th><th>Action</th>
+	                                    <tr><th>Name</th><th>License Status</th><th>City</th><th  width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -47,15 +47,15 @@ $this->load->view("template/left.php");
 				  			 <div role="tabpanel">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
-                                    <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab">Branches</a></li>
-                                    <li role="presentation"><a href="#tab3" id="deplin" aria-controls="messages" role="tab" data-toggle="tab">Departments</a></li>
-                                    <li role="presentation"><a href="#tab4" aria-controls="settings" role="tab" data-toggle="tab">Wards</a></li>
-                                    <li role="presentation"><a href="#tab5" aria-controls="settings" role="tab" data-toggle="tab">Beds</a></li>
-                                    <li role="presentation"><a href="#tab6" aria-controls="settings" role="tab" data-toggle="tab">Doctors</a></li>
-                                    <li role="presentation"><a href="#tab7" aria-controls="settings" role="tab" data-toggle="tab">Nurses</a></li>
-                                    <li role="presentation"><a href="#tab8" aria-controls="settings" role="tab" data-toggle="tab">Receptionists</a></li>
-                                    <li role="presentation"><a href="#tab9" aria-controls="settings" role="tab" data-toggle="tab">Med. Stores</a></li>
-                                    <li role="presentation"><a href="#tab10" aria-controls="settings" role="tab" data-toggle="tab">Med. Labs</a></li>
+                                    <li role="presentation"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/">Branches</a></li>
+                                    <li role="presentation"><a href="#tab3" id="deplin" aria-controls="departments" role="tab" data-toggle="tab">Departments</a></li>
+                                    <!-- <li role="presentation"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="">Wards</a></li> -->
+                                    <li role="presentation"><a href="#tab5" aria-controls="beds" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_beds" data-url="beds/getDTbeds/">Beds</a></li>
+                                    <li role="presentation"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="">Doctors</a></li>
+                                    <li role="presentation"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="">Nurses</a></li>
+                                    <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="">Receptionists</a></li>
+                                    <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="">Med. Stores</a></li>
+                                    <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="">Med. Labs</a></li>
                                 </ul>
                                 <div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -150,23 +150,87 @@ $this->load->view("template/left.php");
 							  				
 							  			</div>            
                                     </div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab2"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab3">
+                                    <div role="tabpanel" class="tab-pane fade in" id="tab2">
+                                    	<table id="tbl_branches" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Branche Name</th><th>Phone Number</th><th>City</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade in" id="tab3">
                                     	<table id="departments" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>Hospital</th><th>Department</th></tr>
+			                                    <tr><th>#</th><th>Branche Name</th><th>Department Name</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
 			                            </table>  
                                     </div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab4"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab5"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab6"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab7"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab8"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab9"></div>
-                                    <div role="tabpanel" class="tab-pane active fade in" id="tab10"></div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab4">
+                                    	<table id="tbl_wards" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Ward</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab5">
+                                    	<table id="tbl_beds" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Branch</th><th>Department</th><th>Bed</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab6">
+                                    	<table id="tbl_doctors" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Name</th><th>Department</th><th>Specilization</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab7">
+                                    	<table id="tbl_nurses" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Name</th><th>Department</th><th>Associated Doctor</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab8">
+                                    	<table id="tbl_receptionist" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab9">
+                                    	<table id="tbl_medstore" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane  fade in" id="tab10">
+                                    	<table id="tbl_medlabs" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
                                 </div>
                             </div>                
 				  			
@@ -231,6 +295,30 @@ $this->load->view("template/footer.php");
 			            "ajax": "<?php echo site_url(); ?>/departments/getDTdepartments/"+id
 					});
 					$("#departments_filter").hide();
+				});
+
+				$(".tab_tbl").click(function(){
+					var id = $(this).data('tblid');
+					var url = $(this).data('url');
+					$("#"+id).dataTable().fnDestroy();
+					if(url == ""){
+						$("#"+id).DataTable({
+							"paging":   false,
+					        "ordering": false,
+					        "info":     false
+						});	
+					}else{
+						$("#"+id).DataTable({
+							"processing": true,
+				            "serverSide": true,
+				            "paging":   false,
+					        "ordering": false,
+					        "info":     false,
+				            "ajax": '<?php echo site_url();?>/'+url+$("#eidt_gf_id").val()
+						});
+					}
+					
+					$("#"+id+"_filter").hide();
 				});
 
 				var validator = $("#form").validate({
