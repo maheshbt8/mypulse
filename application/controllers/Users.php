@@ -26,8 +26,12 @@ class Users extends CI_Controller {
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            if ($this->users_model->add()) {
+            $res = $this->users_model->add();
+
+            if ($res === true) {
                 $data['success'] = array($this->lang->line('msg_user_added'));
+            } else if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
             } else {
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }

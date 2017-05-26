@@ -9,8 +9,8 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">10</p>
-                            <span class="info-box-title">Beds</span>
+                            <p class="counter">1</p>
+                            <span class="info-box-title">Branches</span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-hospital-o"></i>

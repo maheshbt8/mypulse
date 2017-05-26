@@ -25,6 +25,8 @@ class Index extends CI_Controller {
 			redirect($this->login_page);
 		}
 	}
+
+
 	
 	function registration(){
 		if($this->auth->isLoggedIn()){

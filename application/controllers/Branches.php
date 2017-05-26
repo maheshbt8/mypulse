@@ -28,7 +28,7 @@ class Branches extends CI_Controller {
     public function add() {
         if ($this->auth->isLoggedIn()) {
             if ($this->branches_model->add()) {
-                $data['success'] = array("Branches Added Successfully");
+                $data['success'] = array("Branch Added Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
@@ -41,7 +41,7 @@ class Branches extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->branches_model->update($id)) {
-                $data['success'] = array("Branches Updated Successfully");
+                $data['success'] = array("Branch Updated Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
@@ -85,6 +85,10 @@ class Branches extends CI_Controller {
                 $columns[1]["dt"] = 1;
                 $columns[2]["dt"] = 2;
                 $this->tbl->setIndexColumn(true);
+            }
+            if($this->auth->isHospitalAdmin()){
+                $hid = $this->auth->getHospitalId();
+                $this->tbl->setTwID("hospital_id=".$hid);
             }
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));

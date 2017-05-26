@@ -28,7 +28,7 @@ class Departments extends CI_Controller {
     public function add() {
         if ($this->auth->isLoggedIn()) {
             if ($this->departments_model->add()) {
-                $data['success'] = array("Departments Added Successfully");
+                $data['success'] = array("Department Added Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
@@ -41,7 +41,7 @@ class Departments extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->departments_model->update($id)) {
-                $data['success'] = array("Departments Updated Successfully");
+                $data['success'] = array("Department Updated Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
@@ -91,6 +91,11 @@ class Departments extends CI_Controller {
                     return $temp['branch_name'];
                 };
                 $this->tbl->setIndexColumn(true);
+            }
+            if($this->auth->isHospitalAdmin()){
+                $ids = $this->auth->getBranchIds();
+                $ids = implode(",", $ids);
+                $this->tbl->setTwID("branch_id in (".$ids.")");
             }
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));

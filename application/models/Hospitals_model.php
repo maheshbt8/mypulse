@@ -38,7 +38,7 @@ class Hospitals_model extends CI_Model {
             unset($data['hospital_id']);
         }
 
-        $data["created_date"] = date("Y-m-d H:i:s");
+        $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {

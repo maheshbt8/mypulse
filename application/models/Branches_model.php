@@ -7,6 +7,9 @@ class Branches_model extends CI_Model {
     var $tblname = "hms_branches";
     function getAllbranches() {
         $this->db->where("isDeleted", "0");
+        if($this->auth->isHospitalAdmin()){
+            $this->db->where('hospital_id',$this->auth->getHospitalId());
+        }
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
         else return array();
@@ -29,7 +32,7 @@ class Branches_model extends CI_Model {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", strtotime($data["created_date"]));
+        $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {
@@ -40,7 +43,7 @@ class Branches_model extends CI_Model {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", $data["created_date"]);
+        
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
             return true;

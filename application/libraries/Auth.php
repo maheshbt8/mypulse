@@ -19,7 +19,61 @@ class Auth {
     		return false;
     	}
     }
-    
+
+    public function isSuperAdmin(){
+        
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getAdminRoleType()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isHospitalAdmin(){
+        
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getHospitalAdminRoleType()){
+            return true;
+        }
+        return false;
+    }
+
+
+    public function isDoctor(){
+        
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getDoctorRoleType()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isNurse(){
+        
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getNurseRoleType()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isReceptinest(){
+        
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getReceptienstRoleType()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isPatient(){
+        
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getPatientRoleType()){
+            return true;
+        }
+        return false;
+    }
     
     public function getAuthData(){
     	return $this->CI->session->all_userdata();
@@ -50,8 +104,15 @@ class Auth {
         return $u['profile_img'];
       else
         return base_url()."public/assets/images/user.png";
-      
     }    
+
+    public function getHospitalId(){
+        $u = $this->CI->session->all_userdata();
+        if(isset($u['hospital_id'])){
+            return $u['hospital_id'];
+        }
+        return 0;
+    }
 
     public function getUserid(){
       $u = $this->CI->session->all_userdata();
@@ -91,6 +152,99 @@ class Auth {
 
     public function getPatientRoleType(){
         return 6;
+    }
+
+    public function getBranchIds(){
+        $hospital_id = $this->getHospitalId();
+        $this->CI->load->model('branches_model');
+        $ids = $this->CI->branches_model->getBracheIds($hospital_id);
+        if(count($ids) == 0){
+            $ids[] = -1;
+        }
+        return $ids;
+    }   
+
+    public function getDepartmentsIdsByBranch(){
+
+    }
+
+    public function getAllDepartmentsIds(){
+        $hospital_id = $this->getHospitalId();
+        $this->CI->load->model('departments_model');
+        $ids = $this->CI->departments_model->getDepartmentIdsFromHospital($hospital_id);
+        if(count($ids) == 0){
+            $ids[] = -1;
+        }
+        return $ids;
+    }
+
+    public function getAllDoctorsByHospitals(){
+        $this->CI->load->model('doctors_model');
+        $ids = $this->CI->doctors_model->getDoctorsIdsByHospital();
+        if(count($ids) == 0){
+            $ids[] = -1;
+        }
+        return $ids;
+    }
+
+    public function getActiveStatus($status,$onlytax = false){
+        $status = intval($status);
+        $text = "";
+        $class = "";
+        switch ($status) {
+            case 1: 
+                $class = "label label-success";
+                $text = "Active";
+                break;
+            case 0: 
+                $class = "label label-danger";
+                $text = "Inactive";
+                break;
+        }
+        if($onlytax){
+            return $text;
+        }else{
+            return "<span class='$class'>$text</span>";
+        }
+    }
+
+
+    public function addUser($data,$user_id=false){
+        $user = array();
+
+        if(isset($data['first_name'])){
+            $user['first_name'] = $data['first_name'];
+        }
+        if(isset($data['last_name'])){
+            $user['last_name'] = $data['last_name'];
+        }
+        if(isset($data['useremail'])){
+            $user['useremail'] = $data['useremail'];
+        }
+        if(isset($data['password'])){
+            $user['password'] = md5($data['password']);
+        }
+        if(isset($data['address'])){
+            $user['address'] = $data['address'];
+        }
+        if(isset($data['mobile'])){
+            $user['mobile'] = $data['mobile'];
+        }
+        if(isset($data['phone'])){
+            $user['phone'] = $data['phone'];
+        }
+        if(isset($data['role'])){
+            $user['role'] = $data['role'];
+        }
+        $_POST = $user;
+        $this->CI->load->model('users_model');
+        $uid = false;
+        if($user_id){
+            $uid = $this->CI->users_model->update($user_id);
+        }else{
+            $uid = $this->CI->users_model->add();
+        }
+        return $uid;
     }
 
 }

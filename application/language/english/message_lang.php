@@ -7,6 +7,7 @@ $lang["msg_try_again"] = "Please Try Again...!!!";
 $lang['dashboard'] = "Dashboard";
 $lang['home'] = "Home";
 $lang['users'] = "Users";
+$lang['patients'] = "Patients";
 $lang['license'] = "License";
 $lang['hospitals'] = "Hospitals";
 $lang['departments'] = "Departments";
@@ -14,7 +15,7 @@ $lang['departments'] = "Departments";
 //Index
 $lang["msg_welcome"] = "Welcome %s";
 $lang["msg_profile_udpated"] = "Profile updated successfully...!!!";
-$lang["msg_email_exist"] = "This email id is already registration with us. Please try to login.";
+$lang["msg_email_exist"] = "This email id is already registration with us.";
 $lang["msg_check_email"] = "Please Check Your Mailbox";
 $lang["msg_email_send_error"] = "Unable to send you EMail. Please try again after sometime.";
 $lang["msg_password_change"] = "Password Successfully Change";

@@ -7,6 +7,9 @@ class Departments_model extends CI_Model {
     var $tblname = "hms_departments";
     function getAlldepartments() {
         $this->db->where("isDeleted", "0");
+        if($this->auth->isHospitalAdmin()){
+            $this->db->where_in('branch_id',$bids = $this->auth->getBranchIds());
+        }
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
         else return array();
@@ -28,7 +31,7 @@ class Departments_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", strtotime($data["created_date"]));
+        $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {
@@ -38,7 +41,7 @@ class Departments_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["created_date"])) $data["created_date"] = date("Y-m-d H:i:s", $data["created_date"]);
+        
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
             return true;
@@ -55,7 +58,7 @@ class Departments_model extends CI_Model {
     }
 
     function getDepartmentIdsFromHospital($hospital_id=0){
-        $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id");
+        $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id and d.isDeleted=0");
         $res = $res->result_array();
         $ids = array();
         foreach ($res as $key => $value) {

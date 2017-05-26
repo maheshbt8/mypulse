@@ -6,19 +6,19 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="4" />
+		<input type="hidden" id="left_active_menu" value="5" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Doctors</h4>
+	                        <h4 class="panel-title">Nurse</h4>
 	                    </div>
 	                    <div class="panel-body">
 	                       <div class="table-responsive">
-	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
+	                            <table id="nurse" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Doctor</th><th>Branch</th><th>Status</th><th width="20px">#</th>
+	                                    <tr><th>Nurse</th><th>Department</th><th>Status</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -35,7 +35,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/doctors/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/nurse/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -86,13 +86,12 @@ $this->load->view("template/left.php");
 								</div>
 							</div>
 				  			<div class="col-md-12">
-								<div class="form-group col-md-6">
-									<label>Branch</label>
-									<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
-									</select>
+				  				<div class="form-group col-md-6">
+									<label>Department Id</label>
+									<select name="department_id" id="department_id" class=" form-control" style="width: 100%">
+									</select>					
 								</div>
 				  			</div>
-				  		
 						</div>
 					</div>
 				  	<div>
@@ -141,10 +140,10 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-				$("#doctors").DataTable({
+				$("#nurse").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/doctors/getDTdoctors"
+		            "ajax": "<?php echo site_url(); ?>/nurse/getDTnurse"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
@@ -153,76 +152,72 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Add New Dector");
+			    	$("#Edit-Heading").html("Add New Nurse");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#passwordhint").hide();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/doctors/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/nurse/add");
 			    	$("#edit").modal("show");
 			    });
 
-				$("#doctors").on("click",".editbtn",function(){
+				$("#nurse").on("click",".editbtn",function(){
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
 			    	$("#passwordhint").show();
-			    	$("#form").attr("action","<?php echo site_url(); ?>/doctors/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/nurse/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Doctor Details");
+			    	$("#Edit-Heading").html("Edit Nurse Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
 
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/doctors/getdoctors",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/nurse/getnurse",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-						/*var tempselectize_user_id = $selectize_user_id[0].selectize;
-						tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_id}]);
-						tempselectize_user_id.refreshItems();
-						tempselectize_user_id.setValue(data.user_id);*/
-						
-						var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-						tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_id}]);
-						tempselectize_branch_id.refreshItems();
-						tempselectize_branch_id.setValue(data.branch_id);
-
+						var tempselectize_department_id = $selectize_department_id[0].selectize;
+						tempselectize_department_id.addOption([{"id":data.department_id,"text":data.department_id}]);
+						tempselectize_department_id.refreshItems();
+						tempselectize_department_id.setValue(data.department_id);
+					
 						$("#first_name").val(data.first_name);
 						
 						$("#last_name").val(data.last_name);
 						
 						$("#useremail").val(data.useremail);
 						
+						
 						$("#address").val(data.address);
 						
 						$("#mobile").val(data.mobile);
 						
 						$("#phone").val(data.phone);
-					
+			    		
 			    	});
 			    }
 
-			    $("#doctors").on("click",".viewbtn",function(){
+			    $("#nurse").on("click",".viewbtn",function(){
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Doctor Details");
+			    	$("#Edit-Heading").html("Nurse Details");
 
 			    });
 
 
-			    $("#doctors").on("click",".delbtn",function(){
+			    $("#nurse").on("click",".delbtn",function(){
 			    	$("#cur_del").val($(this).attr("data-id"));
 			    });
 			    
 			    $("#del_yes").click(function(){
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/doctors/delete",{id:id},function(){
+			    		$.post("<?php echo site_url(); ?>/nurse/delete",{id:id},function(){
 			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
 			    			$("#delete").modal("hide");	
 			    		});
@@ -233,7 +228,7 @@ $this->load->view("template/footer.php");
 			    	$(".modal-backdrop").hide();
 			    });
 
-				var $selectize_user_id = $("#user_id").selectize({
+				var $selectize_department_id = $("#department_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -250,41 +245,9 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/users/search/3",
+				            url: "<?php echo site_url(); ?>/departments/search",
 				            type: "GET",
-				            data: {"q":query,"f":"first_name,last_name"},
-				            error: function() {
-				                callback();
-				            },
-				            success: function(res) {
-				                callback($.parseJSON(res));
-				            }
-				        });
-				    }
-				});
-
-					
-
-				var $selectize_branch_id = $("#branch_id").selectize({
-				    valueField: "id",
-				    labelField: "text",
-				    searchField: "text",
-				    preload:true,
-				    create: false,
-				    render: {
-				        option: function(item, escape) {
-				        	return "<div><span class='title'>" +
-				                    escape(item.text)+
-				                "</span>" +   
-				            "</div>";
-				        }
-				    },
-				    load: function(query, callback) {
-				        //if (!query.length) return callback();
-				        $.ajax({
-				            url: "<?php echo site_url(); ?>/branches/search",
-				            type: "GET",
-				            data: {"q":query,"f":"branch_name"},
+				            data: {"q":query,"f":"department_name"},
 				            error: function() {
 				                callback();
 				            },

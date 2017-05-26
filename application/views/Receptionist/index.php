@@ -6,19 +6,19 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="4" />
+			<input type="hidden" id="left_active_menu" value="6" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Doctors</h4>
+	                        <h4 class="panel-title">Receptionist</h4>
 	                    </div>
 	                    <div class="panel-body">
 	                       <div class="table-responsive">
-	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
+	                            <table id="receptionist" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Doctor</th><th>Branch</th><th>Status</th><th width="20px">#</th>
+	                                    <tr><th>Receptionist</th><th>Doctor</th><th>Status</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -35,7 +35,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/doctors/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/receptionist/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -44,7 +44,7 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
-				  			<div class="col-md-12">
+							<div class="col-md-12">
 			  					<div class="form-group col-md-6">
 									<label>First Name</label>
 									<input class="form-control " type="text" placeholder="First Name" name="first_name" id="first_name" />
@@ -84,17 +84,16 @@ $this->load->view("template/left.php");
 									<label>Profile Photo</label>
 									<input class="form-control " type="text" placeholder="Profile Photo" name="profile_photo" id="profile_photo" />
 								</div>
-							</div>
+							</div>				  		
 				  			<div class="col-md-12">
-								<div class="form-group col-md-6">
-									<label>Branch</label>
-									<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
+					  			<div class="form-group col-md-6">
+									<label>Doctor</label>
+									<select name="doc_id" id="doc_id" class=" form-control" style="width: 100%">
 									</select>
 								</div>
 				  			</div>
-				  		
 						</div>
-					</div>
+					</div>	
 				  	<div>
 				  		<hr>
 				  		<div class="row">
@@ -141,10 +140,10 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-				$("#doctors").DataTable({
+				$("#receptionist").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/doctors/getDTdoctors"
+		            "ajax": "<?php echo site_url(); ?>/receptionist/getDTreceptionist"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
@@ -153,76 +152,72 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Add New Dector");
+			    	$("#Edit-Heading").html("Add New Receptionist");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#passwordhint").hide();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/doctors/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/receptionist/add");
 			    	$("#edit").modal("show");
 			    });
 
-				$("#doctors").on("click",".editbtn",function(){
+				$("#receptionist").on("click",".editbtn",function(){
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
 			    	$("#passwordhint").show();
-			    	$("#form").attr("action","<?php echo site_url(); ?>/doctors/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/receptionist/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Doctor Details");
+			    	$("#Edit-Heading").html("Edit Receptionist Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
 
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/doctors/getdoctors",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/receptionist/getreceptionist",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-						/*var tempselectize_user_id = $selectize_user_id[0].selectize;
-						tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_id}]);
-						tempselectize_user_id.refreshItems();
-						tempselectize_user_id.setValue(data.user_id);*/
-						
-						var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-						tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_id}]);
-						tempselectize_branch_id.refreshItems();
-						tempselectize_branch_id.setValue(data.branch_id);
-
+						var tempselectize_doc_id = $selectize_doc_id[0].selectize;
+						tempselectize_doc_id.addOption([{"id":data.doc_id,"text":data.doc_id}]);
+						tempselectize_doc_id.refreshItems();
+						tempselectize_doc_id.setValue(data.doc_id);
 						$("#first_name").val(data.first_name);
 						
 						$("#last_name").val(data.last_name);
 						
 						$("#useremail").val(data.useremail);
 						
+						
 						$("#address").val(data.address);
 						
 						$("#mobile").val(data.mobile);
 						
 						$("#phone").val(data.phone);
-					
+
+			    		
 			    	});
 			    }
 
-			    $("#doctors").on("click",".viewbtn",function(){
+			    $("#receptionist").on("click",".viewbtn",function(){
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Doctor Details");
+			    	$("#Edit-Heading").html("Receptionist Details");
 
 			    });
 
 
-			    $("#doctors").on("click",".delbtn",function(){
+			    $("#receptionist").on("click",".delbtn",function(){
 			    	$("#cur_del").val($(this).attr("data-id"));
 			    });
 			    
 			    $("#del_yes").click(function(){
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/doctors/delete",{id:id},function(){
+			    		$.post("<?php echo site_url(); ?>/receptionist/delete",{id:id},function(){
 			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
 			    			$("#delete").modal("hide");	
 			    		});
@@ -233,7 +228,7 @@ $this->load->view("template/footer.php");
 			    	$(".modal-backdrop").hide();
 			    });
 
-				var $selectize_user_id = $("#user_id").selectize({
+				var $selectize_doc_id = $("#doc_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -250,41 +245,9 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/users/search/3",
+				            url: "<?php echo site_url(); ?>/doctors/search",
 				            type: "GET",
-				            data: {"q":query,"f":"first_name,last_name"},
-				            error: function() {
-				                callback();
-				            },
-				            success: function(res) {
-				                callback($.parseJSON(res));
-				            }
-				        });
-				    }
-				});
-
-					
-
-				var $selectize_branch_id = $("#branch_id").selectize({
-				    valueField: "id",
-				    labelField: "text",
-				    searchField: "text",
-				    preload:true,
-				    create: false,
-				    render: {
-				        option: function(item, escape) {
-				        	return "<div><span class='title'>" +
-				                    escape(item.text)+
-				                "</span>" +   
-				            "</div>";
-				        }
-				    },
-				    load: function(query, callback) {
-				        //if (!query.length) return callback();
-				        $.ajax({
-				            url: "<?php echo site_url(); ?>/branches/search",
-				            type: "GET",
-				            data: {"q":query,"f":"branch_name"},
+				            data: {"q":query,"f":"id"},
 				            error: function() {
 				                callback();
 				            },

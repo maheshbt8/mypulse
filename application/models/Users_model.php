@@ -30,6 +30,16 @@ class Users_model extends CI_Model {
                                             'user_id' => $row->id,
                                             'role' => $row->role,
                                             'logged_in' => '1');
+                    if($row->role == $this->auth->getHospitalAdminRoleType()){
+                        $this->db->where('user_id',$row->id);
+                        $this->db->where('isActive',1);
+                        $this->db->where('isDeleted',0);
+                        $adminRecord = $this->db->get('hms_hospital_admin');
+                        $adminRecord = $adminRecord->result_array();
+                        if(isset($adminRecord[0]) && isset($adminRecord[0]['hospital_id'])){
+                            $session_data['hospital_id'] = $adminRecord[0]['hospital_id'];
+                        }
+                    }
                     $session_set = $this->session->set_userdata($session_data);
                     return true;
                 }else{
@@ -56,15 +66,33 @@ class Users_model extends CI_Model {
 
     function search($q, $field,$role) {
         $field = explode(",", $field);
+        for($i=0; $i<count($field); $i++){ $field[$i] = "hms_users.".$field[$i]; }
         if($role > 0){
-            $this->db->where('role',$role);
+            $this->db->where('hms_users.role',$role);
         }
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
+        $this->db->from($this->tblname);
+        if($this->auth->isHospitalAdmin()){
+            if($role == 3){ // Doc
+                $bids = $this->auth->getBranchIds();
+                $this->db->where_in("hms_doctors.branch_id",$bids);
+                $this->db->join("hms_doctors","hms_users.id=hms_doctors.user_id");
+            }else if($role == 4){ //Nurse
+                $ids = $this->auth->getAllDepartmentsIds();
+                $this->db->where_in("hms_nurse.department_id",$bids);
+                $this->db->join("hms_nurse","hms_users.id=hms_nurse.user_id");
+            }else if($role == 5){ // Receptionist
+                $ids = $this->auth->getAllDoctorsByHospitals();
+                $this->db->where_in("hms_receptionist.doc_id",$ids);
+                $this->db->join("hms_receptionist","hms_users.id=hms_receptionist.user_id");
+            }
+        }
+
         $select = implode('`," ",`', $field);
-        $this->db->select("id,CONCAT(`$select`) as text", false);
-        $res = $this->db->get($this->tblname);
+        $this->db->select("hms_users.id,CONCAT(`$select`) as text", false);
+        $res = $this->db->get();
         return $res->result_array();
     }
     function add() {
@@ -72,9 +100,15 @@ class Users_model extends CI_Model {
         unset($data["eidt_gf_id"]);
         if (isset($data["role"])) $data["role"] = intval($data["role"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
+        
+        $data['created_at'] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
-            return true;
+            return $this->db->insert_id();
         } else {
+            $err = $this->db->error();
+            if($err['code'] == 1062){
+                return -1;
+            }
             return false;
         }
     }
@@ -87,6 +121,10 @@ class Users_model extends CI_Model {
         if ($this->db->update($this->tblname, $data)) {
             return true;
         } else {
+            $err = $this->db->error();
+            if($err['code'] == 1062){
+                return -1;
+            }
             return false;
         }
     }
@@ -110,7 +148,7 @@ class Users_model extends CI_Model {
             }else{
                 $data = $_POST;
                 $data['password'] = md5($data['password']);
-                $data['created_date']= date('Y-m-d H:i:s');
+                $data['created_at']= date('Y-m-d H:i:s');
                 $name = explode(" ",$data['first_name']);
                 
                 $data['first_name'] = $name[0];

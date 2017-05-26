@@ -1,0 +1,51 @@
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * @author Yogesh Patel
+ * @email  yogesh@techcrista.in
+ */
+class Patients extends CI_Controller {
+    function __construct() {
+        parent::__construct();
+        $this->load->model('users_model');
+    }
+    public function index() {
+        if ($this->auth->isLoggedIn()) {
+           
+            $data["page_title"] = "Patients";
+            $data["breadcrumb"] = array(site_url() => "Home", null => "Patients");
+            $this->load->view('Patient/index', $data);
+        } else redirect('index/login');
+    }
+
+
+    public function getDTusers() {
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_users";
+            $primaryKey = "id";
+            $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "last_name", "dt" => 1, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "useremail", "dt" => 2, "formatter" => function ($d, $row) {
+                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            }), array("db" => "isActive", "dt" => 7, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "id", "dt" => 8, "formatter" => function ($d, $row) {
+                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+            }));
+
+            if($this->auth->isHospitalAdmin()){
+
+            }
+            else{
+            }
+            $this->tbl->setTwID("role=".$this->auth->getPatientRoleType());
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+}
+?>

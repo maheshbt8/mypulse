@@ -29,7 +29,7 @@ class Beds extends CI_Controller {
     public function add() {
         if ($this->auth->isLoggedIn()) {
             if ($this->beds_model->add()) {
-                $data['success'] = array("Beds Added Successfully");
+                $data['success'] = array("Bed Added Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
@@ -42,7 +42,7 @@ class Beds extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->beds_model->update($id)) {
-                $data['success'] = array("Beds Updated Successfully");
+                $data['success'] = array("Bed Updated Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
@@ -102,6 +102,12 @@ class Beds extends CI_Controller {
                 };
                 $this->tbl->setIndexColumn(true);
             }
+
+            if($this->auth->isHospitalAdmin()){
+                $ids = implode(",", $this->auth->getAllDepartmentsIds());
+                $this->tbl->setTwID("department_id in (".$ids.")");
+            }
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
