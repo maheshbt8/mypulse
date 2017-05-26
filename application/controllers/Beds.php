@@ -78,6 +78,11 @@ class Beds extends CI_Controller {
             }));
             if($hospital_id!=null){
                 $ids = $this->departments_model->getDepartmentIdsFromHospital($hospital_id);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
                 $ids = implode(",", $ids);
                 $this->tbl->setTwID("department_id in (".$ids.")");
                 $columns = array(

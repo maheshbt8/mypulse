@@ -77,6 +77,11 @@ class Departments extends CI_Controller {
             }));
             if($hospital_id!=null){
                 $ids = $this->branches_model->getBracheIds($hospital_id);
+                if(count($ids) == 0){
+                    //If no Branche created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
                 $ids = implode(",", $ids);
                 $this->tbl->setTwID("branch_id in (".$ids.")");
                 $columns = array($columns[0],$columns[1]);

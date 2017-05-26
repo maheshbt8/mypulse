@@ -18,7 +18,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>User Id</th><th>Branch Id</th><th width="20px">#</th>
+	                                    <tr><th>Doctor</th><th>Branch</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -46,12 +46,12 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 				  			<div class="col-md-12">
 				  			<div class="form-group col-md-6">
-					<label>User Id</label>
+					<label>Doctor</label>
 					<select name="user_id" id="user_id" class=" form-control" style="width: 100%">
 					</select>
 					
 		</div><div class="form-group col-md-6">
-					<label>Branch Id</label>
+					<label>Branch</label>
 					<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
 					</select>
 					
@@ -117,7 +117,7 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-			    	$("#Edit-Heading").html("Add New Record");
+			    	$("#Edit-Heading").html("Add New Dector");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
@@ -132,7 +132,7 @@ $this->load->view("template/footer.php");
 			    	loadData(id);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/doctors/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Your Data");
+			    	$("#Edit-Heading").html("Edit Doctor Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
@@ -164,7 +164,7 @@ $this->load->view("template/footer.php");
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Detailed View");
+			    	$("#Edit-Heading").html("Doctor Details");
 
 			    });
 

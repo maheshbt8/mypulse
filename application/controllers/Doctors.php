@@ -68,11 +68,11 @@ class Doctors extends CI_Controller {
             $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
                 $this->load->model("users_model");
                 $temp = $this->users_model->getusersById($d);
-                return $temp["users"];
+                return $temp["first_name"]." ".$temp["last_name"];
             }), array("db" => "branch_id", "dt" => 1, "formatter" => function ($d, $row) {
                 $this->load->model("branches_model");
                 $temp = $this->branches_model->getbranchesById($d);
-                return $temp["branches"];
+                return $temp["branch_name"];
             }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
