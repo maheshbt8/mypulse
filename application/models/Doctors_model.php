@@ -20,6 +20,24 @@ class Doctors_model extends CI_Model {
         foreach ($data as $key => $value) {
             $r[$key] = $value;
         }
+        
+        if(isset($r['department_id'])){
+            $this->db->where('id',$r['department_id']);
+            $this->db->where('isActive',1);
+            $this->db->where("isDeleted",0);
+            $department = $this->db->get('hms_departments');
+            $department =$department->row_array();
+            $r['branch_id'] = $department['branch_id'];
+
+
+            $this->db->where('id',$r['branch_id']);
+            $this->db->where('isActive',1);
+            $this->db->where("isDeleted",0);
+            $branch = $this->db->get('hms_branches');
+            $branch =$branch->row_array();
+            $r['hospital_id'] = $branch['hospital_id'];
+        }
+
         return $r;
     }
     function search($q, $field) {
@@ -75,7 +93,7 @@ class Doctors_model extends CI_Model {
 
         if($doc_id === false){
             return false;
-        }else if($doc_id == -1){
+        }else if($doc_id === -1){
             return -1;
         }
         else{

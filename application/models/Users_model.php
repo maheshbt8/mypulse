@@ -113,6 +113,16 @@ class Users_model extends CI_Model {
         }
     }
     function update($id) {
+        $this->db->where('id',$id);
+        $this->db->where('isDeleted',0);
+        $user = $this->db->get($this->tblname);
+        $user = $user->row_array();
+        
+        if(isset($user['id'])){
+            if($user['useremail'] == $_POST['useremail']){
+                unset($_POST['useremail']);
+            }
+        }
         $data = $_POST;
         unset($data["eidt_gf_id"]);
         if (isset($data["role"])) $data["role"] = intval($data["role"]);

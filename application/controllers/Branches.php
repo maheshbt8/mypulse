@@ -17,14 +17,22 @@ class Branches extends CI_Controller {
             $this->load->view('Branches/index', $data);
         } else redirect('index/login');
     }
+    
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
-            $result = $this->branches_model->search($q, $f);
+            $hid = $this->input->get("hospital_id",null,-1);
+
+            if(!$this->auth->isSuperAdmin()){
+                $hid = $this->auth->getHospitalId();
+            }
+
+            $result = $this->branches_model->search($q, $f,$hid);
             echo json_encode($result);
         }
     }
+
     public function add() {
         if ($this->auth->isLoggedIn()) {
             if ($this->branches_model->add()) {

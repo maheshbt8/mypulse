@@ -6,7 +6,7 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="4" />
+		<input type="hidden" id="left_active_menu" value="4" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -18,7 +18,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Doctor</th><th>Branch</th><th>Status</th><th width="20px">#</th>
+	                                    <tr><th>Doctor</th><th>Hospital</th><th>Branch</th><th>Department</th><th>Status</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -57,7 +57,7 @@ $this->load->view("template/left.php");
 			  				<div class="col-md-12">
 			  					<div class="form-group col-md-6">
 									<label>Email</label>
-									<input class="form-control " type="text" placeholder="Usernemail" name="useremail" id="useremail" />
+									<input class="form-control " type="text" placeholder="Email Address" name="useremail" id="useremail" />
 								</div>
 								<div class="form-group col-md-6">
 									<label>Password</label>
@@ -66,29 +66,31 @@ $this->load->view("template/left.php");
 								</div>
 			  				</div>
 			  				<div class="col-md-12">
+
 							  	<div class="form-group col-md-6">
-									<label>Address</label>
-									<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+									<label>Aadhar Number</label>
+									<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
 								</div>
 								<div class="form-group col-md-6">
 									<label>Mobile</label>
 									<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
 								</div>
 			  				</div>
-			  				<div class="col-md-12">
-			  					<div class="form-group col-md-6">
-									<label>Phone</label>
-									<input class="form-control " type="text" placeholder="Phone" name="phone" id="phone" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Profile Photo</label>
-									<input class="form-control " type="text" placeholder="Profile Photo" name="profile_photo" id="profile_photo" />
-								</div>
-							</div>
+			  				
 				  			<div class="col-md-12">
-								<div class="form-group col-md-6">
-									<label>Branch</label>
-									<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
+								<div class="form-group col-md-4">
+									<label>Select Hospital</label>
+									<select  id="hospital_id" class=" form-control" style="width: 100%">
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Select Branch</label>
+									<select id="branch_id" class=" form-control" style="width: 100%">
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Select Department</label>
+									<select name="department_id" id="department_id" class=" form-control" style="width: 100%">
 									</select>
 								</div>
 				  			</div>
@@ -141,6 +143,9 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
+				var branch_id = null;
+				var department_id = null;
+
 				$("#doctors").DataTable({
 		            "processing": true,
 		            "serverSide": true,
@@ -184,10 +189,13 @@ $this->load->view("template/footer.php");
 						tempselectize_user_id.refreshItems();
 						tempselectize_user_id.setValue(data.user_id);*/
 						
-						var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-						tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_id}]);
-						tempselectize_branch_id.refreshItems();
-						tempselectize_branch_id.setValue(data.branch_id);
+						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+						tempselectize_hospital_id.refreshItems();
+						tempselectize_hospital_id.setValue(data.hospital_id);
+
+						branch_id = data.branch_id;
+						department_id = data.department_id;
 
 						$("#first_name").val(data.first_name);
 						
@@ -199,8 +207,8 @@ $this->load->view("template/footer.php");
 						
 						$("#mobile").val(data.mobile);
 						
-						$("#phone").val(data.phone);
-					
+						$("#phone").val(data.phone);					
+						
 			    	});
 			    }
 
@@ -232,6 +240,8 @@ $this->load->view("template/footer.php");
 			    	}
 			    	$(".modal-backdrop").hide();
 			    });
+
+			    var xhr;
 
 				var $selectize_user_id = $("#user_id").selectize({
 				    valueField: "id",
@@ -269,6 +279,65 @@ $this->load->view("template/footer.php");
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    },
+				    onChange: function(value) {
+				        if (!value.length) return;
+
+				        $selectize_department_id[0].selectize.disable();
+				        $selectize_department_id[0].selectize.clearOptions();
+				        $selectize_department_id[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/departments/search/",
+				                type: "GET",
+				                data: { "branch_id":value,"f":"department_name"},
+				                success: function(results) {
+				                    $selectize_department_id[0].selectize.enable();
+				                    callback($.parseJSON(results));
+				                    if(department_id != null){
+				    					var tempselectize_department_id = $selectize_department_id[0].selectize;
+										tempselectize_department_id.addOption([{"id":department_id,"text":department_id}]);
+										tempselectize_department_id.refreshItems();
+										tempselectize_department_id.setValue(department_id);	
+										department_id = null;
+				    				}
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
+				        });
+				    }
+				});
+
+				var $selectize_department_id = $("#department_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    }
+				});
+
+				$selectize_branch_id[0].selectize.disable();
+				$selectize_department_id[0].selectize.disable();
+
+				var $selectize_hospital_id = $("#hospital_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
 				    preload:true,
 				    create: false,
 				    render: {
@@ -282,15 +351,43 @@ $this->load->view("template/footer.php");
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/branches/search",
+				            url: "<?php echo site_url(); ?>/hospitals/search",
 				            type: "GET",
-				            data: {"q":query,"f":"branch_name"},
+				            data: {"q":query,"f":"name"},
 				            error: function() {
 				                callback();
 				            },
 				            success: function(res) {
 				                callback($.parseJSON(res));
 				            }
+				        });
+				    },
+				    onChange: function(value) {
+				        if (!value.length) return;
+
+				        $selectize_branch_id[0].selectize.disable();
+				        $selectize_branch_id[0].selectize.clearOptions();
+				        $selectize_branch_id[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/branches/search/",
+				                type: "GET",
+				                data: { "hospital_id":value,"f":"branch_name"},
+				                success: function(results) {
+				                    $selectize_branch_id[0].selectize.enable();
+				                    callback($.parseJSON(results));
+				                    if(branch_id != null){
+				    					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
+										tempselectize_branch_id.addOption([{"id":branch_id,"text":branch_id}]);
+										tempselectize_branch_id.refreshItems();
+										tempselectize_branch_id.setValue(branch_id);	
+										branch_id = null;
+				    				}
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
 				        });
 				    }
 				});

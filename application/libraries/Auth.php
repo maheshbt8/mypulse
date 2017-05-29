@@ -236,6 +236,9 @@ class Auth {
         if(isset($data['role'])){
             $user['role'] = $data['role'];
         }
+        if(isset($data['aadhaar_number'])){
+            $user['aadhaar_number'] = $data['aadhaar_number'];
+        }
         $_POST = $user;
         $this->CI->load->model('users_model');
         $uid = false;

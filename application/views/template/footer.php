@@ -36,7 +36,52 @@
         <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
         <script type="text/javascript">
         $(function() {
-             $('.date-picker').datepicker({
+
+            setTimeout(function() {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: false,
+                    showMethod: 'fadeIn',
+                    hideMethod: 'fadeOut',
+                    timeOut: 5000
+                };
+                <?php
+                    @extract($this->session->flashdata('data'));
+                    if(isset($errors)){
+                        foreach ($errors as $e) {
+                            ?>
+                                toastr.error('<?php echo $e;?>', 'Oops!');                
+                            <?php
+                        }
+                    }
+
+                    if(isset($infos)){
+                        foreach ($infos as $e) {
+                            ?>
+                                toastr.info('<?php echo $e;?>', '');                
+                            <?php
+                        }
+                    }
+
+                    if(isset($warnings)){
+                        foreach ($warnings as $e) {
+                            ?>
+                                toastr.warning('<?php echo $e;?>', '');                
+                            <?php
+                        }
+                    }
+
+                    if(isset($success)){
+                        foreach ($success as $e) {
+                            ?>
+                                toastr.success('<?php echo $e;?>', '');                
+                            <?php
+                        }
+                    }
+                ?>
+            }, 1000);
+
+            $('.date-picker').datepicker({
                 todayHighlight: true,
                 format: 'dd-mm-yyyy',
                 orientation: "top auto",
@@ -48,6 +93,10 @@
                 $("#li"+pos).children()[0].click();
                 $("#li"+$("#left_active_sub_menu").val()).addClass("active");
             }
+
+
+
+
         });
     </script>
     </body>

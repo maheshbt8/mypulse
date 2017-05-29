@@ -18,11 +18,17 @@ class Departments_model extends CI_Model {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
-    function search($q, $field) {
+    function search($q, $field,$branch_id=-1) {
         $field = explode(",", $field);
         foreach ($field as $f) {
-            $this->db->like($f, $q);
+            if($q!="")
+                $this->db->like($f, $q);
         }
+
+        if($branch_id > 0){
+            $this->db->where('branch_id',$branch_id);
+        }
+
         $select = implode('`," ",`', $field);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);

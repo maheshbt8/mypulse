@@ -67,24 +67,14 @@ $this->load->view("template/left.php");
 			  				</div>
 			  				<div class="col-md-12">
 							  	<div class="form-group col-md-6">
-									<label>Address</label>
-									<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+									<label>Aadhar Number</label>
+									<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
 								</div>
 								<div class="form-group col-md-6">
 									<label>Mobile</label>
 									<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
 								</div>
-			  				</div>
-			  				<div class="col-md-12">
-			  					<div class="form-group col-md-6">
-									<label>Phone</label>
-									<input class="form-control " type="text" placeholder="Phone" name="phone" id="phone" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Profile Photo</label>
-									<input class="form-control " type="text" placeholder="Profile Photo" name="profile_photo" id="profile_photo" />
-								</div>
-							</div>				  		
+			  				</div>			  		
 				  			<div class="col-md-12">
 					  			<div class="form-group col-md-6">
 									<label>Doctor</label>

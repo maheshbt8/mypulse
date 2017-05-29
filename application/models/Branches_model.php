@@ -16,13 +16,31 @@ class Branches_model extends CI_Model {
     }
     function getbranchesById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
-        return $r->row_array();
-    }
-    function search($q, $field) {
-        $field = explode(",", $field);
-        foreach ($field as $f) {
-            $this->db->like($f, $q);
+        $r = $r->row_array();
+
+        if(isset($r['hospital_id'])){
+            $this->db->where('id',$r['hospital_id']);
+            $this->db->where('isDeleted',0);
+            $this->db->where('isActive',1);
+            $hos = $this->db->get("hms_hospitals");
+            $hos = $hos->row_array();
+            $r['hospital'] = $hos;
         }
+
+        return $r;
+    }
+    function search($q, $field,$hospital_id=-1) {
+        $field = explode(",", $field);
+
+        foreach ($field as $f) {
+            if($q!="")
+                $this->db->like($f, $q);
+        }
+
+        if($hospital_id > 0){
+            $this->db->where('hospital_id',$hospital_id);
+        }
+
         $select = implode('`," ",`', $field);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);

@@ -28,7 +28,6 @@
         
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/> 
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>     
-
         <!-- Theme Styles -->
         <link href="<?php echo base_url();?>public/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo base_url();?>public/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>

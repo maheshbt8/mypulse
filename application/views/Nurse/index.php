@@ -67,27 +67,17 @@ $this->load->view("template/left.php");
 			  				</div>
 			  				<div class="col-md-12">
 							  	<div class="form-group col-md-6">
-									<label>Address</label>
-									<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+									<label>Aadhar Number</label>
+									<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
 								</div>
 								<div class="form-group col-md-6">
 									<label>Mobile</label>
 									<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
 								</div>
 			  				</div>
-			  				<div class="col-md-12">
-			  					<div class="form-group col-md-6">
-									<label>Phone</label>
-									<input class="form-control " type="text" placeholder="Phone" name="phone" id="phone" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Profile Photo</label>
-									<input class="form-control " type="text" placeholder="Profile Photo" name="profile_photo" id="profile_photo" />
-								</div>
-							</div>
 				  			<div class="col-md-12">
 				  				<div class="form-group col-md-6">
-									<label>Department Id</label>
+									<label>Department</label>
 									<select name="department_id" id="department_id" class=" form-control" style="width: 100%">
 									</select>					
 								</div>
@@ -188,7 +178,6 @@ $this->load->view("template/footer.php");
 						$("#last_name").val(data.last_name);
 						
 						$("#useremail").val(data.useremail);
-						
 						
 						$("#address").val(data.address);
 						

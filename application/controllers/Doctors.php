@@ -81,19 +81,38 @@ class Doctors extends CI_Controller {
                 $temp = $this->users_model->getusersById($d);
                 $name = $temp["first_name"]." ".$temp["last_name"];
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
-            }), array("db" => "branch_id", "dt" => 1, "formatter" => function ($d, $row) {
+            }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $this->load->model("departments_model");
+                $temp = $this->departments_model->getdepartmentsById($d);
+                
                 $this->load->model("branches_model");
-                $temp = $this->branches_model->getbranchesById($d);
-                return $temp["branch_name"];
-            }),array("db" => "isActive", "dt" => 2, "formatter" => function ($d, $row) {
+                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                return $branch["branch_name"];
+
+            }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $this->load->model("departments_model");
+                $temp = $this->departments_model->getdepartmentsById($d);
+
+                $this->load->model("branches_model");
+                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+
+                $this->load->model("hospitals_model");
+                $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
+
+                return $hospital["name"];
+            }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
+                $this->load->model("departments_model");
+                $temp = $this->departments_model->getdepartmentsById($d);
+                return $temp["department_name"];
+            }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);
-            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             if($this->auth->isHospitalAdmin()){
-                $ids = $this->auth->getBranchIds();
+                $ids = $this->auth->getAllDepartmentsIds();
                 $ids = implode(",", $ids);
-                $this->tbl->setTwID("branch_id in (".$ids.")");
+                $this->tbl->setTwID("department_id in (".$ids.")");
             }
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
