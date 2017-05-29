@@ -20,6 +20,12 @@ class Hospitals_model extends CI_Model {
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
+
+        if($this->auth->isHospitalAdmin()){
+            $hid = $this->auth->getHospitalId();
+            $this->db->where('id',$hid);
+        }
+
         $select = implode('`," ",`', $field);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);

@@ -7,6 +7,10 @@ class Receptionist extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('receptionist_model');
+        $this->load->model('departments_model');
+        $this->load->model('branches_model');
+        $this->load->model('doctors_model');
+        $this->load->model('hospitals_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
@@ -76,13 +80,34 @@ class Receptionist extends CI_Controller {
                 $temp = $this->users_model->getusersById($d);
                 $name = $temp["first_name"]." ".$temp["last_name"];
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
-            }),array("db" => "doc_id", "dt" => 1, "formatter" => function ($d, $row) {
-                $this->load->model("doctors_model");
+            }), array("db" => "doc_id", "dt" => 1, "formatter" => function ($d, $row) {
+                
+                $doc = $this->doctors_model->getdoctorsById($d);
+                   
+                $temp = $this->departments_model->getdepartmentsById($doc['department_id']);
+
+                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+
+                $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
+
+                return $hospital["name"];
+
+            }), array("db" => "doc_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $doc = $this->doctors_model->getdoctorsById($d);
+                $temp = $this->departments_model->getdepartmentsById($doc['department_id']);
+                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                return $branch["branch_name"];
+
+            }), array("db" => "doc_id", "dt" => 3, "formatter" => function ($d, $row) {
+                $doc = $this->doctors_model->getdoctorsById($d);
+                $temp = $this->departments_model->getdepartmentsById($doc['department_id']);
+                return $temp["department_name"];
+            }),array("db" => "doc_id", "dt" => 4, "formatter" => function ($d, $row) {
                 $temp = $this->doctors_model->getdoctorsById($d);
                 return $temp["first_name"]." ".$temp["last_name"];
-            }),array("db" => "isActive", "dt" => 2, "formatter" => function ($d, $row) {
+            }),array("db" => "isActive", "dt" => 5, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);
-            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+            }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             // SQL server connection informationhostname" => "localhost",

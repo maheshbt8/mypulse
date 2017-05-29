@@ -12,11 +12,15 @@ class Doctors_model extends CI_Model {
         else return array();
     }
     function getdoctorsById($id) {
+      
+      
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
+        
         $this->db->where('id',$r['user_id']);
         $data = $this->db->get('hms_users');
         $data = $data->row_array();
+        
         foreach ($data as $key => $value) {
             $r[$key] = $value;
         }
@@ -36,15 +40,22 @@ class Doctors_model extends CI_Model {
             $branch = $this->db->get('hms_branches');
             $branch =$branch->row_array();
             $r['hospital_id'] = $branch['hospital_id'];
+        }else{
+            $r['department_id'] = 0;
+            $r['branch_id'] = 0;
+            $r['hospital_id'] = 0;
         }
 
         return $r;
     }
-    function search($q, $field) {
+    function search($q, $field,$did = -1) {
 
-        if($this->auth->isHospitalAdmin()){
-            $bids = $this->auth->getBranchIds();
-            $this->db->where_in("hms_doctors.branch_id",$bids);
+        $dids = $this->auth->getAllDepartmentsIds();
+
+        if($did > 0){
+            $this->db->where("hms_doctors.department_id",$did);
+        }else if($this->auth->isHospitalAdmin()){
+            $this->db->where_in("hms_doctors.department_id",$bids);
         }
 
         $this->db->like("hms_users.first_name",$q);

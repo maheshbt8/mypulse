@@ -42,6 +42,7 @@
                     closeButton: true,
                     progressBar: false,
                     showMethod: 'fadeIn',
+                    positionClass : "toast-top-center",
                     hideMethod: 'fadeOut',
                     timeOut: 5000
                 };

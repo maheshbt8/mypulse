@@ -22,6 +22,28 @@ class Nurse_model extends CI_Model {
         foreach ($data as $key => $value) {
             $r[$key] = $value;
         }
+
+        if(isset($r['department_id'])){
+            $this->db->where('id',$r['department_id']);
+            $this->db->where('isActive',1);
+            $this->db->where("isDeleted",0);
+            $department = $this->db->get('hms_departments');
+            $department =$department->row_array();
+            $r['branch_id'] = $department['branch_id'];
+
+
+            $this->db->where('id',$r['branch_id']);
+            $this->db->where('isActive',1);
+            $this->db->where("isDeleted",0);
+            $branch = $this->db->get('hms_branches');
+            $branch =$branch->row_array();
+            $r['hospital_id'] = $branch['hospital_id'];
+        }else{
+            $r['department_id'] = 0;
+            $r['branch_id'] = 0;
+            $r['hospital_id'] = 0;
+        }
+
         return $r;
     }
     function search($q, $field) {

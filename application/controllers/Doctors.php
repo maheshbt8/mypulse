@@ -20,7 +20,9 @@ class Doctors extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
-            $result = $this->doctors_model->search($q, $f);
+
+            $did = $this->input->get("department_id",null,-1);
+            $result = $this->doctors_model->search($q, $f,$did);
             echo json_encode($result);
         }
     }
@@ -82,14 +84,8 @@ class Doctors extends CI_Controller {
                 $name = $temp["first_name"]." ".$temp["last_name"];
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
             }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
-                $this->load->model("departments_model");
-                $temp = $this->departments_model->getdepartmentsById($d);
                 
-                $this->load->model("branches_model");
-                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
-                return $branch["branch_name"];
 
-            }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
                 $this->load->model("departments_model");
                 $temp = $this->departments_model->getdepartmentsById($d);
 
@@ -100,6 +96,14 @@ class Doctors extends CI_Controller {
                 $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
 
                 return $hospital["name"];
+
+            }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $this->load->model("departments_model");
+                $temp = $this->departments_model->getdepartmentsById($d);
+                
+                $this->load->model("branches_model");
+                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                return $branch["branch_name"];
             }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
                 $this->load->model("departments_model");
                 $temp = $this->departments_model->getdepartmentsById($d);
