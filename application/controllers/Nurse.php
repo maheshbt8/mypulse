@@ -37,7 +37,7 @@ class Nurse extends CI_Controller {
                 $data['success'] = array("Nurse Added Successfully");
             } else {
                 $errors = array();
-                if($nur == -1){
+                if($nur === -1){
                     $errors[] = "Please use another email.";
                 }else{
                     $errors[] = "Please again later";

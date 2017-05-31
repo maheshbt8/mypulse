@@ -154,6 +154,14 @@ class Auth {
         return 6;
     }
 
+    public function getMedicalStoreRoleType(){
+        return 7;
+    }
+
+    public function getMedicalLabRoleType(){
+        return 8;
+    }
+
     public function getBranchIds(){
         $hospital_id = $this->getHospitalId();
         $this->CI->load->model('branches_model');

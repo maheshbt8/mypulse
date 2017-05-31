@@ -128,6 +128,7 @@ class Users_model extends CI_Model {
         if (isset($data["role"])) $data["role"] = intval($data["role"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
+        
         if ($this->db->update($this->tblname, $data)) {
             return true;
         } else {

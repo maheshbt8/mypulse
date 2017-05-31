@@ -96,7 +96,7 @@ class Nurse_model extends CI_Model {
 
         if($nid === false){
             return false;
-        }else if($nid == -1){
+        }else if($nid === -1){
             return -1;
         }
         else{
