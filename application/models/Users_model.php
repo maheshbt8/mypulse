@@ -95,8 +95,13 @@ class Users_model extends CI_Model {
         $res = $this->db->get();
         return $res->result_array();
     }
-    function add() {
-        $data = $_POST;
+    function add($user=null) {
+        $data = array();
+        if($user==null)
+            $data = $_POST;
+        else
+            $data = $user;
+
         unset($data["eidt_gf_id"]);
         if (isset($data["role"])) $data["role"] = intval($data["role"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
@@ -112,25 +117,33 @@ class Users_model extends CI_Model {
             return false;
         }
     }
-    function update($id) {
-        $this->db->where('id',$id);
-        $this->db->where('isDeleted',0);
-        $user = $this->db->get($this->tblname);
-        $user = $user->row_array();
+    function update($id,$usr=null) {
+        $data = array();
+        if($usr==null)
+            $data = $_POST;
+        else
+            $data = $usr;
         
-        if(isset($user['id'])){
-            if($user['useremail'] == $_POST['useremail']){
-                unset($_POST['useremail']);
+        if(isset($data['useremail'])){
+            $this->db->where('id',$id);
+            $this->db->where('isDeleted',0);
+            $user = $this->db->get($this->tblname);
+            $user = $user->row_array();
+            
+            if(isset($user['id'])){
+                if($user['useremail'] == $data['useremail']){
+                    unset($data['useremail']);
+                }
             }
         }
-        $data = $_POST;
+        
         unset($data["eidt_gf_id"]);
         if (isset($data["role"])) $data["role"] = intval($data["role"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
         
         if ($this->db->update($this->tblname, $data)) {
-            return true;
+            return $id;
         } else {
             $err = $this->db->error();
             if($err['code'] == 1062){

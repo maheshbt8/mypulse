@@ -35,7 +35,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/nurse/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/nurse/update" method="post" id="form" enctype="multipart/form-data">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -44,54 +44,135 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
-				  			<div class="col-md-12">
-			  					<div class="form-group col-md-6">
-									<label>First Name</label>
-									<input class="form-control " type="text" placeholder="First Name" name="first_name" id="first_name" />
+						  	<div role="tabpanel">
+                                <ul class="nav  nav-pills" role="tablist">
+                                    <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab">Basic</a></li>
+									<li role="presentation"><a href="#tab2" aria-controls="other" role="tab" data-toggle="tab">General</a></li>
+								</ul>
+								<div class="tab-content">
+                                	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label>First Name</label>
+												<input class="form-control " type="text" placeholder="First Name" name="first_name" id="first_name" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Last Name</label>
+												<input class="form-control " type="text" placeholder="Last Name" name="last_name" id="last_name" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label>Email</label>
+												<input class="form-control " type="text" placeholder="Email Address" name="useremail" id="useremail" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Password</label>
+												<input class="form-control " type="text" placeholder="Password" name="password" id="password" />
+												<span id="passwordhint" style="display: none">Leave it empty if you don't want to update the password.</span>
+											</div>
+										</div>
+										<div class="col-md-12">
+
+											<div class="form-group col-md-6">
+												<label>Aadhar Number</label>
+												<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Mobile</label>
+												<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
+											</div>
+										</div>
+										
+										<div class="col-md-12">
+											<div class="form-group col-md-4">
+                                                <label>Select Hospital</label>
+                                                <select  id="hospital_id" class=" form-control" style="width: 100%">
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Select Branch</label>
+                                                <select id="branch_id" class=" form-control" style="width: 100%">
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label>Select Department</label>
+                                                <select name="department_id" id="department_id" class=" form-control" style="width: 100%">
+                                                </select>
+                                            </div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane fade in" id="tab2">
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label>Gender</label>
+												<select class="form-control " name="gender" id="gender" />
+													<option value="M">Male</option>
+													<option value="F">Female</option>
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label>Date of Birth</label>
+												<input class="form-control date-picker" type="text" placeholder="Date of birth" name="date_of_birth" id="date_of_birth" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label>Address</label>
+												<input class="form-control" type="text" placeholder="Address" name="address" id="address" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>City</label>
+												<input class="form-control" type="text" placeholder="City" name="city" id="city" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label>State</label>
+												<input class="form-control" type="text" placeholder="State" name="state" id="state" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Country</label>
+												<input class="form-control" type="text" placeholder="Country" name="country" id="country" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label>Alternate Mobile Number</label>
+												<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>Description</label>
+												<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group  col-md-6">
+												<label for="input-Default" class="col-sm-4 control-label">Profile Picture</label>
+	                                            <div class="col-sm-8">
+													<div class=" input-group image-preview">
+										                <input type="text" class="form-control image-preview-filename" id="prephoto" disabled="disabled"> 
+										                <span class="input-group-btn">
+										                    <!-- image-preview-clear button -->
+										                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+										                        <span class="glyphicon glyphicon-remove"></span> Clear
+										                    </button>
+										                    <!-- image-preview-input -->
+										                    <div class="btn btn-default image-preview-input">
+										                        <span class="glyphicon glyphicon-folder-open"></span>
+										                        <span class="image-preview-input-title">Browse</span>
+										                        <input type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
+										                    </div>
+										                </span>
+										            </div>
+									            </div>
+								            </div>
+										</div>
+									</div>
 								</div>
-								<div class="form-group col-md-6">
-									<label>Last Name</label>
-									<input class="form-control " type="text" placeholder="Last Name" name="last_name" id="last_name" />
-								</div>
-			  				</div>
-			  				<div class="col-md-12">
-			  					<div class="form-group col-md-6">
-									<label>Email</label>
-									<input class="form-control " type="text" placeholder="Usernemail" name="useremail" id="useremail" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Password</label>
-									<input class="form-control " type="text" placeholder="Password" name="password" id="password" />
-									<span id="passwordhint" style="display: none">Leave it empty if you don't want to update the password.</span>
-								</div>
-			  				</div>
-			  				<div class="col-md-12">
-							  	<div class="form-group col-md-6">
-									<label>Aadhar Number</label>
-									<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
-								</div>
-								<div class="form-group col-md-6">
-									<label>Mobile</label>
-									<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
-								</div>
-			  				</div>
-				  			<div class="col-md-12">
-								<div class="form-group col-md-4">
-									<label>Select Hospital</label>
-									<select  id="hospital_id" class=" form-control" style="width: 100%">
-									</select>
-								</div>
-								<div class="form-group col-md-4">
-									<label>Select Branch</label>
-									<select id="branch_id" class=" form-control" style="width: 100%">
-									</select>
-								</div>
-								<div class="form-group col-md-4">
-									<label>Select Department</label>
-									<select name="department_id" id="department_id" class=" form-control" style="width: 100%">
-									</select>
-								</div>
-				  			</div>
+							</div>	
+				  			
+				  		
 						</div>
 					</div>
 				  	<div>
@@ -205,6 +286,19 @@ $this->load->view("template/footer.php");
 						$("#mobile").val(data.mobile);
 						
 						$("#phone").val(data.phone);
+
+						$("#gender").val(data.gender);
+						$("#city").val(data.city);
+						$("#state").val(data.state);
+						$("#country").val(data.country);
+						$("#address").val(data.address);
+						$("#description").val(data.description);
+						$("#alternate_mobile_number").val(data.alternate_mobile_number);
+						if(data.date_of_birth != "" && data.date_of_birth != "0000-00-00"){
+							$("#date_of_birth").datepicker("update", new Date(data.date_of_birth));
+						}
+						
+						shwoImgFromUrl(data.profile_photo);
 			    		
 			    	});
 			    }

@@ -109,8 +109,8 @@ class Doctors_model extends CI_Model {
         }
         else{
             $doc = array();
-            if(isset($data['branch_id']))
-                $doc['branch_id'] = $data['branch_id'];
+            if(isset($data['department_id']))
+                $doc['department_id'] = $data['department_id'];
             if(isset($data['isActive']))
                 $doc['isActive'] = intval($data['isActive']);
             

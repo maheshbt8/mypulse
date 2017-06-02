@@ -25,7 +25,7 @@
         <link href="<?php echo base_url();?>public/assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css"/>   
         <link href="<?php echo base_url();?>public/assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>  
         <link href="<?php echo base_url();?>public/assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>    
-        
+        <link href="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/> 
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>     
         <!-- Theme Styles -->
@@ -42,7 +42,77 @@
                 border-radius: 0px !important;
             }
         </style>
-        
+        <style type="text/css">
+            .content_img {
+                width: 250px;
+                height: 250px;
+                overflow:hidden;
+            }
+            .cimg {
+                height: 100%;
+                min-width: 100%;
+                left: 50%;
+                position: relative;
+                transform: translateX(-50%);
+            }
+            .selectize-control {
+                width: 100%;
+                padding: 0px !important;
+                border-radius: 0px !important;
+            }
+            .image-preview-input {
+                position: relative;
+                overflow: hidden;
+                margin: 0px;    
+                color: #333;
+                background-color: #fff;
+                border-color: #ccc;    
+            }
+            .image-preview-input input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+            .image-preview-input-title {
+                margin-left:2px;
+            }
+
+            .image-attach-input {
+                position: relative;
+                overflow: hidden;
+                margin: 0px;    
+                color: #333;
+                background-color: #fff;
+                border-color: #ccc;    
+            }
+            .image-attach-input input[type=file] {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                padding: 0;
+                font-size: 20px;
+                cursor: pointer;
+                opacity: 0;
+                filter: alpha(opacity=0);
+            }
+            .image-attach-input-title {
+                margin-left:2px;
+            }
+            .sm{
+
+            }
+            .negstock{
+                color: red;
+            }
+        </style>
+
     </head>
     <body class="page-header-fixed">
         <div class="overlay"></div>

@@ -247,14 +247,55 @@ class Auth {
         if(isset($data['aadhaar_number'])){
             $user['aadhaar_number'] = $data['aadhaar_number'];
         }
-        $_POST = $user;
+        if(isset($data['gender'])){
+            $g = strtolower($data['gender']);
+            if($g == "m" || $g == "male"){
+                $user['gender'] = "M";
+            }else if($g == "f" || $g == "female"){
+                $user['gender'] = "F";
+            }
+        }
+        if(isset($data['date_of_birth'])){
+            $user['date_of_birth'] = date("Y-m-d",strtotime($data['date_of_birth']));
+        }
+        if(isset($data['address'])){
+            $user['address'] = $data['address'];
+        }
+        if(isset($data['city'])){
+            $user['city'] = $data['city'];
+        }
+        if(isset($data['state'])){
+            $user['state'] = $data['state'];
+        }
+        if(isset($data['country'])){
+            $user['country'] = $data['country'];
+        }
+        if(isset($data['alternate_mobile_number'])){
+            $user['alternate_mobile_number'] = $data['alternate_mobile_number'];
+        }
+        if(isset($data['description'])){
+            $user['description'] = $data['description'];
+        }
+
         $this->CI->load->model('users_model');
         $uid = false;
         if($user_id){
-            $uid = $this->CI->users_model->update($user_id);
+            $uid = $this->CI->users_model->update($user_id,$user);
         }else{
-            $uid = $this->CI->users_model->add();
+            $uid = $this->CI->users_model->add($user);
         }
+
+        if($uid !== false && $uid !== -1){
+            
+            if(isset($_FILES["profile_photo"]) && $_FILES['profile_photo']['error'] == 0){
+                $url = base_url().'public/images/ux/'.$uid.".png";
+                $path = dirname(BASEPATH)."/public/images/ux/".$uid.".png";
+                move_uploaded_file($_FILES["profile_photo"]['tmp_name'],$path);
+                $new_user['profile_photo'] = $url;
+                $uid = $this->CI->users_model->update($uid,$new_user);
+            }
+        }
+
         return $uid;
     }
 
