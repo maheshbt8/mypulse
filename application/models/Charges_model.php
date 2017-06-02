@@ -3,36 +3,23 @@
  * @author Yogesh Patel
  * @email  yogesh@techcrista.in
  */
-class Hospitals_model extends CI_Model {
-    var $tblname = "hms_hospitals";
-    function getAllhospitals() {
+class Charges_model extends CI_Model {
+    var $tblname = "hms_charges";
+    function getAllcharges() {
         $this->db->where("isDeleted", "0");
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
-    function gethospitalsById($id) {
+    function getchargesById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
-        $r = $r->row_array();
-        if(isset($r['license_category'])){
-            $this->db->where('id',$r['license_category']);
-            $l = $this->db->get('hms_license');
-            $l = $l->row_array();
-            $r['license'] = $l;
-        }
-        return $r;
+        return $r->row_array();
     }
     function search($q, $field) {
         $field = explode(",", $field);
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
-
-        if($this->auth->isHospitalAdmin()){
-            $hid = $this->auth->getHospitalId();
-            $this->db->where('id',$hid);
-        }
-
         $select = implode('`," ",`', $field);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
@@ -41,17 +28,9 @@ class Hospitals_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
-        if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
-        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-
-        if(isset($_POST['hospital_id']) && $_POST['hospital_id'] != -1){
-
-        }else{
-            unset($data['hospital_id']);
-        }
-
+        if (isset($data["charge"])) $data["charge"] = floatval($data["charge"]);
         $data["created_at"] = date("Y-m-d H:i:s");
+        //$data['hospital_id'] = $this->auth->getHospitalId();
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {
@@ -61,14 +40,7 @@ class Hospitals_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
-        if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
-        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if(isset($_POST['hospital_id']) && $_POST['hospital_id'] != -1){
-
-        }else{
-            unset($data['hospital_id']);
-        }
+        if (isset($data["charge"])) $data["charge"] = floatval($data["charge"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
             return true;

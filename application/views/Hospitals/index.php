@@ -47,6 +47,7 @@ $this->load->view("template/left.php");
 				  			 <div role="tabpanel">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
+									<li role="presentation"><a href="#tab12" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
                                     <li role="presentation"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/">Branches</a></li>
                                     <li role="presentation"><a href="#tab3" id="deplin" aria-controls="departments" role="tab" data-toggle="tab">Departments</a></li>
                                     <!-- <li role="presentation"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="">Wards</a></li> -->
@@ -56,6 +57,7 @@ $this->load->view("template/left.php");
                                     <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="">Receptionists</a></li>
                                     <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="">Med. Stores</a></li>
                                     <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="">Med. Labs</a></li>
+									<li role="presentation"><a href="#tab11" aria-controls="charges" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_charges" data-url="charges/getDTcharges/">Charges</a></li>
                                 </ul>
                                 <div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -104,25 +106,7 @@ $this->load->view("template/left.php");
 												<input class="form-control " type="text" placeholder="City" name="city" id="city" />
 											</div>
 							  			</div>
-							  			<div class="col-md-12">
-							  				<div class="form-group col-md-6">
-												<label>License</label>
-												<select class="form-control" name="license_category" id="license_category">					
-													<?php 
-														foreach ($license as $key => $value) {
-															echo "<option value='$value[license_code]'>$value[name]</option>";
-														}
-													?>
-												</select>
-											</div>
-											<div class="form-group col-md-6">
-												<label>License Status</label>
-												<select class="form-control" name="license_status" id="license_status">
-													<option value="1">Active</option>
-													<option value="0">In-Active</option>
-												</select>
-											</div>
-							  			</div>
+							  			
 							  			
 							  			<div class="col-md-12">
 							  			<hr>
@@ -150,6 +134,27 @@ $this->load->view("template/left.php");
 							  				
 							  			</div>            
                                     </div>
+									<div role="tabpanel" class="tab-pane fade in" id="tab12">
+										<div class="col-md-12">
+							  				<div class="form-group col-md-6">
+												<label>License</label>
+												<select class="form-control" name="license_category" id="license_category">					
+													<?php 
+														foreach ($license as $key => $value) {
+															echo "<option value='$value[license_code]'>$value[name]</option>";
+														}
+													?>
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label>License Status</label>
+												<select class="form-control" name="license_status" id="license_status">
+													<option value="1">Active</option>
+													<option value="0">In-Active</option>
+												</select>
+											</div>
+							  			</div>
+									</div>
                                     <div role="tabpanel" class="tab-pane fade in" id="tab2">
                                     	<table id="tbl_branches" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
@@ -226,6 +231,15 @@ $this->load->view("template/left.php");
                                     	<table id="tbl_medlabs" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
 			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                </thead>
+			                                <tbody>
+			                                </tbody>
+			                            </table> 
+                                    </div>
+									<div role="tabpanel" class="tab-pane  fade in" id="tab11">
+                                    	<table id="tbl_charges" class="display table table-bordered" cellspacing="0" width="100%">
+			                                <thead>
+			                                    <tr><th>#</th><th>Title</th><th>Charge</th><th>Hospital</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>

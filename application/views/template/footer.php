@@ -39,7 +39,7 @@
 
             setTimeout(function() {
                 toastr.options = {
-                    closeButton: true,
+                    closeButton: false,
                     progressBar: false,
                     showMethod: 'fadeIn',
                     positionClass : "toast-top-center",

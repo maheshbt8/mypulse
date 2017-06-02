@@ -25,7 +25,6 @@
                             //Super Admin
                         ?>
                             <li id="li2"><a href="<?php echo site_url();?>/hospitals" class="waves-effect waves-button"><span class="menu-icon fa  fa-hospital-o"></span><p><?php echo $menu['main_hospitals'];?></p></a></li>
-                            <!-- <li id="li3"><a href="<?php echo site_url();?>/departments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_departments'];?></p></a></li> -->
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
                             <li id="li5"><a href="<?php echo site_url();?>/nurse" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p><?php echo $menu['main_nurses'];?></p></a></li>
                             <li id="li6"><a href="<?php echo site_url();?>/receptionist" class="waves-effect waves-button"><span class="menu-icon  icon-user-following "></span><p><?php echo $menu['main_receptionists'];?></p></a></li>
@@ -77,9 +76,9 @@
                                 </ul>
                             </li>
 
-                            <li id="li13" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                            <li id="li17" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
-                                    <!-- <li id="li1301"><a href="<?php echo site_url();?>/license/" ><?php echo $menu['main_license_category'];?></a></li> -->
+                                    <li id="li1701"><a href="<?php echo site_url();?>/charges/" ><?php echo $menu['main_charges'];?></a></li> 
                                 </ul>
                             </li>
                         <?php
