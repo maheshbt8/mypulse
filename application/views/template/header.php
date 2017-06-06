@@ -111,6 +111,15 @@
             .negstock{
                 color: red;
             }
+            .model_error{
+                
+                margin-right: 50px;
+                color: #AC4A42;
+                font-size: 15px;
+                float: right;
+                margin-bottom: 10px;
+
+            }
         </style>
 
     </head>
@@ -141,7 +150,26 @@
                                 </li>
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
-                               
+                               <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge badge-success pull-right">1</span></a>
+                                    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
+                                        <li><p class="drop-title">You have 1 new  messages !</p></li>
+                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <a href="#">
+                                                        <div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                        <p class="msg-name">Admin</p>
+                                                        <p class="msg-text">Hey ! Welcome, to HMS.</p>
+                                                        <p class="msg-time">1 day ago</p>
+                                                    </a>
+                                                </li>
+                                                
+                                            </ul>
+                                        </li><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div></div>
+                                        <li class="drop-all"><a href="#" class="text-center">All Messages</a></li>
+                                    </ul>
+                                </li>
                                 <li class="dropdown">
                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i>
                                    

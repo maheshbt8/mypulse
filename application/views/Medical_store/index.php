@@ -46,7 +46,8 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 						  	<ul class="nav  nav-pills" role="tablist">
 								<li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
-								<li role="presentation"><a href="#tab2" aria-controls="incharge" role="tab" data-toggle="tab">Medical Store Incharge</a></li>
+								<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
+								<li role="presentation"><a href="#tab3" aria-controls="incharge" role="tab" data-toggle="tab">Medical Store Incharge</a></li>
 							</ul>
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -55,7 +56,10 @@ $this->load->view("template/left.php");
 											<label>Name</label>
 											<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
 										</div>
-										
+										<div class="form-group col-md-6">
+											<label>Description</label>
+											<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
+										</div>
 									</div>
 									<div class="col-md-12">
 									<div class="form-group col-md-6">
@@ -67,10 +71,13 @@ $this->load->view("template/left.php");
 											<input class="form-control " type="text" placeholder="Owner Contact Number" name="owner_contact_number" id="owner_contact_number" />
 										</div>
 									</div>
+									
+								</div>
+								<div role="tabpanel" class="tab-pane fade in" id="tab2">
 									<div class="col-md-12">	
 										<div class="form-group col-md-6">
 											<label>Select Hospital</label>
-											<select  id="hospital_id" class=" form-control" style="width: 100%">
+											<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
 											</select>
 										</div>
 										<div class="form-group col-md-6">
@@ -80,7 +87,7 @@ $this->load->view("template/left.php");
 										</div>
 									</div>
 								</div>
-								<div role="tabpanel" class="tab-pane fade in" id="tab2">
+								<div role="tabpanel" class="tab-pane fade in" id="tab3">
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
 											<label>First Name</label>
@@ -150,10 +157,7 @@ $this->load->view("template/left.php");
 											<label>Alternate Mobile Number</label>
 											<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
 										</div>
-										<div class="form-group col-md-6">
-											<label>Description</label>
-											<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
-										</div>
+										
 									</div>
 									<div class="col-md-12">
 										<div class="form-group  col-md-6">
@@ -184,6 +188,9 @@ $this->load->view("template/left.php");
 				  	<div>
 				  		<hr>
 				  		<div class="row">
+						  	<div class="col-md-12 error">
+							  	<span class="model_error"></span>
+							</div>
 					  		<div class="form-group col-md-6">
 		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span>CANCEL</button>
 		                    </div>
@@ -228,6 +235,103 @@ $this->load->view("template/footer.php");
 		
 			$(document).ready(function(){
 				var branch_id = null;
+
+				var validator = $("#form").validate({
+					ignore: [],
+			        rules: {
+			        	name:{
+							required:true
+						},
+						owner_name:{
+							required : true
+						},
+						description:{
+							required : true
+						},
+						owner_contact_number:{
+							required : true
+						},
+			        	first_name: {
+			        		required : true
+			        	},
+			        	last_name: {
+			        		required: true
+			        	},
+			        	useremail:{
+			        		required:true,
+			        		email:true
+			        	},
+			        	aadhaar_number:{
+			        		required:true
+			        	},
+			        	mobile:{
+			        		required:true
+			        	},
+			        	hospital_id:{
+			        		required:true
+			        	},
+			        	branch_id:{
+			        		required:true
+			        	}
+			        },
+			        messages: {
+			        	name:{
+							required:"Enter Medical Lab name"
+						},
+						owner_name:{
+							required : "Enter Medical Lab Owner's name"
+						},
+						description:{
+							required : "Enter Description"
+						},
+						owner_contact_number:{
+							required : "Enter Medical Lab Owner's Contact Number"
+						},
+			        	first_name:{
+			        		required: "Enter first name"
+			        	},
+			        	last_name:{
+			        		required: "Enter last name"
+			        	},
+			        	useremail:{
+			        		required: "Enter email address",
+			        		email: "Enter valid email address"
+			        	},
+			        	aadhaar_number:{
+			        		required: "Enter Aadhaar number"
+			        	},
+			        	mobile:{
+			        		required:"Enter mobile number"
+			        	},
+			        	hospital_id:{
+			        		required:"Select Hospital"
+			        	},
+			        	branch_id:{
+			        		required:"Select Branch"
+			        	}
+			        },
+					invalidHandler: function(event, validator) {
+						// 'this' refers to the form
+						var errors = validator.numberOfInvalids();
+						if (errors) {
+							var message = errors == 1 ? 'You missed 1 field. It has been highlighted' : 'You missed ' + errors + ' fields. They have been highlighted';
+							$("div.error span").html(message);
+							$("div.error").show();
+						} else {
+							$("div.error").hide();
+						}
+					},
+					errorPlacement: function(error, element) {
+						if (element.hasClass("selectized")) {
+							var e = element.siblings(2)
+							error.insertAfter(e[1]);
+						} else {
+							error.insertAfter(element);
+						}
+					}
+					
+				});
+
 				$("#medical_store").DataTable({
 		            "processing": true,
 		            "serverSide": true,
@@ -240,6 +344,8 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
+					validator.resetForm();
+					$("div.error").hide();
 			    	$("#Edit-Heading").html("Add New Medical Store");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
@@ -248,6 +354,12 @@ $this->load->view("template/footer.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/medical_store/add");
 			    	$("#edit").modal("show");
+					$("#password").rules("add", {
+						required:true,
+						messages: {
+								required: "Please Enter Password."
+						}
+					});
 			    });
 
 				$("#medical_store").on("click",".editbtn",function(){
@@ -260,6 +372,7 @@ $this->load->view("template/footer.php");
 			    	$("#Edit-Heading").html("Edit Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
+					$("#password").rules("remove","required");
 			    });
 
 			    function loadData(id){
@@ -310,6 +423,8 @@ $this->load->view("template/footer.php");
 			    }
 
 			    $("#medical_store").on("click",".viewbtn",function(){
+					validator.resetForm();
+					$("div.error").hide();
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");

@@ -68,12 +68,10 @@ class Charges extends CI_Controller {
             $primaryKey = "id";
             $columns = array(array("db" => "title", "dt" => 0, "formatter" => function ($d, $row) {
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$d</a>";
-            }), array("db" => "charge", "dt" => 1, "formatter" => function ($d, $row) {
+            }), array("db" => "charge_type", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "hospital_id", "dt" => 2, "formatter" => function ($d, $row) {
-                $this->load->model("hospitals_model");
-                $temp = $this->hospitals_model->gethospitalsById($d);
-                return $temp["name"];
+            }), array("db" => "charge", "dt" => 2, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));

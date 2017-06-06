@@ -47,7 +47,8 @@ $this->load->view("template/left.php");
 						  	<div role="tabpanel">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab">Basic</a></li>
-									<li role="presentation"><a href="#tab2" aria-controls="other" role="tab" data-toggle="tab">General</a></li>
+									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
+									<li role="presentation"><a href="#tab3" aria-controls="other" role="tab" data-toggle="tab">Other Profile Info.</a></li>
 								</ul>
 								<div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -84,15 +85,17 @@ $this->load->view("template/left.php");
 											</div>
 										</div>
 										
+									</div>
+									<div role="tabpanel" class="tab-pane fade in" id="tab2">
 										<div class="col-md-12">
 											<div class="form-group col-md-4">
                                                 <label>Select Hospital</label>
-                                                <select  id="hospital_id" class=" form-control" style="width: 100%">
+                                                <select name="hospital_id"  id="hospital_id" class=" form-control" style="width: 100%">
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Select Branch</label>
-                                                <select id="branch_id" class=" form-control" style="width: 100%">
+                                                <select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-4">
@@ -102,7 +105,7 @@ $this->load->view("template/left.php");
                                             </div>
 										</div>
 									</div>
-									<div role="tabpanel" class="tab-pane fade in" id="tab2">
+									<div role="tabpanel" class="tab-pane fade in" id="tab3">
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label>Gender</label>
@@ -178,6 +181,9 @@ $this->load->view("template/left.php");
 				  	<div>
 				  		<hr>
 				  		<div class="row">
+						  	<div class="col-md-12 error">
+							  	<span class="model_error"></span>
+							</div>
 					  		<div class="form-group col-md-6">
 		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span>CANCEL</button>
 		                    </div>
@@ -224,6 +230,86 @@ $this->load->view("template/footer.php");
 				var branch_id = null;
 				var department_id = null;
 
+				var validator = $("#form").validate({
+					ignore: [],
+			        rules: {
+			        	
+			        	first_name: {
+			        		required : true
+			        	},
+			        	last_name: {
+			        		required: true
+			        	},
+			        	useremail:{
+			        		required:true,
+			        		email:true
+			        	},
+			        	aadhaar_number:{
+			        		required:true
+			        	},
+			        	mobile:{
+			        		required:true
+			        	},
+			        	hospital_id:{
+			        		required:true
+			        	},
+			        	branch_id:{
+			        		required:true
+			        	},
+			        	department_id:{
+			        		required:true
+			        	}
+			        },
+			        messages: {
+			        	
+			        	first_name:{
+			        		required: "Enter first name"
+			        	},
+			        	last_name:{
+			        		required: "Enter last name"
+			        	},
+			        	useremail:{
+			        		required: "Enter email address",
+			        		email: "Enter valid email address"
+			        	},
+			        	aadhaar_number:{
+			        		required: "Enter Aadhaar number"
+			        	},
+			        	mobile:{
+			        		required:"Enter mobile number"
+			        	},
+			        	hospital_id:{
+			        		required:"Select Hospital"
+			        	},
+			        	branch_id:{
+			        		required:"Select Branch"
+			        	},
+			        	department_id:{
+			        		required:"Select Department"
+			        	}
+			        },
+					invalidHandler: function(event, validator) {
+						// 'this' refers to the form
+						var errors = validator.numberOfInvalids();
+						if (errors) {
+							var message = errors == 1 ? 'You missed 1 field. It has been highlighted' : 'You missed ' + errors + ' fields. They have been highlighted';
+							$("div.error span").html(message);
+							$("div.error").show();
+						} else {
+							$("div.error").hide();
+						}
+					},
+					errorPlacement: function(error, element) {
+						if (element.hasClass("selectized")) {
+							var e = element.siblings(2)
+							error.insertAfter(e[1]);
+						} else {
+							error.insertAfter(element);
+						}
+					}
+					
+				});
+
 				$("#nurse").DataTable({
 		            "processing": true,
 		            "serverSide": true,
@@ -236,6 +322,8 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
+					validator.resetForm();
+					$("div.error").hide();
 			    	$("#Edit-Heading").html("Add New Nurse");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
@@ -244,9 +332,17 @@ $this->load->view("template/footer.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/nurse/add");
 			    	$("#edit").modal("show");
+					$("#password").rules("add", {
+						required:true,
+						messages: {
+								required: "Please Enter Password."
+						}
+					});
 			    });
 
 				$("#nurse").on("click",".editbtn",function(){
+					validator.resetForm();
+					$("div.error").hide();
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
@@ -256,6 +352,7 @@ $this->load->view("template/footer.php");
 			    	$("#Edit-Heading").html("Edit Nurse Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
+					$("#password").rules("remove","required");
 			    });
 
 			    function loadData(id){
@@ -304,6 +401,8 @@ $this->load->view("template/footer.php");
 			    }
 
 			    $("#nurse").on("click",".viewbtn",function(){
+					validator.resetForm();
+					$("div.error").hide();
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
@@ -348,7 +447,7 @@ $this->load->view("template/footer.php");
 				    },
 				    onChange: function(value) {
 				        if (!value.length) return;
-
+						
 				        $selectize_department_id[0].selectize.disable();
 				        $selectize_department_id[0].selectize.clearOptions();
 				        $selectize_department_id[0].selectize.load(function(callback) {
@@ -423,7 +522,7 @@ $this->load->view("template/footer.php");
 				    },
 				    onChange: function(value) {
 				        if (!value.length) return;
-
+						
 				        $selectize_branch_id[0].selectize.disable();
 				        $selectize_branch_id[0].selectize.clearOptions();
 				        $selectize_branch_id[0].selectize.load(function(callback) {

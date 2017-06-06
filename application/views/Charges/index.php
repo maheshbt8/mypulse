@@ -19,7 +19,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="charges" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Title</th><th>Charge</th><th>Hospital</th><th width="20px">#</th>
+	                                    <tr><th>Title</th><th>Type of Charge</th><th>Charge</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -57,6 +57,10 @@ $this->load->view("template/left.php");
 				  		</div>
 				  		<div class="col-md-12">
 				  			<div class="form-group col-md-6">
+								<label>Type of Charge</label>
+								<input class="form-control " type="text" placeholder="Type of charge" name="charge_type" id="charge_type" />
+							</div>
+							<div class="form-group col-md-6">
 								<label>Charge</label>
 								<input class="form-control " type="text" placeholder="Charge" name="charge" id="charge" />
 							</div>
@@ -150,21 +154,18 @@ $this->load->view("template/footer.php");
 			    	$.post("<?php echo site_url(); ?>/charges/getcharges",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-					$("#title").val(data.title);
-					
-					$("#description").val(data.description);
-					
-					$("#charge").val(data.charge);
-					
-					var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-					tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
-					tempselectize_hospital_id.refreshItems();
-					tempselectize_hospital_id.setValue(data.hospital_id);
-					
-
-			    		/*$.each(JSON.parse(data), function(key, value){
-						    $("#"+key).val(value);
-						});*/
+						$("#title").val(data.title);
+						
+						$("#description").val(data.description);
+						
+						$("#charge").val(data.charge);
+						$("#charge_type").val(data.charge_type);
+						
+						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+						tempselectize_hospital_id.refreshItems();
+						tempselectize_hospital_id.setValue(data.hospital_id);
+				
 			    	});
 			    }
 

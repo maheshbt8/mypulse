@@ -153,6 +153,10 @@ $this->load->view("template/left.php");
 													<option value="0">In-Active</option>
 												</select>
 											</div>
+											<div class="form-group col-md-6">
+												<label>License Validity</label>
+												<input type="text" class="form-control date-picker" id="validity" value="<?php echo date('d-m-Y', strtotime('+30 days')); ?>" ></input>
+											</div>
 							  			</div>
 									</div>
                                     <div role="tabpanel" class="tab-pane fade in" id="tab2">
@@ -239,7 +243,7 @@ $this->load->view("template/left.php");
 									<div role="tabpanel" class="tab-pane  fade in" id="tab11">
                                     	<table id="tbl_charges" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Title</th><th>Charge</th><th>Hospital</th></tr>
+			                                    <tr><th>#</th><th>Title</th><th>Type Of Charge</th><th>Charge</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
