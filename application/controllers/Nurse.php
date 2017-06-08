@@ -89,15 +89,27 @@ class Nurse extends CI_Controller {
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
             }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
                 $temp = $this->departments_model->getdepartmentsById($d);
+                if(!isset($temp['branch_id']))
+                    return "-";
                 $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                if(!isset($branch['hospital_id']))
+                    return "-";
                 $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
+                 if(!isset($hospital['name']))
+                    return "-";
                 return $hospital["name"];
             }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
                 $temp = $this->departments_model->getdepartmentsById($d);
+                 if(!isset($temp['branch_id']))
+                    return "-";
                 $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                 if(!isset($branch['branch_name']))
+                    return "-";
                 return $branch["branch_name"];
             }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
                 $temp = $this->departments_model->getdepartmentsById($d);
+                 if(!isset($temp['department_name']))
+                    return "-";
                 return $temp["department_name"];
             }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);

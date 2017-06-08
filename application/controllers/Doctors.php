@@ -88,25 +88,37 @@ class Doctors extends CI_Controller {
 
                 $this->load->model("departments_model");
                 $temp = $this->departments_model->getdepartmentsById($d);
+                if(!isset($temp['branch_id']))
+                    return "-";
 
                 $this->load->model("branches_model");
                 $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                if(!isset($branch['hospital_id']))
+                    return "-";                    
 
                 $this->load->model("hospitals_model");
                 $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
+                if(!isset($hospital['name']))
+                    return "-"; 
 
                 return $hospital["name"];
 
             }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
                 $this->load->model("departments_model");
                 $temp = $this->departments_model->getdepartmentsById($d);
-                
+                if(!isset($temp['branch_id']))
+                    return "-";
                 $this->load->model("branches_model");
                 $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                if(!isset($branch['branch_name']))
+                    return "-"; 
+
                 return $branch["branch_name"];
             }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
                 $this->load->model("departments_model");
                 $temp = $this->departments_model->getdepartmentsById($d);
+                 if(!isset($temp['department_name']))
+                    return "-";
                 return $temp["department_name"];
             }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);

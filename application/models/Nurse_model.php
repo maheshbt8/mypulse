@@ -75,14 +75,16 @@ class Nurse_model extends CI_Model {
             return -1;
         }else{
             $nurse['user_id'] = $nid;
-            $nurse['department_id'] = $data['department_id'];
+            $nurse['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
             $nurse['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $nurse)) {
                 return true;
             } else {
                 return false;
             }
+            
         }
+        return true;
     }
     function update($id) {
         $data = $_POST;

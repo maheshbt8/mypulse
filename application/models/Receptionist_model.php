@@ -86,7 +86,7 @@ class Receptionist_model extends CI_Model {
         else{
             $rec = array();
             $rec['user_id'] = $rec_id;
-            $rec['doc_id'] = $data['doc_id'];
+            $rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
             $rec['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $rec)) {
                 return true;
@@ -94,6 +94,7 @@ class Receptionist_model extends CI_Model {
                 return false;
             }
         }
+        return true;
     }
     function update($id) {
         $data = $_POST;

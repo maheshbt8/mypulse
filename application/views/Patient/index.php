@@ -83,6 +83,10 @@ $this->load->view("template/left.php");
 													<label>Mobile</label>
 													<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
 												</div>
+												<div class="form-group col-md-6">
+													<label>About Me</label>
+													<textarea class="form-control"  placeholder="Write Few Words about your self." name="description" id="description"></textarea>
+												</div>
 											</div>
 										</div>
 										<div role="tabpanel" class="tab-pane fade in" id="tab2">
@@ -123,10 +127,6 @@ $this->load->view("template/left.php");
 												<div class="form-group col-md-6">
 													<label>Alternate Mobile Number</label>
 													<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
-												</div>
-												<div class="form-group col-md-6">
-													<label>Description</label>
-													<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
 												</div>
 											</div>
 											<div class="col-md-12">

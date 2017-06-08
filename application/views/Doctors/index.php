@@ -64,21 +64,17 @@ $this->load->view("template/left.php");
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Description</label>
-												<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
-											</div>
-											<div class="form-group col-md-6">
 												<label>Email</label>
 												<input class="form-control " type="text" placeholder="Email Address" name="useremail" id="useremail" />
 											</div>
-											
-										</div>
-										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label>Password</label>
 												<input class="form-control " type="text" placeholder="Password" name="password" id="password" />
 												<span id="passwordhint" style="display: none">Leave it empty if you don't want to update the password.</span>
 											</div>
+										</div>
+										<div class="col-md-12">
+											
 											<div class="form-group col-md-6">
 												<label>Aadhar Number</label>
 												<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
@@ -86,6 +82,10 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-6">
 												<label>Mobile</label>
 												<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
+											</div>
+											<div class="form-group col-md-6">
+												<label>About Me</label>
+												<textarea class="form-control"  placeholder="Write Few Words about your self." name="description" id="description"></textarea>
 											</div>
 										</div>
 										
@@ -252,15 +252,6 @@ $this->load->view("template/footer.php");
 			        	},
 			        	mobile:{
 			        		required:true
-			        	},
-			        	hospital_id:{
-			        		required:true
-			        	},
-			        	branch_id:{
-			        		required:true
-			        	},
-			        	department_id:{
-			        		required:true
 			        	}
 			        },
 			        messages: {
@@ -283,15 +274,6 @@ $this->load->view("template/footer.php");
 			        	},
 			        	mobile:{
 			        		required:"Enter mobile number"
-			        	},
-			        	hospital_id:{
-			        		required:"Select Hospital"
-			        	},
-			        	branch_id:{
-			        		required:"Select Branch"
-			        	},
-			        	department_id:{
-			        		required:"Select Department"
 			        	}
 			        },
 					invalidHandler: function(event, validator) {

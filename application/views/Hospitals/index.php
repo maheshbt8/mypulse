@@ -106,6 +106,13 @@ $this->load->view("template/left.php");
 												<input class="form-control " type="text" placeholder="City" name="city" id="city" />
 											</div>
 							  			</div>
+										<div class="col-md-12">
+							  				<div class="form-group col-md-6">
+												<label>District</label>
+												<textarea class="form-control " placeholder="Description" name="description" id="description" ></textarea>					
+											</div>
+										
+							  			</div>
 							  			
 							  			
 							  			<div class="col-md-12">
@@ -155,7 +162,18 @@ $this->load->view("template/left.php");
 											</div>
 											<div class="form-group col-md-6">
 												<label>License Validity</label>
-												<input type="text" class="form-control date-picker" id="validity" value="<?php echo date('d-m-Y', strtotime('+30 days')); ?>" ></input>
+												<div class="col-md-12">
+													<div class="col-md-5">
+														<input type="text" class="form-control date-picker" id="validity_start" value="<?php echo date('d-m-Y'); ?>" ></input>
+													</div>
+													<div class="col-md-2">
+													to
+													</div>
+													<div class="col-md-5">
+														<input type="text" class="form-control date-picker" id="validity_end" value="<?php echo date('d-m-Y', strtotime('+30 days')); ?>" ></input>
+													</div>
+												</div>
+												
 											</div>
 							  			</div>
 									</div>
@@ -243,7 +261,7 @@ $this->load->view("template/left.php");
 									<div role="tabpanel" class="tab-pane  fade in" id="tab11">
                                     	<table id="tbl_charges" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Title</th><th>Type Of Charge</th><th>Charge</th></tr>
+			                                    <tr><th>#</th><th>Title</th><th>Type Of Charge</th><th>Description</th><th>Charge</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>

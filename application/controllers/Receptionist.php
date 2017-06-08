@@ -83,27 +83,42 @@ class Receptionist extends CI_Controller {
             }), array("db" => "doc_id", "dt" => 1, "formatter" => function ($d, $row) {
                 
                 $doc = $this->doctors_model->getdoctorsById($d);
-                   
+                if(!isset($doc['department_id']))
+                    return "-";   
                 $temp = $this->departments_model->getdepartmentsById($doc['department_id']);
-
+                if(!isset($temp['branch_id']))
+                    return "-"; 
                 $branch = $this->branches_model->getbranchesById($temp['branch_id']);
-
+                if(!isset($branch['hospital_id']))
+                    return "-"; 
                 $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
-
+                if(!isset($hospital['name']))
+                    return "-"; 
                 return $hospital["name"];
 
             }), array("db" => "doc_id", "dt" => 2, "formatter" => function ($d, $row) {
                 $doc = $this->doctors_model->getdoctorsById($d);
+                if(!isset($doc['department_id']))
+                    return "-"; 
                 $temp = $this->departments_model->getdepartmentsById($doc['department_id']);
+                if(!isset($temp['branch_id']))
+                    return "-"; 
                 $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                if(!isset($branch['branch_name']))
+                    return "-"; 
                 return $branch["branch_name"];
 
             }), array("db" => "doc_id", "dt" => 3, "formatter" => function ($d, $row) {
                 $doc = $this->doctors_model->getdoctorsById($d);
+                if(!isset($doc['department_id']))
+                    return "-"; 
                 $temp = $this->departments_model->getdepartmentsById($doc['department_id']);
+                if(!isset($temp['department_name']))
+                    return "-"; 
                 return $temp["department_name"];
             }),array("db" => "doc_id", "dt" => 4, "formatter" => function ($d, $row) {
                 $temp = $this->doctors_model->getdoctorsById($d);
+                
                 return $temp["first_name"]." ".$temp["last_name"];
             }),array("db" => "isActive", "dt" => 5, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);

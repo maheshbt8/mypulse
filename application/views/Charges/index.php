@@ -19,7 +19,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="charges" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Title</th><th>Type of Charge</th><th>Charge</th><th width="20px">#</th>
+	                                    <tr><th>Title</th><th>Type of Charge</th><th>Description</th><th>Charge</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                

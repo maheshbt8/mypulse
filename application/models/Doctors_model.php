@@ -81,16 +81,19 @@ class Doctors_model extends CI_Model {
             return -1;
         }
         else{
+            
             $doc = array();
             $doc['user_id'] = $doc_id;
-            $doc['branch_id'] = $data['branch_id'];
+            $doc['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
             $doc['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $doc)) {
                 return true;
             } else {
                 return false;
             }
+        
         }
+        return true;
     }
     function update($id) {
         $data = $_POST;

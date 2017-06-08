@@ -83,6 +83,10 @@ $this->load->view("template/left.php");
 												<label>Mobile</label>
 												<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
 											</div>
+											<div class="form-group col-md-6">
+												<label>About Me</label>
+												<textarea class="form-control"  placeholder="Write Few Words about your self." name="description" id="description"></textarea>
+											</div>
 										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane fade in" id="tab2">
@@ -149,10 +153,6 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-6">
 												<label>Alternate Mobile Number</label>
 												<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
-											</div>
-											<div class="form-group col-md-6">
-												<label>Description</label>
-												<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -257,19 +257,7 @@ $this->load->view("template/footer.php");
 			        	},
 			        	mobile:{
 			        		required:true
-			        	},
-			        	hospital_id:{
-			        		required:true
-			        	},
-			        	branch_id:{
-			        		required:true
-			        	},
-			        	department_id:{
-			        		required:true
-			        	},
-						doc_id:{
-							required:true
-						}
+			        	}
 			        },
 			        messages: {
 			        	
@@ -288,19 +276,7 @@ $this->load->view("template/footer.php");
 			        	},
 			        	mobile:{
 			        		required:"Enter mobile number"
-			        	},
-			        	hospital_id:{
-			        		required:"Select Hospital"
-			        	},
-			        	branch_id:{
-			        		required:"Select Branch"
-			        	},
-			        	department_id:{
-			        		required:"Select Department"
-			        	},
-						doc_id:{
-							required:"Select Doctor"
-						}
+			        	}
 			        },
 					invalidHandler: function(event, validator) {
 						// 'this' refers to the form
