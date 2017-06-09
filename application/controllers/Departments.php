@@ -27,7 +27,7 @@ class Departments extends CI_Controller {
                 $hid = $this->auth->getHospitalId();
             }*/
 
-            $result = $this->departments_model->search($q, $f);
+            $result = $this->departments_model->search($q, $f,$bid);
             echo json_encode($result);
         }
     }
@@ -79,7 +79,7 @@ class Departments extends CI_Controller {
             }), array("db" => "department_name", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             if($hospital_id!=null){
                 $ids = $this->branches_model->getBracheIds($hospital_id);

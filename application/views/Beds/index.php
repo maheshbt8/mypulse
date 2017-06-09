@@ -60,6 +60,9 @@ $this->load->view("template/left.php");
 					</div></div>
 				  	<div>
 				  		<hr>
+						<div class="col-md-12 error">
+							<span class="model_error"></span>
+						</div>  
 				  		<div class="row">
 					  		<div class="form-group col-md-6">
 		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span>CANCEL</button>
@@ -104,6 +107,49 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
+
+				var validator = $("#form").validate({
+					ignore: [],
+			        rules: {
+			        	
+			        	department_id: {
+			        		required : true
+			        	},
+			        	bed: {
+			        		required: true
+			        	}
+			        },
+			        messages: {
+			        	
+			        	department_id:{
+			        		required: "Select Department"
+			        	},
+			        	bed:{
+			        		required: "Enter bed number"
+			        	}
+			        },
+					invalidHandler: function(event, validator) {
+						// 'this' refers to the form
+						var errors = validator.numberOfInvalids();
+						if (errors) {
+							var message = errors == 1 ? 'You missed 1 field. It has been highlighted' : 'You missed ' + errors + ' fields. They have been highlighted';
+							$("div.error span").html(message);
+							$("div.error").show();
+						} else {
+							$("div.error").hide();
+						}
+					},
+					errorPlacement: function(error, element) {
+						if (element.hasClass("selectized")) {
+							var e = element.siblings(2)
+							error.insertAfter(e[1]);
+						} else {
+							error.insertAfter(element);
+						}
+					}
+					
+				});
+
 				$("#beds").DataTable({
 		            "processing": true,
 		            "serverSide": true,
@@ -173,7 +219,7 @@ $this->load->view("template/footer.php");
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
 			    		$.post("<?php echo site_url(); ?>/beds/delete",{id:id},function(){
-			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
+			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
 			    			$("#delete").modal("hide");	
 			    		});
 			    	}

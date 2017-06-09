@@ -18,7 +18,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="users" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>First Name</th><th>Last Name</th><th>Usernemail</th><th>Status</th><th style="width: 20px">#</th>
+	                                    <tr><th>Name</th><th>Email</th><th>Status</th><th style="width: 20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -126,7 +126,7 @@ $this->load->view("template/left.php");
 											<div class="col-md-12">
 												<div class="form-group col-md-6">
 													<label>Alternate Mobile Number</label>
-													<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
+													<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_number" id="alternate_mobile_number" />
 												</div>
 											</div>
 											<div class="col-md-12">
@@ -377,7 +377,7 @@ $this->load->view("template/footer.php");
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
 			    		$.post("<?php echo site_url(); ?>/users/delete",{id:id},function(){
-			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
+			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
 			    			$("#delete").modal("hide");	
 			    		});
 			    	}

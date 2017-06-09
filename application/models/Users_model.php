@@ -91,6 +91,7 @@ class Users_model extends CI_Model {
         }
 
         $select = implode('`," ",`', $field);
+        $this->db->where("hms_users.isDeleted",0);
         $this->db->select("hms_users.id,CONCAT(`$select`) as text", false);
         $res = $this->db->get();
         return $res->result_array();

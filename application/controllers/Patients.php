@@ -24,15 +24,21 @@ class Patients extends CI_Controller {
             $table = "hms_users";
             $primaryKey = "id";
             $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "last_name", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "useremail", "dt" => 2, "formatter" => function ($d, $row) {
+                $user = $this->users_model->getusersById($row['id']);
+                $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-            }), array("db" => "isActive", "dt" => 7, "formatter" => function ($d, $row) {
+            }), array("db" => "isActive", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "id", "dt" => 8, "formatter" => function ($d, $row) {
-                 return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 
             if($this->auth->isHospitalAdmin()){

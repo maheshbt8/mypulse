@@ -443,7 +443,7 @@ $this->load->view("template/footer.php");
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
 			    		$.post("<?php echo site_url(); ?>/medical_store/delete",{id:id},function(){
-			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
+			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
 			    			$("#delete").modal("hide");	
 			    		});
 			    	}

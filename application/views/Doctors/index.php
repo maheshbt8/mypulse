@@ -312,7 +312,7 @@ $this->load->view("template/footer.php");
 			    $(".addbtn").click(function(){
 					validator.resetForm();
 					$("div.error").hide();
-			    	$("#Edit-Heading").html("Add New Dector");
+			    	$("#Edit-Heading").html("Add New Doctor");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
@@ -409,7 +409,7 @@ $this->load->view("template/footer.php");
 			    	var id = $("#cur_del").val();
 			    	if(id!==""){
 			    		$.post("<?php echo site_url(); ?>/doctors/delete",{id:id},function(){
-			    			$("#tr_"+$("#cur_del").val()).parent().parent().hide();
+			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
 			    			$("#delete").modal("hide");	
 			    		});
 			    	}

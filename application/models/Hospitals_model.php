@@ -15,10 +15,12 @@ class Hospitals_model extends CI_Model {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         if(isset($r['license_category'])){
-            $this->db->where('id',$r['license_category']);
+            $this->db->where('license_code',$r['license_category']);
             $l = $this->db->get('hms_license');
             $l = $l->row_array();
             $r['license'] = $l;
+        }else{
+            $r['license']['name'] = "Not Found";
         }
         return $r;
     }
@@ -27,13 +29,14 @@ class Hospitals_model extends CI_Model {
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
-
+        
         if($this->auth->isHospitalAdmin()){
             $hid = $this->auth->getHospitalId();
             $this->db->where('id',$hid);
         }
 
         $select = implode('`," ",`', $field);
+        $this->db->where("isDeleted",0);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();

@@ -34,6 +34,7 @@ class Medical_store_model extends CI_Model {
             $this->db->like($f, $q);
         }
         $select = implode('`," ",`', $field);
+        $this->db->where("isDeleted",0);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();

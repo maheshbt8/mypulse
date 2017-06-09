@@ -61,8 +61,10 @@ class Receptionist_model extends CI_Model {
 
         $this->db->like("hms_users.first_name",$q);
         $this->db->like("hms_users.last_name",$q);
+        $this->db->where("hms_users.isDeleted",0);
         $this->db->where("hms_users.role",$this->auth->getDoctorRoleType());
         $this->db->select("hms_receptionist.id,CONCAT(`first_name`,`last_name`) as text", false);
+        $this->db->where("hms_receptionist.isDeleted",0);
         $this->db->from($this->tblname);
 
         $this->db->join("hms_users","hms_receptionist.user_id=hms_users.id");

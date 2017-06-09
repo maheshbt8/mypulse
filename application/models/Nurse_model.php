@@ -55,10 +55,11 @@ class Nurse_model extends CI_Model {
 
         $this->db->like("hms_users.first_name",$q);
         $this->db->like("hms_users.last_name",$q);
+        $this->db->where("hms_users.isDeleted",0);
         $this->db->where("hms_users.role",$this->auth->getNurseRoleType());
         $this->db->select("hms_nurse.id,CONCAT(`first_name`,`last_name`) as text", false);
+        $this->db->where("hms_nurse.isDeleted",0);
         $this->db->from($this->tblname);
-
         $this->db->join("hms_users","hms_nurse.user_id=hms_users.id");
                
         $res = $this->db->get();

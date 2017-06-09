@@ -114,7 +114,7 @@ class Nurse extends CI_Controller {
             }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);
             }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             if($this->auth->isHospitalAdmin()){
                 $ids = $this->auth->getAllDepartmentsIds();
