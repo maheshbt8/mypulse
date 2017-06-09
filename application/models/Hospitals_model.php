@@ -44,7 +44,7 @@ class Hospitals_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["license_category"])) $data["license_category"] = $data["license_category"];
+        
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
 
@@ -64,7 +64,7 @@ class Hospitals_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["license_category"])) $data["license_category"] = intval($data["license_category"]);
+        
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if(isset($_POST['hospital_id']) && $_POST['hospital_id'] != -1){
