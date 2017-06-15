@@ -80,14 +80,17 @@ class Departments_model extends CI_Model {
     }
 
     function getDepartmentIdsFromHospital($hospital_id=0){
-        $res = null;
+        $res = array();
         if(is_array($hospital_id)){
-            $hospital_id = implode(",",$hospital_id);
-            $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.isDeleted=0");
+            if(count($hospital_id) > 0){
+                $hospital_id = implode(",",$hospital_id);
+                $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.isDeleted=0");
+                $res = $res->result_array();
+            }
         }else{
             $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id and d.isDeleted=0");
+            $res = $res->result_array();
         }
-        $res = $res->result_array();
         $ids = array();
         foreach ($res as $key => $value) {
             $ids[] = $value['id'];
@@ -96,14 +99,17 @@ class Departments_model extends CI_Model {
     }
 
     function getDepartmentIdsFromBranch($branch_id=0){
-        $res = null;
+        $res = array();
         if(is_array($branch_id)){
-            $branch_id = implode(",",$branch_id);
-            $res = $this->db->query("select d.id from hms_departments d where d.branch_id in ($branch_id) and d.isDeleted=0");
+            if(count($branch_id) > 0){
+                $branch_id = implode(",",$branch_id);
+                $res = $this->db->query("select d.id from hms_departments d where d.branch_id in ($branch_id) and d.isDeleted=0");
+                $res = $res->result_array();
+            }
         }else{
             $res = $this->db->query("select d.id from hms_departments d where d.branch_id='$branch_id' and d.isDeleted=0");
+            $res = $res->result_array();
         }
-        $res = $res->result_array();
         $ids = array();
         foreach ($res as $key => $value) {
             $ids[] = $value['id'];
@@ -117,8 +123,10 @@ class Departments_model extends CI_Model {
         $this->db->where('isDeleted',0);
         $res = $this->db->get($this->tblname);
         $res = $res->row_array();
-
-        $this->db->where('id',$res['branch_id']);
+        $bid = -1;
+        if(isset($res['branch_id']))
+            $bid = $res['branch_id'];
+        $this->db->where('id',$bid);
         $this->db->where('isActive',1);
         $this->db->where('isDeleted',0);
         $branch = $this->db->get("hms_branches");

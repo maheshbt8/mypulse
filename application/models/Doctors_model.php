@@ -156,7 +156,7 @@ class Doctors_model extends CI_Model {
         foreach ($dids as $key => $value) {
             $tids[] = $value['id'];
         }
-
+        if(count($tids) == 0) { $tids[] = -1;}
         $this->db->where_in("department_id",$tids);
         $this->db->where("isDeleted",0);
         $this->db->where("isActive",1);
@@ -181,7 +181,7 @@ class Doctors_model extends CI_Model {
         foreach ($dids as $key => $value) {
             $tids[] = $value['id'];
         }
-
+        if(count($tids) == 0) { $tids[] = -1;}
         $this->db->where_in("department_id",$tids);
         $this->db->where("isDeleted",0);
         $this->db->where("isActive",1);

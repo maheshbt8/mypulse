@@ -88,8 +88,10 @@ class Branches_model extends CI_Model {
     }
 
     function getBracheIds($hospital_id = 0){
-        if(is_array($hospital_id))
+        if(is_array($hospital_id)){
+            if(count($hospital_id) == 0) { $hospital_id[] = -1;}
             $this->db->where_in('hospital_id',$hospital_id);
+        }
         else
             $this->db->where('hospital_id',$hospital_id);
         $this->db->where('isActive',1);
