@@ -150,6 +150,11 @@ class Beds extends CI_Controller {
             }else{
                 $hids = $this->hospitals_model->getHospicalIds();
                 $ids = $this->wards_model->getWardIdsFromHospital($hids);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
                 $ids = implode(",",$ids);
                 $cond[] = "ward_id in (".$ids.")";
             }
