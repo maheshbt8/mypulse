@@ -30,13 +30,13 @@ class Receptionist extends CI_Controller {
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            $nid = $this->receptionist_model->add();
-            if ($nid === true) {
+            $res = $this->receptionist_model->add();
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
                 $data['success'] = array("Receptionist Added Successfully");
-            } else if($nid === -1){
-                $data['errors'] = array("Please use another email.");
-            } else {
-                $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
             redirect('receptionist/index');
@@ -47,12 +47,12 @@ class Receptionist extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->receptionist_model->update($id);
-            if ($res === true) {
-                $data['success'] = array("Receptionist Updated Successfully");
-            } else if($res === -1){
-                $data['errors'] = array("Please use another email.");
-            } else {
-                $data['errors'] = array("Please again later");
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array("Receptionist updated Successfully");
             }
             $this->session->set_flashdata('data', $data);
             redirect('receptionist/index');

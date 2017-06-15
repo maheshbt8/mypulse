@@ -34,7 +34,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/users/update" method="post" id="form" enctype="multipart/form-data">
+				<form action="<?php echo site_url(); ?>/patients/update" method="post" id="form" enctype="multipart/form-data">
 					<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 					<input type="hidden" name="role" value="<?php echo $this->auth->getPatientRoleType(); ?>">
 					<div class="modal-content">
@@ -44,7 +44,7 @@ $this->load->view("template/left.php");
 						</div>
 				  		<div class="modal-body">
 				  			
-							<div class="row">
+							<div class="row" id="tabs">
 								<div role="tabpanel">
 									<ul class="nav  nav-pills" role="tablist">
 										<li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab">Basic</a></li>
@@ -336,7 +336,7 @@ $this->load->view("template/footer.php");
 			    	$("#form")[0].reset();
 			    	$("#passwordhint").hide();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/users/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/patients/add");
 			    	$("#edit").modal("show");
 					$("#password").rules("add", {
 						required:true,
@@ -344,6 +344,7 @@ $this->load->view("template/footer.php");
 								required: "Please Enter Password."
 						}
 					});
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 				$("#users").on("click",".editbtn",function(){
@@ -354,12 +355,13 @@ $this->load->view("template/footer.php");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
 			    	$("#passwordhint").show();
-			    	$("#form").attr("action","<?php echo site_url(); ?>/users/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/patients/update");
 			    	$("#form input").attr("disabled",false);
 			    	$("#Edit-Heading").html("Edit Patient Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$("#password").rules("remove","required");
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id){
@@ -371,11 +373,8 @@ $this->load->view("template/footer.php");
 						$("#last_name").val(data.last_name);
 						
 						$("#useremail").val(data.useremail);
-						
-						$("#password").val(data.password);
-						
 						$("#address").val(data.address);
-						
+						$("#aadhaar_number").val(data.aadhaar_number);
 						$("#mobile").val(data.mobile);
 						
 						$("#phone").val(data.phone);
@@ -419,6 +418,7 @@ $this->load->view("template/footer.php");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
 			    	$("#Edit-Heading").html("Patients Details");
+					$('#tabs a[href="#tab1"]').click();
 
 			    });
 

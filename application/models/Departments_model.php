@@ -18,15 +18,23 @@ class Departments_model extends CI_Model {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
-    function search($q, $field,$branch_id=-1) {
+    function search($q, $field,$hospital_id=-1,$branch_id=-1) {
         $field = explode(",", $field);
         foreach ($field as $f) {
             if($q!="")
                 $this->db->like($f, $q);
         }
         
+        
         if($branch_id > 0){
             $this->db->where('branch_id',$branch_id);
+        }else if($hospital_id > 0){
+            $bids = $this->auth->getBranchIds($hospital_id);
+            $this->db->where_in('branch_id',$bids);
+        }else{
+            $hids = $this->auth->getAllHospitalIds();
+            $bids = $this->auth->getBranchIds($hids);
+            $this->db->where_in('branch_id',$bids);
         }
         
         $select = implode('`," ",`', $field);

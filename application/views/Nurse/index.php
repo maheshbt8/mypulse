@@ -44,7 +44,7 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
-						  	<div role="tabpanel">
+						  	<div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab">Basic</a></li>
 									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
@@ -332,6 +332,7 @@ $this->load->view("template/footer.php");
 								required: "Please Enter Password."
 						}
 					});
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 				$("#nurse").on("click",".editbtn",function(){
@@ -348,6 +349,7 @@ $this->load->view("template/footer.php");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$("#password").rules("remove","required");
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id){
@@ -413,6 +415,7 @@ $this->load->view("template/footer.php");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
 			    	$("#Edit-Heading").html("Nurse Details");
+					$('#tabs a[href="#tab1"]').click();
 
 			    });
 
@@ -469,7 +472,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_department_id[0].selectize.enable();
 				                    callback($.parseJSON(results));
-				                    if(department_id != null){
+				                    if(department_id != null  && department_id > 0){
 				    					var tempselectize_department_id = $selectize_department_id[0].selectize;
 										tempselectize_department_id.addOption([{"id":department_id,"text":department_id}]);
 										tempselectize_department_id.refreshItems();

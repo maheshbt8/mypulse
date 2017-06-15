@@ -39,6 +39,9 @@ class Branches_model extends CI_Model {
 
         if($hospital_id > 0){
             $this->db->where('hospital_id',$hospital_id);
+        }else{
+            $hids = $this->auth->getAllHospitalIds();
+            $this->db->where_in('hospital_id',$hids);
         }
 
         $select = implode('`," ",`', $field);

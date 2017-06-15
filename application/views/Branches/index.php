@@ -413,7 +413,7 @@ $this->load->view("template/footer.php");
                     $("#branches").DataTable({
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "<?php echo site_url(); ?>/branches/getDTbranches/"+id
+                        "ajax": "<?php echo site_url(); ?>/branches/getDTbranches?hid="+id
                     });
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");

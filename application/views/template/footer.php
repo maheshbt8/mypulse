@@ -116,7 +116,7 @@
                 });
                 if(selected.length == 0){
                     swal({
-                        animation: false,
+                        animation: "slide-from-top",
                         text: 'Please select checkbox.'
                         });
                 }else{

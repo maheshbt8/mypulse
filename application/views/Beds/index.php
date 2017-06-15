@@ -353,7 +353,7 @@ $this->load->view("template/footer.php");
 								xhr = $.ajax({
 									url: "<?php echo site_url(); ?>/departments/search/",
 									type: "GET",
-									data: { "branch_id":value,"f":"department_name"},
+									data: { "branch_id":value,"f":"department_name","hospital_id":$("#hospital_id1").val()},
 									success: function(results) {
 										$selectize_department_id1[0].selectize.enable();
 										var res = $.parseJSON(results);

@@ -96,6 +96,8 @@ class Branches extends CI_Controller {
             }));
 
             $hospital_id = $this->input->get('hid',null,null);
+            if($hospital_id == "all")
+                $hospital_id = null;
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
             if($this->auth->isHospitalAdmin()){
@@ -104,6 +106,11 @@ class Branches extends CI_Controller {
             }
             else if($hospital_id!=null){
                 $cond[] = "hospital_id=$hospital_id";
+            }else{
+                $hids = $this->hospitals_model->getHospicalIds();
+                if(count($hids) == 0){ $hids[] = -1; }
+                $hids = implode(",",$hids);
+                $cond[] = "hospital_id in ($hids)";
             }
             
             if($show){

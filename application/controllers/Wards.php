@@ -110,6 +110,11 @@ class Wards extends CI_Controller {
             }else if($bid == "all"){
                 $bids = $this->branches_model->getBracheIds($hid);
                 $ids = $this->departments_model->getDepartmentIdsFromBranch($bids);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
                 $ids = implode(",", $ids);
                 $cond[] = "department_id in (".$ids.")";
             }else if($bid != null){

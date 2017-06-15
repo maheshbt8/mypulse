@@ -31,18 +31,14 @@ class Nurse extends CI_Controller {
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            $nur = $this->nurse_model->add();
+            $res = $this->nurse_model->add();
             $data = array();
-            if ($nur===true) {
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
                 $data['success'] = array("Nurse Added Successfully");
-            } else {
-                $errors = array();
-                if($nur === -1){
-                    $errors[] = "Please use another email.";
-                }else{
-                    $errors[] = "Please again later";
-                }
-                $data['errors'] = $errors;
             }
             $this->session->set_flashdata('data', $data);
             redirect('nurse/index');
@@ -53,13 +49,12 @@ class Nurse extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->nurse_model->update($id);
-            if($res === true){
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
                 $data['success'] = array("Nurse Updated Successfully");
-            }
-            else if ($res === -1) {
-                $data['errors'] = array("Please use another email.");
-            } else {
-                $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
             redirect('nurse/index');

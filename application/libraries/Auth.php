@@ -114,6 +114,7 @@ class Auth {
         return 0;
     }
 
+    
     public function getUserid(){
       $u = $this->CI->session->all_userdata();
       return $u['user_id'];
@@ -172,6 +173,13 @@ class Auth {
         }
         return $ids;
     }   
+
+    public function getAllHospitalIds(){
+        $this->CI->load->model('hospitals_model');
+        $ids = $this->CI->hospitals_model->getHospicalIds();
+        
+        return $ids;
+    }
 
     public function getDepartmentsIdsByBranch(){
 
@@ -284,6 +292,9 @@ class Auth {
         }
         if(isset($data['state'])){
             $user['state'] = $data['state'];
+        }
+        if(isset($data['district'])){
+            $user['district'] = $data['district'];
         }
         if(isset($data['country'])){
             $user['country'] = $data['country'];

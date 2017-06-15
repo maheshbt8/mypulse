@@ -17,6 +17,39 @@ class Patients extends CI_Controller {
         } else redirect('index/login');
     }
 
+    public function add() {
+        if ($this->auth->isLoggedIn()) {
+            $res = $this->users_model->add();
+
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array($this->lang->line('msg_user_added'));
+            }
+            $this->session->set_flashdata('data', $data);
+            redirect('Patients/index');
+            
+        } else redirect('index/login');
+    }
+    public function update() {
+        if ($this->auth->isLoggedIn()) {
+            $data = array();
+            $id = $this->input->post('eidt_gf_id');
+            $res = $this->users_model->update($id);
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array($this->lang->line('msg_user_added'));
+            }
+            $this->session->set_flashdata('data', $data);
+            redirect('Patients/index');
+        } else redirect('index/login');
+    }
+
 
     public function getDTusers() {
         if ($this->auth->isLoggedIn()) {

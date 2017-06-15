@@ -43,7 +43,7 @@ $this->load->view("template/left.php");
 					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
 					</div>
 				  	<div class="modal-body">
-				  		<div class="row">
+				  		<div class="row" id="tabs">
 						  	<div role="tabpanel">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab">Basic</a></li>
@@ -343,6 +343,7 @@ $this->load->view("template/footer.php");
 								required: "Please Enter Password."
 						}
 					});
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 				$("#receptionist").on("click",".editbtn",function(){
@@ -359,6 +360,7 @@ $this->load->view("template/footer.php");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$("#password").rules("remove","required");
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id){
@@ -387,7 +389,7 @@ $this->load->view("template/footer.php");
 						
 						
 						$("#address").val(data.address);
-						
+						$("#aadhaar_number").val(data.aadhaar_number);
 						$("#mobile").val(data.mobile);
 						
 						$("#phone").val(data.phone);
@@ -426,6 +428,7 @@ $this->load->view("template/footer.php");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
 			    	$("#Edit-Heading").html("Receptionist Details");
+					$('#tabs a[href="#tab1"]').click();
 
 			    });
 
@@ -497,7 +500,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_department_id[0].selectize.enable();
 				                    callback($.parseJSON(results));
-				                    if(department_id != null){
+				                    if(department_id != null  && department_id > 0){
 				    					var tempselectize_department_id = $selectize_department_id[0].selectize;
 										tempselectize_department_id.addOption([{"id":department_id,"text":department_id}]);
 										tempselectize_department_id.refreshItems();
@@ -539,7 +542,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_doc_id[0].selectize.enable();
 				                    callback($.parseJSON(results));
-				                    if(doctor_id != null){
+				                    if(doctor_id != null  && doctor_id > 0){
 				    					var tempselectize_doctor_id = $selectize_doc_id[0].selectize;
 										tempselectize_doctor_id.addOption([{"id":doctor_id,"text":doctor_id}]);
 										tempselectize_doctor_id.refreshItems();
@@ -601,7 +604,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_branch_id[0].selectize.enable();
 				                    callback($.parseJSON(results));
-				                    if(branch_id != null){
+				                    if(branch_id != null &&  branch_id > 0){
 				    					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
 										tempselectize_branch_id.addOption([{"id":branch_id,"text":branch_id}]);
 										tempselectize_branch_id.refreshItems();

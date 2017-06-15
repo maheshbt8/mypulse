@@ -51,6 +51,7 @@ class Medical_lab_model extends CI_Model {
         }else{
             $mlab['user_id'] = $uid;
             $mlab['name'] = $data['name'];
+            $mlab['description'] = $data['md_description'];
             $mlab['owner_name'] = $data['owner_name'];
             $mlab['owner_contact_number'] = $data['owner_contact_number'];
             $mlab['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
@@ -87,15 +88,19 @@ class Medical_lab_model extends CI_Model {
                 $mlab['owner_contact_number'] = $data['owner_contact_number'];
             if(isset($data['branch_id']))
                 $mlab['branch_id'] = $data['branch_id'];        
-
-
-            $this->db->where("id", $id);
-            if ($this->db->update($this->tblname, $mlab)) {
-                return true;
-            } else {
-                return false;
+            if(isset($data['md_description'])){
+                $mlab['description'] = $data['md_description'];
+            }
+            if(count($mlab) > 0){
+                $this->db->where("id", $id);
+                if ($this->db->update($this->tblname, $mlab)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
+        return true;
     }
     function delete($id) {
         if(is_array($id)){

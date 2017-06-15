@@ -28,12 +28,12 @@ class Users extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $res = $this->users_model->add();
 
-            if ($res === true) {
-                $data['success'] = array($this->lang->line('msg_user_added'));
-            } else if($res === -1){
+            if($res === -1){
                 $data['errors'] = array($this->lang->line('msg_email_exist'));
-            } else {
+            }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array($this->lang->line('msg_user_added'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('users/index');
@@ -44,11 +44,15 @@ class Users extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
-            if ($this->users_model->update($id)) {
-                $data['success'] = array($this->lang->line('msg_user_updated'));
-            } else {
+            $res = $this->users_model->update($id);
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array($this->lang->line('msg_user_added'));
             }
+
             $this->session->set_flashdata('data', $data);
             redirect('users/index');
         } else redirect('index/login');
@@ -77,7 +81,7 @@ class Users extends CI_Controller {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "last_name", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "usernemail", "dt" => 2, "formatter" => function ($d, $row) {
+            }), array("db" => "useremail", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "address", "dt" => 3, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;

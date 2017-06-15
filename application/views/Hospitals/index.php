@@ -45,7 +45,7 @@ $this->load->view("template/left.php");
 				  	<div class="modal-body">
 				  		<div class="row">
 
-				  			 <div role="tabpanel">
+				  			 <div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
 									<li role="presentation"><a href="#tab12" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
@@ -63,13 +63,19 @@ $this->load->view("template/left.php");
                                 <div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
                             			<div class="col-md-12">
-							  				<div class="form-group col-md-6">
-												<label>Name</label>
-												<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
+											<div class ="col-md-6">
+												<div class="form-group ">
+													<label>Name</label>
+													<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
+												</div>
+												<div class="form-group">
+													<label>Address</label>
+													<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+												</div>
 											</div>
 											<div class="form-group col-md-6">
-												<label>Address</label>
-												<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+												<label>Description</label>
+												<textarea class="form-control " rows="5" placeholder="Description" name="description" id="description" ></textarea>					
 											</div>
 							  			</div>
 							  			<div class="col-md-12">
@@ -102,12 +108,6 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-3">
 												<label>Select City</label>
 												<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
-											</div>
-							  			</div>
-										<div class="col-md-12">
-							  				<div class="form-group col-md-12">
-												<label>Description</label>
-												<textarea class="form-control " placeholder="Description" name="description" id="description" ></textarea>					
 											</div>
 							  			</div>
 							  			
@@ -306,20 +306,6 @@ $this->load->view("template/left.php");
 					$this->load->view("template/location");
 				?>
 				
-				$("#deplin").click(function(){
-					var id = $("#eidt_gf_id").val();
-					$("#departments").dataTable().fnDestroy();
-					$("#departments").DataTable({
-						"processing": true,
-			            "serverSide": true,
-			            "paging":   false,
-				        "ordering": false,
-				        "info":     false,
-			            "ajax": "<?php echo site_url(); ?>/departments/getDTdepartments/"+id
-					});
-					$("#departments_filter").hide();
-				});
-
 				$(".tab_tbl").click(function(){
 					var id = $(this).data('tblid');
 					var url = $(this).data('url');
@@ -427,6 +413,7 @@ $this->load->view("template/left.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/hospitals/add");
 			    	$("#edit").modal("show");
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 				$("#hospitals").on("click",".editbtn",function(){
@@ -440,6 +427,7 @@ $this->load->view("template/left.php");
 			    	$("#Edit-Heading").html("Hospital Data");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id,isEdit){
@@ -451,6 +439,7 @@ $this->load->view("template/left.php");
 						$("#logo").val(data.logo);
 						$("#phone_numbers").val(data.phone_numbers);
 						$("#email").val(data.email);
+						$("#license_status").val(data.license_status);
 						if(data.country != null && data.country!=undefined && data.country != "" && data.country > 0){
 							loc_cid = data.city;
 							loc_did = data.district;
@@ -471,6 +460,7 @@ $this->load->view("template/left.php");
 					$("#action-update-btn").parent().hide();
 			    	$("#Edit-Heading").html("Detailed View");
 			    	loadData($(this).attr("data-id"),false);
+					$('#tabs a[href="#tab1"]').click();
 
 			    });
 

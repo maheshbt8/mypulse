@@ -23,13 +23,14 @@ class Departments extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
+            $hid = $this->input->get("hospital_id",null,-1);
             $bid = $this->input->get("branch_id",null,-1);
 
             /*if(!$this->auth->isSuperAdmin()){
                 $hid = $this->auth->getHospitalId();
             }*/
 
-            $result = $this->departments_model->search($q, $f,$bid);
+            $result = $this->departments_model->search($q, $f,$hid,$bid);
             echo json_encode($result);
         }
     }

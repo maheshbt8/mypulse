@@ -44,7 +44,7 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
-						  	<div role="tabpanel">
+						  	<div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab">Basic</a></li>
 									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
@@ -346,6 +346,7 @@ $this->load->view("template/footer.php");
 								required: "Please Enter Password."
 						}
 					});
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 				$("#doctors").on("click",".editbtn",function(){
@@ -362,6 +363,7 @@ $this->load->view("template/footer.php");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$("#password").rules("remove","required");
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id){
@@ -372,11 +374,12 @@ $this->load->view("template/footer.php");
 						tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_id}]);
 						tempselectize_user_id.refreshItems();
 						tempselectize_user_id.setValue(data.user_id);*/
-						
-						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
-						tempselectize_hospital_id.refreshItems();
-						tempselectize_hospital_id.setValue(data.hospital_id);
+						if(data.hospital_id != null && data.hospital_id != undefined && data.hospital_id > 0){
+							var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+							tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+							tempselectize_hospital_id.refreshItems();
+							tempselectize_hospital_id.setValue(data.hospital_id);
+						}
 
 						branch_id = data.branch_id;
 						department_id = data.department_id;
@@ -427,6 +430,7 @@ $this->load->view("template/footer.php");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
 			    	$("#Edit-Heading").html("Doctor Details");
+					$('#tabs a[href="#tab1"]').click();
 
 			    });
 
@@ -486,7 +490,19 @@ $this->load->view("template/footer.php");
 				    }
 				});
 
-					
+				var $selectize_department_id = $("#department_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    }
+				});	
 
 				var $selectize_branch_id = $("#branch_id").selectize({
 				    valueField: "id",
@@ -514,7 +530,8 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_department_id[0].selectize.enable();
 				                    callback($.parseJSON(results));
-				                    if(department_id != null){
+								
+				                    if(department_id != null && department_id > 0){
 				    					var tempselectize_department_id = $selectize_department_id[0].selectize;
 										tempselectize_department_id.addOption([{"id":department_id,"text":department_id}]);
 										tempselectize_department_id.refreshItems();
@@ -530,19 +547,7 @@ $this->load->view("template/footer.php");
 				    }
 				});
 
-				var $selectize_department_id = $("#department_id").selectize({
-				    valueField: "id",
-				    labelField: "text",
-				    searchField: "text",
-				    render: {
-				        option: function(item, escape) {
-				        	return "<div><span class='title'>" +
-				                    escape(item.text)+
-				                "</span>" +   
-				            "</div>";
-				        }
-				    }
-				});
+				
 
 				$selectize_branch_id[0].selectize.disable();
 				$selectize_department_id[0].selectize.disable();

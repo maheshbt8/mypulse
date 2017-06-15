@@ -17,8 +17,10 @@ class Receptionist_model extends CI_Model {
         $this->db->where('id',$r['user_id']);
         $data = $this->db->get('hms_users');
         $data = $data->row_array();
-        foreach ($data as $key => $value) {
-            $r[$key] = $value;
+        if(is_array($data)){
+            foreach ($data as $key => $value) {
+                $r[$key] = $value;
+            }
         }
 
         if(isset($r['doc_id'])){
@@ -118,12 +120,15 @@ class Receptionist_model extends CI_Model {
                 $rec['doc_id'] = $data['doc_id'];
             if(isset($data['isActive']))
                 $rec['isActive'] = intval($data['isActive']);
-            if ($this->db->update($this->tblname, $rec)) {
-                return true;
-            } else {
-                return false;
+            if(count($res) > 0){
+                if ($this->db->update($this->tblname, $rec)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
+        return true;
     }
     function delete($id) {
         if(is_array($id)){

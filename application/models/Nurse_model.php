@@ -19,8 +19,10 @@ class Nurse_model extends CI_Model {
         $this->db->where('id',$r['user_id']);
         $data = $this->db->get('hms_users');
         $data = $data->row_array();
-        foreach ($data as $key => $value) {
-            $r[$key] = $value;
+        if(is_array($data)){
+            foreach ($data as $key => $value) {
+                $r[$key] = $value;
+            }
         }
 
         if(isset($r['department_id'])){

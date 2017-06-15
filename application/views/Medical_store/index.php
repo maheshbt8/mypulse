@@ -43,7 +43,7 @@ $this->load->view("template/left.php");
 					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
 					</div>
 				  	<div class="modal-body">
-				  		<div class="row">
+				  		<div class="row" id="tabs">
 						  	<ul class="nav  nav-pills" role="tablist">
 								<li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
 								<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
@@ -59,7 +59,7 @@ $this->load->view("template/left.php");
 										</div>
 										<div class="form-group col-md-6">
 											<label>Description</label>
-											<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
+											<textarea class="form-control"  placeholder="Description" name="md_description" id="md_description"></textarea>
 										</div>
 									</div>
 									<div class="col-md-12">
@@ -314,6 +314,7 @@ $this->load->view("template/footer.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/medical_store/add");
 			    	$("#edit").modal("show");
+					$('#tabs a[href="#tab1"]').click();
 					
 			    });
 
@@ -329,7 +330,7 @@ $this->load->view("template/footer.php");
 			    	$("#Edit-Heading").html("Edit Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
-					
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id){
@@ -339,7 +340,7 @@ $this->load->view("template/footer.php");
 						$("#name").val(data.name);
 						
 						$("#owner_name").val(data.owner_name);
-						
+						$("#md_description").val(data.description);
 						$("#owner_contact_number").val(data.owner_contact_number);
 						
 						branch_id = data.branch_id;
@@ -364,26 +365,28 @@ $this->load->view("template/footer.php");
 							if(user.phone != undefined)
 								$("#phone").val(user.phone);
 							if(user.gender != undefined)
-								$("#gender").val(data.gender);
+								$("#gender").val(user.gender);
 							if(user.description != undefined)
-								$("#description").val(data.description);
+								$("#description").val(user.description);
 							if(user.alternate_mobile_number != undefined)	
-								$("#alternate_mobile_number").val(data.alternate_mobile_number);
+								$("#alternate_mobile_number").val(user.alternate_mobile_number);
+							if(user.date_of_birth!= undefined &&  user.date_of_birth != "" && user.date_of_birth != "0000-00-00"){
+								$("#date_of_birth").datepicker("update", new Date(user.date_of_birth));
+							}
+
+							if(user.country != null && user.country!=undefined && user.country != "" && user.country > 0){
+								loc_cid = user.city;
+								loc_did = user.district;
+								loc_sid = user.state;
+								var tempselectize_selectize_country = $selectize_country[0].selectize;
+								tempselectize_selectize_country.addOption([{"id":user.country,"text":user.country}]);
+								tempselectize_selectize_country.refreshItems();
+								tempselectize_selectize_country.setValue(user.country);
+							}
+
+							shwoImgFromUrl(user.profile_photo);
 						}
-						if(data.date_of_birth != "" && data.date_of_birth != "0000-00-00"){
-							$("#date_of_birth").datepicker("update", new Date(data.date_of_birth));
-						}
-						if(data.country != null && data.country!=undefined && data.country != "" && data.country > 0){
-							console.log(data.country);
-							loc_cid = data.city;
-							loc_did = data.district;
-							loc_sid = data.state;
-							var tempselectize_selectize_country = $selectize_country[0].selectize;
-							tempselectize_selectize_country.addOption([{"id":data.country,"text":data.country}]);
-							tempselectize_selectize_country.refreshItems();
-							tempselectize_selectize_country.setValue(data.country);
-						}
-						shwoImgFromUrl(data.profile_photo);
+						
 						
 			    	});
 			    }
@@ -398,7 +401,7 @@ $this->load->view("template/footer.php");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
 			    	$("#Edit-Heading").html("View Details");
-
+					$('#tabs a[href="#tab1"]').click();
 			    });
 
 
@@ -484,7 +487,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_branch_id[0].selectize.enable();
 				                    callback($.parseJSON(results));
-				                    if(branch_id != null){
+				                    if(branch_id != null  && branch_id > 0){
 				    					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
 										tempselectize_branch_id.addOption([{"id":branch_id,"text":branch_id}]);
 										tempselectize_branch_id.refreshItems();

@@ -30,12 +30,12 @@ class Medical_lab extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $res = $this->medical_lab_model->add();
             $data = array();
-            if ($res===true) {
-                $data['success'] = array("Medical lab Added Successfully");
-            } else if($res === -1) {
-                $data['errors'] = array("Please use another email.");
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['errors'] = array("Please again later");
+                $data['success'] = array("Medical Lab Added Successfully");
             }
             $this->session->set_flashdata('data', $data);
             redirect('medical_lab/index');
@@ -47,12 +47,13 @@ class Medical_lab extends CI_Controller {
             $id = $this->input->post('eidt_gf_id');
             $res = $this->medical_lab_model->update($id);
             $data = array();
-            if ($res===true) {
-                $data['success'] = array("Medical lab Updated Successfully");
-            } else if($res === -1) {
-                $data['errors'] = array("Please use another email.");
+           
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['errors'] = array("Please again later");
+                $data['success'] = array("Medical Lab Updated Successfully");
             }
             $this->session->set_flashdata('data', $data);
             redirect('medical_lab/index');
