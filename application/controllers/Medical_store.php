@@ -84,14 +84,51 @@ class Medical_store extends CI_Controller {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "branch_id", "dt" => 3, "formatter" => function ($d, $row) {
                 $temp = $this->branches_model->getbranchesById($d);
+                if(!isset($temp['hospital_id']))
+                    return "-";
                 $hospital = $this->hospitals_model->gethospitalsById($temp['hospital_id']);
+                if(!isset($hospital['name']))
+                    return "-";
                 return $hospital["name"];
             }),array("db" => "branch_id", "dt" => 4, "formatter" => function ($d, $row) {
                 $temp = $this->branches_model->getbranchesById($d);
+                if(!isset($temp['branch_name']))
+                    return "-";
                 return $temp["branch_name"];
             }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
+
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            if($this->auth->isHospitalAdmin()){
+                $ids = $this->auth->getBranchIds();
+                $ids = implode(",", $ids);
+                $cond[] = "branch_id in (".$ids.")";
+            }else if($hospital_id!=null){
+                $ids = $this->branches_model->getBracheIds($hospital_id);
+                if(count($ids) == 0){
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "branch_id in (".$ids.")";
+            }
+
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array($columns[0],$columns[1],$columns[2],$columns[4]);
+                $columns[0]["dt"] = 0;
+                $columns[1]["dt"] = 1;
+                $columns[2]['dt'] = 2;
+                $columns[3]['dt'] = 3;
+                $columns[0]['formatter'] =  function ($d, $row) {
+                    return $d;
+                };
+                $this->tbl->setIndexColumn(true);
+            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

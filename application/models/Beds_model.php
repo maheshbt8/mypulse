@@ -8,8 +8,8 @@ class Beds_model extends CI_Model {
     function getAllbeds() {
         $this->db->where("isDeleted", "0");
         if($this->auth->isHospitalAdmin()){
-            $department_ids = $this->auth->getAllDepartmentsIds();
-            $this->db->where_in("department_id",$department_ids);
+            $ward_ids = $this->auth->getAllWardsIds();
+            $this->db->where_in("ward_id",$ward_ids);
         }
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
@@ -34,6 +34,9 @@ class Beds_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        unset($data['selected_hid']);
+        unset($data['selected_bid']);
+        unset($data['selected_did']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
@@ -45,6 +48,9 @@ class Beds_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        unset($data['selected_hid']);
+        unset($data['selected_bid']);
+        unset($data['selected_did']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
        
         $this->db->where("id", $id);
@@ -55,7 +61,11 @@ class Beds_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;

@@ -7,6 +7,7 @@ $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
 		<input type="hidden" id="left_active_menu" value="2" />
+		<input type="hidden" id="left_active_sub_menu" value="201" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -18,7 +19,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="hospitals" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Name</th><th>License Status</th><th>City</th><th  width="20px">#</th>
+	                                    <tr><th style="width:10px"></th><th>Name</th><th>License Status</th><th>City</th><th  width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -49,14 +50,14 @@ $this->load->view("template/left.php");
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
 									<li role="presentation"><a href="#tab12" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
                                     <li role="presentation"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/">Branches</a></li>
-                                    <li role="presentation"><a href="#tab3" id="deplin" aria-controls="departments" role="tab" data-toggle="tab">Departments</a></li>
+                                    <li role="presentation"><a href="#tab3" aria-controls="departments" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_departments" data-url="departments/getDTdepartments/">Departments</a></li>
                                     <!-- <li role="presentation"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="">Wards</a></li> -->
                                     <li role="presentation"><a href="#tab5" aria-controls="beds" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_beds" data-url="beds/getDTbeds/">Beds</a></li>
-                                    <li role="presentation"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="">Doctors</a></li>
-                                    <li role="presentation"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="">Nurses</a></li>
-                                    <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="">Receptionists</a></li>
-                                    <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="">Med. Stores</a></li>
-                                    <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="">Med. Labs</a></li>
+                                    <li role="presentation"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="doctors/getDTdoctors/">Doctors</a></li>
+                                    <li role="presentation"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="nurse/getDTnurse/">Nurses</a></li>
+                                    <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="receptionist/getDTreceptionist/">Receptionists</a></li>
+                                    <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="medical_store/getDTmedical_store/">Med. Stores</a></li>
+                                    <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="medical_lab/getDTmedical_lab/">Med. Labs</a></li>
 									<li role="presentation"><a href="#tab11" aria-controls="charges" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_charges" data-url="charges/getDTcharges/">Charges</a></li>
                                 </ul>
                                 <div class="tab-content">
@@ -86,32 +87,28 @@ $this->load->view("template/left.php");
 											</div>
 							  			</div>
 							  			<div class="col-md-12">
-							  				<div class="form-group col-md-6">
-												<label>Country</label>
-												<input class="form-control " type="text" placeholder="Country" name="country" id="country" />
+							  				<div class="form-group col-md-3">
+												<label>Select Country</label>
+												<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
 											</div>
-											
-											<div class="form-group col-md-6">
-												<label>State</label>
-												<input class="form-control " type="text" placeholder="State" name="state" id="state" />
+											<div class="form-group col-md-3">
+												<label>Select State</label>
+												<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
 											</div>
-							  			</div>
-							  			<div class="col-md-12">
-							  				<div class="form-group col-md-6">
-												<label>District</label>
-												<input class="form-control " type="text" placeholder="District" name="district" id="district" />					
+							  				<div class="form-group col-md-3">
+												<label>Select District</label>
+												<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
 											</div>
-											<div class="form-group col-md-6">
-												<label>City</label>
-												<input class="form-control " type="text" placeholder="City" name="city" id="city" />
+											<div class="form-group col-md-3">
+												<label>Select City</label>
+												<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
 											</div>
 							  			</div>
 										<div class="col-md-12">
-							  				<div class="form-group col-md-6">
-												<label>District</label>
+							  				<div class="form-group col-md-12">
+												<label>Description</label>
 												<textarea class="form-control " placeholder="Description" name="description" id="description" ></textarea>					
 											</div>
-										
 							  			</div>
 							  			
 							  			
@@ -187,7 +184,7 @@ $this->load->view("template/left.php");
 			                            </table> 
                                     </div>
                                     <div role="tabpanel" class="tab-pane fade in" id="tab3">
-                                    	<table id="departments" class="display table table-bordered" cellspacing="0" width="100%">
+                                    	<table id="tbl_departments" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
 			                                    <tr><th>#</th><th>Branche Name</th><th>Department Name</th></tr>
 			                                </thead>
@@ -207,7 +204,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab5">
                                     	<table id="tbl_beds" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Branch</th><th>Department</th><th>Bed</th></tr>
+			                                    <tr><th>#</th><th>Ward</th><th>Bed</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -216,7 +213,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab6">
                                     	<table id="tbl_doctors" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Department</th><th>Specilization</th></tr>
+			                                    <tr><th>#</th><th>Name</th><th>Branch</th><th>Department</th><th>Status</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -225,7 +222,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab7">
                                     	<table id="tbl_nurses" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Department</th><th>Associated Doctor</th></tr>
+			                                    <tr><th>#</th><th>Name</th><th>Branch</th><th>Department</th><th>Status</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -234,7 +231,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab8">
                                     	<table id="tbl_receptionist" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                    <tr><th>#</th><th>Name</th><th>Branch</th><th>Department</th><th>Doctor</th><th>Status</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -243,7 +240,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab9">
                                     	<table id="tbl_medstore" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                    <tr><th>#</th><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Branch</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -252,7 +249,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab10">
                                     	<table id="tbl_medlabs" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Department</th></tr>
+			                                    <tr><th>#</th><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Branch</th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -296,32 +293,19 @@ $this->load->view("template/left.php");
 			<!-- /.modal-content --> 
 			</div>
 		<!-- /.modal-dialog --> 
-		</div><div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-	      	<div class="modal-dialog modal-sm">
-	    		<div class="modal-content">
-	          		<div class="modal-header">
-	        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-	        			<h4 class="modal-title custom_align" id="Heading">Delete Item</h4>
-	      			</div>
-	          		<div class="modal-body">
-	       				<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure? You want to delete this Item?</div>
-
-	      			</div>
-	        		<div class="modal-footer ">
-	        			<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
-	                    <button type="button" id="del_yes" class="btn btn-danger">YES</button>
-	      			</div>
-	        	</div>
-	    	<!-- /.modal-content --> 
-	  		</div>
 		</div>
-	    <!-- /.modal-dialog -->
-	    <?php
-$this->load->view("template/footer.php");
-?><script type="text/javascript">
+		
+<?php
+	$this->load->view("template/footer.php");
+?>
+	<script type="text/javascript">
 		
 			$(document).ready(function(){
 
+				<?php
+					$this->load->view("template/location");
+				?>
+				
 				$("#deplin").click(function(){
 					var id = $("#eidt_gf_id").val();
 					$("#departments").dataTable().fnDestroy();
@@ -353,10 +337,9 @@ $this->load->view("template/footer.php");
 				            "paging":   false,
 					        "ordering": false,
 					        "info":     false,
-				            "ajax": '<?php echo site_url();?>/'+url+$("#eidt_gf_id").val()
+				            "ajax": '<?php echo site_url();?>/'+url+"?s=1&hid="+$("#eidt_gf_id").val()
 						});
 					}
-					
 					$("#"+id+"_filter").hide();
 				});
 
@@ -406,16 +389,16 @@ $this->load->view("template/footer.php");
 			        		required: "Enter phone number"
 			        	},
 			        	country:{
-			        		required:"Enter country"
+			        		required:"Select country"
 			        	},
 			        	state:{
-			        		required:"Enter state"
+			        		required:"Select state"
 			        	},
 			        	district:{
-			        		required:"Enter district"
+			        		required:"Select district"
 			        	},
 			        	city:{
-			        		required:"Enter city"
+			        		required:"Select city"
 			        	}
 			        }
 				});
@@ -429,10 +412,14 @@ $this->load->view("template/footer.php");
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+				$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"hospitals\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+				
 				
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
+					validator.resetForm();
+					resetLocation();
 			    	$("#Edit-Heading").html("Add New Hospital");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
@@ -443,12 +430,14 @@ $this->load->view("template/footer.php");
 			    });
 
 				$("#hospitals").on("click",".editbtn",function(){
+					validator.resetForm();
+					resetLocation();
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id,true);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/hospitals/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Hospital Data");
+			    	$("#Edit-Heading").html("Hospital Data");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 			    });
@@ -456,33 +445,26 @@ $this->load->view("template/footer.php");
 			    function loadData(id,isEdit){
 			    	$.post("<?php echo site_url(); ?>/hospitals/gethospitals",{ id: id },function(data){
 			    		var data = JSON.parse(data);
-			    		
 						$("#name").val(data.name);
-						if(isEdit)
-							$("#Edit-Heading").html("Edit "+data.name+" Information");
-						else
-							$("#Edit-Heading").html(data.name+" Information");
-
+						$("#Edit-Heading").html(data.name+" Information");
 						$("#address").val(data.address);
-						
 						$("#logo").val(data.logo);
-						
 						$("#phone_numbers").val(data.phone_numbers);
-						
 						$("#email").val(data.email);
-						
-						$("#city").val(data.city);
-						
-						$("#district").val(data.district);
-						
-						$("#state").val(data.state);
-						
-						$("#country").val(data.country);
-					
+						if(data.country != null && data.country!=undefined && data.country != "" && data.country > 0){
+							loc_cid = data.city;
+							loc_did = data.district;
+							loc_sid = data.state;
+							var tempselectize_selectize_country = $selectize_country[0].selectize;
+							tempselectize_selectize_country.addOption([{"id":data.country,"text":data.country}]);
+							tempselectize_selectize_country.refreshItems();
+							tempselectize_selectize_country.setValue(data.country);
+						}
 			    	});
 			    }
 
 			    $("#hospitals").on("click",".viewbtn",function(){
+					validator.resetForm();
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
@@ -494,22 +476,28 @@ $this->load->view("template/footer.php");
 
 
 			    $("#hospitals").on("click",".delbtn",function(){
-			    	$("#cur_del").val($(this).attr("data-id"));
+					var id = $(this).attr("data-id");
+					swal({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Yes'
+					}).then(function () {
+						
+						$.post("<?php echo site_url(); ?>/hospitals/delete",{id:id},function(data){
+							if(data==1){
+								$("#dellink_"+id).parents('tr').remove();	
+								toastr.success('selected item(s) deleted.');
+							}else{
+								toastr.error('Please try again.');
+							}
+						});
+					});
 			    });
-			    
-			    $("#del_yes").click(function(){
-			    	var id = $("#cur_del").val();
-			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/hospitals/delete",{id:id},function(){
-			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
-			    			$("#delete").modal("hide");	
-			    		});
-			    	}
-			    	else{
-			    		$("#delete").modal("hide");
-			    	}
-			    	$(".modal-backdrop").hide();
-			    });
+			
 
 			});
 

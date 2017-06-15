@@ -54,7 +54,7 @@ class Medical_store_model extends CI_Model {
             $mstore['name'] = $data['name'];
             $mstore['owner_name'] = $data['owner_name'];
             $mstore['owner_contact_number'] = $data['owner_contact_number'];
-            $mstore['branch_id'] = $data['branch_id'];
+            $mstore['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mstore['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $mstore)) {
                 return true;
@@ -100,7 +100,11 @@ class Medical_store_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;

@@ -154,7 +154,11 @@ class Users_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;

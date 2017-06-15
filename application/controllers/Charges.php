@@ -26,19 +26,26 @@ class Charges extends CI_Controller {
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            
+            $selected_hid = "";
+            if(isset($_POST['selected_hid'])){
+                $selected_hid = $_POST['selected_hid'];
+            }
             if ($this->charges_model->add()) {
                 $data['success'] = array("Charge Added Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('charges/index');
+            redirect('charges/index?hid='.$selected_hid);
         } else redirect('index/login');
     }
     public function update() {
         if ($this->auth->isLoggedIn()) {
             $data = array();
+            $selected_hid = "";
+            if(isset($_POST['selected_hid'])){
+                $selected_hid = $_POST['selected_hid'];
+            }
             $id = $this->input->post('eidt_gf_id');
             if ($this->charges_model->update($id)) {
                 $data['success'] = array("Charge Updated Successfully");
@@ -46,7 +53,7 @@ class Charges extends CI_Controller {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('charges/index');
+            redirect('charges/index?hid='.$selected_hid);
         } else redirect('index/login');
     }
     public function delete() {
@@ -61,7 +68,7 @@ class Charges extends CI_Controller {
             echo json_encode($this->charges_model->getchargesById($id));
         }
     }
-    public function getDTcharges($hospital_id=null) {
+    public function getDTcharges() {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_charges";
@@ -77,18 +84,28 @@ class Charges extends CI_Controller {
             }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
-            if($hospital_id!=null){
-                $this->tbl->setTwID("hospital_id=$hospital_id");
+
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            if($this->auth->isHospitalAdmin()){
+                $hid = $this->auth->getHospitalId();
+                $cond[] = "hospital_id=".$hid;
+            }else if($hospital_id!=null){
+                $cond[] = "hospital_id=".$hospital_id;
+            }
+            
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
                 $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
                 $columns[0]['formatter'] = function ($d, $row) {
                     return $d;
                 };
+                
                 $this->tbl->setIndexColumn(true);
             }
-            if($this->auth->isHospitalAdmin()){
-                $hid = $this->auth->getHospitalId();
-                $this->tbl->setTwID("hospital_id=".$hid);
-            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

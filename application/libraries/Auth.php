@@ -162,8 +162,9 @@ class Auth {
         return 8;
     }
 
-    public function getBranchIds(){
-        $hospital_id = $this->getHospitalId();
+    public function getBranchIds($hospital_id=null){
+        if($hospital_id == null)
+            $hospital_id = $this->getHospitalId();
         $this->CI->load->model('branches_model');
         $ids = $this->CI->branches_model->getBracheIds($hospital_id);
         if(count($ids) == 0){
@@ -180,6 +181,16 @@ class Auth {
         $hospital_id = $this->getHospitalId();
         $this->CI->load->model('departments_model');
         $ids = $this->CI->departments_model->getDepartmentIdsFromHospital($hospital_id);
+        if(count($ids) == 0){
+            $ids[] = -1;
+        }
+        return $ids;
+    }
+
+    public function getAllWardsIds(){
+        $hospital_id = $this->getHospitalId();
+        $this->CI->load->model('wards_model');
+        $ids = $this->CI->wards_model->getWardIdsFromHospital($hospital_id);
         if(count($ids) == 0){
             $ids[] = -1;
         }
@@ -226,9 +237,16 @@ class Auth {
         if(isset($data['last_name'])){
             $user['last_name'] = $data['last_name'];
         }
+        $email = "";
         if(isset($data['useremail'])){
             $user['useremail'] = $data['useremail'];
+            $email = $data['useremail'];
         }
+
+        if($email == null || $email==""){
+            return 0;
+        }
+
         if(isset($data['password'])){
             $user['password'] = md5($data['password']);
         }

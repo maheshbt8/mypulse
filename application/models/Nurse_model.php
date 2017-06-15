@@ -108,17 +108,23 @@ class Nurse_model extends CI_Model {
                 $nus['department_id'] = $data['department_id'];
             if(isset($data['isActive']))
                 $nus['isActive'] = intval($data['isActive']);
-
-            $this->db->where("id", $id);
-            if ($this->db->update($this->tblname, $nus)) {
-                return true;
-            } else {
-                return false;
+            if(count($nus) > 0){
+                $this->db->where("id", $id);
+                if ($this->db->update($this->tblname, $nus)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
+        return true;
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;

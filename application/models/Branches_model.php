@@ -50,6 +50,7 @@ class Branches_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        unset($data['selected_hid']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
@@ -61,6 +62,7 @@ class Branches_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        unset($data['selected_hid']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         
         $this->db->where("id", $id);
@@ -71,7 +73,11 @@ class Branches_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;
@@ -79,7 +85,10 @@ class Branches_model extends CI_Model {
     }
 
     function getBracheIds($hospital_id = 0){
-        $this->db->where('hospital_id',$hospital_id);
+        if(is_array($hospital_id))
+            $this->db->where_in('hospital_id',$hospital_id);
+        else
+            $this->db->where('hospital_id',$hospital_id);
         $this->db->where('isActive',1);
         $this->db->where('isDeleted',0);
         $res = $this->db->get($this->tblname);

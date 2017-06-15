@@ -9,6 +9,7 @@ class Index extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('users_model');
+		$this->load->model('dashboard_model');
 	}
 
 	function index()
@@ -16,10 +17,14 @@ class Index extends CI_Controller {
 		if($this->auth->isLoggedIn()){
 			$data['page_title'] = $this->lang->line('dashboard');
 			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
-			if($this->auth->getRole() == 1)
+			if($this->auth->getRole() == 1){
+				$data['states'] = $this->dashboard_model->getSuperAdminStates();
 				$this->load->view($this->index_page,$data);
-			else if($this->auth->getRole() == 2)
+			}
+			else if($this->auth->getRole() == 2){
+				$data['states'] = $this->dashboard_model->getHospitalAdminStates($this->auth->getHospitalId());
 				$this->load->view('index/admindashboard',$data);
+			}
 		}
 		else{
 			redirect($this->login_page);

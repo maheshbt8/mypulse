@@ -29,6 +29,7 @@ class Charges_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        unset($data['selected_hid']);
         if (isset($data["charge"])) $data["charge"] = floatval($data["charge"]);
         $data["created_at"] = date("Y-m-d H:i:s");
         //$data['hospital_id'] = $this->auth->getHospitalId();
@@ -41,6 +42,7 @@ class Charges_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+        unset($data['selected_hid']);
         if (isset($data["charge"])) $data["charge"] = floatval($data["charge"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
@@ -50,7 +52,11 @@ class Charges_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;

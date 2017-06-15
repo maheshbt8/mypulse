@@ -9,7 +9,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">1</p>
+                            <p class="counter"><?php echo $states['tot_bra'];?></p>
                             <span class="info-box-title">Branches</span>
                         </div>
                         <div class="info-box-icon">
@@ -22,7 +22,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">340</p>
+                            <p class="counter"><?php echo $states['tot_doc'];?></p>
                             <span class="info-box-title">Doctors</span>
                         </div>
                         <div class="info-box-icon">
@@ -35,7 +35,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p><span class="counter">653</span></p>
+                            <p><span class="counter"><?php echo $states['tot_pat'];?></span></p>
                             <span class="info-box-title">Patients</span>
                         </div>
                         <div class="info-box-icon">
@@ -48,7 +48,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter">1050</p>
+                            <p class="counter"><?php echo $states['tot_app'];?></p>
                             <span class="info-box-title">Appointments</span>
                         </div>
                         <div class="info-box-icon">

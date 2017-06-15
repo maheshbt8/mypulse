@@ -20,9 +20,10 @@ class Doctors_model extends CI_Model {
         $this->db->where('id',$r['user_id']);
         $data = $this->db->get('hms_users');
         $data = $data->row_array();
-        
-        foreach ($data as $key => $value) {
-            $r[$key] = $value;
+        if(is_array($data)){
+            foreach ($data as $key => $value) {
+                $r[$key] = $value;
+            }
         }
         
         if(isset($r['department_id'])){
@@ -119,30 +120,74 @@ class Doctors_model extends CI_Model {
             if(isset($data['isActive']))
                 $doc['isActive'] = intval($data['isActive']);
             
-            $this->db->where("id", $id);
-            if ($this->db->update($this->tblname, $doc)) {
-                return true;
-            } else {
-                return false;
+            if(count($doc) > 0){
+                $this->db->where("id", $id);
+                if ($this->db->update($this->tblname, $doc)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
+        return true;
 
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;
         } else return false;
     }
 
-    function getDoctorsIdsByHospital(){
-        $bids = $this->auth->getBranchIds();
-        $this->db->where_in("branch_id",$bids);
+    function getDoctorsIdsByHospitalId($hospital_id=0){
+        $bids = $this->auth->getBranchIds($hospital_id);
+
+        $this->db->where_in('branch_id',$bids);
+        $this->db->where("isDeleted",0);
+        $this->db->where("isActive",1);
+        $dids = $this->db->get("hms_departments");
+        $dids = $dids->result_array();
+        $tids = array();
+        foreach ($dids as $key => $value) {
+            $tids[] = $value['id'];
+        }
+
+        $this->db->where_in("department_id",$tids);
         $this->db->where("isDeleted",0);
         $this->db->where("isActive",1);
 
         $res = $this->db->get($this->tblname);
+        $res = $res->result_array();
+        $ids = array();
+        foreach ($res as $key => $value) {
+            $ids[] = $value['id'];
+        }
+        return $ids;
+    }
+
+    function getDoctorsIdsByHospital(){
+        $bids = $this->auth->getBranchIds();
+        $this->db->where_in('branch_id',$bids);
+        $this->db->where("isDeleted",0);
+        $this->db->where("isActive",1);
+        $dids = $this->db->get("hms_departments");
+        $dids = $dids->result_array();
+        $tids = array();
+        foreach ($dids as $key => $value) {
+            $tids[] = $value['id'];
+        }
+
+        $this->db->where_in("department_id",$tids);
+        $this->db->where("isDeleted",0);
+        $this->db->where("isActive",1);
+
+        $res = $this->db->get($this->tblname);
+        $res = $res->result_array();
         $ids = array();
         foreach ($res as $key => $value) {
             $ids[] = $value['id'];

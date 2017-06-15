@@ -7,6 +7,7 @@ class Branches extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('branches_model');
+        $this->load->model('general_model');
         $this->load->model('hospitals_model');
     }
     public function index() {
@@ -14,7 +15,8 @@ class Branches extends CI_Controller {
             $data['branchess'] = $this->branches_model->getAllbranches();
             $data["page_title"] = "Branches";
             $data["breadcrumb"] = array(site_url() => "Home", null => "Branches");
-            $this->load->view('Branches/index', $data);
+            
+            $this->load->view('Branches/index', $data);    
         } else redirect('index/login');
     }
     
@@ -35,18 +37,26 @@ class Branches extends CI_Controller {
 
     public function add() {
         if ($this->auth->isLoggedIn()) {
+            $selected_hid = "";
+            if(isset($_POST['selected_hid'])){
+                $selected_hid = $_POST['selected_hid'];
+            }
             if ($this->branches_model->add()) {
                 $data['success'] = array("Branch Added Successfully");
             } else {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('branches/index');
+            redirect('branches/index?hid='.$selected_hid);
         } else redirect('index/login');
     }
     public function update() {
         if ($this->auth->isLoggedIn()) {
             $data = array();
+            $selected_hid = "";
+            if(isset($_POST['selected_hid'])){
+                $selected_hid = $_POST['selected_hid'];
+            }
             $id = $this->input->post('eidt_gf_id');
             if ($this->branches_model->update($id)) {
                 $data['success'] = array("Branch Updated Successfully");
@@ -54,7 +64,7 @@ class Branches extends CI_Controller {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('branches/index');
+            redirect('branches/index?hid='.$selected_hid);
         } else redirect('index/login');
     }
     public function delete() {
@@ -69,30 +79,66 @@ class Branches extends CI_Controller {
             echo json_encode($this->branches_model->getbranchesById($id));
         }
     }
-    public function getDTbranches($hospital_id=null) {
+    public function getDTbranches() {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_branches";
             $primaryKey = "id";
-            $columns = array(array("db" => "hospital_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $temp = $this->hospitals_model->gethospitalsById($d);
-                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$temp['name']."</a>";
-            }), array("db" => "branch_name", "dt" => 1, "formatter" => function ($d, $row) {
+            $columns = array( array("db" => "branch_name", "dt" => 0, "formatter" => function ($d, $row) {
+                //return ($d == "" || $d == null) ? "-" : $d;
+                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            }), array("db" => "phone_number", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "phone_number", "dt" => 2, "formatter" => function ($d, $row) {
+            }), array("db" => "city", "dt" => 2, "formatter" => function ($d, $row) {
+                return $this->general_model->getCityName($d);
+            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+            }));
+
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            if($this->auth->isHospitalAdmin()){
+                $hid = $this->auth->getHospitalId();
+                $cond[] = "hospital_id=".$hid;
+            }
+            else if($hospital_id!=null){
+                $cond[] = "hospital_id=$hospital_id";
+            }
+            
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array($columns[0],$columns[1],$columns[2]);
+                $columns[0]["dt"] = 0;
+                $columns[1]["dt"] = 1;
+                $columns[2]["dt"] = 2;
+                $columns[0]['formatter'] = function($d,$row){return $d;};
+                $this->tbl->setIndexColumn(true);
+            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function getDTbranchesSuper($hospital_id=null) {
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_branches";
+            $primaryKey = "id";
+            $columns = array(array("db" => "branch_name", "dt" => 0, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "city", "dt" => 3, "formatter" => function ($d, $row) {
+            }), array("db" => "phone_number", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
+            }), array("db" => "city", "dt" => 2, "formatter" => function ($d, $row) {
+                return $this->general_model->getCityName($d);
+            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             if($hospital_id!=null){
                 $this->tbl->setTwID("hospital_id=$hospital_id");
-                $columns = array($columns[1],$columns[2],$columns[3]);
-                $columns[0]["dt"] = 0;
-                $columns[1]["dt"] = 1;
-                $columns[2]["dt"] = 2;
-                $this->tbl->setIndexColumn(true);
+
             }
             if($this->auth->isHospitalAdmin()){
                 $hid = $this->auth->getHospitalId();

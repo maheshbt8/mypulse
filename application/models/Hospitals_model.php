@@ -80,10 +80,31 @@ class Hospitals_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;
         } else return false;
+    }
+
+    function getHospicalIds(){
+        $qry = "";
+        if($this->auth->isSuperAdmin()){
+            $qry = "select id from $this->tblname where isDeleted=0";
+        }else if($this->auth->isHospitalAdmin()){
+            $uid = $this->auth->getUserid();
+            $qry = "select hospital_id as id from hms_hospital_admin where user_id=$uid and isDeleted=0 ";            
+        }
+        $res = $this->db->query($qry);
+        $res = $res->result_array();
+        $ids = array();
+        foreach($res as $r){
+            $ids[] = $r['id'];
+        }
+        return $ids;
     }
 }

@@ -11,9 +11,14 @@ class Tbl {
 
 	public static $other;
 	public static $include_number_index_column = false;
+	public static $include_checkbox_column = true;
 
 	public function setTwID($d){
 		self::$other = $d;
+	}
+
+	public function setCheckboxColumn($s=false){
+		self::$include_checkbox_column = $s;
 	}
 
 	public function setIndexColumn($s=false){
@@ -26,13 +31,24 @@ class Tbl {
 		$cnt = 1;
 		for ( $i=0, $ien=count($data) ; $i<$ien ; $i++ ) {
 			$row = array();
+			if(self::$include_checkbox_column){
+				//Include Checkbox
+
+				$id = isset($data[$i]['id']) ? $data[$i]['id'] : 0;
+				$row[] = "<input type='checkbox' class='multiselect' data-id='".$id."' />";
+			}
 			for ( $j=0, $jen=count($columns) ; $j<$jen ; $j++ ) {
 				$column = $columns[$j];
 				$dt = $column['dt'];
+				if(self::$include_checkbox_column)
+					$dt++;
 				if(self::$include_number_index_column){
 					$dt++;
 					if($j==0){
-						$row[0] = $cnt;
+						if(self::$include_checkbox_column)
+							$row[1] = $cnt;
+						else
+							$row[0] = $cnt;
 					}
 				}
 				// Is there a formatter?
@@ -208,7 +224,11 @@ class Tbl {
 		$order = self::order( $request, $columns );
 		$where = self::filter( $request, $columns, $bindings );
 		// Main query to actually get the data
-		
+		/*var_dump("SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+			 FROM `$table`
+			 $where
+			 $order
+			 $limit");exit;*/
 		$data = self::sql_exec( $db, $bindings,
 			"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
 			 FROM `$table`

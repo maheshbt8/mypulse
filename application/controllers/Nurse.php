@@ -116,11 +116,40 @@ class Nurse extends CI_Controller {
             }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
+            
+
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
             if($this->auth->isHospitalAdmin()){
                 $ids = $this->auth->getAllDepartmentsIds();
                 $ids = implode(",", $ids);
-                $this->tbl->setTwID("department_id in (".$ids.")");
+                $cond[] = "department_id in (".$ids.")";
+            }else if($hospital_id!=null){
+                $ids = $this->departments_model->getDepartmentIdsFromHospital($hospital_id);
+                if(count($ids) == 0){
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "department_id in (".$ids.")";
             }
+
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array($columns[0],$columns[2],$columns[3],$columns[4]);
+                $columns[0]["dt"] = 0;
+                $columns[1]["dt"] = 1;
+                $columns[2]['dt'] = 2;
+                $columns[3]['dt'] = 3;
+                $columns[0]['formatter'] =  function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($d);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
+                    return $name;
+                };
+                $this->tbl->setIndexColumn(true);
+            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

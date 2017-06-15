@@ -3,34 +3,27 @@
  * @author Yogesh Patel
  * @email  yogesh@techcrista.in
  */
-class Departments_model extends CI_Model {
-    var $tblname = "hms_departments";
-    function getAlldepartments() {
+class Wards_model extends CI_Model {
+    var $tblname = "hms_wards";
+    function getAllwards() {
         $this->db->where("isDeleted", "0");
-        if($this->auth->isHospitalAdmin()){
-            $this->db->where_in('branch_id',$bids = $this->auth->getBranchIds());
-        }
         $res = $this->db->get($this->tblname);
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
-    function getdepartmentsById($id) {
+    function getwardsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
-    function search($q, $field,$branch_id=-1) {
+    function search($q, $field, $did=0) {
         $field = explode(",", $field);
         foreach ($field as $f) {
-            if($q!="")
-                $this->db->like($f, $q);
+            $this->db->like($f, $q);
         }
-        
-        if($branch_id > 0){
-            $this->db->where('branch_id',$branch_id);
+        if($did > 0){
+            $this->db->where("department_id",$did);
         }
-        
         $select = implode('`," ",`', $field);
-        $this->db->where("isDeleted",0);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();
@@ -40,7 +33,8 @@ class Departments_model extends CI_Model {
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
-        $data["created_at"] = date("Y-m-d H:i:s");
+        unset($data['selected_did']);
+        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if ($this->db->insert($this->tblname, $data)) {
             return true;
         } else {
@@ -52,6 +46,8 @@ class Departments_model extends CI_Model {
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
+        unset($data['selected_did']);
+        if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
             return true;
@@ -71,13 +67,13 @@ class Departments_model extends CI_Model {
         } else return false;
     }
 
-    function getDepartmentIdsFromHospital($hospital_id=0){
+    function getWardIdsFromHospital($hospital_id=0){
         $res = null;
         if(is_array($hospital_id)){
             $hospital_id = implode(",",$hospital_id);
-            $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_branches b,hms_departments d,hms_wards w where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.id=w.department_id and d.isDeleted=0");
         }else{
-            $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_branches b,hms_departments d,hms_wards w where b.hospital_id=$hospital_id and b.id=d.branch_id and d.id=w.department_id and d.isDeleted=0");
         }
         $res = $res->result_array();
         $ids = array();
@@ -87,13 +83,13 @@ class Departments_model extends CI_Model {
         return $ids;
     }
 
-    function getDepartmentIdsFromBranch($branch_id=0){
+    function getWardIdsFromBranch($branch_id=0){
         $res = null;
         if(is_array($branch_id)){
             $branch_id = implode(",",$branch_id);
-            $res = $this->db->query("select d.id from hms_departments d where d.branch_id in ($branch_id) and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_departments d,hms_wards w where d.branch_id in ($branch_id) and d.id=w.department_id and d.isDeleted=0");
         }else{
-            $res = $this->db->query("select d.id from hms_departments d where d.branch_id='$branch_id' and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_departments d,hms_wards w where d.branch_id=$branch_id and d.id=w.department_id and d.isDeleted=0");
         }
         $res = $res->result_array();
         $ids = array();
@@ -103,18 +99,20 @@ class Departments_model extends CI_Model {
         return $ids;
     }
 
-    function getBranch($department_id=0){
-        $this->db->where('id',$department_id);
-        $this->db->where('isActive',1);
-        $this->db->where('isDeleted',0);
-        $res = $this->db->get($this->tblname);
-        $res = $res->row_array();
-
-        $this->db->where('id',$res['branch_id']);
-        $this->db->where('isActive',1);
-        $this->db->where('isDeleted',0);
-        $branch = $this->db->get("hms_branches");
-        $branch = $branch->row_array();
-        return $branch;
+    function getWardIdsFromDepartment($department_id=0){
+        $res = null;
+        if(is_array($department_id)){
+            $department_id = implode(",",$department_id);
+            $res = $this->db->query("select w.id from hms_wards w where w.department_id in ($department_id) and d.isDeleted=0");
+        }else{
+            $department_id = intval($department_id);
+            $res = $this->db->query("select w.id from hms_wards w where w.department_id=$department_id and w.isDeleted=0");
+        }
+        $res = $res->result_array();
+        $ids = array();
+        foreach ($res as $key => $value) {
+            $ids[] = $value['id'];
+        }
+        return $ids;
     }
 }

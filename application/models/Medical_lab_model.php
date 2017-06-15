@@ -53,7 +53,7 @@ class Medical_lab_model extends CI_Model {
             $mlab['name'] = $data['name'];
             $mlab['owner_name'] = $data['owner_name'];
             $mlab['owner_contact_number'] = $data['owner_contact_number'];
-            $mlab['branch_id'] = $data['branch_id'];
+            $mlab['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mlab['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $mlab)) {
                 return true;
@@ -98,7 +98,11 @@ class Medical_lab_model extends CI_Model {
         }
     }
     function delete($id) {
-        $this->db->where("id", $id);
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
             return true;

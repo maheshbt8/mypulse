@@ -22,6 +22,5 @@ $lang["main_insurance"] = "Insurance";
 $lang["main_settings"] = "Settings";
 $lang["main_license_category"] = "License Category";
 $lang["main_charges"] = "Charges";
-
 $lang["profile"] = "Profile";
 $lang["logout"] = "Log out";

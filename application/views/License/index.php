@@ -19,7 +19,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="license" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>License Code</th><th>Name</th><th>Action</th>
+	                                    <tr><th style="width:10px"></th><th>License Code</th><th>Name</th><th>Action</th>
 	                                    </tr>
 	                                </thead>
 	                             
@@ -79,26 +79,8 @@ $this->load->view("template/left.php");
 			<!-- /.modal-content --> 
 			</div>
 		<!-- /.modal-dialog --> 
-		</div><div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-	      	<div class="modal-dialog modal-sm">
-	    		<div class="modal-content">
-	          		<div class="modal-header">
-	        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-	        			<h4 class="modal-title custom_align" id="Heading">Delete Item</h4>
-	      			</div>
-	          		<div class="modal-body">
-	       				<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure? You want to delete this Item?</div>
-
-	      			</div>
-	        		<div class="modal-footer ">
-	        			<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
-	                    <button type="button" id="del_yes" class="btn btn-danger">YES</button>
-	      			</div>
-	        	</div>
-	    	<!-- /.modal-content --> 
-	  		</div>
 		</div>
-	    <!-- /.modal-dialog -->
+		
 	    <?php
 $this->load->view("template/footer.php");
 ?><script type="text/javascript">
@@ -112,7 +94,8 @@ $this->load->view("template/footer.php");
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-				
+				$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"license\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
@@ -163,22 +146,28 @@ $this->load->view("template/footer.php");
 
 
 			    $("#license").on("click",".delbtn",function(){
-			    	$("#cur_del").val($(this).attr("data-id"));
+			    	var id = $(this).attr("data-id");
+					swal({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Yes'
+					}).then(function () {
+						
+						$.post("<?php echo site_url(); ?>/license/delete",{id:id},function(data){
+							if(data==1){
+								$("#dellink_"+id).parents('tr').remove();	
+								toastr.success('selected item(s) deleted.');
+							}else{
+								toastr.error('Please try again.');
+							}
+						});
+					});
 			    });
 			    
-			    $("#del_yes").click(function(){
-			    	var id = $("#cur_del").val();
-			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/license/delete",{id:id},function(){
-			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
-			    			$("#delete").modal("hide");	
-			    		});
-			    	}
-			    	else{
-			    		$("#delete").modal("hide");
-			    	}
-			    	$(".modal-backdrop").hide();
-			    });
 
 			});
 

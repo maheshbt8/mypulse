@@ -36,7 +36,7 @@ class Patients extends CI_Controller {
             }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
             }), array("db" => "isActive", "dt" => 2, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
+               return $this->auth->getActiveStatus($d);
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                  return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));

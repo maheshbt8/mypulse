@@ -6,8 +6,16 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-		<input type="hidden" id="left_active_menu" value="17" />
-		<input type="hidden" id="left_active_sub_menu" value="1701" />
+		<?php 
+			if($this->auth->isSuperAdmin()){
+				echo '<input type="hidden" id="left_active_menu" value="2" />
+					  <input type="hidden" id="left_active_sub_menu" value="205" />';
+			}else if($this->auth->isHospitalAdmin()){
+				echo '<input type="hidden" id="left_active_menu" value="17" />
+						<input type="hidden" id="left_active_sub_menu" value="1701" />';
+			}
+		?>
+		
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -16,17 +24,27 @@ $this->load->view("template/left.php");
 	                        <h4 class="panel-title">Charges</h4>
 	                    </div>
 	                    <div class="panel-body">
-	                       <div class="table-responsive">
-	                            <table id="charges" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-	                                    <tr><th>Title</th><th>Type of Charge</th><th>Description</th><th>Charge</th><th width="20px">#</th>
-	                                    </tr>
-	                                </thead>
-	                                
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
+							<div class="col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label>Select Hospital</label>
+                                    <select id="hospital_id1" class=" form-control" style="width: 100%">
+										<option value="all">All</option>
+					                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+								<div class="table-responsive">
+									<table id="charges" class="display table" cellspacing="0" width="100%">
+										<thead>
+											<tr><th style="width:10px"></th><th>Title</th><th>Type of Charge</th><th>Description</th><th>Charge</th><th width="20px">#</th>
+											</tr>
+										</thead>
+										
+										<tbody>
+										</tbody>
+									</table>  
+								</div>
+							</div>	
 	                    </div>
 	                </div>
 	            </div>
@@ -38,6 +56,7 @@ $this->load->view("template/left.php");
 			<div class="modal-dialog modal-lg">
 				<form action="<?php echo site_url(); ?>/charges/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
+				<input type="hidden" name="selected_hid" id="selected_hid" />
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
@@ -93,43 +112,27 @@ $this->load->view("template/left.php");
 			<!-- /.modal-content --> 
 			</div>
 		<!-- /.modal-dialog --> 
-		</div><div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-	      	<div class="modal-dialog modal-sm">
-	    		<div class="modal-content">
-	          		<div class="modal-header">
-	        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-	        			<h4 class="modal-title custom_align" id="Heading">Delete Item</h4>
-	      			</div>
-	          		<div class="modal-body">
-	       				<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure? You want to delete this Item?</div>
-
-	      			</div>
-	        		<div class="modal-footer ">
-	        			<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
-	                    <button type="button" id="del_yes" class="btn btn-danger">YES</button>
-	      			</div>
-	        	</div>
-	    	<!-- /.modal-content --> 
-	  		</div>
 		</div>
-	    <!-- /.modal-dialog -->
 	    <?php
 $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-				$("#charges").DataTable({
-		            "processing": true,
-		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/charges/getDTcharges"
-		        });
 
-				$(".dataTables_filter").attr("style","display: flex;float: right");
-				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+				var hid = null;
+				<?php
+					if(isset($_GET['hid'])){
+						?>
+						hid = '<?php echo $_GET["hid"];?>';
+						<?php
+					}
+				?>
+
+				
 				
 			    $("[data-toggle=tooltip]").tooltip();
 
-			    $(".addbtn").click(function(){
+			    $(document).on('click','.addbtn', function(){
 			    	$("#Edit-Heading").html("Add New Charge");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
@@ -137,6 +140,12 @@ $this->load->view("template/footer.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/charges/add");
 			    	$("#edit").modal("show");
+					var thid = $("#hospital_id1").val();
+					$("#selected_hid").val(thid);
+					var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+					tempselectize_hospital_id.addOption([{"id":thid,"text":thid}]);
+					tempselectize_hospital_id.refreshItems();
+					tempselectize_hospital_id.setValue(thid);
 			    });
 
 				$("#charges").on("click",".editbtn",function(){
@@ -148,6 +157,8 @@ $this->load->view("template/footer.php");
 			    	$("#Edit-Heading").html("Edit Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
+					
+					$("#selected_hid").val($("#hospital_id1").val());
 			    });
 
 			    function loadData(id){
@@ -181,22 +192,29 @@ $this->load->view("template/footer.php");
 
 
 			    $("#charges").on("click",".delbtn",function(){
-			    	$("#cur_del").val($(this).attr("data-id"));
+			    	var id = $(this).attr("data-id");
+					swal({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Yes'
+					}).then(function () {
+						
+						$.post("<?php echo site_url(); ?>/charges/delete",{id:id},function(data){
+							if(data==1){
+								$("#dellink_"+id).parents('tr').remove();	
+								toastr.success('selected item(s) deleted.');
+							}else{
+								toastr.error('Please try again.');
+							}
+						});
+					});
 			    });
 			    
-			    $("#del_yes").click(function(){
-			    	var id = $("#cur_del").val();
-			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/charges/delete",{id:id},function(){
-			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
-			    			$("#delete").modal("hide");	
-			    		});
-			    	}
-			    	else{
-			    		$("#delete").modal("hide");
-			    	}
-			    	$(".modal-backdrop").hide();
-			    });
+			
 
 				var $selectize_hospital_id = $("#hospital_id").selectize({
 				    valueField: "id",
@@ -228,7 +246,63 @@ $this->load->view("template/footer.php");
 				    }
 				});
 
-					
+				var $selectize_hospital_id1 = $("#hospital_id1").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    },
+				    load: function(query, callback) {
+				        //if (!query.length) return callback();
+				        $.ajax({
+				            url: "<?php echo site_url(); ?>/hospitals/search",
+				            type: "GET",
+				            data: {"q":query,"f":"name"},
+				            error: function() {
+				                callback();
+				            },
+				            success: function(res) {
+				                callback($.parseJSON(res));
+								if(hid!=null){
+									var tempselectize_hospital_id1 = $selectize_hospital_id1[0].selectize;
+									tempselectize_hospital_id1.addOption([{"id":hid,"text":hid}]);
+									tempselectize_hospital_id1.refreshItems();
+									tempselectize_hospital_id1.setValue(hid);
+								}
+				            }
+				        });
+				    },
+                    onChange: function(value) {
+                        if (!value.length) return;
+                        loadTable(value);                        
+                    }
+				});
+            
+                function loadTable(id){
+                    
+                    $("#charges").dataTable().fnDestroy();
+					if(id=="all"){
+						id="";
+					}
+                    $("#charges").DataTable({
+						"processing": true,
+						"serverSide": true,
+						"ajax": "<?php echo site_url(); ?>/charges/getDTcharges/"+id
+					});
+
+					$(".dataTables_filter").attr("style","display: flex;float: right");
+					$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+					$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+                }
+                loadTable("all");
 
 			});
 

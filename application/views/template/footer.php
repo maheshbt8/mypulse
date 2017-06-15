@@ -37,8 +37,16 @@
         <script src="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/pages/previewimage.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>
         <script type="text/javascript">
         $(function() {
+                //phone_number.match(/^(1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+                phone_number = phone_number.replace(/\s+/g, ""); 
+                return this.optional(element) || phone_number.length > 9 &&
+                    phone_number.match(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
+            }, "Please specify a valid phone number");
+
 
             setTimeout(function() {
                 toastr.options = {
@@ -98,7 +106,44 @@
                 $("#li"+$("#left_active_sub_menu").val()).addClass("active");
             }
 
-
+            $(document).on('click','.multiDeleteBtn',function(){
+                var at = $(this).data('at');
+                var selected = [];
+                $('.multiselect').each(function() {
+                    if ($(this).is(":checked")) {
+                        selected.push($(this).data('id'));
+                    }
+                });
+                if(selected.length == 0){
+                    swal({
+                        animation: false,
+                        text: 'Please select checkbox.'
+                        });
+                }else{
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes'
+                    }).then(function () {
+                        $.post(BASEURL+"/"+at+"/delete",{ id : selected },function(data){
+                            if(data==1){
+                                for(var i=0; i<selected.length; i++){
+                                    var temp = selected[i];
+                                    $("#dellink_"+temp).parents('tr').remove();	
+                                }
+                                toastr.success('selected item(s) deleted.');
+                            }else{
+                                toastr.error('Please try again.');
+                            }
+                        });
+                    });
+                    
+                }
+            });
 
 
         });

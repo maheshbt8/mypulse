@@ -1,7 +1,7 @@
 <?php
 /**
- * @author Ramesh Patel
- * @email  ramesh@techcrista.in
+ * @author Yogesh Patel
+ * @email  yogesh@techcrista.in
  */
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
@@ -9,9 +9,9 @@ $this->load->view("template/left.php");
 		<?php 
 			if($this->auth->isSuperAdmin()){
 				echo '<input type="hidden" id="left_active_menu" value="2" />
-					  <input type="hidden" id="left_active_sub_menu" value="204" />';
+					  <input type="hidden" id="left_active_sub_menu" value="206" />';
 			}else if($this->auth->isHospitalAdmin()){
-				echo '<input type="hidden" id="left_active_menu" value="14" />';
+				echo '<input type="hidden" id="left_active_menu" value="3" />';
 			}
 		?>
 		<div id="main-wrapper">
@@ -19,32 +19,34 @@ $this->load->view("template/left.php");
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Beds</h4>
+	                        <h4 class="panel-title">Wards</h4>
 	                    </div>
 	                    <div class="panel-body">
 							<div class="col-md-12">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Select Hospital</label>
                                     <select id="hospital_id1" class=" form-control" style="width: 100%">
 										<option value="all">ALL</option>
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-4">
                                     <label>Select Branch</label>
                                     <select id="branch_id1" class=" form-control" style="width: 100%">
+										<option value="all">ALL</option>
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
-                                    <label>Select Departmenet</label>
+								<div class="form-group col-md-4">
+                                    <label>Select Department</label>
                                     <select id="department_id1" class=" form-control" style="width: 100%">
+										<option value="all">ALL</option>
 					                </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
 								<div class="table-responsive">
-									<table id="beds" class="display table" cellspacing="0" width="100%">
+									<table id="wards" class="display table" cellspacing="0" width="100%">
 										<thead>
-											<tr><th style="width:10px"></th><th>Ward</th><th>Bed</th><th width="20px">#</th>
+											<tr><th style="width:10px"></th><th>Ward Name</th><th width="20px">#</th>
 											</tr>
 										</thead>
 										
@@ -62,7 +64,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/beds/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/wards/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<input type="hidden" name="selected_hid" id="selected_hid" />
 				<input type="hidden" name="selected_bid" id="selected_bid" />
@@ -75,24 +77,19 @@ $this->load->view("template/left.php");
 				  	<div class="modal-body">
 				  		<div class="row">
 				  			<div class="col-md-12">
-				  			<div class="form-group col-md-6">
-					<label>Ward</label>
-					<select name="ward_id" id="ward_id" class=" form-control" style="width: 100%">
-					</select>
-					
-		</div><div class="form-group col-md-6">
-					<label>Bed</label>
-					<input class="form-control " type="text" placeholder="Bed" name="bed" id="bed" />
-					
-		</div>
-				  		</div>
-				  		
-					</div></div>
+				  				<div class="form-group col-md-6">
+									<label>Department</label>
+									<select name="department_id" id="department_id" class=" form-control" style="width: 100%"></select>					
+								</div>
+								<div class="form-group col-md-6">
+									<label>Ward Name</label>
+									<input class="form-control " type="text" placeholder="Ward Name" name="ward_name" id="ward_name" />
+								</div>
+				  			</div>
+						</div>
+					</div>
 				  	<div>
 				  		<hr>
-						<div class="col-md-12 error">
-							<span class="model_error"></span>
-						</div>  
 				  		<div class="row">
 					  		<div class="form-group col-md-6">
 		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span>CANCEL</button>
@@ -120,25 +117,21 @@ $this->load->view("template/footer.php");
 			$(document).ready(function(){
 
 				var hid = null;
+				var bid = null;
+				var did = null;
 				<?php
 					if(isset($_GET['hid'])){
 						?>
 						hid = '<?php echo $_GET["hid"];?>';
 						<?php
 					}
-				?>
 
-				var bid = null;
-				<?php
 					if(isset($_GET['bid'])){
 						?>
 						bid = '<?php echo $_GET["bid"];?>';
 						<?php
 					}
-				?>
 
-				var did = null;
-				<?php
 					if(isset($_GET['did'])){
 						?>
 						did = '<?php echo $_GET["did"];?>';
@@ -150,20 +143,20 @@ $this->load->view("template/footer.php");
 					ignore: [],
 			        rules: {
 			        	
-			        	ward_id: {
+			        	department_id: {
 			        		required : true
 			        	},
-			        	bed: {
+			        	ward_name: {
 			        		required: true
 			        	}
 			        },
 			        messages: {
 			        	
-			        	ward_id:{
-			        		required: "Select ward"
+			        	department_id:{
+			        		required: "Select Department"
 			        	},
-			        	bed:{
-			        		required: "Enter bed number"
+			        	department_name:{
+			        		required: "Enter ward name"
 			        	}
 			        },
 					invalidHandler: function(event, validator) {
@@ -188,70 +181,94 @@ $this->load->view("template/footer.php");
 					
 				});
 
-			
+				
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(document).on('click','.addbtn', function(){
-			    	$("#Edit-Heading").html("Add New Bed");
+			    	$("#Edit-Heading").html("Add New Ward");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/beds/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/wards/add");
 			    	$("#edit").modal("show");
-					var thid = $("#hospital_id1").val();
-					var tbid = $("#branch_id1").val();
 					var tdid = $("#department_id1").val();
-					$("#selected_hid").val(thid);
-					$("#selected_bid").val(tbid);
 					$("#selected_did").val(tdid);
-					
+					$("#selected_hid").val($("#hospital_id1").val());
+					$("#selected_bid").val($("#branch_id1").val());
+
+				
+					setDept(tdid);
 			    });
 
-				$("#beds").on("click",".editbtn",function(){
+				$("#wards").on("click",".editbtn",function(){
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/beds/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/wards/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Bed Detail");
+			    	$("#Edit-Heading").html("Edit Ward Information");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$("#selected_hid").val($("#hospital_id1").val());
+					var tdid = $("#department_id1").val();
+					$("#selected_did").val(tdid);
+					$("#selected_hid").val($("#hospital_id1").val());
 					$("#selected_bid").val($("#branch_id1").val());
-					$("#selected_did").val($("#department_id1").val());
+					//setDept(tdid);
 			    });
 
+				function setDept(tdid){
+					$selectize_department_id[0].selectize.clearOptions();
+					$selectize_department_id[0].selectize.load(function(callback) {
+						xhr && xhr.abort();
+						xhr = $.ajax({
+							url: "<?php echo site_url(); ?>/departments/search/",
+							type: "GET",
+							data: { "branch_id":$("#branch_id1").val(),"f":"department_name"},
+							success: function(results) {
+								$selectize_department_id[0].selectize.enable();
+								var res = $.parseJSON(results);
+								callback(res);
+								if(tdid != "all"){
+									$selectize_department_id[0].selectize.addOption([{"id":tdid,"text":tdid}]);
+									$selectize_department_id[0].selectize.refreshItems();
+									$selectize_department_id[0].selectize.setValue(tdid);
+								}
+							},
+							error: function() {
+								callback();
+							}
+						})
+					}); 
+				}
+
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/beds/getbeds",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/wards/getwards",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-						var tempselectize_ward_id = $selectize_ward_id[0].selectize;
-						tempselectize_ward_id.addOption([{"id":data.ward_id,"text":data.ward_id}]);
-						tempselectize_ward_id.refreshItems();
-						tempselectize_ward_id.setValue(data.ward_id);
+						var tempselectize_department_id = $selectize_department_id[0].selectize;
+						tempselectize_department_id.addOption([{"id":data.department_id,"text":data.department_id}]);
+						tempselectize_department_id.refreshItems();
+						tempselectize_department_id.setValue(data.department_id);
 						
-						$("#bed").val(data.bed);
+						$("#ward_name").val(data.ward_name);
 						
-
-			    		/*$.each(JSON.parse(data), function(key, value){
-						    $("#"+key).val(value);
-						});*/
 			    	});
 			    }
 
-			    $("#beds").on("click",".viewbtn",function(){
+			    $("#wards").on("click",".viewbtn",function(){
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Bed Detail");
+			    	$("#Edit-Heading").html("Ward information");
 
 			    });
 
 
-			    $("#beds").on("click",".delbtn",function(){
+			    $("#wards").on("click",".delbtn",function(){
 			    	var id = $(this).attr("data-id");
 					swal({
 						title: 'Are you sure?',
@@ -263,7 +280,7 @@ $this->load->view("template/footer.php");
 						confirmButtonText: 'Yes'
 					}).then(function () {
 						
-						$.post("<?php echo site_url(); ?>/beds/delete",{id:id},function(data){
+						$.post("<?php echo site_url(); ?>/wards/delete",{id:id},function(data){
 							if(data==1){
 								$("#dellink_"+id).parents('tr').remove();	
 								toastr.success('selected item(s) deleted.');
@@ -273,9 +290,9 @@ $this->load->view("template/footer.php");
 						});
 					});
 			    });
-			 
+			    
 
-				var $selectize_ward_id = $("#ward_id").selectize({
+				var $selectize_department_id = $("#department_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -291,12 +308,10 @@ $this->load->view("template/footer.php");
 				    },
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
-						if($("#department_id1").val() == null || $("#department_id1").val()=="")
-							return;
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/wards/search",
+				            url: "<?php echo site_url(); ?>/departments/search",
 				            type: "GET",
-				            data: {"q":query,"f":"ward_name","department_id":$("#department_id1").val()},
+				            data: {"q":query,"f":"department_name"},
 				            error: function() {
 				                callback();
 				            },
@@ -323,8 +338,8 @@ $this->load->view("template/footer.php");
 				            "</div>";
 				        }
 				    },
-					onChange: function(value) {
-				        if (!value.length) return;
+					onChange: function(value){
+						if(!value.length) return;
 						loadTable($("#hospital_id1").val(),$("#branch_id1").val(),value);
 					}
 				});
@@ -359,7 +374,7 @@ $this->load->view("template/footer.php");
 										var res = $.parseJSON(results);
 										res.push({id:"all",text:"ALL"});
 										callback(res);
-										if(bid==null || bid == undefined){
+										if(did==null || did == undefined){
 											did ="all";
 										}
 										if(did != null){
@@ -413,12 +428,10 @@ $this->load->view("template/footer.php");
 				            }
 				        });
 				    },
-					onChange: function(value) {
-				        if (!value.length) return;
-						
-						loadTable(value,"");
-
-				        $selectize_branch_id1[0].selectize.disable();
+                    onChange: function(value) {
+                        if (!value.length) return;
+                        
+						$selectize_branch_id1[0].selectize.disable();
 				        $selectize_branch_id1[0].selectize.clearOptions();
 				        $selectize_branch_id1[0].selectize.load(function(callback) {
 				            xhr && xhr.abort();
@@ -446,25 +459,27 @@ $this->load->view("template/footer.php");
 				                    callback();
 				                }
 				            })
-				        });
-				    }
+				        });   
+                    }
 				});
             
                 function loadTable(hid,bid,did){
-										
-                    $("#beds").dataTable().fnDestroy();
-                    $("#beds").DataTable({
+					
+                    $("#wards").dataTable().fnDestroy();
+                    $("#wards").DataTable({
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did
+                        "ajax": "<?php echo site_url(); ?>/wards/getDTwards?hid="+hid+"&bid="+bid+"&did="+did
                     });
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");
                     $(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-					$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"beds\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+					$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"wards\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
                 }
 
-                loadTable("all","", "");	
+                loadTable('all',"","");
+
+					
 
 			});
 

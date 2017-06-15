@@ -18,7 +18,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="medical_store" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Hospital</th><th>Branch</th><th width="20px">#</th>
+	                                    <tr><th style="width:10px"></th><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Hospital</th><th>Branch</th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -48,6 +48,7 @@ $this->load->view("template/left.php");
 								<li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
 								<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
 								<li role="presentation"><a href="#tab3" aria-controls="incharge" role="tab" data-toggle="tab">Medical Store Incharge</a></li>
+								<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab">Profession Info.</a></li>
 							</ul>
 							<div class="tab-content">
 								<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -138,26 +139,27 @@ $this->load->view("template/left.php");
 											<input class="form-control" type="text" placeholder="Address" name="address" id="address" />
 										</div>
 										<div class="form-group col-md-6">
-											<label>City</label>
-											<input class="form-control" type="text" placeholder="City" name="city" id="city" />
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group col-md-6">
-											<label>State</label>
-											<input class="form-control" type="text" placeholder="State" name="state" id="state" />
-										</div>
-										<div class="form-group col-md-6">
-											<label>Country</label>
-											<input class="form-control" type="text" placeholder="Country" name="country" id="country" />
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group col-md-6">
 											<label>Alternate Mobile Number</label>
 											<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
 										</div>
-										
+									</div>
+									<div class="col-md-12">
+										<div class="form-group col-md-3">
+											<label>Select Country</label>
+											<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
+										</div>
+										<div class="form-group col-md-3">
+											<label>Select State</label>
+											<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
+										</div>
+										<div class="form-group col-md-3">
+											<label>Select District</label>
+											<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
+										</div>
+										<div class="form-group col-md-3">
+											<label>Select City</label>
+											<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
+										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group  col-md-6">
@@ -181,6 +183,18 @@ $this->load->view("template/left.php");
 											</div>
 										</div>
 									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane fade in" id="tab4">
+									<div class="col-md-12">
+										<div class="form-group col-md-6">
+											<label>Qualification</label>
+											<input class="form-control" type="text" placeholder="Qualification" name1="qualification" id="qualification" />
+										</div>
+										<div class="form-group col-md-6">
+											<label>Experience</label>
+											<input class="form-control" type="text" placeholder="Experience" name1="experience" id="experience" />
+										</div>
+									</div>	
 								</div>
 							</div>			  		
 						</div>
@@ -209,31 +223,17 @@ $this->load->view("template/left.php");
 			<!-- /.modal-content --> 
 			</div>
 		<!-- /.modal-dialog --> 
-		</div><div class="modal fade bs-example-modal-sm" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-	      	<div class="modal-dialog modal-sm">
-	    		<div class="modal-content">
-	          		<div class="modal-header">
-	        			<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-	        			<h4 class="modal-title custom_align" id="Heading">Delete Item</h4>
-	      			</div>
-	          		<div class="modal-body">
-	       				<div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Are you sure? You want to delete this Item?</div>
-
-	      			</div>
-	        		<div class="modal-footer ">
-	        			<button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
-	                    <button type="button" id="del_yes" class="btn btn-danger">YES</button>
-	      			</div>
-	        	</div>
-	    	<!-- /.modal-content --> 
-	  		</div>
 		</div>
-	    <!-- /.modal-dialog -->
 	    <?php
 $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
+
+				<?php
+					$this->load->view("template/location");
+				?>
+
 				var branch_id = null;
 
 				var validator = $("#form").validate({
@@ -249,30 +249,9 @@ $this->load->view("template/footer.php");
 							required : true
 						},
 						owner_contact_number:{
-							required : true
-						},
-			        	first_name: {
-			        		required : true
-			        	},
-			        	last_name: {
-			        		required: true
-			        	},
-			        	useremail:{
-			        		required:true,
-			        		email:true
-			        	},
-			        	aadhaar_number:{
-			        		required:true
-			        	},
-			        	mobile:{
-			        		required:true
-			        	},
-			        	hospital_id:{
-			        		required:true
-			        	},
-			        	branch_id:{
-			        		required:true
-			        	}
+							required : true,
+							phoneUS: true
+						}
 			        },
 			        messages: {
 			        	name:{
@@ -285,30 +264,9 @@ $this->load->view("template/footer.php");
 							required : "Enter Description"
 						},
 						owner_contact_number:{
-							required : "Enter Medical Lab Owner's Contact Number"
-						},
-			        	first_name:{
-			        		required: "Enter first name"
-			        	},
-			        	last_name:{
-			        		required: "Enter last name"
-			        	},
-			        	useremail:{
-			        		required: "Enter email address",
-			        		email: "Enter valid email address"
-			        	},
-			        	aadhaar_number:{
-			        		required: "Enter Aadhaar number"
-			        	},
-			        	mobile:{
-			        		required:"Enter mobile number"
-			        	},
-			        	hospital_id:{
-			        		required:"Select Hospital"
-			        	},
-			        	branch_id:{
-			        		required:"Select Branch"
-			        	}
+							required : "Enter Medical Lab Owner's Contact Number",
+							phoneUS: "Enter valid phone number"
+						}
 			        },
 					invalidHandler: function(event, validator) {
 						// 'this' refers to the form
@@ -340,11 +298,13 @@ $this->load->view("template/footer.php");
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+				$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"medical_store\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 				
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
 					validator.resetForm();
+					resetLocation();
 					$("div.error").hide();
 			    	$("#Edit-Heading").html("Add New Medical Store");
 			    	$("#action-update-btn").parent().hide();
@@ -354,15 +314,12 @@ $this->load->view("template/footer.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/medical_store/add");
 			    	$("#edit").modal("show");
-					$("#password").rules("add", {
-						required:true,
-						messages: {
-								required: "Please Enter Password."
-						}
-					});
+					
 			    });
 
 				$("#medical_store").on("click",".editbtn",function(){
+					validator.resetForm();
+					resetLocation();
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
@@ -372,7 +329,7 @@ $this->load->view("template/footer.php");
 			    	$("#Edit-Heading").html("Edit Details");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
-					$("#password").rules("remove","required");
+					
 			    });
 
 			    function loadData(id){
@@ -393,30 +350,39 @@ $this->load->view("template/footer.php");
 						tempselectize_hospital_id.setValue(data.hospital_id);
 
 						var user = data.user;
-
-						$("#first_name").val(user.first_name);
-						
-						$("#last_name").val(user.last_name);
-						
-						$("#useremail").val(user.useremail);
-						
-						$("#address").val(user.address);
-						
-						$("#mobile").val(user.mobile);
-						
-						$("#phone").val(user.phone);
-
-						$("#gender").val(data.gender);
-						$("#city").val(data.city);
-						$("#state").val(data.state);
-						$("#country").val(data.country);
-						$("#address").val(data.address);
-						$("#description").val(data.description);
-						$("#alternate_mobile_number").val(data.alternate_mobile_number);
+						if(user != null && user!= undefined){
+							if(user.first_name != undefined)
+								$("#first_name").val(user.first_name);
+							if(user.last_name != undefined)
+								$("#last_name").val(user.last_name);
+							if(user.useremail != undefined)
+								$("#useremail").val(user.useremail);
+							if(user.address != undefined)
+								$("#address").val(user.address);
+							if(user.mobile != undefined)
+								$("#mobile").val(user.mobile);
+							if(user.phone != undefined)
+								$("#phone").val(user.phone);
+							if(user.gender != undefined)
+								$("#gender").val(data.gender);
+							if(user.description != undefined)
+								$("#description").val(data.description);
+							if(user.alternate_mobile_number != undefined)	
+								$("#alternate_mobile_number").val(data.alternate_mobile_number);
+						}
 						if(data.date_of_birth != "" && data.date_of_birth != "0000-00-00"){
 							$("#date_of_birth").datepicker("update", new Date(data.date_of_birth));
 						}
-						
+						if(data.country != null && data.country!=undefined && data.country != "" && data.country > 0){
+							console.log(data.country);
+							loc_cid = data.city;
+							loc_did = data.district;
+							loc_sid = data.state;
+							var tempselectize_selectize_country = $selectize_country[0].selectize;
+							tempselectize_selectize_country.addOption([{"id":data.country,"text":data.country}]);
+							tempselectize_selectize_country.refreshItems();
+							tempselectize_selectize_country.setValue(data.country);
+						}
 						shwoImgFromUrl(data.profile_photo);
 						
 			    	});
@@ -424,6 +390,7 @@ $this->load->view("template/footer.php");
 
 			    $("#medical_store").on("click",".viewbtn",function(){
 					validator.resetForm();
+					resetLocation();
 					$("div.error").hide();
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
@@ -436,22 +403,28 @@ $this->load->view("template/footer.php");
 
 
 			    $("#medical_store").on("click",".delbtn",function(){
-			    	$("#cur_del").val($(this).attr("data-id"));
+			    	var id = $(this).attr("data-id");
+					swal({
+						title: 'Are you sure?',
+						text: "You won't be able to revert this!",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Yes'
+					}).then(function () {
+						
+						$.post("<?php echo site_url(); ?>/medical_store/delete",{id:id},function(data){
+							if(data==1){
+								$("#dellink_"+id).parents('tr').remove();	
+								toastr.success('selected item(s) deleted.');
+							}else{
+								toastr.error('Please try again.');
+							}
+						});
+					});
 			    });
 			    
-			    $("#del_yes").click(function(){
-			    	var id = $("#cur_del").val();
-			    	if(id!==""){
-			    		$.post("<?php echo site_url(); ?>/medical_store/delete",{id:id},function(){
-			    			$("#dellink_"+$("#cur_del").val()).parents('tr').remove();
-			    			$("#delete").modal("hide");	
-			    		});
-			    	}
-			    	else{
-			    		$("#delete").modal("hide");
-			    	}
-			    	$(".modal-backdrop").hide();
-			    });
 
 				var $selectize_branch_id = $("#branch_id").selectize({
 				    valueField: "id",

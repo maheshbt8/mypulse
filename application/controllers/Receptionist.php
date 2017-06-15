@@ -118,13 +118,51 @@ class Receptionist extends CI_Controller {
                 return $temp["department_name"];
             }),array("db" => "doc_id", "dt" => 4, "formatter" => function ($d, $row) {
                 $temp = $this->doctors_model->getdoctorsById($d);
-                
-                return $temp["first_name"]." ".$temp["last_name"];
+                $name = "-";
+                if(isset($temp['first_name'])){
+                    $name = $temp['first_name'].' '.$temp['last_name'];
+                }
+                return $name;
             }),array("db" => "isActive", "dt" => 5, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
+
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            if($this->auth->isHospitalAdmin()){
+                $ids = $this->doctors_model->getDoctorsIdsByHospitalId($this->auth->getHospitalId());
+                $ids = implode(",", $ids);
+                $cond[] = "doc_id in (".$ids.")";
+            }else if($hospital_id!=null){
+                $ids = $this->doctors_model->getDoctorsIdsByHospitalId($hospital_id);
+                if(count($ids) == 0){
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "doc_id in (".$ids.")";
+            }
+
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array($columns[0],$columns[2],$columns[3],$columns[4],$columns[5]);
+                $columns[0]["dt"] = 0;
+                $columns[1]["dt"] = 1;
+                $columns[2]['dt'] = 2;
+                $columns[3]['dt'] = 3;
+                $columns[4]['dt'] = 4;
+                $columns[0]['formatter'] =  function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($d);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
+                    return $name;
+                };
+                $this->tbl->setIndexColumn(true);
+            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
