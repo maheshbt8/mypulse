@@ -10,6 +10,7 @@ class Wards extends CI_Controller {
         $this->load->model('departments_model');
         $this->load->model('branches_model');
         $this->load->model('hospitals_model');
+        $this->load->model('beds_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
@@ -94,6 +95,10 @@ class Wards extends CI_Controller {
             $columns = array( array("db" => "ward_name", "dt" => 0, "formatter" => function ($d, $row) {
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
             }), array("db" => "id", "dt" => 1, "formatter" => function ($d, $row) {
+                return $this->beds_model->getTotalBedsByWard($d);
+            }),array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
+                return $this->beds_model->getTotalAvailableBedsByWard($d);
+            }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 

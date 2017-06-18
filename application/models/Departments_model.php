@@ -16,7 +16,16 @@ class Departments_model extends CI_Model {
     }
     function getdepartmentsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
-        return $r->row_array();
+        $r = $r->row_array();
+        $r['hospital_id'] = 0;
+        $r['branch_name'] = "";
+        if(isset($r['branch_id'])){
+            $hid = $this->db->query("select * from hms_branches where id=$r[branch_id]");
+            $hid = $hid->row_array();
+            $r['hospital_id'] = $hid['hospital_id'];
+            $r['branch_name'] = $hid['branch_name'];
+        }
+        return $r;
     }
     function search($q, $field,$hospital_id=-1,$branch_id=-1) {
         $field = explode(",", $field);

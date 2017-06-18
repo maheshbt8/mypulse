@@ -7,6 +7,8 @@ class Charges extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('charges_model');
+        $this->load->model('branches_model');
+        $this->load->model('hospitals_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
@@ -26,9 +28,12 @@ class Charges extends CI_Controller {
     }
     public function add() {
         if ($this->auth->isLoggedIn()) {
-            $selected_hid = "";
+            $query =array();
             if(isset($_POST['selected_hid'])){
-                $selected_hid = $_POST['selected_hid'];
+                $query[] = "hid=".$_POST['selected_hid'];
+            }
+            if(isset($_POST['selected_bid'])){
+                $query[] = "bid=".$_POST['selected_bid'];
             }
             if ($this->charges_model->add()) {
                 $data['success'] = array("Charge Added Successfully");
@@ -36,15 +41,19 @@ class Charges extends CI_Controller {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('charges/index?hid='.$selected_hid);
+            $qry = implode("&",$query);
+            redirect('charges/index?'.$qry);
         } else redirect('index/login');
     }
     public function update() {
         if ($this->auth->isLoggedIn()) {
             $data = array();
-            $selected_hid = "";
+            $query =array();
             if(isset($_POST['selected_hid'])){
-                $selected_hid = $_POST['selected_hid'];
+                $query[] = "hid=".$_POST['selected_hid'];
+            }
+            if(isset($_POST['selected_bid'])){
+                $query[] = "bid=".$_POST['selected_bid'];
             }
             $id = $this->input->post('eidt_gf_id');
             if ($this->charges_model->update($id)) {
@@ -53,7 +62,8 @@ class Charges extends CI_Controller {
                 $data['errors'] = array("Please again later");
             }
             $this->session->set_flashdata('data', $data);
-            redirect('charges/index?hid='.$selected_hid);
+             $qry = implode("&",$query);
+            redirect('charges/index?'.$qry);
         } else redirect('index/login');
     }
     public function delete() {
@@ -85,16 +95,52 @@ class Charges extends CI_Controller {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 
-            $hospital_id = $this->input->get('hid',null,null);
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
+            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            if($hid == "all")
+                $hid = null;
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
+
             if($this->auth->isHospitalAdmin()){
                 $hid = $this->auth->getHospitalId();
-                $cond[] = "hospital_id=".$hid;
-            }else if($hospital_id!=null){
-                $cond[] = "hospital_id=".$hospital_id;
+                $ids = $this->branches_model->getBracheIds($hid);
+                if(count($ids) == 0){
+                    //If no Branche created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "branch_id in (".$ids.")";
             }
-            
+            if($bid == "all"){
+                $ids = $this->branches_model->getBracheIds($hid);
+                
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "branch_id in (".$ids.")";
+            }else if($bid != null){
+                $cond[] = "branch_id = ".$bid;
+            }else if($hid!=null){
+                $ids = $this->branches_model->getBracheIds($hid);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "branch_id in (".$ids.")";
+            }else{
+                $hids = $this->hospitals_model->getHospicalIds();
+                $ids = $this->branches_model->getBracheIds($hids);
+                $ids = implode(",",$ids);
+                $cond[] = "branch_id in (".$ids.")";
+            }
+
             if($show){
                 $this->tbl->setCheckboxColumn(false);
                 $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);

@@ -18,23 +18,35 @@ $this->load->view("template/left.php");
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
+	                    
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Beds</h4>
+							<div class="">
+								<div class="custome_col8">
+									<h4 class="panel-title panel_heading_custome">Beds</h4>
+								</div>
+								<div class="custome_col4">
+									<div class="panel_button_top_right">
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" title="Add"  href="javascript:void(0);" data-title="Add" data-toggle="modal" data-target="#edit" style="">Add New</a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals" data-toggle="tooltip" title="Delete"  href="javascript:void(0);" data-title="Delete" data-toggle="modal" data-target="#edit" style="margin-left:10px">Delete</a>
+									</div>
+								</div>
+								<br>
+							</div>
 	                    </div>
-	                    <div class="panel-body">
+	                    <div class="panel-body panel_body_custome">
 							<div class="col-md-12">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Select Hospital</label>
                                     <select id="hospital_id1" class=" form-control" style="width: 100%">
 										<option value="all">ALL</option>
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-4">
                                     <label>Select Branch</label>
                                     <select id="branch_id1" class=" form-control" style="width: 100%">
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-4">
                                     <label>Select Departmenet</label>
                                     <select id="department_id1" class=" form-control" style="width: 100%">
 					                </select>
@@ -44,7 +56,7 @@ $this->load->view("template/left.php");
 								<div class="table-responsive">
 									<table id="beds" class="display table" cellspacing="0" width="100%">
 										<thead>
-											<tr><th style="width:10px"></th><th>Ward</th><th>Bed</th><th width="20px">#</th>
+											<tr><th style="width:10px"></th><th>Ward</th><th>Bed</th><th>Is Occupied?</th><th width="20px">#</th>
 											</tr>
 										</thead>
 										
@@ -74,20 +86,39 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
+						  	<div class="col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label>Select Hospital</label>
+                                    <select id="hospital_id" class=" form-control" style="width: 100%"></select>
+                                </div>
+								<div class="form-group col-md-6">
+                                    <label>Select Branch</label>
+                                    <select id="branch_id" class=" form-control" style="width: 100%"></select>
+                                </div>
+								<div class="form-group col-md-6">
+                                    <label>Select Departmenet</label>
+                                    <select id="department_id" class=" form-control" style="width: 100%"></select>
+                                </div>
+								<div class="form-group col-md-6">
+									<label>Ward</label>
+									<select name="ward_id" id="ward_id" class=" form-control" style="width: 100%"></select>
+								</div>
+                            </div>
 				  			<div class="col-md-12">
-				  			<div class="form-group col-md-6">
-					<label>Ward</label>
-					<select name="ward_id" id="ward_id" class=" form-control" style="width: 100%">
-					</select>
-					
-		</div><div class="form-group col-md-6">
-					<label>Bed</label>
-					<input class="form-control " type="text" placeholder="Bed" name="bed" id="bed" />
-					
-		</div>
-				  		</div>
-				  		
-					</div></div>
+								<div class="form-group col-md-6">
+									<label>Bed</label>
+									<input class="form-control " type="text" placeholder="Bed" name="bed" id="bed" />
+								</div>
+								<div class="form-group col-md-6">
+									<label>Is Bed Occupied?</label>
+									<select class="form-control" name="isAvailable" id="isAvailable">
+										<option value="1">No</option>
+										<option value="0">Yes</option>
+									</select>
+								</div>
+				  			</div>
+						</div>
+					</div>
 				  	<div>
 				  		<hr>
 						<div class="col-md-12 error">
@@ -205,6 +236,13 @@ $this->load->view("template/footer.php");
 					$("#selected_hid").val(thid);
 					$("#selected_bid").val(tbid);
 					$("#selected_did").val(tdid);
+					$selectize_ward_id[0].selectize.disable();
+					$selectize_ward_id[0].selectize.clear();
+					$selectize_department_id[0].selectize.disable();
+					$selectize_department_id[0].selectize.clear();
+					$selectize_branch_id[0].selectize.disable();
+					$selectize_branch_id[0].selectize.clear();
+					$selectize_hospital_id[0].selectize.clear();
 					
 			    });
 
@@ -225,18 +263,33 @@ $this->load->view("template/footer.php");
 			    function loadData(id){
 			    	$.post("<?php echo site_url(); ?>/beds/getbeds",{ id: id },function(data){
 			    		var data = JSON.parse(data);
-			    		
+
+						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+						tempselectize_hospital_id.refreshItems();
+						tempselectize_hospital_id.setValue(data.hospital_id);
+
+						var selectize_branch_id = $selectize_branch_id[0].selectize;
+						selectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_name}]);
+						selectize_branch_id.refreshItems();
+						selectize_branch_id.setValue(data.branch_id);
+
+						var tempselectize_department_id = $selectize_department_id[0].selectize;
+						tempselectize_department_id.addOption([{"id":data.department_id,"text":data.department_name}]);
+						tempselectize_department_id.refreshItems();
+						tempselectize_department_id.setValue(data.department_id);
+						
 						var tempselectize_ward_id = $selectize_ward_id[0].selectize;
-						tempselectize_ward_id.addOption([{"id":data.ward_id,"text":data.ward_id}]);
+						tempselectize_ward_id.addOption([{"id":data.ward_id,"text":data.ward_name}]);
 						tempselectize_ward_id.refreshItems();
 						tempselectize_ward_id.setValue(data.ward_id);
 						
+						$selectize_branch_id[0].selectize.enable();
+						$selectize_department_id[0].selectize.enable();
+						$selectize_ward_id[0].selectize.enable();
 						$("#bed").val(data.bed);
+						$("#isAvailable").val(data.isAvailable);
 						
-
-			    		/*$.each(JSON.parse(data), function(key, value){
-						    $("#"+key).val(value);
-						});*/
 			    	});
 			    }
 
@@ -273,9 +326,25 @@ $this->load->view("template/footer.php");
 						});
 					});
 			    });
-			 
+				var xhr;
 
 				var $selectize_ward_id = $("#ward_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    }
+				});
+
+				var $selectize_department_id = $("#department_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
 				    searchField: "text",
@@ -291,12 +360,10 @@ $this->load->view("template/footer.php");
 				    },
 				    load: function(query, callback) {
 				        //if (!query.length) return callback();
-						if($("#department_id1").val() == null || $("#department_id1").val()=="")
-							return;
 				        $.ajax({
-				            url: "<?php echo site_url(); ?>/wards/search",
+				            url: "<?php echo site_url(); ?>/departments/search",
 				            type: "GET",
-				            data: {"q":query,"f":"ward_name","department_id":$("#department_id1").val()},
+				            data: {"q":query,"f":"department_name"},
 				            error: function() {
 				                callback();
 				            },
@@ -304,10 +371,136 @@ $this->load->view("template/footer.php");
 				                callback($.parseJSON(res));
 				            }
 				        });
-				    }
+				    },
+					onChange: function(value){
+						if(!value.length) return;
+
+						$selectize_ward_id[0].selectize.disable();
+				        $selectize_ward_id[0].selectize.clearOptions();
+				        $selectize_ward_id[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/wards/search/",
+				                type: "GET",
+				                data: { "department_id":value,"f":"ward_name"},
+				                success: function(results) {
+				                    $selectize_ward_id[0].selectize.enable();
+									var res = $.parseJSON(results);
+				                    callback(res);
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
+				        }); 
+					}
 				});
 
-				var xhr;
+				var $selectize_branch_id = $("#branch_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    },
+				    load: function(query, callback) {
+				        //if (!query.length) return callback();
+				        $.ajax({
+				            url: "<?php echo site_url(); ?>/branches/search",
+				            type: "GET",
+				            data: {"q":query,"f":"branch_name","hospital_id":$("#hospital_id1").val()},
+				            error: function() {
+				                callback();
+				            },
+				            success: function(res) {
+				                callback($.parseJSON(res));
+				            }
+				        });
+				    },
+					onChange: function(value){
+						if(!value.length) return;
+
+						$selectize_department_id[0].selectize.disable();
+				        $selectize_department_id[0].selectize.clearOptions();
+				        $selectize_department_id[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/departments/search/",
+				                type: "GET",
+				                data: { "branch_id":value,"f":"department_name"},
+				                success: function(results) {
+				                    $selectize_department_id[0].selectize.enable();
+									var res = $.parseJSON(results);
+				                    callback(res);
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
+				        }); 
+					}
+				});
+
+				var $selectize_hospital_id = $("#hospital_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    },
+				    load: function(query, callback) {
+				        //if (!query.length) return callback();
+				        $.ajax({
+				            url: "<?php echo site_url(); ?>/hospitals/search",
+				            type: "GET",
+				            data: {"q":query,"f":"name"},
+				            error: function() {
+				                callback();
+				            },
+				            success: function(res) {
+				                callback($.parseJSON(res));
+				            }
+				        });
+				    },
+                    onChange: function(value) {
+                        if (!value.length) return;
+                        
+						$selectize_branch_id[0].selectize.disable();
+				        $selectize_branch_id[0].selectize.clearOptions();
+				        $selectize_branch_id[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/branches/search/",
+				                type: "GET",
+				                data: { "hospital_id":value,"f":"branch_name"},
+				                success: function(results) {
+				                    $selectize_branch_id[0].selectize.enable();
+									var res = $.parseJSON(results);
+				                    callback(res);
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
+				        });                 
+                    }
+				});
+
+				//Table Search
 
 				var $selectize_department_id1 = $("#department_id1").selectize({
 				    valueField: "id",
@@ -460,8 +653,8 @@ $this->load->view("template/footer.php");
                     });
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");
-                    $(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-					$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"beds\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+                    //$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+					//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"beds\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
                 }
 
                 loadTable("all","", "");	

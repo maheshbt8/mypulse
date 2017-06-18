@@ -13,9 +13,21 @@ $this->load->view("template/left.php");
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Hospitals</h4>
+							<div class="">
+								<div class="custome_col8">
+									<h4 class="panel-title panel_heading_custome">Hospitals</h4>
+								</div>
+								<div class="custome_col4">
+									<div class="panel_button_top_right">
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" title="Add"  href="javascript:void(0);" data-title="Add" data-toggle="modal" data-target="#edit" style="">Add New</a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals" data-toggle="tooltip" title="Delete"  href="javascript:void(0);" data-title="Delete" data-toggle="modal" data-target="#edit" style="margin-left:10px">Delete</a>
+										
+									</div>
+								</div>
+								<br>
+							</div>
 	                    </div>
-	                    <div class="panel-body">
+	                    <div class="panel-body panel_body_custome">
 	                       <div class="table-responsive">
 	                            <table id="hospitals" class="display table" cellspacing="0" width="100%">
 	                                <thead>
@@ -397,8 +409,8 @@ $this->load->view("template/left.php");
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
-				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-				$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"hospitals\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+				//$(".dataTables_filter").append("");
+				//$(".dataTables_filter").append("");
 				
 				
 			    $("[data-toggle=tooltip]").tooltip();

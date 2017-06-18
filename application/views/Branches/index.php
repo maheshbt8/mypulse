@@ -18,10 +18,22 @@ $this->load->view("template/left.php");
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
+						
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Branches</h4>
+							<div class="">
+								<div class="custome_col8">
+									<h4 class="panel-title panel_heading_custome">Branches</h4>
+								</div>
+								<div class="custome_col4">
+									<div class="panel_button_top_right">
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" title="Add"  href="javascript:void(0);" data-title="Add" data-toggle="modal" data-target="#edit" style="">Add New</a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals" data-toggle="tooltip" title="Delete"  href="javascript:void(0);" data-title="Delete" data-toggle="modal" data-target="#edit" style="margin-left:10px">Delete</a>
+									</div>
+								</div>
+								<br>
+							</div>
 	                    </div>
-	                    <div class="panel-body">
+	                    <div class="panel-body panel_body_custome">
 							<div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <label>Select Hospital</label>
@@ -252,10 +264,12 @@ $this->load->view("template/footer.php");
 			    	$("#edit").modal("show");
 					var thid = $("#hospital_id1").val();
 					$("#selected_hid").val(thid);
-					var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-					tempselectize_hospital_id.addOption([{"id":thid,"text":thid}]);
-					tempselectize_hospital_id.refreshItems();
-					tempselectize_hospital_id.setValue(thid);
+					if(thid != "all"){
+						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+						tempselectize_hospital_id.addOption([{"id":thid,"text":thid}]);
+						tempselectize_hospital_id.refreshItems();
+						tempselectize_hospital_id.setValue(thid);
+					}
 			    });
 
 				$("#branches").on("click",".editbtn",function(){
@@ -417,8 +431,8 @@ $this->load->view("template/footer.php");
                     });
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");
-                    $(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-					$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"branches\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+                    //$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+					//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"branches\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 				
                 }
                 loadTable('all');

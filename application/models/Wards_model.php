@@ -13,7 +13,20 @@ class Wards_model extends CI_Model {
     }
     function getwardsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
-        return $r->row_array();
+        $r = $r->row_array();
+        $did = array();
+        if(isset($r['department_id'])){
+            $did = $this->db->query("select d.department_name,d.branch_id,b.branch_name,b.hospital_id from hms_departments d,hms_branches b where d.id=$r[department_id] and d.branch_id=b.id");
+            $did = $did->row_array();
+        }
+
+        $r['department_name'] = isset($did['department_name']) ? $did['department_name'] : "";
+        $r['branch_id'] = isset($did['branch_id']) ? $did['branch_id'] : "";
+        $r['branch_name'] = isset($did['branch_name']) ? $did['branch_name'] : "";
+        $r['hospital_id'] = isset($did['hospital_id']) ? $did['hospital_id'] : "";
+        
+
+        return $r;
     }
     function search($q, $field, $did=0) {
         $field = explode(",", $field);

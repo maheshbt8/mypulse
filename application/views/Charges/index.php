@@ -21,14 +21,31 @@ $this->load->view("template/left.php");
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
 	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Charges</h4>
+							<div class="">
+								<div class="custome_col8">
+									<h4 class="panel-title panel_heading_custome">Charges</h4>
+								</div>
+								<div class="custome_col4">
+									<div class="panel_button_top_right">
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" title="Add"  href="javascript:void(0);" data-title="Add" data-toggle="modal" data-target="#edit" style="">Add New</a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals" data-toggle="tooltip" title="Delete"  href="javascript:void(0);" data-title="Delete" data-toggle="modal" data-target="#edit" style="margin-left:10px">Delete</a>
+									</div>
+								</div>
+								<br>
+							</div>
 	                    </div>
-	                    <div class="panel-body">
+	                    <div class="panel-body panel_body_custome">
 							<div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <label>Select Hospital</label>
                                     <select id="hospital_id1" class=" form-control" style="width: 100%">
 										<option value="all">All</option>
+					                </select>
+                                </div>
+								<div class="form-group col-md-6">
+                                    <label>Select Branch</label>
+                                    <select id="branch_id1" class=" form-control" style="width: 100%">
+										<option value="all">ALL</option>
 					                </select>
                                 </div>
                             </div>
@@ -64,33 +81,38 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
+						  	<div class="col-md-12">
+							  	<div class="form-group col-md-6">
+                                    <label>Select Hospital</label>
+                                    <select id="hospital_id" class=" form-control" style="width: 100%"></select>
+                                </div>
+				  				<div class="form-group col-md-6">
+									<label>Select Branch</label>
+									<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%"></select>
+								</div>
+							</div>	
 				  			<div class="col-md-12">
-				  			<div class="form-group col-md-6">
-								<label>Title</label>
-								<input class="form-control " type="text" placeholder="Title" name="title" id="title" />
-							</div>
-							<div class="form-group col-md-6">
-								<label>Description</label>
-								<input class="form-control " type="text" placeholder="Description" name="description" id="description" />
-							</div>
-				  		</div>
-				  		<div class="col-md-12">
-				  			<div class="form-group col-md-6">
-								<label>Type of Charge</label>
-								<input class="form-control " type="text" placeholder="Type of charge" name="charge_type" id="charge_type" />
-							</div>
-							<div class="form-group col-md-6">
-								<label>Charge</label>
-								<input class="form-control " type="text" placeholder="Charge" name="charge" id="charge" />
-							</div>
-							<div class="form-group col-md-6">
-								<label>Hospital</label>
-								<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
-								</select>
-							</div>
-				  		</div>
-				  		
-					</div></div>
+								<div class="form-group col-md-6">
+									<label>Title</label>
+									<input class="form-control " type="text" placeholder="Title" name="title" id="title" />
+								</div>
+								<div class="form-group col-md-6">
+									<label>Description</label>
+									<input class="form-control " type="text" placeholder="Description" name="description" id="description" />
+								</div>
+				  			</div>
+				  			<div class="col-md-12">
+								<div class="form-group col-md-6">
+									<label>Type of Charge</label>
+									<input class="form-control " type="text" placeholder="Type of charge" name="charge_type" id="charge_type" />
+								</div>
+								<div class="form-group col-md-6">
+									<label>Charge</label>
+									<input class="form-control " type="text" placeholder="Charge" name="charge" id="charge" />
+								</div>
+				  			</div>
+						</div>
+					</div>
 				  	<div>
 				  		<hr>
 				  		<div class="row">
@@ -127,7 +149,56 @@ $this->load->view("template/footer.php");
 						<?php
 					}
 				?>
+				var bid = null;
+				<?php
+					if(isset($_GET['bid'])){
+						?>
+						bid = '<?php echo $_GET["bid"];?>';
+						<?php
+					}
+				?>
 
+				var validator = $("#form").validate({
+					ignore: [],
+			        rules: {
+			        	
+			        	branch_id: {
+			        		required : true
+			        	},
+			        	department_name: {
+			        		required: true
+			        	}
+			        },
+			        messages: {
+			        	
+			        	branch_id:{
+			        		required: "Select Branch"
+			        	},
+			        	department_name:{
+			        		required: "Enter department name"
+			        	}
+			        },
+					invalidHandler: function(event, validator) {
+						// 'this' refers to the form
+						var errors = validator.numberOfInvalids();
+						if (errors) {
+							var message = errors == 1 ? 'You missed 1 field. It has been highlighted' : 'You missed ' + errors + ' fields. They have been highlighted';
+							$("div.error span").html(message);
+							$("div.error").show();
+						} else {
+							$("div.error").hide();
+						}
+					},
+					errorPlacement: function(error, element) {
+						if (element.hasClass("selectized")) {
+							var e = element.siblings(2)
+							error.insertAfter(e[1]);
+						} else {
+							error.insertAfter(element);
+						}
+					}
+					
+				});
 				
 				
 			    $("[data-toggle=tooltip]").tooltip();
@@ -142,10 +213,12 @@ $this->load->view("template/footer.php");
 			    	$("#edit").modal("show");
 					var thid = $("#hospital_id1").val();
 					$("#selected_hid").val(thid);
-					var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-					tempselectize_hospital_id.addOption([{"id":thid,"text":thid}]);
-					tempselectize_hospital_id.refreshItems();
-					tempselectize_hospital_id.setValue(thid);
+					
+					var tbid = $("#branch_id1").val();
+					$("#selected_hid").val(tbid);
+					$selectize_branch_id[0].selectize.disable();
+					$selectize_branch_id[0].selectize.clear();
+					$selectize_hospital_id[0].selectize.clear();
 			    });
 
 				$("#charges").on("click",".editbtn",function(){
@@ -159,6 +232,7 @@ $this->load->view("template/footer.php");
 			    	$("#action-update-btn").parent().show();
 					
 					$("#selected_hid").val($("#hospital_id1").val());
+					$("#selected_bid").val($("#branch_id1").val());
 			    });
 
 			    function loadData(id){
@@ -176,6 +250,12 @@ $this->load->view("template/footer.php");
 						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
 						tempselectize_hospital_id.refreshItems();
 						tempselectize_hospital_id.setValue(data.hospital_id);
+
+						var tempselectize_branch_id = $selectize_branch_id[0].selectize;
+						tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_name}]);
+						tempselectize_branch_id.refreshItems();
+						tempselectize_branch_id.setValue(data.branch_id);
+						$selectize_branch_id[0].selectize.enable();
 				
 			    	});
 			    }
@@ -216,6 +296,26 @@ $this->load->view("template/footer.php");
 			    
 			
 
+				var xhr;
+
+				var $selectize_branch_id = $("#branch_id").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    }
+				});
+
+				
+
 				var $selectize_hospital_id = $("#hospital_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
@@ -243,8 +343,52 @@ $this->load->view("template/footer.php");
 				                callback($.parseJSON(res));
 				            }
 				        });
-				    }
+				    },
+                    onChange: function(value) {
+                        if (!value.length) return;
+                        
+						$selectize_branch_id[0].selectize.disable();
+				        $selectize_branch_id[0].selectize.clearOptions();
+				        $selectize_branch_id[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/branches/search/",
+				                type: "GET",
+				                data: { "hospital_id":value,"f":"branch_name"},
+				                success: function(results) {
+				                    $selectize_branch_id[0].selectize.enable();
+									var res = $.parseJSON(results);
+				                    callback(res);
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
+				        });                 
+                    }
 				});
+
+				var $selectize_branch_id1 = $("#branch_id1").selectize({
+				    valueField: "id",
+				    labelField: "text",
+				    searchField: "text",
+				    preload:true,
+				    create: false,
+				    render: {
+				        option: function(item, escape) {
+				        	return "<div><span class='title'>" +
+				                    escape(item.text)+
+				                "</span>" +   
+				            "</div>";
+				        }
+				    },
+					onChange: function(value) {
+				        if (!value.length) return;
+						loadTable($("#hospital_id1").val(),value);   
+					}
+				});
+
+			
 
 				var $selectize_hospital_id1 = $("#hospital_id1").selectize({
 				    valueField: "id",
@@ -282,27 +426,55 @@ $this->load->view("template/footer.php");
 				    },
                     onChange: function(value) {
                         if (!value.length) return;
-                        loadTable(value);                        
+                        loadTable(value,"");   
+						$selectize_branch_id1[0].selectize.disable();
+				        $selectize_branch_id1[0].selectize.clearOptions();
+				        $selectize_branch_id1[0].selectize.load(function(callback) {
+				            xhr && xhr.abort();
+				            xhr = $.ajax({
+				                url: "<?php echo site_url(); ?>/branches/search/",
+				                type: "GET",
+				                data: { "hospital_id":value,"f":"branch_name"},
+				                success: function(results) {
+				                    $selectize_branch_id1[0].selectize.enable();
+									var res = $.parseJSON(results);
+									res.push({id:"all",text:"ALL"});
+				                    callback(res);
+									if(bid==null || bid == undefined){
+										bid ="all";
+									}
+				                    if(bid != null){
+				    					var tempselectize_branch_id1 = $selectize_branch_id1[0].selectize;
+										tempselectize_branch_id1.addOption([{"id":bid,"text":bid}]);
+										tempselectize_branch_id1.refreshItems();
+										tempselectize_branch_id1.setValue(bid);	
+										bid = null;
+				    				}
+				                },
+				                error: function() {
+				                    callback();
+				                }
+				            })
+				        });                 
                     }
 				});
             
-                function loadTable(id){
+                function loadTable(hid,bid){
                     
                     $("#charges").dataTable().fnDestroy();
-					if(id=="all"){
-						id="";
-					}
+					
                     $("#charges").DataTable({
 						"processing": true,
 						"serverSide": true,
-						"ajax": "<?php echo site_url(); ?>/charges/getDTcharges/"+id
+						"ajax": "<?php echo site_url(); ?>/charges/getDTcharges?hid="+hid+"&bid="+bid
 					});
 
 					$(".dataTables_filter").attr("style","display: flex;float: right");
-					$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-					$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+					//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+					//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
                 }
-                loadTable("all");
+
+                loadTable("all","");
 
 			});
 

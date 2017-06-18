@@ -29,9 +29,9 @@
                                     <li id="li201"><a href="<?php echo site_url();?>/hospitals"><?php echo $menu['main_hospitals'];?></a></li>
                                     <li id="li202"><a href="<?php echo site_url();?>/branches" ><?php echo $menu['main_branches'];?></a></li>
                                     <li id="li203"><a href="<?php echo site_url();?>/departments" ><?php echo $menu['main_departments'];?></a></li>
+                                    <li id="li206"><a href="<?php echo site_url();?>/wards/" ><?php echo $menu['main_wards'];?></a></li> 
                                     <li id="li204"><a href="<?php echo site_url();?>/beds" ><?php echo $menu['main_beds'];?></a></li>
                                     <li id="li205"><a href="<?php echo site_url();?>/charges/" ><?php echo $menu['main_charges'];?></a></li> 
-                                    <li id="li206"><a href="<?php echo site_url();?>/wards/" ><?php echo $menu['main_wards'];?></a></li> 
                                 </ul>
                             </li>
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>

@@ -46,6 +46,21 @@
             }
         </style>
         <style type="text/css">
+            .custome_col8{
+                width:66.66666667%
+            }
+            .custome_col4{
+                
+            }
+            .panel_button_top_right{
+                float:right;
+            }
+            .panel_heading_custome{
+                max-width:100px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
+            }
+            .panel_body_custome{
+                margin-top:15px;
+            }
             .content_img {
                 width: 250px;
                 height: 250px;
