@@ -13,8 +13,8 @@ class Medical_lab extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['medical_labs'] = $this->medical_lab_model->getAllmedical_lab();
-            $data["page_title"] = "Medical lab";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Medical lab");
+            $data["page_title"] = $this->lang->line('medicalLabFull');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('medicalLabFull'));
             $this->load->view('Medical_lab/index', $data);
         } else redirect('index/login');
     }
@@ -35,7 +35,7 @@ class Medical_lab extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Medical Lab Added Successfully");
+                $data['success'] = array($this->lang->line('msg_medlab_added'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('medical_lab/index');
@@ -53,7 +53,7 @@ class Medical_lab extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Medical Lab Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_medlab_updated'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('medical_lab/index');

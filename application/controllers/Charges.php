@@ -13,8 +13,8 @@ class Charges extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['chargess'] = $this->charges_model->getAllcharges();
-            $data["page_title"] = "Charges";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Charges");
+            $data["page_title"] = $this->lang->line('charges');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('charges'));
             $this->load->view('Charges/index', $data);
         } else redirect('index/login');
     }
@@ -36,9 +36,9 @@ class Charges extends CI_Controller {
                 $query[] = "bid=".$_POST['selected_bid'];
             }
             if ($this->charges_model->add()) {
-                $data['success'] = array("Charge Added Successfully");
+                $data['success'] = array($this->lang->line('msg_charge_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             $qry = implode("&",$query);
@@ -57,9 +57,9 @@ class Charges extends CI_Controller {
             }
             $id = $this->input->post('eidt_gf_id');
             if ($this->charges_model->update($id)) {
-                $data['success'] = array("Charge Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_charge_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
              $qry = implode("&",$query);

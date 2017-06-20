@@ -13,8 +13,8 @@ class Departments extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['departmentss'] = $this->departments_model->getAlldepartments();
-            $data["page_title"] = "Departments";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Departments");
+            $data["page_title"] = $this->lang->line('departments');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('departments'));
            
             $this->load->view('Departments/index', $data);
         } else redirect('index/login');
@@ -44,9 +44,9 @@ class Departments extends CI_Controller {
                 $query[] = "bid=".$_POST['selected_bid'];
             }
             if ($this->departments_model->add()) {
-                $data['success'] = array("Department Added Successfully");
+                $data['success'] = array($this->lang->line('msg_department_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             $qry = implode("&",$query);
@@ -65,9 +65,9 @@ class Departments extends CI_Controller {
             }
             $id = $this->input->post('eidt_gf_id');
             if ($this->departments_model->update($id)) {
-                $data['success'] = array("Department Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_department_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             $qry = implode("&",$query);

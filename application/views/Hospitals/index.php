@@ -15,13 +15,13 @@ $this->load->view("template/left.php");
 	                    <div class="panel-heading clearfix">
 							<div class="">
 								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome">Hospitals</h4>
+									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('hospitals');?></h4>
 								</div>
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
-										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" title="Add"  href="javascript:void(0);" data-title="Add" data-toggle="modal" data-target="#edit" style="">Add New</a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals" data-toggle="tooltip" title="Delete"  href="javascript:void(0);" data-title="Delete" data-toggle="modal" data-target="#edit" style="margin-left:10px">Delete</a>
-										
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+										<a class="btn btn-primary m-b-sm exportBtn"    href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
 								<br>
@@ -31,7 +31,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="hospitals" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th style="width:10px"></th><th>Name</th><th>License Status</th><th>City</th><th  width="20px">#</th>
+	                                    <tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['licenseStatus'];?></th><th><?php echo $this->lang->line('tableHeaders')['city'];?></th><th  width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                <tbody>
@@ -52,7 +52,7 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -61,33 +61,33 @@ $this->load->view("template/left.php");
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
 									<li role="presentation"><a href="#tab12" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
-                                    <li role="presentation"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/">Branches</a></li>
-                                    <li role="presentation"><a href="#tab3" aria-controls="departments" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_departments" data-url="departments/getDTdepartments/">Departments</a></li>
-                                    <!-- <li role="presentation"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="">Wards</a></li> -->
-                                    <li role="presentation"><a href="#tab5" aria-controls="beds" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_beds" data-url="beds/getDTbeds/">Beds</a></li>
-                                    <li role="presentation"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="doctors/getDTdoctors/">Doctors</a></li>
-                                    <li role="presentation"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="nurse/getDTnurse/">Nurses</a></li>
-                                    <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="receptionist/getDTreceptionist/">Receptionists</a></li>
-                                    <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="medical_store/getDTmedical_store/">Med. Stores</a></li>
-                                    <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="medical_lab/getDTmedical_lab/">Med. Labs</a></li>
-									<li role="presentation"><a href="#tab11" aria-controls="charges" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_charges" data-url="charges/getDTcharges/">Charges</a></li>
+                                    <li role="presentation"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/"><?php echo $this->lang->line('branches');?></a></li>
+                                    <li role="presentation"><a href="#tab3" aria-controls="departments" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_departments" data-url="departments/getDTdepartments/"><?php echo $this->lang->line('departments');?></a></li>
+                                    <li role="presentation"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="wards/getDTwards/"><?php echo $this->lang->line('wards');?></a></li>
+                                    <li role="presentation"><a href="#tab5" aria-controls="beds" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_beds" data-url="beds/getDTbeds/"><?php echo $this->lang->line('beds');?></a></li>
+                                    <li role="presentation"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="doctors/getDTdoctors/"><?php echo $this->lang->line('doctors');?></a></li>
+                                    <li role="presentation"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="nurse/getDTnurse/"><?php echo $this->lang->line('nurses');?></a></li>
+                                    <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="receptionist/getDTreceptionist/"><?php echo $this->lang->line('receptionists');?></a></li>
+                                    <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="medical_store/getDTmedical_store/"><?php echo $this->lang->line('medicalStore');?></a></li>
+                                    <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="medical_lab/getDTmedical_lab/"><?php echo $this->lang->line('medicalLab');?></a></li>
+									<li role="presentation"><a href="#tab11" aria-controls="charges" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_charges" data-url="charges/getDTcharges/"><?php echo $this->lang->line('charges');?></a></li>
                                 </ul>
                                 <div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
                             			<div class="col-md-12">
 											<div class ="col-md-6">
 												<div class="form-group ">
-													<label>Name</label>
-													<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
+													<label><?php echo $this->lang->line('labels')['name'];?></label>
+													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['name'];?>" name="name" id="name" />
 												</div>
 												<div class="form-group">
-													<label>Address</label>
-													<input class="form-control " type="text" placeholder="Address" name="address" id="address" />
+													<label><?php echo $this->lang->line('labels')['address'];?></label>
+													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
 												</div>
 											</div>
 											<div class="form-group col-md-6">
-												<label>Description</label>
-												<textarea class="form-control " rows="5" placeholder="Description" name="description" id="description" ></textarea>					
+												<label><?php echo $this->lang->line('labels')['description'];?></label>
+												<textarea class="form-control " rows="5" placeholder="<?php echo $this->lang->line('labels')['description'];?>" name="description" id="description" ></textarea>					
 											</div>
 							  			</div>
 							  			<div class="col-md-12">
@@ -96,29 +96,29 @@ $this->load->view("template/left.php");
 													<input class="form-control " type="text" placeholder="Logo" name="logo" id="logo" />					
 												</div> -->
 											<div class="form-group col-md-6">
-												<label>Email</label>
-												<input class="form-control " type="text" placeholder="Email" name="email" id="email" />
+												<label><?php echo $this->lang->line('labels')['email'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="email" id="email" />
 											</div>	
 											<div class="form-group col-md-6">
-												<label>Phone Numbers</label>
-												<input class="form-control " type="text" placeholder="Phone Numbers" name="phone_numbers" id="phone_numbers" />
+												<label><?php echo $this->lang->line('labels')['phoneNumber'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>" name="phone_numbers" id="phone_numbers" />
 											</div>
 							  			</div>
 							  			<div class="col-md-12">
 							  				<div class="form-group col-md-3">
-												<label>Select Country</label>
+												<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
 												<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
 											</div>
 											<div class="form-group col-md-3">
-												<label>Select State</label>
+												<label><?php echo $this->lang->line('labels')['selectState'];?></label>
 												<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
 											</div>
 							  				<div class="form-group col-md-3">
-												<label>Select District</label>
+												<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
 												<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
 											</div>
 											<div class="form-group col-md-3">
-												<label>Select City</label>
+												<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
 												<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
 											</div>
 							  			</div>
@@ -127,17 +127,17 @@ $this->load->view("template/left.php");
 							  			<div class="col-md-12">
 							  			<hr>
 							  				<div class="form-group col-md-6">
-												<label>Owner/MD Name</label>
-												<input class="form-control " type="text" placeholder="Owner/MD Name" name="md_name" id="md_name" />
+												<label><?php echo $this->lang->line('labels')['ownerName'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerName'];?>" name="md_name" id="md_name" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Owner/MD Phone number</label>
-												<input class="form-control " type="text" placeholder="Owner/MD Phone Numbers" name="md_contact_number" id="md_contact_number" />
+												<label><?php echo $this->lang->line('labels')['ownerNumber'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerNumber'];?>" name="md_contact_number" id="md_contact_number" />
 											</div>
 							  			</div>
 							  			<div class="col-md-12">
 							  				<div class="col-md-6 form-group">
-							  					<label>Hospital Admin</label>
+							  					<label><?php echo $this->lang->line('labels')['selectHospitalAdmin'];?></label>
 							  					<select name="hospital_id" id="hospital_id" class=" form-control">
 							  						<option value="-1">Hospital Admin</option>
 							  						<?php
@@ -153,7 +153,7 @@ $this->load->view("template/left.php");
 									<div role="tabpanel" class="tab-pane fade in" id="tab12">
 										<div class="col-md-12">
 							  				<div class="form-group col-md-6">
-												<label>License</label>
+												<label><?php echo $this->lang->line('labels')['license'];?></label>
 												<select class="form-control" name="license_category" id="license_category">					
 													<?php 
 														foreach ($license as $key => $value) {
@@ -163,14 +163,14 @@ $this->load->view("template/left.php");
 												</select>
 											</div>
 											<div class="form-group col-md-6">
-												<label>License Status</label>
+												<label><?php echo $this->lang->line('labels')['licenseStatus'];?></label>
 												<select class="form-control" name="license_status" id="license_status">
 													<option value="1">Active</option>
 													<option value="0">In-Active</option>
 												</select>
 											</div>
 											<div class="form-group col-md-6">
-												<label>License Validity</label>
+												<label><?php echo $this->lang->line('labels')['licenseValidity'];?></label>
 												<div class="col-md-12">
 													<div class="col-md-5">
 														<input type="text" class="form-control date-picker" id="validity_start" value="<?php echo date('d-m-Y'); ?>" ></input>
@@ -189,7 +189,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane fade in" id="tab2">
                                     	<table id="tbl_branches" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Branche Name</th><th>Phone Number</th><th>City</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['phoneNumber'];?></th><th><?php echo $this->lang->line('tableHeaders')['city'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -198,7 +198,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane fade in" id="tab3">
                                     	<table id="tbl_departments" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Branche Name</th><th>Department Name</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -207,7 +207,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab4">
                                     	<table id="tbl_wards" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Ward</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['totalBeds'];?></th><th><?php echo $this->lang->line('tableHeaders')['availableBeds'];?></th> </tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -216,7 +216,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab5">
                                     	<table id="tbl_beds" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Ward</th><th>Bed</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['bed'];?></th><th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -225,7 +225,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab6">
                                     	<table id="tbl_doctors" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Branch</th><th>Department</th><th>Status</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th><?php echo $this->lang->line('tableHeaders')['status'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -234,7 +234,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab7">
                                     	<table id="tbl_nurses" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Branch</th><th>Department</th><th>Status</th></tr>
+												<tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th><?php echo $this->lang->line('tableHeaders')['status'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -243,7 +243,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab8">
                                     	<table id="tbl_receptionist" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Branch</th><th>Department</th><th>Doctor</th><th>Status</th></tr>
+												<tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th><th><?php echo $this->lang->line('tableHeaders')['status'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -252,7 +252,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab9">
                                     	<table id="tbl_medstore" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Branch</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['ownerName'];?></th><th><?php echo $this->lang->line('tableHeaders')['ownerNumber'];?></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -261,7 +261,7 @@ $this->load->view("template/left.php");
                                     <div role="tabpanel" class="tab-pane  fade in" id="tab10">
                                     	<table id="tbl_medlabs" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Branch</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['ownerName'];?></th><th><?php echo $this->lang->line('tableHeaders')['ownerNumber'];?></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -270,7 +270,7 @@ $this->load->view("template/left.php");
 									<div role="tabpanel" class="tab-pane  fade in" id="tab11">
                                     	<table id="tbl_charges" class="display table table-bordered" cellspacing="0" width="100%">
 			                                <thead>
-			                                    <tr><th>#</th><th>Title</th><th>Type Of Charge</th><th>Description</th><th>Charge</th></tr>
+			                                    <tr><th>#</th><th><?php echo $this->lang->line('tableHeaders')['title'];?></th><th><?php echo $this->lang->line('tableHeaders')['typeOfCharge'];?></th><th><?php echo $this->lang->line('tableHeaders')['description'];?></th><th><?php echo $this->lang->line('tableHeaders')['charge'];?></th></tr>
 			                                </thead>
 			                                <tbody>
 			                                </tbody>
@@ -288,15 +288,15 @@ $this->load->view("template/left.php");
 						</div>
 				  		<div class="row">
 					  		<div class="form-group col-md-6">
-		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span>CANCEL</button>
+		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span><?php echo $this->lang->line('buttons')['cancel'];?></button>
 		                    </div>
 
 		                    <div class="form-group col-md-6">
-		                        <button type="submit" class="btn btn-info btn-lg" id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span>UPDATE</button>
+		                        <button type="submit" class="btn btn-info btn-lg" id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span><?php echo $this->lang->line('buttons')['update'];?></button>
 		                    </div>
 		                    
 		                    <div class="form-group col-md-6" style="display:none">
-		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span>ADD</button>
+		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['add'];?></button>
 		                    </div>
 		                </div>
 					</div>
@@ -398,7 +398,9 @@ $this->load->view("template/left.php");
 			        	city:{
 			        		required:"Select city"
 			        	}
-			        }
+			        },
+					invalidHandler: validationInvalidHandler,
+					errorPlacement: validationErrorPlacement
 				});
 
 
@@ -416,9 +418,9 @@ $this->load->view("template/left.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-					validator.resetForm();
+					resetForm(validator);
 					resetLocation();
-			    	$("#Edit-Heading").html("Add New Hospital");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewHospital'];?>");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
@@ -429,7 +431,7 @@ $this->load->view("template/left.php");
 			    });
 
 				$("#hospitals").on("click",".editbtn",function(){
-					validator.resetForm();
+					resetForm(validator);
 					resetLocation();
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
@@ -446,7 +448,7 @@ $this->load->view("template/left.php");
 			    	$.post("<?php echo site_url(); ?>/hospitals/gethospitals",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 						$("#name").val(data.name);
-						$("#Edit-Heading").html(data.name+" Information");
+						$("#Edit-Heading").html(data.name+" <?php echo $this->lang->line('headings')['info'];?>");
 						$("#address").val(data.address);
 						$("#logo").val(data.logo);
 						$("#phone_numbers").val(data.phone_numbers);
@@ -465,12 +467,13 @@ $this->load->view("template/left.php");
 			    }
 
 			    $("#hospitals").on("click",".viewbtn",function(){
-					validator.resetForm();
+					resetForm(validator);
+					resetLocation();
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("Detailed View");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['detailedView'];?>");
 			    	loadData($(this).attr("data-id"),false);
 					$('#tabs a[href="#tab1"]').click();
 
@@ -479,23 +482,9 @@ $this->load->view("template/left.php");
 
 			    $("#hospitals").on("click",".delbtn",function(){
 					var id = $(this).attr("data-id");
-					swal({
-						title: 'Are you sure?',
-						text: "You won't be able to revert this!",
-						type: 'warning',
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: 'Yes'
-					}).then(function () {
-						
+					swal(swalDeleteConfig).then(function () {
 						$.post("<?php echo site_url(); ?>/hospitals/delete",{id:id},function(data){
-							if(data==1){
-								$("#dellink_"+id).parents('tr').remove();	
-								toastr.success('selected item(s) deleted.');
-							}else{
-								toastr.error('Please try again.');
-							}
+							delResFunc(data,id);
 						});
 					});
 			    });

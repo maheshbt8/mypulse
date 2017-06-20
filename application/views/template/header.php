@@ -2,9 +2,8 @@
 <html>
     
 <head>
-        
         <!-- Title -->
-        <title><?php echo $this->config->item('title'); ?></title>
+        <title><?php echo $this->config->item('validation')['my']; ?></title>
         
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
         <meta charset="UTF-8">
@@ -36,6 +35,50 @@
         <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
         <script>
             var BASEURL = '<?php echo site_url();?>';
+            var validationInvalidHandler = function(event, validator) {
+						// 'this' refers to the form
+						var errors = validator.numberOfInvalids();
+						if (errors) {
+							var message = errors == 1 ? "<?php echo $this->lang->line('validation')['missedOne'];?>" : "<?php echo $this->lang->line('validation')['youMissed'];?>" + errors + "<?php echo $this->lang->line('validation')['filedsHighLighed'];?>";
+							$("div.error span").html(message);
+							$("div.error").show();
+						} else {
+							$("div.error").hide();
+						}
+					};
+            var validationErrorPlacement = function(error, element) {
+						if (element.hasClass("selectized")) {
+							var e = element.siblings(2)
+							error.insertAfter(e[1]);
+						} else {
+							error.insertAfter(element);
+						}
+					};  
+
+            var swalDeleteConfig = {
+                title: "<?php echo $this->lang->line('headings')['areYouSure'];?>",
+                text: "<?php echo $this->lang->line('headings')['deleteMessage'];?>",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: "<?php echo $this->lang->line('buttons')['yes'];?>",
+                cancelButtonText: "<?php echo $this->lang->line('buttons')['no'];?>"
+            };              
+            var delResFunc = function(data,id){
+                if(data==1){
+                    $("#dellink_"+id).parents('tr').remove();	
+                    toastr.success("<?php echo $this->lang->line('headings')['deleteSuccess'];?>");
+                }else{
+                    toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
+                }
+            };
+            
+            function resetForm(validator){
+                validator.resetForm();
+                $("div.error").hide();
+                
+            }
         </script>
         <link href="<?php echo base_url();?>public/assets/plugins/selectize/css/selectize.css" rel="stylesheet" rel="stylesheet" />
         <style type="text/css">
@@ -46,6 +89,9 @@
             }
         </style>
         <style type="text/css">
+            #tabs a{
+                padding: 10px 8px !important;
+            }
             .custome_col8{
                 width:66.66666667%
             }

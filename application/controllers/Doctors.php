@@ -12,8 +12,8 @@ class Doctors extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['doctorss'] = $this->doctors_model->getAlldoctors();
-            $data["page_title"] = "Doctors";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Doctors");
+            $data["page_title"] =  $this->lang->line('doctors');
+            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('doctors'));
             $this->load->view('Doctors/index', $data);
         } else redirect('index/login');
     }
@@ -36,7 +36,7 @@ class Doctors extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Doctor Added Successfully");
+                $data['success'] = array($this->lang->line('msg_doctor_added'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('doctors/index');
@@ -53,7 +53,7 @@ class Doctors extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Doctor Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_doctor_updated'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('doctors/index');

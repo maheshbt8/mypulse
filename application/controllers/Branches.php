@@ -13,8 +13,8 @@ class Branches extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['branchess'] = $this->branches_model->getAllbranches();
-            $data["page_title"] = "Branches";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Branches");
+            $data["page_title"] = $this->lang->line('branches');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('branches'));
             
             $this->load->view('Branches/index', $data);    
         } else redirect('index/login');
@@ -42,9 +42,9 @@ class Branches extends CI_Controller {
                 $selected_hid = $_POST['selected_hid'];
             }
             if ($this->branches_model->add()) {
-                $data['success'] = array("Branch Added Successfully");
+                $data['success'] = array($this->lang->line('msg_branch_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('branches/index?hid='.$selected_hid);
@@ -59,9 +59,9 @@ class Branches extends CI_Controller {
             }
             $id = $this->input->post('eidt_gf_id');
             if ($this->branches_model->update($id)) {
-                $data['success'] = array("Branch Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_branch_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('branches/index?hid='.$selected_hid);
@@ -94,7 +94,7 @@ class Branches extends CI_Controller {
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
-
+            
             $hospital_id = $this->input->get('hid',null,null);
             if($hospital_id == "all")
                 $hospital_id = null;

@@ -15,8 +15,8 @@ class Receptionist extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['receptionists'] = $this->receptionist_model->getAllreceptionist();
-            $data["page_title"] = "Receptionist";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Receptionist");
+            $data["page_title"] = $this->lang->line('receptionists');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('receptionists'));
             $this->load->view('Receptionist/index', $data);
         } else redirect('index/login');
     }
@@ -36,7 +36,7 @@ class Receptionist extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Receptionist Added Successfully");
+                $data['success'] = array($this->lang->line('msg_receptionist_added'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('receptionist/index');
@@ -52,7 +52,7 @@ class Receptionist extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Receptionist updated Successfully");
+                $data['success'] = array($this->lang->line('msg_receptionist_updated'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('receptionist/index');

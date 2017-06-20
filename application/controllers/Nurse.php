@@ -16,8 +16,8 @@ class Nurse extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['nurses'] = $this->nurse_model->getAllnurse();
-            $data["page_title"] = "Nurse";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Nurse");
+            $data["page_title"] = $this->lang->line('nurses');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('nurses'));
             $this->load->view('Nurse/index', $data);
         } else redirect('index/login');
     }
@@ -38,7 +38,7 @@ class Nurse extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Nurse Added Successfully");
+                $data['success'] = array($this->lang->line('msg_nurse_added'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('nurse/index');
@@ -54,7 +54,7 @@ class Nurse extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array("Nurse Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_nurse_updated'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('nurse/index');

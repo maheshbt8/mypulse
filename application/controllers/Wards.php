@@ -15,8 +15,8 @@ class Wards extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['wardss'] = $this->wards_model->getAllwards();
-            $data["page_title"] = "Wards";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Wards");
+            $data["page_title"] = $this->lang->line('wards');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('wards'));
             $this->load->view('Wards/index', $data);
         } else redirect('index/login');
     }
@@ -43,9 +43,9 @@ class Wards extends CI_Controller {
             }
             $qry = implode("&",$query);
             if ($this->wards_model->add()) {
-                $data['success'] = array("Wards Added Successfully");
+                $data['success'] = array($this->lang->line('msg_ward_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('wards/index?'.$qry);
@@ -67,9 +67,9 @@ class Wards extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->wards_model->update($id)) {
-                $data['success'] = array("Wards Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_ward_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('wards/index?'.$qry);
@@ -105,6 +105,7 @@ class Wards extends CI_Controller {
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? $_GET['bid'] : null : null;
             $did = isset($_GET['did']) ? $_GET['did']!="" ? $_GET['did'] : null : null;
+            $show  = $this->input->get('s',null,false);
             $cond = array();
 
             if($hid == "all")
@@ -146,7 +147,21 @@ class Wards extends CI_Controller {
                 $ids = implode(",",$ids);
                 $cond[] = "department_id in (".$ids.")";
             }
-            
+
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array(
+                    array("db" => "department_id", "dt" => 0, "formatter" => function ($d, $row) {
+                        $temp = $this->departments_model->getdepartmentsById($d);
+                        return $temp['department_name'];
+                    }),$columns[0],$columns[1],$columns[2]);
+                $columns[1]["dt"] = 1;
+                $columns[2]["dt"] = 2;
+                $columns[3]["dt"] = 3;
+                $columns[1]['formatter'] = function($d,$row){return $d;};
+                $this->tbl->setIndexColumn(true);
+            }
+
             $this->tbl->setTwID(implode(" AND ",$cond));
 
             // SQL server connection informationhostname" => "localhost",

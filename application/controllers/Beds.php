@@ -15,8 +15,8 @@ class Beds extends CI_Controller {
     public function index() {
         if ($this->auth->isLoggedIn()) {
             $data['bedss'] = $this->beds_model->getAllbeds();
-            $data["page_title"] = "Beds";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Beds");
+            $data["page_title"] = $this->lang->line('beds');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('beds'));
             $this->load->view('Beds/index', $data);
         } else redirect('index/login');
     }
@@ -42,9 +42,9 @@ class Beds extends CI_Controller {
             }
             
             if ($this->beds_model->add()) {
-                $data['success'] = array("Bed Added Successfully");
+                $data['success'] = array($this->lang->line('msg_bed_added'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             $qry = implode("&",$query);
@@ -66,9 +66,9 @@ class Beds extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             if ($this->beds_model->update($id)) {
-                $data['success'] = array("Bed Updated Successfully");
+                $data['success'] = array($this->lang->line('msg_bed_updated'));
             } else {
-                $data['errors'] = array("Please again later");
+                $data['errors'] = array($this->lang->line('msg_try_again'));
             }
             $this->session->set_flashdata('data', $data);
             $qry = implode("&",$query);
@@ -170,7 +170,7 @@ class Beds extends CI_Controller {
             if($show){
                 $this->tbl->setCheckboxColumn(false);
                 $columns[1]['formatter'] = function ($d, $row) { return $d; };
-                unset($columns[2]);
+                unset($columns[3]);
                 $this->tbl->setIndexColumn(true);
             }
             

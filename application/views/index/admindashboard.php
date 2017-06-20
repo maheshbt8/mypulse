@@ -10,7 +10,7 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter"><?php echo $states['tot_bra'];?></p>
-                            <span class="info-box-title">Branches</span>
+                            <span class="info-box-title"><?php echo $this->lang->line('branches');?></span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-hospital-o"></i>
@@ -23,7 +23,7 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter"><?php echo $states['tot_doc'];?></p>
-                            <span class="info-box-title">Doctors</span>
+                            <span class="info-box-title"><?php echo $this->lang->line('doctors');?></span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-user-md"></i>
@@ -36,7 +36,7 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p><span class="counter"><?php echo $states['tot_pat'];?></span></p>
-                            <span class="info-box-title">Patients</span>
+                            <span class="info-box-title"><?php echo $this->lang->line('patients');?></span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-users"></i>
@@ -49,7 +49,7 @@
                     <div class="panel-body">
                         <div class="info-box-stats">
                             <p class="counter"><?php echo $states['tot_app'];?></p>
-                            <span class="info-box-title">Appointments</span>
+                            <span class="info-box-title"><?php echo $this->lang->line('appointments');?></span>
                         </div>
                         <div class="info-box-icon">
                             <i class="icon-envelope"></i>

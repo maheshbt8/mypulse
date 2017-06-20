@@ -106,6 +106,8 @@
                 $("#li"+$("#left_active_sub_menu").val()).addClass("active");
             }
 
+            
+
             $(document).on('click','.multiDeleteBtn',function(){
                 var at = $(this).data('at');
                 var selected = [];

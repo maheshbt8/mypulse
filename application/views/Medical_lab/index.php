@@ -11,14 +11,33 @@ $this->load->view("template/left.php");
 	        <div class="row">
 	            <div class="col-md-12">
 	                <div class="panel panel-white">
-	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Medical Lab</h4>
+	                     <div class="panel-heading clearfix">
+							<div class="">
+								<div class="custome_col8">
+									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('medicalLabFull');?></h4>
+								</div>
+								<div class="custome_col4">
+									<div class="panel_button_top_right">
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="medical_lab" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+										<a class="btn btn-primary m-b-sm exportBtn" data-at="medical_lab" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+									</div>
+								</div>
+								<br>
+							</div>
 	                    </div>
-	                    <div class="panel-body">
+	                    <div class="panel-body panel_body_custome">
 	                       <div class="table-responsive">
 	                            <table id="medical_lab" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th style="width:10px"></th><th>Name</th><th>Owner Name</th><th>Owner Contact Number</th><th>Hospital</th><th>Branch</th><th width="20px">#</th>
+	                                    <tr>
+											<th style="width:10px"></th>
+											<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['ownerName'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['ownerNumber'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
+											<th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -41,38 +60,38 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
 					</div>
 				  	<div class="modal-body">
 						<div class="row">
 
 				  			 <div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
-									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab">Hospital Association</a></li>
-                                    <li role="presentation"><a href="#tab3" aria-controls="incharge" role="tab" data-toggle="tab">Medical Lab Incharge</a></li>
-									<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab">Profession Info.</a></li>
+                                    <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
+								<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+								<li role="presentation"><a href="#tab3" aria-controls="incharge" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['medLabInc'];?></a></li>
+								<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
 								</ul>
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active fade in" id="tab1">
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Name</label>
-												<input class="form-control " type="text" placeholder="Name" name="name" id="name" />
+												<label><?php echo $this->lang->line('labels')['name'];?></label>
+												<input class="form-control " type="text" placeholder="<label><?php echo $this->lang->line('labels')['name'];?></label>" name="name" id="name" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Description</label>
-												<textarea class="form-control"  placeholder="Description" name="md_description" id="md_description"></textarea>
+												<label><?php echo $this->lang->line('labels')['description'];?></label>
+												<textarea class="form-control"  placeholder="<?php echo $this->lang->line('labels')['description'];?>" name="md_description" id="md_description"></textarea>
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Owner Name</label>
-												<input class="form-control " type="text" placeholder="Owner Name" name="owner_name" id="owner_name" />
+												<label><?php echo $this->lang->line('labels')['ownerName'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerName'];?>" name="owner_name" id="owner_name" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Owner Contact Number</label>
-												<input class="form-control " type="text" placeholder="Owner Contact Number" name="owner_contact_number" id="owner_contact_number" />
+												<label><?php echo $this->lang->line('labels')['ownerNumber'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerNumber'];?>" name="owner_contact_number" id="owner_contact_number" />
 											</div>
 										</div>
 										
@@ -80,109 +99,105 @@ $this->load->view("template/left.php");
 									<div role="tabpanel" class="tab-pane fade in" id="tab2">
 										<div class="col-md-12">	
 											<div class="form-group col-md-6">
-												<label>Select Hospital</label>
+												<label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
 												<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
 												</select>
 											</div>
 											<div class="form-group col-md-6">
-												<label>Branch</label>
+												<label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
 												<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
 												</select>
 											</div>
 										</div>
 									</div>
                                 	<div role="tabpanel" class="tab-pane fade in" id="tab3">
-                            			<div class="col-md-12">
+										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>First Name</label>
-												<input class="form-control " type="text" placeholder="First Name" name="first_name" id="first_name" />
+												<label><?php echo $this->lang->line('labels')['female'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['female'];?>" name="first_name" id="first_name" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Last Name</label>
-												<input class="form-control " type="text" placeholder="Last Name" name="last_name" id="last_name" />
+												<label><?php echo $this->lang->line('labels')['lname'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Email</label>
-												<input class="form-control " type="text" placeholder="Usernemail" name="useremail" id="useremail" />
+												<label><?php echo $this->lang->line('labels')['email'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Password</label>
-												<input class="form-control " type="text" placeholder="Password" name="password" id="password" />
-												<span id="passwordhint" style="display: none">Leave it empty if you don't want to update the password.</span>
+												<label><?php echo $this->lang->line('labels')['password'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
+												<span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Aadhar Number</label>
-												<input class="form-control " type="text" placeholder="Aadhar Number" name="aadhaar_number" id="aadhaar_number" />
+												<label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Mobile</label>
-												<input class="form-control " type="text" placeholder="Mobile" name="mobile" id="mobile" />
+												<label><?php echo $this->lang->line('labels')['mobile'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
 											</div>
 										</div> 
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Gender</label>
+												<label><?php echo $this->lang->line('labels')['gender'];?></label>
 												<select class="form-control " name="gender" id="gender" />
-													<option value="M">Male</option>
-													<option value="F">Female</option>
+													<option value="M"><?php echo $this->lang->line('labels')['male'];?></option>
+													<option value="F"><?php echo $this->lang->line('labels')['female'];?></option>
 												</select>
 											</div>
 											<div class="form-group col-md-6">
-												<label>Date of Birth</label>
-												<input class="form-control date-picker" type="text" placeholder="Date of birth" name="date_of_birth" id="date_of_birth" />
+												<label><?php echo $this->lang->line('labels')['dob'];?></label>
+												<input class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Address</label>
-												<input class="form-control" type="text" placeholder="Address" name="address" id="address" />
+												<label><?php echo $this->lang->line('labels')['address'];?></label>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Alternate Mobile Number</label>
-												<input class="form-control" type="text" placeholder="Alternate Mobile Number" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
-											</div>
-											<div class="form-group col-md-6">
-												<label>Description</label>
-												<textarea class="form-control"  placeholder="Description" name="description" id="description"></textarea>
+												<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-3">
-												<label>Select Country</label>
+												<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
 												<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
 											</div>
 											<div class="form-group col-md-3">
-												<label>Select State</label>
+												<label><?php echo $this->lang->line('labels')['selectState'];?></label>
 												<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
 											</div>
 											<div class="form-group col-md-3">
-												<label>Select District</label>
+												<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
 												<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
 											</div>
 											<div class="form-group col-md-3">
-												<label>Select City</label>
+												<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
 												<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
 											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group  col-md-6">
-												<label for="input-Default" class="col-sm-4 control-label">Profile Picture</label>
+												<label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
 												<div class="col-sm-8">
 													<div class=" input-group image-preview">
 														<input type="text" class="form-control image-preview-filename" id="prephoto" disabled="disabled"> 
 														<span class="input-group-btn">
 															<!-- image-preview-clear button -->
 															<button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-																<span class="glyphicon glyphicon-remove"></span> Clear
+																<span class="glyphicon glyphicon-remove"></span> <?php echo $this->lang->line('labels')['clear'];?>
 															</button>
 															<!-- image-preview-input -->
 															<div class="btn btn-default image-preview-input">
 																<span class="glyphicon glyphicon-folder-open"></span>
-																<span class="image-preview-input-title">Browse</span>
+																<span class="image-preview-input-title"><?php echo $this->lang->line('labels')['browse'];?></span>
 																<input type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
 															</div>
 														</span>
@@ -190,18 +205,18 @@ $this->load->view("template/left.php");
 												</div>
 											</div>
 										</div>
-                                    </div>
+									</div>
 									<div role="tabpanel" class="tab-pane fade in" id="tab4">
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label>Qualification</label>
-												<input class="form-control" type="text" placeholder="Qualification" name1="qualification" id="qualification" />
+												<label><?php echo $this->lang->line('labels')['qualification'];?></label>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name1="qualification" id="qualification" />
 											</div>
 											<div class="form-group col-md-6">
-												<label>Experience</label>
-												<input class="form-control" type="text" placeholder="Experience" name1="experience" id="experience" />
+												<label><?php echo $this->lang->line('labels')['experience'];?></label>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name1="experience" id="experience" />
 											</div>
-										</div>	
+										</div>
 									</div>
 								</div>	
 							</div>	
@@ -215,15 +230,15 @@ $this->load->view("template/left.php");
 							  	<span class="model_error"></span>
 							</div>
 					  		<div class="form-group col-md-6">
-		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span>CANCEL</button>
+		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span><?php echo $this->lang->line('buttons')['cancel'];?></button>
 		                    </div>
 
 		                    <div class="form-group col-md-6">
-		                        <button type="submit" class="btn btn-info btn-lg" id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span>UPDATE</button>
+		                        <button type="submit" class="btn btn-info btn-lg" id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span><?php echo $this->lang->line('buttons')['update'];?></button>
 		                    </div>
 		                    
 		                    <div class="form-group col-md-6" style="display:none">
-		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span>ADD</button>
+		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['add'];?></button>
 		                    </div>
 		                </div>
 					</div>
@@ -264,38 +279,21 @@ $this->load->view("template/footer.php");
 			        },
 			        messages: {
 			        	name:{
-							required:"Enter Medical Lab name"
+							required:"<?php echo $this->lang->line('validation')['requriedMedLab'];?>"
 						},
 						owner_name:{
-							required : "Enter Medical Lab Owner's name"
+							required : "<?php echo $this->lang->line('validation')['requiredOwnername'];?>"
 						},
 						description:{
-							required : "Enter Description"
+							required : "<?php echo $this->lang->line('validation')['requiredDiscription'];?>"
 						},
 						owner_contact_number:{
-							required : "Enter Medical Lab Owner's Contact Number",
-							phoneUS: "Enter valid phone number"
+							required : "<?php echo $this->lang->line('validation')['requriedOwnerNumber'];?>",
+							phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>"
 						}
 			        },
-					invalidHandler: function(event, validator) {
-						// 'this' refers to the form
-						var errors = validator.numberOfInvalids();
-						if (errors) {
-							var message = errors == 1 ? 'You missed 1 field. It has been highlighted' : 'You missed ' + errors + ' fields. They have been highlighted';
-							$("div.error span").html(message);
-							$("div.error").show();
-						} else {
-							$("div.error").hide();
-						}
-					},
-					errorPlacement: function(error, element) {
-						if (element.hasClass("selectized")) {
-							var e = element.siblings(2)
-							error.insertAfter(e[1]);
-						} else {
-							error.insertAfter(element);
-						}
-					}
+					invalidHandler: validationInvalidHandler,
+					errorPlacement: validationErrorPlacement
 					
 				});
 
@@ -306,16 +304,15 @@ $this->load->view("template/footer.php");
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
-				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-				$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"medical_lab\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+				//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+				//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"medical_lab\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
-					validator.resetForm();
+					resetForm(validator);
 					resetLocation();
-					$("div.error").hide();
-			    	$("#Edit-Heading").html("Add New Medical Lab");
+					$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewMedLab'];?>");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
@@ -328,7 +325,7 @@ $this->load->view("template/footer.php");
 			    });
 
 				$("#medical_lab").on("click",".editbtn",function(){
-					validator.resetForm();
+					resetForm(validator);
 					resetLocation();
 					$("div.error").hide();
 			    	var id = $(this).attr("data-id");
@@ -337,7 +334,7 @@ $this->load->view("template/footer.php");
 					$("#passwordhint").show();
 			    	$("#form").attr("action","<?php echo site_url(); ?>/medical_lab/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Edit Details");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$('#tabs a[href="#tab1"]').click();
@@ -403,7 +400,7 @@ $this->load->view("template/footer.php");
 			    }
 
 			    $("#medical_lab").on("click",".viewbtn",function(){
-					validator.resetForm();
+					resetForm(validator);
 					resetLocation();
 					$("div.error").hide();
 			    	loadData($(this).attr("data-id"));
@@ -411,30 +408,16 @@ $this->load->view("template/footer.php");
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("View Details");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['detailedView'];?>");
 					$('#tabs a[href="#tab1"]').click();
 			    });
 
 
 			    $("#medical_lab").on("click",".delbtn",function(){
 			    	var id = $(this).attr("data-id");
-					swal({
-						title: 'Are you sure?',
-						text: "You won't be able to revert this!",
-						type: 'warning',
-						showCancelButton: true,
-						confirmButtonColor: '#3085d6',
-						cancelButtonColor: '#d33',
-						confirmButtonText: 'Yes'
-					}).then(function () {
-						
+					swal(swalDeleteConfig).then(function () {
 						$.post("<?php echo site_url(); ?>/medical_lab/delete",{id:id},function(data){
-							if(data==1){
-								$("#dellink_"+id).parents('tr').remove();	
-								toastr.success('selected item(s) deleted.');
-							}else{
-								toastr.error('Please try again.');
-							}
+							delResFunc(data,id);
 						});
 					});
 			    });
