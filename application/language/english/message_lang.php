@@ -23,6 +23,8 @@ $lang['medicalLabFull'] = "Medical Labs";
 $lang['medicalLab'] = "Med. Labs";
 $lang['charges'] = "Charges";
 $lang['appointments'] = "Appointments";
+$lang['profile'] = "Profile";
+$lang['patientInfo'] = "Patient Information";
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -90,7 +92,8 @@ $lang['buttons'] = array(
     'update' => "Update",
     'add' => "Add",
     'yes' => 'Yes',
-    'no' => 'No'
+    'no' => 'No',
+    'edit' => 'Edit'
 );
 
 $lang['tableHeaders'] = array(
@@ -188,6 +191,7 @@ $lang['labels'] = array(
     'pastMedicalHistoryPlaceholder' => 'Provide any past medical hisotry, For example any Surgeries, Alergies etc.',
     'medStoreInc' => 'Medical Store Incharge',
     'medLabInc' => 'Medical Lab Incharge',
+    'healthInfo' => 'Health Information'
 
 );
 

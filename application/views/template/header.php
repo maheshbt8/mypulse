@@ -260,8 +260,8 @@
                                         <img class="img-circle avatar" src="<?php echo $this->auth->getProfileImg();?>" width="40" height="40" alt="">
                                     </a>
                                     <ul class="dropdown-menu dropdown-list" role="menu">
-                                        <li role="presentation"><a href=href="<?php echo site_url();?>/index/"><i class="fa fa-user"></i><?php echo $_SESSION['menu']['profile'];?></a></li>
-                                        <li role="presentation" class="divider"></li>
+                                        <!--<li role="presentation"><a href=href="<?php //echo site_url();?>/index/"><i class="fa fa-user"></i><?php //echo $_SESSION['menu']['profile'];?></a></li>-->
+                                        <!--<li role="presentation" class="divider"></li>-->
                                         <li role="presentation"><a href="<?php echo site_url();?>/index/logout"><i class="fa fa-sign-out m-r-xs"></i><?php echo $_SESSION['menu']['logout'];?></a></li>
                                     </ul>
                                 </li>

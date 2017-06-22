@@ -17,13 +17,18 @@ class Index extends CI_Controller {
 		if($this->auth->isLoggedIn()){
 			$data['page_title'] = $this->lang->line('dashboard');
 			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
-			if($this->auth->getRole() == 1){
+			if($this->auth->isSuperAdmin()){
 				$data['states'] = $this->dashboard_model->getSuperAdminStates();
 				$this->load->view($this->index_page,$data);
 			}
-			else if($this->auth->getRole() == 2){
+			else if($this->auth->isHospitalAdmin()){
 				$data['states'] = $this->dashboard_model->getHospitalAdminStates($this->auth->getHospitalId());
 				$this->load->view('index/admindashboard',$data);
+			}else if($this->auth->isPatient()){
+				$data['page_title'] = $this->lang->line('patients');
+			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
+				$data['profile'] = $this->users_model->getProfile($this->auth->getUserid());
+				$this->load->view('patient/profile',$data);
 			}
 		}
 		else{

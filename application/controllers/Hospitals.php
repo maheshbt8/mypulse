@@ -78,7 +78,7 @@ class Hospitals extends CI_Controller {
                 if($d==1){
                     return '<span class="label label-success">'.$name.' - Active</span>';
                 }else{
-                    return '<span class="label label-danger">'.$name.' - In-Active</span>';
+                    return '<span class="label label-danger">'.$name.' - Inactive</span>';
                 }
                 //return '<span class="label label-info">'.$name.' - Not Register</span>';
                 //return ($d == "" || $d == null) ? "-" : $d;

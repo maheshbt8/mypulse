@@ -66,15 +66,15 @@ $this->load->view("template/left.php");
 									<ul class="nav  nav-pills" role="tablist">
 										<li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
 										<li role="presentation"><a href="#tab2" aria-controls="other" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
-										<li role="presentation"><a href="#tab3" aria-controls="patient" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
+										<li role="presentation"><a href="#tab3" aria-controls="patient" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>
 									</ul>
 									<div class="tab-content">
 										<div role="tabpanel" class="tab-pane active fade in" id="tab1">
 											<div class="col-md-12">
 												<div class="col-md-6">
 													<div class="form-group">
-														<label><?php echo $this->lang->line('labels')['female'];?></label>
-														<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['female'];?>" name="first_name" id="first_name" />
+														<label><?php echo $this->lang->line('labels')['fname'];?></label>
+														<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
 													</div>
 													<div class="form-group">
 														<label><?php echo $this->lang->line('labels')['lname'];?></label>
