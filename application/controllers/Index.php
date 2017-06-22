@@ -28,7 +28,7 @@ class Index extends CI_Controller {
 				$data['page_title'] = $this->lang->line('patients');
 			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
 				$data['profile'] = $this->users_model->getProfile($this->auth->getUserid());
-				$this->load->view('patient/profile',$data);
+				$this->load->view('Patient/profile',$data);
 			}
 		}
 		else{
