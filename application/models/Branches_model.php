@@ -41,6 +41,7 @@ class Branches_model extends CI_Model {
             $this->db->where('hospital_id',$hospital_id);
         }else{
             $hids = $this->auth->getAllHospitalIds();
+            if(count($hids) == 0){ $hids[] = -1;} 
             $this->db->where_in('hospital_id',$hids);
         }
 

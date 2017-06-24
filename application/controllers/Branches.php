@@ -25,12 +25,12 @@ class Branches extends CI_Controller {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
             $hid = $this->input->get("hospital_id",null,-1);
-
-            if(!$this->auth->isSuperAdmin()){
+            
+            if($hid == -1 && !$this->auth->isSuperAdmin()){
                 $hid = $this->auth->getHospitalId();
             }
-
-            $result = $this->branches_model->search($q, $f,$hid);
+            
+            $result = $this->branches_model->search($q,$f,$hid);
             echo json_encode($result);
         }
     }

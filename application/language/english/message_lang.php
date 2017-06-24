@@ -25,6 +25,9 @@ $lang['charges'] = "Charges";
 $lang['appointments'] = "Appointments";
 $lang['profile'] = "Profile";
 $lang['patientInfo'] = "Patient Information";
+$lang['visits'] = 'Visits';
+$lang['changePassword'] = "Change Password";
+$lang['appoitments'] = "Appoitments";
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -34,7 +37,8 @@ $lang["msg_check_email"] = "Please Check Your Mailbox";
 $lang["msg_email_send_error"] = "Unable to send you EMail. Please try again after sometime.";
 $lang["msg_password_change"] = "Password Successfully Change";
 $lang["msg_key_not_match"] = "Key Does Not Match";
-
+$lang['msg_new_password_notmatch'] = "New password does not match. Please try again";
+$lang['msg_old_password_notmatch'] = "Old password does not match. Please try again";
 //Users
 $lang['msg_user_added'] = "User Added Successfully";
 $lang['msg_user_updated'] = "User Updated Successfully";
@@ -78,6 +82,12 @@ $lang['msg_medstore_updated'] = "Medical Store Updated Successfully";
 $lang['msg_medlab_added'] = "Medical Lab Added Successfully";
 $lang['msg_medlab_updated'] = "Medical Lab Updated Successfully";
 
+$lang['msg_patient_added'] = "Patient Added Successfully";
+$lang['msg_patient_updated'] = "Patient Updated Successfully";
+
+$lang['msg_appoitment_added'] = "Appoitment Added Successfully";
+$lang['msg_appoitment_updated'] = "Appoitment Updated Successfully";
+
 ///
 $lang["usr_invalid_user"] = "Please Enter Valid Username";
 $lang['usr_acc_verify'] = "Please verify your account.";
@@ -119,8 +129,9 @@ $lang['tableHeaders'] = array(
     'title' => 'Title',
     'typeOfCharge' => 'Type of Charge',
     'description' => 'Description',
-    'charge' => 'Charge'
-    
+    'charge' => 'Charge',
+    'hospital_branch' => 'Hospital-Branch',
+    'appoitment_date' => 'Appoitment Date'
 );
 
 $lang['labels'] = array(
@@ -191,8 +202,18 @@ $lang['labels'] = array(
     'pastMedicalHistoryPlaceholder' => 'Provide any past medical hisotry, For example any Surgeries, Alergies etc.',
     'medStoreInc' => 'Medical Store Incharge',
     'medLabInc' => 'Medical Lab Incharge',
-    'healthInfo' => 'Health Information'
-
+    'healthInfo' => 'Health Information',
+    'selectHeightFt' => 'Select Feet',
+    'selectHeightIc' => 'Select Inch',
+    'oldPassword' => 'Old Password',
+    'newPassword' => 'New Password',
+    'reNewPassword' => 'Repeat New Password',
+    'inactive' => 'Inactive',
+    'active' => 'Active',
+    'pending' => 'Pending',
+    'approved' => 'Approved',
+    'rejected' => 'Rejected',
+    'completed' => 'Completed',
 );
 
 $lang['headings'] = array(
@@ -215,6 +236,7 @@ $lang['headings'] = array(
     'deleteSuccess' => 'Seleceted item(s) deleted',
     'addNewMedStore' => 'Add new medical store',
     'addNewMedLab' => 'Add new medical lab',
+    'addNewAppoitment' => 'New appoitment'
     
 );
 
@@ -252,5 +274,10 @@ $lang['validation'] = array(
     'requiredMedStore' => 'Enter medical store name',
     'requiredOwnername' => 'Enter owner name',
     'requriedOwnerNumber' => "Enter owner's contact number",
-
+    'requiredNewReapeatPassword' => 'Re-enter new password',
+    'requiredNewPassword' => 'Enter new password',
+    'requriedOldPass' => 'Enter old password',
+    'selectDoctor' => 'Select Doctor',
+    'requiredAppoitmentDate' => 'Enter appoitment date',
+    'requiredReason' => 'Enter reason for your appoitment'
 );

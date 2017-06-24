@@ -13,7 +13,13 @@ $this->load->view("template/left.php");
             <div class="col-md-3 user-profile">
             
                 <div class="profile-image-container" >
-                    <img src="<?php echo base_url();?>public/assets/images/user.png" alt="" style="width:200px;height:auto;padding-left:10px">
+                    <?php
+                        $img = base_url().'public/assets/images/user.png';
+                        if($profile['profile_photo'] != ""){
+                            $img = $profile['profile_photo'];
+                        }
+                    ?>
+                    <img src="<?php echo $img;?>" alt="" style="width:200px;height:auto;padding-left:10px">
                 </div>
             
                 <h3 class="text-center"><?php
@@ -56,6 +62,8 @@ $this->load->view("template/left.php");
                                 
                             </ul>
                             <!-- Tab panes -->
+                            <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
+                            <input type="hidden" name="eidt_gf_id" value="<?php echo $profile['id'];?>" />
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="tab1">
                                     <div class="col-md-12">
@@ -74,17 +82,7 @@ $this->load->view("template/left.php");
                                             <textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"><?php echo $profile['description'];?></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['email'];?></label>
-                                            <input value="<?php echo $profile['useremail'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['password'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
-                                            <span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col-md-12">
                                         
                                         <div class="form-group col-md-6">
@@ -96,6 +94,17 @@ $this->load->view("template/left.php");
                                             <input value="<?php echo $profile['mobile'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
                                         </div>
                                         
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['email'];?></label>
+                                            <input value="<?php echo $profile['useremail'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>"  id="useremail" />
+                                        </div>
+                                        <!--<div class="form-group col-md-6">
+                                            <label><?php //echo $this->lang->line('labels')['password'];?></label>
+                                            <input class="form-control" type="text" placeholder="<?php //echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
+                                            <span id="passwordhint" style="display: none"><?php //echo $this->lang->line('labels')['passwordHind'];?></span>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tab2">
@@ -169,52 +178,82 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['bloodPressure'];?></label>
-                                            <select class="form-control" name1="boold_group" id="boold_group">
-                                                <option value="OPVE">O +</option>
-                                                <option value="ONVE">O -</option>
-                                                <option value="APVE">A +</option>
-                                                <option value="ANVE">A -</option>
-                                                <option value="BPVE">B +</option>
-                                                <option value="BNVE">B -</option>
-                                                <option value="ABPVE">AB +</option>
-                                                <option value="ABNVE">AB -</option>
+                                            <select class="form-control" name="blood_group" id="blood_group">
+                                                <option <?php if($profile['gender']=="OPVE") { echo "selected";}?> value="OPVE">O +</option>
+                                                <option <?php if($profile['gender']=="ONVE") { echo "selected";}?> value="ONVE">O -</option>
+                                                <option <?php if($profile['gender']=="APVE") { echo "selected";}?> value="APVE">A +</option>
+                                                <option <?php if($profile['gender']=="ANVE") { echo "selected";}?> value="ANVE">A -</option>
+                                                <option <?php if($profile['gender']=="BPVE") { echo "selected";}?> value="BPVE">B +</option>
+                                                <option <?php if($profile['gender']=="BNVE") { echo "selected";}?> value="BNVE">B -</option>
+                                                <option <?php if($profile['gender']=="ABPVE") { echo "selected";}?> value="ABPVE">AB +</option>
+                                                <option <?php if($profile['gender']=="ABNVE") { echo "selected";}?> value="ABNVE">AB -</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['height'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['height'];?>" name1="height" id="height" />
+                                            <div>
+                                                <div class="form-group col-md-6">
+                                                    <label><?php echo $this->lang->line('labels')['selectHeightFt'];?></label>
+                                                    <select class="form-control" name="height_feet" id="height_feet">
+                                                        <?php
+                                                            for($i=1; $i<=10; $i++){
+                                                                $sel = "";
+                                                                if($profile['height_feet'] == $i){
+                                                                    $sel = "selected";
+                                                                }
+                                                                echo "<option $sel value='$i'>$i</option>";
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group  col-md-6" >
+                                                    <label><?php echo $this->lang->line('labels')['selectHeightIc'];?></label>
+                                                    <select class="form-control" name="height_inch" id="height_inch">
+                                                        <?php
+                                                            for($i=1; $i<=12; $i++){
+                                                                $sel = "";
+                                                                if($profile['height_inch'] == $i){
+                                                                    $sel = "selected";
+                                                                }
+                                                                echo "<option $sel value='$i'>$i</option>";
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>    
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['weight'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['weight'];?>" name1="weight" id="weight" />
+                                            <input value="<?php echo $profile['weight'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['weight'];?>" name="weight" id="weight" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['bloodPressure'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['bloodPressure'];?>" name1="blood_pressure" id="blood_pressure" />
+                                            <input value="<?php echo $profile['blood_pressure'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['bloodPressure'];?>" name="blood_pressure" id="blood_pressure" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['sugarLevel'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['sugarLevel'];?>" name1="sugar_level" id="sugar_level" />
+                                            <input value="<?php echo $profile['sugar_level'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['sugarLevel'];?>" name="sugar_level" id="sugar_level" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['healthInsuranceProvider'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['healthInsuranceProvider'];?>" name1="health_insurance_provider" id="health_insurance_provider" />
+                                            <input value="<?php echo $profile['health_insurance_provider'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['healthInsuranceProvider'];?>" name="health_insurance_provider" id="health_insurance_provider" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['healthInsuranceId'];?></label>
-                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['healthInsuranceId'];?>" name1="health_insurance_id" id="health_insurance_id" />
+                                            <input value="<?php echo $profile['health_insurance_id'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['healthInsuranceId'];?>" name="health_insurance_id" id="health_insurance_id" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['familyHistory'];?></label>
-                                            <textarea class="form-control" placeholder="<?php echo $this->lang->line('labels')['familyHistoryPlaceholder'];?>" id="family_history" name1="family_history" ></textarea>
+                                            <textarea class="form-control" placeholder="<?php echo $this->lang->line('labels')['familyHistoryPlaceholder'];?>" id="family_history" name="family_history" ><?php echo $profile['family_history'];?></textarea>
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label><?php echo $this->lang->line('labels')['pastMedicalHistory'];?></label>
-                                            <textarea class="form-control" placeholder="<?php echo $this->lang->line('labels')['pastMedicalHistoryPlaceholder'];?>" id="past_medical_history" name1="past_medical_history" ></textarea>
+                                            <textarea class="form-control" placeholder="<?php echo $this->lang->line('labels')['pastMedicalHistoryPlaceholder'];?>" id="past_medical_history" name="past_medical_history" ><?php echo $profile['past_medical_history'];?></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -226,6 +265,23 @@ $this->load->view("template/footer.php");
 ?>
 <script type="text/javascript">
     $(document).ready(function(){
+
+        <?php
+            $this->load->view("template/location");
+        ?>
+
+        var country = "<?php echo $profile['country'];?>";
+
+        if(country != null && country!=undefined && country != "" && country > 0){
+            loc_cid = "<?php echo $profile['city'];?>";
+            loc_did = "<?php echo $profile['district'];?>";
+            loc_sid = "<?php echo $profile['state'];?>";
+            var tempselectize_selectize_country = $selectize_country[0].selectize;
+            tempselectize_selectize_country.addOption([{"id":country,"text":country}]);
+            tempselectize_selectize_country.refreshItems();
+            tempselectize_selectize_country.setValue(country);
+        }
+        shwoImgFromUrl("<?php echo $profile['profile_photo'];?>");
         
         $("#editBtn").click(function(){
             toggleEditButton();
@@ -234,11 +290,14 @@ $this->load->view("template/footer.php");
         function toggleEditButton(){
             var eb = $("#editBtn");
             if($(eb).data('isEdit') == "1"){
-                $(eb).data('isEdit','0');
+                saveData();
+
+                /*$(eb).data('isEdit','0');
                 $(eb).addClass('btn-primary');
                 $(eb).removeClass('btn-success');
                 $(eb).html('Edit');
                 disableFields();
+                */
             }else{
                 $(eb).data('isEdit','1');
                 $(eb).removeClass('btn-primary');
@@ -252,14 +311,32 @@ $this->load->view("template/footer.php");
             $("#profileBody input").prop("disabled", true);
             $("#profileBody textarea").prop("disabled", true);
             $("#profileBody select").prop("disabled", true);
+
+            $selectize_city[0].selectize.disable();
+            $selectize_state[0].selectize.disable();
+            $selectize_district[0].selectize.disable();
+            $selectize_country[0].selectize.disable();
+
+            //$("#passwordhint").hide();
         }
 
         function enableFields(){
             $("#profileBody input").prop("disabled", false);
             $("#profileBody textarea").prop("disabled", false);
             $("#profileBody select").prop("disabled", false);
+
+            $selectize_city[0].selectize.enable();
+            $selectize_state[0].selectize.enable();
+            $selectize_district[0].selectize.enable();
+            $selectize_country[0].selectize.enable();
+            //$("#passwordhint").show();
+            $("#useremail").prop("disabled",true);
         }
 
         disableFields();
+
+        function saveData(){
+            $("#form").submit();
+        }
     });
 </script>

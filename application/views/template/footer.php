@@ -34,6 +34,7 @@
         <script src="<?php echo base_url();?>public/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/selectize/js/selectize.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/pages/previewimage.js"></script>
@@ -99,6 +100,11 @@
                 orientation: "top auto",
                 autoclose: true
             });
+
+            $(".date-time-picker").datetimepicker({
+                format: 'D-M-Y hh:mm A'
+            });
+
             var pos = $("#left_active_menu").val();
             $("#li"+pos).addClass('active');
             if($("#li"+pos).find('ul').length > 0) {

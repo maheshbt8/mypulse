@@ -221,11 +221,41 @@ class Auth {
         switch ($status) {
             case 1: 
                 $class = "label label-success";
-                $text = "Active";
+                $text = $this->CI->lang->line('labels')['active'];
                 break;
             case 0: 
                 $class = "label label-danger";
-                $text = "Inactive";
+                $text = $this->CI->lang->line('labels')['inactive'];
+                break;
+        }
+        if($onlytax){
+            return $text;
+        }else{
+            return "<span class='$class'>$text</span>";
+        }
+    }
+
+    public function getAppoitmentStatus($status=0,$onlytax = false){
+        
+        $status = intval($status);
+        $text = "";
+        $class = "";
+        switch ($status) {
+            case 1: 
+                $class = "label label-success";
+                $text = $this->CI->lang->line('labels')['approved'];
+                break;
+            case 2: 
+                $class = "label label-success";
+                $text = $this->CI->lang->line('labels')['Rejected'];
+                break;
+            case 3: 
+                $class = "label label-success";
+                $text = $this->CI->lang->line('labels')['Completed'];
+                break;
+            default: 
+                $class = "label label-info";
+                $text = $this->CI->lang->line('labels')['pending'];
                 break;
         }
         if($onlytax){
@@ -251,11 +281,11 @@ class Auth {
             $email = $data['useremail'];
         }
 
-        if($email == null || $email==""){
+        /*if($email == null || $email==""){
             return 0;
-        }
+        }*/
 
-        if(isset($data['password'])){
+        if(isset($data['password']) && $data['password'] != ""){
             $user['password'] = md5($data['password']);
         }
         if(isset($data['address'])){
@@ -308,6 +338,7 @@ class Auth {
 
         $this->CI->load->model('users_model');
         $uid = false;
+        
         if($user_id){
             $uid = $this->CI->users_model->update($user_id,$user);
         }else{

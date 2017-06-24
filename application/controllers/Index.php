@@ -10,6 +10,7 @@ class Index extends CI_Controller {
 		parent::__construct();
 		$this->load->model('users_model');
 		$this->load->model('dashboard_model');
+		$this->load->model('patient_model');
 	}
 
 	function index()
@@ -25,18 +26,15 @@ class Index extends CI_Controller {
 				$data['states'] = $this->dashboard_model->getHospitalAdminStates($this->auth->getHospitalId());
 				$this->load->view('index/admindashboard',$data);
 			}else if($this->auth->isPatient()){
-				$data['page_title'] = $this->lang->line('patients');
-			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
-				$data['profile'] = $this->users_model->getProfile($this->auth->getUserid());
-				$this->load->view('Patient/profile',$data);
+				$data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());
+				$this->load->view('Patient/dashbord',$data);
 			}
 		}
 		else{
 			redirect($this->login_page);
 		}
 	}
-
-
+	
 	
 	function registration(){
 		if($this->auth->isLoggedIn()){
@@ -167,6 +165,39 @@ class Index extends CI_Controller {
 			$temp['key']=null;
 			$this->session->set_flashdata('data', $temp);
 			$this->load->view('index/resetPassword',$temp);
+		}
+		
+	}
+
+	function changepassword(){
+		if($this->auth->isLoggedIn()){
+		
+			if(isset($_POST['password'])){
+					
+				$temp = array();
+				if($_POST['password'] != $_POST['repassword']){
+					$temp['errors'] = array($this->lang->line('msg_new_password_notmatch'));
+				}else{
+					$res = $this->users_model->changePassword($_POST['oldpassword'],$_POST['password']);
+					if($res === -1){
+						$temp['errors'] = array($this->lang->line('msg_old_password_notmatch'));
+					}else if($res === false){
+						$temp['errors'] = array($this->lang->line('msg_try_again'));
+					}else{
+						$temp['success'] = array($this->lang->line('msg_password_change'));
+					}
+				}
+				//echo "<pre>";print_r($temp);exit;
+				$this->session->set_flashdata('data', $temp);
+				redirect('index/changepassword');
+				return;
+			}
+			$data['page_title'] = $this->lang->line('changePassword');
+			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('changePassword'));
+			$this->load->view('index/changePassword',$data);
+		}
+		else{
+			redirect($this->login_page);
 		}
 		
 	}

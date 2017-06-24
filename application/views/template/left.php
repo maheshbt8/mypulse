@@ -16,14 +16,14 @@
                         $menu = $_SESSION['menu'];
                     ?>
                     <ul class="menu accordion-menu">
-                        
+                        <li id="li1"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p><?php echo $menu['main_dashboard'];?></p></a></li>
                         <?php
 
                         switch ($this->auth->getRole()) {
                             case $this->auth->getAdminRoleType():
                             //Super Admin
                         ?>
-                            <li id="li1"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p><?php echo $menu['main_dashboard'];?></p></a></li>
+                            
                             <li id="li2" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon fa fa-hospital-o"></span><p><?php echo $menu['main_hospitals'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
                                     <li id="li201"><a href="<?php echo site_url();?>/hospitals"><?php echo $menu['main_hospitals'];?></a></li>
@@ -63,7 +63,6 @@
                             case $this->auth->getHospitalAdminRoleType():
                             //Hospital Admin                                
                         ?>
-                            <li id="li1"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-home"></span><p><?php echo $menu['main_dashboard'];?></p></a></li>
                             <li id="li13"><a href="<?php echo site_url();?>/branches" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_branches'];?></p></a></li>
                             <li id="li3"><a href="<?php echo site_url();?>/departments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_departments'];?></p></a></li>
                             <li id="li14"><a href="<?php echo site_url();?>/beds" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_beds'];?></p></a></li>
@@ -94,7 +93,8 @@
                             break;
                             case $this->auth->getPatientRoleType():
                         ?>
-                            <li id="li51"><a href="<?php echo site_url();?>/patient/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p><?php echo $menu['profile'];?></p></a></li>
+                            <li id="li51"><a href="<?php echo site_url();?>/patients/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p><?php echo $menu['profile'];?></p></a></li>
+                            <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
                         <?php    
                             break;
                             default:

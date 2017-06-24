@@ -12,6 +12,8 @@ class Hospitals_model extends CI_Model {
         else return array();
     }
     function gethospitalsById($id) {
+        if($id == "")
+            $id = 0;
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         if(isset($r['license_category'])){
@@ -98,6 +100,8 @@ class Hospitals_model extends CI_Model {
         }else if($this->auth->isHospitalAdmin()){
             $uid = $this->auth->getUserid();
             $qry = "select hospital_id as id from hms_hospital_admin where user_id=$uid and isDeleted=0 ";            
+        }else{
+            $qry = "select * from $this->tblname where id=-1";
         }
         $res = $this->db->query($qry);
         $res = $res->result_array();
@@ -107,4 +111,5 @@ class Hospitals_model extends CI_Model {
         }
         return $ids;
     }
+    
 }

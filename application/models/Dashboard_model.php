@@ -51,4 +51,12 @@ class Dashboard_model extends CI_Model {
 
         return $res;
     }
+
+    function getPatientStates(){
+        $res['tot_hos'] = 0;
+        $res['tot_doc'] = 0;
+        $res['tot_vit'] = 0;
+        $res['tot_app'] = 0;
+        return $res;
+    }
 }

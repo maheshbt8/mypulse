@@ -7,13 +7,35 @@ class Patients extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('users_model');
+        $this->load->model('patient_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
-           
-            $data["page_title"] = "Patients";
-            $data["breadcrumb"] = array(site_url() => "Home", null => "Patients");
-            $this->load->view('Patient/index', $data);
+            if($this->auth->isPatient()){
+                redirect('index');
+            }else if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                $data["page_title"] = "Patients";
+                $data["breadcrumb"] = array(site_url() => "Home", null => "Patients");
+                $this->load->view('Patient/index', $data);
+            }
+        } else redirect('index/login');
+    }
+
+    public function appoitments(){
+        if ($this->auth->isLoggedIn()) {
+            $data['page_title'] = $this->lang->line('appoitments');
+            $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('appoitments'));
+            //$data['profile'] = $this->patient_model->getProfile($this->auth->getUserid());
+            $this->load->view('Patient/newappoitment',$data);
+        } else redirect('index/login');
+    }
+
+    public function profile(){
+        if ($this->auth->isLoggedIn()) {
+            $data['page_title'] = $this->lang->line('patients');
+            $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
+            $data['profile'] = $this->patient_model->getProfile($this->auth->getUserid());
+            $this->load->view('Patient/profile',$data);
         } else redirect('index/login');
     }
 
@@ -33,6 +55,25 @@ class Patients extends CI_Controller {
             
         } else redirect('index/login');
     }
+
+    public function updatemyprofile(){
+        if ($this->auth->isLoggedIn()) {
+            $data = array();
+            $id = $this->input->post('eidt_gf_id');
+            
+            $res = $this->patient_model->update($id);
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array($this->lang->line('msg_patient_updated'));
+            }
+            $this->session->set_flashdata('data', $data);
+            redirect('Patients/index');
+        } else redirect('index/login');
+    }
+
     public function update() {
         if ($this->auth->isLoggedIn()) {
             $data = array();
@@ -43,7 +84,7 @@ class Patients extends CI_Controller {
             }else if($res === false){
                 $data['errors'] = array($this->lang->line('msg_try_again'));
             }else{
-                $data['success'] = array($this->lang->line('msg_user_added'));
+                $data['success'] = array($this->lang->line('msg_user_updated'));
             }
             $this->session->set_flashdata('data', $data);
             redirect('Patients/index');

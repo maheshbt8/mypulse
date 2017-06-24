@@ -33,6 +33,7 @@
         <link href="<?php echo base_url();?>public/assets/css/custom.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" />
         <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
         <script>
             var BASEURL = '<?php echo site_url();?>';
             var validationInvalidHandler = function(event, validator) {
@@ -102,7 +103,7 @@
                 float:right;
             }
             .panel_heading_custome{
-                max-width:100px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
+                max-width:150px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
             }
             .panel_body_custome{
                 margin-top:15px;
@@ -261,7 +262,8 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-list" role="menu">
                                         <!--<li role="presentation"><a href=href="<?php //echo site_url();?>/index/"><i class="fa fa-user"></i><?php //echo $_SESSION['menu']['profile'];?></a></li>-->
-                                        <!--<li role="presentation" class="divider"></li>-->
+                                        <li role="presentation"><a href="<?php echo site_url();?>/index/changepassword"><i class="fa fa-lock"></i><?php echo $_SESSION['menu']['changePassword'];?></a>
+                                        <li role="presentation" class="divider"></li>
                                         <li role="presentation"><a href="<?php echo site_url();?>/index/logout"><i class="fa fa-sign-out m-r-xs"></i><?php echo $_SESSION['menu']['logout'];?></a></li>
                                     </ul>
                                 </li>

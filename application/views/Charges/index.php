@@ -75,6 +75,7 @@ $this->load->view("template/left.php");
 				<form action="<?php echo site_url(); ?>/charges/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<input type="hidden" name="selected_hid" id="selected_hid" />
+				<input type="hidden" name="selected_bid" id="selected_bid" />
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
@@ -219,7 +220,7 @@ $this->load->view("template/footer.php");
 					$("#selected_hid").val(thid);
 					
 					var tbid = $("#branch_id1").val();
-					$("#selected_hid").val(tbid);
+					$("#selected_bid").val(tbid);
 					$selectize_branch_id[0].selectize.disable();
 					$selectize_branch_id[0].selectize.clear();
 					$selectize_hospital_id[0].selectize.clear();
@@ -379,8 +380,6 @@ $this->load->view("template/footer.php");
 						loadTable($("#hospital_id1").val(),value);   
 					}
 				});
-
-			
 
 				var $selectize_hospital_id1 = $("#hospital_id1").selectize({
 				    valueField: "id",

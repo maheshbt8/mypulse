@@ -119,6 +119,7 @@ class Users_model extends CI_Model {
         }
     }
     function update($id,$usr=null) {
+        
         $data = array();
         if($usr==null)
             $data = $_POST;
@@ -273,5 +274,18 @@ class Users_model extends CI_Model {
     public function getProfile($id){
         $res = $this->db->query("select * from ".$this->tblname." where id=$id");
         return $res->row_array();
+    }
+
+    public function changePassword($op,$np){
+        $id = $this->auth->getUserid();
+        $this->db->where('id',$id);
+        $this->db->where('password',md5($op));
+        $user = $this->db->get($this->tblname);
+        if($user->num_rows() == 0)
+            return -1;
+        else{
+            $this->db->where('id',$id);
+            return $this->db->update($this->tblname,array('password'=>md5($np)));
+        }
     }
 }

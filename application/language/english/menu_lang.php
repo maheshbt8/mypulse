@@ -24,3 +24,5 @@ $lang["main_license_category"] = "License Category";
 $lang["main_charges"] = "Charges";
 $lang["profile"] = "Profile";
 $lang["logout"] = "Log out";
+$lang['changePassword'] = "Change Password";
+$lang['appoitments'] = "Appoitments";
