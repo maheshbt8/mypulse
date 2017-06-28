@@ -4,7 +4,7 @@
 <head>
         <!-- Title -->
         <!--<title><?php //echo $this->config->item('validation')['my']; ?></title>-->
-        <title><?php echo $this->config->item('title');?> | Login</title>
+        <title><?php echo $this->config->item('title');?></title>
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
         <meta charset="UTF-8">
 
@@ -68,6 +68,7 @@
             };              
             var delResFunc = function(data,id){
                 if(data==1){
+                    debugger;
                     $("#dellink_"+id).parents('tr').remove();	
                     toastr.success("<?php echo $this->lang->line('headings')['deleteSuccess'];?>");
                 }else{

@@ -58,6 +58,13 @@ class Appoitments extends CI_Controller {
             echo $this->appoitments_model->delete($id);
         }
     }
+    public function cancel() {
+        echo 1;exit;
+        if ($this->auth->isLoggedIn()) {
+            $id = $this->input->post('id');
+            echo $this->appoitments_model->cancel($id);
+        }
+    }
     public function getappoitments() {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');

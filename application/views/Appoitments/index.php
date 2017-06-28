@@ -24,8 +24,8 @@ $this->load->view("template/left.php");
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="charges"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn" data-at="charges" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<a class="btn btn-danger m-b-sm multiCancelBtn" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
+										<a class="btn btn-primary m-b-sm exportBtn" data-at="appoitments" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
 								<br>
@@ -278,11 +278,57 @@ $this->load->view("template/footer.php");
 		
 		 $("#appoitments").on("click",".delbtn",function(){
 			var id = $(this).attr("data-id");
+			var curdel = $(this);
 			swal(swalDeleteConfig).then(function () {
-				$.post("<?php echo site_url(); ?>/appoitments/delete",{id:id},function(data){
-					delResFunc(data,id);
+				$.post("<?php echo site_url(); ?>/appoitments/cancel",{id:id},function(data){
+					if(data==1){
+						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+						//$("#dellink_"+id).parents('tr').remove();	
+						toastr.success("<?php echo $this->lang->line('headings')['cancelSuccess'];?>");
+					}else{
+						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
+					}
 				});
 			});
+		});
+
+		$(document).on('click','.multiCancelBtn',function(){
+			var at = $(this).data('at');
+			var selected = [];
+			$('.multiselect').each(function() {
+				if ($(this).is(":checked")) {
+					selected.push($(this).data('id'));
+				}
+			});
+			if(selected.length == 0){
+				swal({
+					animation: "slide-from-top",
+					text: 'Please select checkbox.'
+					});
+			}else{
+				swal({
+					title: 'Are you sure?',
+					text: "You won't be able to revert this!",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Yes'
+				}).then(function () {
+					$.post(BASEURL+"/"+at+"/cancel",{ id : selected },function(data){
+						if(data==1){
+							for(var i=0; i<selected.length; i++){
+								var temp = selected[i];
+								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+							}
+							toastr.success('selected item(s) cancled.');
+						}else{
+							toastr.error('Please try again.');
+						}
+					});
+				});
+				
+			}
 		});
 		
 		/*var $selectize_user_id = $("#user_id").selectize({

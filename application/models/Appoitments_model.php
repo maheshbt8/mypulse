@@ -80,4 +80,11 @@ class Appoitments_model extends CI_Model {
             return true;
         } else return false;
     }
+    function cancel($id){
+        $this->db->where("id", $id);
+        $d["status"] = 4;
+        if ($this->db->update($this->tblname, $d)) {
+            return true;
+        } else return false;
+    }
 }

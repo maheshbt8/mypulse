@@ -242,17 +242,21 @@ class Auth {
         $class = "";
         switch ($status) {
             case 1: 
-                $class = "label label-success";
+                $class = "label label-primary";
                 $text = $this->CI->lang->line('labels')['approved'];
                 break;
             case 2: 
-                $class = "label label-success";
-                $text = $this->CI->lang->line('labels')['Rejected'];
+                $class = "label label-danger";
+                $text = $this->CI->lang->line('labels')['rejected'];
                 break;
             case 3: 
                 $class = "label label-success";
-                $text = $this->CI->lang->line('labels')['Completed'];
+                $text = $this->CI->lang->line('labels')['completed'];
                 break;
+            case 4: 
+                $class = "label label-warning";
+                $text = $this->CI->lang->line('labels')['canceled'];
+                break;    
             default: 
                 $class = "label label-info";
                 $text = $this->CI->lang->line('labels')['pending'];

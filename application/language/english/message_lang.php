@@ -227,8 +227,9 @@ $lang['labels'] = array(
     'completed' => 'Completed',
     'highBloodPressure' => 'High Blood Pressure',
     'lowBloodPressure' => 'Low Blood Pressure',
-    'selectHealthInsuranceProvider' => 'Select Health Insurance Provide',
-    'licenseCode' => 'License Code'
+    'selectHealthInsuranceProvider' => 'Select Health Insurance Provider',
+    'licenseCode' => 'License Code',
+    'canceled' => 'Canceled'
 
 );
 
@@ -255,6 +256,7 @@ $lang['headings'] = array(
     'addNewAppoitment' => 'New appoitment',
     'addNewHealthInscuranceProvider' => 'Add new health insurance provider',
     'addNewLicense' => 'Add new license',
+    'cancelSuccess' => 'Canceled Successfully'
     
 );
 
