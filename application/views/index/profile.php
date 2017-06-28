@@ -18,7 +18,7 @@ $this->load->view("template/left.php");
                             $img = $profile['profile_photo'];
                         }
                     ?>
-                    <img src="<?php echo $img;?>" alt="" style="width:200px;height:auto;padding-left:10px">
+                    <img src="<?php echo $img;?>" alt="" style="width:200px;height:auto;display:block;margin:auto;">
                 </div>
             
                 <h3 class="text-center"><?php
