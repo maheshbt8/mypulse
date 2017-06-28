@@ -24,7 +24,7 @@ $this->load->view("template/left.php");
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="charges"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="charges"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
 										<a class="btn btn-primary m-b-sm exportBtn" data-at="charges" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
