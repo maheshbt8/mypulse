@@ -10,7 +10,7 @@ class Doctors extends CI_Controller {
         $this->load->model("departments_model");
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['doctorss'] = $this->doctors_model->getAlldoctors();
             $data["page_title"] =  $this->lang->line('doctors');
             $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('doctors'));
@@ -28,7 +28,7 @@ class Doctors extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $res = $this->doctors_model->add();
             $data = array();
             if($res === -1){
@@ -43,7 +43,7 @@ class Doctors extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->doctors_model->update($id);
@@ -60,7 +60,7 @@ class Doctors extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->doctors_model->delete($id);
         }
@@ -72,7 +72,7 @@ class Doctors extends CI_Controller {
         }
     }
     public function getDTdoctors() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_doctors";
             $primaryKey = "id";

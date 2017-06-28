@@ -5,6 +5,9 @@ $lang["msg_failed"] = "Operation Fielded";
 $lang["msg_try_again"] = "Please Try Again...!!!";
 
 $lang['dashboard'] = "Dashboard";
+$lang['superAdmin'] = 'Super Admin';
+$lang['hospitalAdmin'] = 'Hospital Admin';
+$lang['profile'] = 'Profile';
 $lang['home'] = "Home";
 $lang['users'] = "Users";
 $lang['patients'] = "Patients";
@@ -28,6 +31,8 @@ $lang['patientInfo'] = "Patient Information";
 $lang['visits'] = 'Visits';
 $lang['changePassword'] = "Change Password";
 $lang['appoitments'] = "Appoitments";
+$lang['medStoreLabs'] = "Medical Store/Labs";
+$lang['healthinsuranceprovider'] = "Health Insurance Provider";
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -39,6 +44,7 @@ $lang["msg_password_change"] = "Password Successfully Change";
 $lang["msg_key_not_match"] = "Key Does Not Match";
 $lang['msg_new_password_notmatch'] = "New password does not match. Please try again";
 $lang['msg_old_password_notmatch'] = "Old password does not match. Please try again";
+$lang['msg_profile_updated'] = "Profile Updated Successfully";
 //Users
 $lang['msg_user_added'] = "User Added Successfully";
 $lang['msg_user_updated'] = "User Updated Successfully";
@@ -88,6 +94,9 @@ $lang['msg_patient_updated'] = "Patient Updated Successfully";
 $lang['msg_appoitment_added'] = "Appoitment Added Successfully";
 $lang['msg_appoitment_updated'] = "Appoitment Updated Successfully";
 
+$lang['msg_hip_added'] = "Health insurance provider Added Successfully";
+$lang['msg_hip_updated'] = "Health insurance provider Updated Successfully";
+
 ///
 $lang["usr_invalid_user"] = "Please Enter Valid Username";
 $lang['usr_acc_verify'] = "Please verify your account.";
@@ -98,7 +107,7 @@ $lang['buttons'] = array(
     "addNew" => "Add New",
     "delete" => "Delete",
     "export" => "Export",
-    'cancel' => 'Cencel',
+    'cancel' => 'Cancel',
     'update' => "Update",
     'add' => "Add",
     'yes' => 'Yes',
@@ -131,7 +140,8 @@ $lang['tableHeaders'] = array(
     'description' => 'Description',
     'charge' => 'Charge',
     'hospital_branch' => 'Hospital-Branch',
-    'appoitment_date' => 'Appoitment Date'
+    'appoitment_date' => 'Appoitment Date',
+    'licenseCode' => 'License Code'
 );
 
 $lang['labels'] = array(
@@ -190,6 +200,7 @@ $lang['labels'] = array(
     'otherProfile' => 'Other Profile Info.',
     'professionInfo' => 'Profession Info.',
     'bloodGroup' => 'Blood Group',
+    'selectBloodGroup' => 'Select Blood Group',
     'height' => 'Height',
     'weight' => 'Weight',
     'bloodPressure' => 'Blood Pressure',
@@ -214,6 +225,11 @@ $lang['labels'] = array(
     'approved' => 'Approved',
     'rejected' => 'Rejected',
     'completed' => 'Completed',
+    'highBloodPressure' => 'High Blood Pressure',
+    'lowBloodPressure' => 'Low Blood Pressure',
+    'selectHealthInsuranceProvider' => 'Select Health Insurance Provide',
+    'licenseCode' => 'License Code'
+
 );
 
 $lang['headings'] = array(
@@ -236,7 +252,9 @@ $lang['headings'] = array(
     'deleteSuccess' => 'Seleceted item(s) deleted',
     'addNewMedStore' => 'Add new medical store',
     'addNewMedLab' => 'Add new medical lab',
-    'addNewAppoitment' => 'New appoitment'
+    'addNewAppoitment' => 'New appoitment',
+    'addNewHealthInscuranceProvider' => 'Add new health insurance provider',
+    'addNewLicense' => 'Add new license',
     
 );
 
@@ -279,5 +297,10 @@ $lang['validation'] = array(
     'requriedOldPass' => 'Enter old password',
     'selectDoctor' => 'Select Doctor',
     'requiredAppoitmentDate' => 'Enter appoitment date',
-    'requiredReason' => 'Enter reason for your appoitment'
+    'requiredReason' => 'Enter reason for your appoitment',
+    'requiredHealthInsuranceName' => 'Enter health insurance provider name',
+    'requiredHospitalName' => 'Enter hospital name',
+    'requiredHospitalAddress' => 'Enter hospital address',
+    'requiredLicenseName' => 'Enter license name',
+    'requiredLicenseCode' => 'Enter license code',
 );

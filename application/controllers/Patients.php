@@ -8,6 +8,7 @@ class Patients extends CI_Controller {
         parent::__construct();
         $this->load->model('users_model');
         $this->load->model('patient_model');
+        $this->load->model('healthinsuranceprovider_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
@@ -21,18 +22,10 @@ class Patients extends CI_Controller {
         } else redirect('index/login');
     }
 
-    public function appoitments(){
-        if ($this->auth->isLoggedIn()) {
-            $data['page_title'] = $this->lang->line('appoitments');
-            $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('appoitments'));
-            //$data['profile'] = $this->patient_model->getProfile($this->auth->getUserid());
-            $this->load->view('Patient/newappoitment',$data);
-        } else redirect('index/login');
-    }
-
     public function profile(){
         if ($this->auth->isLoggedIn()) {
             $data['page_title'] = $this->lang->line('patients');
+            $data['hip'] = $this->healthinsuranceprovider_model->getAllhealthinsuranceprovider();
             $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
             $data['profile'] = $this->patient_model->getProfile($this->auth->getUserid());
             $this->load->view('Patient/profile',$data);
@@ -40,7 +33,7 @@ class Patients extends CI_Controller {
     }
 
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $res = $this->users_model->add();
 
             if($res === -1){
@@ -70,12 +63,12 @@ class Patients extends CI_Controller {
                 $data['success'] = array($this->lang->line('msg_patient_updated'));
             }
             $this->session->set_flashdata('data', $data);
-            redirect('Patients/index');
+            redirect('Patients/profile');
         } else redirect('index/login');
     }
 
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->users_model->update($id);
@@ -93,7 +86,7 @@ class Patients extends CI_Controller {
 
 
     public function getDTusers() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_users";
             $primaryKey = "id";

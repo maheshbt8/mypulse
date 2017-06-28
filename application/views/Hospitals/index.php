@@ -356,7 +356,8 @@ $this->load->view("template/left.php");
 			        		email:true
 			        	},
 			        	phone_numbers:{
-			        		required:true
+			        		required:true,
+							phoneUS: true
 			        	},
 			        	country:{
 			        		required:true
@@ -374,29 +375,30 @@ $this->load->view("template/left.php");
 			        messages: {
 			        	
 			        	name:{
-			        		required: "Enter hospital name"
+			        		required: "<?php echo $this->lang->line('validation')['requiredHospitalName'];?>"
 			        	},
 			        	address:{
-			        		required: "Enter hospital address"
+			        		required: "<?php echo $this->lang->line('validation')['requiredHospitalAddress'];?>"
 			        	},
 			        	email:{
-			        		required: "Enter email address",
-			        		email: "Enter valid email address"
+			        		required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
+			        		email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>"
 			        	},
 			        	phone_numbers:{
-			        		required: "Enter phone number"
+			        		required: "<?php echo $this->lang->line('validation')['requriedPhone'];?>",
+							phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>"
 			        	},
-			        	country:{
-			        		required:"Select country"
+						country:{
+			        		required:"<?php echo $this->lang->line('validation')['selectCountry'];?>"
 			        	},
 			        	state:{
-			        		required:"Select state"
+			        		required:"<?php echo $this->lang->line('validation')['selectState'];?>"
 			        	},
 			        	district:{
-			        		required:"Select district"
+			        		required:"<?php echo $this->lang->line('validation')['selectDistrict'];?>"
 			        	},
 			        	city:{
-			        		required:"Select city"
+			        		required:"<?php echo $this->lang->line('validation')['selectCity'];?>"
 			        	}
 			        },
 					invalidHandler: validationInvalidHandler,
@@ -438,7 +440,7 @@ $this->load->view("template/left.php");
 			    	loadData(id,true);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/hospitals/update");
 			    	$("#form input").attr("disabled",false);
-			    	$("#Edit-Heading").html("Hospital Data");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$('#tabs a[href="#tab1"]').click();

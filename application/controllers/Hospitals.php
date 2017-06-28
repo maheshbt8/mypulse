@@ -12,7 +12,7 @@ class Hospitals extends CI_Controller {
         $this->load->model('general_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['license'] = $this->license_model->getAlllicense();
             $data['hospital_admins'] = $this->users_model->getUsersByType($this->auth->getHospitalAdminRoleType());
             $data["page_title"] = $this->lang->line('hospitals');

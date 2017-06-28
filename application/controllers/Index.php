@@ -11,6 +11,7 @@ class Index extends CI_Controller {
 		$this->load->model('users_model');
 		$this->load->model('dashboard_model');
 		$this->load->model('patient_model');
+		$this->load->model('healthinsuranceprovider_model');
 	}
 
 	function index()
@@ -28,6 +29,12 @@ class Index extends CI_Controller {
 			}else if($this->auth->isPatient()){
 				$data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());
 				$this->load->view('Patient/dashbord',$data);
+			}else if($this->auth->isReceptinest()){
+				$data['states'] = $this->dashboard_model->getReceptinestStates($this->auth->getUserid());
+				$this->load->view('receptionist/dashboard',$data);
+			}else if($this->auth->isDoctor()){
+				$data['states'] = $this->dashboard_model->getDoctorStates($this->auth->getUserid());
+				$this->load->view('doctors/dashboard',$data);
 			}
 		}
 		else{
@@ -49,9 +56,7 @@ class Index extends CI_Controller {
 	
 	function login(){
 		if($this->auth->isLoggedIn()){
-			$data['page_title'] = $this->lang->line('dashboard');
-			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
-			$this->load->view($this->index_page,$data);
+			redirect('index');
 		}
 		else
 			$this->load->view($this->login_page);
@@ -200,6 +205,43 @@ class Index extends CI_Controller {
 			redirect($this->login_page);
 		}
 		
+	}
+
+	function profile(){
+		if ($this->auth->isLoggedIn()) {
+            $data['page_title'] = $this->lang->line('profile');
+            $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
+			$uid = $this->auth->getUserid();
+			$data['profile'] = array();
+			switch($this->auth->getRole()){
+				case $this->auth->getPatientRoleType():
+					$data['hip'] = $this->healthinsuranceprovider_model->getAllhealthinsuranceprovider();
+					$data['profile'] = $this->patient_model->getProfile($this->auth->getUserid());
+					$this->load->view('Patient/profile',$data);
+					break;
+				default: 
+					$data['profile'] = $this->patient_model->getProfile($uid);
+					$this->load->view('index/profile',$data);
+			}
+        } else redirect('index/login');
+	}
+
+	function updateprofile(){
+		if ($this->auth->isLoggedIn()) {
+			$data = array();
+            $id = $this->input->post('eidt_gf_id');
+            $res = $this->auth->addUser($_POST,$id);
+            
+            if($res === -1){
+                $data['errors'] = array($this->lang->line('msg_email_exist'));
+            }else if($res === false){
+                $data['errors'] = array($this->lang->line('msg_try_again'));
+            }else{
+                $data['success'] = array($this->lang->line('msg_profile_updated'));
+            }
+            $this->session->set_flashdata('data', $data);
+            redirect('index/profile');
+		} else redirect('index/login');
 	}
 
 	

@@ -7,7 +7,7 @@ $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
 		<input type="hidden" id="left_active_menu" value="13" />
-		<input type="hidden" id="left_active_sub_menu" value="1301" />
+		<input type="hidden" id="left_active_sub_menu" value="1302" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -16,12 +16,12 @@ $this->load->view("template/left.php");
 	                    <div class="panel-heading clearfix">
 							<div class="">
 								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('license');?></h4>
+									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('healthinsuranceprovider');?></h4>
 								</div>
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="license"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="healthinsuranceprovider"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
 										<a class="btn btn-primary m-b-sm exportBtn"    href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
@@ -30,12 +30,12 @@ $this->load->view("template/left.php");
 	                    </div>
 	                    <div class="panel-body panel_body_custome">
 	                       <div class="table-responsive">
-	                            <table id="license" class="display table" cellspacing="0" width="100%">
+	                            <table id="healthinsuranceprovider" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-	                                    <tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['licenseCode'];?></th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th width="20px">#</th>
+	                                    <tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
-	                             
+	                                
 	                                <tbody>
 	                                </tbody>
 	                            </table>  
@@ -49,7 +49,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/license/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/healthinsuranceprovider/update" method="post" id="form">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -60,10 +60,6 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 				  			<div class="col-md-12">
 				  				<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['licenseCode'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['licenseCode'];?>" name="license_code" id="license_code" />
-								</div>
-								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['name'];?></label>
 									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['name'];?>" name="name" id="name" />
 								</div>
@@ -105,53 +101,48 @@ $this->load->view("template/footer.php");
 				var validator = $("#form").validate({
 					
 			        rules: {
-						license_code:{
-							required : true
-						},
 			        	name: {
 			        		required : true
 			        	}
 					},
 			        messages: {
 			        	name:{
-			        		required: "<?php echo $this->lang->line('validation')['requiredLicenseName'];?>"
-			        	},
-						license_code:{
-			        		required: "<?php echo $this->lang->line('validation')['requiredLicenseCode'];?>"
+			        		required: "<?php echo $this->lang->line('validation')['requiredHealthInsuranceName'];?>"
 			        	}
 					},
 					invalidHandler: validationInvalidHandler,
 					errorPlacement: validationErrorPlacement
 				});
+		
 
-				$("#license").DataTable({
+				$("#healthinsuranceprovider").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/license/getDTlicense"
+		            "ajax": "<?php echo site_url(); ?>/healthinsuranceprovider/getDThealthinsuranceprovider"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
+				//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 				
-
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
 					resetForm(validator);
-			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewLicense'];?>");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewHealthInscuranceProvider'];?>");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/license/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/healthinsuranceprovider/add");
 			    	$("#edit").modal("show");
 			    });
 
-				$("#license").on("click",".editbtn",function(){
+				$("#healthinsuranceprovider").on("click",".editbtn",function(){
 					resetForm(validator);
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/license/update");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/healthinsuranceprovider/update");
 			    	$("#form input").attr("disabled",false);
 			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
 			    	$("#action-add-btn").parent().hide();
@@ -159,17 +150,15 @@ $this->load->view("template/footer.php");
 			    });
 
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/license/getlicense",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/healthinsuranceprovider/gethealthinsuranceprovider",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 			    		
-						$("#license_code").val(data.license_code);
-					
 						$("#name").val(data.name);
-					
+			    		
 			    	});
 			    }
 
-			    $("#license").on("click",".viewbtn",function(){
+			    $("#healthinsuranceprovider").on("click",".viewbtn",function(){
 					resetForm(validator);
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
@@ -180,16 +169,15 @@ $this->load->view("template/footer.php");
 
 			    });
 
-
-				$("#license").on("click",".delbtn",function(){
+				 $("#healthinsuranceprovider").on("click",".delbtn",function(){
 					var id = $(this).attr("data-id");
 					swal(swalDeleteConfig).then(function () {
-						$.post("<?php echo site_url(); ?>/license/delete",{id:id},function(data){
+						$.post("<?php echo site_url(); ?>/healthinsuranceprovider/delete",{id:id},function(data){
 							delResFunc(data,id);
 						});
 					});
 			    });
-			    
+
 
 			});
 

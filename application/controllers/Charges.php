@@ -11,7 +11,7 @@ class Charges extends CI_Controller {
         $this->load->model('hospitals_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['chargess'] = $this->charges_model->getAllcharges();
             $data["page_title"] = $this->lang->line('charges');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('charges'));
@@ -27,7 +27,7 @@ class Charges extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $query =array();
             if(isset($_POST['selected_hid'])){
                 $query[] = "hid=".$_POST['selected_hid'];
@@ -46,7 +46,7 @@ class Charges extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $query =array();
             if(isset($_POST['selected_hid'])){
@@ -67,7 +67,7 @@ class Charges extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->charges_model->delete($id);
         }
@@ -79,7 +79,7 @@ class Charges extends CI_Controller {
         }
     }
     public function getDTcharges() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_charges";
             $primaryKey = "id";

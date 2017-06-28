@@ -259,10 +259,9 @@ $this->load->view("template/footer.php");
 				
 				$("#remarks").val(data.remarks);
 			
-
-				/*$.each(JSON.parse(data), function(key, value){
-					$("#"+key).val(value);
-				});*/
+				$("#appoitment_date").prop("disabled", true);
+				$("#reason").prop("disabled", true);
+				$selectize_hospital_id[0].selectize.disable();
 			});
 		}
 
@@ -360,7 +359,7 @@ $this->load->view("template/footer.php");
 						type: "GET",
 						data: { "department_id":value,"f":""},
 						success: function(results) {
-							$selectize_doctor_id[0].selectize.enable();
+							
 							var res = $.parseJSON(results);
 							callback(res);
 							if(t_oid != null){
@@ -369,6 +368,8 @@ $this->load->view("template/footer.php");
 								tempsselectize_doctor_id.refreshItems();
 								tempsselectize_doctor_id.setValue(t_oid);
 								t_oid = null;
+							}else{
+								$selectize_doctor_id[0].selectize.enable();
 							}
 						},
 						error: function() {
@@ -405,7 +406,7 @@ $this->load->view("template/footer.php");
 						type: "GET",
 						data: { "branch_id":value,"f":"department_name"},
 						success: function(results) {
-							$selectize_department_id[0].selectize.enable();
+							
 							var res = $.parseJSON(results);
 							callback(res);
 							if(t_did != null){
@@ -414,6 +415,8 @@ $this->load->view("template/footer.php");
 								tempsselectize_department_id.refreshItems();
 								tempsselectize_department_id.setValue(t_did);
 								t_did = null;
+							}else{
+								$selectize_department_id[0].selectize.enable();
 							}
 						},
 						error: function() {
@@ -465,7 +468,7 @@ $this->load->view("template/footer.php");
 						type: "GET",
 						data: { "hospital_id":value,"f":"branch_name"},
 						success: function(results) {
-							$selectize_branch_id[0].selectize.enable();
+							
 							var res = $.parseJSON(results);
 							callback(res);
 							if(t_bid != null){
@@ -474,6 +477,8 @@ $this->load->view("template/footer.php");
 								tempselectize_branch_id.refreshItems();
 								tempselectize_branch_id.setValue(t_bid);
 								t_bid = null;
+							}else{
+								$selectize_branch_id[0].selectize.enable();
 							}
 						},
 						error: function() {

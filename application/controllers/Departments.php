@@ -11,7 +11,7 @@ class Departments extends CI_Controller {
         $this->load->model('hospitals_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['departmentss'] = $this->departments_model->getAlldepartments();
             $data["page_title"] = $this->lang->line('departments');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('departments'));
@@ -35,7 +35,7 @@ class Departments extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $query =array();
             if(isset($_POST['selected_hid'])){
                 $query[] = "hid=".$_POST['selected_hid'];
@@ -54,7 +54,7 @@ class Departments extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $query =array();
             if(isset($_POST['selected_hid'])){
@@ -75,7 +75,7 @@ class Departments extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->departments_model->delete($id);
         }
@@ -87,7 +87,7 @@ class Departments extends CI_Controller {
         }
     }
     public function getDTdepartments() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_departments";
             $primaryKey = "id";

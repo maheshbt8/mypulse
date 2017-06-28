@@ -55,7 +55,23 @@ class Dashboard_model extends CI_Model {
     function getPatientStates(){
         $res['tot_hos'] = 0;
         $res['tot_doc'] = 0;
-        $res['tot_vit'] = 0;
+        $res['tot_medStoreLab'] = 0;
+        $res['tot_app'] = 0;
+        return $res;
+    }
+
+    function getReceptinestStates(){
+        $res['tot_hos'] = 0;
+        $res['tot_doc'] = 0;
+        $res['tot_pat'] = 0;
+        $res['tot_app'] = 0;
+        return $res;
+    }
+
+    function getDoctorStates(){
+        $res['tot_hos'] = 0;
+        $res['tot_rec'] = 0;
+        $res['tot_pat'] = 0;
         $res['tot_app'] = 0;
         return $res;
     }

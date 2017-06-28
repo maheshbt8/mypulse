@@ -14,7 +14,7 @@ class Nurse extends CI_Controller {
         $this->load->model('hospitals_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['nurses'] = $this->nurse_model->getAllnurse();
             $data["page_title"] = $this->lang->line('nurses');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('nurses'));
@@ -30,7 +30,7 @@ class Nurse extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $res = $this->nurse_model->add();
             $data = array();
             if($res === -1){
@@ -45,7 +45,7 @@ class Nurse extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->nurse_model->update($id);
@@ -61,7 +61,7 @@ class Nurse extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->nurse_model->delete($id);
         }
@@ -73,7 +73,7 @@ class Nurse extends CI_Controller {
         }
     }
     public function getDTnurse() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_nurse";
             $primaryKey = "id";

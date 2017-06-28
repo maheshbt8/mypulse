@@ -35,8 +35,8 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p><span class="counter"><?php echo $states['tot_vit'];?></span></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('visits');?></span>
+                            <p><span class="counter"><?php echo $states['tot_medStoreLab'];?></span></p>
+                            <span class="info-box-title"><?php echo $this->lang->line('medStoreLabs');?></span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-users"></i>

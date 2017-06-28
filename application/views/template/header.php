@@ -3,8 +3,8 @@
     
 <head>
         <!-- Title -->
-        <title><?php echo $this->config->item('validation')['my']; ?></title>
-        
+        <!--<title><?php //echo $this->config->item('validation')['my']; ?></title>-->
+        <title><?php echo $this->config->item('title');?> | Login</title>
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
         <meta charset="UTF-8">
 
@@ -103,7 +103,7 @@
                 float:right;
             }
             .panel_heading_custome{
-                max-width:150px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
+                max-width:180px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
             }
             .panel_body_custome{
                 margin-top:15px;
@@ -261,7 +261,7 @@
                                         <img class="img-circle avatar" src="<?php echo $this->auth->getProfileImg();?>" width="40" height="40" alt="">
                                     </a>
                                     <ul class="dropdown-menu dropdown-list" role="menu">
-                                        <!--<li role="presentation"><a href=href="<?php //echo site_url();?>/index/"><i class="fa fa-user"></i><?php //echo $_SESSION['menu']['profile'];?></a></li>-->
+                                        <li role="presentation"><a href="<?php echo site_url();?>/index/profile"><i class="fa fa-user"></i><?php echo $_SESSION['menu']['profile'];?></a></li>
                                         <li role="presentation"><a href="<?php echo site_url();?>/index/changepassword"><i class="fa fa-lock"></i><?php echo $_SESSION['menu']['changePassword'];?></a>
                                         <li role="presentation" class="divider"></li>
                                         <li role="presentation"><a href="<?php echo site_url();?>/index/logout"><i class="fa fa-sign-out m-r-xs"></i><?php echo $_SESSION['menu']['logout'];?></a></li>

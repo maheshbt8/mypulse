@@ -6,7 +6,6 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-    <input type="hidden" id="left_active_menu" value="51" />
 	<div id="main-wrapper">
 	    <div class="row">
 
@@ -59,11 +58,10 @@ $this->load->view("template/left.php");
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
                                 <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
-                                <li role="presentation"><a href="#tab3" aria-controls="messages" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>
                                 
                             </ul>
                             <!-- Tab panes -->
-                            <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
+                            <form action="<?php echo site_url(); ?>/index/updateprofile" method="post" id="form" enctype="multipart/form-data">
                             <input type="hidden" name="eidt_gf_id" value="<?php echo $profile['id'];?>" />
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="tab1">
@@ -172,115 +170,6 @@ $this->load->view("template/left.php");
                                                     </span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="tab3">
-                                    <div class="col-md-12">
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['selectBloodGroup'];?></label>
-                                            <select class="form-control" name="blood_group" id="blood_group">
-                                                <option <?php if($profile['gender']=="OPVE") { echo "selected";}?> value="OPVE">O +</option>
-                                                <option <?php if($profile['gender']=="ONVE") { echo "selected";}?> value="ONVE">O -</option>
-                                                <option <?php if($profile['gender']=="APVE") { echo "selected";}?> value="APVE">A +</option>
-                                                <option <?php if($profile['gender']=="ANVE") { echo "selected";}?> value="ANVE">A -</option>
-                                                <option <?php if($profile['gender']=="BPVE") { echo "selected";}?> value="BPVE">B +</option>
-                                                <option <?php if($profile['gender']=="BNVE") { echo "selected";}?> value="BNVE">B -</option>
-                                                <option <?php if($profile['gender']=="ABPVE") { echo "selected";}?> value="ABPVE">AB +</option>
-                                                <option <?php if($profile['gender']=="ABNVE") { echo "selected";}?> value="ABNVE">AB -</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['height'];?></label>
-                                            <div>
-                                                <div class="form-group col-md-6">
-                                                    <!--<label><?php //echo $this->lang->line('labels')['selectHeightFt'];?></label>-->
-                                                    <select class="form-control" name="height_feet" id="height_feet">
-                                                        <option><?php echo $this->lang->line('labels')['selectHeightFt'];?></option>
-                                                        <?php
-                                                            for($i=1; $i<=10; $i++){
-                                                                $sel = "";
-                                                                if($profile['height_feet'] == $i){
-                                                                    $sel = "selected";
-                                                                }
-                                                                echo "<option $sel value='$i'>$i</option>";
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group  col-md-6" >
-                                                    <!--<label><?php //echo $this->lang->line('labels')['selectHeightIc'];?></label>-->
-                                                    <select class="form-control" name="height_inch" id="height_inch">
-                                                        <option><?php echo $this->lang->line('labels')['selectHeightIc'];?></option>
-                                                        <?php
-                                                            for($i=1; $i<=12; $i++){
-                                                                $sel = "";
-                                                                if($profile['height_inch'] == $i){
-                                                                    $sel = "selected";
-                                                                }
-                                                                echo "<option $sel value='$i'>$i</option>";
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                            </div>    
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['weight'];?></label>
-                                            <input value="<?php echo $profile['weight'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['weight'];?>" name="weight" id="weight" />
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['bloodPressure'];?></label>
-                                            <div>
-                                            <div class="col-md-6">
-                                                <?php $hb =$profile['high_blood_pressure'];
-                                                    if($hb == 0){
-                                                        $hb = "";
-                                                    }
-                                                ?>
-                                                <input value="<?php echo $hb;?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['highBloodPressure'];?>" name="high_blood_pressure" id="high_blood_pressure" />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <?php $lb =$profile['low_blood_pressure'];
-                                                    if($lb == 0){
-                                                        $lb = "";
-                                                    }
-                                                ?>
-                                                <input value="<?php echo $lb;?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['lowBloodPressure'];?>" name="low_blood_pressure" id="low_blood_pressure" />
-                                            </div>
-                                            </div>  
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['sugarLevel'];?></label>
-                                            <input value="<?php echo $profile['sugar_level'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['sugarLevel'];?>" name="sugar_level" id="sugar_level" />
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">    
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['selectHealthInsuranceProvider'];?></label>
-                                            <select class="form-control"   name="health_insurance_provider" id="health_insurance_provider" >
-                                                <?php 
-                                                foreach($hip as $h){
-                                                    $sel = "";
-                                                    if($profile['health_insurance_provider'] == $h['id']){
-                                                        $sel = "selected";
-                                                    }
-                                                    echo "<option $sel value='$h[id]'>$h[name]</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['healthInsuranceId'];?></label>
-                                            <input value="<?php echo $profile['health_insurance_id'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['healthInsuranceId'];?>" name="health_insurance_id" id="health_insurance_id" />
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['familyHistory'];?></label>
-                                            <textarea class="form-control" placeholder="<?php echo $this->lang->line('labels')['familyHistoryPlaceholder'];?>" id="family_history" name="family_history" ><?php echo $profile['family_history'];?></textarea>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['pastMedicalHistory'];?></label>
-                                            <textarea class="form-control" placeholder="<?php echo $this->lang->line('labels')['pastMedicalHistoryPlaceholder'];?>" id="past_medical_history" name="past_medical_history" ><?php echo $profile['past_medical_history'];?></textarea>
                                         </div>
                                     </div>
                                 </div>

@@ -26,3 +26,4 @@ $lang["profile"] = "Profile";
 $lang["logout"] = "Log out";
 $lang['changePassword'] = "Change Password";
 $lang['appoitments'] = "Appoitments";
+$lang['main_healthinsuranceprovider'] = "Health Insurance Provider";

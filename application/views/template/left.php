@@ -55,6 +55,7 @@
                             <li id="li13" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
                                     <li id="li1301"><a href="<?php echo site_url();?>/license/" ><?php echo $menu['main_license_category'];?></a></li>
+                                    <li id="li1302"><a href="<?php echo site_url();?>/healthinsuranceprovider/" ><?php echo $menu['main_healthinsuranceprovider'];?></a></li>
                                 </ul>
                             </li>
                             
@@ -95,6 +96,12 @@
                         ?>
                             <li id="li51"><a href="<?php echo site_url();?>/patients/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p><?php echo $menu['profile'];?></p></a></li>
                             <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
+                            <li id="li53"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>
+                            <li id="li54" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    
+                                </ul>
+                            </li>
                         <?php    
                             break;
                             default:

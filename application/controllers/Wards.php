@@ -13,7 +13,7 @@ class Wards extends CI_Controller {
         $this->load->model('beds_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['wardss'] = $this->wards_model->getAllwards();
             $data["page_title"] = $this->lang->line('wards');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('wards'));
@@ -30,7 +30,7 @@ class Wards extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $query = array();
             if(isset($_POST['selected_hid'])){
                 $query[] = "hid=".$_POST['selected_hid'];
@@ -52,7 +52,7 @@ class Wards extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $query = array();
             if(isset($_POST['selected_hid'])){
                 $query[] = "hid=".$_POST['selected_hid'];
@@ -76,7 +76,7 @@ class Wards extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->wards_model->delete($id);
         }
@@ -88,7 +88,7 @@ class Wards extends CI_Controller {
         }
     }
     public function getDTwards() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_wards";
             $primaryKey = "id";

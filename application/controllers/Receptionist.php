@@ -14,10 +14,14 @@ class Receptionist extends CI_Controller {
     }
     public function index() {
         if ($this->auth->isLoggedIn()) {
-            $data['receptionists'] = $this->receptionist_model->getAllreceptionist();
-            $data["page_title"] = $this->lang->line('receptionists');
-            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('receptionists'));
-            $this->load->view('Receptionist/index', $data);
+            if($this->auth->isReceptinest()){
+                redirect('index');
+            }else if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                $data['receptionists'] = $this->receptionist_model->getAllreceptionist();
+                $data["page_title"] = $this->lang->line('receptionists');
+                $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('receptionists'));
+                $this->load->view('Receptionist/index', $data);
+            }
         } else redirect('index/login');
     }
     public function search() {
@@ -29,7 +33,7 @@ class Receptionist extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $res = $this->receptionist_model->add();
             if($res === -1){
                 $data['errors'] = array($this->lang->line('msg_email_exist'));
@@ -43,7 +47,7 @@ class Receptionist extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->receptionist_model->update($id);
@@ -59,7 +63,7 @@ class Receptionist extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->receptionist_model->delete($id);
         }
@@ -71,7 +75,7 @@ class Receptionist extends CI_Controller {
         }
     }
     public function getDTreceptionist() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_receptionist";
             $primaryKey = "id";

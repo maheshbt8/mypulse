@@ -11,7 +11,7 @@ class Medical_store extends CI_Controller {
         $this->load->model("branches_model");
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['medical_stores'] = $this->medical_store_model->getAllmedical_store();
             $data["page_title"] = $this->lang->line('medicalStoreFull');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('medicalStoreFull'));
@@ -27,7 +27,7 @@ class Medical_store extends CI_Controller {
         }
     }
     public function add() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $res = $this->medical_store_model->add();
             $data = array();
             if($res === -1){
@@ -42,7 +42,7 @@ class Medical_store extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->medical_store_model->update($id);
@@ -60,7 +60,7 @@ class Medical_store extends CI_Controller {
         } else redirect('index/login');
     }
     public function delete() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
             echo $this->medical_store_model->delete($id);
         }
@@ -72,7 +72,7 @@ class Medical_store extends CI_Controller {
         }
     }
     public function getDTmedical_store() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_medical_store";
             $primaryKey = "id";
