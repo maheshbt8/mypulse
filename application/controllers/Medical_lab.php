@@ -29,32 +29,16 @@ class Medical_lab extends CI_Controller {
     public function add() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $res = $this->medical_lab_model->add();
-            $data = array();
-            if($res === -1){
-                $data['errors'] = array($this->lang->line('msg_email_exist'));
-            }else if($res === false){
-                $data['errors'] = array($this->lang->line('msg_try_again'));
-            }else{
-                $data['success'] = array($this->lang->line('msg_medlab_added'));
-            }
+            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_medlab_added'));
             $this->session->set_flashdata('data', $data);
             redirect('medical_lab/index');
         } else redirect('index/login');
     }
     public function update() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
-            $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->medical_lab_model->update($id);
-            $data = array();
-           
-            if($res === -1){
-                $data['errors'] = array($this->lang->line('msg_email_exist'));
-            }else if($res === false){
-                $data['errors'] = array($this->lang->line('msg_try_again'));
-            }else{
-                $data['success'] = array($this->lang->line('msg_medlab_updated'));
-            }
+            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_medlab_updated'));
             $this->session->set_flashdata('data', $data);
             redirect('medical_lab/index');
         } else redirect('index/login');

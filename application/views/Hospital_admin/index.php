@@ -6,7 +6,8 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-		<input type="hidden" id="left_active_menu" value="5" />
+		<input type="hidden" id="left_active_menu" value="2" />
+		<input type="hidden" id="left_active_sub_menu" value="206" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -15,13 +16,13 @@ $this->load->view("template/left.php");
 	                    <div class="panel-heading clearfix">
 							<div class="">
 								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('nurses');?></h4>
+									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('hospital_admin');?></h4>
 								</div>
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="nurses" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn" data-at="nurses" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospital_admin" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+										<a class="btn btn-primary m-b-sm exportBtn" data-at="hospital_admin" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
 								<br>
@@ -29,14 +30,12 @@ $this->load->view("template/left.php");
 	                    </div>
 	                    <div class="panel-body panel_body_custome">
 	                       <div class="table-responsive">
-	                            <table id="nurse" class="display table" cellspacing="0" width="100%">
+	                            <table id="hospital_admin" class="display table" cellspacing="0" width="100%">
 	                                <thead>
 	                                    <tr>
 											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['nurse'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['admin'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
 											<th width="20px">#</th>
 	                                    </tr>
@@ -53,14 +52,15 @@ $this->load->view("template/left.php");
 	        <input type="hidden" id="cur_del">
 	    </div><!-- Main Wrapper -->
 
-	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+
+		<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/nurse/update" method="post" id="form" enctype="multipart/form-data">
+				<form action="<?php echo site_url(); ?>/hospital_admin/update" method="post" id="form" enctype="multipart/form-data">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading">Edit Your Detail</h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -69,15 +69,14 @@ $this->load->view("template/left.php");
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
 									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
 									<li role="presentation"><a href="#tab3" aria-controls="other" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
-									<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
 								</ul>
 								<div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
 										<div class="col-md-12">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label><?php echo $this->lang->line('labels')['fname'];?></label>
-													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+													<label><?php echo $this->lang->line('labels')['female'];?></label>
+													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['female'];?>" name="first_name" id="first_name" />
 												</div>
 												<div class="form-group">
 													<label><?php echo $this->lang->line('labels')['lname'];?></label>
@@ -119,16 +118,6 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-4">
                                                 <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                                 <select name="hospital_id"  id="hospital_id" class=" form-control" style="width: 100%">
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                                <select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                               <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                                <select name="department_id" id="department_id" class=" form-control" style="width: 100%">
                                                 </select>
                                             </div>
 										</div>
@@ -200,25 +189,6 @@ $this->load->view("template/left.php");
 								            </div>
 										</div>
 									</div>
-									<div role="tabpanel" class="tab-pane fade in" id="tab4">
-										<div class="col-md-12">
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['qualification'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name1="qualification" id="qualification" />
-											</div>
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['experience'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name1="experience" id="experience" />
-											</div>
-										</div>
-										<div class="col-md-12">
-											
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['availability'];?></label>
-												<textarea class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['availability'];?>" name1="availability" id="availability" ></textarea>
-											</div>
-										</div>		
-									</div>
 								</div>
 							</div>	
 				  			
@@ -227,10 +197,10 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div>
 				  		<hr>
+						<div class="col-md-12 error">
+							<span class="model_error"></span>
+						</div>
 				  		<div class="row">
-						  	<div class="col-md-12 error">
-							  	<span class="model_error"></span>
-							</div>
 					  		<div class="form-group col-md-6">
 		                        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span><?php echo $this->lang->line('buttons')['cancel'];?></button>
 		                    </div>
@@ -250,16 +220,18 @@ $this->load->view("template/left.php");
 			</div>
 		<!-- /.modal-dialog --> 
 		</div>
-	    <?php
-$this->load->view("template/footer.php");
-?><script type="text/javascript">
+		
+	    
+<?php
+	$this->load->view("template/footer.php");
+?>
+<script type="text/javascript">
 		
 			$(document).ready(function(){
+
 				<?php
 					$this->load->view("template/location");
 				?>
-				var branch_id = null;
-				var department_id = null;
 
 				var validator = $("#form").validate({
 					ignore: [],
@@ -283,7 +255,7 @@ $this->load->view("template/footer.php");
 							phoneUS:true
 			        	}
 			        },
-			         messages: {
+			        messages: {
 			        	
 			        	first_name:{
 			        		required: "<?php echo $this->lang->line('validation')['requiredFname'];?>"
@@ -308,29 +280,28 @@ $this->load->view("template/footer.php");
 					
 				});
 
-				$("#nurse").DataTable({
+				$("#hospital_admin").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/nurse/getDTnurse"
+		            "ajax": "<?php echo site_url(); ?>/hospital_admin/getDThospital_admin"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
-				//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"nurse\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
-
+				
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
 					resetForm(validator);
 					resetLocation();
-			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewNurse'];?>");
+			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewHospitalAdmin'];?>");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
 			    	$("#form")[0].reset();
-			    	$("#passwordhint").hide();
 			    	$("#form input").attr("disabled",false);
-			    	$("#form").attr("action","<?php echo site_url(); ?>/nurse/add");
+			    	$("#form").attr("action","<?php echo site_url(); ?>/hospital_admin/add");
 			    	$("#edit").modal("show");
+					$("#passwordhint").hide();
 					$("#password").rules("add", {
 						required:true,
 						messages: {
@@ -338,72 +309,58 @@ $this->load->view("template/footer.php");
 						}
 					});
 					$('#tabs a[href="#tab1"]').click();
-					clearSelection();
-			    });
-				function clearSelection(){
-					
-					$selectize_department_id[0].selectize.disable();
-					$selectize_department_id[0].selectize.clear();
-					$selectize_branch_id[0].selectize.disable();
-					$selectize_branch_id[0].selectize.clear();
 					$selectize_hospital_id[0].selectize.clear();
-				}	
-				$("#nurse").on("click",".editbtn",function(){
+			    });
+
+				$("#hospital_admin").on("click",".editbtn",function(){
 					resetForm(validator);
-					clearSelection();
 					resetLocation();
-					$("div.error").hide();
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
-			    	$("#passwordhint").show();
-			    	$("#form").attr("action","<?php echo site_url(); ?>/nurse/update");
+					
+			    	$("#form").attr("action","<?php echo site_url(); ?>/hospital_admin/update");
 			    	$("#form input").attr("disabled",false);
 			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
+					$selectize_hospital_id[0].selectize.clear();
+					$("#passwordhint").show();
 					$("#password").rules("remove","required");
 					$('#tabs a[href="#tab1"]').click();
 			    });
 
 			    function loadData(id){
-			    	$.post("<?php echo site_url(); ?>/nurse/getnurse",{ id: id },function(data){
+			    	$.post("<?php echo site_url(); ?>/hospital_admin/gethospital_admin",{ id: id },function(data){
 			    		var data = JSON.parse(data);
-			    		
-						/*var tempselectize_department_id = $selectize_department_id[0].selectize;
-						tempselectize_department_id.addOption([{"id":data.department_id,"text":data.department_id}]);
-						tempselectize_department_id.refreshItems();
-						tempselectize_department_id.setValue(data.department_id);*/
 
-						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
-						tempselectize_hospital_id.refreshItems();
-						tempselectize_hospital_id.setValue(data.hospital_id);
+						if(data.hospital_id != null && data.hospital_id != undefined && data.hospital_id > 0){
+							var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+							tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+							tempselectize_hospital_id.refreshItems();
+							tempselectize_hospital_id.setValue(data.hospital_id);
+						}
 
-						branch_id = data.branch_id;
-						department_id = data.department_id;
-					
 						$("#first_name").val(data.first_name);
 						
 						$("#last_name").val(data.last_name);
 						
 						$("#useremail").val(data.useremail);
-						
+						$("#aadhaar_number").val(data.aadhaar_number);
 						$("#address").val(data.address);
 						
 						$("#mobile").val(data.mobile);
-						$("#aadhaar_number").val(data.aadhaar_number);
-						$("#phone").val(data.phone);
+						
+						$("#phone").val(data.phone);	
 
 						$("#gender").val(data.gender);
-						
+
 						$("#address").val(data.address);
 						$("#description").val(data.description);
 						$("#alternate_mobile_number").val(data.alternate_mobile_number);
 						if(data.date_of_birth != "" && data.date_of_birth != "0000-00-00"){
 							$("#date_of_birth").datepicker("update", new Date(data.date_of_birth));
 						}
-
 						if(data.country != null && data.country!=undefined && data.country != "" && data.country > 0){
 							console.log(data.country);
 							loc_cid = data.city;
@@ -414,96 +371,32 @@ $this->load->view("template/footer.php");
 							tempselectize_selectize_country.refreshItems();
 							tempselectize_selectize_country.setValue(data.country);
 						}
-						
 						shwoImgFromUrl(data.profile_photo);
-			    		
+					
 			    	});
 			    }
 
-			    $("#nurse").on("click",".viewbtn",function(){
-					resetForm(validator);
-					clearSelection();
+			    $("#hospital_admin").on("click",".viewbtn",function(){
+					$selectize_hospital_id[0].selectize.clear();
 			    	loadData($(this).attr("data-id"));
 			    	$("#form input").attr("disabled",true);
 			    	$("#form").attr("action","");
 					$("#action-add-btn").parent().hide();
 					$("#action-update-btn").parent().hide();
-			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['detailedView'];?>");
-					$('#tabs a[href="#tab1"]').click();
+			    	$("#Edit-Heading").html("Detailed View");
 
 			    });
 
-
-			    $("#nurse").on("click",".delbtn",function(){
+				$("#doctors").on("click",".delbtn",function(){
 			    	var id = $(this).attr("data-id");
 					swal(swalDeleteConfig).then(function () {
-						$.post("<?php echo site_url(); ?>/nurse/delete",{id:id},function(data){
+						$.post("<?php echo site_url(); ?>/hospital_admin/delete",{id:id},function(data){
 							delResFunc(data,id);
 						});
 					});
 			    });
 			    
-			    var xhr;
-
-
-				var $selectize_branch_id = $("#branch_id").selectize({
-				    valueField: "id",
-				    labelField: "text",
-				    searchField: "text",
-				    render: {
-				        option: function(item, escape) {
-				        	return "<div><span class='title'>" +
-				                    escape(item.text)+
-				                "</span>" +   
-				            "</div>";
-				        }
-				    },
-				    onChange: function(value) {
-				        if (!value.length) return;
-						
-				        $selectize_department_id[0].selectize.disable();
-				        $selectize_department_id[0].selectize.clearOptions();
-				        $selectize_department_id[0].selectize.load(function(callback) {
-				            xhr && xhr.abort();
-				            xhr = $.ajax({
-				                url: "<?php echo site_url(); ?>/departments/search/",
-				                type: "GET",
-				                data: { "branch_id":value,"f":"department_name"},
-				                success: function(results) {
-				                    $selectize_department_id[0].selectize.enable();
-				                    callback($.parseJSON(results));
-				                    if(department_id != null  && department_id > 0){
-				    					var tempselectize_department_id = $selectize_department_id[0].selectize;
-										tempselectize_department_id.addOption([{"id":department_id,"text":department_id}]);
-										tempselectize_department_id.refreshItems();
-										tempselectize_department_id.setValue(department_id);	
-										department_id = null;
-				    				}
-				                },
-				                error: function() {
-				                    callback();
-				                }
-				            })
-				        });
-				    }
-				});
-
-				var $selectize_department_id = $("#department_id").selectize({
-				    valueField: "id",
-				    labelField: "text",
-				    searchField: "text",
-				    render: {
-				        option: function(item, escape) {
-				        	return "<div><span class='title'>" +
-				                    escape(item.text)+
-				                "</span>" +   
-				            "</div>";
-				        }
-				    }
-				});
-
-				$selectize_branch_id[0].selectize.disable();
-				$selectize_department_id[0].selectize.disable();
+				var xhr;
 
 				var $selectize_hospital_id = $("#hospital_id").selectize({
 				    valueField: "id",
@@ -532,39 +425,8 @@ $this->load->view("template/footer.php");
 				                callback($.parseJSON(res));
 				            }
 				        });
-				    },
-				    onChange: function(value) {
-				        if (!value.length) return;
-						
-				        $selectize_branch_id[0].selectize.disable();
-				        $selectize_branch_id[0].selectize.clearOptions();
-				        $selectize_branch_id[0].selectize.load(function(callback) {
-				            xhr && xhr.abort();
-				            xhr = $.ajax({
-				                url: "<?php echo site_url(); ?>/branches/search/",
-				                type: "GET",
-				                data: { "hospital_id":value,"f":"branch_name"},
-				                success: function(results) {
-				                    $selectize_branch_id[0].selectize.enable();
-				                    callback($.parseJSON(results));
-				                    if(branch_id != null){
-				    					var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-										tempselectize_branch_id.addOption([{"id":branch_id,"text":branch_id}]);
-										tempselectize_branch_id.refreshItems();
-										tempselectize_branch_id.setValue(branch_id);	
-										branch_id = null;
-				    				}
-				                },
-				                error: function() {
-				                    callback();
-				                }
-				            })
-				        });
 				    }
 				});
-
-					
-
 			});
 
 		</script>

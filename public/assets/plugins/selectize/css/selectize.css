@@ -317,8 +317,7 @@
   margin: 0 4px 0 -2px !important;
 }
 .selectize-control .selectize-input.disabled {
-  opacity: 0.5;
-  background-color: #ffffff;
+  background-color: #eee;
 }
 .selectize-dropdown,
 .selectize-dropdown.form-control {

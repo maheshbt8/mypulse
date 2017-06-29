@@ -80,11 +80,10 @@ class Doctors_model extends CI_Model {
         
         if($doc_id === false){
             return false;
-        }else if($doc_id == -1){
-            return -1;
+        }else if($doc_id < 0){
+            return $doc_id;
         }
         else{
-            
             $doc = array();
             $doc['user_id'] = $doc_id;
             $doc['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
@@ -94,7 +93,6 @@ class Doctors_model extends CI_Model {
             } else {
                 return false;
             }
-        
         }
         return true;
     }
@@ -110,8 +108,8 @@ class Doctors_model extends CI_Model {
 
         if($doc_id === false){
             return false;
-        }else if($doc_id === -1){
-            return -1;
+        }else if($doc_id < 0){
+            return $doc_id;
         }
         else{
             $doc = array();

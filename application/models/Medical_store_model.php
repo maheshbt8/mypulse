@@ -47,8 +47,8 @@ class Medical_store_model extends CI_Model {
         
         if($uid === false){
             return false;
-        }else if($uid === -1){
-            return -1;
+        }else if($uid < -1){
+            return $uid;
         }else{
             $mstore['user_id'] = $uid;
             $mstore['name'] = $data['name'];
@@ -77,8 +77,8 @@ class Medical_store_model extends CI_Model {
 
         if($uid === false){
             return false;
-        }else if($uid === -1){
-            return -1;
+        }else if($uid < -1){
+            return $uid;
         }
         else{
             $mstore = array();

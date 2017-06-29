@@ -5,7 +5,7 @@
     <input type="hidden" id="left_active_menu" value="1" />
     <div id="main-wrapper">
         <div class="row">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6 col-sm-offset-1">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -31,12 +31,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-2 col-md-6">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p><span class="counter"><?php echo $states['tot_medStoreLab'];?></span></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('medStoreLabs');?></span>
+                            <p><span class="counter"><?php echo $states['tot_medStore'];?></span></p>
+                            <span class="info-box-title"><?php echo $this->lang->line('medicalStoreFull');?></span>
                         </div>
                         <div class="info-box-icon">
                             <i class="fa fa-users"></i>
@@ -44,7 +44,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
+             <div class="col-lg-2 col-md-6">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p><span class="counter"><?php echo $states['tot_medLab'];?></span></p>
+                            <span class="info-box-title"><?php echo $this->lang->line('medicalLabFull');?></span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">

@@ -72,10 +72,8 @@ class Patient_model extends CI_Model {
         //exit;
         if($patient_id === false){
             return false;
-        }else if($patient_id === -1){
-            return -1;
-        }
-        else{
+        }else if($patient_id < 0){
+            return $patient_id;
         }
         return true;
 
@@ -100,6 +98,15 @@ class Patient_model extends CI_Model {
             else
                 $res[$key] = $value;
         }
+
+        $con = $this->db->query("select * from hms_country where id = $res[country]");
+        if($con->num_rows() > 0){
+            $con = $con->row_array();
+            $res['country_name'] = $con['name'];
+        }else{
+            $res['country_name'] = '';
+        }
+
         return $res;
     }
 }

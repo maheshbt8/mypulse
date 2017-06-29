@@ -269,6 +269,25 @@ class Auth {
         }
     }
 
+    public function parseUserResult($res,$msg=false){
+        //echo "<pre>";var_dump($res,$msg);exit;
+        if($msg === false){
+            $msg = $this->CI->lang->line('msg_user_added');
+        }
+        $data = array();
+        if($res === -1){
+            $data['errors'] = array($this->CI->lang->line('msg_email_exist'));
+        }else if($res === -2){
+            $data['errors'] = array($this->CI->lang->line('msg_mobile_exist'));
+        }else if($res === -3){
+            $data['errors'] = array($this->CI->lang->line('msg_aadharnumber_exist'));
+        }else if($res === false){
+            $data['errors'] = array($this->CI->lang->line('msg_try_again'));
+        }else{
+            $data['success'] = array($msg);
+        }
+        return $data;
+    }
 
     public function addUser($data,$user_id=false){
         $user = array();
@@ -313,6 +332,8 @@ class Auth {
                 $user['gender'] = "M";
             }else if($g == "f" || $g == "female"){
                 $user['gender'] = "F";
+            }else if($g == "o" || $g == "other"){
+                $user['gender'] = "O";
             }
         }
         if(isset($data['date_of_birth'])){
@@ -349,7 +370,7 @@ class Auth {
             $uid = $this->CI->users_model->add($user);
         }
 
-        if($uid !== false && $uid !== -1){
+        if($uid !== false && $uid > 0){
             
             if(isset($_FILES["profile_photo"]) && $_FILES['profile_photo']['error'] == 0){
                 $url = base_url().'public/images/ux/'.$uid.".png";

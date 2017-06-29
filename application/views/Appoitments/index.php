@@ -86,23 +86,23 @@ $this->load->view("template/left.php");
 					                </select>
                                 </div>
 								<div class="form-group col-md-6">
-									<label>Doctor</label>
+									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
 									<select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
 									</select>
 								</div>
 								<div class="form-group col-md-6">
-									<label>Appoitment Date</label>
-									<input class="form-control date-time-picker" type="text" placeholder="Appoitment Date" name="appoitment_date" id="appoitment_date" />
+									<label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
+									<input class="form-control date-time-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
 								</div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
-									<label>Reason</label>
-									<textarea class="form-control " type="text" placeholder="Reason" name="reason" id="reason" rows="3"></textarea>
+									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
+									<textarea class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
 								</div>
 								<div class="form-group col-md-6">
-									<label>Remarks</label>
-									<textarea  class="form-control " type="text" placeholder="Remarks" name="remarks" id="remarks" rows="3"></textarea>
+									<label><?php echo $this->lang->line('labels')['remark'];?></label>
+									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
 								</div>
 							</div>				  		
 						</div>

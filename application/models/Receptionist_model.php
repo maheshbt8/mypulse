@@ -84,8 +84,8 @@ class Receptionist_model extends CI_Model {
         
         if($rec_id === false){
             return false;
-        }else if($rec_id === -1){
-            return -1;
+        }else if($rec_id < 0){
+            return $rec_id;
         }
         else{
             $rec = array();
@@ -111,8 +111,8 @@ class Receptionist_model extends CI_Model {
 
         if($rec_id === false){
             return false;
-        }else if($rec_id == -1){
-            return -1;
+        }else if($rec_id < 0){
+            return $rec_id;
         }
         else{
             $rec = array();

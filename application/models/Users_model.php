@@ -112,8 +112,17 @@ class Users_model extends CI_Model {
             return $this->db->insert_id();
         } else {
             $err = $this->db->error();
+            //echo "<pre>";print_r($err);
             if($err['code'] == 1062){
-                return -1;
+                $a = $err['message'];
+                if (strpos($a, 'usernemail') !== false) {
+                    return -1;
+                }else if(strpos($a, 'mobile') !== false) {
+                    return -2;
+                }else if(strpos($a, 'aadhaar_number') !== false){
+                    return -3;
+                }
+                return -4;
             }
             return false;
         }
@@ -125,16 +134,32 @@ class Users_model extends CI_Model {
             $data = $_POST;
         else
             $data = $usr;
+
+        $this->db->where('id',$id);
+        $this->db->where('isDeleted',0);
+        $user = $this->db->get($this->tblname);
+        $user = $user->row_array();    
         
         if(isset($data['useremail'])){
-            $this->db->where('id',$id);
-            $this->db->where('isDeleted',0);
-            $user = $this->db->get($this->tblname);
-            $user = $user->row_array();
-            
             if(isset($user['id'])){
                 if($user['useremail'] == $data['useremail']){
                     unset($data['useremail']);
+                }
+            }
+        }
+        
+        if(isset($data['mobile'])){
+            if(isset($user['id'])){
+                if($user['mobile'] == $data['mobile']){
+                    unset($data['mobile']);
+                }
+            }
+        }
+
+        if(isset($data['aadhaar_number'])){
+            if(isset($user['id'])){
+                if($user['aadhaar_number'] == $data['aadhaar_number']){
+                    unset($data['aadhaar_number']);
                 }
             }
         }
@@ -148,8 +173,17 @@ class Users_model extends CI_Model {
             return $id;
         } else {
             $err = $this->db->error();
+            
             if($err['code'] == 1062){
-                return -1;
+                $a = $err['message'];
+                if (strpos($a, 'usernemail') !== false) {
+                    return -1;
+                }else if(strpos($a, 'mobile') !== false) {
+                    return -2;
+                }else if(strpos($a, 'aadhaar_number') !== false){
+                    return -3;
+                }
+                return -4;
             }
             return false;
         }
@@ -273,7 +307,15 @@ class Users_model extends CI_Model {
 
     public function getProfile($id){
         $res = $this->db->query("select * from ".$this->tblname." where id=$id");
-        return $res->row_array();
+        $res = $res->row_array();
+        $con = $this->db->query("select * from hms_country where id = $res[country]");
+        if($con->num_rows() > 0){
+            $con = $con->row_array();
+            $res['country_name'] = $con['name'];
+        }else{
+            $res['country_name'] = '';
+        }
+        return $res;
     }
 
     public function changePassword($op,$np){

@@ -74,8 +74,8 @@ class Nurse_model extends CI_Model {
         
         if($nid === false){
             return false;
-        }else if($nid === -1){
-            return -1;
+        }else if($nid < 0){
+            return $nid;
         }else{
             $nurse['user_id'] = $nid;
             $nurse['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
@@ -101,8 +101,8 @@ class Nurse_model extends CI_Model {
 
         if($nid === false){
             return false;
-        }else if($nid === -1){
-            return -1;
+        }else if($nid < 0){
+            return $nid;
         }
         else{
             $nus = array();

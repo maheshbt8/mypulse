@@ -33,11 +33,14 @@ $lang['changePassword'] = "Change Password";
 $lang['appoitments'] = "Appoitments";
 $lang['medStoreLabs'] = "Medical Store/Labs";
 $lang['healthinsuranceprovider'] = "Health Insurance Provider";
+$lang['hospital_admin'] = 'Hospital Admin';
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
 $lang["msg_profile_udpated"] = "Profile updated successfully...!!!";
 $lang["msg_email_exist"] = "This email id is already registration with us.";
+$lang["msg_mobile_exist"] = "This mobile is already registration with us.";
+$lang["msg_aadharnumber_exist"] = "This Aaadhar number is already registration with us.";
 $lang["msg_check_email"] = "Please Check Your Mailbox";
 $lang["msg_email_send_error"] = "Unable to send you EMail. Please try again after sometime.";
 $lang["msg_password_change"] = "Password Successfully Change";
@@ -97,6 +100,9 @@ $lang['msg_appoitment_updated'] = "Appoitment Updated Successfully";
 $lang['msg_hip_added'] = "Health insurance provider Added Successfully";
 $lang['msg_hip_updated'] = "Health insurance provider Updated Successfully";
 
+$lang['msg_hospitaladmin_added'] = "Hospital Admin Added Successfully";
+$lang['msg_hospitaladmin_updated'] = "Hospital Admin Updated Successfully";
+
 ///
 $lang["usr_invalid_user"] = "Please Enter Valid Username";
 $lang['usr_acc_verify'] = "Please verify your account.";
@@ -141,7 +147,9 @@ $lang['tableHeaders'] = array(
     'charge' => 'Charge',
     'hospital_branch' => 'Hospital-Branch',
     'appoitment_date' => 'Appoitment Date',
-    'licenseCode' => 'License Code'
+    'licenseCode' => 'License Code',
+    'admin' => 'Admin'
+    
 );
 
 $lang['labels'] = array(
@@ -187,6 +195,7 @@ $lang['labels'] = array(
     'alternateNumber' => 'Alternate Mobile Number',
     'male' => 'Male',
     'female' => 'Female',
+    'other' => 'Other',
     'fname' => 'First Name',
     'lname' => 'Last Name',
     'aboutMe' => 'About Me',
@@ -229,7 +238,10 @@ $lang['labels'] = array(
     'lowBloodPressure' => 'Low Blood Pressure',
     'selectHealthInsuranceProvider' => 'Select Health Insurance Provider',
     'licenseCode' => 'License Code',
-    'canceled' => 'Canceled'
+    'canceled' => 'Canceled',
+    'appoitment_date' => 'Appoitment Date & Time',
+    'appoitment_reason' => 'Reason for appoitment',
+    'remark' => 'Remark'
 
 );
 
@@ -256,7 +268,8 @@ $lang['headings'] = array(
     'addNewAppoitment' => 'New appoitment',
     'addNewHealthInscuranceProvider' => 'Add new health insurance provider',
     'addNewLicense' => 'Add new license',
-    'cancelSuccess' => 'Canceled Successfully'
+    'cancelSuccess' => 'Canceled Successfully',
+    'addNewHospitalAdmin' => 'Add new hospital admin'
     
 );
 

@@ -27,14 +27,7 @@ class Users extends CI_Controller {
     public function add() {
         if ($this->auth->isLoggedIn()) {
             $res = $this->users_model->add();
-
-            if($res === -1){
-                $data['errors'] = array($this->lang->line('msg_email_exist'));
-            }else if($res === false){
-                $data['errors'] = array($this->lang->line('msg_try_again'));
-            }else{
-                $data['success'] = array($this->lang->line('msg_user_added'));
-            }
+            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_user_added'));
             $this->session->set_flashdata('data', $data);
             redirect('users/index');
             
@@ -42,17 +35,11 @@ class Users extends CI_Controller {
     }
     public function update() {
         if ($this->auth->isLoggedIn()) {
-            $data = array();
+            
             $id = $this->input->post('eidt_gf_id');
             $res = $this->users_model->update($id);
-            if($res === -1){
-                $data['errors'] = array($this->lang->line('msg_email_exist'));
-            }else if($res === false){
-                $data['errors'] = array($this->lang->line('msg_try_again'));
-            }else{
-                $data['success'] = array($this->lang->line('msg_user_added'));
-            }
-
+            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_patient_updated'));
+            
             $this->session->set_flashdata('data', $data);
             redirect('users/index');
         } else redirect('index/login');
@@ -69,8 +56,6 @@ class Users extends CI_Controller {
             echo json_encode($this->users_model->getusersById($id));
         }
     }
-
-   
 
     public function getDTusers() {
         if ($this->auth->isLoggedIn()) {

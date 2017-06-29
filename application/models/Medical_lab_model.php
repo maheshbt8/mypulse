@@ -46,8 +46,8 @@ class Medical_lab_model extends CI_Model {
         
         if($uid === false){
             return false;
-        }else if($uid === -1){
-            return -1;
+        }else if($uid < 0){
+            return $uid;
         }else{
             $mlab['user_id'] = $uid;
             $mlab['name'] = $data['name'];
@@ -75,8 +75,8 @@ class Medical_lab_model extends CI_Model {
 
         if($uid === false){
             return false;
-        }else if($uid === -1){
-            return -1;
+        }else if($uid < 0){
+            return $uid;
         }
         else{
             $mlab = array();

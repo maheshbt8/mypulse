@@ -110,7 +110,7 @@ $this->load->view("template/left.php");
 								<div role="tabpanel" class="tab-pane fade in" id="tab3">
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['female'];?></label>
+											<label><?php echo $this->lang->line('labels')['fname'];?></label>
 											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['female'];?>" name="first_name" id="first_name" />
 										</div>
 										<div class="form-group col-md-6">
@@ -145,6 +145,7 @@ $this->load->view("template/left.php");
 											<select class="form-control " name="gender" id="gender" />
 												<option value="M"><?php echo $this->lang->line('labels')['male'];?></option>
 												<option value="F"><?php echo $this->lang->line('labels')['female'];?></option>
+												<option value="O"><?php echo $this->lang->line('labels')['other'];?></option>
 											</select>
 										</div>
 										<div class="form-group col-md-6">
