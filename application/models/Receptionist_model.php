@@ -141,4 +141,20 @@ class Receptionist_model extends CI_Model {
             return true;
         } else return false;
     }
+
+    function getDoctorsIds($id=false){
+        if($id===false){
+            $id = $this->auth->getUserid();
+        }
+        $this->db->where('user_id',$id);
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $rep = $this->db->get($this->tblname);
+        $rep = $rep->result_array();
+        $ids = array();
+        foreach($rep as $p){
+            $ids[] = $p['doc_id'];
+        }
+        return $ids;
+    }
 }

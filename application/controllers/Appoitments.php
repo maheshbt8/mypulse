@@ -11,14 +11,21 @@ class Appoitments extends CI_Controller {
         $this->load->model("branches_model");
         $this->load->model("departments_model");
         $this->load->model("users_model");
+        $this->load->model("receptionist_model");
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
-            $data['appoitmentss'] = $this->appoitments_model->getAllappoitments();
-            $data["page_title"] = $this->lang->line("appoitments");
+        $data["page_title"] = $this->lang->line("appoitments");
             $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitments"));
+        if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {    
             $this->load->view('Appoitments/index', $data);
-        } else redirect('index/login');
+        }
+        else if($this->auth->isLoggedIn() && $this->auth->isReceptinest()){
+            $this->load->view('Appoitments/receptionist', $data);
+        }
+        else if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
+            $this->load->view('Appoitments/doctor', $data);
+        }
+         else redirect('index/login');
     }
     public function search() {
         if ($this->auth->isLoggedIn()) {
@@ -65,6 +72,14 @@ class Appoitments extends CI_Controller {
             echo $this->appoitments_model->cancel($id);
         }
     }
+
+    public function approve(){
+        if ($this->auth->isLoggedIn()) {
+            $id = $this->input->post('id');
+            echo $this->appoitments_model->approve($id);
+        }
+    }
+
     public function getappoitments() {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
@@ -110,34 +125,10 @@ class Appoitments extends CI_Controller {
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
 
-            /*if($bid == "all"){
-                $ids = $this->branches_model->getBracheIds($hid);
-                
-                if(count($ids) == 0){
-                    //If no department created.
-                    //Add dummy id to return nothing
-                    $ids[] = -1;
-                }
-                $ids = implode(",", $ids);
-                $cond[] = "branch_id in (".$ids.")";
-            }else if($bid != null){
-                $cond[] = "branch_id = ".$bid;
-            }else if($hid!=null){
-                $ids = $this->branches_model->getBracheIds($hid);
-                if(count($ids) == 0){
-                    //If no department created.
-                    //Add dummy id to return nothing
-                    $ids[] = -1;
-                }
-                $ids = implode(",", $ids);
-                $cond[] = "branch_id in (".$ids.")";
-            }else{
-                $hids = $this->hospitals_model->getHospicalIds();
-                $ids = $this->branches_model->getBracheIds($hids);
-                if(count($ids) == 0){ $ids[] = -1; }
-                $ids = implode(",",$ids);
-                $cond[] = "branch_id in (".$ids.")";
-            }*/
+            if($this->auth->isPatient()){
+                $uid = $this->auth->getUserid();
+                $cond[] = 'user_id='.$uid;
+            }
 
             if($show){
                 $this->tbl->setCheckboxColumn(false);
@@ -155,4 +146,126 @@ class Appoitments extends CI_Controller {
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }
+
+    public function getDTRespappoitments(){
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_appoitments";
+            $primaryKey = "id";
+            $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
+                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $dep = $this->departments_model->getdepartmentsById($d);
+                $hos = $this->hospitals_model->gethospitalsById($dep['hospital_id']);
+                $name = "";
+                if(isset($hos['name']))
+                    $name = $hos['name'];
+                if(isset($dep['branch_name'])){
+                    $name .= " - ".$dep['branch_name'];
+                }
+                return $name;
+            }), array("db" => "doctor_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $dep = $this->departments_model->getdepartmentsById($d);
+                return $dep['department_name'];
+            }),array("db" => "doctor_id", "dt" => 3, "formatter" => function ($d, $row) {
+                $temp = $this->users_model->getusersById($d);
+                $name = $temp["first_name"]." ".$temp["last_name"];
+                return $name;
+            }), array("db" => "appoitment_date", "dt" => 4, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : date("d-M-Y h:i A",strtotime($d));
+            }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
+                return $this->auth->getAppoitmentStatus($d);
+            }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
+                return "
+                <span style='display:inline-flex'>
+                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>
+
+                <a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>
+                </span>
+                ";
+            }));
+
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
+            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            if($hid == "all")
+                $hid = null;
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+
+            if($this->auth->isReceptinest()){
+                $dids = $this->receptionist_model->getDoctorsIds();
+                if(count($dids) == 0){ $dids[] = -1;}
+                $dids = implode(",",$dids);
+                $cond[] = "doctor_id in (".$dids.")";
+            }
+
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
+                $columns[0]['formatter'] = function ($d, $row) {
+                    return $d;
+                };
+                
+                $this->tbl->setIndexColumn(true);
+            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }    
+    }
+
+    public function getDTDocpappoitments(){
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_appoitments";
+            $primaryKey = "id";
+            $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
+                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            }), array("db" => "user_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $temp = $this->users_model->getusersById($d);
+                $name = $temp["first_name"]." ".$temp["last_name"];
+                return $name;
+            }), array("db" => "reason", "dt" => 2, "formatter" => function ($d, $row) {
+                return $d;
+            }),array("db" => "appoitment_date", "dt" => 3, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : date("d-M-Y h:i A",strtotime($d));
+            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
+                /*return "
+                <span style='display:inline-flex'>
+                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>
+                <a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>
+                </span>
+                ";*/
+                return "";
+            }));
+
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
+            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            if($hid == "all")
+                $hid = null;
+                
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            $cond[] = "status = 1";
+            $cond[] = "doctor_id = ".$this->auth->getDoctorId();
+
+            if($show){
+                $this->tbl->setCheckboxColumn(false);
+                $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
+                $columns[0]['formatter'] = function ($d, $row) {
+                    return $d;
+                };
+                
+                $this->tbl->setIndexColumn(true);
+            }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }    
+    }
+
 }

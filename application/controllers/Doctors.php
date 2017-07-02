@@ -8,14 +8,18 @@ class Doctors extends CI_Controller {
         parent::__construct();
         $this->load->model('doctors_model');
         $this->load->model("departments_model");
+        $this->load->model("receptionist_model");
     }
     public function index() {
+        $data["page_title"] =  $this->lang->line('doctors');
+        $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('doctors'));
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
-            $data['doctorss'] = $this->doctors_model->getAlldoctors();
-            $data["page_title"] =  $this->lang->line('doctors');
-            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('doctors'));
             $this->load->view('Doctors/index', $data);
-        } else redirect('index/login');
+        } 
+        else if($this->auth->isLoggedIn() && $this->auth->isReceptinest()){
+            $this->load->view('Doctors/receptionist', $data);
+        }
+        else redirect('index/login');
     }
     public function search() {
         if ($this->auth->isLoggedIn()) {
@@ -57,7 +61,7 @@ class Doctors extends CI_Controller {
         }
     }
     public function getDTdoctors() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+        if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_doctors";
             $primaryKey = "id";
@@ -109,7 +113,15 @@ class Doctors extends CI_Controller {
             $hospital_id = $this->input->get('hid',null,null);
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
-            if($this->auth->isHospitalAdmin()){
+            
+            if($this->auth->isReceptinest()){
+                $show = true;
+                $ids = $this->receptionist_model->getDoctorsIds();
+                if(count($ids) == 0) { $ids[] = -1;}
+                $ids = implode(",", $ids);
+                $cond[] = "id in (".$ids.")";
+            }
+            else if($this->auth->isHospitalAdmin()){
                 $ids = $this->auth->getAllDepartmentsIds();
                 $ids = implode(",", $ids);
                 $cond[] = "department_id in (".$ids.")";
@@ -129,6 +141,11 @@ class Doctors extends CI_Controller {
                 $columns[1]["dt"] = 1;
                 $columns[2]['dt'] = 2;
                 $columns[3]['dt'] = 3;
+
+                if($this->auth->isReceptinest()){
+                    unset($columns[3]);
+                }
+
                 $columns[0]['formatter'] =  function ($d, $row) {
                     $this->load->model("users_model");
                     $temp = $this->users_model->getusersById($d);

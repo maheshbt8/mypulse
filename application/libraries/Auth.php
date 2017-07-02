@@ -114,6 +114,10 @@ class Auth {
         return 0;
     }
 
+    public function getDoctorId(){
+        $this->CI->load->model('doctors_model');
+        return $this->CI->doctors_model->getMyId();
+    }
     
     public function getUserid(){
       $u = $this->CI->session->all_userdata();

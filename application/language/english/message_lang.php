@@ -33,7 +33,7 @@ $lang['changePassword'] = "Change Password";
 $lang['appoitments'] = "Appoitments";
 $lang['medStoreLabs'] = "Medical Store/Labs";
 $lang['healthinsuranceprovider'] = "Health Insurance Provider";
-$lang['hospital_admin'] = 'Hospital Admin';
+$lang['hospital_admin'] = 'Hospital Admins';
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -118,7 +118,8 @@ $lang['buttons'] = array(
     'add' => "Add",
     'yes' => 'Yes',
     'no' => 'No',
-    'edit' => 'Edit'
+    'edit' => 'Edit',
+    'approve' => 'Approve'
 );
 
 $lang['tableHeaders'] = array(
@@ -148,8 +149,10 @@ $lang['tableHeaders'] = array(
     'hospital_branch' => 'Hospital-Branch',
     'appoitment_date' => 'Appoitment Date',
     'licenseCode' => 'License Code',
-    'admin' => 'Admin'
-    
+    'admin' => 'Admin',
+    'appoitment_no' => 'Appoitment No',
+    'patient' => 'Patient',
+    'reason' => 'Reason'
 );
 
 $lang['labels'] = array(
@@ -269,7 +272,8 @@ $lang['headings'] = array(
     'addNewHealthInscuranceProvider' => 'Add new health insurance provider',
     'addNewLicense' => 'Add new license',
     'cancelSuccess' => 'Canceled Successfully',
-    'addNewHospitalAdmin' => 'Add new hospital admin'
+    'addNewHospitalAdmin' => 'Add new hospital admin',
+    'approvedSuccess' => 'Approved Successfully,'
     
 );
 
