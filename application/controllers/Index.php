@@ -31,10 +31,10 @@ class Index extends CI_Controller {
 				$this->load->view('Patient/dashbord',$data);
 			}else if($this->auth->isReceptinest()){
 				$data['states'] = $this->dashboard_model->getReceptinestStates($this->auth->getUserid());
-				$this->load->view('receptionist/dashboard',$data);
+				$this->load->view('Receptionist/dashboard',$data);
 			}else if($this->auth->isDoctor()){
 				$data['states'] = $this->dashboard_model->getDoctorStates($this->auth->getUserid());
-				$this->load->view('doctors/dashboard',$data);
+				$this->load->view('Doctors/dashboard',$data);
 			}
 		}
 		else{

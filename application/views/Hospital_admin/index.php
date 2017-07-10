@@ -6,8 +6,7 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-		<input type="hidden" id="left_active_menu" value="2" />
-		<input type="hidden" id="left_active_sub_menu" value="206" />
+		<input type="hidden" id="left_active_menu" value="14" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">

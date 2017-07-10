@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2017 at 01:17 PM
+-- Generation Time: Jul 03, 2017 at 04:07 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `hms_appoitments` (
 INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department_id`, `doctor_id`, `appoitment_date`, `status`, `reason`, `remarks`, `created_at`, `modified_at`, `isDeleted`) VALUES
 (1, '', 0, 0, 0, '1970-01-01 00:00:00', 0, '', '', '0000-00-00 00:00:00', '2017-06-24 11:09:25', 1),
 (2, '', 0, 1, 2, '2017-06-24 18:15:00', 0, 'Nothing ', 'test', '0000-00-00 00:00:00', '2017-06-24 13:01:38', 1),
-(3, 'APT3', 0, 1, 2, '2017-06-24 18:31:00', 0, 'Reasong', '', '0000-00-00 00:00:00', '2017-06-24 13:02:05', 0);
+(3, 'APT3', 15, 1, 2, '2017-07-02 18:31:00', 1, 'Reasong', '', '0000-00-00 00:00:00', '2017-07-02 15:20:47', 0);
 
 -- --------------------------------------------------------
 
@@ -656,7 +656,7 @@ CREATE TABLE IF NOT EXISTS `hms_doctors` (
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=109 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=114 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_doctors`
@@ -769,7 +769,29 @@ INSERT INTO `hms_doctors` (`id`, `user_id`, `department_id`, `isActive`, `isDele
 (105, 101, 37, 0, 0, '0000-00-00 00:00:00', '2017-06-20 14:04:38'),
 (106, 61, 17, 0, 0, '0000-00-00 00:00:00', '2017-06-20 14:04:38'),
 (107, 23, 87, 0, 0, '0000-00-00 00:00:00', '2017-06-20 14:04:38'),
-(108, 102, 18, 0, 0, '0000-00-00 00:00:00', '2017-06-20 14:04:38');
+(108, 102, 18, 0, 0, '0000-00-00 00:00:00', '2017-06-20 14:04:38'),
+(109, 142, -1, 0, 0, '2017-06-28 08:38:21', '2017-06-28 08:38:21');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hms_healthinsuranceprovider`
+--
+
+DROP TABLE IF EXISTS `hms_healthinsuranceprovider`;
+CREATE TABLE IF NOT EXISTS `hms_healthinsuranceprovider` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_healthinsuranceprovider`
+--
+
+INSERT INTO `hms_healthinsuranceprovider` (`id`, `name`, `isDeleted`) VALUES
+(1, 'LIC', 0);
 
 -- --------------------------------------------------------
 
@@ -785,9 +807,10 @@ CREATE TABLE IF NOT EXISTS `hms_healthrecords` (
   `height_feet` int(11) NOT NULL,
   `height_inch` int(11) NOT NULL,
   `weight` float NOT NULL,
-  `blood_pressure` varchar(250) NOT NULL,
+  `high_blood_pressure` int(11) NOT NULL DEFAULT '0',
+  `low_blood_pressure` int(11) NOT NULL DEFAULT '0',
   `sugar_level` varchar(250) NOT NULL,
-  `health_insurance_provider` varchar(500) NOT NULL,
+  `health_insurance_provider` int(11) NOT NULL DEFAULT '0',
   `health_insurance_id` varchar(500) NOT NULL,
   `family_history` text NOT NULL,
   `past_medical_history` text NOT NULL,
@@ -801,8 +824,8 @@ CREATE TABLE IF NOT EXISTS `hms_healthrecords` (
 -- Dumping data for table `hms_healthrecords`
 --
 
-INSERT INTO `hms_healthrecords` (`id`, `user_id`, `blood_group`, `height_feet`, `height_inch`, `weight`, `blood_pressure`, `sugar_level`, `health_insurance_provider`, `health_insurance_id`, `family_history`, `past_medical_history`, `isDeleted`, `created_at`, `updated_at`) VALUES
-(1, 26, '', 5, 0, 70, '90', '90', '', '', '', '', 0, '0000-00-00 00:00:00', '2017-06-23 10:17:14');
+INSERT INTO `hms_healthrecords` (`id`, `user_id`, `blood_group`, `height_feet`, `height_inch`, `weight`, `high_blood_pressure`, `low_blood_pressure`, `sugar_level`, `health_insurance_provider`, `health_insurance_id`, `family_history`, `past_medical_history`, `isDeleted`, `created_at`, `updated_at`) VALUES
+(1, 26, 'OPVE', 5, 5, 70, 90, 0, '90', 1, '', '', '', 0, '0000-00-00 00:00:00', '2017-06-27 07:36:21');
 
 -- --------------------------------------------------------
 
@@ -964,7 +987,7 @@ CREATE TABLE IF NOT EXISTS `hms_hospital_admin` (
 --
 
 INSERT INTO `hms_hospital_admin` (`id`, `hospital_id`, `user_id`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(1, 1, 3, 1, 0, '0000-00-00 00:00:00', '2017-05-26 05:39:18');
+(1, 11, 3, 1, 0, '0000-00-00 00:00:00', '2017-06-29 06:26:20');
 
 -- --------------------------------------------------------
 
@@ -1171,7 +1194,7 @@ CREATE TABLE IF NOT EXISTS `hms_receptionist` (
 INSERT INTO `hms_receptionist` (`id`, `user_id`, `doc_id`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
 (1, 17, 2, 1, 0, '2017-05-26 10:48:52', '2017-06-02 09:36:13'),
 (2, 31, 0, 1, 0, '2017-06-13 10:48:13', '2017-06-13 10:48:13'),
-(3, 39, 0, 1, 0, '2017-06-15 08:52:07', '2017-06-15 08:52:07');
+(3, 39, 2, 1, 0, '2017-06-15 08:52:07', '2017-07-01 08:06:15');
 
 -- --------------------------------------------------------
 
@@ -1265,47 +1288,47 @@ CREATE TABLE IF NOT EXISTS `hms_users` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `forgotPassCode` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `usernemail` (`useremail`)
-) ENGINE=MyISAM AUTO_INCREMENT=142 DEFAULT CHARSET=latin1;
+  UNIQUE KEY `usernemail` (`useremail`),
+  UNIQUE KEY `mobile` (`mobile`),
+  UNIQUE KEY `aadhaar_number` (`aadhaar_number`)
+) ENGINE=MyISAM AUTO_INCREMENT=143 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_users`
 --
 
 INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password`, `address`, `mobile`, `aadhaar_number`, `phone`, `profile_photo`, `hospital`, `gender`, `date_of_birth`, `city`, `district`, `state`, `country`, `alternate_mobile_number`, `description`, `role`, `isActive`, `isDeleted`, `created_at`, `updated_at`, `forgotPassCode`) VALUES
-(1, 'Admin', '', 'admin@mypulse.com', '21232f297a57a5a743894a0e4a801fc3', 'Ahmedabad', '9090123409', '', '', '', 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', 0),
-(2, 'Ramesh', '', 'ramesh@techcrista.in', '64a43b6ca15d128ac6a0679b39bc9c07', '', '', '', '', '', 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 2, 0, 0, '2017-05-03 18:56:20', '2017-05-03 18:56:20', 3),
-(3, 'Lms', 'ADMIN', 'lmsadmin@mypulse.com', '21232f297a57a5a743894a0e4a801fc3', '', '', '', '', '', 1, '', '0000-00-00', 0, 0, 0, 0, '', '', 2, 1, 0, '0000-00-00 00:00:00', '2017-05-24 04:22:31', NULL),
-(15, 'Ayus', 'Prakash', 'ayus@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', NULL, '09099910271', '', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 8, 0, 0, '2017-05-30 12:36:59', '2017-05-30 12:36:59', NULL),
-(14, 'Ravi', 'Prashad', 'ravi@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', NULL, '09099910271', '', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 7, 0, 0, '2017-05-30 12:34:11', '2017-05-30 12:34:11', NULL),
-(13, 'Prakash', 'Reak', 'prakash@lms.com', 'e10adc3949ba59abbe56e057f20f883e', NULL, '991820012321', '321409875412', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 7, 0, 0, '2017-05-30 12:31:32', '2017-05-30 12:31:32', NULL),
-(12, 'Ravi', 'Patel', 'drravi@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '990131', '', NULL, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/12.png', 0, 'M', '1988-12-26', 0, 0, 0, 0, '', '', 3, 1, 0, '2017-05-28 05:22:21', '2017-05-28 05:22:21', NULL),
-(16, 'Priya', 'Shah', 'priya@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '9099910271', '1234567678', NULL, NULL, 0, '', '1970-01-01', 0, 0, 0, 0, '', 'ASd', 0, 0, 0, '0000-00-00 00:00:00', '2017-06-02 09:33:43', NULL),
+(1, 'Admin', '', 'admin@mypulse.com', '21232f297a57a5a743894a0e4a801fc3', 'Ahmedabad', '9090123409', '542132105467', '', 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/1.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', '', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', 0),
+(2, 'Ramesh', '', 'ramesh@techcrista.in', '64a43b6ca15d128ac6a0679b39bc9c07', '', '1234561230', '542132105460', '', '', 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 2, 0, 0, '2017-05-03 18:56:20', '2017-05-03 18:56:20', 3),
+(3, 'Lms', 'ADMIN', 'lmsadmin@mypulse.com', '21232f297a57a5a743894a0e4a801fc3', '', '1234561239', '542132105462', '', '', 1, 'M', '2017-06-29', 2, 1, 1, 1, '', 'Some Descsss', 2, 1, 0, '0000-00-00 00:00:00', '2017-05-24 04:22:31', NULL),
+(15, 'Ayus', 'Prakash', 'ayus@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', NULL, '09099910272', '542132105463', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 8, 0, 0, '2017-05-30 12:36:59', '2017-05-30 12:36:59', NULL),
+(14, 'Ravi', 'Prashad', 'ravi@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', NULL, '09099910273', '542132105464', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 7, 0, 0, '2017-05-30 12:34:11', '2017-05-30 12:34:11', NULL),
+(13, 'Prakash', 'Reak', 'prakash@lms.com', 'e10adc3949ba59abbe56e057f20f883e', NULL, '991820012321', '3214098754122', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 7, 0, 0, '2017-05-30 12:31:32', '2017-05-30 12:31:32', NULL),
+(12, 'Ravi', 'Patel', 'drravi@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '990131', '542132105465', NULL, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/12.png', 0, 'M', '1988-12-26', 0, 0, 0, 0, '', '', 3, 1, 0, '2017-05-28 05:22:21', '2017-05-28 05:22:21', NULL),
+(16, 'Priya', 'Shah', 'priya@lms.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '9099910271', '123456767822', NULL, NULL, 0, '', '1970-01-01', 0, 0, 0, 0, '', 'ASd', 0, 0, 0, '0000-00-00 00:00:00', '2017-06-02 09:33:43', NULL),
 (17, 'Raju', '', 'raju@lms.com', '123456', NULL, NULL, NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 0, 0, 0, '0000-00-00 00:00:00', '2017-06-02 09:36:06', NULL),
-(18, '', '', '', 'd41d8cd98f00b204e9800998ecf8427e', '', '', '', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 4, 0, 0, '2017-06-06 07:53:06', '2017-06-06 07:53:06', NULL),
-(19, 'asdf', 'asdf', 'asdf@adfs.vsadf', '6a09965fb1ad7f14539e569c264b15ef', '', 'asdf', 'asdf', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 4, 0, 0, '2017-06-06 07:58:38', '2017-06-06 07:58:38', NULL),
+(18, '', '', '', 'd41d8cd98f00b204e9800998ecf8427e', '', '1234561243', '542132105466', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 4, 0, 0, '2017-06-06 07:53:06', '2017-06-06 07:53:06', NULL),
 (20, 'Test', 'Test', 'test@lms.com', '268e27056a3e52cf3755d193cbeb0594', '', '12313123', '5421781215', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 4, 0, 0, '2017-06-06 08:50:27', '2017-06-06 08:50:27', NULL),
-(21, 'Amit', 'patel', 'drravi1@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910271', '321409875412', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD', 3, 0, 0, '2017-06-07 06:07:20', '2017-06-07 06:07:20', NULL),
-(22, 'Amit1', 'patel', 'drrav2i@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910271', '321409875412', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD', 3, 0, 0, '2017-06-07 06:11:53', '2017-06-07 06:11:53', NULL),
+(21, 'Amit', 'patel', 'drravi1@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910274', '3214098754124', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD', 3, 0, 0, '2017-06-07 06:07:20', '2017-06-07 06:07:20', NULL),
+(22, 'Amit1', 'patel', 'drrav2i@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910275', '3214098754125', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD', 3, 0, 0, '2017-06-07 06:11:53', '2017-06-07 06:11:53', NULL),
 (23, 'Susma', 'Mehta', 'susma@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', '', '91231231812', '129812912311', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD in ALL', 3, 0, 0, '2017-06-09 06:08:37', '2017-06-09 06:08:37', NULL),
 (24, 'Partik', 'Sharma', 'pratik@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '81237123981', '82347123128', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'DES', 3, 0, 0, '2017-06-09 06:09:03', '2017-06-09 06:09:03', NULL),
 (25, 'Narshima', 'Ananya', 'narshima@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '912031281123', '91231021931', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'nURHWEMAES ', 4, 0, 0, '2017-06-09 06:11:18', '2017-06-09 06:11:18', NULL),
 (26, 'Patient1', 'LASTNAME', 'P1@LMS.COM', '827ccb0eea8a706c4c34a16891f84e7b', 'A-312 Avenue, NY-121', '9812831123', '12931892318', NULL, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/26.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', 'Reg.', 6, 1, 0, '2017-06-09 06:13:06', '2017-06-09 06:13:06', NULL),
-(27, 'Manoj', 'Vyajpai', 'manoj@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910271', '321409875412', NULL, NULL, 0, 'F', '1970-01-01', 0, 0, 0, 0, '', 'All MEDs Available ', 7, 0, 0, '2017-06-09 06:17:52', '2017-06-09 06:17:52', NULL),
-(28, 'Amit', 'patel', 'dr1ravi@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910271', '321409875412', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 8, 0, 0, '2017-06-09 06:18:30', '2017-06-09 06:18:30', NULL),
-(29, 'Jignesh', 'Patel', 'asdf@gmail.com', '22ca8686bfa31a2ae5f55a7f60009e14', '', '0799956444', 'asdf', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'asdfasdf', 3, 0, 0, '2017-06-13 10:44:13', '2017-06-13 10:44:13', NULL),
+(27, 'Manoj', 'Vyajpai', 'manoj@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910277', '3214098754126', NULL, NULL, 0, 'F', '1970-01-01', 0, 0, 0, 0, '', 'All MEDs Available ', 7, 0, 0, '2017-06-09 06:17:52', '2017-06-09 06:17:52', NULL),
+(28, 'Amit', 'patel', 'dr1ravi@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '09099910271', '3214098754127', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 8, 0, 0, '2017-06-09 06:18:30', '2017-06-09 06:18:30', NULL),
 (30, 'Ranchi', 'Patel', 'mmh@gmail.com', '6a204bd89f3c8348afd5c77c717a097a', '', '9889988822', '1234565748', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'asdfasdf', 4, 0, 0, '2017-06-13 10:46:59', '2017-06-13 10:46:59', NULL),
 (31, 'Door', 'Ship', 'adsfasdf@gmail.com', '912ec803b2ce49e4a541068d495ab570', '', '7994558542', '777454848', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'ASdfas', 5, 0, 0, '2017-06-13 10:48:13', '2017-06-13 10:48:13', NULL),
 (32, 'tghh', 'hdfgdf', 'gsdfgsdfg', '97dec69bf52685aad08bbbf93226a928', '', 'sdfgsdfgsdfg', 'sdfgsdf', NULL, NULL, 0, 'F', '2017-06-13', 0, 0, 0, 0, '', 'sdfsadfasd', 0, 0, 0, '2017-06-13 10:52:34', '2017-06-13 10:52:34', NULL),
-(33, 'Ramesh', 'Lalo', 'ramesh@ab.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '9101283281', '1234567678', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD OF ALL', 3, 0, 0, '2017-06-15 05:43:57', '2017-06-15 05:43:57', NULL),
+(33, 'Ramesh', 'Lalo', 'ramesh@ab.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '9101283281', '12345676781', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD OF ALL', 3, 0, 0, '2017-06-15 05:43:57', '2017-06-15 05:43:57', NULL),
 (34, 'Jayes', 'Raval', 'jayes@hotmail.com', 'e10adc3949ba59abbe56e057f20f883e', '', '8191782382', '819127176', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'KSla', 6, 0, 0, '2017-06-15 08:32:35', '2017-06-15 08:32:35', NULL),
 (35, 'Umang', 'Shah', 'umang@lak.com', 'e10adc3949ba59abbe56e057f20f883e', '', '9081232132', '9812038912831', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'KLakal', 6, 0, 0, '2017-06-15 08:35:43', '2017-06-15 08:35:43', NULL),
 (36, 'Kamelsh', 'Klak', 'kamlesh@kga.com', 'e10adc3949ba59abbe56e057f20f883e', '', '8902178654', '918028928', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'Iopq', 6, 0, 0, '2017-06-15 08:40:35', '2017-06-15 08:40:35', NULL),
 (37, 'Mahesh', 'Lal', 'mahesh@la.com', 'e10adc3949ba59abbe56e057f20f883e', '', '9801232098', '98819281928', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD Skin', 3, 0, 0, '2017-06-15 08:51:13', '2017-06-15 08:51:13', NULL),
 (38, 'Lka', 'Klak', 'lka@gamil.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '9875461230', '254678987', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'Desc', 4, 0, 0, '2017-06-15 08:51:42', '2017-06-15 08:51:42', NULL),
-(39, 'Resc', 'kak', 'ersc@cal.com', 'd41d8cd98f00b204e9800998ecf8427e', '', '5647891230', '123123123', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'klk', 5, 0, 0, '2017-06-15 08:52:07', '2017-06-15 08:52:07', NULL),
+(39, 'Resc', 'kak', 'ersc@cal.com', 'e10adc3949ba59abbe56e057f20f883e', '', '5647891230', '1231231234', NULL, NULL, 0, 'M', '1970-01-01', 2, 1, 1, 1, '', 'klk', 5, 1, 0, '2017-06-15 08:52:07', '2017-06-15 08:52:07', NULL),
 (40, 'Lal', 'Sign', 'lal@gma.com', 'e10adc3949ba59abbe56e057f20f883e', '', '3216549870', '586984120', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'kk', 6, 0, 0, '2017-06-15 08:54:11', '2017-06-15 08:54:11', NULL),
-(41, 'Rews', 'Adse', 'ares@dfa.fgt', 'd41d8cd98f00b204e9800998ecf8427e', '', '6751235476', '123123123', NULL, NULL, 0, 'M', '2017-06-08', 1, 1, 1, 1, '', 'zxcvzxcv', 8, 0, 0, '2017-06-15 09:02:48', '2017-06-15 09:02:48', NULL),
+(41, 'Rews', 'Adse', 'ares@dfa.fgt', 'd41d8cd98f00b204e9800998ecf8427e', '', '6751235476', '12312312312', NULL, NULL, 0, 'M', '2017-06-08', 1, 1, 1, 1, '', 'zxcvzxcv', 8, 0, 0, '2017-06-15 09:02:48', '2017-06-15 09:02:48', NULL),
 (42, 'Nevada', 'Baker', 'molestie.Sed.id@nulla.net', 'e10adc3949ba59abbe56e057f20f883e', '351-7518 Curabitur Road', '+91 0949965737', '1667101454499', '1-512-398-6522', NULL, 0, 'M', '2018-01-12', 1, 1, 1, 1, '+91 9383315835', '', 3, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
 (43, 'Bell', 'Meadows', 'ornare@Inmipede.co.uk', 'e10adc3949ba59abbe56e057f20f883e', '1501 Luctus St.', '+91 7151627385', '1675021912999', '880-5775', NULL, 0, 'M', '2018-05-31', 1, 1, 1, 1, '+91 2596754139', '', 3, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
 (44, 'Breanna', 'Hewitt', 'in@consectetuer.org', 'e10adc3949ba59abbe56e057f20f883e', 'Ap #645-5323 Faucibus Av.', '+91 0714016419', '1685090663999', '1-547-292-7587', NULL, 0, 'M', '2017-07-01', 1, 1, 1, 1, '+91 6660930721', '', 6, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
@@ -1405,7 +1428,8 @@ INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password
 (138, 'Whilemina', 'Reed', 'odio@a.ca', 'e10adc3949ba59abbe56e057f20f883e', '936-4138 Nam Rd.', '+91 6299362241', '1655081440799', '762-7869', NULL, 0, 'M', '2016-11-16', 1, 1, 1, 1, '+91 8170373334', '', 4, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
 (139, 'Selma', 'Britt', 'amet.consectetuer.adipiscing@Sedeu.com', 'e10adc3949ba59abbe56e057f20f883e', '5749 Cum Road', '+91 2841818084', '1601042984999', '859-2008', NULL, 0, 'F', '2018-05-28', 1, 1, 1, 1, '+91 8061980408', '', 3, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
 (140, 'Leila', 'Levine', 'ac.facilisis.facilisis@adipiscingfringilla.net', 'e10adc3949ba59abbe56e057f20f883e', '7879 Posuere Ave', '+91 9881393396', '1611102608499', '1-837-576-2121', NULL, 0, 'M', '2018-04-02', 1, 1, 1, 1, '+91 3455294213', '', 1, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
-(141, 'Karleigh', 'Molina', 'commodo.auctor@turpisAliquamadipiscing.org', 'e10adc3949ba59abbe56e057f20f883e', 'P.O. Box 794, 4479 Nullam Av.', '+91 0762591308', '1645063079099', '405-5373', NULL, 0, 'M', '2017-06-06', 1, 1, 1, 1, '+91 1473566477', '', 3, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL);
+(141, 'Karleigh', 'Molina', 'commodo.auctor@turpisAliquamadipiscing.org', 'e10adc3949ba59abbe56e057f20f883e', 'P.O. Box 794, 4479 Nullam Av.', '+91 0762591308', '1645063079099', '405-5373', NULL, 0, 'M', '2017-06-06', 1, 1, 1, 1, '+91 1473566477', '', 3, 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:59:32', NULL),
+(142, 'Yogesh', 'Patel', 'drravi123@lms.com', 'e10adc3949ba59abbe56e057f20f883e', '', '4123643214', '321409875412', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'asdfasdf', 3, 0, 0, '2017-06-28 08:38:21', '2017-06-28 08:38:21', NULL);
 
 -- --------------------------------------------------------
 

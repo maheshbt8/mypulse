@@ -45,10 +45,18 @@ class Patients extends CI_Controller {
     public function updatemyprofile(){
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('eidt_gf_id');
-            $res = $this->patient_model->update($id);
-            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_patient_updated'));
-            $this->session->set_flashdata('data', $data);
-            redirect('Patients/profile');
+            if(isset($_POST['isDoc']) && $_POST['isDoc'] == 1){
+                $this->patient_model->updateHealthData($id);
+                $aid = $_POST['appt_id'];
+                $data['success'] = array($this->lang->line('msg_patient_updated'));
+                $this->session->set_flashdata('data', $data);
+                redirect('doctors/patientRecord/'.$aid);
+            }else{
+                $res = $this->patient_model->update($id);
+                $data = $this->auth->parseUserResult($res,$this->lang->line('msg_patient_updated'));
+                $this->session->set_flashdata('data', $data);
+                redirect('Patients/profile');
+            }
         } else redirect('index/login');
     }
 

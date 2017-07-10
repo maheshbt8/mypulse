@@ -26,6 +26,7 @@ $lang['medicalLabFull'] = "Medical Labs";
 $lang['medicalLab'] = "Med. Labs";
 $lang['charges'] = "Charges";
 $lang['appointments'] = "Appointments";
+$lang['appointment'] = "Appointment";
 $lang['profile'] = "Profile";
 $lang['patientInfo'] = "Patient Information";
 $lang['visits'] = 'Visits';
@@ -34,6 +35,12 @@ $lang['appoitments'] = "Appoitments";
 $lang['medStoreLabs'] = "Medical Store/Labs";
 $lang['healthinsuranceprovider'] = "Health Insurance Provider";
 $lang['hospital_admin'] = 'Hospital Admins';
+$lang['todaysappoitments'] = "Today's Appoitments";
+$lang['availability'] = 'Availability';
+$lang['othersetting'] = 'Other Setting';
+$lang['patientrecord'] = 'Patient Record';
+$lang['newPrescription'] = 'New Prescription';
+
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -103,12 +110,12 @@ $lang['msg_hip_updated'] = "Health insurance provider Updated Successfully";
 $lang['msg_hospitaladmin_added'] = "Hospital Admin Added Successfully";
 $lang['msg_hospitaladmin_updated'] = "Hospital Admin Updated Successfully";
 
-///
 $lang["usr_invalid_user"] = "Please Enter Valid Username";
 $lang['usr_acc_verify'] = "Please verify your account.";
 $lang['usr_acc_invalid_credential'] = "Please Enter Valid Username and Password !!!";
 $lang['reg_completed'] = "Registration completed successfully...!!!";
 
+$lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "delete" => "Delete",
@@ -119,8 +126,11 @@ $lang['buttons'] = array(
     'yes' => 'Yes',
     'no' => 'No',
     'edit' => 'Edit',
-    'approve' => 'Approve'
+    'approve' => 'Approve',
+    'newPrescription' => 'New Prescription',
+    
 );
+//End Buttons
 
 $lang['tableHeaders'] = array(
     'name' => "Name",
@@ -152,8 +162,15 @@ $lang['tableHeaders'] = array(
     'admin' => 'Admin',
     'appoitment_no' => 'Appoitment No',
     'patient' => 'Patient',
-    'reason' => 'Reason'
+    'reason' => 'Reason',
+    'time' => 'Time',
+    'appoitment_sloat' => 'Time sloat',
+    'reasonForAppt' => 'Reason for Appoitment',
+    'date' => 'Date',
+    'remarks' => 'Remarks',
+    
 );
+//End Table Headings
 
 $lang['labels'] = array(
     'name' => "Name",
@@ -161,21 +178,21 @@ $lang['labels'] = array(
     'description' => 'Description',
     'email' => 'Email',
     'phoneNumber' => 'Phone Number',
-    'selectCountry' => 'Select Country',
-    'selectState' => 'Select State',
-    'selectDistrict' => 'Select District',
-    'selectCity' => 'Select City',
+    'selectCountry' => 'Country',
+    'selectState' => 'State',
+    'selectDistrict' => 'District',
+    'selectCity' => 'City',
     'ownerName' => 'Owner/MD Name',
     'ownerNumber' => 'Owner/MD Phone Number',
-    'selectHospitalAdmin' => 'Select Hospital Admin',
+    'selectHospitalAdmin' => 'Hospital Admin',
     'license' => 'License',
     'licenseStatus' => 'License Status',
     'licenseValidity' => 'License Validity',
-    'selectHospital' => 'Select Hospital',
-    'selectBranch' => 'Select Branch',
-    'selectDepartment' => 'Select Department',
-    'selectWard' => 'Select Ward',
-    'selectDoctor' => 'Select Doctor',
+    'selectHospital' => 'Hospital',
+    'selectBranch' => 'Branch',
+    'selectDepartment' => 'Department',
+    'selectWard' => 'Ward',
+    'selectDoctor' => 'Doctor',
     'isBedOccupied' => 'Is Bed Occupied?',
     'branchName' => 'Branch Name',
     'departmentName' => "Department Name",
@@ -212,7 +229,7 @@ $lang['labels'] = array(
     'otherProfile' => 'Other Profile Info.',
     'professionInfo' => 'Profession Info.',
     'bloodGroup' => 'Blood Group',
-    'selectBloodGroup' => 'Select Blood Group',
+    'selectBloodGroup' => 'Blood Group',
     'height' => 'Height',
     'weight' => 'Weight',
     'bloodPressure' => 'Blood Pressure',
@@ -226,8 +243,8 @@ $lang['labels'] = array(
     'medStoreInc' => 'Medical Store Incharge',
     'medLabInc' => 'Medical Lab Incharge',
     'healthInfo' => 'Health Information',
-    'selectHeightFt' => 'Select Feet',
-    'selectHeightIc' => 'Select Inch',
+    'selectHeightFt' => 'Feet',
+    'selectHeightIc' => 'Inch',
     'oldPassword' => 'Old Password',
     'newPassword' => 'New Password',
     'reNewPassword' => 'Repeat New Password',
@@ -239,14 +256,28 @@ $lang['labels'] = array(
     'completed' => 'Completed',
     'highBloodPressure' => 'High Blood Pressure',
     'lowBloodPressure' => 'Low Blood Pressure',
-    'selectHealthInsuranceProvider' => 'Select Health Insurance Provider',
+    'selectHealthInsuranceProvider' => 'Health Insurance Provider',
     'licenseCode' => 'License Code',
     'canceled' => 'Canceled',
-    'appoitment_date' => 'Appoitment Date & Time',
+    'appoitment_date' => 'Appoitment Date',
     'appoitment_reason' => 'Reason for appoitment',
-    'remark' => 'Remark'
-
+    'remark' => 'Remark',
+    'repeat_interval' => 'Repeat Interval',
+    'repeat_on' => 'Repeat On',
+    'start_time' => 'Start Time',
+    'end_time' => 'End Time',
+    'weekly' => 'Weekly',
+    'monthly' => 'Monthly',
+    'yearly' => 'Yearly',
+    'repeat_on_monthly' => 'Day of month',
+    'otherSettings' => 'Other Settings',
+    'noAppInterval' => 'Number of patient can handle in a hour',
+    'appt_interval' => 'Appoitment Interval (In Minutes)',
+    'appoitment_sloat' => 'Time sloat',
+    'noApptTimeSloat' => 'No time sloat available for this date. Please try another date',
+    'prescription' => 'Prescription',
 );
+//End Labels
 
 $lang['headings'] = array(
     'addNewHospital' => 'Add new hospital',
@@ -273,9 +304,11 @@ $lang['headings'] = array(
     'addNewLicense' => 'Add new license',
     'cancelSuccess' => 'Canceled Successfully',
     'addNewHospitalAdmin' => 'Add new hospital admin',
-    'approvedSuccess' => 'Approved Successfully,'
+    'approvedSuccess' => 'Approved Successfully',
+    'addNewAvailability' => 'Add new availability',
     
 );
+//End Heading
 
 $lang['validation'] = array(
     'missedOne' => 'You missed 1 field. It has been highlighted',
@@ -322,4 +355,12 @@ $lang['validation'] = array(
     'requiredHospitalAddress' => 'Enter hospital address',
     'requiredLicenseName' => 'Enter license name',
     'requiredLicenseCode' => 'Enter license code',
+    'requiredRepeatInterval' => 'Select repeat interval',
+    'requiredStartTime' => 'Select start time',
+    'requiredEndTime' => 'Select end time',
+    'requiredReadOn' => 'Select repeate on day',
+    'requiredDayMonth' => 'Select Day of month'
+
+
 );
+//End Validation

@@ -59,7 +59,38 @@
             </div>
         </div><!-- Row -->
         <div class="row">
-           
+            <div class="panel panel-white">      
+                <div class="panel-heading clearfix">
+                    <div class="">
+                        <div class="custome_col8">
+                            <h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('todaysappoitments');?></h4>
+                        </div>
+                        <div class="custome_col4">
+                            <div class="panel_button_top_right">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <div class="panel-body panel_body_custome">
+                    <div class="table-responsive">
+                        <table id="appoitments" class="display table" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th style="width:10px">#</th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['time'];?></th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                            </tbody>
+                        </table>  
+                    </div>
+                </div>
+            </div>
             
            
         </div>
@@ -68,3 +99,14 @@
     $this->load->view('template/footer.php');
 ?>
 <script src="<?php echo base_url();?>public/assets/js/pages/dashboard.js"></script>
+<script>
+    $(document).ready(function(){
+        //$("#appoitments").dataTable().fnDestroy();
+        $("#appoitments").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?status=1&td=1"
+        });
+        $(".dataTables_filter").hide();
+    });
+</script>

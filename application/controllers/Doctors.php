@@ -9,6 +9,8 @@ class Doctors extends CI_Controller {
         $this->load->model('doctors_model');
         $this->load->model("departments_model");
         $this->load->model("receptionist_model");
+        $this->load->model("patient_model");
+        $this->load->model("appoitments_model");
     }
     public function index() {
         $data["page_title"] =  $this->lang->line('doctors');
@@ -60,6 +62,76 @@ class Doctors extends CI_Controller {
             echo json_encode($this->doctors_model->getdoctorsById($id));
         }
     }
+    public function availability(){
+        if ($this->auth->isLoggedIn()
+            &&(
+                $this->auth->isSuperAdmin() || 
+                $this->auth->isHospitalAdmin() || 
+                $this->auth->isReceptinest() ||
+                $this->auth->isDoctor()
+            )
+        ) {
+            $data["page_title"] =  $this->lang->line('doctors');
+            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('availability'));
+
+            if(isset($_POST['repeat_interval'])){
+                $this->doctors_model->addAvailability();
+            }
+
+            $this->load->view('Doctors/availability', $data);
+        }else{
+            redirect('index/login');
+        }
+    }
+
+    public function getAvailability(){
+        if($this->auth->isLoggedIn()){
+            $start = $_POST['start'];
+            $end = $_POST['end'];
+            $doid = $this->doctors_model->getDoctorIdFromUserId($this->auth->getUserid());
+            $data = $this->doctors_model->getDoctorAvailabilties($doid,$start,$end);
+            echo json_encode($data);exit;
+        }
+    }
+
+    public function othersetting(){
+        if($this->auth->isLoggedIn()){
+            $data["page_title"] =  $this->lang->line('doctors');
+            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('othersetting'));
+            if(isset($_POST['eidt_gf_id'])){
+                $this->doctors_model->updateSettings();
+            }
+            $s = $this->doctors_model->getSetting();
+            $data['no_appt_handle'] = isset($s['no_appt_handle']) ? $s['no_appt_handle'] : 5;
+            $this->load->view('Doctors/other',$data);
+        }
+    }
+
+    public function patientRecord($appoitment_id=0){
+        if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
+            $data["page_title"] =  $this->lang->line('doctors');
+            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('patientrecord'));
+            $data['appoitment'] = $this->appoitments_model->getappoitmentsById($appoitment_id);
+            $pid = $data['appoitment']['user_id'];
+            $data['profile'] = $this->patient_model->getProfile($pid);
+            $this->load->view('Doctors/patientrecord',$data);
+        }else{
+            redirect('index/login');
+        }
+    }
+
+    public function newprescription(){
+        if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
+            $appt_id = $_POST['appt_id'];
+            $this->doctors_model->addPrescription();
+            $d['success'] = array($this->lang->line('msg_prescriptioned_saved'));
+            $this->session->set_flashdata('data', $d);
+            redirect('doctors/patientRecord/'.$appt_id.'?p=1');
+        }else{
+            redirect('index/login');
+        }
+    }
+
     public function getDTdoctors() {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
@@ -154,6 +226,55 @@ class Doctors extends CI_Controller {
                 };
                 $this->tbl->setIndexColumn(true);
             }
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function previewprescription($pid = 0){
+        $prescription = $this->doctors_model->getPrescription($pid);
+        $return['html'] = $this->load->view('template/prescription',array("data"=>$prescription),true);
+        $btn = '';        
+        $btn .= '<a href="#" class="btn btn-primary printtem" data-url="doctors/previewprescription/'.$pid.'">Print</a>&nbsp;&nbsp;';
+        $return['btns'] = $btn;
+        echo json_encode($return);
+    }
+
+    public function getDTPrescription($pid=0) {
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_prescription";
+            $primaryKey = "id";
+            $columns = array(array("db" => "patient_id", "dt" => 0, "formatter" => function ($d, $row) {
+                $this->load->model("users_model");
+                $temp = $this->users_model->getusersById($d);
+                $name = $temp["first_name"]." ".$temp["last_name"];
+                return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$name."</a>";
+            }), array("db" => "appoitment_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                return isset($temp['reason']) ? $temp['reason'] : "$d";
+            }), array("db" => "appoitment_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                return isset($temp['appoitment_date']) ? date("d-M-Y",strtotime($temp['appoitment_date'])) : "-";
+            }), array("db" => "appoitment_id", "dt" => 3, "formatter" => function ($d, $row) {
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                return isset($temp['remarks']) ? $temp['remarks'] : "-";
+            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
+                //return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                return "-";
+            }));
+            
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            $cond = array("patient_id=".$pid);
+            
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
+
+            
             $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));

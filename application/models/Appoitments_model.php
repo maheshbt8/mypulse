@@ -49,9 +49,15 @@ class Appoitments_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+        
         unset($data["eidt_gf_id"]);
         if (isset($data["appoitment_date"])) $data["appoitment_date"] = date("Y-m-d H:i:s", strtotime($data["appoitment_date"]));
         if (isset($data["status"])) $data["status"] = intval($data["status"]);
+        $tsloat = $data['appoitment_sloat'];
+        unset($data['appoitment_sloat']);
+        $tsloat = explode('-',$tsloat);
+        $data['appoitment_time_start'] = date('H:i',strtotime($tsloat[0]));
+        $data['appoitment_time_end'] = date('H:i',strtotime($tsloat[1]));
         $data['user_id'] = $this->auth->getUserid();
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
@@ -99,5 +105,86 @@ class Appoitments_model extends CI_Model {
         if ($this->db->update($this->tblname, $d)) {
             return true;
         } else return false;
+    }
+
+    function isDoctorAvailable($doc_id=0,$date){
+        $this->db->where('doctor_id',$doc_id);
+        $this->db->where('status',0);
+    }
+
+    function getTimeSloats($doc_id=0,$date){
+        $this->db->where('user_id',$doc_id);
+        $this->db->where('isDeleted',0);
+        $availability = $this->db->get('hms_availability');
+        $availability = $availability->result_array();
+
+        //Get Available Date time
+        $data = array();
+        foreach($availability as $r){
+            $_day = 0; 
+            if($r['repeat_interval'] == 0){
+                $_day = date("w",strtotime($date));
+            }else if($r['repeat_interval'] == 1){
+                $_day = date("j",strtotime($date));
+            }
+            if($_day == $r['day']){
+                $data[] = array(
+                    'start' => strtotime($date.' '.$r['start_time']),
+                    'end' => strtotime($date.' '.$r['end_time'])
+                );
+            }
+        }
+        //Get Doctor Settings
+        $this->db->where('id',$doc_id);
+        $doc_set = $this->db->get('hms_doctors');
+        $doc_set = $doc_set->row_array();
+        $noAppt = $doc_set['no_appt_handle'];
+        $apptInterval = floor(60/$noAppt);
+
+        //Get TimeSloats
+        $timeSloats = array();
+        foreach($data as $d){
+            $end = $d['end'];
+            $start = $d['start'];
+            while($start <= $end){
+                $s = $start;
+                $start += 60 * 60;
+                $_e = $start;
+                if($_e > $end){
+                    $_e = $end;
+                }
+                $timeSloats[] = array(
+                    'start' => date('h:i A',$s),
+                    'end' => date('h:i A',$_e),
+                    'title' => date('h:i A',$s)." to ".date('h:i A',$_e)
+                );
+            }
+        }
+        
+        //Get Available TimeSloats
+        $availableTimeSloats = array();
+        foreach($timeSloats as $slot){
+            $st = strtotime($slot['start']);
+            $et = strtotime($slot['end']);
+            $mins = $et - $st;
+            $mins = floor($mins/60);
+
+            $tot_appt = floor($mins/$apptInterval);
+
+            $this->db->where('doctor_id',$doc_id);
+            $this->db->where('appoitment_date',$date);
+            $this->db->where('appoitment_time_start',date('H:i:s',$st));
+            $this->db->where('appoitment_time_end',date('H:i:s',$et));
+            $this->db->where('status',0);
+            $this->db->where('isDeleted',0);
+
+            $appt = $this->db->get($this->tblname);
+            $appt = $appt->result_array();
+            if(count($appt) < $tot_appt){
+                $slot['remaining'] = $tot_appt - count($appt);
+                $availableTimeSloats[] = $slot;
+            }
+        }
+        return $availableTimeSloats;
     }
 }

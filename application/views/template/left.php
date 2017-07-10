@@ -27,7 +27,6 @@
                             <li id="li2" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon fa fa-hospital-o"></span><p><?php echo $menu['main_hospitals'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
                                     <li id="li201"><a href="<?php echo site_url();?>/hospitals"><?php echo $menu['main_hospitals'];?></a></li>
-                                    <li id="li206"><a href="<?php echo site_url();?>/hospital_admin" ><?php echo $menu['main_hospital_admin'];?></a></li> 
                                     <li id="li202"><a href="<?php echo site_url();?>/branches" ><?php echo $menu['main_branches'];?></a></li>
                                     <li id="li203"><a href="<?php echo site_url();?>/departments" ><?php echo $menu['main_departments'];?></a></li>
                                     <li id="li206"><a href="<?php echo site_url();?>/wards/" ><?php echo $menu['main_wards'];?></a></li> 
@@ -35,6 +34,7 @@
                                     <li id="li205"><a href="<?php echo site_url();?>/charges/" ><?php echo $menu['main_charges'];?></a></li> 
                                 </ul>
                             </li>
+                            <li id="li14"><a href="<?php echo site_url();?>/hospital_admin" class="waves-effect waves-button"><span class="menu-icon fa  fa-users "></span><p><?php echo $menu['main_hospital_admin'];?></p></a></li> 
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
                             <li id="li5"><a href="<?php echo site_url();?>/nurse" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p><?php echo $menu['main_nurses'];?></p></a></li>
                             <li id="li6"><a href="<?php echo site_url();?>/receptionist" class="waves-effect waves-button"><span class="menu-icon  icon-user-following "></span><p><?php echo $menu['main_receptionists'];?></p></a></li>
@@ -115,6 +115,12 @@
                             case $this->auth->getDoctorRoleType():
                         ?>
                             <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
+                            <li id="li60" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li id="li601"><a href="<?php echo site_url();?>/doctors/availability" ><?php echo $menu['main_availability'];?></a></li>
+                                    <li id="li602"><a href="<?php echo site_url();?>/doctors/othersetting" ><?php echo $menu['main_other'];?></a></li>
+                                </ul>
+                            </li>
                         <?php
                             default:
                                 break;

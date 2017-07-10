@@ -204,4 +204,171 @@ class Doctors_model extends CI_Model {
         }
         return 0;   
     }
+
+    public function getMyUserId($id=0){
+        $this->db->where('id',$id);
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $d = $this->db->get($this->tblname);
+        $d = $d->row_array();
+        if(isset($d['user_id']))
+            return $d['user_id'];
+        return 0;
+    }
+
+    public function getDoctorIdFromUserId($uid=0){
+        $this->db->where('user_id',$uid);
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $d = $this->db->get($this->tblname);
+        $d = $d->row_array();
+        if(isset($d['id']))
+            return $d['id'];
+        return 0;
+    }
+
+    public function addAvailability(){
+        if($_POST['repeat_interval'] == 0){
+            for($i=0; $i<count($_POST['repeat_on']); $i++){
+                $data['user_id'] = $this->getDoctorIdFromUserId($this->auth->getUserid());
+                $data['repeat_interval'] = $_POST['repeat_interval'];
+                $data['day'] = $_POST['repeat_on'][$i];
+                $data['start_time'] = date("H:i", strtotime($_POST['start_time']));
+                $data['end_time'] = date("H:i", strtotime($_POST['end_time']));
+                $this->db->insert('hms_availability',$data);
+            }
+        }else if($_POST['repeat_interval'] == 1){
+            $data['user_id'] = $this->getDoctorIdFromUserId($this->auth->getUserid());
+            $data['repeat_interval'] = $_POST['repeat_interval'];
+            $data['day'] = $_POST['day_of_month'];
+            $data['start_time'] = date("H:i", strtotime($_POST['start_time']));
+            $data['end_time'] = date("H:i", strtotime($_POST['end_time']));
+            $this->db->insert('hms_availability',$data);
+        }
+    }
+
+    public function getDoctorAvailabilties($doc_id=0,$start_date,$end_date){
+        $this->db->where('user_id',$doc_id);
+        $this->db->where('isDeleted',0);
+        $red = $this->db->get('hms_availability');
+        $red = $red->result_array();
+        $data = array();
+        foreach($red as $r){
+            
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1D'),
+                new DateTime($end_date)
+            );
+            
+            foreach($period as $date){
+                $_day = 0;
+                if($r['repeat_interval'] == 0){
+                    //Weekly
+                    $_day = $date->format("w");
+                }else if($r['repeat_interval']==1){
+                    //Monthly
+                    $_day = $date->format("j");
+                }
+                if($_day == $r['day']){
+                    $data[] = array(
+                        'date' => $date->format('d-m-Y'),
+                        'start_time' => $r['start_time'],
+                        'end_time' => $r['end_time'],
+                        'startDate' => strtotime($date->format('d-m-Y').' '.$r['start_time']),
+                        'endDate' => strtotime($date->format('d-m-Y').' '.$r['end_time']),
+                        'title' => date('h:i A',strtotime($r['start_time']))." to ".date('h:i A',strtotime($r['end_time']))
+                    );
+                }
+            }
+            
+        }
+        return $data;
+    }
+
+    function updateSettings(){
+        $docid = $this->getDoctorIdFromUserId($this->auth->getUserid());
+        $data['no_appt_handle'] = intval($_POST['no_appt_handle']);
+        //$data['appt_interval'] = intval($_POST['appt_interval']);
+        $this->db->where('id',$docid);
+        $this->db->update($this->tblname,$data);
+    }
+
+    function getSetting(){
+        $docid = $this->getDoctorIdFromUserId($this->auth->getUserid());
+        $this->db->where('id',$docid);
+        $s = $this->db->get($this->tblname);
+        $s = $s->row_array();
+        return $s;
+    }
+    function getDocAppInterval($docid=0){
+        $this->db->where('id',$docid);
+        $doc = $this->db->get($this->tblname);
+        $doc = $doc->row_array();
+        return $doc['no_appt_handle'];
+    }
+
+    public function addPrescription(){
+        $pre['doctor_id'] = $this->auth->getDoctorid();
+        $pre['patient_id'] = $_POST['patient_id'];
+        $pre['appoitment_id'] = $_POST['appt_id'];
+        $pre['created_at'] = date("Y-m-d H:i:s");
+        $this->db->insert('hms_prescription',$pre);
+
+        $this->db->where('id',$pre['appoitment_id']);
+        $this->db->update('hms_appoitments',array('status'=>3));
+
+        $pid = $this->db->insert_id();
+        $this->addPrescriptionItems($pid);
+    }
+
+    function addPrescriptionItems($pid=0){
+        for($i=0; $i<count($_POST['item_id']); $i++){
+            $item['drug'] = $_POST['drug'][$i];
+            $item['prescription_id'] = $pid;
+            $item['strength'] = $_POST['strength'][$i];
+            $item['dosage'] = $_POST['dosage'][$i];
+            $item['duration'] = $_POST['duration'][$i];
+            $item['note'] = $_POST['note'][$i];
+
+            if(isset($_POST['item_id'][$i]) && $_POST['item_id'][$i]!=""){
+                $this->db->where('id',$_POST['item'][$i]);
+                $this->db->update('hms_prescription_item',$item);
+            }else{
+                $this->db->insert('hms_prescription_item',$item);
+            }
+
+        }
+    }
+
+    function getPrescription($pid = 0){
+        $this->db->where('id',$pid);
+        $this->db->where('isDeleted',0);
+        $pre = $this->db->get('hms_prescription');
+        $pre = $pre->row_array();
+
+        $this->db->where('id',$pre['patient_id']);
+        $patient = $this->db->get('hms_users');
+        $patient = $patient->row_array();
+        $patient_name = "";
+        $patient_name = isset($patient['first_name']) ? $patient['first_name']." " : "";
+        $patient_name .= isset($patient['last_name']) ? $patient['last_name'] : "";
+        $pre['patient_name'] = $patient_name;
+
+        $duid = $this->getMyUserId($pre['doctor_id']);
+        $this->db->where('id',$duid);
+        $doctor = $this->db->get('hms_users');
+        $doctor = $doctor->row_array();
+        $doctor_name = "";
+        $doctor_name = isset($doctor['first_name']) ? $doctor['first_name']." " : "";
+        $doctor_name .= isset($doctor['last_name']) ? $doctor['last_name'] : "";
+        $pre['doctor_name'] = $doctor_name;
+
+        $this->db->where('prescription_id',$pid);
+        $items = $this->db->get('hms_prescription_item');
+        $items = $items->result_array();
+
+        $pre['items'] = $items;
+        return $pre;
+    }
 }

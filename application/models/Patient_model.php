@@ -7,6 +7,65 @@ class Patient_model extends CI_Model {
     var $tblname = "hms_users";
     var $healthTbl = "hms_healthrecords";
 
+    function updateHealthData($id){
+        $hr = array();
+
+        if(isset($_POST['blood_group'])){
+            $hr['blood_group'] = $_POST['blood_group'];
+        }
+
+        if(isset($_POST['height_feet'])){
+            $hr['height_feet'] = intval($_POST['height_feet']);
+        }
+
+        if(isset($_POST['height_inch'])){
+            $hr['height_inch'] = intval($_POST['height_inch']);
+        }
+
+        if(isset($_POST['weight'])){
+            $hr['weight'] = floatval($_POST['weight']);
+        }
+
+        if(isset($_POST['high_blood_pressure'])){
+            $hr['high_blood_pressure'] = $_POST['high_blood_pressure'];
+        }
+
+        if(isset($_POST['low_blood_pressure'])){
+            $hr['low_blood_pressure'] = $_POST['low_blood_pressure'];
+        }
+
+        if(isset($_POST['sugar_level'])){
+            $hr['sugar_level'] = $_POST['sugar_level'];
+        }
+
+        if(isset($_POST['health_insurance_provider'])){
+            $hr['health_insurance_provider'] = $_POST['health_insurance_provider'];
+        }
+
+        if(isset($_POST['health_insurance_id'])){
+            $hr['health_insurance_id'] = $_POST['health_insurance_id'];
+        }
+
+        if(isset($_POST['family_history'])){
+            $hr['family_history'] = $_POST['family_history'];
+        }
+
+        if(isset($_POST['past_medical_history'])){
+            $hr['past_medical_history'] = $_POST['past_medical_history'];
+        }
+
+        $this->db->where('user_id',$id);
+        $temp = $this->db->get($this->healthTbl);
+        if($temp->num_rows() > 0){
+            $this->db->where('user_id',$id);
+            $this->db->update($this->healthTbl,$hr);
+        }else{
+            $hr['user_id'] = $id;
+            $this->db->insert($this->healthTbl,$hr);
+        }   
+        return true;
+    }
+
     function update($id) {
 
         $hr = array();

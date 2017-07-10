@@ -36,7 +36,7 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="appoitments" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-		                                    <tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th><th><?php echo $this->lang->line('tableHeaders')['patient'];?></th><th><?php echo $this->lang->line('tableHeaders')['reason'];?></th><th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th><th width="20px">#</th>
+		                                    <tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th><th><?php echo $this->lang->line('tableHeaders')['patient'];?></th><th><?php echo $this->lang->line('tableHeaders')['reason'];?></th><th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
 	                                    </tr>
 	                                </thead>
 	                                

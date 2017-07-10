@@ -51,7 +51,7 @@ class Users_model extends CI_Model {
             return false;
     }
 
-    function getusersById($id) {
+    function getusersById($id) {   
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }

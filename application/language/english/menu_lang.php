@@ -29,3 +29,5 @@ $lang['appoitments'] = "Appoitments";
 $lang['main_healthinsuranceprovider'] = "Health Insurance Provider";
 $lang['main_inpatient_history'] = "In-Patient History";
 $lang['main_hospital_admin'] = 'Hospital Admins';
+$lang['main_availability'] = 'Availability';
+$lang['main_other'] = 'Others';

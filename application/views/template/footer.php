@@ -1,3 +1,22 @@
+        <div class="modal fade bs-example-modal-lg" id="printDialog" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <div id="btnArea" style="float: right;margin-right: 20px"></div>
+                        <h4 class="modal-title custom_align" id="printHeading"></h4>
+                    </div>
+                    <div class="modal-body" id="printBody">
+                    </div>
+                    <div class="modal-footer ">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            <!-- /.modal-content --> 
+            </div>
+        </div>
+
+
         <div class="page-footer">
             <div class="row">
             <span class="no-s"><?php echo date("Y");?> &copy; JagruMs Technologies Pvt Limited</span>
@@ -34,6 +53,8 @@
         <script src="<?php echo base_url();?>public/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/selectize/js/selectize.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+        <script src="<?php echo base_url();?>public/assets/plugins/fullcalendar/lib/moment.min.js"></script>
+        <script src="<?php echo base_url();?>public/assets/plugins/fullcalendar/fullcalendar.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
@@ -101,6 +122,18 @@
                 autoclose: true
             });
 
+            $('.date-picker-nopast').datepicker({
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+                orientation: "top auto",
+                autoclose: true,
+                startDate: "+0d"
+            });
+
+            $('.timepicker').datetimepicker({
+                format:'hh:mm A'
+            });
+
             $(".date-time-picker").datetimepicker({
                 format: 'D-M-Y hh:mm A'
             });
@@ -152,6 +185,50 @@
                     
                 }
             });
+
+            $(document).on('click','.previewtem',function(){
+                $("#printBody").html("");
+                $("#btnArea").html("");
+                var u = $(this).data('url');
+                $.get('<?php echo site_url()?>/'+u, function(d) {
+                    if(d!=""){
+                        try{
+                            data = $.parseJSON(d);
+                            if(data.html!=undefined){
+                                $("#printBody").html(data.html);
+                                $("#btnArea").html(data.btns);
+                                $("#printDialog").modal('show');
+                                return;
+                            }
+                        }catch(e){
+                            
+                        }
+                        $("#printBody").html(d);
+                        $("#printDialog").modal('show');
+                    }
+                });
+            });
+
+            $(document).on('click','.printtem',function(){
+                var u = $(this).data('url');
+                $.get('<?php echo site_url()?>/'+u, function(d) {
+                    if(d!=""){
+                        try{
+                            data = $.parseJSON(d);
+                            if(data.html != undefined){    
+                                var newWindow = window.open();
+                                newWindow.document.write(data.html);
+                                newWindow.print();
+                                newWindow.close();
+                                return;
+                            }
+                        }catch(e){
+
+                        }
+                    }
+                });
+            });
+
 
 
         });

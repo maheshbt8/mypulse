@@ -118,10 +118,26 @@ class Auth {
         $this->CI->load->model('doctors_model');
         return $this->CI->doctors_model->getMyId();
     }
+
+    public function getReceptinestId(){
+        $this->CI->load->model('receptionist_model');
+        return $this->CI->receptionist_model->getMyId();
+    }
     
     public function getUserid(){
       $u = $this->CI->session->all_userdata();
       return $u['user_id'];
+    }
+    
+    public function getUserIdFromRoleId($id=0,$role=0){
+        switch($role){
+            case $this->getDoctorRoleType():
+                $this->CI->load->model('doctors_model');
+                return $this->CI->doctors_model->getMyUserId($id);
+                break;
+            default:
+                return 0;
+        }
     }
     
     public function LoggedOut()

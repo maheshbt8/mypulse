@@ -157,4 +157,16 @@ class Receptionist_model extends CI_Model {
         }
         return $ids;
     }
+
+    public function getMyId(){
+        $this->db->where('user_id',$this->auth->getUserid());
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $doc = $this->db->get($this->tblname);
+        $doc = $doc->row_array();
+        if(isset($doc['id'])){
+            return $doc['id'];
+        }
+        return 0;   
+    }
 }

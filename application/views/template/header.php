@@ -34,6 +34,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" />
         <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+        <link href="<?php echo base_url();?>public/assets/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
         <script>
             var BASEURL = '<?php echo site_url();?>';
             var validationInvalidHandler = function(event, validator) {
@@ -48,10 +49,12 @@
 						}
 					};
             var validationErrorPlacement = function(error, element) {
-						if (element.hasClass("selectized")) {
+                		if (element.hasClass("selectized")) {
 							var e = element.siblings(2)
 							error.insertAfter(e[1]);
-						} else {
+						} else if(element.attr("type") == "checkbox"){
+                            error.appendTo($("#weekerror"));
+                        } else {
 							error.insertAfter(element);
 						}
 					};  
@@ -91,6 +94,13 @@
             }
         </style>
         <style type="text/css">
+            .equalDivParent{
+                display:flex;
+                width:100%;
+            }
+            .equalDivChild{
+                flex-basis:95%
+            }
             #tabs a{
                 padding: 10px 8px !important;
             }

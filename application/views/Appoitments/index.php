@@ -35,7 +35,17 @@ $this->load->view("template/left.php");
 	                       <div class="table-responsive">
 	                            <table id="appoitments" class="display table" cellspacing="0" width="100%">
 	                                <thead>
-		                                    <tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th><th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th><th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th><th><?php echo $this->lang->line('tableHeaders')['status']; ?></th><th width="20px">#</th>
+		                                <tr>
+										<th style="width:10px"></th>
+										<!--<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>-->
+										<th>No.</th>
+										<th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+										<th width="20px">#</th>
 	                                    </tr>
 	                                </thead>
 	                                
@@ -92,7 +102,13 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
-									<input class="form-control date-time-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
+									<input class="form-control date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
+								</div>
+								<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
+									<select class="form-control" type="text" name="appoitment_sloat" id="appoitment_sloat">
+									</select>
+									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
 								</div>
 							</div>
 							<div class="col-md-12">
@@ -161,6 +177,12 @@ $this->load->view("template/footer.php");
 		var validator = $("#form").validate({
 			ignore: [],
 			rules: {
+				hospital_id:{
+					required: true
+				},
+				department_id:{
+					required: true
+				},
 				doctor_id:{
 					required: true
 				},
@@ -186,6 +208,12 @@ $this->load->view("template/footer.php");
 				},
 				branch_id:{
 					required: "<?php echo $this->lang->line('validation')['selectBranch'];?>"
+				},
+				hospital_id:{
+					required: "<?php echo $this->lang->line('validation')['selectHospital'];?>"
+				},
+				department_id:{
+					required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
 				}
 				
 			},
@@ -218,6 +246,8 @@ $this->load->view("template/footer.php");
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
 			$selectize_hospital_id[0].selectize.clear();
+			$("#appoitment_date").attr('disabled',true);
+			$("#appoitment_sloat").attr('disabled',true);
 		});
 
 		$("#appoitments").on("click",".editbtn",function(){
@@ -361,6 +391,26 @@ $this->load->view("template/footer.php");
 			}
 		});*/
 		
+
+		$("#appoitment_date").change(function(){
+			var d = $("#appoitment_date").val();
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+				data = JSON.parse(data);
+				$("#appoitment_sloat").html("");
+				$("#noApptTimeSloat").hide();
+				if(data.length == 0){
+					$("#noApptTimeSloat").show();
+				}else{
+					$("#appoitment_sloat").attr('disabled',false);
+					for(var i=0; i<data.length; i++){
+						var item = data[i];
+						var ht = '<option value="'+item.start+'-'+item.end+'">'+item.title+'</option>';
+						$("#appoitment_sloat").append(ht);
+					}
+				}
+			});
+		});
+
 		var xhr;
 
 		var $selectize_doctor_id = $("#doctor_id").selectize({
@@ -376,6 +426,10 @@ $this->load->view("template/footer.php");
 						"</span>" +   
 					"</div>";
 				}
+			},
+			onChange: function(value){
+				if(!value.length) return;
+				$("#appoitment_date").attr('disabled',false);
 			}
 		});
 
