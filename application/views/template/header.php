@@ -71,7 +71,6 @@
             };              
             var delResFunc = function(data,id){
                 if(data==1){
-                    debugger;
                     $("#dellink_"+id).parents('tr').remove();	
                     toastr.success("<?php echo $this->lang->line('headings')['deleteSuccess'];?>");
                 }else{
@@ -91,6 +90,9 @@
                 width: 100%;
                 padding: 0px !important;
                 border-radius: 0px !important;
+            }
+            .fc-time{
+                display:none !important;
             }
         </style>
         <style type="text/css">

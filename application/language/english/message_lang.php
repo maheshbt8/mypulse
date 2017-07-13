@@ -110,6 +110,8 @@ $lang['msg_hip_updated'] = "Health insurance provider Updated Successfully";
 $lang['msg_hospitaladmin_added'] = "Hospital Admin Added Successfully";
 $lang['msg_hospitaladmin_updated'] = "Hospital Admin Updated Successfully";
 
+$lang['msg_setting_saved'] = "Setting saved successfully";
+
 $lang["usr_invalid_user"] = "Please Enter Valid Username";
 $lang['usr_acc_verify'] = "Please verify your account.";
 $lang['usr_acc_invalid_credential'] = "Please Enter Valid Username and Password !!!";
@@ -118,6 +120,7 @@ $lang['reg_completed'] = "Registration completed successfully...!!!";
 $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 $lang['buttons'] = array(
     "addNew" => "Add New",
+    "bookAppoitment" => "Book Appoitment",
     "delete" => "Delete",
     "export" => "Export",
     'cancel' => 'Cancel',
@@ -168,7 +171,7 @@ $lang['tableHeaders'] = array(
     'reasonForAppt' => 'Reason for Appoitment',
     'date' => 'Date',
     'remarks' => 'Remarks',
-    
+    'prescriptionFor' => 'Title(Prescription for)'
 );
 //End Table Headings
 
@@ -276,6 +279,12 @@ $lang['labels'] = array(
     'appoitment_sloat' => 'Time sloat',
     'noApptTimeSloat' => 'No time sloat available for this date. Please try another date',
     'prescription' => 'Prescription',
+    'custom' => 'Custom',
+    'select_date' => 'Select Date',
+    'end_on' => 'Ends on',
+    'availabilityText' => 'Availability',
+    'availabilityTextPlace' => 'E.g. Available on every monday to friday.',
+    'doctorAvailability' => 'Doctor Availability',
 );
 //End Labels
 
@@ -306,7 +315,7 @@ $lang['headings'] = array(
     'addNewHospitalAdmin' => 'Add new hospital admin',
     'approvedSuccess' => 'Approved Successfully',
     'addNewAvailability' => 'Add new availability',
-    
+    'editAvailability' => 'Edit availability',
 );
 //End Heading
 
@@ -329,6 +338,7 @@ $lang['validation'] = array(
     'selectDistrict' => 'Select District',
     'selectCity' => 'Select City',
     'selectWard' => 'Select Ward',
+    'selectDate' => 'Select Date',
     'requiredBed' => 'Enter bed number',
     'requiredTitle' => "Enter title",
     'requiredDiscription' => "Enter discription",
@@ -359,8 +369,8 @@ $lang['validation'] = array(
     'requiredStartTime' => 'Select start time',
     'requiredEndTime' => 'Select end time',
     'requiredReadOn' => 'Select repeate on day',
-    'requiredDayMonth' => 'Select Day of month'
-
-
+    'requiredDayMonth' => 'Select Day of month',
+    'requiredEndDate' => 'Select End Date',
+    'requiredTitle' => 'Enter title'
 );
 //End Validation

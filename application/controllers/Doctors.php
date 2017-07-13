@@ -62,7 +62,7 @@ class Doctors extends CI_Controller {
             echo json_encode($this->doctors_model->getdoctorsById($id));
         }
     }
-    public function availability(){
+    public function availability($did=0){
         if ($this->auth->isLoggedIn()
             &&(
                 $this->auth->isSuperAdmin() || 
@@ -71,11 +71,22 @@ class Doctors extends CI_Controller {
                 $this->auth->isDoctor()
             )
         ) {
+            $doc_id= 0;
+            if($this->auth->isDoctor()){
+                $doc_id = $this->doctors_model->getDoctorIdFromUserId($this->auth->getUserid());
+            }else{
+                $doc_id = $did;
+            }
+
             $data["page_title"] =  $this->lang->line('doctors');
             $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('availability'));
-
+            $data['doc_id'] = $doc_id;
+            $s = $this->doctors_model->getSetting($doc_id);
+            $data['no_appt_handle'] = isset($s['no_appt_handle']) ? $s['no_appt_handle'] : 5;
+            $data['availabilityText'] = isset($s['availability_text']) ? $s['availability_text'] : "";
+            $data['availabilty'] = $this->doctors_model->getAvailibaliryInterval($doc_id);
             if(isset($_POST['repeat_interval'])){
-                $this->doctors_model->addAvailability();
+                $this->doctors_model->addAvailability($doc_id);
             }
 
             $this->load->view('Doctors/availability', $data);
@@ -84,26 +95,63 @@ class Doctors extends CI_Controller {
         }
     }
 
-    public function getAvailability(){
+    public function deleteavalibality(){
+        if ($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+            $id = $this->input->post('id');
+            echo $this->doctors_model->deleteavalibality($id);
+        }
+    }
+
+    public function getAvailability($doid=0){
         if($this->auth->isLoggedIn()){
             $start = $_POST['start'];
             $end = $_POST['end'];
-            $doid = $this->doctors_model->getDoctorIdFromUserId($this->auth->getUserid());
             $data = $this->doctors_model->getDoctorAvailabilties($doid,$start,$end);
             echo json_encode($data);exit;
         }
     }
 
+    public function getAvailabilityById(){
+        if($this->auth->isLoggedIn()){
+            $id = $_GET['id'];
+            $av = $this->doctors_model->getAvailabilityById($id);
+            if(isset($av['start_date'])){
+                $av['start_date'] = date("d-m-Y",strtotime($av['start_date']));
+            }
+            if(isset($av['end_date'])){
+                $av['end_date'] = date("d-m-Y",strtotime($av['end_date']));
+            }
+            if(isset($av['start_time'])){
+                $av['start_time'] = date("h:i A",strtotime($av['start_time']));
+            }
+            if(isset($av['end_time'])){
+                $av['end_time'] = date("h:i A",strtotime($av['end_time']));
+            }
+            
+            echo json_encode($av);
+        }
+    }
+
+    public function getAvailabilityText(){
+        if($this->auth->isLoggedIn()){
+            $id = isset($_GET['id']) ? $_GET['id'] : 0;
+            $s = $this->doctors_model->getSetting($id);
+            $t = isset($s['availability_text']) ? $s['availability_text'] : "";
+            echo $t;exit;
+        }else{
+            echo "";
+        }
+    }
+
     public function othersetting(){
         if($this->auth->isLoggedIn()){
-            $data["page_title"] =  $this->lang->line('doctors');
-            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('othersetting'));
-            if(isset($_POST['eidt_gf_id'])){
-                $this->doctors_model->updateSettings();
-            }
-            $s = $this->doctors_model->getSetting();
-            $data['no_appt_handle'] = isset($s['no_appt_handle']) ? $s['no_appt_handle'] : 5;
-            $this->load->view('Doctors/other',$data);
+            //$data["page_title"] =  $this->lang->line('doctors');
+            //$data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('othersetting'));
+            $doid = isset($_POST['eidt_gf_id']) ? $_POST['eidt_gf_id'] : 0;
+            $this->doctors_model->updateSettings($doid);
+            $d['success'] = array($this->lang->line('msg_setting_saved'));
+            $this->session->set_flashdata('data', $d);
+            redirect('doctors/availability/'.$doid);
         }
     }
 
@@ -179,7 +227,8 @@ class Doctors extends CI_Controller {
             }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);
             }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button>
+                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button></span>";
             }));
             
             $hospital_id = $this->input->get('hid',null,null);
@@ -215,7 +264,9 @@ class Doctors extends CI_Controller {
                 $columns[3]['dt'] = 3;
 
                 if($this->auth->isReceptinest()){
-                    unset($columns[3]);
+                    $columns[3] = array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                        return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button></span>";
+                    });
                 }
 
                 $columns[0]['formatter'] =  function ($d, $row) {
@@ -247,14 +298,11 @@ class Doctors extends CI_Controller {
             $this->load->library("tbl");
             $table = "hms_prescription";
             $primaryKey = "id";
-            $columns = array(array("db" => "patient_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $this->load->model("users_model");
-                $temp = $this->users_model->getusersById($d);
-                $name = $temp["first_name"]." ".$temp["last_name"];
-                return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$name."</a>";
+            $columns = array(array("db" => "title", "dt" => 0, "formatter" => function ($d, $row) {
+                return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$d."</a>";
             }), array("db" => "appoitment_id", "dt" => 1, "formatter" => function ($d, $row) {
                 $temp = $this->appoitments_model->getappoitmentsById($d);
-                return isset($temp['reason']) ? $temp['reason'] : "$d";
+                return isset($temp['doctor_name']) ? $temp['doctor_name'] : "-";
             }), array("db" => "appoitment_id", "dt" => 2, "formatter" => function ($d, $row) {
                 $temp = $this->appoitments_model->getappoitmentsById($d);
                 return isset($temp['appoitment_date']) ? date("d-M-Y",strtotime($temp['appoitment_date'])) : "-";

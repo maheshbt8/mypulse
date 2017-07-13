@@ -63,7 +63,7 @@ class Doctors_model extends CI_Model {
         $this->db->like("hms_users.last_name",$q);
         $this->db->where("hms_users.isDeleted",0);
         $this->db->where("hms_users.role",$this->auth->getDoctorRoleType());
-        $this->db->select("hms_doctors.id,CONCAT(`first_name`,`last_name`) as text", false);
+        $this->db->select("hms_doctors.id,CONCAT(`first_name`,`last_name`) as text,description", false);
         $this->db->where("hms_doctors.isDeleted",0);
         $this->db->from($this->tblname);
 
@@ -138,6 +138,18 @@ class Doctors_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+            return true;
+        } else return false;
+    }
+
+    function deleteavalibality($id){
+        if(is_array($id)){
+            $this->db->where_in('id',$id);
+        }else{
+            $this->db->where("id", $id);
+        }
+        $d["isDeleted"] = 1;
+        if ($this->db->update("hms_availability", $d)) {
             return true;
         } else return false;
     }
@@ -227,24 +239,59 @@ class Doctors_model extends CI_Model {
         return 0;
     }
 
-    public function addAvailability(){
+    public function addAvailability($docid=0){
+        $data = array();
         if($_POST['repeat_interval'] == 0){
+            //Weekly
             for($i=0; $i<count($_POST['repeat_on']); $i++){
-                $data['user_id'] = $this->getDoctorIdFromUserId($this->auth->getUserid());
+                $data['user_id'] = $docid;//$this->getDoctorIdFromUserId($this->auth->getUserid());
                 $data['repeat_interval'] = $_POST['repeat_interval'];
                 $data['day'] = $_POST['repeat_on'][$i];
+                $data['end_date'] = date("Y-m-d",strtotime($_POST['end_on']));
                 $data['start_time'] = date("H:i", strtotime($_POST['start_time']));
                 $data['end_time'] = date("H:i", strtotime($_POST['end_time']));
-                $this->db->insert('hms_availability',$data);
+                if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
+                    $this->db->where('id',$_POST['eidt_gf_id']);
+                    $this->db->update('hms_availability',$data);
+                }
+                else{
+                    $data['start_date'] = date("Y-m-d");
+                    $this->db->insert('hms_availability',$data);
+                }   
             }
         }else if($_POST['repeat_interval'] == 1){
-            $data['user_id'] = $this->getDoctorIdFromUserId($this->auth->getUserid());
+            //Monthly
+            $data['user_id'] = $docid;//$this->getDoctorIdFromUserId($this->auth->getUserid());
             $data['repeat_interval'] = $_POST['repeat_interval'];
             $data['day'] = $_POST['day_of_month'];
+            $data['end_date'] = date("Y-m-d",strtotime($_POST['end_on']));
             $data['start_time'] = date("H:i", strtotime($_POST['start_time']));
             $data['end_time'] = date("H:i", strtotime($_POST['end_time']));
-            $this->db->insert('hms_availability',$data);
+            if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
+                $this->db->where('id',$_POST['eidt_gf_id']);
+                $this->db->update('hms_availability',$data);
+            }
+            else{
+                $data['start_date'] = date("Y-m-d");
+                $this->db->insert('hms_availability',$data);
+            }
+        }else if($_POST['repeat_interval'] == 2){
+            //Custum
+            $data['user_id'] = $docid;//$this->getDoctorIdFromUserId($this->auth->getUserid());
+            $data['repeat_interval'] = $_POST['repeat_interval'];
+            $data['start_date'] = date("Y-m-d",strtotime($_POST['date']));
+            $data['end_date'] = date("Y-m-d",strtotime($_POST['end_on']));
+            $data['start_time'] = date("H:i", strtotime($_POST['start_time']));
+            $data['end_time'] = date("H:i", strtotime($_POST['end_time']));
+            if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
+                $this->db->where('id',$_POST['eidt_gf_id']);
+                $this->db->update('hms_availability',$data);
+            }
+            else{
+                $this->db->insert('hms_availability',$data);
+            }   
         }
+        
     }
 
     public function getDoctorAvailabilties($doc_id=0,$start_date,$end_date){
@@ -262,6 +309,16 @@ class Doctors_model extends CI_Model {
             );
             
             foreach($period as $date){
+                $c = strtotime($date->format("Y-m-d"));
+                $s = strtotime($r['start_date']);
+                $e = strtotime($r['end_date']);
+                $can = false;
+                if($c >= $s && $c <= $e){
+                    $can = true;
+                }
+                if(!$can)
+                    continue;
+
                 $_day = 0;
                 if($r['repeat_interval'] == 0){
                     //Weekly
@@ -272,6 +329,7 @@ class Doctors_model extends CI_Model {
                 }
                 if($_day == $r['day']){
                     $data[] = array(
+                        'interval_id' => $r['id'],
                         'date' => $date->format('d-m-Y'),
                         'start_time' => $r['start_time'],
                         'end_time' => $r['end_time'],
@@ -286,21 +344,35 @@ class Doctors_model extends CI_Model {
         return $data;
     }
 
-    function updateSettings(){
-        $docid = $this->getDoctorIdFromUserId($this->auth->getUserid());
+    function getAvailabilityById($id){
+        $this->db->where('id',$id);
+        $this->db->where('isDeleted',0);
+        $av = $this->db->get('hms_availability');
+        return $av->row_array();
+    }
+
+    function updateSettings($docid=0){
+        //$docid = $this->getDoctorIdFromUserId($this->auth->getUserid());
         $data['no_appt_handle'] = intval($_POST['no_appt_handle']);
-        //$data['appt_interval'] = intval($_POST['appt_interval']);
+        $data['availability_text'] = $_POST['availability_text'];
         $this->db->where('id',$docid);
         $this->db->update($this->tblname,$data);
     }
 
-    function getSetting(){
-        $docid = $this->getDoctorIdFromUserId($this->auth->getUserid());
+    function getSetting($docid){
         $this->db->where('id',$docid);
         $s = $this->db->get($this->tblname);
         $s = $s->row_array();
         return $s;
     }
+
+    function getAvailibaliryInterval($docid=0){
+        $this->db->where('user_id',$docid);
+        $this->db->where('isDeleted',0);
+        $ava = $this->db->get('hms_availability');
+        return $ava->result_array();
+    }
+
     function getDocAppInterval($docid=0){
         $this->db->where('id',$docid);
         $doc = $this->db->get($this->tblname);
@@ -313,6 +385,7 @@ class Doctors_model extends CI_Model {
         $pre['patient_id'] = $_POST['patient_id'];
         $pre['appoitment_id'] = $_POST['appt_id'];
         $pre['created_at'] = date("Y-m-d H:i:s");
+        $pre['title'] = $_POST['title'];
         $this->db->insert('hms_prescription',$pre);
 
         $this->db->where('id',$pre['appoitment_id']);

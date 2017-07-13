@@ -213,8 +213,8 @@ $this->load->view("template/left.php");
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['reasonForAppt'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
                                                         <th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
                                                         <th><?php echo $this->lang->line('tableHeaders')['remarks'];?></th>
                                                         <th  width="20px">#</th>
@@ -230,15 +230,21 @@ $this->load->view("template/left.php");
                             </form>
                         </div>
                         <div class="row" id="preDiv" style="display:none">
-                            <form action="<?php echo site_url();?>/doctors/newprescription" method="post">
+                            <form action="<?php echo site_url();?>/doctors/newprescription" method="post" id="form">
                             <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
                             <input type="hidden" name="patient_id" id="patient_id" value="<?php echo $profile['id'];?>" />
                             <div class="col-md-12">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="input-Default" class="col-sm-4 control-label">Date</label>
+                                        <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
                                         <div class="col-sm-8">
                                             <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>" />
                                         </div>
                                     </div>
                                 </div>
@@ -303,6 +309,25 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
     $(document).ready(function(){
 
+        var validator = $("#form").validate({
+            ignore: [],
+            rules: {
+                
+                title: {
+                    required : true
+                }
+            },
+            messages: {
+                
+                title:{
+                    required: "<?php echo $this->lang->line('validation')['requiredTitle'];?>"
+                }
+            },
+            invalidHandler: validationInvalidHandler,
+            errorPlacement: validationErrorPlacement
+            
+        });
+
         var isEdit = false;
         var gotoP = 0;
         gotoP = '<?php if(isset($_GET["p"]) && $_GET["p"]==1){ echo 1;}else{ echo 0;} ?>';
@@ -357,6 +382,9 @@ $this->load->view("template/footer.php");
             $("#tabDiv input").prop("disabled", false);
             $("#tabDiv textarea").prop("disabled", false);
             $("#tabDiv select").prop("disabled", false);
+
+            $("#health_insurance_provider").prop("disabled", true);
+            $("#health_insurance_id").prop("disabled", true);
            
         }
 

@@ -34,7 +34,7 @@ $this->load->view("template/left.php");
 											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-											
+											<th style="width:10px"></th>
 	                                    </tr>
 	                                </thead>
 	                                

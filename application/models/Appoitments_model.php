@@ -35,6 +35,21 @@ class Appoitments_model extends CI_Model {
             $r['hospital_id'] = 0;
         } 
 
+        if(isset($r['doctor_id'])){
+            $uid = $this->auth->getDoctorUserId($r['doctor_id']);
+            $this->db->where('id',$uid);
+            $u = $this->db->get('hms_users');
+            $u = $u->row_array();
+            $na = "";
+            if(isset($u['first_name']))
+                $na .=$u['first_name']." ";
+            if(isset($u['last_name']))
+                $na .= $u['last_name'];
+            $r['doctor_name'] = $na;
+        }else{
+            $r['doctor_name'] = "";
+        }
+
         return $r;
     }
     function search($q, $field) {
@@ -121,6 +136,16 @@ class Appoitments_model extends CI_Model {
         //Get Available Date time
         $data = array();
         foreach($availability as $r){
+            $c = strtotime($date);
+            $s = strtotime($r['start_date']);
+            $e = strtotime($r['end_date']);
+            $can = false;
+            if($c >= $s && $c <= $e){
+                $can = true;
+            }
+            if(!$can)
+                continue;
+
             $_day = 0; 
             if($r['repeat_interval'] == 0){
                 $_day = date("w",strtotime($date));

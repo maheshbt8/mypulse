@@ -23,7 +23,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
-										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
+										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
 										<a class="btn btn-danger m-b-sm multiCancelBtn" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
 										<a class="btn btn-primary m-b-sm exportBtn" data-at="appoitments" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
@@ -112,6 +112,13 @@ $this->load->view("template/left.php");
 								</div>
 							</div>
 							<div class="col-md-12">
+								<div class="form-group col-md-12">
+									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
+									<br>
+									<span id="docAvailability"></span>
+								</div>
+							</div>
+							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
 									<textarea class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
@@ -135,7 +142,7 @@ $this->load->view("template/left.php");
 		                    </div>
 		                    
 		                    <div class="form-group col-md-6" style="display:none">
-		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['add'];?></button>
+		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['bookAppoitment'];?></button>
 		                    </div>
 		                </div>
 					</div>
@@ -227,6 +234,7 @@ $this->load->view("template/footer.php");
 
 		$(".addbtn").click(function(){
 			resetForm(validator);
+			$("#docAvailability").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
 			$("#action-add-btn").parent().show();
@@ -252,6 +260,7 @@ $this->load->view("template/footer.php");
 
 		$("#appoitments").on("click",".editbtn",function(){
 			resetForm(validator);
+			$("#docAvailability").html("");
 			var id = $(this).attr("data-id");
 			$("#eidt_gf_id").val(id);
 			loadData(id);
@@ -421,14 +430,23 @@ $this->load->view("template/footer.php");
 			create: false,
 			render: {
 				option: function(item, escape) {
-					return "<div><span class='title'>" +
+					
+					var dis = "";
+					if(item.description != undefined)
+						dis = item.description;
+					return "<div><span class='title' style='font-size:14px'><b>" +
 							escape(item.text)+
-						"</span>" +   
+						"</b></span><br><span style='font-size:12px;'><i>"+
+						escape(dis)+
+						"</i></span>" +   
 					"</div>";
 				}
 			},
 			onChange: function(value){
 				if(!value.length) return;
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:value},function(data){
+					$("#docAvailability").html(data);
+				});
 				$("#appoitment_date").attr('disabled',false);
 			}
 		});

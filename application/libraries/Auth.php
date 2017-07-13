@@ -119,6 +119,11 @@ class Auth {
         return $this->CI->doctors_model->getMyId();
     }
 
+    public function getDoctorUserId($id){
+        $this->CI->load->model('doctors_model');
+        return $this->CI->doctors_model->getMyUserId($id);
+    }
+
     public function getReceptinestId(){
         $this->CI->load->model('receptionist_model');
         return $this->CI->receptionist_model->getMyId();

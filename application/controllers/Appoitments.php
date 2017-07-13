@@ -134,6 +134,8 @@ class Appoitments extends CI_Controller {
             }), array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
                 return $this->auth->getAppoitmentStatus($d);
             }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                if($row['status']==3)
+                    return "";
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 
