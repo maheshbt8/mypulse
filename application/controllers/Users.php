@@ -16,6 +16,14 @@ class Users extends CI_Controller {
             $this->load->view('Users/index', $data);
         } else redirect('index/login');
     }
+    public function searchPatient(){
+        if ($this->auth->isLoggedIn()) {
+            $q = $this->input->get("q", null, "");
+            $f = $this->input->get("f", null, "");
+            $result = $this->users_model->searchPatient($q, $f);
+            echo json_encode($result);
+        }
+    }
     public function search($role=0) {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");

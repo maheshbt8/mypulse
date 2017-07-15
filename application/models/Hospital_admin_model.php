@@ -101,4 +101,5 @@ class Hospital_admin_model extends CI_Model {
             return true;
         } else return false;
     }
+    
 }

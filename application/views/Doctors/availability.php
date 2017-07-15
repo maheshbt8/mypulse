@@ -43,36 +43,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="col-md-6">
-                <div class="panel panel-white">
-                    <div class="panel-heading clearfix">
-                        <div class="">
-                            <div class="custome_col8">
-                                <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('availability');?></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        //availabilty
-                        <div class="table-responsive">
-                            <table class="display table" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr>
-                                        <th style="width:10px"></th>
-                                        <th><?php echo $this->lang->line('tableHeaders')['type'];?></th>
-                                        <th><?php echo $this->lang->line('tableHeaders')['st'];?></th>
-                                        <th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
-                                        <th><?php echo $this->lang->line('tableHeaders')['remarks'];?></th>
-                                        <th  width="20px">#</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>  
-                        </div>
-                    </div>
-                </div>
-            </div>-->
             <div class="col-md-12">
                 <div class="panel panel-white">
                     <div class="panel-body"> 
@@ -88,7 +58,7 @@
     </div>
 
     <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog ">
             <form action="<?php echo site_url(); ?>/doctors/availability/<?php echo $doc_id;?>" method="post" id="form" enctype="multipart/form-data">
                 <input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
                 <div class="modal-content">
@@ -97,51 +67,64 @@
                         <h4 class="modal-title custom_align" id="Edit-Heading"></h4>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label><?php echo $this->lang->line('labels')['repeat_interval'];?></label>
-                            <select class="form-control " name="repeat_interval" id="repeat_interval" >
-                                <option value="0"><?php echo $this->lang->line('labels')['weekly'];?></option>
-                                <option value="1"><?php echo $this->lang->line('labels')['monthly'];?></option>
-                                <option value="2"><?php echo $this->lang->line('labels')['custom'];?></option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label><?php echo $this->lang->line('labels')['repeat_interval'];?></label>
+                                    <select class="form-control " name="repeat_interval" id="repeat_interval" >
+                                        <option value="0"><?php echo $this->lang->line('labels')['weekly'];?></option>
+                                        <option value="1"><?php echo $this->lang->line('labels')['monthly'];?></option>
+                                        <option value="2"><?php echo $this->lang->line('labels')['custom'];?></option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="weeklyDayDiv">
+                                    <label><?php echo $this->lang->line('labels')['repeat_on'];?></label><br>
+                                    <label><input id="chk_0" class='repeat_on' type="checkbox" name="repeat_on[]" value="0" />S</label>
+                                    <label><input id="chk_1" class='repeat_on' type="checkbox" name="repeat_on[]" value="1" />M</label>
+                                    <label><input id="chk_2" class='repeat_on' type="checkbox" name="repeat_on[]" value="2" />T</label>
+                                    <label><input id="chk_3" class='repeat_on' type="checkbox" name="repeat_on[]" value="3" />W</label>
+                                    <label><input id="chk_4" class='repeat_on' type="checkbox" name="repeat_on[]" value="4" />T</label>
+                                    <label><input id="chk_5" class='repeat_on' type="checkbox" name="repeat_on[]" value="5" />F</label>
+                                    <label><input id="chk_6" class='repeat_on' type="checkbox" name="repeat_on[]" value="6" />S</label>
+                                    <br>
+                                    <span id="weekerror" ></span>
+                                </div>
+                                <div class="form-group" id="monthDayDiv" style="display:none">
+                                    <label><?php echo $this->lang->line('labels')['repeat_on_monthly'];?></label>
+                                    <select class="form-control" name="day_of_month" id="day_of_month">
+                                        <?php
+                                            for($i=1; $i<=31; $i++){
+                                                echo "<option value='$i'>$i</option>";
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>   
+                        </div> 
+                        <div class="row" >
+                            <div class="form-group col-md-6" style="">
+                                <label><?php echo $this->lang->line('labels')['start_date'];?></label>
+                                <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
+                            </div>
+                            <div class="form-group col-md-6" id="endDiv">
+                                <label><?php echo $this->lang->line('labels')['end_on'];?></label>
+                                <input type="text" class="form-control date-picker-nopast" name="end_on" id="end_on" />
+                            </div>
                         </div>
-                        <div class="form-group" id="weeklyDayDiv">
-                            <label><?php echo $this->lang->line('labels')['repeat_on'];?></label><br>
-                            <label><input id="chk_0" class='repeat_on' type="checkbox" name="repeat_on[]" value="0" />S</label>
-                            <label><input id="chk_1" class='repeat_on' type="checkbox" name="repeat_on[]" value="1" />M</label>
-                            <label><input id="chk_2" class='repeat_on' type="checkbox" name="repeat_on[]" value="2" />T</label>
-                            <label><input id="chk_3" class='repeat_on' type="checkbox" name="repeat_on[]" value="3" />W</label>
-                            <label><input id="chk_4" class='repeat_on' type="checkbox" name="repeat_on[]" value="4" />T</label>
-                            <label><input id="chk_5" class='repeat_on' type="checkbox" name="repeat_on[]" value="5" />F</label>
-                            <label><input id="chk_6" class='repeat_on' type="checkbox" name="repeat_on[]" value="6" />S</label>
-                            <br>
-                            <span id="weekerror" ></span>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label><?php echo $this->lang->line('labels')['start_time'];?></label>
+                                <input type="text" class="form-control timepicker" name="start_time" id="start_time" />
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label><?php echo $this->lang->line('labels')['end_time'];?></label>
+                                <input type="text" class="form-control timepicker" name="end_time" id="end_time" />
+                            </div>
                         </div>
-                        <div class="form-group" id="monthDayDiv" style="display:none">
-                            <label><?php echo $this->lang->line('labels')['repeat_on_monthly'];?></label>
-                            <select class="form-control" name="day_of_month" id="day_of_month">
-                                <?php
-                                    for($i=1; $i<=31; $i++){
-                                        echo "<option value='$i'>$i</option>";
-                                    }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group" id="customDiv" style="display:none">
-                            <label><?php echo $this->lang->line('labels')['select_date'];?></label>
-                            <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
-                        </div><br>
-                        <div class="form-group">
-                            <label><?php echo $this->lang->line('labels')['start_time'];?></label>
-                            <input type="text" class="form-control timepicker" name="start_time" id="start_time" />
-                        </div><br>
-                        <div class="form-group">
-                            <label><?php echo $this->lang->line('labels')['end_time'];?></label>
-                            <input type="text" class="form-control timepicker" name="end_time" id="end_time" />
-                        </div><br>
-                        <div class="form-group">
-                            <label><?php echo $this->lang->line('labels')['end_on'];?></label>
-                            <input type="text" class="form-control date-picker-nopast" name="end_on" id="end_on" />
+                        <div class="row" id="onlyOneDiv" style="display:none">
+                            <div class="col-md-12">
+                                <label><input type="checkbox" name="onlyOne" id="onlyOne" value="yes"><?php echo $this->lang->line('labels')['updateOrDeleteOnlyOne'];?></label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -194,6 +177,9 @@
                 },
                 end_on:{
                     required: true
+                },
+                date:{
+                    required: true
                 }
             },
             messages: {
@@ -211,6 +197,9 @@
                 },
                 'repeat_on[]':{
                     required: "<?php echo $this->lang->line('validation')['requiredReadOn'];?>"
+                },
+                date: {
+                    required: "<?php echo $this->lang->line('validation')['selectStartDate'];?>"
                 }
             },
             invalidHandler: validationInvalidHandler,
@@ -221,11 +210,17 @@
         $(".addbtn").click(function(){
             resetForm(validator);
             $("#eidt_gf_id").val(0);
+            for(var i=0; i<7; i++){
+                $("#chk_"+i).prop('checked',false);
+                $("#chk_"+i).parent().removeClass('checked');
+            }
             $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAvailability'];?>");
             $("#action-update-btn").parent().hide();
+            $("#onlyOneDiv").hide();
             $("#action-add-btn").parent().show();
             $("#form")[0].reset();
             $("#form input").attr("disabled",false);
+            $("#repeat_interval").attr("disabled",false);
             $("#form").attr("action","<?php echo site_url(); ?>/doctors/availability/<?php echo $doc_id;?>");
             $("#edit").modal("show");
             $("#repeat_interval").trigger('change');
@@ -233,13 +228,19 @@
 
         function editEvent(id){
             resetForm(validator);
+            for(var i=0; i<7; i++){
+                $("#chk_"+i).prop('checked',false);
+                $("#chk_"+i).parent().removeClass('checked');
+            }
             $("#eidt_gf_id").val(id);
             $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editAvailability'];?>");
             $("#action-update-btn").parent().show();
             $("#action-del-btn").parent().show();
             $("#action-add-btn").parent().hide();
+            $("#onlyOneDiv").show();
             $("#form")[0].reset();
             $("#form input").attr("disabled",false);
+            $("#repeat_interval").attr("disabled",true);
             $("#form").attr("action","<?php echo site_url(); ?>/doctors/availability/<?php echo $doc_id;?>");
             $("#edit").modal("show");
             //$("#repeat_interval").trigger('change');
@@ -254,21 +255,19 @@
                 $("#customDiv").hide();
                 if(data.repeat_interval == 2){
                     $("#customDiv").show();
-                    $("#date").val(data.start_date);
-                    $('#date').datepicker("setDate", data.start_date );
                 }else if(data.repeat_interval == 1){
                     $("#day_of_month").val(data.day);
                     $("#monthDayDiv").show();
+                    $('#end_on').datepicker("setDate", data.end_date );
                 }else if(data.repeat_interval == 0){
-                    //$(".repeat_on input[value="+data.day+"]").attr("checked",true);
+                    $('#end_on').datepicker("setDate", data.end_date );
                     $("#chk_"+data.day).prop('checked',true);
                     $("#chk_"+data.day).parent().addClass('checked');
                     $("#weeklyDayDiv").show();
                 }
                 $("#start_time").val(data.start_time);
                 $("#end_time").val(data.end_time);
-                $("#end_on").val(data.end_date);
-                $('#end_on').datepicker("setDate", data.end_date );
+                $('#date').datepicker("setDate", data.start_date );
                 $("#repeat_interval").val(data.repeat_interval);
                 $("#repeat_interval").trigger('change');
             });
@@ -277,8 +276,9 @@
         $("#action-del-btn").click(function(){
             $("#edit").modal("hide");
             var id = $("#eidt_gf_id").val();
+            var isOne = $("#onlyOne").is(":checked");
             swal(swalDeleteConfig).then(function () {
-                $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id},function(data){
+                $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id,isOne:isOne},function(data){
                     if(data==1){
                         getCurrentCalData();
                         toastr.success("<?php echo $this->lang->line('headings')['deleteSuccess'];?>");
@@ -294,6 +294,13 @@
             $("#weeklyDayDiv").hide();
             $("#monthDayDiv").hide();
             $("#customDiv").hide();
+            $("#endDiv").show();
+            $(".end_on").rules("add", {
+                required:true,
+                messages: {
+                    required: "<?php echo $this->lang->line('validation')['requiredEndDate'];?>"
+                }
+            });
             if(val == 0){
                 $("#weeklyDayDiv").show();
                 $(".repeat_on").rules("add", {
@@ -302,26 +309,21 @@
                         required: "<?php echo $this->lang->line('validation')['requiredReadOn'];?>"
                     }
                 });
-                $("#date").rules("remove","required");
+                
             }else if(val == 1){
                 $("#monthDayDiv").show();
                 $(".repeat_on").rules("remove","required");
-                $("#date").rules("remove","required");
+                
             }else if(val == 2){
-                $("#customDiv").show();
-                $("#date").rules("add", {
-                    required:true,
-                    messages: {
-                        required: "<?php echo $this->lang->line('validation')['selectDate'];?>"
-                    }
-                });
+                $("#endDiv").hide();
                 $(".repeat_on").rules("remove","required");
+                $("#end_on").rules('remove','required');
             }
         });
 
         var cal = $('#calendar').fullCalendar({
-            editable: true,
-	        droppable: true,
+            editable: false,
+	        droppable: false,
 			eventLimit: true,
             viewRender: function(view, element){
                 getCurrentCalData();

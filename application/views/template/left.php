@@ -41,7 +41,7 @@
                             <li id="li7"><a href="<?php echo site_url();?>/patients" class="waves-effect waves-button"><span class="menu-icon icon-users "></span><p><?php echo $menu['main_patients'];?></p></a></li>
                             <li id="li8"><a href="<?php echo site_url();?>/medical_store" class="waves-effect waves-button"><span class="menu-icon fa fa-medkit "></span><p><?php echo $menu['main_medical_stores'];?></p></a></li>
                             <li id="li9"><a href="<?php echo site_url();?>/medical_lab" class="waves-effect waves-button"><span class="menu-icon fa  fa-plus-square "></span><p><?php echo $menu['main_medical_labs'];?></p></a></li>
-                            <li id="li10"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-edit "></span><p><?php echo $menu['main_appointments'];?></p></a></li>
+                            <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
                             <li id="li11"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>
                             <li id="li12"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart "></span><p><?php echo $menu['main_reports'];?></p></a></li>
                       
@@ -74,7 +74,7 @@
                             <li id="li7"><a href="<?php echo site_url();?>/patients" class="waves-effect waves-button"><span class="menu-icon icon-users "></span><p><?php echo $menu['main_patients'];?></p></a></li>
                             <li id="li8"><a href="<?php echo site_url();?>/medical_store" class="waves-effect waves-button"><span class="menu-icon fa fa-medkit "></span><p><?php echo $menu['main_medical_stores'];?></p></a></li>
                             <li id="li9"><a href="<?php echo site_url();?>/medical_lab" class="waves-effect waves-button"><span class="menu-icon fa  fa-plus-square "></span><p><?php echo $menu['main_medical_labs'];?></p></a></li>
-                            <li id="li10"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-edit "></span><p><?php echo $menu['main_appointments'];?></p></a></li>
+                            <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
                             <li id="li11"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>
                             <li id="li12"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart "></span><p><?php echo $menu['main_reports'];?></p></a></li>
                       
@@ -118,7 +118,7 @@
                             <li id="li60" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
                                     <li id="li601"><a href="<?php echo site_url();?>/doctors/availability" ><?php echo $menu['main_availability'];?></a></li>
-                                    <li id="li602"><a href="<?php echo site_url();?>/doctors/othersetting" ><?php echo $menu['main_other'];?></a></li>
+                                    <!--<li id="li602"><a href="<?php //echo site_url();?>/doctors/othersetting" ><?php e//cho $menu['main_other'];?></a></li>-->
                                 </ul>
                             </li>
                         <?php

@@ -230,6 +230,12 @@ class Auth {
         return $ids;
     }
 
+    public function getDocIdsFromRecpId($id=false){
+        $this->CI->load->model('receptionist_model');
+        $ids = $this->CI->receptionist_model->getDoctorsIds($id);
+        return $ids;
+    }
+
     public function getAllDoctorsByHospitals(){
         $this->CI->load->model('doctors_model');
         $ids = $this->CI->doctors_model->getDoctorsIdsByHospital();

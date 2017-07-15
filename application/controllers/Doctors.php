@@ -98,7 +98,14 @@ class Doctors extends CI_Controller {
     public function deleteavalibality(){
         if ($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
-            echo $this->doctors_model->deleteavalibality($id);
+            $isOne = $this->input->post('isOne',null,false);
+            
+            if($isOne=="true"){
+                //Add Delete Entry;
+                echo $this->doctors_model->deleteavalibalityForOne($id);
+            }else{
+                echo $this->doctors_model->deleteavalibality($id);
+            }
         }
     }
 
@@ -284,6 +291,13 @@ class Doctors extends CI_Controller {
         }
     }
 
+    public function getprescription($pid=0){
+        if($this->auth->isLoggedin()){
+            $prescription = $this->doctors_model->getPrescription($pid);
+            echo json_encode($prescription);
+        }
+    }
+
     public function previewprescription($pid = 0){
         $prescription = $this->doctors_model->getPrescription($pid);
         $return['html'] = $this->load->view('template/prescription',array("data"=>$prescription),true);
@@ -310,7 +324,10 @@ class Doctors extends CI_Controller {
                 $temp = $this->appoitments_model->getappoitmentsById($d);
                 return isset($temp['remarks']) ? $temp['remarks'] : "-";
             }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
-                //return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                if($temp['doctor_id'] == $this->auth->getDoctorId()){
+                    return "<a href=\"#\" class=\"editbtn1\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a>";
+                }
                 return "-";
             }));
             

@@ -11,6 +11,7 @@ class Appoitments extends CI_Controller {
         $this->load->model("branches_model");
         $this->load->model("departments_model");
         $this->load->model("users_model");
+        $this->load->model("doctors_model");
         $this->load->model("receptionist_model");
     }
     public function index() {
@@ -19,7 +20,7 @@ class Appoitments extends CI_Controller {
         if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {    
             $this->load->view('Appoitments/index', $data);
         }
-        else if($this->auth->isLoggedIn() && $this->auth->isReceptinest()){
+        else if($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())){
             $this->load->view('Appoitments/receptionist', $data);
         }
         else if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
@@ -88,8 +89,8 @@ class Appoitments extends CI_Controller {
     }
 
     public function getNewSloat(){
-        if($this->auth->isLoggedIn() && $this->auth->isPatient()){
-            $pid = $this->auth->getUserid();
+        if($this->auth->isLoggedIn()){
+            
             $did = $_POST['did'];
             $date = date("Y-m-d",strtotime($_POST['date']));
 
@@ -193,10 +194,16 @@ class Appoitments extends CI_Controller {
                 $name = $temp["first_name"]." ".$temp["last_name"];
                 return $name;
             }), array("db" => "appoitment_date", "dt" => 4, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : date("d-M-Y h:i A",strtotime($d));
-            }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));
+            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
+                $a = $this->appoitments_model->getappoitmentsById($d);
+                return date('h:i A',strtotime($a['appoitment_time_start'])).' to '.date('h:i A',strtotime($a['appoitment_time_end']));
+            }), array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
                 return $this->auth->getAppoitmentStatus($d);
-            }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
+            }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                if($row['status'] == 3){
+                    return "-";
+                }
                 return "
                 <span style='display:inline-flex'>
                 <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>
@@ -207,14 +214,37 @@ class Appoitments extends CI_Controller {
             }));
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
-            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            $did = isset($_GET['did']) ? $_GET['did']!="" ? intval($_GET['did']) : null : null;
+            $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
             if($hid == "all")
                 $hid = null;
+            if($did == "all")
+                $did = null;
+
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
 
-            if($this->auth->isReceptinest()){
+            if($date != null){
+                $cond[] = "appoitment_date='$date'";
+            }
+
+            if($hid != null){
+                $_dids = $this->departments_model->getDepartmentIdsFromHospital($hid);
+                if(count($_dids) == 0){ $_dids[] = -1;}
+                $_dids = implode(",",$_dids);
+                $cond[] = "department_id in (".$_dids.")";
+            }
+
+            if($did != null){
+                $cond[] = "doctor_id=$did";
+            }
+            else if($this->auth->isReceptinest()){
                 $dids = $this->receptionist_model->getDoctorsIds();
+                if(count($dids) == 0){ $dids[] = -1;}
+                $dids = implode(",",$dids);
+                $cond[] = "doctor_id in (".$dids.")";
+            }else if($this->auth->isHospitalAdmin()){
+                $dids = $this->doctors_model->getDoctorsIdsByHospital();
                 if(count($dids) == 0){ $dids[] = -1;}
                 $dids = implode(",",$dids);
                 $cond[] = "doctor_id in (".$dids.")";

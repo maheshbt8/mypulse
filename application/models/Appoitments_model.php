@@ -49,7 +49,15 @@ class Appoitments_model extends CI_Model {
         }else{
             $r['doctor_name'] = "";
         }
-
+        $r['appoitment_date'] = date("d-m-Y",strtotime($r['appoitment_date']));
+        $time_vl = "";
+        $time_tx = "";
+        $_st= date("h:i A",strtotime($r['appoitment_time_start']));
+        $_et= date("h:i A",strtotime($r['appoitment_time_end']));
+        $time_vl = $_st."-".$_et;
+        $time_tx = $_st." to ".$_et;
+        $r['timesloat_val'] = $time_vl;
+        $r['timesloat_txt'] = $time_tx;
         return $r;
     }
     function search($q, $field) {
@@ -73,7 +81,11 @@ class Appoitments_model extends CI_Model {
         $tsloat = explode('-',$tsloat);
         $data['appoitment_time_start'] = date('H:i',strtotime($tsloat[0]));
         $data['appoitment_time_end'] = date('H:i',strtotime($tsloat[1]));
-        $data['user_id'] = $this->auth->getUserid();
+        if($this->auth->isPatient()){
+            $data['user_id'] = $this->auth->getUserid();
+        }else{
+            $data['user_id'] = intval($data['user_id']);
+        }
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
             $this->db->where('id',$id);
@@ -127,6 +139,7 @@ class Appoitments_model extends CI_Model {
         $this->db->where('status',0);
     }
 
+    //For Patient
     function getTimeSloats($doc_id=0,$date){
         $this->db->where('user_id',$doc_id);
         $this->db->where('isDeleted',0);
@@ -142,6 +155,15 @@ class Appoitments_model extends CI_Model {
             $can = false;
             if($c >= $s && $c <= $e){
                 $can = true;
+            }
+            //Get Dates when doctor is not available
+            $this->db->where('user_id',$doc_id);
+            $this->db->where('repeat_interval',4);
+            $this->db->where('start_date',$date);
+            $notAvailable = $this->db->get('hms_availability');
+            
+            if($notAvailable->num_rows() > 0){
+                $can = false;
             }
             if(!$can)
                 continue;
@@ -179,6 +201,8 @@ class Appoitments_model extends CI_Model {
                     $_e = $end;
                 }
                 $timeSloats[] = array(
+                    's' => $s,
+                    'e' => $_e,
                     'start' => date('h:i A',$s),
                     'end' => date('h:i A',$_e),
                     'title' => date('h:i A',$s)." to ".date('h:i A',$_e)
@@ -207,7 +231,19 @@ class Appoitments_model extends CI_Model {
             $appt = $appt->result_array();
             if(count($appt) < $tot_appt){
                 $slot['remaining'] = $tot_appt - count($appt);
-                $availableTimeSloats[] = $slot;
+                $hasSlot = false;
+                foreach($availableTimeSloats as $temp){
+                    $_s = $temp['s'];
+                    $_e = $temp['e'];
+                    if( ($slot['s'] <= $_s && $slot['e'] >= $_s) ||
+                        ($slot['e'] <= $_e && $slot['e'] >= $_e) 
+                    ){
+                        $hasSlot = true;
+                    }
+                }
+                if(!$hasSlot){
+                    $availableTimeSloats[] = $slot;
+                }
             }
         }
         return $availableTimeSloats;

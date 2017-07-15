@@ -231,6 +231,7 @@ $this->load->view("template/left.php");
                         </div>
                         <div class="row" id="preDiv" style="display:none">
                             <form action="<?php echo site_url();?>/doctors/newprescription" method="post" id="form">
+                            <input type="hidden" name="edit_id" id="edit_id" value='' />
                             <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
                             <input type="hidden" name="patient_id" id="patient_id" value="<?php echo $profile['id'];?>" />
                             <div class="col-md-12">
@@ -293,7 +294,7 @@ $this->load->view("template/left.php");
                             <Br><br>
                             <div class="col-md-12">
                                 <button type="button" id="item_btn_1" class="btn additemrow"><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
-                                <button type="submit" id="submitbtn" class="btn btn-success"><i class="fa fa-check"></i> &nbsp; Save</button>
+                                <button type="submit" id="submitbtn" class="btn btn-success"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
                                 <button type="button" id="canPrescriptionBtn" class="btn btn-warning"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
                             </div>
                             </form>
@@ -415,8 +416,44 @@ $this->load->view("template/footer.php");
             $("#addPrescriptionBtn").hide();
             $("#tabDiv").hide();
             $("#preDiv").show();
-
+            $("#date").val(moment().format("DD-MM-YYYY"));
+            $("#title").val("");
+            $("#edit_id").val("");
+            $("#tbody").html("");
+            $("#sbtn").html("Save");
+            addNewItemRow();
             $("#div_title").html("<?php echo $this->lang->line('newPrescription');?>");
+        });
+
+        $(document).on('click','.editbtn1', function(){
+            var id = $(this).data('id');            
+            $("#edit_id").val(id);
+            $.get('<?php echo site_url();?>/doctors/getprescription/'+id,{}, function(data) {
+                $("#addPrescriptionBtn").hide();
+                $("#tabDiv").hide();
+                $("#preDiv").show();
+                $("#sbtn").html("Update");
+
+                $("#div_title").html("<?php echo $this->lang->line('newPrescription');?>");
+                data = JSON.parse(data);
+                
+                $("#date").val(data.date);
+                $("#title").val(data.title);
+                
+                $("#tbody").html("");
+                
+                for(var i=1; i<=data.items.length; i++){
+                    var item = data.items[i-1];
+                    addNewItemRow();
+                    $("#drug_"+i).val(item.drug);
+                    $("#strength_"+i).val(item.strength);
+                    $("#dosage_"+i).val(item.dosage);
+                    $("#duration_"+i).val(item.duration);
+                    $("#note_"+i).val(item.note);
+                    $("#item_id_"+i).val(item.id);
+                }
+
+            });
         });
 
         $("#canPrescriptionBtn").click(function(){
@@ -465,7 +502,7 @@ $this->load->view("template/footer.php");
             length += 1;
             var tr = "";
             tr = '<tr id="row_'+length+'">';
-            tr += '<td class="drug_nos"><input type="hidden" name="item_id[]" name="item_id[]" id="item_id_'+length+'"></input>'+length+'</td>';
+            tr += '<td class="drug_nos"><input type="hidden" name="item_id[]" name="item_id[]" id="item_id_'+length+'"></input><span id="pnum_'+length+'">'+length+'</span></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="drug[]" value="" class="form-control" id="drug_'+length+'"></input></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="strength[]" value="" class="form-control" id="strength_'+length+'"></input></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="dosage[]" value="" class="form-control" id="dosage_'+length+'" placeholder="1-0-1"></input></td>';
@@ -479,7 +516,8 @@ $this->load->view("template/footer.php");
         function updateDrugNo(){
             var all = $(".drug_nos");
             for(var i=1; i<=all.length; i++){
-                $(all[i-1]).html(i);
+                //$(all[i-1]).html(i);
+                $("#pnum_"+i).html(i);
             }
         }
 

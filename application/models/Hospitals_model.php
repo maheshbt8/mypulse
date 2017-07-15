@@ -35,6 +35,9 @@ class Hospitals_model extends CI_Model {
         if($this->auth->isHospitalAdmin()){
             $hid = $this->auth->getHospitalId();
             $this->db->where('id',$hid);
+        }else if($this->auth->isReceptinest()){
+            $hids = $this->getHospicalIds();
+            $this->db->where_in('id',$hids);
         }
 
         $select = implode('`," ",`', $field);
@@ -100,7 +103,11 @@ class Hospitals_model extends CI_Model {
         }else if($this->auth->isHospitalAdmin()){
             $uid = $this->auth->getUserid();
             $qry = "select hospital_id as id from hms_hospital_admin where user_id=$uid and isDeleted=0 ";            
-        }else{
+        }else if($this->auth->isReceptinest()){
+            $uid = $this->auth->getUserid();
+            $qry = "select b.hospital_id as id from hms_receptionist r,hms_doctors d,hms_departments m,hms_branches b where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.branch_id=b.id";
+        }
+        else{
             $qry = "select * from $this->tblname where id=-1";
         }
         $res = $this->db->query($qry);

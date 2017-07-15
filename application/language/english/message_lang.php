@@ -268,13 +268,14 @@ $lang['labels'] = array(
     'repeat_interval' => 'Repeat Interval',
     'repeat_on' => 'Repeat On',
     'start_time' => 'Start Time',
+    'start_date' => 'Start Date',
     'end_time' => 'End Time',
     'weekly' => 'Weekly',
     'monthly' => 'Monthly',
     'yearly' => 'Yearly',
     'repeat_on_monthly' => 'Day of month',
     'otherSettings' => 'Other Settings',
-    'noAppInterval' => 'Number of patient can handle in a hour',
+    'noAppInterval' => 'Number of patients that can be handled in an hour',
     'appt_interval' => 'Appoitment Interval (In Minutes)',
     'appoitment_sloat' => 'Time sloat',
     'noApptTimeSloat' => 'No time sloat available for this date. Please try another date',
@@ -282,9 +283,10 @@ $lang['labels'] = array(
     'custom' => 'Custom',
     'select_date' => 'Select Date',
     'end_on' => 'Ends on',
-    'availabilityText' => 'Availability',
+    'availabilityText' => 'Availability message(For Patients)',
     'availabilityTextPlace' => 'E.g. Available on every monday to friday.',
     'doctorAvailability' => 'Doctor Availability',
+    'updateOrDeleteOnlyOne' => 'Update/Delete only current day availability',
 );
 //End Labels
 
@@ -370,7 +372,9 @@ $lang['validation'] = array(
     'requiredEndTime' => 'Select end time',
     'requiredReadOn' => 'Select repeate on day',
     'requiredDayMonth' => 'Select Day of month',
+    'selectStartDate' => 'Select Start Date',
     'requiredEndDate' => 'Select End Date',
-    'requiredTitle' => 'Enter title'
+    'requiredTitle' => 'Enter title',
+    'selectPatient' => 'Select Patient'
 );
 //End Validation

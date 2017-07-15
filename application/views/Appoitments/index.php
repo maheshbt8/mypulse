@@ -100,6 +100,15 @@ $this->load->view("template/left.php");
 									<select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
 									</select>
 								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group col-md-12">
+									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
+									<br>
+									<span id="docAvailability"></span>
+								</div>
+							</div>
+							<div class="col-md-12">	
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
 									<input class="form-control date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
@@ -111,13 +120,7 @@ $this->load->view("template/left.php");
 									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
 								</div>
 							</div>
-							<div class="col-md-12">
-								<div class="form-group col-md-12">
-									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
-									<br>
-									<span id="docAvailability"></span>
-								</div>
-							</div>
+							
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
@@ -161,6 +164,7 @@ $this->load->view("template/footer.php");
 	$(document).ready(function(){
 
 		var hid = null;
+		var cur_v = null;
 		<?php
 			if(isset($_GET['hid'])){
 				?>
@@ -256,6 +260,11 @@ $this->load->view("template/footer.php");
 			$selectize_hospital_id[0].selectize.clear();
 			$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
+			<?php if($this->auth->isPatient()){
+				?>
+				$("#remarks").attr("disabled",true);
+				<?php
+			}?>
 		});
 
 		$("#appoitments").on("click",".editbtn",function(){
@@ -269,7 +278,11 @@ $this->load->view("template/footer.php");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
 			$("#action-add-btn").parent().hide();
 			$("#action-update-btn").parent().show();
-
+			<?php if($this->auth->isPatient()){
+				?>
+				$("#remarks").attr("disabled",true);
+				<?php
+			}?>
 			$("#selected_hid").val($("#hospital_id1").val());
 			$("#selected_bid").val($("#branch_id1").val());
 		});
@@ -290,12 +303,13 @@ $this->load->view("template/footer.php");
 				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
 				tempselectize_hospital_id.refreshItems();
 				tempselectize_hospital_id.setValue(data.hospital_id);
-
+				cur_v = data.timesloat;
+				
 				
 				$("#appoitment_date").val(data.appoitment_date);
-				
+				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#reason").val(data.reason);
-				
+				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#remarks").val(data.remarks);
 			
 				$("#appoitment_date").prop("disabled", true);
@@ -413,7 +427,14 @@ $this->load->view("template/footer.php");
 					$("#appoitment_sloat").attr('disabled',false);
 					for(var i=0; i<data.length; i++){
 						var item = data[i];
-						var ht = '<option value="'+item.start+'-'+item.end+'">'+item.title+'</option>';
+						var v = item.start+'-'+item.end;
+						var sel = "";
+						if(cur_v != null && cur_v != undefined){
+							if(cur_v == v){
+								sel = "selected";
+							}
+						}
+						var ht = '<option '+sel+' value="'+v+'">'+item.title+'</option>';
 						$("#appoitment_sloat").append(ht);
 					}
 				}

@@ -94,6 +94,10 @@
             .fc-time{
                 display:none !important;
             }
+            .fc-event-container{
+                cursor: pointer;
+            }
+            form label {font-weight:bold}
         </style>
         <style type="text/css">
             .equalDivParent{
