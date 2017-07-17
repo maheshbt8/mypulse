@@ -35,20 +35,31 @@ $this->load->view("template/left.php");
 	                    </div>
 	                    <div class="panel-body panel_body_custome">
 							<div class="col-md-12">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                                     <input id="sel_date" class=" form-control date-picker" /> 
                                 </div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-3">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id1" class=" form-control" style="width: 100%">
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-3">
                                     <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
                                     <select id="doctor_id1" class=" form-control" style="width: 100%">
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+					                </select>
+                                </div>
+								<div class="form-group col-md-3">
+                                    <label><?php echo $this->lang->line('labels')['status'];?></label>
+                                    <select id="status" class=" form-control" style="width: 100%">
+										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['completed']; ?></option>
+										<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
+										<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
+										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
 					                </select>
                                 </div>
                             </div>
@@ -770,14 +781,19 @@ $this->load->view("template/footer.php");
 			}
 		});
 
+		$("#status").change(function(){
+			loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
+		});
+
 		function loadTable(date,hid,did){	
+			var st = $("#status").val();
 			$("#appoitments").dataTable().fnDestroy();
 			$("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?hid="+hid+"&did="+did+"&d="+date
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?hid="+hid+"&did="+did+"&d="+date+"&st="+st
 			});
-
+			
 			$(".dataTables_filter").attr("style","display: flex;float: right");
 			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");

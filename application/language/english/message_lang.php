@@ -178,7 +178,6 @@ $lang['tableHeaders'] = array(
 $lang['labels'] = array(
     'name' => "Name",
     'address' => 'Address',
-    'description' => 'Description',
     'email' => 'Email',
     'phoneNumber' => 'Phone Number',
     'selectCountry' => 'Country',
@@ -287,6 +286,9 @@ $lang['labels'] = array(
     'availabilityTextPlace' => 'E.g. Available on every monday to friday.',
     'doctorAvailability' => 'Doctor Availability',
     'updateOrDeleteOnlyOne' => 'Update/Delete only current day availability',
+    'date' => 'Date',
+    'status' => 'Status',
+    'health_records' => 'Health records',
 );
 //End Labels
 

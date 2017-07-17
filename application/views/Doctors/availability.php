@@ -103,7 +103,7 @@
                         </div> 
                         <div class="row" >
                             <div class="form-group col-md-6" style="">
-                                <label><?php echo $this->lang->line('labels')['start_date'];?></label>
+                                <label id="stlbl"><?php echo $this->lang->line('labels')['date'];?></label>
                                 <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
                             </div>
                             <div class="form-group col-md-6" id="endDiv">
@@ -216,6 +216,7 @@
             }
             $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAvailability'];?>");
             $("#action-update-btn").parent().hide();
+            $("#action-del-btn").parent().hide();
             $("#onlyOneDiv").hide();
             $("#action-add-btn").parent().show();
             $("#form")[0].reset();
@@ -301,6 +302,7 @@
                     required: "<?php echo $this->lang->line('validation')['requiredEndDate'];?>"
                 }
             });
+            $("#stlbl").html('<?php echo $this->lang->line('labels')['start_date'];?>');
             if(val == 0){
                 $("#weeklyDayDiv").show();
                 $(".repeat_on").rules("add", {
@@ -315,6 +317,7 @@
                 $(".repeat_on").rules("remove","required");
                 
             }else if(val == 2){
+                $("#stlbl").html('<?php echo $this->lang->line('labels')['date'];?>');
                 $("#endDiv").hide();
                 $(".repeat_on").rules("remove","required");
                 $("#end_on").rules('remove','required');

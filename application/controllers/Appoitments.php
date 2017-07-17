@@ -212,20 +212,28 @@ class Appoitments extends CI_Controller {
                 </span>
                 ";
             }));
-
-            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
-            $did = isset($_GET['did']) ? $_GET['did']!="" ? intval($_GET['did']) : null : null;
+            
+            $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
+            $did = isset($_GET['did']) ? $_GET['did']!="" ? $_GET['did'] : null : null;
             $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
-            if($hid == "all")
+            
+            if($hid === "all")
                 $hid = null;
-            if($did == "all")
+            if($did === "all")
                 $did = null;
+            if($st === "all")    
+                $st = null;
 
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
 
             if($date != null){
                 $cond[] = "appoitment_date='$date'";
+            }
+            
+            if($st !== null){
+                $cond[] = "status in (".$st.")";
             }
 
             if($hid != null){

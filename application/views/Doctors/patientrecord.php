@@ -90,6 +90,7 @@ $this->load->view("template/left.php");
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab1"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>                                
                                 <li role="presentation" class=""><a href="#tab2"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescription'];?></a></li>
+                                <li role="presentation" class=""><a href="#tab3" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
                             </ul>
                             <!-- Tab panes -->
                             <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
@@ -147,6 +148,7 @@ $this->load->view("template/left.php");
                                                 </div>
                                             </div>    
                                         </div>
+
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['weight'];?></label>
                                             <input value="<?php echo $profile['weight'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['weight'];?>" name="weight" id="weight" />
@@ -226,6 +228,8 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                 </div>
+                                <div role="tabpanel" class="tab-pane" id="tab3">
+                                </div>
                             </div>
                             </form>
                         </div>
@@ -292,10 +296,23 @@ $this->load->view("template/left.php");
                                 </table>
                             </div> 
                             <Br><br>
-                            <div class="col-md-12">
-                                <button type="button" id="item_btn_1" class="btn additemrow"><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
-                                <button type="submit" id="submitbtn" class="btn btn-success"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
-                                <button type="button" id="canPrescriptionBtn" class="btn btn-warning"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
+                            <div class="col-md-12" id="medReportDiv">
+                                <lable class="control-label"><b>Medical Report </b></label><br><br>
+                                <table width="100%" id="medRepTbl">
+                                </table>
+                            <div>
+                            <Br><br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-8">
+                                        <button type="button" id="item_btn_1" class="btn additemrow" style="margin-right:10px"><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
+                                        <button type="button" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
+                                        <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
+                                    </div>
+                                </div>    
                             </div>
                             </form>
                         </div>            
@@ -304,11 +321,73 @@ $this->load->view("template/left.php");
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="medReportModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align" id="Edit-Heading">Add Medical Report</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('labels')['title'];?></label>
+                                <input type="text" class="form-control" name="title" id="mr_title" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label><?php echo $this->lang->line('labels')['description'];?></label>
+                                <textarea class="form-control" name="description" id="mr_description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-warning pull-right">Cancel</button>
+                    <button type="button" data-dismiss="modal" id="addMRBtn" class="btn btn-success pull-right" style="margin-right:10px">Add</button>
+                </div>
+            </div>    
+        </div>
+    </div>
+
 <?php
 $this->load->view("template/footer.php");
 ?>
 <script type="text/javascript">
     $(document).ready(function(){
+
+        $(document).on('click','.mr_remove',function(){
+            $(this).parents('tr').remove();
+            updateMrCnt(); 
+        });
+
+        $("#addMRBtn").click(function(){
+            var tit = $("#mr_title").val();
+            var des = $("#mr_description").val();
+            var cnt = $("#medRepTbl").children().length;
+            cnt += 1;
+            var report = "<tr>";
+            report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
+            report += "<td style='width:20%' valign='top'>"+tit+"</td>";
+            report += "<td valign='top'>"+des+"</td>";
+            report += '<td valign="top" style="width:10px"><a href="javascript:void(0)" class="mr_remove"><i class="fa fa-remove"></i></a></td>';
+            
+            report += "</tr>";
+            $("#medRepTbl").append(report);
+            updateMrCnt();
+        });
+
+        function updateMrCnt(){
+            var cnts = $(".mr_cnt");
+            for(var i=1; i<=cnts.length; i++){
+                debugger;
+                $(cnts[i]).html(i);
+            }
+        }
+        
 
         var validator = $("#form").validate({
             ignore: [],
@@ -409,6 +488,10 @@ $this->load->view("template/footer.php");
                 $("#editBtn").hide();
                 $("#cancelBtn").hide();
                 $("#addPrescriptionBtn").show();
+            }else if(target == "#tab3"){
+                $("#editBtn").hide();
+                $("#cancelBtn").hide();
+                $("#addPrescriptionBtn").hide();
             }
         }
 

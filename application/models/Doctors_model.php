@@ -53,13 +53,16 @@ class Doctors_model extends CI_Model {
 
         $dids = $this->auth->getAllDepartmentsIds();
 
+        if($this->auth->isReceptinest()){
+            $_dids = $this->auth->getDocIdsFromRecpId();
+            if(count($_dids) > 0)
+                $this->db->where_in("hms_doctors.id",$_dids);
+        }
+
         if($did > 0){
             $this->db->where("hms_doctors.department_id",$did);
         }else if($this->auth->isHospitalAdmin()){
             $this->db->where_in("hms_doctors.department_id",$dids);
-        }else if($this->auth->isReceptinest()){
-            $_dids = $this->auth->getDocIdsFromRecpId();
-            $this->db->where_in("hms_doctors.id",$_dids);
         }
 
         $this->db->like("hms_users.first_name",$q);

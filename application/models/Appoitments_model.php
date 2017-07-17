@@ -195,7 +195,7 @@ class Appoitments_model extends CI_Model {
             $start = $d['start'];
             while($start <= $end){
                 $s = $start;
-                $start += 60 * 60;
+                $start += 30 * 60;
                 $_e = $start;
                 if($_e > $end){
                     $_e = $end;
