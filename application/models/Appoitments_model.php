@@ -49,11 +49,16 @@ class Appoitments_model extends CI_Model {
         }else{
             $r['doctor_name'] = "";
         }
-        $r['appoitment_date'] = date("d-m-Y",strtotime($r['appoitment_date']));
+        if(isset($r['appoitment_date']))
+            $r['appoitment_date'] = date("d-m-Y",strtotime($r['appoitment_date']));
         $time_vl = "";
         $time_tx = "";
-        $_st= date("h:i A",strtotime($r['appoitment_time_start']));
-        $_et= date("h:i A",strtotime($r['appoitment_time_end']));
+        $_st = "";
+        $_et = "";
+        if(isset($r['appoitment_time_start']))
+            $_st= date("h:i A",strtotime($r['appoitment_time_start']));
+        if(isset($r['appoitment_time_end']))    
+            $_et= date("h:i A",strtotime($r['appoitment_time_end']));
         $time_vl = $_st."-".$_et;
         $time_tx = $_st." to ".$_et;
         $r['timesloat_val'] = $time_vl;

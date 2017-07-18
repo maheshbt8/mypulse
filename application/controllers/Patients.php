@@ -60,6 +60,17 @@ class Patients extends CI_Controller {
         } else redirect('index/login');
     }
 
+    public function selectml(){
+        if($this->auth->isLoggedIn()){
+            $this->patient_model->selectml();
+            $data['success'] = array($this->lang->line('msg_patient_ml_saved'));
+            $this->session->set_flashdata('data', $data);
+            redirect('index');
+        }else{
+            redirect('index/login');
+        }
+    }
+
     public function update() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data = array();

@@ -298,7 +298,8 @@ class Doctors extends CI_Controller {
         }
     }
 
-    public function previewprescription($pid = 0){
+    public function previewprescription($apptid = 0){
+        $pid = $this->doctors_model->getPrescriptionIdFromApptid($apptid);
         $prescription = $this->doctors_model->getPrescription($pid);
         $return['html'] = $this->load->view('template/prescription',array("data"=>$prescription),true);
         $btn = '';        
@@ -325,7 +326,8 @@ class Doctors extends CI_Controller {
                 return isset($temp['remarks']) ? $temp['remarks'] : "-";
             }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
                 $temp = $this->appoitments_model->getappoitmentsById($d);
-                if($temp['doctor_id'] == $this->auth->getDoctorId()){
+                $did = isset($temp['doctor_id'] ) ? $temp['doctor_id'] : 0;
+                if($did== $this->auth->getDoctorId()){
                     return "<a href=\"#\" class=\"editbtn1\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a>";
                 }
                 return "-";

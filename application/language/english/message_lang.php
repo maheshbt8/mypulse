@@ -10,6 +10,7 @@ $lang['hospitalAdmin'] = 'Hospital Admin';
 $lang['profile'] = 'Profile';
 $lang['home'] = "Home";
 $lang['users'] = "Users";
+$lang['customers'] = "Customers";
 $lang['patients'] = "Patients";
 $lang['license'] = "License";
 $lang['hospitals'] = "Hospitals";
@@ -40,6 +41,7 @@ $lang['availability'] = 'Availability';
 $lang['othersetting'] = 'Other Setting';
 $lang['patientrecord'] = 'Patient Record';
 $lang['newPrescription'] = 'New Prescription';
+$lang['reports'] = 'Reports';
 
 
 //Index
@@ -116,6 +118,8 @@ $lang["usr_invalid_user"] = "Please Enter Valid Username";
 $lang['usr_acc_verify'] = "Please verify your account.";
 $lang['usr_acc_invalid_credential'] = "Please Enter Valid Username and Password !!!";
 $lang['reg_completed'] = "Registration completed successfully...!!!";
+
+$lang['msg_patient_ml_saved'] = "Your report request sent to medical lab";
 
 $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 $lang['buttons'] = array(
@@ -289,6 +293,8 @@ $lang['labels'] = array(
     'date' => 'Date',
     'status' => 'Status',
     'health_records' => 'Health records',
+    'medicalLab' => 'Medical Lab',
+
 );
 //End Labels
 
@@ -377,6 +383,10 @@ $lang['validation'] = array(
     'selectStartDate' => 'Select Start Date',
     'requiredEndDate' => 'Select End Date',
     'requiredTitle' => 'Enter title',
-    'selectPatient' => 'Select Patient'
+    'selectPatient' => 'Select Patient',
+    'requiredDrug' => 'Enter drug',
+    'requriedStrength' => 'Enter strength',
+    'requiredDosage' => 'Enter dosage',
+    'requiredDuration' => 'Enter duration'
 );
 //End Validation

@@ -488,19 +488,40 @@ class Doctors_model extends CI_Model {
         }
         if(isset($_POST['title']))
             $pre['title'] = $_POST['title'];
-        /*echo "<pre>";
-        var_dump($_POST);
-        var_dump(get_defined_vars());exit;*/
+        
+        
         if(!$isEdit){
             $this->db->insert('hms_prescription',$pre);
+            $pid = $this->db->insert_id();
             $this->db->where('id',$pre['appoitment_id']);
             $this->db->update('hms_appoitments',array('status'=>3));
-            $pid = $this->db->insert_id();
         }else{
             $this->db->where('id',$pid);
             $this->db->update('hms_prescription',$pre);
         }
         $this->addPrescriptionItems($pid);
+        $this->addMedicalReport($pid);
+       
+    }
+
+    function addMedicalReport($pid=0){
+        if(!isset($_POST['mr_tit']))
+            return;
+
+        for($i=0; $i<count($_POST['mr_tit']); $i++){
+            $item['title'] = $_POST['mr_tit'][$i];
+            $item['description'] = $_POST['mr_des'][$i];
+            $item['patient_id'] = $_POST['patient_id'];
+            $item['doctor_id'] = $this->auth->getDoctorid();
+            $item['prescription_id'] = $pid;
+            $item['created_at'] = date('Y-m-d H:i:s');
+            if(isset($_POST['item_id'][$i]) && $_POST['item_id'][$i]!=""){
+                $this->db->where('id',$_POST['item_id'][$i]);
+                $this->db->update('hms_medical_report',$item);
+            }else{
+                $this->db->insert('hms_medical_report',$item);
+            }
+        }
     }
 
     function addPrescriptionItems($pid=0){
@@ -518,8 +539,18 @@ class Doctors_model extends CI_Model {
             }else{
                 $this->db->insert('hms_prescription_item',$item);
             }
-
         }
+    }
+
+    function getPrescriptionIdFromApptid($appt=0){
+        $this->db->where('appoitment_id',$appt);
+        $this->db->where('isDeleted',0);
+        $p = $this->db->get('hms_prescription');
+        if($p){
+            $p = $p->row_array();
+            return isset($p['id']) ? $p['id'] : 0;
+        }
+        return 0;
     }
 
     function getPrescription($pid = 0){
@@ -536,7 +567,7 @@ class Doctors_model extends CI_Model {
         $patient_name .= isset($patient['last_name']) ? $patient['last_name'] : "";
         $pre['patient_name'] = $patient_name;
 
-        $duid = $this->getMyUserId($pre['doctor_id']);
+        $duid = $this->getMyUserId(isset($pre['doctor_id']) ? $pre['doctor_id'] : 0);
         $this->db->where('id',$duid);
         $doctor = $this->db->get('hms_users');
         $doctor = $doctor->row_array();
@@ -548,7 +579,9 @@ class Doctors_model extends CI_Model {
         $this->db->where('prescription_id',$pid);
         $items = $this->db->get('hms_prescription_item');
         $items = $items->result_array();
-        $pre['date'] = date("d-m-Y",strtotime($pre['created_at']));
+        $pre['date'] = "-";
+        if(isset($pre['created_at']))
+            $pre['date'] = date("<d-m></d-m>-Y",strtotime($pre['created_at']));
         $pre['items'] = $items;
         return $pre;
     }

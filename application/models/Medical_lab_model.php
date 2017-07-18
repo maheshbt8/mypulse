@@ -11,6 +11,13 @@ class Medical_lab_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+    function getMyLabId(){
+        $this->db->where('user_id',$this->auth->getUserid());
+        $this->db->where('isDeleted',0);
+        $ml = $this->db->get($this->tblname);
+        $ml = $ml->row_array();
+        return isset($ml['id']) ? $ml['id'] : 0;
+    }
     function getmedical_labById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();

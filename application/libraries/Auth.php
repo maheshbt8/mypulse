@@ -67,9 +67,16 @@ class Auth {
     }
 
     public function isPatient(){
-        
         $role = $this->CI->session->userdata('role');
         if($role==$this->getPatientRoleType()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isMedicalLab(){
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getMedicalLabRoleType()){
             return true;
         }
         return false;
@@ -264,6 +271,22 @@ class Auth {
         }else{
             return "<span class='$class'>$text</span>";
         }
+    }
+
+    public function getUName($p){
+        $name = "";
+        if(isset($p['first_name'])){
+            $name = $p['first_name']." ";
+        }
+        if(isset($p['last_name'])){
+            $name .= $p['last_name'];
+        }
+        return $name;
+    }
+
+    public function getMyLabId(){
+        $this->CI->load->model('medical_lab_model');
+        return $this->CI->medical_lab_model->getMyLabId();
     }
 
     public function getAppoitmentStatus($status=0,$onlytax = false){

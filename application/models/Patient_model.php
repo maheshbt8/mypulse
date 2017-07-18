@@ -168,4 +168,13 @@ class Patient_model extends CI_Model {
 
         return $res;
     }
+
+    //Select Medical Lab. For medical Report created by doctor at the time of prescription.
+    public function selectml(){
+        $mrid = isset($_POST['mrid']) ? $_POST['mrid'] : 0;
+        $this->db->where('id',$mrid);
+        $this->db->where('patient_id',$this->auth->getUserid());
+        $data['medical_lab_id'] = isset($_POST['medicalLab']) ? $_POST['medicalLab'] : 0;
+        $this->db->update('hms_medical_report',$data);
+    }
 }

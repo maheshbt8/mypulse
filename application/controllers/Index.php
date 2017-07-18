@@ -12,6 +12,7 @@ class Index extends CI_Controller {
 		$this->load->model('dashboard_model');
 		$this->load->model('patient_model');
 		$this->load->model('healthinsuranceprovider_model');
+		$this->load->model('medical_lab_model');
 	}
 
 	function index()
@@ -28,6 +29,7 @@ class Index extends CI_Controller {
 				$this->load->view('index/admindashboard',$data);
 			}else if($this->auth->isPatient()){
 				$data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());
+				$data['medicalLab'] = $this->medical_lab_model->getAllmedical_lab();
 				$this->load->view('Patient/dashbord',$data);
 			}else if($this->auth->isReceptinest()){
 				$data['states'] = $this->dashboard_model->getReceptinestStates($this->auth->getUserid());
@@ -35,6 +37,9 @@ class Index extends CI_Controller {
 			}else if($this->auth->isDoctor()){
 				$data['states'] = $this->dashboard_model->getDoctorStates($this->auth->getUserid());
 				$this->load->view('Doctors/dashboard',$data);
+			}else if($this->auth->isMedicalLab()){
+				$data['states'] = $this->dashboard_model->getMedicalLabStates($this->auth->getUserid());
+				$this->load->view('Medical_lab/dashboard',$data);
 			}
 		}
 		else{
@@ -221,6 +226,7 @@ class Index extends CI_Controller {
 					break;
 				default: 
 					$data['profile'] = $this->patient_model->getProfile($uid);
+					// echo "<pre>";print_r($data);exit;
 					$this->load->view('index/profile',$data);
 			}
         } else redirect('index/login');

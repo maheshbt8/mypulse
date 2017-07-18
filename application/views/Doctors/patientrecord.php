@@ -234,7 +234,7 @@ $this->load->view("template/left.php");
                             </form>
                         </div>
                         <div class="row" id="preDiv" style="display:none">
-                            <form action="<?php echo site_url();?>/doctors/newprescription" method="post" id="form">
+                            <form action="<?php echo site_url();?>/doctors/newprescription" method="post" id="pre_form">
                             <input type="hidden" name="edit_id" id="edit_id" value='' />
                             <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
                             <input type="hidden" name="patient_id" id="patient_id" value="<?php echo $profile['id'];?>" />
@@ -249,7 +249,7 @@ $this->load->view("template/left.php");
                                     <div class="form-group">
                                         <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
                                         <div class="col-sm-8">
-                                            <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>" />
+                                            <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
                                         </div>
                                     </div>
                                 </div>
@@ -306,7 +306,7 @@ $this->load->view("template/left.php");
                                 <div class="col-md-12">
                                     <div class="col-md-8">
                                         <button type="button" id="item_btn_1" class="btn additemrow" style="margin-right:10px"><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
-                                        <button type="button" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
+                                        <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
@@ -359,6 +359,13 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
     $(document).ready(function(){
 
+        
+
+        $("#addireport").click(function(){
+            $("#mr_title").val("");
+            $("#mr_description").val("");
+        });
+
         $(document).on('click','.mr_remove',function(){
             $(this).parents('tr').remove();
             updateMrCnt(); 
@@ -371,8 +378,8 @@ $this->load->view("template/footer.php");
             cnt += 1;
             var report = "<tr>";
             report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
-            report += "<td style='width:20%' valign='top'>"+tit+"</td>";
-            report += "<td valign='top'>"+des+"</td>";
+            report += "<td style='width:20%' valign='top'><span class='mr_tit'>"+tit+"</span></td>";
+            report += "<td valign='top'><span class='mr_des'>"+des+"</span></td>";
             report += '<td valign="top" style="width:10px"><a href="javascript:void(0)" class="mr_remove"><i class="fa fa-remove"></i></a></td>';
             
             report += "</tr>";
@@ -383,28 +390,61 @@ $this->load->view("template/footer.php");
         function updateMrCnt(){
             var cnts = $(".mr_cnt");
             for(var i=1; i<=cnts.length; i++){
-                debugger;
-                $(cnts[i]).html(i);
+                $(cnts[i-1]).html(i);
             }
         }
         
 
-        var validator = $("#form").validate({
+        var validator = $("#pre_form").validate({
             ignore: [],
             rules: {
                 
                 title: {
                     required : true
-                }
+                },
+                'drug[]':{ required : true },
+                'strength[]' : { required : true },
+                'dosage[]': { required : true },
+                'duration[]' :{ required : true }
             },
             messages: {
                 
                 title:{
                     required: "<?php echo $this->lang->line('validation')['requiredTitle'];?>"
+                },
+                'drug[]':{
+                    required: "<?php echo $this->lang->line('validation')['requiredDrug'];?>"
+                },
+                'strength[]':{
+                    required: "<?php echo $this->lang->line('validation')['requriedStrength'];?>"
+                },
+                'dosage[]':{
+                    required: "<?php echo $this->lang->line('validation')['requiredDosage'];?>"
+                },
+                'duration[]':{
+                    required: "<?php echo $this->lang->line('validation')['requiredDuration'];?>"
                 }
             },
             invalidHandler: validationInvalidHandler,
             errorPlacement: validationErrorPlacement
+            
+        });
+
+        $('#pre_form').submit(function(event) {
+
+            event.preventDefault(); //this will prevent the default submit
+            if(validator.valid()){
+                console.log("Here");
+                var tits = $('.mr_tit');
+                var des = $(".mr_des");
+                for(var i=0; i<tits.length; i++){
+                    var tin = '<input type="hidden" name="mr_tit[]" value="'+$(tits[i]).html()+'" />';
+                    var din = '<input type="hidden" name="mr_des[]" value="'+$(des[i]).html()+'" />';
+                    $("#pre_form").append(tin);
+                    $("#pre_form").append(din);
+                }
+                $(this).unbind('submit').submit();
+            }
             
         });
 
