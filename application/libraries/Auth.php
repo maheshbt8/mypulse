@@ -199,7 +199,7 @@ class Auth {
         if($hospital_id == null)
             $hospital_id = $this->getHospitalId();
         $this->CI->load->model('branches_model');
-        $ids = $this->CI->branches_model->getBracheIds($hospital_id);
+        $ids = $this->CI->branches_model->getBranchesIds($hospital_id);
         if(count($ids) == 0){
             $ids[] = -1;
         }
@@ -305,7 +305,7 @@ class Auth {
                 break;
             case 3: 
                 $class = "label label-success";
-                $text = $this->CI->lang->line('labels')['completed'];
+                $text = $this->CI->lang->line('labels')['closed'];
                 break;
             case 4: 
                 $class = "label label-warning";

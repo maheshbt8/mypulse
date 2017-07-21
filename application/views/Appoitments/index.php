@@ -128,7 +128,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea>
 								</div>
 							</div>				  		
 						</div>
@@ -332,11 +332,12 @@ $this->load->view("template/footer.php");
 		 $("#appoitments").on("click",".delbtn",function(){
 			var id = $(this).attr("data-id");
 			var curdel = $(this);
-			swal(swalDeleteConfig).then(function () {
+			var s = swalDeleteConfig;
+			s.text = '<?=$this->lang->line('labels')['delSureAppt'];?>';
+			swal(s).then(function () {
 				$.post("<?php echo site_url(); ?>/appoitments/cancel",{id:id},function(data){
 					if(data==1){
 						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
-						//$("#dellink_"+id).parents('tr').remove();	
 						toastr.success("<?php echo $this->lang->line('headings')['cancelSuccess'];?>");
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
@@ -361,7 +362,7 @@ $this->load->view("template/footer.php");
 			}else{
 				swal({
 					title: 'Are you sure?',
-					text: "You won't be able to revert this!",
+					text: "<?=$this->lang->line('labels')['delSureAppt'];?>",
 					type: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',

@@ -18,7 +18,13 @@ $this->load->view("template/left.php");
                     <div class="panel-body">
                         <div class="row"> 
                             <div class="col-md-12">
+                            <div class="col-md-6">
                                 <table width="100%" style="border-collapse:separate; border-spacing:0 8px;">
+                                    <tr>
+                                        <td style='width:23%' align="right" valign="top"><strong>Appoitment # : </strong></td>
+                                        <td style="width:2%">&nbsp;</td>
+                                        <td style='width:80%' align="left" valign="center"><?php echo $appoitment['appoitment_number'];?></td>
+                                    </tr>
                                     <tr>
                                         <td style='width:23%' align="right" valign="top"><strong>Appoitment Date : </strong></td>
                                         <td style="width:2%">&nbsp;</td>
@@ -35,6 +41,14 @@ $this->load->view("template/left.php");
                                         <td style='width:80%' align="left"><?php echo $appoitment['reason'];?></td>
                                     </tr>
                                 </table>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="input-Default" class="control-label"><?php echo $this->lang->line('labels')['remarks'];?></label>
+                                    <textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['remarks'];?>"><?php echo $appoitment['remarks'];?></textarea>
+                                </div>
+                                <button class="btn btn-success pull-right" data-id="<?php echo $appoitment['id'];?>" id="saveaptr">Save</button>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -359,7 +373,12 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
     $(document).ready(function(){
 
-        
+        $("#saveaptr").click(function(){
+            var id = $(this).data("id");
+            $.post('<?php echo site_url();?>/appoitments/udpateremark', {id: id, remark: $("#apt_remark").val()}, function(data, textStatus, xhr) {
+                toastr.success("Remark saved", '');  
+            });
+        });
 
         $("#addireport").click(function(){
             $("#mr_title").val("");

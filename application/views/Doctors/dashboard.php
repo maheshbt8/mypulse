@@ -9,11 +9,11 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter"><?php echo $states['tot_hos'];?></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('hospitals');?></span>
+                            <p class="counter"><?php echo $states['tot_nus'];?></p>
+                            <span class="info-box-title"><?php echo $this->lang->line('nurses');?></span>
                         </div>
                         <div class="info-box-icon">
-                            <i class="fa fa-hospital-o"></i>
+                            <i class="fa fa-user"></i>
                         </div>
                     </div>
                 </div>
@@ -77,11 +77,14 @@
                         <table id="appoitments" class="display table" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th style="width:10px">#</th>
-                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
+                                    <th style="width:10px"></th>
+									<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
                                     <th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
                                     <th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
-                                    <th><?php echo $this->lang->line('tableHeaders')['time'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+                                    <th width="20px">#</th>
                                 </tr>
                             </thead>
                             
@@ -105,7 +108,7 @@
         $("#appoitments").DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?status=1&td=1"
+            "ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?td=1"
         });
         $(".dataTables_filter").hide();
     });

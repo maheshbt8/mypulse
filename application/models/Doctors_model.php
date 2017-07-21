@@ -227,9 +227,11 @@ class Doctors_model extends CI_Model {
         $this->db->where('isDeleted',0);
         $this->db->where('isActive',1);
         $doc = $this->db->get($this->tblname);
-        $doc = $doc->row_array();
-        if(isset($doc['id'])){
-            return $doc['id'];
+        if($doc){
+            $doc = $doc->row_array();
+            if(isset($doc['id'])){
+                return $doc['id'];
+            }
         }
         return 0;   
     }
@@ -259,9 +261,10 @@ class Doctors_model extends CI_Model {
     public function addAvailability($docid=0){
         $data = array();
         $isOnlyOne = false;
+        
         if(isset($_POST['onlyOne']) && $_POST['onlyOne']=='yes'){
             $isOnlyOne = true;
-            $sd = date("Y-m-d",strtotime($_POST['date']));
+            $sd = date("Y-m-d",strtotime($_POST['today']));
             $st = date("H:i:s",strtotime($_POST['start_time']));
             $et = date("H:i:s",strtotime($_POST['end_time']));
             $res = $this->db->query("select * from hms_availability where user_id=$docid and repeat_interval=2 and start_date='$sd' and end_date='$sd' and ( (start_time <= '$st' and end_time >= '$st') OR (start_time <= '$et' and end_time >= '$et') )");
@@ -271,13 +274,17 @@ class Doctors_model extends CI_Model {
             $data['end_date'] = $sd;
             $data['start_time'] = $st;
             $data['end_time'] = $et;
+            //echo "<pre>";
             if($res->num_rows() > 0){
                 $res = $res->row_array();
+                //var_dump($res);
                 $this->db->where('id',$res['id']);
                 $this->db->update('hms_availability',$data);
             }else{
+                //var_dump($data);
                 $this->db->insert('hms_availability',$data);
             }
+            //exit;
         }else{
             if($_POST['repeat_interval'] == 0){
                 //Weekly
@@ -385,10 +392,12 @@ class Doctors_model extends CI_Model {
                         'date' => $date->format('d-m-Y'),
                         'start_time' => $r['start_time'],
                         'end_time' => $r['end_time'],
-                        'startDate' => strtotime($date->format('d-m-Y').' '.$r['start_time']),
-                        'endDate' => strtotime($date->format('d-m-Y').' '.$r['end_time']),
+                        'startDate' => $date->format('Y-m-d').' '.$r['start_time'],
+                        'endDate' => $date->format('Y-m-d').' '.$r['end_time'],
                         'title' => date('h:i A',strtotime($r['start_time']))." to ".date('h:i A',strtotime($r['end_time']))
                     );
+                    //echo "<Pre>";
+                    //var_dump($data);exit;
                     $cnt++;
                 }
             }

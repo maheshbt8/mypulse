@@ -65,6 +65,15 @@ class Appoitments_model extends CI_Model {
         $r['timesloat_txt'] = $time_tx;
         return $r;
     }
+
+    function udpateremark(){
+        $id = isset($_POST['id']) ? $_POST['id'] : 0;
+        $r = isset($_POST['remark']) ? $_POST['remark'] : "";
+
+        $this->db->where('id',$id);
+        $this->db->update($this->tblname,array('remarks'=>$r));
+    }
+
     function search($q, $field) {
         $field = explode(",", $field);
         foreach ($field as $f) {

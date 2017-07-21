@@ -64,7 +64,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="panel panel-white">
                     <div class="panel-heading">
-                        <h4 class="panel-title">Outstanding Medical Reports</h4>
+                        <h4 class="panel-title"><?=$this->lang->line('labels')['patientOutstendingPLT'];?></h4>
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive project-stats">  

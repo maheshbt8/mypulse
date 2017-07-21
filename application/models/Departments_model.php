@@ -29,21 +29,38 @@ class Departments_model extends CI_Model {
     }
     function search($q, $field,$hospital_id=-1,$branch_id=-1) {
         $field = explode(",", $field);
-        foreach ($field as $f) {
-            if($q!="")
-                $this->db->like($f, $q);
-        }
-        
-        
-        if($branch_id > 0){
-            $this->db->where('branch_id',$branch_id);
-        }else if($hospital_id > 0){
+
+        $dids = $this->getDepartmentIds();        
+
+        $bids = array();
+        if($hospital_id > 0){
             $bids = $this->auth->getBranchIds($hospital_id);
+        }else{
+             $bids = $this->auth->getBranchIds();
+        }
+
+
+        if($branch_id > 0){
+            if(in_array($branch_id,$bids))
+                $this->db->where('branch_id',$branch_id);
+            else
+                $this->db->where('branch_id',-1);
+        }else if($hospital_id > 0){
             $this->db->where_in('branch_id',$bids);
         }else{
             $hids = $this->auth->getAllHospitalIds();
             $bids = $this->auth->getBranchIds($hids);
             $this->db->where_in('branch_id',$bids);
+        }
+
+        if($this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isReceptinest()){
+            $this->db->where_in("id",$dids);
+        }
+
+
+        foreach ($field as $f) {
+            if($q!="")
+                $this->db->like($f, $q);
         }
         
         $select = implode('`," ",`', $field);
@@ -141,5 +158,30 @@ class Departments_model extends CI_Model {
         $branch = $this->db->get("hms_branches");
         $branch = $branch->row_array();
         return $branch;
+    }
+
+    function getDepartmentIds(){
+        $qry = "";
+        if($this->auth->isSuperAdmin()){
+            $qry = "select id from $this->tblname where isDeleted=0";
+        }else if($this->auth->isHospitalAdmin()){
+            $uid = $this->auth->getUserid();
+            $qry = "select d.id as id from hms_hospital_admin a,hms_branches b,hms_departments d where a.user_id=$uid and a.isDeleted=0 and a.hospital_id=b.hospital_id and b.id = d.branch_id";            
+        }else if($this->auth->isReceptinest()){
+            $uid = $this->auth->getUserid();
+            $qry = "select DISTINCT d.department_id as id from hms_receptionist r,hms_doctors d where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id";
+        }else if($this->auth->isDoctor()){
+            $uid = $this->auth->getDoctorId();
+            $qry = "select DISTINCT d.department_id as id from  hms_doctors d where d.isDeleted=0 and d.id=$uid ";
+        }
+        
+        $res = $this->db->query($qry);
+        $res = $res->result_array();
+        $ids = array();
+        foreach($res as $r){
+            $ids[] = $r['id'];
+        }
+
+        return $ids;
     }
 }

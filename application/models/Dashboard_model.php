@@ -109,6 +109,7 @@ class Dashboard_model extends CI_Model {
 
     function getDoctorStates(){
         $res['tot_hos'] = 0;
+        $res['tot_nus'] = 0;
         $uid = $this->auth->getUserid();
         $h = $this->db->query("select count(id) as cnt from hms_doctors where isDeleted=0 and isActive=1 and user_id=".$uid);
         $h = $h->row_array();

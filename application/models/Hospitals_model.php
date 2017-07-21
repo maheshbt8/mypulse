@@ -28,9 +28,6 @@ class Hospitals_model extends CI_Model {
     }
     function search($q, $field) {
         $field = explode(",", $field);
-        foreach ($field as $f) {
-            $this->db->like($f, $q);
-        }
         
         if($this->auth->isHospitalAdmin()){
             $hid = $this->auth->getHospitalId();
@@ -38,13 +35,23 @@ class Hospitals_model extends CI_Model {
         }else if($this->auth->isReceptinest()){
             $hids = $this->getHospicalIds();
             $this->db->where_in('id',$hids);
+        }else if($this->auth->isDoctor()){
+            $hids = $this->getHospicalIds();
+            $this->db->where_in('id',$hids);
         }
 
+        foreach ($field as $f) {
+            $this->db->like($f, $q);
+        }
+        
         $select = implode('`," ",`', $field);
         $this->db->where("isDeleted",0);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
-        return $res->result_array();
+        if($res)
+            return $res->result_array();
+        else
+            return array();
     }
     function add() {
         $data = $_POST;
@@ -106,6 +113,9 @@ class Hospitals_model extends CI_Model {
         }else if($this->auth->isReceptinest()){
             $uid = $this->auth->getUserid();
             $qry = "select b.hospital_id as id from hms_receptionist r,hms_doctors d,hms_departments m,hms_branches b where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.branch_id=b.id";
+        }else if($this->auth->isDoctor()){
+            $uid = $this->auth->getDoctorId();
+            $qry = "select b.hospital_id as id from  hms_doctors d,hms_departments m,hms_branches b where d.isDeleted=0 and d.id=$uid and d.department_id=m.id and m.branch_id=b.id";
         }
         else{
             $qry = "select * from $this->tblname where id=-1";

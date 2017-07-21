@@ -85,6 +85,10 @@ class Doctors extends CI_Controller {
             $data['no_appt_handle'] = isset($s['no_appt_handle']) ? $s['no_appt_handle'] : 5;
             $data['availabilityText'] = isset($s['availability_text']) ? $s['availability_text'] : "";
             $data['availabilty'] = $this->doctors_model->getAvailibaliryInterval($doc_id);
+            //echo "<pre>";var_dump($_POST);exit;
+            if(isset($_POST['edit_ri'])){
+                $_POST['repeat_interval'] = $_POST['edit_ri'];
+            }
             if(isset($_POST['repeat_interval'])){
                 $this->doctors_model->addAvailability($doc_id);
             }

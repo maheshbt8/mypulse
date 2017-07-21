@@ -104,11 +104,11 @@
                         <div class="row" >
                             <div class="form-group col-md-6" style="">
                                 <label id="stlbl"><?php echo $this->lang->line('labels')['date'];?></label>
-                                <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
+                                <input type="text" class="form-control date-picker" name="date" id="date" />
                             </div>
                             <div class="form-group col-md-6" id="endDiv">
                                 <label><?php echo $this->lang->line('labels')['end_on'];?></label>
-                                <input type="text" class="form-control date-picker-nopast" name="end_on" id="end_on" />
+                                <input type="text" class="form-control date-picker" name="end_on" id="end_on" />
                             </div>
                         </div>
                         <div class="row">
@@ -123,7 +123,7 @@
                         </div>
                         <div class="row" id="onlyOneDiv" style="display:none">
                             <div class="col-md-12">
-                                <label><input type="checkbox" name="onlyOne" id="onlyOne" value="yes"><?php echo $this->lang->line('labels')['updateOrDeleteOnlyOne'];?></label>
+                                <label><input type="checkbox" name="onlyOne" id="onlyOne" value="yes" ><?php echo $this->lang->line('labels')['updateOrDeleteOnlyOne'];?></label>
                             </div>
                         </div>
                     </div>
@@ -211,13 +211,15 @@
             resetForm(validator);
             $("#eidt_gf_id").val(0);
             for(var i=0; i<7; i++){
-                $("#chk_"+i).prop('checked',false);
+                $("#chk_"+i).attr('checked',false);
                 $("#chk_"+i).parent().removeClass('checked');
             }
             $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAvailability'];?>");
             $("#action-update-btn").parent().hide();
             $("#action-del-btn").parent().hide();
             $("#onlyOneDiv").hide();
+            $("#onlyOne").attr('checked',false);
+            $("#onlyOne").parent().removeClass('checked');
             $("#action-add-btn").parent().show();
             $("#form")[0].reset();
             $("#form input").attr("disabled",false);
@@ -225,12 +227,14 @@
             $("#form").attr("action","<?php echo site_url(); ?>/doctors/availability/<?php echo $doc_id;?>");
             $("#edit").modal("show");
             $("#repeat_interval").trigger('change');
+            $("#edit_ri").remove();
+            $("#today").remove();
         });
 
-        function editEvent(id){
+        function editEvent(id,today){
             resetForm(validator);
             for(var i=0; i<7; i++){
-                $("#chk_"+i).prop('checked',false);
+                $("#chk_"+i).attr('checked',false);
                 $("#chk_"+i).parent().removeClass('checked');
             }
             $("#eidt_gf_id").val(id);
@@ -239,11 +243,14 @@
             $("#action-del-btn").parent().show();
             $("#action-add-btn").parent().hide();
             $("#onlyOneDiv").show();
+            $("#onlyOne").attr('checked', true);
+            $("#onlyOne").parent().addClass('checked');
             $("#form")[0].reset();
             $("#form input").attr("disabled",false);
             $("#repeat_interval").attr("disabled",true);
             $("#form").attr("action","<?php echo site_url(); ?>/doctors/availability/<?php echo $doc_id;?>");
             $("#edit").modal("show");
+            $("#form").append("<input type='hidden' name='today' value='"+today+"' id='today' />");
             //$("#repeat_interval").trigger('change');
             loadData(id);
         }
@@ -254,6 +261,7 @@
                 $("#weeklyDayDiv").hide();
                 $("#monthDayDiv").hide();
                 $("#customDiv").hide();
+                $("#form").append("<input type='hidden' name='edit_ri' id='edit_ri' value='"+data.repeat_interval+"' />");
                 if(data.repeat_interval == 2){
                     $("#customDiv").show();
                 }else if(data.repeat_interval == 1){
@@ -262,7 +270,7 @@
                     $('#end_on').datepicker("setDate", data.end_date );
                 }else if(data.repeat_interval == 0){
                     $('#end_on').datepicker("setDate", data.end_date );
-                    $("#chk_"+data.day).prop('checked',true);
+                    $("#chk_"+data.day).attr('checked',true);
                     $("#chk_"+data.day).parent().addClass('checked');
                     $("#weeklyDayDiv").show();
                 }
@@ -328,11 +336,12 @@
             editable: false,
 	        droppable: false,
 			eventLimit: true,
+            nextDayThreshold: '00:01', 
             viewRender: function(view, element){
                 getCurrentCalData();
             },
             eventClick: function(calEvent, jsEvent, view) {
-                editEvent(calEvent.int_id);
+                editEvent(calEvent.int_id,calEvent.start.format("YYYY-MM-DD"));
             }
 		});
 
@@ -352,8 +361,8 @@
                 $('#calendar').fullCalendar('removeEvents');
                 for(var i=0; i<data.length; i++){
                     var _item = data[i];
-                    var sdate = new Date(_item.startDate * 1000);
-					var edate = new Date(_item.endDate * 1000);
+                    var sdate = new Date(_item.startDate);
+					var edate = new Date(_item.endDate);
                     var event = {
                         id: i,
                         title: _item.title,

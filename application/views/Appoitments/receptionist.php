@@ -71,11 +71,11 @@ $this->load->view("template/left.php");
 												<th style="width:10px"></th>
 												<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
 												<th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th>
-												<th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th>
-												<?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
 												<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
 												<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
-												</th><th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
 												<th width="20px">#</th>
 											</tr>
 										</thead>
@@ -239,7 +239,7 @@ $this->load->view("template/footer.php");
 				}
 			},
 			messages: {
-				doctor_id:{
+				user_id:{
 					required:  "<?php echo $this->lang->line('validation')['selectPatient'];?>"
 				},
 				doctor_id:{

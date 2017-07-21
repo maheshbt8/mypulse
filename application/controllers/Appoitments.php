@@ -98,6 +98,12 @@ class Appoitments extends CI_Controller {
         }
     }
 
+    public function udpateremark(){
+        if($this->auth->isLoggedIn()){
+            echo json_encode($this->appoitments_model->udpateremark());exit;
+        }
+    }
+
     public function getDTappoitments() {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
@@ -297,28 +303,60 @@ class Appoitments extends CI_Controller {
                 }else{
                     return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));
                 }
+            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
+                $a = $this->appoitments_model->getappoitmentsById($d);
+                return date('h:i A',strtotime($a['appoitment_time_start'])).' to '.date('h:i A',strtotime($a['appoitment_time_end']));
+            }),array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
+                return $this->auth->getAppoitmentStatus($d);
+            }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
+                if($row['status'] == 3){
+                    return "-";
+                }
+                return "
+                <span style='display:inline-flex'>
+                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>
+
+                <a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>
+                </span>
+                ";
             }));
 
-            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
-            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
-            $status = isset($_GET['status']) ? intval($_GET['status']) : -1;
-            
-            if($hid == "all")
+            $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
+            $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
+
+            if($hid === "all")
                 $hid = null;
-                
+            
+            if($st === "all")    
+                $st = null;
+
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
-            if($status > 0){
-                $cond[] = "status = ".$status;
+
+            if($date != null){
+                $cond[] = "appoitment_date='$date'";
             }
+            
+            if($st !== null){
+                $cond[] = "status in (".$st.")";
+            }
+
+            if($hid != null){
+                $_dids = $this->departments_model->getDepartmentIdsFromHospital($hid);
+                if(count($_dids) == 0){ $_dids[] = -1;}
+                $_dids = implode(",",$_dids);
+                $cond[] = "department_id in (".$_dids.")";
+            }
+
+            $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
             if($isToday===1){   
-                $this->tbl->setCheckboxColumn(false);
-                $this->tbl->setIndexColumn(true);
+                //$this->tbl->setCheckboxColumn(false);
+                //$this->tbl->setIndexColumn(true);
                 $cond[] = "DATE(appoitment_date)='".date("Y-m-d")."'";
             }
             $cond[] = "doctor_id = ".$this->auth->getDoctorId();
-            //echo "<pre>";
-            //var_dump($cond);exit;
+            
             if($show){
                 $this->tbl->setCheckboxColumn(false);
                 $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);

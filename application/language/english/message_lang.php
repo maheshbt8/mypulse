@@ -260,6 +260,7 @@ $lang['labels'] = array(
     'approved' => 'Approved',
     'rejected' => 'Rejected',
     'completed' => 'Completed',
+    'closed' => 'Closed',
     'highBloodPressure' => 'High Blood Pressure',
     'lowBloodPressure' => 'Low Blood Pressure',
     'selectHealthInsuranceProvider' => 'Health Insurance Provider',
@@ -294,6 +295,11 @@ $lang['labels'] = array(
     'status' => 'Status',
     'health_records' => 'Health records',
     'medicalLab' => 'Medical Lab',
+    'remarks' => 'Remarks',
+    'patientRemarkPlace' => 'Remark to be updated by Hospital(Optional)',
+    'patientOutstendingPLT' => 'Outstanding prescriptions for Lab Tests',
+    'medicalLabOutStanding' => 'Outstanding Lab Tests',
+    'delSureAppt' => 'You really want to cancel appointment',
 
 );
 //End Labels
