@@ -302,12 +302,11 @@ class Doctors extends CI_Controller {
         }
     }
 
-    public function previewprescription($apptid = 0){
-        $pid = $this->doctors_model->getPrescriptionIdFromApptid($apptid);
-        $prescription = $this->doctors_model->getPrescription($pid);
+    public function previewprescription($prescription_id = 0){
+        $prescription = $this->doctors_model->getPrescription($prescription_id);
         $return['html'] = $this->load->view('template/prescription',array("data"=>$prescription),true);
         $btn = '';        
-        $btn .= '<a href="#" class="btn btn-primary printtem" data-url="doctors/previewprescription/'.$pid.'">Print</a>&nbsp;&nbsp;';
+        $btn .= '<a href="#" class="btn btn-primary printtem" data-url="doctors/previewprescription/'.$prescription_id.'">Print</a>&nbsp;&nbsp;';
         $return['btns'] = $btn;
         echo json_encode($return);
     }
@@ -329,12 +328,12 @@ class Doctors extends CI_Controller {
                 $temp = $this->appoitments_model->getappoitmentsById($d);
                 return isset($temp['remarks']) ? $temp['remarks'] : "-";
             }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
-                $temp = $this->appoitments_model->getappoitmentsById($d);
+                $temp = $this->appoitments_model->getappoitmentsById($row['appoitment_id']);
                 $did = isset($temp['doctor_id'] ) ? $temp['doctor_id'] : 0;
-                if($did== $this->auth->getDoctorId()){
+                if($did == $this->auth->getDoctorId()){
                     return "<a href=\"#\" class=\"editbtn1\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a>";
                 }
-                return "-";
+                return "";
             }));
             
             $hospital_id = $this->input->get('hid',null,null);

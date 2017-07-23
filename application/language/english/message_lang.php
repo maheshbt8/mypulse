@@ -42,7 +42,8 @@ $lang['othersetting'] = 'Other Setting';
 $lang['patientrecord'] = 'Patient Record';
 $lang['newPrescription'] = 'New Prescription';
 $lang['reports'] = 'Reports';
-
+$lang['about'] = 'About';
+$lang['testreports'] = 'Test Reports';
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -122,6 +123,9 @@ $lang['reg_completed'] = "Registration completed successfully...!!!";
 $lang['msg_patient_ml_saved'] = "Your report request sent to medical lab";
 
 $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
+
+$lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
+
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appoitment",
@@ -175,7 +179,8 @@ $lang['tableHeaders'] = array(
     'reasonForAppt' => 'Reason for Appoitment',
     'date' => 'Date',
     'remarks' => 'Remarks',
-    'prescriptionFor' => 'Title(Prescription for)'
+    'prescriptionFor' => 'Title(Prescription for)',
+    'action' => 'Action',
 );
 //End Table Headings
 
@@ -300,7 +305,8 @@ $lang['labels'] = array(
     'patientOutstendingPLT' => 'Outstanding prescriptions for Lab Tests',
     'medicalLabOutStanding' => 'Outstanding Lab Tests',
     'delSureAppt' => 'You really want to cancel appointment',
-
+    'ShowClosedAppt' => 'Show Closed Appoitments',
+    'patientRecordRemark' => 'Remark to be updated by Hospital',
 );
 //End Labels
 
@@ -393,6 +399,8 @@ $lang['validation'] = array(
     'requiredDrug' => 'Enter drug',
     'requriedStrength' => 'Enter strength',
     'requiredDosage' => 'Enter dosage',
-    'requiredDuration' => 'Enter duration'
+    'requiredDuration' => 'Enter duration',
+    'requiredMedicalLab' => 'Select Medical Lab',
+    'takenEmail' => 'This email is already taken. Please try another'
 );
 //End Validation

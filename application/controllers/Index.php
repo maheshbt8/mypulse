@@ -17,6 +17,8 @@ class Index extends CI_Controller {
 
 	function index()
 	{
+		//$this->users_model->updateKeys();
+		//echo "Updateed";exit;
 		if($this->auth->isLoggedIn()){
 			$data['page_title'] = $this->lang->line('dashboard');
 			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));

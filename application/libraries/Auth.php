@@ -107,7 +107,7 @@ class Auth {
 
     public function getProfileImg(){
       $u = $this->CI->session->all_userdata();
-      if(isset($u['profile_img']))
+      if(isset($u['profile_img']) && $u['profile_img'] != "")
         return $u['profile_img'];
       else
         return base_url()."public/assets/images/user.png";
@@ -137,8 +137,13 @@ class Auth {
     }
     
     public function getUserid(){
-      $u = $this->CI->session->all_userdata();
-      return $u['user_id'];
+        $u = $this->CI->session->all_userdata();
+        return $u['user_id'];
+    }
+
+    public function getMyKey(){
+        $u = $this->CI->session->all_userdata();
+        return $u['my_key'];
     }
     
     public function getUserIdFromRoleId($id=0,$role=0){
@@ -193,6 +198,11 @@ class Auth {
 
     public function getMedicalLabRoleType(){
         return 8;
+    }
+
+    public function getCountryName($con_id=0){
+        $this->CI->load->model('general_model');
+        return $this->CI->general_model->getCountryName($con_id);
     }
 
     public function getBranchIds($hospital_id=null){
@@ -320,6 +330,55 @@ class Auth {
             return $text;
         }else{
             return "<span class='$class'>$text</span>";
+        }
+    }
+
+    function my_encrypt_array($data,$uid){
+        $key = $this->getKeyFromUid($uid);
+        $encryption_key = base64_decode($key);
+
+        foreach($data as $k=>$value){
+            $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+            $encrypted = openssl_encrypt($value, 'aes-256-cbc', $encryption_key, 0, $iv);    
+            $data[$k] = base64_encode($encrypted . '::' . $iv);
+        }
+        return $data;
+    }
+
+    function my_decrypt_array($data,$uid){
+        $key = $this->getKeyFromUid($uid);
+        $encryption_key = base64_decode($key);
+        foreach($data as $k=>$value){
+            list($encrypted_data, $iv) = explode('::', base64_decode($value), 2);
+            $data[$k] = openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
+        }
+        return $data;
+    }
+
+    function my_encrypt($data, $uid) {
+        $key = $this->getKeyFromUid($uid);
+        $encryption_key = base64_decode($key);
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+        $encrypted = openssl_encrypt($data, 'aes-256-cbc', $encryption_key, 0, $iv);
+        return base64_encode($encrypted . '::' . $iv);
+    }
+
+    function my_decrypt($data, $uid) {
+        $key = $this->getKeyFromUid($uid);
+        $encryption_key = base64_decode($key);
+        list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
+        return openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
+    }
+
+    public function getKeyFromUid($uid){
+        if(!$this->isLoggedIn()){
+            return "";
+        }
+        if($this->isPatient()){
+            return $this->getMyKey();
+        }else{
+            $this->CI->load->model('users_model');
+            return $this->CI->users_model->getUserKey($uid);
         }
     }
 

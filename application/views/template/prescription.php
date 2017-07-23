@@ -162,7 +162,7 @@
                                                                     <span class="pcs-label">Date :</span>
                                                                 </td>
                                                                 <td style="text-align:right;width:40%;">
-                                                                    <span id="tmp_entity_date"><?php echo date("d M Y",strtotime($data['created_at']));?></span>
+                                                                    <span id="tmp_entity_date"><?php echo date("d M Y",strtotime($data['date']));?></span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>

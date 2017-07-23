@@ -31,10 +31,10 @@ $this->load->view("template/left.php");
 	                                <thead>
 	                                    <tr>
 											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-											<th style="width:10px"></th>
+											<th style="width:10px"><?php echo $this->lang->line('tableHeaders')['action'];?></th>
 	                                    </tr>
 	                                </thead>
 	                                

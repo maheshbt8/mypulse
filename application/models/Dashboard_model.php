@@ -68,7 +68,13 @@ class Dashboard_model extends CI_Model {
         if($reports){
             $res['medical_reports'] = $reports->result_array();
         }
-        
+        $this->db->select('id,country,state,district,city');
+        $this->db->where('id',$this->auth->getUserid());
+        $user = $this->db->get('hms_users');
+        $user = $user->row_array();
+        $res['profile'] = $user;
+        $res['profile']['country_name'] = $this->auth->getCountryName($user['country']);
+
         return $res;
     }
 

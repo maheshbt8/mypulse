@@ -21,33 +21,35 @@ $this->load->view("template/left.php");
                             <div class="col-md-6">
                                 <table width="100%" style="border-collapse:separate; border-spacing:0 8px;">
                                     <tr>
-                                        <td style='width:23%' align="right" valign="top"><strong>Appoitment # : </strong></td>
+                                        <td style='width:30%' align="right" valign="top"><strong>Appoitment # : </strong></td>
                                         <td style="width:2%">&nbsp;</td>
-                                        <td style='width:80%' align="left" valign="center"><?php echo $appoitment['appoitment_number'];?></td>
+                                        <td style='width:69%' align="left" valign="center"><?php echo $appoitment['appoitment_number'];?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:23%' align="right" valign="top"><strong>Appoitment Date : </strong></td>
+                                        <td style='width:30%' align="right" valign="top"><strong>Appoitment Date : </strong></td>
                                         <td style="width:2%">&nbsp;</td>
-                                        <td style='width:80%' align="left" valign="center"><?php echo date('d-M-Y',strtotime($appoitment['appoitment_date']));?></td>
+                                        <td style='width:69%' align="left" valign="center"><?php echo date('d-M-Y',strtotime($appoitment['appoitment_date']));?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:23%' align="right"><strong>Appoitment Sloat : </strong></td>
+                                        <td style='width:30%' align="right"><strong>Appoitment Sloat : </strong></td>
                                         <td style="width:2%">&nbsp;</td>
-                                        <td style='width:80%' align="left"><?php echo date('h:i A',strtotime($appoitment['appoitment_time_start'])).' to '.date('h:i A',strtotime($appoitment['appoitment_time_end']));?></td>
+                                        <td style='width:69%' align="left"><?php echo date('h:i A',strtotime($appoitment['appoitment_time_start'])).' to '.date('h:i A',strtotime($appoitment['appoitment_time_end']));?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:23%' align="right"><strong>Reason : </strong></td>
+                                        <td style='width:30%' align="right"><strong>Reason : </strong></td>
                                         <td style="width:2%">&nbsp;</td>
-                                        <td style='width:80%' align="left"><?php echo $appoitment['reason'];?></td>
+                                        <td style='width:69%' align="left"><?php echo $appoitment['reason'];?></td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="input-Default" class="control-label"><?php echo $this->lang->line('labels')['remarks'];?></label>
-                                    <textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['remarks'];?>"><?php echo $appoitment['remarks'];?></textarea>
+                                    <textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['patientRecordRemark'];?>" <?php if($appoitment['status'] == 3) { echo "disabled"; } ?>><?php echo $appoitment['remarks'];?></textarea>
                                 </div>
+                                <?php if($appoitment['status'] != 3) { ?>
                                 <button class="btn btn-success pull-right" data-id="<?php echo $appoitment['id'];?>" id="saveaptr">Save</button>
+                                <?php } ?>
                             </div>
                             </div>
                         </div>
@@ -243,6 +245,22 @@ $this->load->view("template/left.php");
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tab3">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="reportTbl" class="display table" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:10px"></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['title'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['description'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>  
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             </form>
@@ -252,24 +270,27 @@ $this->load->view("template/left.php");
                             <input type="hidden" name="edit_id" id="edit_id" value='' />
                             <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
                             <input type="hidden" name="patient_id" id="patient_id" value="<?php echo $profile['id'];?>" />
-                            <div class="col-md-12">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
-                                        <div class="col-sm-8">
-                                            <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
+                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    
+                                    <div class="form-group col-md-6">
+                                        <label for="input-Default" class="col-sm4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
+                                        <div class="8">
+                                            <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
-                                        <div class="col-sm-8">
-                                            <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
+                                    <div class="form-group col-md-6">
+                                        <label for="input-Default" class="col-s-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
+                                        <div class="">
+                                            <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br><br><br>
+                            
                             <div class="col-md-12">
+                                <lable class="control-label"><b><h3>Prescription for Medicines </h3></b></label><br>
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
@@ -308,10 +329,11 @@ $this->load->view("template/left.php");
                                         </tr>
                                     </tbody>
                                 </table>
+                                <button type="button" id="item_btn_1" class="btn additemrow pull-right" style=""><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
                             </div> 
                             <Br><br>
                             <div class="col-md-12" id="medReportDiv">
-                                <lable class="control-label"><b>Medical Report </b></label><br><br>
+                                <lable class="control-label"><b><h3>Prescription for Medical Tests </h3></b></label><br>
                                 <table width="100%" id="medRepTbl">
                                 </table>
                             <div>
@@ -319,7 +341,7 @@ $this->load->view("template/left.php");
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="col-md-8">
-                                        <button type="button" id="item_btn_1" class="btn additemrow" style="margin-right:10px"><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
+                                        
                                         <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
                                     </div>
                                     <div class="col-md-4">
@@ -367,6 +389,32 @@ $this->load->view("template/left.php");
         </div>
     </div>
 
+    <div class="modal fade" id="uploadMR" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+		<div class="modal-dialog modal-m">
+		    <form action="<?php echo site_url(); ?>/medical_lab/uploadreport" method="post" id="form" enctype="multipart/form-data">
+			    <input type="hidden" name="mrid" id="mrid">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <h4 class="modal-title custom_align" id="Edit-Heading">Test Report</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="drop-area" id="dparea">
+                                <h4 class="drop-text">No Test-Report Uploaded Yet</h4>        
+                            </div>
+                            <div style="z-index:1000; position:fixed;top:0;bottom:0;left:0;right:0;display:none" id="loading-img">
+                                <img style="margin: 0 auto;display: flow-root;background: white;margin-top: 15%;padding: 20px;" src="<?php echo base_url();?>public/images/loading.gif"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-defualt" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 <?php
 $this->load->view("template/footer.php");
 ?>
@@ -673,6 +721,41 @@ $this->load->view("template/footer.php");
         });
         $("#prescriptionTbl_filter").hide();
         $("#prescriptionTbl_length").hide();
+
+        $("#reportTbl").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "paging":   true,
+            "ordering": false,
+            "info":     false,
+            "ajax": '<?php echo site_url();?>/medical_lab/getDTPReports/'+"<?php echo $profile['id'];?>"
+        });
+        $("#reportTbl_filter").hide();
+        $("#reportTbl_length").hide();
+
+        $(document).on('click','.btnup',function(){
+            var current_id = $(this).data('id');
+            var url = '<?php echo site_url();?>/medical_lab/getreportspreview/'+current_id;
+            $("#loading-img").show();
+            $.get(url,function(data){ 
+                showImages(data);
+            });
+        });
+
+        function showImages(data){
+            data = $.parseJSON(data);
+            $("#loading-img").hide();
+            $("#dparea").html('<h4 class="drop-text">Drag and Drop Test-Report Here</h4>');
+            var imgList= "<div style='display:flex'>";
+            if(data.length == 0)
+                return;
+
+            $.each(data, function () {
+                imgList += '<div id="imgdiv_'+this.id+'" style="margin:0 auto"><img src= "' + this.url + '" /><div style="text-align:center"><a style="font-size:20px" href="javascript:void(0)" onclick="window.open(\''+this.url+'\');return false;"><i class="fa fa-download"></i></a></div></div>';
+            });
+            imgList += "</div>";
+            $("#dparea").html(imgList);
+        }
 
     });
 </script>

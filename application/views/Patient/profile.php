@@ -60,7 +60,8 @@ $this->load->view("template/left.php");
                                 <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
                                 <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
                                 <li role="presentation"><a href="#tab3" aria-controls="messages" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>
-                                
+                                <li role="presentation"><a href="#tab4"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescription'];?></a></li>
+                                <li role="presentation"><a href="#tab5" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
                             </ul>
                             <!-- Tab panes -->
                             <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
@@ -285,12 +286,77 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                 </div>
+                                <div role="tabpanel" class="tab-pane " id="tab4">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="prescriptionTbl" class="display table" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:10px"></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['remarks'];?></th>
+                                                        <th  width="20px">#</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tab5">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="reportTbl" class="display table" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:10px"></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['title'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['description'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>  
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadMR" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+		<div class="modal-dialog modal-m">
+		    <form action="<?php echo site_url(); ?>/medical_lab/uploadreport" method="post" id="form" enctype="multipart/form-data">
+			    <input type="hidden" name="mrid" id="mrid">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <h4 class="modal-title custom_align" id="Edit-Heading">Test Report</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="drop-area" id="dparea">
+                                <h4 class="drop-text">No Test-Report Uploaded Yet</h4>        
+                            </div>
+                            <div style="z-index:1000; position:fixed;top:0;bottom:0;left:0;right:0;display:none" id="loading-img">
+                                <img style="margin: 0 auto;display: flow-root;background: white;margin-top: 15%;padding: 20px;" src="<?php echo base_url();?>public/images/loading.gif"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-defualt" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 <?php
@@ -614,6 +680,52 @@ $this->load->view("template/footer.php");
 
         function saveData(){
             $("#form").submit();
+        }
+
+        $("#prescriptionTbl").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "paging":   true,
+            "ordering": false,
+            "info":     false,
+            "ajax": '<?php echo site_url();?>/doctors/getDTPrescription/'+"<?php echo $profile['id'];?>"
+        });
+        $("#prescriptionTbl_filter").hide();
+        $("#prescriptionTbl_length").hide();
+
+        $("#reportTbl").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "paging":   true,
+            "ordering": false,
+            "info":     false,
+            "ajax": '<?php echo site_url();?>/medical_lab/getDTPReports/'+"<?php echo $profile['id'];?>"
+        });
+        $("#reportTbl_filter").hide();
+        $("#reportTbl_length").hide();
+
+        $(document).on('click','.btnup',function(){
+            var current_id = $(this).data('id');
+            var url = '<?php echo site_url();?>/medical_lab/getreportspreview/'+current_id;
+            $("#loading-img").show();
+            $.get(url,function(data){ 
+                showImages(data);
+            });
+        });
+
+        function showImages(data){
+            data = $.parseJSON(data);
+            $("#loading-img").hide();
+            $("#dparea").html('<h4 class="drop-text">Drag and Drop Test-Report Here</h4>');
+            var imgList= "<div style='display:flex'>";
+            if(data.length == 0)
+                return;
+
+            $.each(data, function () {
+                imgList += '<div id="imgdiv_'+this.id+'" style="margin:0 auto"><img src= "' + this.url + '" /><div style="text-align:center"><a style="font-size:20px" href="javascript:void(0)" onclick="window.open(\''+this.url+'\');return false;"><i class="fa fa-download"></i></a></div></div>';
+            });
+            imgList += "</div>";
+            $("#dparea").html(imgList);
         }
     });
 </script>

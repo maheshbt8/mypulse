@@ -31,3 +31,5 @@ $lang['main_inpatient_history'] = "In-Patient History";
 $lang['main_hospital_admin'] = 'Hospital Admins';
 $lang['main_availability'] = 'Availability';
 $lang['main_other'] = 'Others';
+$lang['main_about'] = 'About';
+$lang['reports'] = 'Test Reports';

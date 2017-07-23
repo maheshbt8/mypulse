@@ -52,6 +52,7 @@
         <script src="<?php echo base_url();?>public/assets/js/modern.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/selectize/js/selectize.min.js"></script>
+        <script src="<?php echo base_url();?>public/assets/plugins/select2/js/select2.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/fullcalendar/lib/moment.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/fullcalendar/fullcalendar.min.js"></script>

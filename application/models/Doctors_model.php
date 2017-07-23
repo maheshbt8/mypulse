@@ -486,12 +486,19 @@ class Doctors_model extends CI_Model {
         $pre = array();
         $isEdit = false;
         $pid = 0;
+        $patient_id = 0;
         if(isset($_POST['edit_id']) && $_POST['edit_id'] != ""){
             $isEdit = true;
             $pid = $_POST['edit_id'];
+            $this->db->select('patient_id');
+            $this->db->where('id',$pid);
+            $_pre = $this->db->get('hms_prescription');
+            $_pre = $_pre->row_array();
+            $patient_id = isset($_pre['patient_id']) ? $_pre['patient_id'] : 0;
         }else{
             $pre['doctor_id'] = $this->auth->getDoctorid();
             $pre['patient_id'] = $_POST['patient_id'];
+            $patient_id = $_POST['patient_id'];
             $pre['appoitment_id'] = $_POST['appt_id'];
             $pre['created_at'] = date("Y-m-d H:i:s");
         }
@@ -508,7 +515,7 @@ class Doctors_model extends CI_Model {
             $this->db->where('id',$pid);
             $this->db->update('hms_prescription',$pre);
         }
-        $this->addPrescriptionItems($pid);
+        $this->addPrescriptionItems($pid,$patient_id);
         $this->addMedicalReport($pid);
        
     }
@@ -533,15 +540,17 @@ class Doctors_model extends CI_Model {
         }
     }
 
-    function addPrescriptionItems($pid=0){
+    function addPrescriptionItems($pid=0,$patient_id=0){
         for($i=0; $i<count($_POST['item_id']); $i++){
             $item['drug'] = $_POST['drug'][$i];
-            $item['prescription_id'] = $pid;
             $item['strength'] = $_POST['strength'][$i];
             $item['dosage'] = $_POST['dosage'][$i];
             $item['duration'] = $_POST['duration'][$i];
             $item['note'] = $_POST['note'][$i];
 
+            $item = $this->auth->my_encrypt_array($item,$patient_id);
+
+            $item['prescription_id'] = $pid;
             if(isset($_POST['item_id'][$i]) && $_POST['item_id'][$i]!=""){
                 $this->db->where('id',$_POST['item_id'][$i]);
                 $this->db->update('hms_prescription_item',$item);
@@ -567,7 +576,8 @@ class Doctors_model extends CI_Model {
         $this->db->where('isDeleted',0);
         $pre = $this->db->get('hms_prescription');
         $pre = $pre->row_array();
-
+        //echo "<pre>";
+        //print_r($pid);exit;
         $this->db->where('id',$pre['patient_id']);
         $patient = $this->db->get('hms_users');
         $patient = $patient->row_array();
@@ -590,8 +600,20 @@ class Doctors_model extends CI_Model {
         $items = $items->result_array();
         $pre['date'] = "-";
         if(isset($pre['created_at']))
-            $pre['date'] = date("<d-m></d-m>-Y",strtotime($pre['created_at']));
+            $pre['date'] = date("d-m-Y",strtotime($pre['created_at']));
+
+        for($i=0; $i<count($items); $i++){
+            $_item = $items[$i];
+            $id = $_item['id'];unset($_item['id']);
+            $prescription_id = $_item['prescription_id'];unset($_item['prescription_id']);
+            $_item = $this->auth->my_decrypt_array($_item,$pre['patient_id']);
+            $_item['prescription_id'] = $prescription_id;
+            $_item['id'] = $id;
+            $items[$i] = $_item;
+        }
+
         $pre['items'] = $items;
+        
         return $pre;
     }
 }

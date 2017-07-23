@@ -34,6 +34,14 @@ class Appoitments_model extends CI_Model {
             $r['branch_id'] = 0;
             $r['hospital_id'] = 0;
         } 
+        $r['user_name'] = "";
+        if(isset($r['user_id'])){
+            $this->db->select('id,first_name,last_name');
+            $this->db->where('id',$r['user_id']);
+            $u = $this->db->get('hms_users');
+            $u = $u->row_array();
+            $r['user_name'] = $this->auth->getUName($u);
+        }
 
         if(isset($r['doctor_id'])){
             $uid = $this->auth->getDoctorUserId($r['doctor_id']);

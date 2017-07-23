@@ -12,6 +12,17 @@ class Users_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
+    function updateKeys(){
+        $this->db->select('id');
+        $users = $this->db->get($this->tblname);
+        $users = $users->result_array();
+        foreach($users as $u){
+            $this->db->where('id',$u['id']);
+            $key = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
+            $this->db->update($this->tblname,array("my_key"=>$key));
+        }
+    }
     
     function doLogin()
     {   
@@ -29,6 +40,8 @@ class Users_model extends CI_Model {
                                             'email_id' => $row->useremail,
                                             'user_id' => $row->id,
                                             'role' => $row->role,
+                                            'my_key' => $row->my_key,
+                                            'profile_img' => $row->profile_photo,
                                             'logged_in' => '1');
                     if($row->role == $this->auth->getHospitalAdminRoleType()){
                         $this->db->where('user_id',$row->id);
@@ -49,6 +62,14 @@ class Users_model extends CI_Model {
         }
         else
             return false;
+    }
+
+    function getUserKey($id){
+        $this->db->where("id",$id);
+        $this->db->select("my_key");
+        $u = $this->db->get($this->tblname);
+        $u = $u->row_array();
+        return isset($u['my_key']) ? $u['my_key'] : "";
     }
 
     function getusersById($id) {   
@@ -97,16 +118,37 @@ class Users_model extends CI_Model {
         return $res->result_array();
     }
     function searchPatient($q, $field){
-        $field = explode(",", $field);
-        foreach ($field as $f) {
-            $this->db->like($f, $q);
-        }
-        $select = implode('`," ",`', $field);
+        /*$this->db->or_group_start()
+            ->or_where('useremail', $q)
+            ->or_where('mobile', $q)
+            ->or_where('aadhaar_number', $q)
+            ->group_end();
+        $select = implode('`," ",`', array("first_name","last_name"));
         $this->db->where("isDeleted",0);
         $this->db->where('role',6);
         $this->db->select("id,CONCAT(`$select`) as text", false);
-        $res = $this->db->get($this->tblname);
+        $res = $this->db->get($this->tblname);*/
+        $res = $this->db->query("select id,CONCAT(`first_name`,' ',`last_name`) as text from $this->tblname where isDeleted=0 and role=6 and (useremail='$q' OR mobile='$q' OR aadhaar_number='$q')");
         return $res->result_array();
+    }
+    function checkEmail($email){
+        $this->db->where('useremail',$email);
+        $user = $this->db->get($this->tblname);
+        if($user->num_rows() == 0){
+            return false;
+        }
+        return true;
+    }
+    function regUsers(){
+        $data['useremail'] = isset($_POST['useremail']) ? $_POST['useremail'] : "";
+        $data['first_name'] = isset($_POST['first_name']) ? $_POST['first_name'] : "";
+        $data['last_name'] = isset($_POST['last_name']) ? $_POST['last_name'] : "";
+        $data["role"] = 6;
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
+        $this->db->insert($this->tblname,$data);
+        $uid = $this->db->insert_id();
+        return $uid;
     }
     function add($user=null) {
         $data = array();
@@ -120,6 +162,7 @@ class Users_model extends CI_Model {
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         
         $data['created_at'] = date("Y-m-d H:i:s");
+        $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
         if ($this->db->insert($this->tblname, $data)) {
             return $this->db->insert_id();
         } else {

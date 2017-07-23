@@ -24,6 +24,25 @@ class Users extends CI_Controller {
             echo json_encode($result);
         }
     }
+    public function checkemail(){
+        $email = isset($_GET['useremail']) ? $_GET['useremail'] : "";
+        if($email==""){
+            echo 'false';
+        }
+        else if($this->users_model->checkEmail($email)){
+            echo 'false';
+        }else{
+            echo 'true';
+        }
+        exit;    
+    }
+    public function regUsers(){
+        if($this->auth->isLoggedIn()){
+            $email = isset($_POST['useremail']) ? $_POST['useremail'] : "";
+            $uid = $this->users_model->regUsers();
+            echo json_encode(array("text"=>$email,"id"=>$uid));exit;
+        }
+    }
     public function search($role=0) {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");

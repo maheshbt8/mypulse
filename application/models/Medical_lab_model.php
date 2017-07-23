@@ -33,10 +33,14 @@ class Medical_lab_model extends CI_Model {
             $branch =$branch->row_array();
             $r['hospital_id'] = $branch['hospital_id'];
         }
+        $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
     }
-    function search($q, $field) {
+    function search($q, $field,$city) {
         $field = explode(",", $field);
+        if($city!=null){
+            $this->db->where('city',$city);
+        }
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
@@ -45,6 +49,41 @@ class Medical_lab_model extends CI_Model {
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();
+    }
+    function addReportUrl($id,$urls,$paths,$types){
+        for($i=0; $i<count($urls); $i++){
+            $d['medical_report_id'] = $id;
+            $d['file_url'] = $urls[$i];
+            $d['file_path'] = $paths[$i];
+            $d['file_type'] = $types[$i];
+            $this->db->insert('hms_medical_report_file',$d);
+        }
+        if(count($urls) > 0){
+            $this->db->where('id',$id);
+            $this->db->update('hms_medical_report',array('status'=>1));
+        }
+    }
+    function getMedicalReportFiles($id){
+        $this->db->where('medical_report_id',$id);
+        $r = $this->db->get('hms_medical_report_file');
+        $r = $r->result_array();
+        return $r;
+    }
+    function deleteMedicalReportFile($id){
+        $this->db->where('id',$id);
+        $d = $this->db->get('hms_medical_report_file');
+        $d = $d->row_array();
+        $med_r_id = $d['medical_report_id'];
+
+        @unlink($d['file_path']);
+        $this->db->query("delete from hms_medical_report_file where id=$id");
+
+        $this->db->where('medical_report_id',$med_r_id);
+        $c = $this->db->get('hms_medical_report_file');
+        if($c->num_rows() == 0){
+            $this->db->where('id',$med_r_id);
+            $this->db->update('hms_medical_report',array('status'=>0));
+        }
     }
     function add() {
         $data = $_POST;
@@ -89,6 +128,14 @@ class Medical_lab_model extends CI_Model {
             $mlab = array();
             if(isset($data['name']))
                 $mlab['name'] = $data['name'];
+            if(isset($data['country']))
+                $mlab['country'] = $data['country'];
+            if(isset($data['state']))
+                $mlab['state'] = $data['state'];
+            if(isset($data['district']))
+                $mlab['district'] = $data['district'];
+            if(isset($data['city']))
+                $mlab['city'] = $data['city'];            
             if(isset($data['owner_name']))
                 $mlab['owner_name'] = $data['owner_name'];
             if(isset($data['owner_contact_number']))

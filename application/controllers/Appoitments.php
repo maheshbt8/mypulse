@@ -111,7 +111,8 @@ class Appoitments extends CI_Controller {
             $primaryKey = "id";
             $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
                 if($row['status'] == 3){
-                    return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$d."</a>";
+                    $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
+                    return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
                 }else{
                     return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
                 }
@@ -143,7 +144,9 @@ class Appoitments extends CI_Controller {
             }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
                 if($row['status']==3)
                     return "";
-                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                if($row['status']!=4)
+                    return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                return "";
             }));
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
@@ -210,16 +213,19 @@ class Appoitments extends CI_Controller {
                 if($row['status'] == 3){
                     return "-";
                 }
-                return "
-                <span style='display:inline-flex'>
-                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>
-
-                <a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>
-                </span>
-                ";
+                $html = "<span style='display:inline-flex'>";
+                if($row['status'] != 4){
+                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                }
+                if($row['status'] !=3){
+                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
+                }
+                $html .= "</span>";
+                return $html;
             }));
             
             $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
+            $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
             $did = isset($_GET['did']) ? $_GET['did']!="" ? $_GET['did'] : null : null;
             $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
@@ -228,8 +234,22 @@ class Appoitments extends CI_Controller {
                 $hid = null;
             if($did === "all")
                 $did = null;
-            if($st === "all")    
+            if($st === "all"){    
                 $st = null;
+            }
+            
+
+            $all_status = array(0,1,2,4);
+            $status = array();
+            if($st !== null){
+                $status[] = $st;
+            }else{
+                $status = $all_status;
+            }
+
+            if($sc==1){
+                $status[] = 3;
+            }  
 
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
@@ -238,8 +258,10 @@ class Appoitments extends CI_Controller {
                 $cond[] = "appoitment_date='$date'";
             }
             
-            if($st !== null){
-                $cond[] = "status in (".$st.")";
+            if(count($status) > 0){
+                $cond[] = "status in (".implode(",",$status).")";
+            }else{
+                $cond[] = "status in (".implode(",",$all_status).")";
             }
 
             if($hid != null){
@@ -312,16 +334,20 @@ class Appoitments extends CI_Controller {
                 if($row['status'] == 3){
                     return "-";
                 }
-                return "
-                <span style='display:inline-flex'>
-                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>
-
-                <a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>
-                </span>
-                ";
+                $html = "<span style='display:inline-flex'>";
+                if($row['status'] != 4){
+                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                }
+                if($row['status'] !=3){
+                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
+                }
+                $html .=  "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
+                $html .= "</span>";
+                return $html;
             }));
 
             $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
+            $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
             $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
 
@@ -331,15 +357,29 @@ class Appoitments extends CI_Controller {
             if($st === "all")    
                 $st = null;
 
+            $all_status = array(0,1,2,4);
+            $status = array();
+            if($st !== null){
+                $status[] = $st;
+            }else{
+                $status = $all_status;
+            }
+
+            if($sc==1){
+                $status[] = 3;
+            }    
+
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
 
             if($date != null){
                 $cond[] = "appoitment_date='$date'";
             }
-            
-            if($st !== null){
-                $cond[] = "status in (".$st.")";
+        
+            if(count($status) > 0){
+                $cond[] = "status in (".implode(",",$status).")";
+            }else{
+                $cond[] = "status in (".implode(",",$all_status).")";
             }
 
             if($hid != null){

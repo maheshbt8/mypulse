@@ -2,7 +2,7 @@
                 <div class="page-sidebar-inner slimscroll">
                     <div class="sidebar-header">
                         <div class="sidebar-profile">
-                            <a href="javascript:void(0);" id="profile-menu-link">
+                            <a href="<?php echo site_url();?>/index/profile" id="profile-menu-link">
                                 <div class="sidebar-profile-image">
                                     <img src="<?php echo $this->auth->getProfileImg();?>" class="img-circle img-responsive" alt="">
                                 </div>
@@ -122,6 +122,18 @@
                                 </ul>
                             </li>
                         <?php
+                            break;
+                            case $this->auth->getMedicalLabRoleType():
+                        ?>
+                            <li id="li81"><a href="<?php echo site_url();?>/medical_lab/reports" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['reports'];?></p></a></li>
+                            <li id="li80" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li id="li801"><a href="<?php echo site_url();?>/medical_lab/about" ><?php echo $menu['main_about'];?></a></li>
+                                    <!--<li id="li602"><a href="<?php //echo site_url();?>/doctors/othersetting" ><?php e//cho $menu['main_other'];?></a></li>-->
+                                </ul>
+                            </li>
+                        <?php
+                            break;
                             default:
                                 break;
                         }

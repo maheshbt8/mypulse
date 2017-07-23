@@ -27,6 +27,7 @@
         <link href="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/> 
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>     
+
         <!-- Theme Styles -->
         <link href="<?php echo base_url();?>public/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo base_url();?>public/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
@@ -80,17 +81,25 @@
             };
             
             function resetForm(validator){
-                validator.resetForm();
+                if(validator!=undefined)
+                    validator.resetForm();
                 $("div.error").hide();
                 
             }
         </script>
         <link href="<?php echo base_url();?>public/assets/plugins/selectize/css/selectize.css" rel="stylesheet" rel="stylesheet" />
+        <link href="<?php echo base_url();?>public/assets/plugins/select2/css/select2.css" rel="stylesheet" rel="stylesheet" />
         <style type="text/css">
             .selectize-control {
                 width: 100%;
                 padding: 0px !important;
                 border-radius: 0px !important;
+            }
+            .select2-selection select2-selection--single{
+                height:30px !important;
+            }
+            .swal2-container{
+                z-index: 9999 !important;
             }
             .fc-time{
                 display:none !important;
@@ -99,6 +108,28 @@
                 cursor: pointer;
             }
             form label {font-weight:bold}
+            .drop-area
+            {
+                height:200px;
+                background-color:white;
+                border:1px dashed #ccc;
+            }
+            .drop-text
+            {
+                margin-top:80px;
+                color:grey;
+                text-align: center; 
+            }
+            .drop-area img
+            {
+                max-width:100px;
+                min-width:100px;
+                display:flow-root;
+                margin: 0 auto;
+                max-height: 100px;
+                min-height: 100px;
+                margin-top: 5%;
+            }
         </style>
         <style type="text/css">
             .equalDivParent{

@@ -49,12 +49,14 @@ $this->load->view("template/left.php");
                                     <select id="status" class=" form-control" style="width: 100%">
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
-										<option value="3"><?php echo  $this->lang->line('labels')['completed']; ?></option>
 										<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
 					                </select>
                                 </div>
+								<div class="col-md-12">
+									<label class="pull-right"><input type="checkbox" id="showClosed" class="form-control" /><?php echo $this->lang->line('labels')['ShowClosedAppt'];?></label>
+								</div>
                             </div>
 							<div class="col-md-12">
 								<div class="table-responsive">
@@ -84,6 +86,8 @@ $this->load->view("template/left.php");
 	        <input type="hidden" id="cur_del">
 	    </div><!-- Main Wrapper -->
 
+		
+
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<form action="<?php echo site_url(); ?>/appoitments/update" method="post" id="form">
@@ -99,7 +103,7 @@ $this->load->view("template/left.php");
 				  			<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label>User</label>
-									<select name="user_id" id="user_id" class=" form-control" style="width: 100%">
+									<select name="user_id" id="user_id" class="form-control" style="width: 100%;">
 									</select>
 								</div>
 								<div class="form-group col-md-6">
@@ -172,6 +176,39 @@ $this->load->view("template/left.php");
 			</div>
 		<!-- /.modal-dialog --> 
 		</div>
+
+		<div class="modal fade" id="createUser" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<form action="<?php echo site_url(); ?>/users/regUsers" method="post" id="createUseerform">
+				<div class="modal-content" style="box-shadow: 0px 0px 50px 0px rgba(0,0,0,30.67)">
+				  	<div class="modal-header">
+					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading">Create new user</h4>
+					</div>
+				  	<div class="modal-body">
+				  		<div class="row">
+				  			
+							<div class="form-group col-md-12">
+								<label>Useremail</label>
+								<input name="useremail" id="useremail" class="form-control"  placeholder="User emailid"/>
+							</div><br>
+							<div class="form-group col-md-12">
+								<label>First Name</label>
+								<input name="first_name" id="first_name" class="form-control"  placeholder="First Name"/>
+							</div><br>
+							<div class="form-group col-md-12">
+								<label>Last Name</label>
+								<input name="last_name" id="last_name" class="form-control"  placeholder="Last Name"/>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+						<button class="btn btn-success" id="create_user">Create</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		
 <?php
 $this->load->view("template/footer.php");
@@ -179,6 +216,7 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
 		
 	$(document).ready(function(){
+		$(".js-example-basic-multiple").select2();
 
 		var hid = null;
 		<?php
@@ -201,6 +239,39 @@ $this->load->view("template/footer.php");
 		var t_did = null;
 		var t_oid = null;
 		var cur_v = null;
+		var isEdit = false;
+		var validatorCreate = $("#createUseerform").validate({
+			ignore: [],
+			rules: {
+				first_name: {
+					required : true
+				},
+				last_name: {
+					required: true
+				},
+				useremail:{
+					required:true,
+					email:true,
+					remote: "<?php echo site_url();?>/users/checkemail"
+				},
+			},
+			messages: {
+				first_name:{
+					required: "<?php echo $this->lang->line('validation')['requiredFname'];?>"
+				},
+				last_name:{
+					required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
+				},
+				useremail:{
+					required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
+					email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>",
+					remote:"<?php echo $this->lang->line('validation')['takenEmail'];?>"
+				},
+			},
+			invalidHandler: validationInvalidHandler,
+			errorPlacement: validationErrorPlacement
+		});
+
 		var validator = $("#form").validate({
 			ignore: [],
 			rules: {
@@ -322,10 +393,10 @@ $this->load->view("template/footer.php");
 			$.post("<?php echo site_url(); ?>/appoitments/getappoitments",{ id: id },function(data){
 				var data = JSON.parse(data);
 				var tempselectize_user_id = $selectize_user_id[0].selectize;
-				tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_id}]);
+				tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_name}]);
 				tempselectize_user_id.refreshItems();
 				tempselectize_user_id.setValue(data.user_id);
-
+				isEdit = true;
 				t_bid = data.branch_id;
 				t_did = data.department_id;
 				t_oid = data.doctor_id;
@@ -343,9 +414,13 @@ $this->load->view("template/footer.php");
 				
 				$("#remarks").val(data.remarks);
 			
-				$("#appoitment_date").prop("disabled", true);
-				$("#reason").prop("disabled", false);
+				$("#appoitment_date").attr("disabled", true);
+				$("#appoitment_sloat").attr("disabled", true);
+				$("#reason").attr("disabled", true);
 				$selectize_hospital_id[0].selectize.disable();
+				$selectize_user_id[0].selectize.disable();
+				
+
 			});
 		}
 
@@ -401,7 +476,11 @@ $this->load->view("template/footer.php");
 				if(data.length == 0){
 					$("#noApptTimeSloat").show();
 				}else{
-					$("#appoitment_sloat").attr('disabled',false);
+					if(isEdit){
+						$("#appoitment_date").attr("disabled", true);
+					}else{
+						$("#appoitment_sloat").attr('disabled',false);
+					}
 					for(var i=0; i<data.length; i++){
 						var item = data[i];
 						var v = item.start+'-'+item.end;
@@ -495,15 +574,85 @@ $this->load->view("template/footer.php");
 				
 			}
 		});
-		
+
+		/*$("#user_id").select2({
+			ajax: {
+				url: "<?php echo site_url(); ?>/users/searchPatient/",
+				dataType: 'json',
+				delay: 250,
+				data: function (params) {
+					return {
+						q: params.term,
+					};
+				},
+				processResults: function (data, params) {
+					return {
+						results: data.items,
+						pagination: {
+							more: false
+						}
+					};
+				},
+				cache: true
+			},
+			escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
+			minimumInputLength: 1,
+			templateResult: formatRepo, // omitted for brevity, see the source of this page
+			templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+		});*/
+
+		function formatRepo (repo) {
+			if (repo.loading) return repo.text;
+			var markup = "<div><span class='title'>" +repo.text+"</span></div>"
+			return markup;
+		}
+
+		function formatRepoSelection (user) {
+			return user.text;
+		}
+
+		var userCreateCallBack = null;
+
+		$("#createUser").on('hide.bs.modal',function(e){
+			if(userCreateCallBack!=null){
+				userCreateCallBack();
+				userCreateCallBack = null;
+			}
+		});
+
+		$("#createUseerform").on("submit",function(e){
+			if(validatorCreate.valid()){
+				e.preventDefault();
+				$.ajax({
+					method: "POST",
+					url : $(this).attr('action'),
+					data: $(this).serialize(),
+					success:function(response){
+						userCreateCallBack($.parseJSON(response));		
+						userCreateCallBack = null;
+						$("#createUser").modal("toggle");
+					}
+				});
+			}
+		});
+
 		var $selectize_user_id = $("#user_id").selectize({
 			valueField: "id",
 			labelField: "text",
 			searchField: "text",
+			loadThrottle: 500,
+			placeholder: "Enter useremail or mobile number or aadhaar number",
 			preload:true,
-			create: false,
+			create: function(input,callback){
+				userCreateCallBack = callback;
+				resetForm(validatorCreate);
+				$("#createUser").modal();
+				$("#createUseerform").trigger('reset');
+				$("#useremail").val(input);
+			},
 			render: {
 				option: function(item, escape) {
+					console.log(item);
 					return "<div><span class='title'>" +
 							escape(item.text)+
 						"</span>" +   
@@ -511,20 +660,32 @@ $this->load->view("template/footer.php");
 				}
 			},
 			load: function(query, callback) {
-				//if (!query.length) return callback();
+				if (!query.length) return callback();
+				$selectize_user_id[0].selectize.clearOptions();
 				$.ajax({
 					url: "<?php echo site_url(); ?>/users/searchPatient/",
 					type: "GET",
-					data: {"q":query,"f":"first_name,last_name"},
+					data: {"q":query},
 					error: function() {
 						callback();
 					},
 					success: function(res) {
-						callback($.parseJSON(res));
+						res = $.parseJSON(res);
+						callback(res);
+						if(res.length > 0){
+							selectFirst($selectize_user_id,res[0].id,res[0].text);
+						}
 					}
 				});
 			}
 		});
+
+		function selectFirst(sel,id,value){
+			var tempsselectize = sel[0].selectize;
+			tempsselectize.addOption([{"id":id,"text":value}]);
+			tempsselectize.refreshItems();
+			tempsselectize.setValue(id);
+		}
 		
 		var xhr;
 
@@ -560,7 +721,11 @@ $this->load->view("template/footer.php");
 			},
 			onChange: function(value){
 				if(!value.length) return;
-				$("#appoitment_date").prop("disabled", false);
+				if(isEdit){
+					$("#appoitment_date").prop("disabled", true);
+				}else{
+					$("#appoitment_date").prop("disabled", false);
+				}
 			}
 		});
 
@@ -594,13 +759,16 @@ $this->load->view("template/footer.php");
 							var res = $.parseJSON(results);
 							callback(res);
 							if(t_did != null){
-								var tempsselectize_department_id = $selectize_department_id[0].selectize;
-								tempsselectize_department_id.addOption([{"id":t_did,"text":t_did}]);
-								tempsselectize_department_id.refreshItems();
-								tempsselectize_department_id.setValue(t_did);
+								selectFirst($selectize_department_id,t_did,t_did);
 								t_did = null;
 							}else{
 								$selectize_department_id[0].selectize.enable();
+								if(res.length > 0){
+									selectFirst($selectize_department_id,res[0].id,res[0].text);
+								}
+							}
+							if(isEdit){
+								$selectize_department_id[0].selectize.disable();
 							}
 						},
 						error: function() {
@@ -636,7 +804,13 @@ $this->load->view("template/footer.php");
 						callback();
 					},
 					success: function(res) {
-						callback($.parseJSON(res));
+						res = $.parseJSON(res);
+						callback(res);
+						if(res.length > 0){
+							setTimeout(function() {
+								selectFirst($selectize_hospital_id,res[0].id,res[0].text);	
+							}, 2000);
+						}
 					}
 				});
 			},
@@ -656,13 +830,16 @@ $this->load->view("template/footer.php");
 							var res = $.parseJSON(results);
 							callback(res);
 							if(t_bid != null){
-								var tempselectize_branch_id = $selectize_branch_id[0].selectize;
-								tempselectize_branch_id.addOption([{"id":t_bid,"text":t_bid}]);
-								tempselectize_branch_id.refreshItems();
-								tempselectize_branch_id.setValue(t_bid);
+								selectFirst($selectize_branch_id,t_bid,t_bid);
 								t_bid = null;
 							}else{
 								$selectize_branch_id[0].selectize.enable();
+								if(res.length > 0){
+									selectFirst($selectize_branch_id,res[0].id,res[0].text);
+								}
+							}
+							if(isEdit){
+								$selectize_department_id[0].selectize.disable();
 							}
 						},
 						error: function() {
@@ -717,14 +894,21 @@ $this->load->view("template/footer.php");
 			loadTable($("#sel_date").val(),$("#hospital_id1").val());
 		});
 			
+		$("#showClosed").change(function(){
+			loadTable($("#sel_date").val(),$("#hospital_id1").val());
+		});
 
 		function loadTable(date,hid){	
 			var st = $("#status").val();
+			var showClosed = 0;
+			if($("#showClosed").is(":checked")){
+				showClosed = 1;
+			}
 			$("#appoitments").dataTable().fnDestroy();
 			$("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&d="+date+"&st="+st
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&d="+date+"&st="+st+"&sc="+showClosed
 			});
 
 			$(".dataTables_filter").attr("style","display: flex;float: right");
