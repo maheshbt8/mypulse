@@ -342,13 +342,18 @@ $this->load->view("template/footer.php");
 			
 			var tbid = $("#branch_id1").val();
 			$("#selected_bid").val(tbid);
+			
 			$selectize_department_id[0].selectize.disable();
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
+			$selectize_hospital_id[0].selectize.enable();
 			$selectize_hospital_id[0].selectize.clear();
+			$selectize_user_id[0].selectize.enable();
+			$selectize_user_id[0].selectize.clear();
 			$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
+			$("#reason").attr('disabled',false);
 		});
 
 		$(".addbtn").click(function(){

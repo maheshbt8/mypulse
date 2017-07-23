@@ -351,7 +351,7 @@ $this->load->view("template/footer.php");
 			$("#edit").modal("show");
 			var thid = $("#hospital_id1").val();
 			$("#selected_hid").val(thid);
-			
+			isEdit = false;
 			var tbid = $("#branch_id1").val();
 			$("#selected_bid").val(tbid);
 			$selectize_doctor_id[0].selectize.disable();
@@ -360,9 +360,13 @@ $this->load->view("template/footer.php");
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
+			$selectize_hospital_id[0].selectize.enable();
 			$selectize_hospital_id[0].selectize.clear();
+			$selectize_user_id[0].selectize.enable();
+			$selectize_user_id[0].selectize.clear();
 			$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
+			$("#reason").attr('disabled',false);
 		});
 
 		$("#appoitments").on("click",".editbtn",function(){
