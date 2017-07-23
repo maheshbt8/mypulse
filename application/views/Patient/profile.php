@@ -716,7 +716,7 @@ $this->load->view("template/footer.php");
         function showImages(data){
             data = $.parseJSON(data);
             $("#loading-img").hide();
-            $("#dparea").html('<h4 class="drop-text">Drag and Drop Test-Report Here</h4>');
+            $("#dparea").html('<h4 class="drop-text">No Test-Report Uploaded Yet</h4>');
             var imgList= "<div style='display:flex'>";
             if(data.length == 0)
                 return;
