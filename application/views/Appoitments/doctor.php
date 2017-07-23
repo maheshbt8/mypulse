@@ -342,7 +342,7 @@ $this->load->view("template/footer.php");
 			
 			var tbid = $("#branch_id1").val();
 			$("#selected_bid").val(tbid);
-			
+			isEdit = false;
 			$selectize_department_id[0].selectize.disable();
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
