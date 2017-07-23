@@ -366,6 +366,7 @@ $this->load->view("template/footer.php");
 			$selectize_user_id[0].selectize.clear();
 			$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
+			$("#appoitment_sloat").html('');
 			$("#reason").attr('disabled',false);
 		});
 
