@@ -5,7 +5,7 @@
     <input type="hidden" id="left_active_menu" value="80" />
 	<input type="hidden" id="left_active_sub_menu" value="801" />
     <div id="main-wrapper">
-        <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-white">
                 <div class="panel-heading clearfix">
                     <div class="">
@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['description'];?></label>
-                                    <textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"><?php echo $about['description'];?></textarea>
+                                    <textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMedLabPlaceholder'];?>" name="description" id="description"><?php echo $about['description'];?></textarea>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -55,6 +55,20 @@
                             </div>
                         </div>
                     </form>
+                    <br>
+                    <h3 class="panel-title"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></h3><br>
+                    <div class="col-md-12">
+                        <table cellspacing="10" class="table" style="margin-top:10px">
+                            <tr>
+                                <td style="width:150px" align="right">Hospital : </td>
+                                <td><?php echo $about['hospital_name'];?></label></td>
+                            </tr>
+                            <tr>
+                                <td style="width:150px" align="right">Branch : </td>
+                                <td><?php echo $about['branch_name'];?></label></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div><!-- Row -->

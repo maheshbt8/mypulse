@@ -74,6 +74,14 @@ class Appoitments extends CI_Controller {
         }
     }
 
+    public function reject() {
+      
+        if ($this->auth->isLoggedIn()) {
+            $id = $this->input->post('id');
+            echo $this->appoitments_model->reject($id);
+        }
+    }
+
     public function approve(){
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
@@ -110,6 +118,7 @@ class Appoitments extends CI_Controller {
             $table = "hms_appoitments";
             $primaryKey = "id";
             $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
+                
                 if($row['status'] == 3){
                     $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
                     return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
@@ -145,7 +154,7 @@ class Appoitments extends CI_Controller {
                 if($row['status']==3)
                     return "";
                 if($row['status']!=4)
-                    return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                    return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
                 return "";
             }));
 
@@ -184,7 +193,13 @@ class Appoitments extends CI_Controller {
             $table = "hms_appoitments";
             $primaryKey = "id";
             $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
-                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+                if($row['status'] == 3){
+                    $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
+                    return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
+                }else{
+                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+                }
+                
             }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
                 $dep = $this->departments_model->getdepartmentsById($d);
                 $hos = $this->hospitals_model->gethospitalsById($dep['hospital_id']);
@@ -210,15 +225,15 @@ class Appoitments extends CI_Controller {
             }), array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
                 return $this->auth->getAppoitmentStatus($d);
             }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
-                if($row['status'] == 3){
+                if($row['status'] == 3 || $row['status'] == 4){
                     return "-";
                 }
                 $html = "<span style='display:inline-flex'>";
-                if($row['status'] != 4){
-                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                if($row['status'] != 2){
+                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Reject\" data-msg='".$this->lang->line('msg_want_to_reject_appt')."' style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
                 }
                 if($row['status'] !=3){
-                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
+                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" data-msg='".$this->lang->line('msg_want_to_approve_appt')."' style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
                 }
                 $html .= "</span>";
                 return $html;
@@ -311,7 +326,13 @@ class Appoitments extends CI_Controller {
             $isToday = isset($_GET['td']) ? intval($_GET['td']) : -1;
             $this->isT = $isToday;
             $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
-                return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".$d."</a>";
+                if($row['status'] == 3){
+                    $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
+                    return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
+                }else{
+                    //return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+                    return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".$d."</a>";
+                }
             }), array("db" => "user_id", "dt" => 1, "formatter" => function ($d, $row) {
                 $temp = $this->users_model->getusersById($d);
                 $name = $temp["first_name"]." ".$temp["last_name"];
@@ -331,15 +352,15 @@ class Appoitments extends CI_Controller {
             }),array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
                 return $this->auth->getAppoitmentStatus($d);
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
-                if($row['status'] == 3){
+                if($row['status'] == 3 || $row['status']=='4'){
                     return "-";
                 }
                 $html = "<span style='display:inline-flex'>";
-                if($row['status'] != 4){
-                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                if($row['status'] != 2){
+                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
                 }
                 if($row['status'] !=3){
-                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
+                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
                 }
                 $html .=  "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
                 $html .= "</span>";

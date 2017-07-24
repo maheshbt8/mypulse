@@ -24,7 +24,7 @@ $this->load->view("template/left.php");
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-										<a class="btn btn-danger m-b-sm multiCancelBtn" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
+										<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_cancel_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
 										<a class="btn btn-primary m-b-sm exportBtn" data-at="appoitments" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
@@ -334,6 +334,9 @@ $this->load->view("template/footer.php");
 			var curdel = $(this);
 			var s = swalDeleteConfig;
 			s.text = '<?=$this->lang->line('labels')['delSureAppt'];?>';
+			var msg = $(this).data('msg');
+			if(msg!=undefined)
+				s.text = msg;
 			swal(s).then(function () {
 				$.post("<?php echo site_url(); ?>/appoitments/cancel",{id:id},function(data){
 					if(data==1){
@@ -360,9 +363,13 @@ $this->load->view("template/footer.php");
 					text: 'Please select checkbox.'
 					});
 			}else{
+				var txt = "<?=$this->lang->line('labels')['delSureAppt'];?>";
+				var msg = $(this).data('msg');
+				if(msg!=undefined)
+					txt = msg;
 				swal({
 					title: 'Are you sure?',
-					text: "<?=$this->lang->line('labels')['delSureAppt'];?>",
+					text: txt,
 					type: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',

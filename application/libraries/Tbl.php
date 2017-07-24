@@ -246,7 +246,8 @@ class Tbl {
 		// Total data set length
 		$resTotalLength = self::sql_exec( $db,
 			"SELECT COUNT(`{$primaryKey}`)
-			 FROM   `$table`"
+			 FROM   `$table`
+			 $where"
 		);
 		$recordsTotal = $resTotalLength[0][0];
 		/*

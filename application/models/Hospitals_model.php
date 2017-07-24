@@ -46,6 +46,10 @@ class Hospitals_model extends CI_Model {
         
         $select = implode('`," ",`', $field);
         $this->db->where("isDeleted",0);
+        if(!$this->auth->isSuperAdmin()){   
+            $this->db->where('license_status',1);
+            $this->db->where('isActive',1);
+        }
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         if($res)

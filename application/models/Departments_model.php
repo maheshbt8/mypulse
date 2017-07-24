@@ -30,7 +30,11 @@ class Departments_model extends CI_Model {
     function search($q, $field,$hospital_id=-1,$branch_id=-1) {
         $field = explode(",", $field);
 
-        $dids = $this->getDepartmentIds();        
+        $dids = array();
+        if($this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isReceptinest()){
+            $dids = $this->getDepartmentIds();        
+        }
+        
 
         $bids = array();
         if($hospital_id > 0){
@@ -42,6 +46,8 @@ class Departments_model extends CI_Model {
 
         if($branch_id > 0){
             if(in_array($branch_id,$bids))
+                $this->db->where('branch_id',$branch_id);
+            else if($this->auth->isPatient())
                 $this->db->where('branch_id',$branch_id);
             else
                 $this->db->where('branch_id',-1);

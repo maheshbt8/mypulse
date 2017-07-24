@@ -126,7 +126,7 @@ class Branches_model extends CI_Model {
             $qry = "select DISTINCT m.branch_id as id from  hms_doctors d,hms_departments m where d.isDeleted=0 and d.id=$uid and d.department_id=m.id";
         }
         else{
-            $qry = "select * from $this->tblname where id=-1";
+            $qry = "select * from $this->tblname ";
         }
         $res = $this->db->query($qry);
         $res = $res->result_array();

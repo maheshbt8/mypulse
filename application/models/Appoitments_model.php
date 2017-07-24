@@ -140,6 +140,10 @@ class Appoitments_model extends CI_Model {
         return $this->updateStatus($id,4);
     }
 
+    function reject($id){
+        return $this->updateStatus($id,2);
+    }
+
     function approve($id){
         return $this->updateStatus($id,1);
     }

@@ -126,6 +126,17 @@ $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
 
+$lang['msg_want_to_reject_appt'] = "You want reject appoitment";
+$lang['msg_want_to_reject_appts'] = "You want reject selected appoitments";
+
+$lang['msg_want_to_cancel_appt'] = "You want cancel appoitment";
+$lang['msg_want_to_cancel_appts'] = "You want cancel selected appoitments";
+
+$lang['msg_want_to_approve_appt'] = "You want approve appoitment";
+$lang['msg_want_to_approve_appts'] = "You want approve selected appoitments";
+
+$lang['msg_want_del_availability'] = "You want to delete availability";
+
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appoitment",
@@ -133,6 +144,7 @@ $lang['buttons'] = array(
     "export" => "Export",
     'cancel' => 'Cancel',
     'update' => "Update",
+    'reject' => 'Reject',
     'add' => "Add",
     'yes' => 'Yes',
     'no' => 'No',
@@ -307,6 +319,7 @@ $lang['labels'] = array(
     'delSureAppt' => 'You really want to cancel appointment',
     'ShowClosedAppt' => 'Show Closed Appoitments',
     'patientRecordRemark' => 'Remark to be updated by Hospital',
+    'aboutMedLabPlaceholder' => 'About your medical lab.'
 );
 //End Labels
 
@@ -334,6 +347,7 @@ $lang['headings'] = array(
     'addNewHealthInscuranceProvider' => 'Add new health insurance provider',
     'addNewLicense' => 'Add new license',
     'cancelSuccess' => 'Canceled Successfully',
+    'rejectSuccess' => 'Rejected Successfully',
     'addNewHospitalAdmin' => 'Add new hospital admin',
     'approvedSuccess' => 'Approved Successfully',
     'addNewAvailability' => 'Add new availability',

@@ -24,8 +24,8 @@ $this->load->view("template/left.php");
 								<div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-										<a class="btn btn-info m-b-sm multiApprBtn" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
-										<a class="btn btn-danger m-b-sm multiCancelBtn" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
+										<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
+										<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
 										<a class="btn btn-primary m-b-sm exportBtn" data-at="appoitments" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
 								</div>
@@ -444,12 +444,15 @@ $this->load->view("template/footer.php");
 		 $("#appoitments").on("click",".delbtn",function(){
 			var id = $(this).attr("data-id");
 			var curdel = $(this);
-			swal(swalDeleteConfig).then(function () {
-				$.post("<?php echo site_url(); ?>/appoitments/cancel",{id:id},function(data){
+			var s = swalDeleteConfig;
+			var msg = $(this).data('msg');
+			if(msg!=undefined)
+				s.text = msg;
+			swal(s).then(function () {
+				$.post("<?php echo site_url(); ?>/appoitments/reject",{id:id},function(data){
 					if(data==1){
-						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
-						//$("#dellink_"+id).parents('tr').remove();	
-						toastr.success("<?php echo $this->lang->line('headings')['cancelSuccess'];?>");
+						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+						toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -460,7 +463,11 @@ $this->load->view("template/footer.php");
         $(document).on('click','.apprbtn',function(){
             var id = $(this).attr("data-id");
 			var curdel = $(this);
-			swal(swalDeleteConfig).then(function () {
+			var s = swalDeleteConfig;
+			var msg = $(this).data('msg');
+			if(msg!=undefined)
+				s.text = msg;
+			swal(s).then(function () {
 				$.post("<?php echo site_url(); ?>/appoitments/approve",{id:id},function(data){
 					if(data==1){
 						$($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
@@ -517,9 +524,13 @@ $this->load->view("template/footer.php");
 					text: 'Please select checkbox.'
 					});
 			}else{
+				var txt = "<?=$this->lang->line('headings')['deleteMessage']?>";
+				var msg = $(this).data('msg');
+				if(msg!=undefined)
+					txt = msg;
 				swal({
-					title: 'Are you sure?',
-					text: "",
+					title: '<?=$this->lang->line('headings')['areYouSure']?>',
+					text: txt,
 					type: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',
@@ -556,20 +567,24 @@ $this->load->view("template/footer.php");
 					text: 'Please select checkbox.'
 					});
 			}else{
+				var txt = "<?=$this->lang->line('headings')['deleteMessage']?>";
+				var msg = $(this).data('msg');
+				if(msg!=undefined)
+					txt = msg;
 				swal({
-					title: 'Are you sure?',
-					text: "You won't be able to revert this!",
+					title: '<?=$this->lang->line('headings')['areYouSure']?>',
+					text: txt,
 					type: 'warning',
 					showCancelButton: true,
 					confirmButtonColor: '#3085d6',
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes'
 				}).then(function () {
-					$.post(BASEURL+"/"+at+"/cancel",{ id : selected },function(data){
+					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
 						if(data==1){
 							for(var i=0; i<selected.length; i++){
 								var temp = selected[i];
-								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
 							}
 							toastr.success('selected item(s) cancled.');
 						}else{

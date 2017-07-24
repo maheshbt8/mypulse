@@ -286,7 +286,9 @@
             $("#edit").modal("hide");
             var id = $("#eidt_gf_id").val();
             var isOne = $("#onlyOne").is(":checked");
-            swal(swalDeleteConfig).then(function () {
+            var s = swalDeleteConfig;
+            s.text = '<?=$this->lang->line('msg_want_del_availability');?>';
+            swal(s).then(function () {
                 $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id,isOne:isOne},function(data){
                     if(data==1){
                         getCurrentCalData();

@@ -40,6 +40,11 @@ $this->load->view("template/left.php");
                                         <td style="width:2%">&nbsp;</td>
                                         <td style='width:69%' align="left"><?php echo $appoitment['reason'];?></td>
                                     </tr>
+                                    <tr>
+                                        <td style='width:30%' align="right"><strong>Status : </strong></td>
+                                        <td style="width:2%">&nbsp;</td>
+                                        <td style='width:69%' align="left"><?php echo $this->auth->getAppoitmentStatus($appoitment['status']);?></td>
+                                    </tr>
                                 </table>
                             </div>
                             <div class="col-md-6">

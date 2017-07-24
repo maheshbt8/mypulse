@@ -25,13 +25,20 @@ class Medical_lab_model extends CI_Model {
         $user = $this->db->get('hms_users');
         $user = $user->row_array();
         $r['user'] = $user;
+        $r['branch_name'] = "";
+        $r['hospital_name'] = "";
         if(isset($r['branch_id'])){
             $this->db->where('id',$r['branch_id']);
             $this->db->where('isActive',1);
             $this->db->where("isDeleted",0);
             $branch = $this->db->get('hms_branches');
             $branch =$branch->row_array();
+            $r['branch_name'] = $branch['branch_name'];
             $r['hospital_id'] = $branch['hospital_id'];
+            $this->db->where('id',$branch['hospital_id']);
+            $hos = $this->db->get('hms_hospitals');
+            $hos = $hos->row_array();
+            $r['hospital_name'] = $hos['name'];
         }
         $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
