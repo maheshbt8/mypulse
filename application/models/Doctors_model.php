@@ -504,7 +504,8 @@ class Doctors_model extends CI_Model {
         }
         if(isset($_POST['title']))
             $pre['title'] = $_POST['title'];
-        
+        if(isset($_POST['note']))
+            $pre['note'] = $_POST['note'];
         
         if(!$isEdit){
             $this->db->insert('hms_prescription',$pre);
@@ -576,8 +577,7 @@ class Doctors_model extends CI_Model {
         $this->db->where('isDeleted',0);
         $pre = $this->db->get('hms_prescription');
         $pre = $pre->row_array();
-        //echo "<pre>";
-        //print_r($pid);exit;
+        
         $this->db->where('id',$pre['patient_id']);
         $patient = $this->db->get('hms_users');
         $patient = $patient->row_array();
@@ -613,6 +613,20 @@ class Doctors_model extends CI_Model {
         }
 
         $pre['items'] = $items;
+
+        $this->db->where('prescription_id',$pid);
+        $this->db->where('isDeleted',0);
+        $reports = $this->db->get('hms_medical_report');
+        $reports = $reports->result_array();
+        for($i=0; $i<count($reports); $i++){
+            $_rep = $reports[$i];
+            $this->db->where("medical_report_id",$_rep['id']);
+            $files = $this->db->get("hms_medical_report_file");
+            $files = $files->result_array();
+            $_rep['files'] = $files;
+            $reports[$i] = $_rep;
+        }
+        $pre['reports'] = $reports;
         
         return $pre;
     }

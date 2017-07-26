@@ -353,6 +353,9 @@ class Appoitments extends CI_Controller {
                 return $this->auth->getAppoitmentStatus($d);
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 if($row['status'] == 3 || $row['status']=='4'){
+                    if($row['status'] == 3){
+
+                    }
                     return "-";
                 }
                 $html = "<span style='display:inline-flex'>";

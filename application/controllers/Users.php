@@ -24,6 +24,14 @@ class Users extends CI_Controller {
             echo json_encode($result);
         }
     }
+    public function searchPatientByPID(){
+        if ($this->auth->isLoggedIn()) {
+            $q = $this->input->get("q", null, "");
+            $f = $this->input->get("f", null, "");
+            $result = $this->users_model->searchPatientByPID($q, $f);
+            echo json_encode($result);
+        }
+    }
     public function checkemail(){
         $email = isset($_GET['useremail']) ? $_GET['useremail'] : "";
         if($email==""){

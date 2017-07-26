@@ -121,7 +121,7 @@
                             </style>
                             <div class="pcs-template">
                                 <div class="pcs-template-header pcs-header-content" id="header"></div>
-                                <div class="pcs-template-body">
+                                <div class="pcs-template-body" style="min-height: 240mm;">
                                     <table style="width:100%;table-layout: fixed;">
                                         <tbody>
                                             <tr>
@@ -171,6 +171,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <h3>Medicine</h3>
                                     <table style="width:100%;margin-top:20px;table-layout:fixed;" class="pcs-itemtable" cellspacing="0" cellpadding="0" border="0">
                                         <thead>
                                             <tr style="height:32px;">
@@ -224,6 +225,63 @@
                                             ?>
                                         </tbody>
                                     </table>
+                            <?php
+                                if(count($data['reports']) > 0){ 
+                                    echo '<h3>Medical Test Reports</h3>';
+                                    $cnt = 1;
+                                    foreach($data['reports'] as $report){
+                                        $rowSpan = 1;
+                                        if(count($report['files']) > 0){
+                                            $rowSpan = count($report['files']);
+                                        }
+                                    ?>
+                                    <table style="width:100%;margin-top:20px;table-layout:fixed;" class="pcs-itemtable" cellspacing="0" cellpadding="0" border="0">
+                                        <thead>
+                                            <tr style="height:32px;">
+                                                <td style="padding:5px 0 5px 5px;text-align: center;word-wrap: break-word;width: 5%;" class="pcs-itemtable-header">
+                                                    #
+                                                </td>
+                                                <td style="padding:5px 10px 5px 20px;word-wrap: break-word;" class="pcs-itemtable-header pcs-itemtable-description">
+                                                    Title
+                                                </td>
+                                                <td style="padding:5px 10px 5px 5px;word-wrap: break-word;width: 11%;" class="pcs-itemtable-header" align="right">
+                                                    Description
+                                                </td>
+                                                <td style="padding:5px 10px 5px 5px;word-wrap: break-word;width: 11%;" class="pcs-itemtable-header" align="right">
+                                                    Report(s)
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="itemBody">
+                                            <tr>
+                                                <td style="padding: 10px 0 10px 5px;text-align: center;word-wrap: break-word;" class="pcs-item-row" valign="top"><?php echo $cnt;?></td>
+                                                <td style="padding: 10px 0px 10px 20px;" class="pcs-item-row" valign="top">
+                                                    <span ><?php echo $report['title']; ?></span>
+                                                </td>
+                                                <td style="padding: 10px 10px 5px 10px;text-align:right;word-wrap: break-word;" class="pcs-item-row" valign="top">
+                                                    <span><?php echo $report['description']; ?></span>
+                                                </td>
+                                                <td style="padding: 10px 10px 5px 10px;text-align:right;word-wrap: break-word;" class="pcs-item-row" valign="top">
+                                                    <?php
+                                                    $r=1;
+                                                    foreach($report['files'] as $file){
+                                                        echo '<span><a data-fancybox="gallery" title="Report - '.$r.'" href="'.$file['file_url'].'">Report - '.$r.'</a></span><br><br>';
+                                                        $r++;
+                                                    }
+                                                    ?>                                                    
+                                                </td>    
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <?php
+                                        $cnt++;
+                                    }
+                            
+                                } ?>
+                                    <br><br>
+                                    <label style="font-size: 10pt;" class="pcs-label">Note</label>
+                                    <br>
+                                    <span class="pcs-customer-name" id="zb-pdf-customer-detail"><?php if(isset($data['note'])) { echo $data['note']; }?></span><br>
                                 </div>
                                 <div class="pcs-template-footer">
                                     <div class="pcs-footer-content">

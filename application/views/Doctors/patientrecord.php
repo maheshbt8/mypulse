@@ -110,7 +110,7 @@ $this->load->view("template/left.php");
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab1"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>                                
-                                <li role="presentation" class=""><a href="#tab2"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescription'];?></a></li>
+                                <li role="presentation" class=""><a href="#tab2"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescriptions'];?></a></li>
                                 <li role="presentation" class=""><a href="#tab3" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
                             </ul>
                             <!-- Tab panes -->
@@ -344,16 +344,18 @@ $this->load->view("template/left.php");
                             <div>
                             <Br><br>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-8">
-                                        
+                                    <div class="col-md-4">
                                         <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
                                     </div>
-                                    <div class="col-md-4">
-                                        <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
-                                        <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
+                                    <div class="col-md-8">
+                                        <textarea class="form-control" id="note" name="note" placeholder="Note"></textarea>
                                     </div>
-                                </div>    
+                            </div><br><br>
+                            <div class="row">
+                                <div class="col-md-12 pull-right" >
+                                    <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
+                                    <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
+                                </div>
                             </div>
                             </form>
                         </div>            
@@ -453,7 +455,6 @@ $this->load->view("template/footer.php");
             report += "<td style='width:20%' valign='top'><span class='mr_tit'>"+tit+"</span></td>";
             report += "<td valign='top'><span class='mr_des'>"+des+"</span></td>";
             report += '<td valign="top" style="width:10px"><a href="javascript:void(0)" class="mr_remove"><i class="fa fa-remove"></i></a></td>';
-            
             report += "</tr>";
             $("#medRepTbl").append(report);
             updateMrCnt();
@@ -567,7 +568,6 @@ $this->load->view("template/footer.php");
             $("#tabDiv textarea").prop("disabled", true);
             $("#tabDiv select").prop("disabled", true);
 
-           
         }
 
         function enableFields(){
@@ -577,7 +577,6 @@ $this->load->view("template/footer.php");
 
             $("#health_insurance_provider").prop("disabled", true);
             $("#health_insurance_id").prop("disabled", true);
-           
         }
 
         disableFields();
@@ -634,6 +633,7 @@ $this->load->view("template/footer.php");
                 
                 $("#date").val(data.date);
                 $("#title").val(data.title);
+                $("#note").val(data.note);
                 
                 $("#tbody").html("");
                 
@@ -648,6 +648,27 @@ $this->load->view("template/footer.php");
                     $("#item_id_"+i).val(item.id);
                 }
 
+                if(data.reports!=undefined){
+                    var cnt =1;
+                    for(var i=0; i<data.reports.length; i++){
+                        var _rep = data.reports[i];
+                        var report = "<tr>";
+                        report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
+                        report += "<td style='width:20%' valign='top'><span class='mr_tit'>"+_rep.title+"</span></td>";
+                        report += "<td valign='top'><span class='mr_des'>"+_rep.description+"</span>";
+                        for(var j=0; j<_rep.files.length; j++){
+                            var f = _rep.files[j];
+                            report += "<br>";
+                            report += "<span><a data-fancybox='gallery' title='Report - "+(j+1)+"' href='"+f.file_url+"'>Report - "+(j+1)+"</a></span><br><br>";
+                        }
+                        report += "</td>";
+                        report += '<td valign="top" style="width:10px"></td>';
+                        report += "</tr>";
+                        $("#medRepTbl").append(report);
+                        cnt++;
+                    }
+                    updateMrCnt();  
+                }
             });
         });
 

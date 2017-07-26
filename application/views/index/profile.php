@@ -69,16 +69,16 @@ $this->load->view("template/left.php");
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('labels')['fname'];?></label>
-                                                <input value="<?php echo $profile['first_name'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+                                                <input data-ori="<?php echo $profile['first_name'];?>" value="<?php echo $profile['first_name'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>"  name="first_name" id="first_name" />
                                             </div>
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('labels')['lname'];?></label>
-                                                <input value="<?php echo $profile['last_name'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+                                                <input data-ori="<?php echo $profile['last_name'];?>" value="<?php echo $profile['last_name'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['aboutMe'];?></label>
-                                            <textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"><?php echo $profile['description'];?></textarea>
+                                            <textarea class="form-control" rows="5" data-ori="<?php echo $profile['description'];?>"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"><?php echo $profile['description'];?></textarea>
                                         </div>
                                     </div>
                                     
@@ -86,7 +86,7 @@ $this->load->view("template/left.php");
                                         
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-                                            <input value="<?php echo $profile['aadhaar_number'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['mobile'];?></label>
@@ -110,8 +110,7 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['gender'];?></label>
-                                            <select class="form-control " name="gender" id="gender" />
-
+                                            <select class="form-control " name="gender" id="gender" data-ori="<?php echo $profile['gender'];?>" />
                                                 <option <?php if($profile['gender']=="M") { echo "selected";}?>  value="M"><?php echo $this->lang->line('labels')['male'];?></option>
                                                 <option <?php if($profile['gender']=="F") { echo "selected";}?> value="F"><?php echo $this->lang->line('labels')['female'];?></option>
                                                 <option <?php if($profile['gender']=="O") { echo "selected";}?> value="O"><?php echo $this->lang->line('labels')['other'];?></option>
@@ -119,36 +118,36 @@ $this->load->view("template/left.php");
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['dob'];?></label>
-                                            <input value="<?php echo date("d-m-Y",strtotime($profile['date_of_birth']));?>" class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
+                                            <input data-ori="<?php echo date("d-m-Y",strtotime($profile['date_of_birth']));?>" value="<?php echo date("d-m-Y",strtotime($profile['date_of_birth']));?>" class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['address'];?></label>
-                                            <input value="<?php echo $profile['address'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
                                         </div>
                                         
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-                                            <input value="<?php echo $profile['alternate_mobile_number'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
+                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group col-md-3">
                                             <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-                                            <select name="country"  id="country" class=" form-control" style="width: 100%"></select>
+                                            <select data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class=" form-control" style="width: 100%"></select>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label><?php echo $this->lang->line('labels')['selectState'];?></label>
-                                            <select name="state"  id="state" class=" form-control" style="width: 100%"></select>
+                                            <select data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class=" form-control" style="width: 100%"></select>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-                                            <select name="district"  id="district" class=" form-control" style="width: 100%"></select>
+                                            <select data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control" style="width: 100%"></select>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-                                            <select name="city"  id="city" class=" form-control" style="width: 100%"></select>
+                                            <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class=" form-control" style="width: 100%"></select>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -166,7 +165,7 @@ $this->load->view("template/left.php");
                                                         <div class="btn btn-default image-preview-input">
                                                             <span class="glyphicon glyphicon-folder-open"></span>
                                                             <span class="image-preview-input-title"><?php echo $this->lang->line('labels')['browse'];?></span>
-                                                            <input type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
+                                                            <input data-ori="<?php echo $profile['profile_photo'];?>" type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
                                                         </div>
                                                     </span>
                                                 </div>
@@ -437,6 +436,7 @@ $this->load->view("template/footer.php");
             $(eb).removeClass('btn-success');
             $(eb).html('Edit');
             disableFields();
+            resetForm();
         });
 
         function toggleEditButton(){
@@ -445,6 +445,7 @@ $this->load->view("template/footer.php");
                 isEdit = false;
                 saveData();
                 $("#cancelBtn").hide();
+                $('.image-preview-clear').attr('disabled',true);
             }else{
                 isEdit = true;
                 $(eb).data('isEdit','1');
@@ -453,6 +454,7 @@ $this->load->view("template/footer.php");
                 $(eb).html('Save');
                 enableFields();
                 $("#cancelBtn").show();
+                $('.image-preview-clear').attr('disabled',false);
             }
         }
 
@@ -487,6 +489,39 @@ $this->load->view("template/footer.php");
 
         function saveData(){
             $("#form").submit();
+        }
+
+        function resetForm(){
+            $("#form input[type=text]").each(function() {
+                if($(this).data('ori') != undefined){
+                    $(this).val($(this).data('ori'));
+                }
+            });
+
+            $("#form textarea").each(function() {
+                if($(this).data('ori') != undefined){
+                    $(this).val($(this).data('ori'));
+                }
+                $(this).attr('disabled',true);
+            });
+
+            $("#form select").each(function() {
+                if($(this).data('ori') != undefined){
+                    $(this).val($(this).data('ori'));
+                }
+            });
+
+            $("#date_of_birth").datepicker('setDate',$("#date_of_birth").data('ori'));
+            loc_sid = $("#state").data('ori');
+            loc_did = $("#district").data('ori');
+            loc_cid = $("#city").data('ori');
+
+            var tempselectize_selectize_country = $selectize_country[0].selectize;
+            tempselectize_selectize_country.addOption([{"id":$("#country").data('ori'),"name":$("#country").data('ori')}]);
+            tempselectize_selectize_country.refreshItems();
+            tempselectize_selectize_country.setValue($("#country").data('ori'));
+            isEdit = false;
+            shwoImgFromUrl($("#profile_photo").data('ori'));
         }
     });
 </script>

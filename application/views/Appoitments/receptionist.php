@@ -193,7 +193,7 @@ $this->load->view("template/left.php");
 				<div class="modal-content" style="box-shadow: 0px 0px 50px 0px rgba(0,0,0,30.67)">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading">Create new user</h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"><?=$this->lang->line('unregUser');?></h4></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -213,8 +213,8 @@ $this->load->view("template/left.php");
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button class="btn btn-default" data-dismiss="modal">Cancel</button>
-						<button class="btn btn-success" id="create_user">Create</button>
+						<button class="btn btn-default" data-dismiss="modal"><?=$this->lang->line('buttons')['cancel']?></button>
+						<button class="btn btn-success" id="create_user"><?=$this->lang->line('buttons')['done']?></button>
 					</div>
 				</div>
 			</div>
@@ -619,16 +619,19 @@ $this->load->view("template/footer.php");
 			labelField: "text",
 			searchField: "text",
 			loadThrottle: 500,
-			placeholder: "Enter useremail or mobile number or aadhaar number",
+			placeholder: "Enter user id",
 			preload:true,
 			create: function(input,callback){
 				userCreateCallBack = callback;
 				resetForm(validatorCreate);
 				$("#createUser").modal();
 				$("#createUseerform").trigger('reset');
-				$("#useremail").val(input);
+				///$("#useremail").val(input);
 			},
 			render: {
+				option_create: function(data, escape) {
+					return '<div class="create"><strong><?=$this->lang->line('unregUser');?></strong></div>';
+				},
 				option: function(item, escape) {
 					console.log(item);
 					return "<div><span class='title'>" +
@@ -641,7 +644,7 @@ $this->load->view("template/footer.php");
 				if (!query.length) return callback();
 				$selectize_user_id[0].selectize.clearOptions();
 				$.ajax({
-					url: "<?php echo site_url(); ?>/users/searchPatient/",
+					url: "<?php echo site_url(); ?>/users/searchPatientByPID/",
 					type: "GET",
 					data: {"q":query},
 					error: function() {

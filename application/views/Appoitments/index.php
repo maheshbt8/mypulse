@@ -258,6 +258,7 @@ $this->load->view("template/footer.php");
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
 			$selectize_hospital_id[0].selectize.clear();
+			$selectize_hospital_id[0].selectize.enable();
 			$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
 			<?php if($this->auth->isPatient()){

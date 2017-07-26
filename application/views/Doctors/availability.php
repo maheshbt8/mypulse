@@ -368,8 +368,8 @@
                     var event = {
                         id: i,
                         title: _item.title,
-                        start: sdate,
-                        end: edate,
+                        start: moment(sdate).format(),
+                        end: moment(edate).format(),
                         color: '#4285F4',
                         int_id: _item.interval_id
                     };
@@ -378,6 +378,17 @@
                 $('#calendar').fullCalendar( 'refetchEvents' );
                 
             });
+        }
+
+
+        function ISODateString(d) {
+            function pad(n) {return n<10 ? '0'+n : n}
+            return d.getUTCFullYear()+'-'
+                + pad(d.getUTCMonth()+1)+'-'
+                + pad(d.getUTCDate())+'T'
+                + pad(d.getUTCHours())+':'
+                + pad(d.getUTCMinutes())+':'
+                + pad(d.getUTCSeconds())+'Z'
         }
 
         $("#editBtn").click(function(){

@@ -131,6 +131,14 @@ class Users_model extends CI_Model {
         $res = $this->db->query("select id,CONCAT(`first_name`,' ',`last_name`) as text from $this->tblname where isDeleted=0 and role=6 and (useremail='$q' OR mobile='$q' OR aadhaar_number='$q')");
         return $res->result_array();
     }
+    function searchPatientByPID($q, $field){
+        if(strlen($q)>0){
+            $q = substr($q,1,strlen($q));
+        }
+        //echo $q;exit;
+        $res = $this->db->query("select id,CONCAT(`first_name`,' ',`last_name`) as text from $this->tblname where isDeleted=0 and role=6 and mobile='$q'");
+        return $res->result_array();
+    }
     function checkEmail($email){
         $this->db->where('useremail',$email);
         $user = $this->db->get($this->tblname);
@@ -144,6 +152,7 @@ class Users_model extends CI_Model {
         $data['first_name'] = isset($_POST['first_name']) ? $_POST['first_name'] : "";
         $data['last_name'] = isset($_POST['last_name']) ? $_POST['last_name'] : "";
         $data["role"] = 6;
+        $data['isRegister'] = 0;
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
         $this->db->insert($this->tblname,$data);

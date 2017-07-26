@@ -137,12 +137,15 @@ $lang['msg_want_to_approve_appts'] = "You want approve selected appoitments";
 
 $lang['msg_want_del_availability'] = "You want to delete availability";
 
+$lang['unregUser'] = "Unregistred  User";
+
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appoitment",
     "delete" => "Delete",
     "export" => "Export",
     'cancel' => 'Cancel',
+    'done' => 'Done',
     'update' => "Update",
     'reject' => 'Reject',
     'add' => "Add",
@@ -301,6 +304,7 @@ $lang['labels'] = array(
     'appoitment_sloat' => 'Time sloat',
     'noApptTimeSloat' => 'No time sloat available for this date. Please try another date',
     'prescription' => 'Prescription',
+    'prescriptions' => 'Prescriptions',
     'custom' => 'Custom',
     'select_date' => 'Select Date',
     'end_on' => 'Ends on',
