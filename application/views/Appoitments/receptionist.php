@@ -199,16 +199,20 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 				  			
 							<div class="form-group col-md-12">
-								<label>Useremail</label>
-								<input name="useremail" id="useremail" class="form-control"  placeholder="User emailid"/>
-							</div><br>
-							<div class="form-group col-md-12">
 								<label>First Name</label>
 								<input name="first_name" id="first_name" class="form-control"  placeholder="First Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
 								<label>Last Name</label>
 								<input name="last_name" id="last_name" class="form-control"  placeholder="Last Name"/>
+							</div><br>
+							<div class="form-group col-md-12">
+								<label>Mobile</label>
+								<input name="mobile" id="mobile" class="form-control"  placeholder="Mobile"/>
+							</div><br>
+							<div class="form-group col-md-12">
+								<label>Useremail</label>
+								<input name="useremail" id="useremail" class="form-control"  placeholder="User emailid"/>
 							</div>
 						</div>
 					</div>
@@ -264,6 +268,11 @@ $this->load->view("template/footer.php");
 					email:true,
 					remote: "<?php echo site_url();?>/users/checkemail"
 				},
+				mobile:{
+					required:true,
+					phoneUS:true,
+					remote: "<?php echo site_url();?>/users/checkmobile"
+				},
 			},
 			messages: {
 				first_name:{
@@ -277,6 +286,11 @@ $this->load->view("template/footer.php");
 					email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>",
 					remote:"<?php echo $this->lang->line('validation')['takenEmail'];?>"
 				},
+				mobile:{
+					required: "<?php echo $this->lang->line('validation')['requriedPhone'];?>",
+					phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>",
+					remote:"<?php echo $this->lang->line('validation')['takenPhone'];?>"
+				}
 			},
 			invalidHandler: validationInvalidHandler,
 			errorPlacement: validationErrorPlacement
@@ -644,7 +658,7 @@ $this->load->view("template/footer.php");
 				if (!query.length) return callback();
 				$selectize_user_id[0].selectize.clearOptions();
 				$.ajax({
-					url: "<?php echo site_url(); ?>/users/searchPatientByPID/",
+					url: "<?php echo site_url(); ?>/users/searchPatientuea/",
 					type: "GET",
 					data: {"q":query},
 					error: function() {

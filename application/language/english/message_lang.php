@@ -44,6 +44,18 @@ $lang['newPrescription'] = 'New Prescription';
 $lang['reports'] = 'Reports';
 $lang['about'] = 'About';
 $lang['testreports'] = 'Test Reports';
+$lang['orders'] = "Orders";
+
+$lang['roles'] = array(
+    1 => 'Super Admin',
+    2 => 'Hospital Admin',
+    3 => 'Doctor',
+    4 => 'Nurse',
+    5 => 'Receptienst',
+    6 => 'MyPulse User',
+    7 => 'Medical Store Incharge',
+    8 => 'Medical Lab Incharge'
+);
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -125,6 +137,7 @@ $lang['msg_patient_ml_saved'] = "Your report request sent to medical lab";
 $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
+$lang['msg_no_outstanding_orders'] = "No outstanding orders found";
 
 $lang['msg_want_to_reject_appt'] = "You want reject appoitment";
 $lang['msg_want_to_reject_appts'] = "You want reject selected appoitments";
@@ -319,11 +332,14 @@ $lang['labels'] = array(
     'remarks' => 'Remarks',
     'patientRemarkPlace' => 'Remark to be updated by Hospital(Optional)',
     'patientOutstendingPLT' => 'Outstanding prescriptions for Lab Tests',
+    'patientOutstendingOrders' => 'Outstanding prescriptions order',
     'medicalLabOutStanding' => 'Outstanding Lab Tests',
+    'medicalStoreOutStanding' => 'Outstanding Orders',
     'delSureAppt' => 'You really want to cancel appointment',
     'ShowClosedAppt' => 'Show Closed Appoitments',
     'patientRecordRemark' => 'Remark to be updated by Hospital',
-    'aboutMedLabPlaceholder' => 'About your medical lab.'
+    'aboutMedLabPlaceholder' => 'About your medical lab.',
+    'aboutMedStorePlaceholder' => 'About your medical store.'
 );
 //End Labels
 
@@ -419,6 +435,7 @@ $lang['validation'] = array(
     'requiredDosage' => 'Enter dosage',
     'requiredDuration' => 'Enter duration',
     'requiredMedicalLab' => 'Select Medical Lab',
-    'takenEmail' => 'This email is already taken. Please try another'
+    'takenEmail' => 'This email is already registered. Please try another',
+    'takenPhone' => 'This mobile is already registered. Please try another',
 );
 //End Validation

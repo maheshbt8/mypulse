@@ -134,6 +134,11 @@
                                                     <span class="pcs-entity-title">MyPulse</span><br>
                                                     <span id="tmp_entity_number" style="font-size: 10pt;" class="pcs-label"><b></b></span>
                                                     <div style="clear:both;margin-top:20px;">
+                                                        <label style="font-size: 10pt;" class="pcs-label">Hospital</label>
+                                                        <br>
+                                                        <span class="pcs-customer-name" id="zb-pdf-customer-detail"><?php echo $data['hospital_name'];?></span><br>
+                                                        <span class="pcs-customer-name" id="zb-pdf-customer-detail"><i class="fa fa-map-marker"></i> &nbsp;<?php echo $data['hospital_address'];?></span><br>
+                                                        <span class="pcs-customer-name" id="zb-pdf-customer-detail"><i class="fa fa-envelope-o"></i> &nbsp;<?php echo $data['hospital_email'];?></span><br>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -142,16 +147,19 @@
                                     <table style="width:100%;margin-top:30px;table-layout:fixed;">
                                         <tbody>
                                             <tr>
-                                                <td style="width:55%;vertical-align:bottom;word-wrap: break-word;">
+                                                <td style="width:55%;vertical-align:top;word-wrap: break-word;">
                                                     <div>
                                                         <label style="font-size: 10pt;" class="pcs-label">Doctor</label>
                                                         <br>
                                                         <span class="pcs-customer-name" id="zb-pdf-customer-detail"><?php echo $data['doctor_name'];?></span><br>
+                                                        <span class="pcs-customer-name" id="zb-pdf-customer-detail"><i class="fa fa-phone"></i> &nbsp;<?php echo $data['doctor_contact'];?></span><br>
                                                     </div>
                                                     <div style="clear:both;width:50%;font-size:10pt;margin-top: 20px;">
-                                                        <label style="font-size: 10pt;" id="tmp_shipping_address_label" class="pcs-label">Patient Name </label>
+                                                        <label style="font-size: 10pt;" id="tmp_shipping_address_label" class="pcs-label">Patient </label>
                                                         <br>
-                                                        <span style="white-space: pre-wrap;" id="tmp_shipping_address"><?php echo $data['patient_name'];?></span>
+                                                        <span style="white-space: pre-wrap;" id="tmp_shipping_address"><?php echo $data['patient_name'];?></span><br>
+                                                        <span style="white-space: pre-wrap;" id="tmp_shipping_address"><i class="fa fa-phone"></i> &nbsp;<?php echo $data['patient_contact'];?></span><br>
+                                                        <span style="white-space: pre-wrap;" id="tmp_shipping_address"><i class="fa fa-envelope-o"></i> &nbsp;<?php echo $data['patient_email'];?></span>
                                                     </div>
                                                 </td>
                                                 <td style="vertical-align:bottom;width: 45%;" align="right">

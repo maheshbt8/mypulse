@@ -68,6 +68,26 @@ class Dashboard_model extends CI_Model {
         if($reports){
             $res['medical_reports'] = $reports->result_array();
         }
+
+        $res['orders'] = array();
+        $this->db->where('patient_id',$this->auth->getUserid());
+        $this->db->where('order_status',0);
+        $this->db->where('store_id',0);
+        $ord = $this->db->get('hms_prescription');
+        if($ord){
+            $orders = $ord->result_array();
+            for($i=0; $i<count($orders); $i++){
+                $pre = $orders[$i];
+
+                $doc = $this->db->query("select * from hms_users u,hms_doctors d where d.id=$pre[doctor_id] and d.user_id=u.id");
+                $doc = $doc->row_array();
+                $pre['doctor_name'] = $this->auth->getUName($doc);
+
+                $orders[$i] = $pre;
+            }
+            $res['orders'] = $orders;
+        }    
+
         $this->db->select('id,country,state,district,city');
         $this->db->where('id',$this->auth->getUserid());
         $user = $this->db->get('hms_users');
@@ -75,6 +95,12 @@ class Dashboard_model extends CI_Model {
         $res['profile'] = $user;
         $res['profile']['country_name'] = $this->auth->getCountryName($user['country']);
 
+        return $res;
+    }
+
+    function getNurseStates($uid = 0){
+        $rid = $this->auth->getReceptinestId();
+        $res = array();
         return $res;
     }
 
@@ -172,6 +198,38 @@ class Dashboard_model extends CI_Model {
             $medical_reports[$i] = $mr;
         }
         $res['medical_reports'] = $medical_reports;
+        return $res;
+    }
+
+    function getMedicalStoreStates($id){
+        $res = array();
+        $sid = $this->auth->getMyStoreId();
+
+        $prescriptions = array();
+        $this->db->where('order_status',0);
+        $this->db->where('store_id', $sid);
+        $pres = $this->db->get('hms_prescription');
+        if($pres){
+            $prescriptions = $pres->result_array();
+        }
+
+        for($i=0; $i<count($prescriptions); $i++){
+            $pre = $prescriptions[$i];
+
+            $this->db->where('id',$pre['patient_id']);
+            $p = $this->db->get('hms_users');
+            $p = $p->row_array();
+            $pre['contact_number'] = isset($p['mobile']) ? $p['mobile'] : "";
+            $pre['address'] = isset($p['address']) ? $p['address'] : "";
+            $pre['patient_name'] = $this->auth->getUName($p);
+            
+            $doc = $this->db->query("select * from hms_users u,hms_doctors d where d.id=$pre[doctor_id] and d.user_id=u.id");
+            $doc = $doc->row_array();
+            $pre['doctor_name'] = $this->auth->getUName($doc);
+
+            $prescriptions[$i] = $pre;
+        }
+        $res['orders'] = $prescriptions;
         return $res;
     }
 }

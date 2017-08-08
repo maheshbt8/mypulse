@@ -585,8 +585,10 @@ class Doctors_model extends CI_Model {
         $patient_name = isset($patient['first_name']) ? $patient['first_name']." " : "";
         $patient_name .= isset($patient['last_name']) ? $patient['last_name'] : "";
         $pre['patient_name'] = $patient_name;
-
-        $duid = $this->getMyUserId(isset($pre['doctor_id']) ? $pre['doctor_id'] : 0);
+        $pre['patient_contact'] = isset($patient['mobile']) ? $patient['mobile'] : '';
+        $pre['patient_email'] = isset($patient['useremail']) ? $patient['useremail'] : '';
+        $doc_id = isset($pre['doctor_id']) ? $pre['doctor_id'] : 0;
+        $duid = $this->getMyUserId($doc_id);
         $this->db->where('id',$duid);
         $doctor = $this->db->get('hms_users');
         $doctor = $doctor->row_array();
@@ -594,7 +596,13 @@ class Doctors_model extends CI_Model {
         $doctor_name = isset($doctor['first_name']) ? $doctor['first_name']." " : "";
         $doctor_name .= isset($doctor['last_name']) ? $doctor['last_name'] : "";
         $pre['doctor_name'] = $doctor_name;
+        $pre['doctor_contact'] = isset($doctor['mobile']) ? $doctor['mobile'] : ''; 
 
+        $hospital = $this->getMyHospital($doc_id);
+        $pre['hospital_name'] = isset($hospital['name']) ? $hospital['name'] : '';
+        $pre['hospital_address'] = isset($hospital['address']) ? $hospital['address'] : '';
+        $pre['hospital_email'] =  isset($hospital['email']) ? $hospital['email'] : '';
+        
         $this->db->where('prescription_id',$pid);
         $items = $this->db->get('hms_prescription_item');
         $items = $items->result_array();
@@ -629,5 +637,11 @@ class Doctors_model extends CI_Model {
         $pre['reports'] = $reports;
         
         return $pre;
+    }
+
+    function getMyHospital($doc_id=0){
+        $hospital = $this->db->query("select h.* from hms_doctors d,hms_departments t,hms_branches b,hms_hospitals h where d.id = $doc_id and d.department_id=t.id and t.branch_id=b.id and h.id=b.hospital_id");
+        $hospital = $hospital->row_array();
+        return $hospital;
     }
 }

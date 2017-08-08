@@ -79,13 +79,13 @@
                                 </div>
                                 <div class="form-group" id="weeklyDayDiv">
                                     <label><?php echo $this->lang->line('labels')['repeat_on'];?></label><br>
-                                    <label><input id="chk_0" class='repeat_on' type="checkbox" name="repeat_on[]" value="0" />S</label>
-                                    <label><input id="chk_1" class='repeat_on' type="checkbox" name="repeat_on[]" value="1" />M</label>
-                                    <label><input id="chk_2" class='repeat_on' type="checkbox" name="repeat_on[]" value="2" />T</label>
-                                    <label><input id="chk_3" class='repeat_on' type="checkbox" name="repeat_on[]" value="3" />W</label>
-                                    <label><input id="chk_4" class='repeat_on' type="checkbox" name="repeat_on[]" value="4" />T</label>
-                                    <label><input id="chk_5" class='repeat_on' type="checkbox" name="repeat_on[]" value="5" />F</label>
-                                    <label><input id="chk_6" class='repeat_on' type="checkbox" name="repeat_on[]" value="6" />S</label>
+                                    <label><input id="chk_0" class='repeat_on' type="checkbox" name="repeat_on[]" value="0" />S</label>&nbsp;&nbsp;&nbsp;
+                                    <label><input id="chk_1" class='repeat_on' type="checkbox" name="repeat_on[]" value="1" />M</label>&nbsp;&nbsp;&nbsp;
+                                    <label><input id="chk_2" class='repeat_on' type="checkbox" name="repeat_on[]" value="2" />T</label>&nbsp;&nbsp;&nbsp;
+                                    <label><input id="chk_3" class='repeat_on' type="checkbox" name="repeat_on[]" value="3" />W</label>&nbsp;&nbsp;&nbsp;
+                                    <label><input id="chk_4" class='repeat_on' type="checkbox" name="repeat_on[]" value="4" />T</label>&nbsp;&nbsp;&nbsp;
+                                    <label><input id="chk_5" class='repeat_on' type="checkbox" name="repeat_on[]" value="5" />F</label>&nbsp;&nbsp;&nbsp;
+                                    <label><input id="chk_6" class='repeat_on' type="checkbox" name="repeat_on[]" value="6" />S</label>&nbsp;&nbsp;&nbsp;
                                     <br>
                                     <span id="weekerror" ></span>
                                 </div>
@@ -321,11 +321,9 @@
                         required: "<?php echo $this->lang->line('validation')['requiredReadOn'];?>"
                     }
                 });
-                
             }else if(val == 1){
                 $("#monthDayDiv").show();
                 $(".repeat_on").rules("remove","required");
-                
             }else if(val == 2){
                 $("#stlbl").html('<?php echo $this->lang->line('labels')['date'];?>');
                 $("#endDiv").hide();

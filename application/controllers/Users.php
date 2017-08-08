@@ -24,6 +24,13 @@ class Users extends CI_Controller {
             echo json_encode($result);
         }
     }
+    public function searchPatientuea(){
+        if($this->auth->isLoggedIn()){
+            $q = $this->input->get('q',null,"");
+            $result = $this->users_model->searchPatient($q);
+            echo json_encode($result);
+        }
+    }
     public function searchPatientByPID(){
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
@@ -43,6 +50,18 @@ class Users extends CI_Controller {
             echo 'true';
         }
         exit;    
+    }
+    public function checkmobile(){
+        $mobile = isset($_GET['mobile']) ? $_GET['mobile'] : "";
+        if($mobile==""){
+            echo 'false';
+        }
+        else if($this->users_model->checkMobile($mobile)){
+            echo 'false';
+        }else{
+            echo 'true';
+        }
+        exit;  
     }
     public function regUsers(){
         if($this->auth->isLoggedIn()){

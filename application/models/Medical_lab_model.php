@@ -104,6 +104,14 @@ class Medical_lab_model extends CI_Model {
         }else{
             $mlab['user_id'] = $uid;
             $mlab['name'] = $data['name'];
+            if(isset($data['country']))
+                $mlab['country'] = $data['country'];
+            if(isset($data['state']))
+                $mlab['state'] = $data['state'];
+            if(isset($data['district']))
+                $mlab['district'] = $data['district'];
+            if(isset($data['city']))
+                $mlab['city'] = $data['city'];
             $mlab['description'] = $data['md_description'];
             $mlab['owner_name'] = $data['owner_name'];
             $mlab['owner_contact_number'] = $data['owner_contact_number'];

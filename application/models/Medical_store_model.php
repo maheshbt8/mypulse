@@ -18,14 +18,22 @@ class Medical_store_model extends CI_Model {
         $user = $this->db->get('hms_users');
         $user = $user->row_array();
         $r['user'] = $user;
+        $r['branch_name'] = "";
+        $r['hospital_name'] = "";
         if(isset($r['branch_id'])){
             $this->db->where('id',$r['branch_id']);
             $this->db->where('isActive',1);
             $this->db->where("isDeleted",0);
             $branch = $this->db->get('hms_branches');
             $branch =$branch->row_array();
+            $r['branch_name'] = $branch['branch_name'];
             $r['hospital_id'] = $branch['hospital_id'];
+            $this->db->where('id',$branch['hospital_id']);
+            $hos = $this->db->get('hms_hospitals');
+            $hos = $hos->row_array();
+            $r['hospital_name'] = $hos['name'];
         }
+        $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
     }
     function search($q, $field) {
@@ -52,6 +60,14 @@ class Medical_store_model extends CI_Model {
         }else{
             $mstore['user_id'] = $uid;
             $mstore['name'] = $data['name'];
+            if(isset($data['country']))
+                $mstore['country'] = $data['country'];
+            if(isset($data['state']))
+                $mstore['state'] = $data['state'];
+            if(isset($data['district']))
+                $mstore['district'] = $data['district'];
+            if(isset($data['city']))
+                $mstore['city'] = $data['city'];    
             $mstore['owner_name'] = $data['owner_name'];
             $mstore['description'] = $data['md_description'];
             $mstore['owner_contact_number'] = $data['owner_contact_number'];
@@ -84,6 +100,14 @@ class Medical_store_model extends CI_Model {
             $mstore = array();
             if(isset($data['name']))
                 $mstore['name'] = $data['name'];
+            if(isset($data['country']))
+                $mstore['country'] = $data['country'];
+            if(isset($data['state']))
+                $mstore['state'] = $data['state'];
+            if(isset($data['district']))
+                $mstore['district'] = $data['district'];
+            if(isset($data['city']))
+                $mstore['city'] = $data['city'];    
             if(isset($data['owner_name']))
                 $mstore['owner_name'] = $data['owner_name'];
             if(isset($data['owner_contact_number']))
@@ -114,5 +138,13 @@ class Medical_store_model extends CI_Model {
         if ($this->db->update($this->tblname, $d)) {
             return true;
         } else return false;
+    }
+
+    function getMyStoreId(){
+        $this->db->where('user_id',$this->auth->getUserid());
+        $this->db->where('isDeleted',0);
+        $ml = $this->db->get($this->tblname);
+        $ml = $ml->row_array();
+        return isset($ml['id']) ? $ml['id'] : 0;
     }
 }

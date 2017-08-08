@@ -46,6 +46,35 @@ class Medical_store extends CI_Controller {
             redirect('medical_store/index');
         } else redirect('index/login');
     }
+    public function about(){
+        if ($this->auth->isLoggedIn()){
+            $data["page_title"] = $this->lang->line('medicalStoreFull');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('about'));
+            $id = $this->medical_store_model->getMyStoreId();
+            $data['about'] = $this->medical_store_model->getmedical_storeById($id);
+            $this->load->view('Medical_store/about',$data);
+        }else{
+            redirect('index/login');
+        }
+    }
+    public function updateabout(){
+        if ($this->auth->isLoggedIn() && $this->auth->isMedicalStore()){
+            $id = $this->input->post('eidt_gf_id');
+            $this->medical_store_model->update($id);
+            $data['success'] = array($this->lang->line('msg_medstore_updated'));
+            $this->session->set_flashdata('data', $data);
+            redirect('medical_store/about');   
+        }
+        else redirect('index/login');   
+    }
+    public function orders(){
+        if ($this->auth->isLoggedIn()){
+            $data["page_title"] = $this->lang->line('medicalStoreFull');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('orders'));
+            
+            $this->load->view('Medical_store/orders',$data);
+        }
+    }
     public function delete() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
@@ -116,6 +145,47 @@ class Medical_store extends CI_Controller {
             }
             $this->tbl->setTwID(implode(' AND ',$cond));
             
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function getDTorders(){
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_prescription";
+            $primaryKey = "id";
+            $columns = array(array("db" => "doctor_id", "dt" => 0, "formatter" => function ($d, $row) {
+                $uid = $this->doctors_model->getMyUserId($d);
+                $data = $this->users_model->getProfile($uid);
+                return $this->auth->getUName($data);
+            }), array("db" => "patient_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $data = $this->users_model->getProfile($d);
+                return $this->auth->getUName($data);
+            }), array("db" => "patient_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $data = $this->users_model->getProfile($d);
+                return isset($data['mobile']) ? $data['mobile'] : "";
+            }), array("db" => "patient_id", "dt" => 3, "formatter" => function ($d, $row) {
+                $data = $this->users_model->getProfile($d);
+                return isset($data['address']) ? $data['address'] : "";
+            }), array("db" => "order_status", "dt" => 4, "formatter" => function ($d, $row) {
+                if($d=="0"){
+                    return '<span class="label label-info">Pending</span>';
+                }else{
+                    return '<span class="label label-success">Completed</span>';
+                }
+            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
+                return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'><i class='fa fa-file'></i></a>";
+            }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
+                return "";
+            }));
+            
+            $cond[] = "isDeleted=0";
+            $cond[] = "store_id=".$this->auth->getMyStoreId();
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setIndexColumn(false);
+            $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

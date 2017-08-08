@@ -31,7 +31,7 @@ class Index extends CI_Controller {
 				$this->load->view('index/admindashboard',$data);
 			}else if($this->auth->isPatient()){
 				$data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());
-				$data['medicalLab'] = $this->medical_lab_model->getAllmedical_lab();
+				//$data['medicalLab'] = $this->medical_lab_model->getAllmedical_lab();
 				$this->load->view('Patient/dashbord',$data);
 			}else if($this->auth->isReceptinest()){
 				$data['states'] = $this->dashboard_model->getReceptinestStates($this->auth->getUserid());
@@ -42,6 +42,12 @@ class Index extends CI_Controller {
 			}else if($this->auth->isMedicalLab()){
 				$data['states'] = $this->dashboard_model->getMedicalLabStates($this->auth->getUserid());
 				$this->load->view('Medical_lab/dashboard',$data);
+			}else if($this->auth->isMedicalStore()){
+				$data['states'] = $this->dashboard_model->getMedicalStoreStates($this->auth->getUserid());
+				$this->load->view('Medical_store/dashboard',$data);
+			}else if($this->auth->isNurse()){
+				$data['states'] = $this->dashboard_model->getNurseStates($this->auth->getUserid());
+				$this->load->view('Nurse/dashboard',$data);
 			}
 		}
 		else{

@@ -58,6 +58,53 @@
                 </div>
             </div>
         </div><!-- Row -->
+        <!--OutStanding Prescription Orders -->
+        <?php if(count($states['orders']) > 0) { ?>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><?=$this->lang->line('labels')['patientOutstendingOrders'];?></h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive project-stats">  
+                           <table class="table">
+                               <thead>
+                                   <tr>
+                                       <th>#</th>
+                                       <th>Title</th>
+                                       <th>Doctore</th>
+                                       <th>Prescription</th>
+                                       <th>Action</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                    <?php
+                                        $cnt = 1;
+                                        foreach($states['orders'] as $mr){
+                                            ?>
+                                            <tr>
+                                                <th scope="row"><?=$cnt;?></th>
+                                                <td><?=$mr['title'];?></td>
+                                                <td><?=$mr['doctor_name'];?></td>
+                                                <td><a href='#' data-url='doctors/previewprescription/<?=$mr['id'];?>' data-id='<?=$mr['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>
+                                                <td></td>
+                                            </tr>
+                                            <?php
+                                            $cnt++;
+                                        }
+                                    ?>
+                                   
+                                   
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+
         <!--OutStanding Med Reports -->
         <?php if(count($states['medical_reports']) > 0) { ?>
         <div class="row">

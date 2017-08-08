@@ -7,7 +7,7 @@
                                     <img src="<?php echo $this->auth->getProfileImg();?>" class="img-circle img-responsive" alt="">
                                 </div>
                                 <div class="sidebar-profile-details">
-                                    <span><?php echo $this->auth->getUsername(); ?><br><small><?php //echo $this->auth->getRoleText();?></small></span>
+                                    <span><?php echo $this->auth->getUsername(); ?><br><small><?php echo $this->auth->getRoleText();?></small></span>
                                 </div>
                             </a>
                         </div>
@@ -68,6 +68,7 @@
                             <li id="li13"><a href="<?php echo site_url();?>/branches" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_branches'];?></p></a></li>
                             <li id="li3"><a href="<?php echo site_url();?>/departments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_departments'];?></p></a></li>
                             <li id="li14"><a href="<?php echo site_url();?>/beds" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_beds'];?></p></a></li>
+                            <li id="li18"><a href="<?php echo site_url();?>/wards/" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-plus-sign"></span><p><?php echo $menu['main_wards'];?></p></a></li> 
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
                             <li id="li5"><a href="<?php echo site_url();?>/nurse" class="waves-effect waves-button"><span class="menu-icon  icon-user "></span><p><?php echo $menu['main_nurses'];?></p></a></li>
                             <li id="li6"><a href="<?php echo site_url();?>/receptionist" class="waves-effect waves-button"><span class="menu-icon  icon-user-following "></span><p><?php echo $menu['main_receptionists'];?></p></a></li>
@@ -132,6 +133,17 @@
                                     <!--<li id="li602"><a href="<?php //echo site_url();?>/doctors/othersetting" ><?php e//cho $menu['main_other'];?></a></li>-->
                                 </ul>
                             </li>
+                        <?php
+                            break;
+                            case $this->auth->getMedicalStoreRoleType():
+                        ?>
+                            <li id="li81"><a href="<?php echo site_url();?>/medical_store/orders" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['orders'];?></p></a></li>
+                            <li id="li80" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li id="li801"><a href="<?php echo site_url();?>/medical_store/about" ><?php echo $menu['main_about'];?></a></li>
+                                    <!--<li id="li602"><a href="<?php //echo site_url();?>/doctors/othersetting" ><?php e//cho $menu['main_other'];?></a></li>-->
+                                </ul>
+                            </li>    
                         <?php
                             break;
                             default:

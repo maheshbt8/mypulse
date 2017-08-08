@@ -14,7 +14,7 @@ $this->load->view("template/left.php");
 	                <div class="panel-heading clearfix">
 						<div class="">
 							<div class="custome_col8">
-								<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('testreports');?></h4>
+								<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('orders');?></h4>
 							</div>
                             <div class="custome_col4">
                                 <div class="panel_button_top_right">
@@ -29,15 +29,16 @@ $this->load->view("template/left.php");
                     <div class="panel-body panel_body_custome">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table id="reports" class="display table" cellspacing="0" width="100%">
+                                <table id="orders" class="display table" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
-                                            <th>Title</th>
-                                            <th>Description</th>
                                             <th>Doctor</th>
                                             <th>Patient</th>
+                                            <th>Contact Number</th>
+                                            <th>Address</th>
                                             <th>Status</th>
-                                            
+                                            <th>Prescription</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     
@@ -86,11 +87,11 @@ $this->load->view("template/left.php");
     
     $(document).ready(function(){
 
-        $("#reports").dataTable().fnDestroy();
-        $("#reports").DataTable({
+        $("#orders").dataTable().fnDestroy();
+        $("#orders").DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/medical_lab/getDTreports"
+            "ajax": "<?php echo site_url(); ?>/medical_store/getDTorders"
         });
 
         $(".dataTables_filter").attr("style","display: flex;float: right");

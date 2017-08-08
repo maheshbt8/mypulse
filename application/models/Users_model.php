@@ -117,17 +117,7 @@ class Users_model extends CI_Model {
         $res = $this->db->get('hms_users');
         return $res->result_array();
     }
-    function searchPatient($q, $field){
-        /*$this->db->or_group_start()
-            ->or_where('useremail', $q)
-            ->or_where('mobile', $q)
-            ->or_where('aadhaar_number', $q)
-            ->group_end();
-        $select = implode('`," ",`', array("first_name","last_name"));
-        $this->db->where("isDeleted",0);
-        $this->db->where('role',6);
-        $this->db->select("id,CONCAT(`$select`) as text", false);
-        $res = $this->db->get($this->tblname);*/
+    function searchPatient($q){
         $res = $this->db->query("select id,CONCAT(`first_name`,' ',`last_name`) as text from $this->tblname where isDeleted=0 and role=6 and (useremail='$q' OR mobile='$q' OR aadhaar_number='$q')");
         return $res->result_array();
     }
@@ -147,8 +137,17 @@ class Users_model extends CI_Model {
         }
         return true;
     }
+    function checkMobile($mobile){
+        $this->db->where('mobile',$mobile);
+        $user = $this->db->get($this->tblname);
+        if($user->num_rows() == 0){
+            return false;
+        }
+        return true;
+    }
     function regUsers(){
         $data['useremail'] = isset($_POST['useremail']) ? $_POST['useremail'] : "";
+        $data['mobile'] = isset($_POST['mobile']) ? $_POST['mobile'] : "";
         $data['first_name'] = isset($_POST['first_name']) ? $_POST['first_name'] : "";
         $data['last_name'] = isset($_POST['last_name']) ? $_POST['last_name'] : "";
         $data["role"] = 6;

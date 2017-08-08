@@ -33,3 +33,4 @@ $lang['main_availability'] = 'Availability';
 $lang['main_other'] = 'Others';
 $lang['main_about'] = 'About';
 $lang['reports'] = 'Test Reports';
+$lang['orders'] = 'Orders';

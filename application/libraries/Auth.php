@@ -81,6 +81,14 @@ class Auth {
         }
         return false;
     }
+
+    public function isMedicalStore(){
+        $role = $this->CI->session->userdata('role');
+        if($role==$this->getMedicalStoreRoleType()){
+            return true;
+        }
+        return false;
+    }
     
     public function getAuthData(){
     	return $this->CI->session->all_userdata();
@@ -93,9 +101,8 @@ class Auth {
 
     public function getRoleText(){
         $u = $this->CI->session->all_userdata();
-        if(isset($u['role']))
-            return $u['role'];
-        return "";
+        $uid = isset($u['role']) ? $u['role'] : 6;
+        return $this->CI->lang->line('roles')[$uid];
     }
 
     public function getRole(){
@@ -134,6 +141,11 @@ class Auth {
     public function getReceptinestId(){
         $this->CI->load->model('receptionist_model');
         return $this->CI->receptionist_model->getMyId();
+    }
+
+    public function getNurseId(){
+        $this->CI->load->model('nurse_model');
+        return $this->CI->nurse_model->getMyId();
     }
     
     public function getUserid(){
@@ -297,6 +309,11 @@ class Auth {
     public function getMyLabId(){
         $this->CI->load->model('medical_lab_model');
         return $this->CI->medical_lab_model->getMyLabId();
+    }
+
+    public function getMyStoreId(){
+        $this->CI->load->model('medical_store_model');
+        return $this->CI->medical_store_model->getMyStoreId();
     }
 
     public function getAppoitmentStatus($status=0,$onlytax = false){

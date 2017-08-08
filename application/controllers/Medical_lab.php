@@ -193,6 +193,7 @@ class Medical_lab extends CI_Controller {
                 }
             }));
             $cond[] = "isDeleted=0";
+            $cond[] = "medical_lab_id=".$this->auth->getMyLabId();
             $this->tbl->setCheckboxColumn(false);
             $this->tbl->setIndexColumn(false);
             $this->tbl->setTwID(implode(' AND ',$cond));

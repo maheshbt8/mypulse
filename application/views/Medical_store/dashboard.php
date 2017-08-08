@@ -1,56 +1,119 @@
 <?php
-/**
- * @author Ramesh Patel
- * @email  ramesh@techcrista.in
- */
-$this->load->view("template/header.php");
-$this->load->view("template/left.php");
-?>
-	<input type="hidden" id="left_active_menu" value="81" />
-	<div id="main-wrapper">
-	    <div class="row">
-	        <div class="col-md-12">
-	            <div class="panel panel-white">    
-	                <div class="panel-heading clearfix">
-						<div class="">
-							<div class="custome_col8">
-								<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('testreports');?></h4>
-							</div>
-                            <div class="custome_col4">
-                                <div class="panel_button_top_right">
-                                    <!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
-                                    <!--<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="beds"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>-->
-                                    <!--<a class="btn btn-primary m-b-sm exportBtn" data-at="beds"  href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>-->
-                                </div>
-                            </div>
-							<br>
-						</div>
-	                </div>
-                    <div class="panel-body panel_body_custome">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table id="reports" class="display table" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Doctor</th>
-                                            <th>Patient</th>
-                                            <th>Status</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    
-                                    <tbody>
-                                    </tbody>
-                                </table>  
-                            </div>
-                        </div>	
+    $this->load->view('template/header.php');
+    $this->load->view('template/left.php');
+?>    
+    <input type="hidden" id="left_active_menu" value="1" />
+    <div id="main-wrapper">
+        <div class="row">
+        <!--
+            <div class="col-md-6">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p class="counter"><?php echo $states['tot_rep'];?></p>
+                            <span class="info-box-title"><?php echo $this->lang->line('reports');?></span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-hospital-o"></i>
+                        </div>
                     </div>
-	            </div>
-	        </div>
-	    </div>
-	</div><!-- Main Wrapper -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p><span class="counter"><?php echo $states['tot_users'];?></span></p>
+                            <span class="info-box-title"><?php echo $this->lang->line('customers');?></span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p><span class="counter"><?php //echo $states['tot_medLab'];?></span></p>
+                            <span class="info-box-title"><?php //echo $this->lang->line('medicalLabFull');?></span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel info-box panel-white">
+                    <div class="panel-body">
+                        <div class="info-box-stats">
+                            <p class="counter"><?php //echo $states['tot_app'];?></p>
+                            <span class="info-box-title"><?php //echo $this->lang->line('appointments');?></span>
+                        </div>
+                        <div class="info-box-icon">
+                            <i class="icon-envelope"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div><!-- Row -->
+        <!--OutStanding Med Reports -->
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><?=$this->lang->line('labels')['medicalStoreOutStanding'];?></h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive project-stats">  
+                           <table class="table">
+                               <thead>
+                                   <tr>
+                                       <th>#</th>
+                                       <th>Doctor</th>
+                                       <th>Patient</th>
+                                       <th>Contact Number</th>
+                                       <th>Address</th>
+                                       <th>Status</th>
+                                       <th>Prescription</th>
+                                       <th>Action</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                    <?php
+                                        $cnt = 1;
+                                        foreach($states['orders'] as $pre){
+                                            ?>
+                                            <tr>
+                                                <th scope="row"><?=$cnt;?></th>
+                                                <td><?=$pre['doctor_name'];?></td>
+                                                <td><?=$pre['patient_name'];?></td>
+                                                <td><?=$pre['contact_number'];?></td>
+                                                <td><?=$pre['address'];?></td>
+                                                <td><span class="label label-info">Pending</span></td>
+                                                <td><a href='#' data-url='doctors/previewprescription/<?=$pre['id'];?>' data-id='<?=$pre['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>
+                                                <td></td>
+                                            </tr>
+                                            <?php
+                                            $cnt++;
+                                        }
+
+                                        if(count($states['orders'])==0){
+                                            echo "<tr><td colspan='8' align='center'>".$this->lang->line('msg_no_outstanding_orders')."</td></tr>";
+                                        }
+                                    ?>
+                                   
+                                   
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- Main Wrapper -->
 
     <div class="modal fade" id="uploadMR" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 		<div class="modal-dialog modal-m">
@@ -78,25 +141,13 @@ $this->load->view("template/left.php");
             </form>
         </div>
     </div>
-
 <?php
-    $this->load->view("template/footer.php");
+    $this->load->view('template/footer.php');
 ?>
 <script type="text/javascript">
-    
-    $(document).ready(function(){
-
-        $("#reports").dataTable().fnDestroy();
-        $("#reports").DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/medical_lab/getDTreports"
-        });
-
-        $(".dataTables_filter").attr("style","display: flex;float: right");
-
+    $( document ).ready(function() {
         var current_id = null;
-        $(document).on('click','.btnup',function(){
+        $(".btnup").click(function(){
             current_id = $(this).data('id');
             var url = '<?php echo site_url();?>/medical_lab/getreportspreview/'+current_id;
             $("#loading-img").show();
@@ -204,8 +255,6 @@ $this->load->view("template/left.php");
             });
             imgList += "</div>";
             $("#dparea").html(imgList);
-        }            
-
-
+        }
     });
 </script>
