@@ -99,8 +99,24 @@ class Dashboard_model extends CI_Model {
     }
 
     function getNurseStates($uid = 0){
-        $rid = $this->auth->getReceptinestId();
+        $uid = $this->auth->getUserid();
         $res = array();
+        $data=$this->db->query('select * from `hms_nurse`  where isDeleted = 0 and isActive = 1 and user_id = "'.$uid.'"');
+        //$res['tot_dep']=count($data);
+        $result =  $data->result_array();
+        $res['dep_count'] = count($result);
+        $dep_ids = array();
+        foreach ($result as $row) {
+            $dep_ids[] = $row['department_id'];
+        }     
+        if(count($dep_ids)==0){
+            $dep_ids[] = -1;
+        }
+        $doc_data = $this->db->query('select * from `hms_doctors`  where isDeleted = 0 and isActive = 1 and department_id in ("'.implode(",", $dep_ids).'")');     
+           // print_r($dep_ids);
+        $doc_data_result = $doc_data->result_array();
+        $doc_count =count($doc_data_result); 
+        $res['doc_count'] = $doc_count;
         return $res;
     }
 

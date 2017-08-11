@@ -24,13 +24,13 @@ $this->load->view("template/left.php");
 								<div class="custome_col8">
 									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('beds');?></h4>
 								</div>
-								<div class="custome_col4">
+								<!-- <div class="custome_col4">
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="beds"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
 										<a class="btn btn-primary m-b-sm exportBtn" data-at="beds"  href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
 									</div>
-								</div>
+								</div> -->
 								<br>
 							</div>
 	                    </div>
@@ -619,7 +619,7 @@ $this->load->view("template/footer.php");
                     $("#beds").DataTable({
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did
+                        "ajax": "<?php echo site_url(); ?>/beds/getDTNursebeds?hid="+hid+"&bid="+bid+"&did="+did
                     });
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");

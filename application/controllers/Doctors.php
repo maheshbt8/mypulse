@@ -11,6 +11,7 @@ class Doctors extends CI_Controller {
         $this->load->model("receptionist_model");
         $this->load->model("patient_model");
         $this->load->model("appoitments_model");
+        $this->load->model('nurse_model');   
     }
     public function index() {
         $data["page_title"] =  $this->lang->line('doctors');
@@ -20,6 +21,9 @@ class Doctors extends CI_Controller {
         } 
         else if($this->auth->isLoggedIn() && $this->auth->isReceptinest()){
             $this->load->view('Doctors/receptionist', $data);
+        }
+        else if($this->auth->isLoggedIn() && $this->auth->isNurse()){
+            $this->load->view('Doctors/nurse', $data);
         }
         else redirect('index/login');
     }
@@ -253,6 +257,13 @@ class Doctors extends CI_Controller {
                 $ids = implode(",", $ids);
                 $cond[] = "id in (".$ids.")";
             }
+            else if($this->auth->isNurse()){
+                 $show = true;
+                $ids = $this->nurse_model->getDepartmentIds();
+                if(count($ids) == 0) { $ids[] = -1;}
+                $ids = implode(",", $ids);
+                $cond[] = "department_id in (".$ids.")";
+            }
             else if($this->auth->isHospitalAdmin()){
                 $ids = $this->auth->getAllDepartmentsIds();
                 $ids = implode(",", $ids);
@@ -279,7 +290,9 @@ class Doctors extends CI_Controller {
                         return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button></span>";
                     });
                 }
-
+                 if($this->auth->isNurse()){                        
+                    unset($columns[3]);
+                }
                 $columns[0]['formatter'] =  function ($d, $row) {
                     $this->load->model("users_model");
                     $temp = $this->users_model->getusersById($d);

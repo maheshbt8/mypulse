@@ -11,6 +11,7 @@ class Beds extends CI_Controller {
         $this->load->model('departments_model');
         $this->load->model('hospitals_model');
         $this->load->model('wards_model');
+        $this->load->library('session');
     }
     public function index() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
@@ -20,6 +21,8 @@ class Beds extends CI_Controller {
             $this->load->view('Beds/index', $data);
         } else redirect('index/login');
     }
+
+    
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
@@ -40,7 +43,6 @@ class Beds extends CI_Controller {
             if(isset($_POST['selected_did'])){
                 $query[] = "did=".$_POST['selected_did'];
             }
-            
             if ($this->beds_model->add()) {
                 $data['success'] = array($this->lang->line('msg_bed_added'));
             } else {
@@ -88,7 +90,7 @@ class Beds extends CI_Controller {
         }
     }
     public function getDTbeds() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() )) {
             $this->load->library("tbl");
             $table = "hms_beds";
             $primaryKey = "id";
@@ -174,6 +176,96 @@ class Beds extends CI_Controller {
                 $this->tbl->setIndexColumn(true);
             }
             
+            $this->tbl->setTwID(implode(" AND ",$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function getDTNursebeds() {
+        if ($this->auth->isLoggedIn() ) {
+            $this->load->library("tbl");
+            $table = "hms_beds";
+            $primaryKey = "id";
+            $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
+                $this->load->model("wards_model");
+                $temp = $this->wards_model->getwardsById($d);
+                return $temp['ward_name'];
+            }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
+                return $d;
+                // return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
+                if($d==0){
+                    //Return yes, It is occupied or not availabe.
+                    return "<span class='label label-danger'>Yes</span>";
+                }else{
+                    return "<span class='label label-success'>No</span>";
+                }
+            }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                return "<a href=\"#\" id=\"statuslink_".$d."\" class=\"statusbtn\"  data-id=\"$d\" data-toggle=\"tooltip\" title=\"Change Status\">Change Status</a>";
+            }));
+
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
+            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            $did = isset($_GET['did']) ? $_GET['did']!="" ? intval($_GET['did']) : null : null;
+            $cond = array();
+
+            if($hid == "all")
+                $hid = null;
+            
+            if($did != "all" && $did != null){
+                $wids = $this->wards_model->getWardIdsFromDepartment($did);
+                if(count($wids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $wids[] = -1;
+                }
+                $ids = implode(",", $wids);
+                $cond[] = "ward_id in (".$ids.")";
+            }else if($bid == "all"){
+                $bids = $this->branches_model->getBracheIds($hid);
+                $ids = $this->wards_model->getWardIdsFromBranch($bids);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "ward_id in (".$ids.")";
+            }else if($bid != null){
+                $ids = $this->wards_model->getWardIdsFromBranch($bid);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "ward_id in (".$ids.")";
+            }else if($hid!=null){
+                $ids = $this->wards_model->getWardIdsFromHospital($hid);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "ward_id in (".$ids.")";
+            }else{
+                $hids = $this->hospitals_model->getHospicalIds();
+                $ids = $this->wards_model->getWardIdsFromHospital($hids);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",",$ids);
+                $cond[] = "ward_id in (".$ids.")";
+            }
+
+            $show = $this->input->get("s",null,false);         
+                $this->tbl->setCheckboxColumn(false);                
+                $this->tbl->setIndexColumn(true);
             $this->tbl->setTwID(implode(" AND ",$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
