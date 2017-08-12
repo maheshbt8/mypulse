@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Aug 11, 2017 at 01:46 PM
+-- Generation Time: Aug 12, 2017 at 05:53 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -1035,6 +1035,43 @@ CREATE TABLE IF NOT EXISTS `hms_hospital_admin` (
 
 INSERT INTO `hms_hospital_admin` (`id`, `hospital_id`, `user_id`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
 (1, 21, 3, 1, 0, '0000-00-00 00:00:00', '2017-07-17 01:58:27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hms_inpatient`
+--
+
+DROP TABLE IF EXISTS `hms_inpatient`;
+CREATE TABLE IF NOT EXISTS `hms_inpatient` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `bed_id` int(11) NOT NULL DEFAULT '0',
+  `doctor_id` int(11) NOT NULL,
+  `join_date` date NOT NULL,
+  `left_date` date DEFAULT NULL,
+  `reason` text NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0' COMMENT '0- not admitted, 1- admitted, 2-discharged',
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
+  `isActive` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hms_inpatient_history`
+--
+
+DROP TABLE IF EXISTS `hms_inpatient_history`;
+CREATE TABLE IF NOT EXISTS `hms_inpatient_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `in_patient_id` int(11) NOT NULL,
+  `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `note` text NOT NULL,
+  `cost` float NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
