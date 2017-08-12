@@ -5,7 +5,6 @@
  */
 class Users_model extends CI_Model {
     var $tblname = "hms_users";
-    
     function getAllusers() {
         $this->db->where("isDeleted", "0");
         $res = $this->db->get($this->tblname);
@@ -71,8 +70,7 @@ class Users_model extends CI_Model {
         $u = $u->row_array();
         return isset($u['my_key']) ? $u['my_key'] : "";
     }
-
-    function getusersById($id) {   
+    function getusersById($id) {    
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }

@@ -144,4 +144,16 @@ class Nurse_model extends CI_Model {
         }
         return 0;   
     }
+
+    public function getDepartmentIds(){
+        $uid = $this->auth->getUserId();
+        $query = $this->db->get_where('hms_nurse' , array('user_id' => $uid));
+        $result = $query->result_array(); 
+       // $res = count($result);
+          $dep_ids = array();
+        foreach ($result as $row) {
+            $dep_ids[] = $row['department_id'];
+        }     
+       return $dep_ids; 
+    }
 }

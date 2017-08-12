@@ -161,7 +161,7 @@ class Tbl {
 				$column = $columns[ $columnIdx ];
 				if ( $requestColumn['searchable'] == 'true' ) {
 					$binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-					$globalSearch[] = "`".$column['db']."` LIKE ".$binding;
+					$globalSearch[] = "`".$column['db']."` LIKE '".'%'.$str."%'";
 				}
 			}
 		}
@@ -175,7 +175,7 @@ class Tbl {
 				if ( $requestColumn['searchable'] == 'true' &&
 				 $str != '' ) {
 					$binding = self::bind( $bindings, '%'.$str.'%', PDO::PARAM_STR );
-					$columnSearch[] = "`".$column['db']."` LIKE ".$binding;
+					$columnSearch[] = "`".$column['db']."` LIKE '".'%'.$str."%'";
 				}
 			}
 		}

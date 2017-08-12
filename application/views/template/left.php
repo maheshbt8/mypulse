@@ -113,6 +113,13 @@
                             <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
                         <?php
                             break;
+                            case $this->auth->getNurseRoleType():
+                        ?>
+                            <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
+                             <li id="li4"><a href="<?php echo site_url();?>/nurse/beds" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_beds'];?> </p></a></li>
+                        <?php
+                                
+                            break;
                             case $this->auth->getDoctorRoleType():
                         ?>
                             <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>

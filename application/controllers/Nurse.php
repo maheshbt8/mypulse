@@ -14,11 +14,22 @@ class Nurse extends CI_Controller {
         $this->load->model('hospitals_model');
     }
     public function index() {
+        if($this->auth->isNurse()){
+            redirect('index');
+        }
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['nurses'] = $this->nurse_model->getAllnurse();
             $data["page_title"] = $this->lang->line('nurses');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('nurses'));
             $this->load->view('Nurse/index', $data);
+        } else redirect('index/login');
+    }
+    public function beds() {
+        if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
+            // $data['bedss'] = $this->beds_model->getAllbeds();
+            $data["page_title"] = $this->lang->line('beds');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('beds'));
+            $this->load->view('Nurse/beds', $data);
         } else redirect('index/login');
     }
     public function search() {
