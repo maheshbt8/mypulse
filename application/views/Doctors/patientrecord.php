@@ -99,6 +99,7 @@ $this->load->view("template/left.php");
                                 <div class="panel_button_top_right">
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newPrescription'];?></a>
+                                    <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newpatient'];?></a>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
                                 </div>
                             </div>
@@ -112,6 +113,7 @@ $this->load->view("template/left.php");
                                 <li role="presentation" class="active"><a href="#tab1"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>                                
                                 <li role="presentation" class=""><a href="#tab2"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescriptions'];?></a></li>
                                 <li role="presentation" class=""><a href="#tab3" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
+                                 <li role="presentation" class=""><a href="#tab4" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['inpatient_records'];?></a></li>
                             </ul>
                             <!-- Tab panes -->
                             <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
@@ -267,98 +269,160 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                 </div>
+                                <div role="tabpanel" class="tab-pane" id="tab4">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table id="inPatientTbl" class="display table" cellspacing="0" width="100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width:10px"></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['bed no'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['join_date'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['left_date'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>  
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             </form>
                         </div>
+                          
+                        <div class="row" id="inPatientDiv" style="display:none">
+                            <div class="col-md-12"> 
+                              <form id="patientform" method="post" action="<?php echo site_url();?>/doctors/addinpatient">
+                                <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
+                                <input type="hidden" name="patient_id" value="<?php echo $profile['id'];?>" />
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="Patientbed"><?php echo $this->lang->line('labels')['bed']; ?></label>
+                                      <select id="Patientbed" class="form-control" name="Patientbed" id="Patientbed">
+                                      </select>
+                                  </div>
+                                  <br>
+                                  <div class="form-group">
+                                    <label for="JoinDate"><?php echo $this->lang->line('labels')['join_date']; ?></label>
+                                    <input type="text" class="form-control date-picker" name="join_date" id="datepicker">
+                                  </div>
+                                  <br>
+                                  <div class="form-group">
+                                  <label for="PatientStatus"><?php echo $this->lang->line('labels')['patientStatus']; ?></label>
+                                      <select class="form-control" name="ptStatus" id="ptStatus">
+                                         <option value="1">Yes</option>
+                                         <option selected value="0">No</option>
+                                      </select>
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="PatientReason"><?php echo $this->lang->line('labels')['reason']; ?></label>
+                                    <textarea class="form-control"  rows="6" name="inPatientReason" id="patient_reason"></textarea>
+                                  </div><br>
+                                  <div class="form-group">                                  
+                                  <button type="button" id="canPatientBtn" class="btn btn-warning pull-right"><i class="fa fa-remove" ></i>Cancel
+                                  </button>
+                                  <button type="submit" class="btn btn-success pull-right" style="margin-right: 10px"><i class="fa fa-check"></i> Save</button>
+                                  </div>
+                                </div>
+                             </form>  
+                            </div>    
+                        </div>         
+
                         <div class="row" id="preDiv" style="display:none">
                             <form action="<?php echo site_url();?>/doctors/newprescription" method="post" id="pre_form">
-                            <input type="hidden" name="edit_id" id="edit_id" value='' />
-                            <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
-                            <input type="hidden" name="patient_id" id="patient_id" value="<?php echo $profile['id'];?>" />
-                            
-                            <div class="row">
+                                <input type="hidden" name="edit_id" id="edit_id" value='' />
+                                <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
+                                <input type="hidden" name="patient_id" id="patient_id" value="<?php echo $profile['id'];?>" />
+                                
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        
+                                        <div class="form-group col-md-6">
+                                            <label for="input-Default" class="col-sm4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
+                                            <div class="8">
+                                                <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="input-Default" class="col-s-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
+                                            <div class="">
+                                                <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="col-md-12">
-                                    
-                                    <div class="form-group col-md-6">
-                                        <label for="input-Default" class="col-sm4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
-                                        <div class="8">
-                                            <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
+                                    <lable class="control-label"><b><h3>Prescription for Medicines </h3></b></label><br>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Drug</th>
+                                                <th>Strength</th>
+                                                <th>Dosage</th>
+                                                <th>Duration</th>
+                                                <th>Note</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody">
+                                            <tr data-row="1" id="row_1">
+                                                <td class='drug_nos'>
+                                                    <input type="hidden" name="item_id[]" name="item_id[]" id="item_id_1"></input>1
+                                                </td>
+                                                <td>
+                                                    <input type="text" data-row="1" name="drug[]" value="" class="form-control" id="drug_1"></input>
+                                                </td>
+                                                <td>
+                                                    <input type="text" data-row="1" name="strength[]" value="" class="form-control" id="strength_1"></input>
+                                                </td>
+                                                <td>
+                                                    <input type="text" data-row="1" name="dosage[]" value="" class="form-control" id="dosage_1" placeholder="1-0-1"></input>
+                                                </td>
+                                                <td>
+                                                    <input type="text" data-row="1" name="duration[]" value="" class="form-control" id="duration_1" placeholder="30 Days"></input>
+                                                </td>
+                                                <td>
+                                                    <input type="text" data-row="1" name="note[]" value="" class="form-control" id="note_1" placeholder="After Food" />
+                                                </td>
+                                                <td>
+                                                    <button type="button" id="remove_id_1" data-len="1" class="btn removeitemrow"><i class="fa fa-minus"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <button type="button" id="item_btn_1" class="btn additemrow pull-right" style=""><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
+                                </div> 
+                                <Br><br>
+                                <div class="col-md-12" id="medReportDiv">
+                                    <lable class="control-label"><b><h3>Prescription for Medical Tests </h3></b></label><br>
+                                    <table width="100%" id="medRepTbl">
+                                    </table>
+                                <div>
+                                <Br><br>
+                                <div class="row">
+                                        <div class="col-md-4">
+                                            <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <label for="input-Default" class="col-s-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
-                                        <div class="">
-                                            <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" id="note" name="note" placeholder="Note"></textarea>
                                         </div>
+                                </div><br><br>
+                                <div class="row">
+                                    <div class="col-md-12 pull-right" >
+                                        <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
+                                        <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            <div class="col-md-12">
-                                <lable class="control-label"><b><h3>Prescription for Medicines </h3></b></label><br>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Drug</th>
-                                            <th>Strength</th>
-                                            <th>Dosage</th>
-                                            <th>Duration</th>
-                                            <th>Note</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                        <tr data-row="1" id="row_1">
-                                            <td class='drug_nos'>
-                                                <input type="hidden" name="item_id[]" name="item_id[]" id="item_id_1"></input>1
-                                            </td>
-                                            <td>
-                                                <input type="text" data-row="1" name="drug[]" value="" class="form-control" id="drug_1"></input>
-                                            </td>
-                                            <td>
-                                                <input type="text" data-row="1" name="strength[]" value="" class="form-control" id="strength_1"></input>
-                                            </td>
-                                            <td>
-                                                <input type="text" data-row="1" name="dosage[]" value="" class="form-control" id="dosage_1" placeholder="1-0-1"></input>
-                                            </td>
-                                            <td>
-                                                <input type="text" data-row="1" name="duration[]" value="" class="form-control" id="duration_1" placeholder="30 Days"></input>
-                                            </td>
-                                            <td>
-                                                <input type="text" data-row="1" name="note[]" value="" class="form-control" id="note_1" placeholder="After Food" />
-                                            </td>
-                                            <td>
-                                                <button type="button" id="remove_id_1" data-len="1" class="btn removeitemrow"><i class="fa fa-minus"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <button type="button" id="item_btn_1" class="btn additemrow pull-right" style=""><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
-                            </div> 
-                            <Br><br>
-                            <div class="col-md-12" id="medReportDiv">
-                                <lable class="control-label"><b><h3>Prescription for Medical Tests </h3></b></label><br>
-                                <table width="100%" id="medRepTbl">
-                                </table>
-                            <div>
-                            <Br><br>
-                            <div class="row">
-                                    <div class="col-md-4">
-                                        <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
-                                    </div>
-                                    <div class="col-md-8">
-                                        <textarea class="form-control" id="note" name="note" placeholder="Note"></textarea>
-                                    </div>
-                            </div><br><br>
-                            <div class="row">
-                                <div class="col-md-12 pull-right" >
-                                    <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
-                                    <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
-                                </div>
-                            </div>
                             </form>
-                        </div>            
+                        </div> 
+
                     </div>
                 </div>
             </div>
@@ -502,8 +566,7 @@ $this->load->view("template/footer.php");
             errorPlacement: validationErrorPlacement
             
         });
-
-        $('#pre_form').submit(function(event) {
+           $('#pre_form').submit(function(event) {
 
             event.preventDefault(); //this will prevent the default submit
             if(validator.valid()){
@@ -520,14 +583,87 @@ $this->load->view("template/footer.php");
             }
             
         });
+                       
+                var $selectize_bed_id = $("#Patientbed").selectize({
+                    valueField: "id",
+                    labelField: "text",
+                    searchField: "text",
+                    preload:true,
+                    create: false,
+                    render: {
+                        option: function(item, escape) {
+                            return "<div><span class='title'>" +
+                                    escape(item.text)+
+                                "</span>" +   
+                            "</div>";
+                        }
+                    },
+                    load: function(query, callback) {
+                        //if (!query.length) return callback();
+                        $.ajax({
+                            url: "<?php echo site_url(); ?>/beds/search",
+                            type: "GET",
+                            data: {"q":query,"f":"bed"},
+                            error: function() {
+                                callback();
+                            },
+                            success: function(res) {
+                                callback($.parseJSON(res));
+                            }
+                        });
+                    }
+                });
+        var validator = $("#patientform").validate({
+            ignore: [],
+            rules: {
+                
+                Patientbed: {
+                    required : true
+                },
+                join_date:{ required : true },
+                inPatientReason: { required : true }
+            },
+            messages: {
+                
+                Patientbed:{
+                    required: "<?php echo $this->lang->line('validation')['requiredBed'];?>"
+                },
+                join_date:{
+                    required: "<?php echo $this->lang->line('validation')['required join date'];?>"
+                },
+                inPatientReason:{
+                    required: "<?php echo $this->lang->line('validation')['patientreason'];?>"
+                }
+                
+            },
+            invalidHandler: validationInvalidHandler,
+            errorPlacement: validationErrorPlacement
+            
+        });
+        
+        $('#patientform').submit(function(event) {
+
+            event.preventDefault(); //this will prevent the default submit
+            if(validator.valid()){
+                console.log("Here");
+                $(this).unbind('submit').submit();
+            }
+            
+        });
+
+     
 
         var isEdit = false;
         var gotoP = 0;
         gotoP = '<?php if(isset($_GET["p"]) && $_GET["p"]==1){ echo 1;}else{ echo 0;} ?>';
-
+        gotoP = '<?php if(isset($_GET["p"]) && $_GET["p"]==2){ echo 2;}else{ echo 0;} ?>';
         if(gotoP == 1){
             $('#tabDiv a[href="#tab2"]').click();
             updateTabshow('#tab2');
+        }
+        else if(gotoP == 2){
+            $('#tabDiv a[href="#tab4"]').click();
+            updateTabshow('#tab4');
         }
 
         $("#editBtn").click(function(){
@@ -593,16 +729,24 @@ $this->load->view("template/footer.php");
         function updateTabshow(target){
             if(target == "#tab1"){
                 $("#editBtn").show();
+                $("#inPatientBtn").hide();
                 $("#cancelBtn").hide();
                 $("#addPrescriptionBtn").hide();    
             }else if(target == "#tab2"){
+                $("#inPatientBtn").hide();
                 $("#editBtn").hide();
                 $("#cancelBtn").hide();
                 $("#addPrescriptionBtn").show();
             }else if(target == "#tab3"){
                 $("#editBtn").hide();
+                $("#inPatientBtn").hide();
                 $("#cancelBtn").hide();
                 $("#addPrescriptionBtn").hide();
+            }else if(target == "#tab4"){
+                $("#editBtn").hide();
+                $("#cancelBtn").hide();
+                $("#addPrescriptionBtn").hide();
+                $("#inPatientBtn").show();
             }
         }
 
@@ -615,8 +759,21 @@ $this->load->view("template/footer.php");
             $("#edit_id").val("");
             $("#tbody").html("");
             $("#sbtn").html("Save");
-            addNewItemRow();
+            //addNewItemRow();
             $("#div_title").html("<?php echo $this->lang->line('newPrescription');?>");
+        });
+        $("#inPatientBtn").click(function(){
+            $("#inPatientBtn").hide();
+            $("#addPrescriptionBtn").hide();
+            $("#tabDiv").hide();
+            $("#inPatientDiv").show();
+          //   $("#datepicker").val(moment().format("DD-MM-YYYY"));
+            // $("#title").val("");
+            // $("#edit_id").val("");
+            // $("#tbody").html("");
+          //  $("#sbtn").html("Save");
+           // addNewItemRow();
+            $("#div_title").html("<?php echo $this->lang->line('newinPatient');?>");
         });
 
         $(document).on('click','.editbtn1', function(){
@@ -678,6 +835,13 @@ $this->load->view("template/footer.php");
             $("#preDiv").hide();
 
             $("#div_title").html("<?php echo $this->lang->line('patientInfo');?>");
+        });
+
+        $("#canPatientBtn").click(function(){
+            $("#inPatientBtn").show();
+            $("#tabDiv").show();
+            $("#inPatientDiv").hide();
+            $("#div_title").html("<?php echo $this->lang->line('newPatient');?>");
         });
 
         $(document).on('click','.additemrow',function(){
@@ -758,6 +922,17 @@ $this->load->view("template/footer.php");
         });
         $("#reportTbl_filter").hide();
         $("#reportTbl_length").hide();
+
+        $("#inPatientTbl").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "paging":   true,
+            "ordering": false,
+            "info":     false,
+            "ajax": '<?php echo site_url();?>/inpatient/getDTPatientinpatient/'+"<?php echo $profile['id'];?>"
+        });
+        $("#inPatientTbl_filter").hide();
+        $("#inPatientTbl_length").hide();
 
         $(document).on('click','.btnup',function(){
             var current_id = $(this).data('id');

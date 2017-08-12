@@ -295,6 +295,31 @@ class Auth {
         }
     }
 
+    public function getInpatientStatus($status,$onlytax = false){
+        $status = intval($status);
+        $text = "";
+        $class = "";
+        switch ($status) {
+            case 2: 
+                $class = "label label-primary";
+                $text = $this->CI->lang->line('labels')['active'];
+                break;
+            case 1: 
+                $class = "label label-success";
+                $text = $this->CI->lang->line('labels')['active'];
+                break;    
+            case 0: 
+                $class = "label label-info";
+                $text = $this->CI->lang->line('labels')['inactive'];
+                break;
+        }
+        if($onlytax){
+            return $text;
+        }else{
+            return "<span class='$class'>$text</span>";
+        }
+    }
+
     public function getUName($p){
         $name = "";
         if(isset($p['first_name'])){

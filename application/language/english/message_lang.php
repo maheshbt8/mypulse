@@ -30,6 +30,7 @@ $lang['appointments'] = "Appointments";
 $lang['appointment'] = "Appointment";
 $lang['profile'] = "Profile";
 $lang['patientInfo'] = "Patient Information";
+$lang['newPatient'] = "New Patient";
 $lang['visits'] = 'Visits';
 $lang['changePassword'] = "Change Password";
 $lang['appoitments'] = "Appoitments";
@@ -41,6 +42,7 @@ $lang['availability'] = 'Availability';
 $lang['othersetting'] = 'Other Setting';
 $lang['patientrecord'] = 'Patient Record';
 $lang['newPrescription'] = 'New Prescription';
+$lang['newinPatient'] = 'New Patient';
 $lang['reports'] = 'Reports';
 $lang['about'] = 'About';
 $lang['testreports'] = 'Test Reports';
@@ -136,6 +138,8 @@ $lang['msg_patient_ml_saved'] = "Your report request sent to medical lab";
 
 $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 
+$lang['msg_inpatien_saved'] = "Inpatient Added successfully";
+
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
 $lang['msg_no_outstanding_orders'] = "No outstanding orders found";
 
@@ -167,12 +171,16 @@ $lang['buttons'] = array(
     'edit' => 'Edit',
     'approve' => 'Approve',
     'newPrescription' => 'New Prescription',
+    'newpatient' => 'New Inpatient',
     
 );
 //End Buttons
 
 $lang['tableHeaders'] = array(
     'name' => "Name",
+    'bed no' => "Bed no",
+    'join_date' => 'Join Date',
+    'left_date' => 'Left Date',
     'email' => 'Email',
     'licenseStatus' => 'License Status',
     'city' => 'City',
@@ -225,6 +233,8 @@ $lang['labels'] = array(
     'ownerNumber' => 'Owner/MD Phone Number',
     'selectHospitalAdmin' => 'Hospital Admin',
     'license' => 'License',
+    'patientStatus' => 'Patient Status',
+    'join_date' => 'Join Date',
     'licenseStatus' => 'License Status',
     'licenseValidity' => 'License Validity',
     'selectHospital' => 'Hospital',
@@ -327,7 +337,9 @@ $lang['labels'] = array(
     'updateOrDeleteOnlyOne' => 'Update/Delete only current day availability',
     'date' => 'Date',
     'status' => 'Status',
+    'reason' => 'Reason',
     'health_records' => 'Health records',
+    'inpatient_records' => 'Inpatient',
     'medicalLab' => 'Medical Lab',
     'remarks' => 'Remarks',
     'patientRemarkPlace' => 'Remark to be updated by Hospital(Optional)',
@@ -397,6 +409,7 @@ $lang['validation'] = array(
     'selectDate' => 'Select Date',
     'requiredBed' => 'Enter bed number',
     'requiredTitle' => "Enter title",
+    'selectbed' =>'Select Bed',
     'requiredDiscription' => "Enter discription",
     'requiredChargeType' => 'Enter chrage type',
     'requiredCharge' => 'Enter charge',
@@ -404,6 +417,8 @@ $lang['validation'] = array(
     'requiredWard' => 'Enter ward name',
     'requiredFname' => 'Enter first name',
     'requiredLname' => 'Enter last name',
+    'patientreason' => 'Write Reason About Inpatient',
+    'required join date' => 'Select Join Date',
     'requiredAadhar' => 'Enter Aadhar number',
     'requiredPassword' => 'Enter password',
     'requriedMedLab' => 'Enter medical lab name',

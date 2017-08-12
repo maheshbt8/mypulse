@@ -195,6 +195,18 @@ class Doctors extends CI_Controller {
         }
     }
 
+    public function addinpatient(){
+        if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
+            $appt_id = $_POST['appt_id'];
+            $this->doctors_model->addPatient();
+            $d['success'] = array($this->lang->line('msg_inpatien_saved'));
+            $this->session->set_flashdata('data', $d);
+            redirect('doctors/patientRecord/'.$appt_id.'?p=2');
+        }else{
+            redirect('index/login');
+        }
+    }
+
     public function getDTdoctors() {
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");

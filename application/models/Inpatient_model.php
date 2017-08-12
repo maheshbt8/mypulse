@@ -16,13 +16,14 @@ class Inpatient_model extends CI_Model {
         return $r->row_array();
     }
     function search($q, $field) {
+        $uid = $this->auth->getUserid();
         $field = explode(",", $field);
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
         $select = implode('`," ",`', $field);
         $this->db->select("id,CONCAT(`$select`) as text", false);
-        $res = $this->db->get($this->tblname);
+        $res = $this->db->get_where($this->tblname,array('doctor_id' => $uid));
         return $res->result_array();
     }
     function add() {
