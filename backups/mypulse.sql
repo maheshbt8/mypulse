@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Aug 12, 2017 at 05:53 AM
+-- Generation Time: Aug 14, 2017 at 04:33 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -1226,6 +1226,44 @@ INSERT INTO `hms_medical_store` (`id`, `user_id`, `name`, `description`, `owner_
 (3, 0, 'Hwrew', '', 'SDFee', 'asde', -1, 0, 0, 0, 0, 1, 0, '2017-06-10 06:35:05', '2017-06-10 06:35:05'),
 (4, 0, 'Asdf', '', 'asdf', '3423423423', 4, 0, 0, 0, 0, 1, 0, '2017-06-13 10:50:36', '2017-06-13 10:51:37'),
 (5, 0, 'Test', '', 'tes', '5461278906', -1, 0, 0, 0, 0, 1, 0, '2017-06-15 09:01:58', '2017-06-15 09:01:58');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hms_messages`
+--
+
+DROP TABLE IF EXISTS `hms_messages`;
+CREATE TABLE IF NOT EXISTS `hms_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `body` text NOT NULL,
+  `created_date` datetime NOT NULL,
+  `isRead` tinyint(4) NOT NULL DEFAULT '0',
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hms_notification`
+--
+
+DROP TABLE IF EXISTS `hms_notification`;
+CREATE TABLE IF NOT EXISTS `hms_notification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created_by` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `isRead` tinyint(4) NOT NULL DEFAULT '0',
+  `action` text,
+  `created_date` datetime NOT NULL,
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
