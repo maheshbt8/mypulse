@@ -45,7 +45,6 @@ class Beds_model extends CI_Model {
                 $docid = $this->auth->getDoctorId();
                 $get_dep = $this->db->get_where('hms_doctors',array('id'=>$docid));
                 $get_dep_result = $get_dep->result_array();
-                
                 $dep_id = array();
                 foreach ($get_dep_result as $row) {
                     $dep_id[] = $row['department_id'];

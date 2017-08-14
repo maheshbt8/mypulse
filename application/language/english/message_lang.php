@@ -140,6 +140,8 @@ $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 
 $lang['msg_inpatien_saved'] = "Inpatient Added successfully";
 
+$lang['msg_inpatien_updated'] = "Inpatient Updated successfully";
+
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
 $lang['msg_no_outstanding_orders'] = "No outstanding orders found";
 
@@ -172,6 +174,7 @@ $lang['buttons'] = array(
     'approve' => 'Approve',
     'newPrescription' => 'New Prescription',
     'newpatient' => 'New Inpatient',
+    'new_note' => 'New Note',
     
 );
 //End Buttons
@@ -210,6 +213,7 @@ $lang['tableHeaders'] = array(
     'appoitment_no' => 'Appoitment No',
     'patient' => 'Patient',
     'reason' => 'Reason',
+    'note' => 'Note',
     'time' => 'Time',
     'appoitment_sloat' => 'Time sloat',
     'reasonForAppt' => 'Reason for Appoitment',

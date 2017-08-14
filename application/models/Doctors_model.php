@@ -532,6 +532,23 @@ class Doctors_model extends CI_Model {
                   );
       $this->db->insert('hms_inpatient',$data);
      }
+     public function UpdateInPatient(){
+        $uid = $this->auth->getUserid();
+        $id = $this->input->post('inpatient_update_id');
+              $data =array(
+               // 'id' => $this->input->post('inpatient_update_id'),
+                'user_id' =>$this->input->post('patient_id'), 
+                'bed_id' => $this->input->post('Patientbed'),
+                'doctor_id' => $uid,
+                'join_date' => date('Y-m-d', strtotime($this->input->post('join_date'))),
+                'reason' => $this->input->post('inPatientReason'),
+                 'status'=>$this->input->post('ptStatus')
+                  );
+              $this->db->set($data);
+              $this->db->where('id',$id);
+              $this->db->update('hms_inpatient'); 
+             // $this->db->replace('hms_inpatient', $data);
+     }
     function addMedicalReport($pid=0){
         if(!isset($_POST['mr_tit']))
             return;

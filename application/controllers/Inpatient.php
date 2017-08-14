@@ -113,13 +113,44 @@ class Inpatient extends CI_Controller {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "status", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getInpatientStatus($d);
+            }),array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
+                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp  <a href=\"javascript:void()\" class=\"historyinpatient\" data-id=\"$d\"  data-toggle=\"tooltip\" title=\"History\"><i class=\"glyphicon glyphicon-th-list\"></i></a>";
             }));
             $this->tbl->setCheckboxColumn(false);                
             $this->tbl->setIndexColumn(true);
             $cond[] = "user_id = $patient_id";
             $this->tbl->setTwID(implode(" AND ",$cond));
             // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host")); 
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function getDTHistoryinpatient($prf_id){
+                 if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_inpatient_history";
+            $primaryKey = "id";
+            $columns = array(array("db" => "id", "dt" => 0, "formatter" => function ($d, $row) {
+                $this->load->model("beds_model");
+                $temp = $this->beds_model->getbedsById($d);
+                if(isset($temp["bed"])){
+                 return $temp["bed"];    
+                }                
+                else
+                {
+                    return "-" ;
+                }
+            }), array("db" => "note", "dt" => 1, "formatter" => function ($d, $row) {
+                return $d;
+            }));
+            $this->tbl->setCheckboxColumn(false);                
+            $this->tbl->setIndexColumn(true);
+            $cond[] = "in_patient_id = $prf_id";
+
+            $this->tbl->setTwID(implode(" AND ",$cond));           
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host")); 
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }
