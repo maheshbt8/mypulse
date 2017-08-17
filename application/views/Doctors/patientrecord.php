@@ -100,7 +100,8 @@ $this->load->view("template/left.php");
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newPrescription'];?></a>
                                     <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newpatient'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['new_note'];?></a>
+                                    <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="modal" data-target="#AddNewNote" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['new_note'];?></a>&nbsp
+                                    <button type="button" id="canPatientBtnHist" class="btn btn-warning pull-right" style="display:none"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
                                 </div>
                             </div>
@@ -272,7 +273,7 @@ $this->load->view("template/left.php");
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tab4">
                                     <div class="col-md-12">
-                                        <div class="table-responsive">
+                                        <div class="table-responsive" id="inPatientTblDiv">
                                             <table id="inPatientTbl" class="display table" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
@@ -288,17 +289,27 @@ $this->load->view("template/left.php");
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                                            <table id="inPatientTblHistory" class="display table" cellspacing="0" width="100%" style="display: none;">
+                                           
+                                        </div>
+                                        <div class="table-responsive" id="inPatientTblHistoryDiv">
+                                           <div class="Histry_record" style="margin-left: 50px;">                                              
+                                              <h4>Bed :  <small id="bed_no"></small></h4>
+                                              <h4>Join-Date:  <small id="jdate"></small></h4>
+                                              <h4>Status:  <small id="hs_status"></small></h4>
+                                              <h4>Reason:  <small id="hs_reason"></small></h4>
+                                              <h4>Left-Date:  <small id="hs_ldate"></small></h4>
+                                           </div>
+                                             <table id="inPatientTblHistory" class="display table" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['bed no'];?></th>
                                                         <th><?php echo $this->lang->line('tableHeaders')['note'];?></th>
+                                                        <th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
                                                         <th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                </tbody>
+                                                </tbody>                                                
                                             </table>
                                         </div>
                                     </div>
@@ -474,6 +485,52 @@ $this->load->view("template/left.php");
             </div>    
         </div>
     </div>
+     <!-- Modal -->
+<div class="modal fade" id="AddNewNote" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add New Note
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form method="post" action="<?php echo site_url(); ?>/inpatient/add_note" class="form-horizontal" role="form" id="new_noteform">
+                <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
+                <input type="hidden" name="hsinpatientadd_id" id="hsinpatientadd_id">
+                <input type="hidden" name="hsinpatientEdit_id" id="hsinpatientEdit_id">
+                  <div class="form-group">
+                    <label  class="col-sm-2 control-label"
+                              for="">New Note</label>
+                    <div class="col-sm-10">
+                    <textarea class="form-control" 
+                      name="new_note"   id="Hsnew_note" placeholder="Write Note" rows="5"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group text-center">
+                  <button  type="submit" class="btn btn-primary" >
+                    <i class="glyphicon glyphicon-plus"></i> Save </button>
+                   <button type="button" class="btn btn-warning" data-dismiss="modal">
+                        <i class="fa fa-remove"></i>  Cancel </button>                    
+                  </div>
+                </form>                  
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">                
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="modal fade" id="uploadMR" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 		<div class="modal-dialog modal-m">
@@ -666,7 +723,33 @@ $this->load->view("template/footer.php");
             
         });
 
-     
+        var validator = $("#new_noteform").validate({
+            ignore: [],
+            rules: {
+                
+                new_note: {
+                    required : true
+                }
+            },
+            messages: {                
+                new_note:{
+                    required: "<?php echo $this->lang->line('validation')['requiredNote'];?>"
+                }                
+            },
+            invalidHandler: validationInvalidHandler,
+            errorPlacement: validationErrorPlacement
+            
+        });
+        
+        $('#new_noteform').submit(function(event) {
+
+            event.preventDefault(); //this will prevent the default submit
+            if(validator.valid()){
+                console.log("Here");
+                $(this).unbind('submit').submit();
+            }
+            
+        }); 
 
         var isEdit = false;
         var gotoP = 0;
@@ -747,25 +830,30 @@ $this->load->view("template/footer.php");
                 $("#inPatientBtn").hide();
                 $("#cancelBtn").hide();
                 $("#add_noteBtn").hide();
-                $("#addPrescriptionBtn").hide();    
+                $("#addPrescriptionBtn").hide();
+                $("#canPatientBtnHist").hide();    
             }else if(target == "#tab2"){
                 $("#inPatientBtn").hide();
                 $("#editBtn").hide();
                 $("#cancelBtn").hide();
                 $("#add_noteBtn").hide();
                 $("#addPrescriptionBtn").show();
+                $("#canPatientBtnHist").hide();
             }else if(target == "#tab3"){
                 $("#editBtn").hide();
                 $("#inPatientBtn").hide();
                 $("#cancelBtn").hide();
                 $("#add_noteBtn").hide();
                 $("#addPrescriptionBtn").hide();
+                $("#canPatientBtnHist").hide();
             }else if(target == "#tab4"){
                 $("#editBtn").hide();
                 $("#cancelBtn").hide();
                 $("#addPrescriptionBtn").hide();
                 $("#inPatientBtn").show();
-                $("#inPatientTbl").show();
+                $("#inPatientTblDiv").show();
+                $("#inPatientTblHistoryDiv").hide();
+                $("#canPatientBtnHist").hide();
             }
         }
 
@@ -793,6 +881,13 @@ $this->load->view("template/footer.php");
           //  $("#sbtn").html("Save");
            // addNewItemRow();
             $("#div_title").html("<?php echo $this->lang->line('newinPatient');?>");
+        });
+        $('#canPatientBtnHist').click(function(){
+          $('#canPatientBtnHist').hide();
+          $('#add_noteBtn').hide();
+          $('#inPatientTblHistoryDiv').hide();
+          $('#inPatientTblDiv').show();
+          $('#inPatientBtn').show();
         });
 
         $(document).on('click','.editbtn1', function(){
@@ -881,23 +976,46 @@ $this->load->view("template/footer.php");
        // }
      });
      $(document).on('click','.historyinpatient',function(){
-              // var patient_id= $(this).data('id');
-              $('#inPatientTbl').hide();
+               var patient_id= $(this).data('id');
+               $('#hsinpatientadd_id').val(patient_id);
+               var bed_no = $(this).data('bno');
+               var hs_jdate = $(this).data('jdate');
+               var hs_status = $(this).data('status');
+               var hs_reason = $(this).data('reason');
+               var ldate= $(this).data('ldate');
+                console.log($(this).data('bno'));
+                $('#bed_no').text(bed_no);
+                $('#jdate').text(hs_jdate);
+                $('#hs_status').text(hs_status);
+                $('#hs_reason').text(hs_reason);
+                $('#hs_ldate').text(ldate);
+                //row.find(".historyinpatient").hide();
+              $('#inPatientTblDiv').hide();
+              $('#canPatientBtnHist').show();
               $('#inPatientBtn').hide();
               $("#add_noteBtn").show();
-              $('#inPatientTblHistory').show();
-              // $.ajax({
-              //               url: "<?php echo site_url(); ?>/inpatient/getDTHistoryinpatient/"+patient_id,
-              //               type: "POST",
-              //               error: function() {
-              //                   callback();
-              //               },
-              //               success: function(res) {
-                                
-              //                    $('#inPatientTblHistory').html($.parseJSON(res));
-              //               }
-              //           });
-     });
+              $('#inPatientTblHistoryDiv').show();
+              $("#inPatientTblHistory").dataTable().fnDestroy();
+                $('#inPatientTblHistory').DataTable({ 
+                "processing": true,
+                "serverSide": true,
+                "paging":   true,
+                "ordering": false,
+                "info":     false,
+                "ajax": {
+                "url":'<?php echo site_url();?>/inpatient/getDTHistoryinpatient/'+patient_id,
+                   }              
+            });
+                $("#inPatientTblHistory_filter").hide();
+                $("#inPatientTblHistory_length").hide(); 
+
+       });
+    $(document).on('click','.editinpatientHistory',function(){
+         var inpHisEdit_id = $(this).data('id');
+         var inpHisEdit_note = $(this).data('note');
+         $('#hsinpatientEdit_id').val(inpHisEdit_id);
+         $('#Hsnew_note').val(inpHisEdit_note);
+    }); 
         $("#canPrescriptionBtn").click(function(){
             $("#addPrescriptionBtn").show();
             $("#tabDiv").show();
@@ -905,7 +1023,9 @@ $this->load->view("template/footer.php");
 
             $("#div_title").html("<?php echo $this->lang->line('patientInfo');?>");
         });
-
+        $('#add_noteBtn').click(function(){
+         $("form").trigger("reset");
+        });
         $("#canPatientBtn").click(function(){
             $("#inPatientBtn").show();
             $("#tabDiv").show();
@@ -1003,19 +1123,7 @@ $this->load->view("template/footer.php");
         $("#inPatientTbl_filter").hide();
         $("#inPatientTbl_length").hide();
 
-    //     $('#inPatientTblHistory').DataTable({ 
-    //         "processing": true,
-    //         "serverSide": true,
-    //         "paging":   true,
-    //         "ordering": false,
-    //         "info":     false,
-    //         "ajax": {
-    //         "url":'<?php echo site_url();?>/inpatient/getDTHistoryinpatient/'+id;
-    //            }              
-    //     });
-    // }
-        $("#inPatientTblHistory_filter").hide();
-        $("#inPatientTblHistory_length").hide();
+
 
         $(document).on('click','.btnup',function(){
             var current_id = $(this).data('id');

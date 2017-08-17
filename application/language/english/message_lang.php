@@ -415,6 +415,7 @@ $lang['validation'] = array(
     'requiredTitle' => "Enter title",
     'selectbed' =>'Select Bed',
     'requiredDiscription' => "Enter discription",
+    'requiredNote' =>'Enter The Note',
     'requiredChargeType' => 'Enter chrage type',
     'requiredCharge' => 'Enter charge',
     'invalidCharge' => "Enter valid charge",
