@@ -689,17 +689,11 @@ $this->load->view("template/footer.php");
             ignore: [],
             rules: {
                 
-                Patientbed: {
-                    required : true
-                },
                 join_date:{ required : true },
                 inPatientReason: { required : true }
             },
             messages: {
                 
-                Patientbed:{
-                    required: "<?php echo $this->lang->line('validation')['requiredBed'];?>"
-                },
                 join_date:{
                     required: "<?php echo $this->lang->line('validation')['required join date'];?>"
                 },

@@ -156,4 +156,37 @@ class Nurse_model extends CI_Model {
         }     
        return $dep_ids; 
     }
+    public function getpatient($userid){
+            $query = $this->db->get_where('hms_nurse',array('user_id'=>$userid));
+          $result = $query->result_array();
+          // $result[0]['department_id'];
+             $dep_ids = array();
+        foreach ($result as $row) {
+            $dep_ids[] = $row['department_id'];
+        }     
+        if(count($dep_ids) == 0){
+            $dep_ids[] = '-1';
+        }
+        $strdep_id = implode(',',$dep_ids);
+        $doc_ids = array(); 
+        $this->db->where_in('department_id',$strdep_id);
+        $query1 = $this->db->get('hms_doctors');
+        $doc_result = $query1->result_array();        
+        foreach ($doc_result as $doc_row) {
+            $doc_ids[] = $doc_row['id'];
+        }     
+        if(count($doc_ids) == 0){
+            $doc_ids[] = '-1';
+        }
+        //$doc_ids[]=12;
+          // echo $str_docids = implode(',',$doc_ids);
+        $query2 = $this->db->query("SELECT DISTINCT `user_id` FROM `hms_inpatient` WHERE `doctor_id` IN (".implode(',',$doc_ids).")");
+        
+        $patient_result = $query2->result_array();
+         $patient_ids = array();
+        foreach ($patient_result as $userrow) {
+            $patient_ids[] = $userrow['user_id'];
+        }     
+        return $patient_ids;
+    }
 }

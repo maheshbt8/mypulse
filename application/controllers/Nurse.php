@@ -10,7 +10,8 @@ class Nurse extends CI_Controller {
         $this->load->model('receptionist_model');
         $this->load->model('departments_model');
         $this->load->model('branches_model');
-        $this->load->model('doctors_model');
+        $this->load->model('doctors_model'); 
+        $this->load->model('users_model');
         $this->load->model('hospitals_model');
     }
     public function index() {
@@ -32,6 +33,20 @@ class Nurse extends CI_Controller {
             $this->load->view('Nurse/beds', $data);
         } else redirect('index/login');
     }
+    public function inpatient(){
+        if($this->auth->isLoggedIn() && ($this->auth->isNurse())){
+            $data["page_title"] = $this->lang->line('patients');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('patients'));
+                $this->load->view('Nurse/patient',$data);
+        }
+        else{
+            redirect('index/login');
+        }
+    }
+    // public function getDTpatient(){
+    //       $uid = $this->auth->getuserid();        
+    //      $this->nurse_model->getpatient($uid);
+    // }
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
@@ -142,6 +157,43 @@ class Nurse extends CI_Controller {
                 $this->tbl->setIndexColumn(true);
             }
             $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+        public function getDTPatient() {
+        if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
+                $uid = $this->auth->getuserid();
+               
+               $patients_ids =  $this->nurse_model->getpatient($uid);
+            $this->load->library("tbl");
+            $table = "hms_users";
+            $primaryKey = "id";
+            $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
+                $user = $this->users_model->getusersById($row['id']);
+                $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
+                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
+                 return "<a href=\"#\" id=\"Patient_id\" class=\"InPatientBtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></button>";
+            }));
+            if(count($patients_ids) == 0){
+            $patients_ids[] = '-1';
+            }   
+           $strpatient_ids = implode(',',$patients_ids); 
+            $cond[] = 'id in ('.$strpatient_ids.')';           
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
