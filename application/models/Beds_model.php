@@ -67,6 +67,33 @@ class Beds_model extends CI_Model {
 
                 $this->db->where_in('ward_id',$ward_id);
          }
+
+         if($this->auth->isNurse()){
+                $docid = $this->auth->getNurseId();
+                $get_dep = $this->db->get_where('hms_nurse',array('id'=>$docid));
+                $get_dep_result = $get_dep->result_array();
+                $dep_id = array();
+                foreach ($get_dep_result as $row) {
+                    $dep_id[] = $row['department_id'];
+                }
+                if(count($dep_id) == 0)
+                {
+                    $dep_id[] = '-1';
+                }
+                $dep_id_str = implode(',',$dep_id);
+                $get_ward = $this->db->query('select * from `hms_wards` where `department_id` in ("'.$dep_id_str.'")');
+                $get_ward_result = $get_ward->result_array();
+                $ward_id = array();
+                foreach ($get_ward_result as $ward_row) {
+                    $ward_id[] = $ward_row['id'];
+                }
+                if(count($ward_id) == 0)
+                {
+                    $ward_id[] = '-1';
+                }
+
+                $this->db->where_in('ward_id',$ward_id);
+         }
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }

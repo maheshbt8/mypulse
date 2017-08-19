@@ -167,9 +167,10 @@ class Nurse_model extends CI_Model {
         if(count($dep_ids) == 0){
             $dep_ids[] = '-1';
         }
-        $strdep_id = implode(',',$dep_ids);
+
+        //$strdep_id = implode(',',$dep_ids);
         $doc_ids = array(); 
-        $this->db->where_in('department_id',$strdep_id);
+        $this->db->where_in('department_id',$dep_ids);
         $query1 = $this->db->get('hms_doctors');
         $doc_result = $query1->result_array();        
         foreach ($doc_result as $doc_row) {
@@ -188,5 +189,39 @@ class Nurse_model extends CI_Model {
             $patient_ids[] = $userrow['user_id'];
         }     
         return $patient_ids;
+    }
+     public function UpdateInPatient(){
+        $id = $this->input->post('inpatient_update_id');
+              $data =array( 
+                'bed_id' => $this->input->post('Patientbed'),
+                  );
+              $this->db->set($data);
+              $this->db->where('id',$id);
+              $this->db->update('hms_inpatient'); 
+
+     }
+
+    public function getDoctorIds($userid){
+           
+    $query = $this->db->get_where('hms_nurse',array('user_id'=>$userid));
+          $result = $query->result_array();
+          // $result[0]['department_id'];
+             $dep_ids = array();
+        foreach ($result as $row) {
+            $dep_ids[] = $row['department_id'];
+        }     
+        if(count($dep_ids) == 0){
+            $dep_ids[] = '-1';
+        }
+
+        //$strdep_id = implode(',',$dep_ids);
+        $doc_ids = array(); 
+        $this->db->where_in('department_id',$dep_ids);
+        $query1 = $this->db->get('hms_doctors');
+        $doc_result = $query1->result_array();        
+        foreach ($doc_result as $doc_row) {
+            $doc_ids[] = $doc_row['id'];
+        }     
+        return $doc_ids;
     }
 }

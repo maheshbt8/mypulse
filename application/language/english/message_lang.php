@@ -140,6 +140,8 @@ $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 
 $lang['msg_inpatien_saved'] = "Inpatient Added successfully";
 
+$lang['msg_inpatien_error'] = "Inpatient Already Existed";
+
 $lang['msg_inpatien_updated'] = "Inpatient Updated successfully";
 
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
@@ -303,6 +305,9 @@ $lang['labels'] = array(
     'reNewPassword' => 'Repeat New Password',
     'inactive' => 'Inactive',
     'active' => 'Active',
+    'admitted' => 'Admitted',
+    'discharged' => 'Discharged',
+    'notadmitted' => 'Not Admitted',
     'pending' => 'Pending',
     'approved' => 'Approved',
     'rejected' => 'Rejected',

@@ -521,8 +521,17 @@ class Doctors_model extends CI_Model {
        
     }
     public function addPatient(){
-      $uid = $this->auth->getUserid();
-      $data =array(
+      $uid = $this->auth->getDoctorId();
+      $userid = $this->input->post('patient_id',null,0);
+      $patientquery = $this->db->query('select * from hms_inpatient where user_id = '.$userid.'  and status in (0,1)');
+        $checkpatient = $patientquery->result_array(); 
+      if(count($checkpatient) > 0)
+         {
+             return 0;
+         }
+     else
+        {
+       $data =array(
                 'user_id' =>$this->input->post('patient_id'), 
                 'bed_id' => $this->input->post('Patientbed'),
                 'doctor_id' => $uid,
@@ -531,9 +540,10 @@ class Doctors_model extends CI_Model {
                  'status'=>$this->input->post('ptStatus')
                   );
       $this->db->insert('hms_inpatient',$data);
+        }
      }
      public function UpdateInPatient(){
-        $uid = $this->auth->getUserid();
+        $uid = $this->auth->getDoctorId(); 
         $id = $this->input->post('inpatient_update_id');
               $data =array(
                // 'id' => $this->input->post('inpatient_update_id'),

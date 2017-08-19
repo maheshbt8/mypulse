@@ -31,22 +31,25 @@ $this->load->view("template/left.php");
 							</div>
 	                    </div>
 	                    <div class="panel-body panel_body_custome">
-	                       <div class="table-responsive"  id="patientRecordTbl" >
-	                            <table id="patients" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-	                                    <tr>
-											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['email'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
-	                                    </tr>
-	                                </thead>
-	                                
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
 	                        <div class="col-md-12">
+	                                    <div class="table-responsive"  id="patientRecordTbl" >
+				                            <table id="patients" class="display table" cellspacing="0" width="100%">
+				                                <thead>
+				                                    <tr>
+														<th style="width:10px"></th>
+														<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>								
+														<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+														<th><?php echo $this->lang->line('tableHeaders')['join_date'];?></th>
+														<th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
+														<th><?php echo $this->lang->line('tableHeaders')['bed'];?></th>
+														<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
+														<th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
+				                                    </tr>
+				                                </thead>
+				                                <tbody>
+				                                </tbody>
+				                            </table>  
+				                        </div>
                                         <div class="table-responsive" id="inPatientTblDiv" style="display: none;">
                                             <table id="inPatientTbl" class="display table" cellspacing="0" width="100%">
                                                 <thead>
@@ -71,7 +74,7 @@ $this->load->view("template/left.php");
                                               <h4>Join-Date:  <small id="jdate"></small></h4>
                                               <h4>Status:  <small id="hs_status"></small></h4>
                                               <h4>Reason:  <small id="hs_reason"></small></h4>
-                                              <h4>Left-Date:  <small id="hs_ldate"></small></h4>
+                                              <!-- <h4>Left-Date:  <small id="hs_ldate"></small></h4> -->
                                            </div>
                                              <table id="inPatientTblHistory" class="display table" cellspacing="0" width="100%">
                                                 <thead>
@@ -89,8 +92,7 @@ $this->load->view("template/left.php");
                                     </div>
                         <div class="row" id="inPatientDiv" style="display:none">
                             <div class="col-md-12"> 
-                              <form id="patientform" method="post" action="<?php echo site_url();?>/doctors/addinpatient">
-                                <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
+                              <form id="patientform" method="post" action="<?php echo site_url();?>/nurse/addinpatient">
                                 <!-- <input type="hidden" name="patient_id" value="<?php echo $profile['id'];?>" /> -->
                                  <input type="hidden" name="inpatient_update_id" id="inpatient_id" />
                                 <div class="col-md-6">
@@ -150,8 +152,7 @@ $this->load->view("template/left.php");
             
             <!-- Modal Body -->
             <div class="modal-body">
-                <form method="post" action="<?php echo site_url(); ?>/inpatient/add_note" class="form-horizontal" role="form" id="new_noteform">
-                <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
+                <form method="post" action="<?php echo site_url(); ?>/inpatient/add_noteByNurse" class="form-horizontal" role="form" id="new_noteform">
                 <input type="hidden" name="hsinpatientadd_id" id="hsinpatientadd_id">
                 <input type="hidden" name="hsinpatientEdit_id" id="hsinpatientEdit_id">
                   <div class="form-group">
@@ -197,41 +198,39 @@ $this->load->view("template/footer.php");
 
 			    $("[data-toggle=tooltip]").tooltip();
 
-                $(document).on('click','.InPatientBtn',function(){
-                	     $('#inPatientTblDiv').show();
-                	     $('#patientRecordTbl').hide();
-                         var inpatient_id = $(this).data('id');                          
-				        $("#inPatientTbl").DataTable({
-				            "processing": true,
-				            "serverSide": true,
-				            "paging":   true,
-				            "ordering": false,
-				            "info":     false,
-				            "ajax": '<?php echo site_url();?>/inpatient/getDTPatientinpatient/'+inpatient_id
-				        });
-				        $("#inPatientTbl_filter").hide();
-				        $("#inPatientTbl_length").hide();
-                        });
+            //     $(document).on('click','.InPatientBtn',function(){
+            //     	     $('#inPatientTblDiv').show();
+            //     	     $('#patientRecordTbl').hide();
+            //              var inpatient_id = $(this).data('id');                          
+				        // $("#inPatientTblHistory").DataTable({
+				        //     "processing": true,
+				        //     "serverSide": true,
+				        //     "paging":   true,
+				        //     "ordering": false,
+				        //     "info":     false,
+				        //     "ajax": '<?php echo site_url();?>/inpatient/getDTPatientinpatient/'+inpatient_id
+				        // });
+				        // $("#inPatientTbl_filter").hide();
+				        // $("#inPatientTbl_length").hide();
+            //             });
 			 
 		    $(document).on('click','.historyinpatient',function(){
 			               var patient_id= $(this).data('id');
+                       $('#hsinpatientadd_id').val(patient_id);
                          $('#inPatientTblDiv').hide();
                 	     $('#patientRecordTbl').hide();
                 	     $('#inPatientTblHistoryDiv').show();
-			              //  $('#hsinpatientadd_id').val(patient_id);
-			              //  var bed_no = $(this).data('bno');
-			              //  var hs_jdate = $(this).data('jdate');
-			              //  var hs_status = $(this).data('status');
-			              //  var hs_reason = $(this).data('reason');
-			              //  var ldate= $(this).data('ldate');
-			              //   console.log($(this).data('bno'));
-			              //   $('#bed_no').text(bed_no);
-			              //   $('#jdate').text(hs_jdate);
-			              //   $('#hs_status').text(hs_status);
-			              //   $('#hs_reason').text(hs_reason);
-			              //   $('#hs_ldate').text(ldate);
+			               var bed_no = $(this).data('bno');
+			               var hs_jdate = $(this).data('jdate');
+			               var hs_status = $(this).data('status');
+			               var hs_reason = $(this).data('reason');
+			                $('#bed_no').text(bed_no);
+			                $('#jdate').text(hs_jdate);
+			                $('#hs_status').text(hs_status);
+			                $('#hs_reason').text(hs_reason);
+			             
 			              //   //row.find(".historyinpatient").hide();
-			              // $('#inPatientTblDiv').hide();
+			              //   $('#inPatientTblDiv').hide();
 			              $('#canPatientBtnHist').show();
 			              // $('#inPatientBtn').hide();
 			               $("#add_noteBtn").show();
@@ -284,6 +283,7 @@ $this->load->view("template/footer.php");
 		        var id = $(this).data('id');
 		        $('#inpatient_id').val(id);
 		            $("#inPatientDiv").show();   
+		          $('#patientRecordTbl').hide();
 		            // $("#inPatientTbl").hide();
 		            $("#inPatientBtn").hide();
 
@@ -318,21 +318,30 @@ $this->load->view("template/footer.php");
                         });
                  // }
             });
-             
+                    $(document).on('click','.editinpatientHistory',function(){
+				         var inpHisEdit_id = $(this).data('id');
+				         var inpHisEdit_note = $(this).data('note');
+				         $('#hsinpatientEdit_id').val(inpHisEdit_id);
+				         $('#Hsnew_note').val(inpHisEdit_note);
+				    }); 
 		        $('#canPatientBtnHist').click(function(){
 		          $('#canPatientBtnHist').hide();
-		          $('#add_noteBtn').hide();
+		          $('#add_noteBtn').hide();		          
+		          $('#inPatientTblDiv').hide();
 		          $('#inPatientTblHistoryDiv').hide();
-		          $('#inPatientTblDiv').show();
+		          $('#patientRecordTbl').show(); 
 		        });
 
 	           $("#canPatientBtn").click(function(){
 	             $("#inPatientBtn").show();
-	             $("#tabDiv").show();
 	             $("#inPatientDiv").hide();
-	             $('#inPatientTblDiv').show();
+	             $('#patientRecordTbl').show();
 	            $("#div_title").html("<?php echo $this->lang->line('newPatient');?>");
               });
+
+			     $('#add_noteBtn').click(function(){
+		         $("form").trigger("reset");
+		        });
 		});
 
 		</script>

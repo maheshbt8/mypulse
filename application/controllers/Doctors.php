@@ -200,17 +200,25 @@ class Doctors extends CI_Controller {
     public function addinpatient(){
         if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
             if(isset($_POST['inpatient_update_id']) && $_POST['inpatient_update_id'] != ''){
-            $appt_id = $_POST['appt_id'];            
-            $this->doctors_model->UpdateInPatient();
-            $d['success'] = array($this->lang->line('msg_inpatien_updated'));
-            $this->session->set_flashdata('data', $d);
-            redirect('doctors/patientRecord/'.$appt_id.'?p=2');                 
+                $appt_id = $_POST['appt_id'];            
+                $this->doctors_model->UpdateInPatient();
+                $d['success'] = array($this->lang->line('msg_inpatien_updated'));
+                $this->session->set_flashdata('data', $d);
+                redirect('doctors/patientRecord/'.$appt_id.'?p=2');                 
             }
-            $appt_id = $_POST['appt_id'];
-            $this->doctors_model->addPatient();
-            $d['success'] = array($this->lang->line('msg_inpatien_saved'));
-            $this->session->set_flashdata('data', $d);
-            redirect('doctors/patientRecord/'.$appt_id.'?p=2');
+            else{
+                $appt_id = $_POST['appt_id'];
+                $message = $this->doctors_model->addPatient();
+                if($this->doctors_model->addPatient() == 0){
+                    $d['error'] = array($this->lang->line('msg_inpatien_error'));    
+                    $this->session->set_flashdata('data', $d);
+                    redirect('doctors/patientRecord/'.$appt_id.'?p=2');
+                }
+                    $d['success'] = array($this->lang->line('msg_inpatien_saved'));
+                    $this->session->set_flashdata('data', $d);
+                    redirect('doctors/patientRecord/'.$appt_id.'?p=2');    
+                
+            }
         }else{
             redirect('index/login');
         }
