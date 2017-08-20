@@ -120,7 +120,7 @@ class Hospitals_model extends CI_Model {
             $qry = "select b.hospital_id as id from hms_receptionist r,hms_doctors d,hms_departments m,hms_branches b where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.branch_id=b.id";
         }else if($this->auth->isNurse()){
             $uid = $this->auth->getUserid();
-            $qry = "select b.hospital_id as id from  hms_nurse d,hms_departments m,hms_branches b where d.isDeleted=0 and d.id=$uid and d.department_id=m.id and m.branch_id=b.id";
+            $qry = "select b.hospital_id as id from  hms_nurse d,hms_departments m,hms_branches b where d.isDeleted=0 and d.user_id=$uid and d.department_id=m.id and m.branch_id=b.id";
         }else if($this->auth->isDoctor()){
             $uid = $this->auth->getDoctorId();
             $qry = "select b.hospital_id as id from  hms_doctors d,hms_departments m,hms_branches b where d.isDeleted=0 and d.id=$uid and d.department_id=m.id and m.branch_id=b.id";

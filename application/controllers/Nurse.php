@@ -10,8 +10,10 @@ class Nurse extends CI_Controller {
         $this->load->model('receptionist_model');
         $this->load->model('departments_model');
         $this->load->model('branches_model');
-        $this->load->model('doctors_model');
+        $this->load->model('doctors_model'); 
+        $this->load->model('users_model');
         $this->load->model('hospitals_model');
+        $this->load->model('beds_model');
     }
     public function index() {
         if($this->auth->isNurse()){
@@ -32,12 +34,36 @@ class Nurse extends CI_Controller {
             $this->load->view('Nurse/beds', $data);
         } else redirect('index/login');
     }
+    public function inpatient(){
+        if($this->auth->isLoggedIn() && ($this->auth->isNurse())){
+            $data["page_title"] = $this->lang->line('patients');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('patients'));
+                $this->load->view('Nurse/patient',$data);
+        }
+        else{
+            redirect('index/login');
+        }
+    }
+    // public function getDTpatient(){
+    //       $uid = $this->auth->getuserid();        
+    //      $this->nurse_model->getpatient($uid);
+    // }
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
             $result = $this->nurse_model->search($q, $f);
             echo json_encode($result);
+        }
+    }
+    public function addinpatient(){
+        if($this->auth->isLoggedIn() && $this->auth->isNurse()){
+            if(isset($_POST['inpatient_update_id']) && $_POST['inpatient_update_id'] != ''){           
+                $this->nurse_model->UpdateInPatient();
+                $d['success'] = array($this->lang->line('msg_inpatien_updated'));
+                $this->session->set_flashdata('data', $d);
+                redirect('nurse/inpatient');                 
+            }
         }
     }
     public function add() {
@@ -147,4 +173,110 @@ class Nurse extends CI_Controller {
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }
+
+
+    //     public function getDTPatient() {
+    //     if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
+    //             $uid = $this->auth->getuserid();
+               
+    //            $patients_ids =  $this->nurse_model->getpatient($uid);
+
+    //         $this->load->library("tbl");
+    //         $table = "hms_users";
+    //         $primaryKey = "id";
+    //         $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
+    //             $user = $this->users_model->getusersById($row['id']);
+    //             $name = "";
+    //             if(isset($user['first_name'])){
+    //                 $name = $user['first_name'];
+    //             }
+    //             if(isset($user['last_name'])){
+    //                 $name .= " ".$user['last_name'];
+    //             }
+    //             return $name;
+    //         }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
+    //             return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+    //         }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
+    //              return "<a href=\"#\" id=\"Patient_id\" class=\"InPatientBtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></button>";
+    //         }));
+    //         if(count($patients_ids) == 0){
+    //         $patients_ids[] = '-1';
+    //         }   
+    //        $strpatient_ids = implode(',',$patients_ids); 
+    //         $cond[] = 'id in ('.$strpatient_ids.')';           
+    //         $this->tbl->setTwID(implode(' AND ',$cond));
+    //         $this->tbl->setIndexColumn(true);
+    //         $this->tbl->setCheckboxColumn(false);
+    //         // SQL server connection informationhostname" => "localhost",
+    //         $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+    //         echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+    //     }
+    // }
+  
+        public function getDTPatient() {
+        if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
+                $uid = $this->auth->getuserid();
+               
+               $patients_ids =  $this->nurse_model->getDoctorIds($uid);
+            $this->load->library("tbl");
+            $table = "hms_inpatient";
+            $primaryKey = "id";
+            $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
+                $user = $this->users_model->getusersById($row['user_id']);
+                $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "doctor_id", "dt" => 1, "formatter" => function ($d, $row) {
+                    $doctor = $this->doctors_model->getdoctorsById($d);  
+                    $user = $this->users_model->getusersById($doctor['user_id']);
+                 $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "join_date", "dt" => 2, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));                   
+            }), array("db" => "reason", "dt" => 3, "formatter" => function ($d, $row) {
+                    return $d;                     
+            }), array("db" => "bed_id", "dt" => 4, "formatter" => function ($d, $row) {
+                    $bed = $this->beds_model->getbedsById($d);
+                return $bedName = $bed['bed'];   
+            }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
+                       $status = $this->auth->getInpatientStatus($d);
+                      return $status;                     
+            }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
+                           $bed = $this->beds_model->getbedsById($row['bed_id']);
+               $bedName = $bed['bed']; 
+               $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
+               $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
+               $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
+               $doc_id = $row['doctor_id'];
+               $bed_id = $row['bed_id'];  
+               $user_id = $row['user_id'];    
+                 return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
+            }));
+            if(count($patients_ids) == 0){
+            $patients_ids[] = '-1';
+            }   
+           $strpatient_ids = implode(',',$patients_ids); 
+            $cond[] = 'doctor_id in ('.$strpatient_ids.')';                                   
+            $cond[] = 'status in (0,1)';
+           $query =  $this->tbl->setTwID(implode(' AND ',$cond));            
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+
 }

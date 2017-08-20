@@ -116,7 +116,8 @@
                             case $this->auth->getNurseRoleType():
                         ?>
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
-                             <li id="li4"><a href="<?php echo site_url();?>/nurse/beds" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_beds'];?> </p></a></li>
+                            <li id="li4"><a href="<?php echo site_url();?>/nurse/beds" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_beds'];?> </p></a></li>
+                            <li id="li4"><a href="<?php echo site_url();?>/nurse/inpatient" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_patients'];?> </p></a></li>
                         <?php
                                 
                             break;

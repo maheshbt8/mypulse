@@ -39,6 +39,27 @@ class Inpatient_model extends CI_Model {
             return false;
         }
     }
+    public function add_new_note($data){
+        $hsdata = $this->db->insert('hms_inpatient_history',$data);
+       if ($hsdata) {
+           return true;
+       }
+       else
+       {
+        return false;
+       }
+    }
+    public function update_new_note($data){
+        $hsdata = $this->db->replace('hms_inpatient_history',$data);
+       if ($hsdata) {
+           return true;
+       }
+       else
+       {
+        return false;
+       }
+    }
+    
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);

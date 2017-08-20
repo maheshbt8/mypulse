@@ -203,7 +203,7 @@ class Beds extends CI_Controller {
                     return "<span class='label label-success'>No</span>";
                 }
             }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" id=\"statuslink_".$d."\" class=\"statusbtn\"  data-id=\"$d\" data-toggle=\"tooltip\" title=\"Change Status\">Change Status</a>";
+                return "";
             }));
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;

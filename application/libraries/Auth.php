@@ -302,15 +302,15 @@ class Auth {
         switch ($status) {
             case 2: 
                 $class = "label label-primary";
-                $text = $this->CI->lang->line('labels')['active'];
+                $text = $this->CI->lang->line('labels')['discharged'];
                 break;
             case 1: 
                 $class = "label label-success";
-                $text = $this->CI->lang->line('labels')['active'];
+                $text = $this->CI->lang->line('labels')['admitted'];
                 break;    
             case 0: 
                 $class = "label label-info";
-                $text = $this->CI->lang->line('labels')['inactive'];
+                $text = $this->CI->lang->line('labels')['notadmitted'];
                 break;
         }
         if($onlytax){
