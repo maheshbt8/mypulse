@@ -512,9 +512,13 @@ class Doctors_model extends CI_Model {
             $pid = $this->db->insert_id();
             $this->db->where('id',$pre['appoitment_id']);
             $this->db->update('hms_appoitments',array('status'=>3));
+            $pre['patient_id']=$_POST['patient_id'];
+            $this->notification->saveNotification($pre['patient_id'],"Some prescriptions are added in your profile ");
         }else{
             $this->db->where('id',$pid);
             $this->db->update('hms_prescription',$pre);
+            $pre['patient_id']=$_POST['patient_id'];
+            $this->notification->saveNotification($pre['patient_id'],"Your prescription information is updated");
         }
         $this->addPrescriptionItems($pid,$patient_id);
         $this->addMedicalReport($pid);

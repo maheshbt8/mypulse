@@ -68,6 +68,9 @@ class Medical_lab_model extends CI_Model {
         if(count($urls) > 0){
             $this->db->where('id',$id);
             $this->db->update('hms_medical_report',array('status'=>1));
+            $this->db->where('id', $id);
+            $report = $this->db->get('hms_medical_report')->row_array();
+            $this->notification->saveNotification($report['patient_id'],"Your medical report is uploded");
         }
     }
     function getMedicalReportFiles($id){
@@ -163,6 +166,9 @@ class Medical_lab_model extends CI_Model {
             if(count($mlab) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mlab)) {
+                    if (!$this->auth->isMedicalLab()) {
+                        $this->notification->saveNotification($usr['user_id'], "Your profile is updated");
+                    }
                     return true;
                 } else {
                     return false;

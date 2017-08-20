@@ -87,7 +87,7 @@ $this->load->view("template/left.php");
                                     <select id="hospital_id" class=" form-control" style="width: 100%"></select>
                                 </div>
 				  				<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
+									<label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
 									<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%"></select>
 								</div>
 								<div class="form-group col-md-6">
@@ -220,13 +220,7 @@ $this->load->view("template/footer.php");
 						tempselectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_name}]);
 						tempselectize_branch_id.refreshItems();
 						tempselectize_branch_id.setValue(data.branch_id);
-						
-						/*tempselectize_branch_id.clearOptions();
-						var tbid = data.branch_id;
-						$.post("<?php echo site_url(); ?>/branches/getbranches",{id: tbid},function(data){
-							var d = JSON.parse(data);
-							
-						});*/
+
 						
 						$("#department_name").val(data.department_name);
 					

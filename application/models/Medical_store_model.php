@@ -83,17 +83,16 @@ class Medical_store_model extends CI_Model {
     function update($id) {
 
         $data = $_POST;
-
         $this->db->where("id", $id);
         $usr = $this->db->get($this->tblname);
         $usr = $usr->row_array();
 
-        $uid = isset($usr["user_id"]) ? $usr['user_id'] : 0;
+        $uid = isset($usr["user_id"]) ? $usr["user_id"] : 0;
         $uid = $this->auth->addUser($data,$uid);
 
         if($uid === false){
             return false;
-        }else if($uid < -1){
+        }else if($uid < 0){
             return $uid;
         }
         else{
@@ -113,13 +112,16 @@ class Medical_store_model extends CI_Model {
             if(isset($data['owner_contact_number']))
                 $mstore['owner_contact_number'] = $data['owner_contact_number'];
             if(isset($data['branch_id']))
-                $mstore['branch_id'] = $data['branch_id'];        
+                $mstore['branch_id'] = $data['branch_id'];
             if(isset($data['md_description'])){
                 $mstore['description'] = $data['md_description'];
             }
             if(count($mstore) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mstore)) {
+                    if(!$this->auth->isMedicalStore()){
+                        $this->notification->saveNotification($usr['user_id'],"Your profile is updated");
+                    }
                     return true;
                 } else {
                     return false;

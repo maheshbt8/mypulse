@@ -76,6 +76,7 @@ class Patients extends CI_Controller {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->users_model->update($id);
+            //echo "<pre>";var_dump($res);exit;
             if($res === -1){
                 $data['errors'] = array($this->lang->line('msg_email_exist'));
             }else if($res === false){

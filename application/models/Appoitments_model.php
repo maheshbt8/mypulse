@@ -80,6 +80,10 @@ class Appoitments_model extends CI_Model {
 
         $this->db->where('id',$id);
         $this->db->update($this->tblname,array('remarks'=>$r));
+
+        $this->db->where('id',$id);
+        $appointment = $this->db->get($this->tblname)->row_array();
+        $this->notification->saveNotification($appointment['user_id'], "Remark updated of your appointment <b>".$appointment['appoitment_number']."</b>");
     }
 
     function search($q, $field) {
@@ -111,19 +115,38 @@ class Appoitments_model extends CI_Model {
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
             $this->db->where('id',$id);
-            $this->db->update($this->tblname,array('appoitment_number'=> 'APT'.$id));
+            $apt_no ='APT'.$id;
+            $this->db->update($this->tblname,array('appoitment_number'=> $apt_no));
+            if(!$this->auth->isPatient()){
+                $this->notification->saveNotification($data['user_id'],"Your appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+            }
             return true;
         } else {
             return false;
         }
     }
     function update($id) {
+
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["appoitment_date"])) $data["appoitment_date"] = date("Y-m-d H:i:s", $data["appoitment_date"]);
+        if (isset($data["appoitment_date"])) $data["appoitment_date"] = date("Y-m-d H:i:s", strtotime($data["appoitment_date"]));
         if (isset($data["status"])) $data["status"] = intval($data["status"]);
+        if (isset($data['appoitment_sloat'])){
+            $tsloat = $data['appoitment_sloat'];
+            unset($data['appoitment_sloat']);
+            $tsloat = explode('-',$tsloat);
+            $data['appoitment_time_start'] = date('H:i',strtotime($tsloat[0]));
+            $data['appoitment_time_end'] = date('H:i',strtotime($tsloat[1]));
+        }
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            //get appt using $id;
+            if(!$this->auth->isPatient()) {
+                $this->db->where("id", $id);
+                $appointment = $this->db->get($this->tblname);
+                $appointment = $appointment->row_array();
+                $this->notification->saveNotification($appointment['user_id'], "Added remark in your appointment");
+            }
             return true;
         } else {
             return false;
@@ -156,6 +179,12 @@ class Appoitments_model extends CI_Model {
             $this->db->where("id", $id);
         }
         if ($this->db->update($this->tblname, $d)) {
+            //notification sent
+            $apt = $this->db->query("select * from $this->tblname where id = $id")->row_array();
+            if(isset($apt['id'])){
+                $msg = $this->auth->getAppoitmentStatus($status,true);
+                $this->notification->saveNotification($apt['user_id'],"Your appointment <b>".$apt['appoitment_number']."</b> has been ".$msg);
+            }
             return true;
         } else return false;
     }

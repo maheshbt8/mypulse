@@ -79,6 +79,8 @@ class Beds_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+        $dept_id = $data['department_id'];
+        unset($data['department_id']);
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
@@ -87,6 +89,11 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            $this->db->where('department_id', $dept_id);
+            $nurses = $this->db->get('hms_nurse')->result_array();
+            foreach ($nurses as $nurse){
+                $this->notification->saveNotification($nurse['user_id'], "new bed is added");
+            }
             return true;
         } else {
             return false;
@@ -94,6 +101,8 @@ class Beds_model extends CI_Model {
     }
     function update($id) {
         $data = $_POST;
+        $dept_id = $data['department_id'];
+        unset($data['department_id']);
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);

@@ -199,8 +199,16 @@ class Users_model extends CI_Model {
         $this->db->where('id',$id);
         $this->db->where('isDeleted',0);
         $user = $this->db->get($this->tblname);
-        $user = $user->row_array();    
-        
+        $user = $user->row_array();
+        //echo "<pre>";
+        $isDataChanged = $this->auth->compareDataWithPost($user,$data);
+
+        //var_dump($user);
+        //var_dump($data);
+        //var_dump($isDataChanged);exit;
+        if(!$isDataChanged)
+            return $id;
+
         if(isset($data['useremail'])){
             if(isset($user['id'])){
                 if($user['useremail'] == $data['useremail']){
@@ -227,14 +235,17 @@ class Users_model extends CI_Model {
         
         unset($data["eidt_gf_id"]);
         if (isset($data["role"])) $data["role"] = intval($data["role"]);
+        if (isset($data["date_of_birth"])) $data["date_of_birth"] = date("Y-m-d",strtotime($data["date_of_birth"]));
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
         
         if ($this->db->update($this->tblname, $data)) {
+            if($this->auth->getUserId() != $id) {
+                $this->notification->saveNotification($id, "Your Profile is updated");
+            }
             return $id;
         } else {
             $err = $this->db->error();
-            
             if($err['code'] == 1062){
                 $a = $err['message'];
                 if (strpos($a, 'usernemail') !== false) {
