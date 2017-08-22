@@ -177,4 +177,16 @@ class Patient_model extends CI_Model {
         $data['medical_lab_id'] = isset($_POST['medicalLab']) ? $_POST['medicalLab'] : 0;
         $this->db->update('hms_medical_report',$data);
     }
+    
+    public function prescriptionByApp_id($app_id){
+        
+
+         $query = $this->db->query("select * from hms_prescription where appoitment_id = $app_id");
+          $pres_query =  $query->result_array();
+         $pres_ids = array();
+         foreach ($pres_query as $row) {
+             $pres_ids[] = $row['id'];
+         }
+          return $pres_ids;
+    }
 }

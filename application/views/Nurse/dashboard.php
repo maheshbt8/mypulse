@@ -37,7 +37,7 @@
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
-                            <p class="counter"><?php  echo 0;//echo $states['tot_app'];?></p>
+                            <p class="counter"><?php  echo $states['patient_count'];?></p>
                             <span class="info-box-title"><?php echo $this->lang->line('users');?></span>
                         </div>
                         <div class="info-box-icon">

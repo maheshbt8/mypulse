@@ -11,6 +11,8 @@ class Beds extends CI_Controller {
         $this->load->model('departments_model');
         $this->load->model('hospitals_model');
         $this->load->model('wards_model');
+        $this->load->model("users_model");
+        $this->load->model("inpatient_model");
         $this->load->library('session');
     }
     public function index() {
@@ -202,8 +204,15 @@ class Beds extends CI_Controller {
                 }else{
                     return "<span class='label label-success'>No</span>";
                 }
-            }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                return "";
+            }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {                                
+                $temp = $this->inpatient_model->getinpatientBybedId($d);
+                if(is_array($temp)){
+                    $user_id = $temp['user_id'];                  
+                    $userdata = $this->users_model->getProfile($user_id);
+                    return $this->auth->getUName($userdata);
+                }else{
+                    return "-";
+                }
             }));
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;

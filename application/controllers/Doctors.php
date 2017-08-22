@@ -186,6 +186,7 @@ class Doctors extends CI_Controller {
            echo $id;
   }
     public function newprescription(){
+
         if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
             $appt_id = $_POST['appt_id'];
             $this->doctors_model->addPrescription();
@@ -353,7 +354,7 @@ class Doctors extends CI_Controller {
         echo json_encode($return);
     }
 
-    public function getDTPrescription($pid=0) {
+    public function getDTPrescription($pid=0) {       
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_prescription";
