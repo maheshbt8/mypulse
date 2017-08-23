@@ -213,11 +213,11 @@ class Nurse extends CI_Controller {
     //     }
     // }
   
-        public function getDTPatient() {
+    public function getDTPatient() {
         if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
-                $uid = $this->auth->getuserid();
-               
-               $patients_ids =  $this->nurse_model->getDoctorIds($uid);
+            $uid = $this->auth->getuserid();   
+            $patients_ids =  $this->nurse_model->getDoctorIds($uid);
+            
             $this->load->library("tbl");
             $table = "hms_inpatient";
             $primaryKey = "id";
@@ -232,9 +232,9 @@ class Nurse extends CI_Controller {
                 }
                 return $name;
             }), array("db" => "doctor_id", "dt" => 1, "formatter" => function ($d, $row) {
-                    $doctor = $this->doctors_model->getdoctorsById($d);  
-                    $user = $this->users_model->getusersById($doctor['user_id']);
-                 $name = "";
+                $doctor = $this->doctors_model->getdoctorsById($d);  
+                $user = $this->users_model->getusersById($doctor['user_id']);
+                $name = "";
                 if(isset($user['first_name'])){
                     $name = $user['first_name'];
                 }
@@ -245,31 +245,31 @@ class Nurse extends CI_Controller {
             }), array("db" => "join_date", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));                   
             }), array("db" => "reason", "dt" => 3, "formatter" => function ($d, $row) {
-                    return $d;                     
+                return $d;                     
             }), array("db" => "bed_id", "dt" => 4, "formatter" => function ($d, $row) {
-                    $bed = $this->beds_model->getbedsById($d);
+                $bed = $this->beds_model->getbedsById($d);
                 return $bedName = $bed['bed'];   
             }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
-                       $status = $this->auth->getInpatientStatus($d);
-                      return $status;                     
+                $status = $this->auth->getInpatientStatus($d);
+                return $status;                     
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
-                           $bed = $this->beds_model->getbedsById($row['bed_id']);
-               $bedName = $bed['bed']; 
-               $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
-               $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
-               $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
-               $doc_id = $row['doctor_id'];
-               $bed_id = $row['bed_id'];  
-               $user_id = $row['user_id'];    
-                 return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
+                $bed = $this->beds_model->getbedsById($row['bed_id']);
+                $bedName = $bed['bed']; 
+                $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
+                $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
+                $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
+                $doc_id = $row['doctor_id'];
+                $bed_id = $row['bed_id'];  
+                $user_id = $row['user_id'];    
+                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
             }));
             if(count($patients_ids) == 0){
-            $patients_ids[] = '-1';
+                $patients_ids[] = '-1';
             }   
-           $strpatient_ids = implode(',',$patients_ids); 
+            $strpatient_ids = implode(',',$patients_ids);
             $cond[] = 'doctor_id in ('.$strpatient_ids.')';                                   
             $cond[] = 'status in (0,1)';
-           $query =  $this->tbl->setTwID(implode(' AND ',$cond));            
+            $query =  $this->tbl->setTwID(implode(' AND ',$cond));            
             $this->tbl->setIndexColumn(true);
             $this->tbl->setCheckboxColumn(false);
             // SQL server connection informationhostname" => "localhost",
