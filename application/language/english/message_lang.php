@@ -144,6 +144,8 @@ $lang['msg_inpatien_error'] = "Inpatient Already Existed";
 
 $lang['msg_inpatien_updated'] = "Inpatient Updated successfully";
 
+$lang['msg_inpatien_rec_error'] = " Inpatient Record Not Found";
+
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
 $lang['msg_no_outstanding_orders'] = "No outstanding orders found";
 

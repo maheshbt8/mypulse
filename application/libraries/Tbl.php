@@ -230,7 +230,7 @@ class Tbl {
 			 $order
 			 $limit");exit;*/
 		$data = self::sql_exec( $db, $bindings,
-			"SELECT id,`".implode("`, `", self::pluck($columns, 'db'))."`
+			"SELECT *
 			 FROM `$table`
 			 $where
 			 $order

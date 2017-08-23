@@ -535,6 +535,7 @@ class Doctors_model extends CI_Model {
                 'user_id' =>$this->input->post('patient_id'), 
                 'bed_id' => $this->input->post('Patientbed'),
                 'doctor_id' => $uid,
+                'appointment_id' => $this->input->post('appt_id'),
                 'join_date' => date('Y-m-d', strtotime($this->input->post('join_date'))),
                 'reason' => $this->input->post('inPatientReason'),
                  'status'=>$this->input->post('ptStatus')

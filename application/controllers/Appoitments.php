@@ -48,6 +48,7 @@ class Appoitments extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
+
         if ($this->auth->isLoggedIn()) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');
@@ -356,7 +357,7 @@ class Appoitments extends CI_Controller {
                     if($row['status'] == 3){
 
                     }
-                    return "-";
+                    return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".'Record'."</a>";
                 }
                 $html = "<span style='display:inline-flex'>";
                 if($row['status'] != 2){
