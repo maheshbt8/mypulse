@@ -46,6 +46,12 @@ class Patients extends CI_Controller {
             redirect('index/login');
         }
     }
+
+    public function updateItemQuantity(){
+             
+           $this->patient_model->Updateitemquantity();
+           echo true;
+        }
     public function profile(){
         if ($this->auth->isLoggedIn()) {
             $data['page_title'] = $this->lang->line('patients');

@@ -214,4 +214,18 @@ class Patient_model extends CI_Model {
        return $query->result_array();
     }
 
+    public function Updateitemquantity(){
+        $id = $_REQUEST['id'];
+        $data = array(
+
+            'qty' => $_REQUEST['quantity']
+
+            );
+        $item = $this->auth->my_encrypt_array($data,$p = 0);
+        $this->db->where('id', $id);
+           if ($this->db->update('hms_prescription_item', $item)) {
+               return true;
+           }        
+    }
+
 }
