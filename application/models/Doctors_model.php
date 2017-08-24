@@ -581,11 +581,14 @@ class Doctors_model extends CI_Model {
     }
 
     function addPrescriptionItems($pid=0,$patient_id=0){
+        //print_r($_POST['quantity']);
+        //exit();
         for($i=0; $i<count($_POST['item_id']); $i++){
             $item['drug'] = $_POST['drug'][$i];
             $item['strength'] = $_POST['strength'][$i];
             $item['dosage'] = $_POST['dosage'][$i];
             $item['duration'] = $_POST['duration'][$i];
+            $item['qty'] = $_POST['quantity'][$i];
             $item['note'] = $_POST['note'][$i];
 
             $item = $this->auth->my_encrypt_array($item,$patient_id);

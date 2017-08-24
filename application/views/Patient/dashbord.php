@@ -88,7 +88,7 @@
                                                 <td><?=$mr['title'];?></td>
                                                 <td><?=$mr['doctor_name'];?></td>
                                                 <td><a href='#' data-url='doctors/previewprescription/<?=$mr['id'];?>' data-id='<?=$mr['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>
-                                                <td></td>
+                                                <td><a href='#' title="Cancel" data-id='<?=$mr['id'];?>' class='CanPresOrderBtn'><i class="glyphicon glyphicon-remove"></i></a> &nbsp; <a href="<?php echo site_url().'/patients/addplaceorder/'.$mr['id'];?>" data-id='<?=$mr['id'];?>' class='PlacePresOrderBtn'><i class="glyphicon glyphicon-plus"></i></a></td>
                                             </tr>
                                             <?php
                                             $cnt++;
@@ -514,5 +514,38 @@
             tempselectize_selectize_country.refreshItems();
             tempselectize_selectize_country.setValue(country);
         }
+        $(document).on('click','.CanPresOrderBtn',function(){
+            var id = $(this).data('id');
+            var btn = $(this);
+            swal({
+                title: 'Are you sure?',
+                text: "You want to Cancel This Order!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then(function () {
+              $.ajax({
+                    url: "<?php echo site_url(); ?>/patients/cancelPrescriptionOutOrder",
+                    type: "GET",
+                    data: {prescId:id},
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        console.log(res);
+                        if(res==1){
+                            toastr.success('Order Cancelled','');
+                            $(btn).parents('tr').remove();
+                        }
+                        else{
+                            toastr.error('Unable to Cancel Order','');
+                        }
+                    }
+                });                
+            });
+
+        });
     });
 </script>

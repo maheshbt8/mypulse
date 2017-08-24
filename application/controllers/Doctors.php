@@ -214,10 +214,13 @@ class Doctors extends CI_Controller {
                     $d['error'] = array($this->lang->line('msg_inpatien_error'));    
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');
-                }
+                }else{
+
                     $d['success'] = array($this->lang->line('msg_inpatien_saved'));
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');    
+
+                }
                 
             }
         }else{

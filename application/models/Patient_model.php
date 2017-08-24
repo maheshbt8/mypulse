@@ -189,4 +189,29 @@ class Patient_model extends CI_Model {
          }
           return $pres_ids;
     }
+    public function getHospitalnameBybedId($userId){
+
+        $query = $this->db->query("select hms_inpatient.bed_id, hms_beds.ward_id,hms_wards.department_id,hms_departments.branch_id,hms_branches.hospital_id, hms_hospitals.name from hms_inpatient,hms_beds,hms_wards,hms_departments,hms_branches,hms_hospitals where hms_inpatient.user_id = $userId and hms_inpatient.bed_id = hms_beds.id and hms_beds.ward_id = hms_wards.id and hms_departments.id = hms_wards.department_id AND hms_departments.branch_id = hms_branches.id AND hms_hospitals.id = hms_branches.hospital_id");
+        return $query->row_array();
+
+
+    }
+
+    public function canOutPrescptionOrder($id){
+         $data = array(
+             'order_status'=> 3
+            ); 
+        $this->db->where('id', $id);
+       if ($this->db->update('hms_prescription', $data)) {
+           return true;
+       }
+        
+    }
+
+    public function addplaceorder($id){
+       $query = $this->db->query('select * from hms_prescription where ' );
+
+       return $query->row_array();
+    }
+
 }
