@@ -57,6 +57,7 @@
         <script src="<?php echo base_url();?>public/assets/plugins/fullcalendar/lib/moment.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/fullcalendar/fullcalendar.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
         <!--<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>-->
         
 

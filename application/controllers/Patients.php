@@ -32,7 +32,8 @@ class Patients extends CI_Controller {
     public function addplaceorder($id){
             $data["page_title"] = $this->lang->line('addplaceorder');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('addplaceorder'));
-            $data['pres_data'] = $this->patient_model->addplaceorder($id);
+            $data['pres_data'] = $this->doctors_model->getPrescription($id);
+            //$data['pres_data'] = $this->patient_model->addplaceorder($id);
            $this->load->view('patient/addplaceorder',$data);
     }
     public function inpatient(){

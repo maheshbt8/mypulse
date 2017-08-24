@@ -209,9 +209,9 @@ class Patient_model extends CI_Model {
     }
 
     public function addplaceorder($id){
-       $query = $this->db->query('select * from hms_prescription where ' );
 
-       return $query->row_array();
+       $query = $this->db->query("select hms_users.first_name,hms_users.last_name,hms_doctors.user_id,hms_prescription.* from hms_prescription,hms_doctors,hms_users where hms_prescription.id = $id and hms_doctors.id = hms_prescription.doctor_id and hms_doctors.user_id = hms_users.id");
+       return $query->result_array();
     }
 
 }

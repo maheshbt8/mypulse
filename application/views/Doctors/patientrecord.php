@@ -411,7 +411,7 @@ $this->load->view("template/left.php");
                                                     <input type="text" data-row="1" name="strength[]" value="" class="form-control" id="strength_1"></input>
                                                 </td>
                                                 <td>
-                                                    <input type="text" data-row="1" name="dosage[]" value="" class="form-control" id="dosage_1" placeholder="1-0-1"></input>
+                                                    <input type="text" data-row="1" name="dosage[]" value="" class="form-control dosage" id="dosage_1" placeholder="1-0-1"></input>
                                                 </td>
                                                 <td>
                                                     <input type="text" data-row="1" name="duration[]" value="" class="form-control" id="duration_1" placeholder="30 Days"></input>
@@ -1046,6 +1046,7 @@ $this->load->view("template/footer.php");
 
         function addNewItemRow(){
             $("#tbody").append(getRow());
+            $(".dosage").inputmask("*{+}-*{+}-*{+}");
             updateDrugNo();
         }
         
@@ -1081,7 +1082,7 @@ $this->load->view("template/footer.php");
             tr += '<td class="drug_nos"><input type="hidden" name="item_id[]" name="item_id[]" id="item_id_'+length+'"></input><span id="pnum_'+length+'">'+length+'</span></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="drug[]" value="" class="form-control" id="drug_'+length+'"></input></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="strength[]" value="" class="form-control" id="strength_'+length+'"></input></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="dosage[]" value="" class="form-control" id="dosage_'+length+'" placeholder="1-0-1"></input></td>';
+            tr += '<td><input type="text" data-row="'+length+'" name="dosage[]" value="" class="form-control dosage" id="dosage_'+length+'" placeholder="1-0-1"></input></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="duration[]" value="" class="form-control" id="duration_'+length+'" placeholder="30 Days"></input></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="quantity[]" value="" class="form-control" id="quantity_'+length+'" placeholder="1"></input></td>';
             tr += '<td><input type="text" data-row="'+length+'" name="note[]" value="" class="form-control" id="note_'+length+'" placeholder="After Food" /></td>';
