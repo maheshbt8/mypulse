@@ -43,12 +43,29 @@ class Wards_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+        //echo "<pre>";
+        //var_dump($data);
+        //exit();
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
         unset($data['selected_did']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if ($this->db->insert($this->tblname, $data)) {
+
+            //find department name
+            $this->db->where('id', $data['department_id']);
+            $dept = $this->db->get('hms_departments')->row_array();
+            //find branch name
+            $this->db->where('id', $dept['branch_id']);
+            $branch = $this->db->get('hms_branches')->row_array();
+
+            if($this->auth->isSuperAdmin()){
+
+
+            }else{
+
+            }
             return true;
         } else {
             return false;

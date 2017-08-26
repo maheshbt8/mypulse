@@ -74,7 +74,7 @@ $this->load->view("template/left.php");
 										<div class="col-md-12">
 											<div class="col-md-6">
 												<div class="form-group">
-													<label><?php echo $this->lang->line('<')['fname'];?></label>
+													<label><?php echo $this->lang->line('labels')['fname'];?></label>
 													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
 												</div>
 												<div class="form-group">

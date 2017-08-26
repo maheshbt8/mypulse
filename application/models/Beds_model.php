@@ -117,8 +117,10 @@ class Beds_model extends CI_Model {
         if ($this->db->insert($this->tblname, $data)) {
             $this->db->where('department_id', $dept_id);
             $nurses = $this->db->get('hms_nurse')->result_array();
+            $this->db->where('id', $data['ward_id']);
+            $ward = $this->db->get('hms_wards')->row_array();
             foreach ($nurses as $nurse){
-                $this->notification->saveNotification($nurse['user_id'], "new bed is added");
+                $this->notification->saveNotification($nurse['user_id'], "new bed is added in <b>".$ward['ward_name']."</b>");
             }
             return true;
         } else {
@@ -137,6 +139,15 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            $this->db->where('department_id', $dept_id);
+            $nurses = $this->db->get('hms_nurse')->result_array();
+            $this->db->where('id', $data['ward_id']);
+            $ward = $this->db->get('hms_wards')->row_array();
+            $this->db->where('id', $id);
+            $bed = $this->db->get($this->tblname)->row_array();
+            foreach ($nurses as $nurse){
+                $this->notification->saveNotification($nurse['user_id'], "Bed <b>".$bed['bed']."</b> information is updated in <b>".$ward['ward_name']."</b>");
+            }
             return true;
         } else {
             return false;

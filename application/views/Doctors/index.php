@@ -96,7 +96,7 @@ $this->load->view("template/left.php");
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['password'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
+												<input class="form-control " type="password" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
 												<span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
 											</div>
 										</div>

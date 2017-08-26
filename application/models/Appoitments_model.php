@@ -184,6 +184,7 @@ class Appoitments_model extends CI_Model {
             if(isset($apt['id'])){
                 $msg = $this->auth->getAppoitmentStatus($status,true);
                 $this->notification->saveNotification($apt['user_id'],"Your appointment <b>".$apt['appoitment_number']."</b> has been ".$msg);
+
             }
             return true;
         } else return false;

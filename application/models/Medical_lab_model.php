@@ -68,9 +68,19 @@ class Medical_lab_model extends CI_Model {
         if(count($urls) > 0){
             $this->db->where('id',$id);
             $this->db->update('hms_medical_report',array('status'=>1));
+            //find patient
             $this->db->where('id', $id);
             $report = $this->db->get('hms_medical_report')->row_array();
-            $this->notification->saveNotification($report['patient_id'],"Your medical report is uploded");
+            //find appointment_no
+            $this->db->where('user_id', $report['patient_id']);
+            $app_no = $this->db->get('hms_appoitments')->row_array();
+            //find doctor
+            $this->db->where('id', $report['doctor_id']);
+            $doctor = $this->db->get('hms_doctors')->row_array();
+            //sent notification to patient
+            $this->notification->saveNotification($report['patient_id'], "Your medical report is uploded");
+            //sent notification to doctor
+            $this->notification->saveNotification($doctor['user_id'], "Medical report is uploaded of Patient_Appointment_No: <b>".$app_no['appoitment_number']."</b>");
         }
     }
     function getMedicalReportFiles($id){

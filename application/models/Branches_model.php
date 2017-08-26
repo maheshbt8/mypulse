@@ -58,11 +58,17 @@ class Branches_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            //find hospital admin
+            $this->db->where('hospital_id', $data['hospital_id']);
+            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+            //sent notification to hospital admin
+            $this->notification->saveNotification($hadmin['user_id'], "New branch is added in your hospital");
             return true;
         } else {
             return false;
@@ -70,12 +76,18 @@ class Branches_model extends CI_Model {
     }
     function update($id) {
         $data = $_POST;
+
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            //find hospital admin
+            $this->db->where('hospital_id', $data['hospital_id']);
+            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+            //sent notification to hospital admin
+            $this->notification->saveNotification($hadmin['user_id'], "Information of <b>".$data['branch_name']."</b> branch is updated in your hospital");
             return true;
         } else {
             return false;
