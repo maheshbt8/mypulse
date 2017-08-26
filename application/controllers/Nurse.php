@@ -14,6 +14,8 @@ class Nurse extends CI_Controller {
         $this->load->model('users_model');
         $this->load->model('hospitals_model');
         $this->load->model('beds_model');
+        $this->load->model('appoitments_model');
+        $this->load->model('patient_model');
     }
     public function index() {
         if($this->auth->isNurse()){
@@ -44,10 +46,7 @@ class Nurse extends CI_Controller {
             redirect('index/login');
         }
     }
-    // public function getDTpatient(){
-    //       $uid = $this->auth->getuserid();        
-    //      $this->nurse_model->getpatient($uid);
-    // }
+    
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
@@ -93,6 +92,25 @@ class Nurse extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $id = $this->input->post('id');
             echo json_encode($this->nurse_model->getnurseById($id));
+        }
+    }
+
+    public function patientRecord($appoitment_id=0){
+        if($this->auth->isLoggedIn() && $this->auth->isNurse()){
+            $data["page_title"] =  $this->lang->line('nurse');
+            $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('patientrecord'));
+            $data['appoitment'] = $this->appoitments_model->getappoitmentsById($appoitment_id);  
+                if(($data['appoitment']) == 0)
+                {    
+                    $d['success'] = array($this->lang->line('msg_inpatien_rec_error'));
+                    $this->session->set_flashdata('data', $d);
+                    redirect('nurse/inpatient',$data);                
+                }                    
+            $pid = $data['appoitment']['user_id'];
+            $data['profile'] = $this->patient_model->getProfile($pid);
+            $this->load->view('nurse/patientrecord',$data);
+        }else{
+            redirect('index/login');
         }
     }
     public function getDTnurse() {
@@ -175,49 +193,12 @@ class Nurse extends CI_Controller {
     }
 
 
-    //     public function getDTPatient() {
-    //     if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
-    //             $uid = $this->auth->getuserid();
-               
-    //            $patients_ids =  $this->nurse_model->getpatient($uid);
-
-    //         $this->load->library("tbl");
-    //         $table = "hms_users";
-    //         $primaryKey = "id";
-    //         $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
-    //             $user = $this->users_model->getusersById($row['id']);
-    //             $name = "";
-    //             if(isset($user['first_name'])){
-    //                 $name = $user['first_name'];
-    //             }
-    //             if(isset($user['last_name'])){
-    //                 $name .= " ".$user['last_name'];
-    //             }
-    //             return $name;
-    //         }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
-    //             return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-    //         }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
-    //              return "<a href=\"#\" id=\"Patient_id\" class=\"InPatientBtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></button>";
-    //         }));
-    //         if(count($patients_ids) == 0){
-    //         $patients_ids[] = '-1';
-    //         }   
-    //        $strpatient_ids = implode(',',$patients_ids); 
-    //         $cond[] = 'id in ('.$strpatient_ids.')';           
-    //         $this->tbl->setTwID(implode(' AND ',$cond));
-    //         $this->tbl->setIndexColumn(true);
-    //         $this->tbl->setCheckboxColumn(false);
-    //         // SQL server connection informationhostname" => "localhost",
-    //         $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-    //         echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
-    //     }
-    // }
   
-        public function getDTPatient() {
+    public function getDTPatient() {
         if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
-                $uid = $this->auth->getuserid();
-               
-               $patients_ids =  $this->nurse_model->getDoctorIds($uid);
+            $uid = $this->auth->getuserid();   
+            $patients_ids =  $this->nurse_model->getDoctorIds($uid);
+            
             $this->load->library("tbl");
             $table = "hms_inpatient";
             $primaryKey = "id";
@@ -229,12 +210,12 @@ class Nurse extends CI_Controller {
                 }
                 if(isset($user['last_name'])){
                     $name .= " ".$user['last_name'];
-                }
-                return $name;
+                }     
+             return "<a href='".site_url()."/nurse/patientRecord/".$row['appointment_id']."' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$name."</a>";
             }), array("db" => "doctor_id", "dt" => 1, "formatter" => function ($d, $row) {
-                    $doctor = $this->doctors_model->getdoctorsById($d);  
-                    $user = $this->users_model->getusersById($doctor['user_id']);
-                 $name = "";
+                $doctor = $this->doctors_model->getdoctorsById($d);  
+                $user = $this->users_model->getusersById($doctor['user_id']);
+                $name = "";
                 if(isset($user['first_name'])){
                     $name = $user['first_name'];
                 }
@@ -245,31 +226,31 @@ class Nurse extends CI_Controller {
             }), array("db" => "join_date", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));                   
             }), array("db" => "reason", "dt" => 3, "formatter" => function ($d, $row) {
-                    return $d;                     
+                return $d;                     
             }), array("db" => "bed_id", "dt" => 4, "formatter" => function ($d, $row) {
-                    $bed = $this->beds_model->getbedsById($d);
+                $bed = $this->beds_model->getbedsById($d);
                 return $bedName = $bed['bed'];   
             }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
-                       $status = $this->auth->getInpatientStatus($d);
-                      return $status;                     
+                $status = $this->auth->getInpatientStatus($d);
+                return $status;                     
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
-                           $bed = $this->beds_model->getbedsById($row['bed_id']);
-               $bedName = $bed['bed']; 
-               $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
-               $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
-               $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
-               $doc_id = $row['doctor_id'];
-               $bed_id = $row['bed_id'];  
-               $user_id = $row['user_id'];    
-                 return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
+                $bed = $this->beds_model->getbedsById($row['bed_id']);
+                $bedName = $bed['bed']; 
+                $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
+                $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
+                $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
+                $doc_id = $row['doctor_id'];
+                $bed_id = $row['bed_id'];  
+                $user_id = $row['user_id'];    
+                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
             }));
             if(count($patients_ids) == 0){
-            $patients_ids[] = '-1';
+                $patients_ids[] = '-1';
             }   
-           $strpatient_ids = implode(',',$patients_ids); 
+            $strpatient_ids = implode(',',$patients_ids);
             $cond[] = 'doctor_id in ('.$strpatient_ids.')';                                   
             $cond[] = 'status in (0,1)';
-           $query =  $this->tbl->setTwID(implode(' AND ',$cond));            
+            $query =  $this->tbl->setTwID(implode(' AND ',$cond));            
             $this->tbl->setIndexColumn(true);
             $this->tbl->setCheckboxColumn(false);
             // SQL server connection informationhostname" => "localhost",
@@ -279,4 +260,71 @@ class Nurse extends CI_Controller {
     }
 
 
+     public function getDTPrescription($app_id) {     
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_prescription";
+            $primaryKey = "id";
+            $columns = array(array("db" => "title", "dt" => 0, "formatter" => function ($d, $row) {
+                return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$d."</a>";
+            }), array("db" => "appoitment_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                return isset($temp['doctor_name']) ? $temp['doctor_name'] : "-";
+            }), array("db" => "appoitment_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                return isset($temp['appoitment_date']) ? date("d-M-Y",strtotime($temp['appoitment_date'])) : "-";
+            }), array("db" => "appoitment_id", "dt" => 3, "formatter" => function ($d, $row) {
+                $temp = $this->appoitments_model->getappoitmentsById($d);
+                return isset($temp['remarks']) ? $temp['remarks'] : "-";
+            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
+                return "";
+            }));
+            
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("isDeleted=0");
+            $cond[] = "appoitment_id=".$app_id;
+            
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
+
+            
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+        public function getDTPReports($app_id){
+            $pres_id = $this->patient_model->prescriptionByApp_id($app_id);
+            if(count($pres_id) == 0 ){
+              $pres_ids[] = '-1';
+          } 
+            $pres_ids = implode(',',$pres_id);
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_medical_report";
+            $primaryKey = "id";
+            $columns = array(array("db" => "title", "dt" => 0, "formatter" => function ($d, $row) {
+                return "<a href='#' class='btnup' data-id='$row[id]' data-toggle='modal' data-target='#uploadMR'>$d</a>";
+            }), array("db" => "description", "dt" => 1, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "status", "dt" => 2, "formatter" => function ($d, $row) {
+                if($d=="0"){
+                    return '<span class="label label-info">Pending</span>';
+                }else{
+                    return '<span class="label label-success">Completed</span>';
+                }
+            }));
+            $cond[] = "isDeleted=0";
+            $cond[] = "prescription_id in (".$pres_ids.")";
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
 }

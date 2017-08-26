@@ -14,7 +14,9 @@ class Appoitments_model extends CI_Model {
     function getappoitmentsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r =  $r->row_array();
-
+           if(count($r) == 0){
+                  return 0;
+                }
         if(isset($r['department_id'])){
             $this->db->where('id',$r['department_id']);
             $this->db->where('isActive',1);
@@ -72,6 +74,7 @@ class Appoitments_model extends CI_Model {
         $r['timesloat_val'] = $time_vl;
         $r['timesloat_txt'] = $time_tx;
         return $r;
+
     }
 
     function udpateremark(){

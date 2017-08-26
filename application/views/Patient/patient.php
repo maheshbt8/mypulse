@@ -19,10 +19,10 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="custome_col4">
                                 <div class="panel_button_top_right">
-                                    <a class="btn btn-primary m-b-sm " id="editBtn" style="display:none" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newPrescription'];?></a>
-                                    <!-- <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newpatient'];?></a> -->
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="modal" data-target="#AddNewNote" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['new_note'];?></a>&nbsp
+                                   <!--  <a class="btn btn-primary m-b-sm " id="editBtn" style="display:none" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['edit'];?></a>
+                                    <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['newPrescription'];?></a>
+                                    <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['newpatient'];?></a>
+                                    <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="modal" data-target="#AddNewNote" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['new_note'];?></a>&nbsp -->
                                     <button type="button" id="canPatientBtnHist" class="btn btn-warning pull-right" style="display:none"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
                                 </div>
@@ -37,7 +37,7 @@ $this->load->view("template/left.php");
 				                                <thead>
 				                                    <tr>
 														<th style="width:10px"></th>
-														<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>								
+														<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>								
 														<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
 														<th><?php echo $this->lang->line('tableHeaders')['join_date'];?></th>
 														<th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
@@ -50,24 +50,24 @@ $this->load->view("template/left.php");
 				                                </tbody>
 				                            </table>  
 				                        </div>
-                                        <div class="table-responsive" id="inPatientTblDiv" style="display: none;">
+                                        <!-- div class="table-responsive" id="inPatientTblDiv" style="display: none;">
                                             <table id="inPatientTbl" class="display table" cellspacing="0" width="100%">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['bed no'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['join_date'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['left_date'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
+                                                        <th><?php// echo $this->lang->line('tableHeaders')['bed no'];?></th>
+                                                        <th><?php// echo $this->lang->line('tableHeaders')['join_date'];?></th>
+                                                        <th><?php// echo $this->lang->line('tableHeaders')['left_date'];?></th>
+                                                        <th><?php //echo $this->lang->line('tableHeaders')['reason'];?></th>
+                                                        <th><?php// echo $this->lang->line('tableHeaders')['status'];?></th>
+                                                        <th><?php //echo $this->lang->line('tableHeaders')['action'];?></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                 </tbody>
                                             </table>
                                            
-                                        </div>
+                                        </div> -->
                                         <div class="table-responsive" id="inPatientTblHistoryDiv" style="display: none;">
                                            <div class="Histry_record" style="margin-left: 50px;">                                              
                                               <h4>Bed :  <small id="bed_no"></small></h4>
@@ -134,11 +134,12 @@ $this->load->view("template/left.php");
 	            </div>
 	        </div>                        
 	    </div><!-- Main Wrapper -->
-        <div class="modal fade" id="AddNewNote" tabindex="-1" role="dialog" 
+      
+<!--         <div class="modal fade" id="AddNewNote" tabindex="-1" role="dialog" 
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
+            Modal Header
             <div class="modal-header">
                 <button type="button" class="close" 
                    data-dismiss="modal">
@@ -150,9 +151,9 @@ $this->load->view("template/left.php");
                 </h4>
             </div>
             
-            <!-- Modal Body -->
+            Modal Body
             <div class="modal-body">
-                <form method="post" action="<?php echo site_url(); ?>/inpatient/add_noteByNurse" class="form-horizontal" role="form" id="new_noteform">
+                <form method="post" action="<?php // echo site_url(); ?>/inpatient/add_noteByNurse" class="form-horizontal" role="form" id="new_noteform">
                 <input type="hidden" name="hsinpatientadd_id" id="hsinpatientadd_id">
                 <input type="hidden" name="hsinpatientEdit_id" id="hsinpatientEdit_id">
                   <div class="form-group">
@@ -172,12 +173,12 @@ $this->load->view("template/left.php");
                 </form>                  
             </div>
             
-            <!-- Modal Footer -->
+            Modal Footer
             <div class="modal-footer">                
             </div>
         </div>
     </div>
-</div>
+</div> -->
 		
 	    <?php
 $this->load->view("template/footer.php");
@@ -189,7 +190,7 @@ $this->load->view("template/footer.php");
 				$("#patients").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/nurse/getDTpatient"
+		            "ajax": "<?php echo site_url(); ?>/patients/getDTpatient"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
@@ -217,7 +218,7 @@ $this->load->view("template/footer.php");
 		    $(document).on('click','.historyinpatient',function(){
 			               var patient_id= $(this).data('id');
                        $('#hsinpatientadd_id').val(patient_id);
-                         $('#inPatientTblDiv').hide();
+                         // $('#inPatientTblDiv').hide();
                 	     $('#patientRecordTbl').hide();
                 	     $('#inPatientTblHistoryDiv').show();
 			               var bed_no = $(this).data('bno');
@@ -233,7 +234,7 @@ $this->load->view("template/footer.php");
 			              //   $('#inPatientTblDiv').hide();
 			              $('#canPatientBtnHist').show();
 			              // $('#inPatientBtn').hide();
-			               $("#add_noteBtn").show();
+			              // $("#add_noteBtn").show();
 			              // $('#inPatientTblHistoryDiv').show();
 			              $("#inPatientTblHistory").dataTable().fnDestroy();
 			                $('#inPatientTblHistory').DataTable({ 
@@ -288,7 +289,7 @@ $this->load->view("template/footer.php");
 		            $("#inPatientBtn").hide();
 
 		            $("#tabDiv").hide();
-		            $("#inPatientTblDiv").hide(); 
+		            // $("#inPatientTblDiv").hide(); 
 		           // $("#inPatientDiv").hide(); 
 		            $("#div_title").html('Edit Inpatient');       
 		            $("#inpatient_update").html("Update");
@@ -326,8 +327,8 @@ $this->load->view("template/footer.php");
 				    }); 
 		        $('#canPatientBtnHist').click(function(){
 		          $('#canPatientBtnHist').hide();
-		          $('#add_noteBtn').hide();		          
-		          $('#inPatientTblDiv').hide();
+		          // $('#add_noteBtn').hide();		          
+		          // $('#inPatientTblDiv').hide();
 		          $('#inPatientTblHistoryDiv').hide();
 		          $('#patientRecordTbl').show(); 
 		        });
@@ -339,9 +340,9 @@ $this->load->view("template/footer.php");
 	            $("#div_title").html("<?php echo $this->lang->line('newPatient');?>");
               });
 
-			     $('#add_noteBtn').click(function(){
-		         $("form").trigger("reset");
-		        });
+			     // $('#add_noteBtn').click(function(){
+		      //    $("form").trigger("reset");
+		      //   });
 		});
 
 		</script>

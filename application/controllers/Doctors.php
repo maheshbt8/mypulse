@@ -186,6 +186,7 @@ class Doctors extends CI_Controller {
            echo $id;
   }
     public function newprescription(){
+
         if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
             $appt_id = $_POST['appt_id'];
             $this->doctors_model->addPrescription();
@@ -213,10 +214,13 @@ class Doctors extends CI_Controller {
                     $d['error'] = array($this->lang->line('msg_inpatien_error'));    
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');
-                }
+                }else{
+
                     $d['success'] = array($this->lang->line('msg_inpatien_saved'));
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');    
+
+                }
                 
             }
         }else{
@@ -353,7 +357,7 @@ class Doctors extends CI_Controller {
         echo json_encode($return);
     }
 
-    public function getDTPrescription($pid=0) {
+    public function getDTPrescription($pid=0) {       
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_prescription";

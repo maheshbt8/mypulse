@@ -182,4 +182,55 @@ class Patient_model extends CI_Model {
         $medicallab = $this->db->get('hms_medical_lab')->row_array();
         $this->notification->saveNotification($medicallab['user_id'], "Patient request for test the medical report");
     }
+    
+    public function prescriptionByApp_id($app_id){
+        
+
+         $query = $this->db->query("select * from hms_prescription where appoitment_id = $app_id");
+          $pres_query =  $query->result_array();
+         $pres_ids = array();
+         foreach ($pres_query as $row) {
+             $pres_ids[] = $row['id'];
+         }
+          return $pres_ids;
+    }
+    public function getHospitalnameBybedId($userId){
+
+        $query = $this->db->query("select hms_inpatient.bed_id, hms_beds.ward_id,hms_wards.department_id,hms_departments.branch_id,hms_branches.hospital_id, hms_hospitals.name from hms_inpatient,hms_beds,hms_wards,hms_departments,hms_branches,hms_hospitals where hms_inpatient.user_id = $userId and hms_inpatient.bed_id = hms_beds.id and hms_beds.ward_id = hms_wards.id and hms_departments.id = hms_wards.department_id AND hms_departments.branch_id = hms_branches.id AND hms_hospitals.id = hms_branches.hospital_id");
+        return $query->row_array();
+
+
+    }
+
+    public function canOutPrescptionOrder($id){
+         $data = array(
+             'order_status'=> 3
+            ); 
+        $this->db->where('id', $id);
+       if ($this->db->update('hms_prescription', $data)) {
+           return true;
+       }
+        
+    }
+
+    public function addplaceorder($id){
+
+       $query = $this->db->query("select hms_users.first_name,hms_users.last_name,hms_doctors.user_id,hms_prescription.* from hms_prescription,hms_doctors,hms_users where hms_prescription.id = $id and hms_doctors.id = hms_prescription.doctor_id and hms_doctors.user_id = hms_users.id");
+       return $query->result_array();
+    }
+
+    public function Updateitemquantity(){
+        $id = $_REQUEST['id'];
+        $data = array(
+
+            'qty' => $_REQUEST['quantity']
+
+            );
+        $item = $this->auth->my_encrypt_array($data,$p = 0);
+        $this->db->where('id', $id);
+           if ($this->db->update('hms_prescription_item', $item)) {
+               return true;
+           }        
+    }
+
 }

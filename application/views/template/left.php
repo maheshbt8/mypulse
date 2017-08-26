@@ -98,13 +98,14 @@
                         ?>
                             <!--<li id="li51"><a href="<?php //echo site_url();?>/patients/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p><?php //echo $menu['profile'];?></p></a></li>-->
                             <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
-                            <li id="li53"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>
-                            <li id="li55"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_inpatient_history'];?></p></a></li>
-                            <li id="li54" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
+                            <!--<li id="li53"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>-->
+                            <li id="li55"><a href="<?php echo site_url();?>/patients/inpatient" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_inpatient_history'];?></p></a></li>
+                           
+                            <!--<li id="li54" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
                                     
                                 </ul>
-                            </li>
+                            </li>-->
                         <?php    
                             break;
                             case $this->auth->getReceptienstRoleType():
@@ -116,8 +117,8 @@
                             case $this->auth->getNurseRoleType():
                         ?>
                             <li id="li4"><a href="<?php echo site_url();?>/doctors" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_dectors'];?> </p></a></li>
-                            <li id="li4"><a href="<?php echo site_url();?>/nurse/beds" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_beds'];?> </p></a></li>
-                            <li id="li4"><a href="<?php echo site_url();?>/nurse/inpatient" class="waves-effect waves-button"><span class="menu-icon fa  fa-stethoscope "></span><p><?php echo $menu['main_patients'];?> </p></a></li>
+                            <li id="li5"><a href="<?php echo site_url();?>/nurse/beds" class="waves-effect waves-button"><span class="menu-icon fa  fa-bed "></span><p><?php echo $menu['main_beds'];?> </p></a></li>
+                            <li id="li6"><a href="<?php echo site_url();?>/nurse/inpatient" class="waves-effect waves-button"><span class="menu-icon fa fa-users "></span><p><?php echo $menu['main_patients'];?> </p></a></li>
                         <?php
                                 
                             break;

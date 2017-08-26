@@ -97,9 +97,6 @@ $this->load->view("template/left.php");
                             </div>
                             <div class="custome_col4">
                                 <div class="panel_button_top_right">
-                                    <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newPrescription'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newpatient'];?></a>
                                     <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="modal" data-target="#AddNewNote" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['new_note'];?></a>&nbsp
                                     <button type="button" id="canPatientBtnHist" class="btn btn-warning pull-right" style="display:none"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
@@ -115,7 +112,7 @@ $this->load->view("template/left.php");
                                 <li role="presentation" class="active"><a href="#tab1"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>                                
                                 <li role="presentation" class=""><a href="#tab2"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescriptions'];?></a></li>
                                 <li role="presentation" class=""><a href="#tab3" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
-                                 <li role="presentation" class=""><a href="#tab4" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['inpatient_records'];?></a></li>
+                                 <!-- <li role="presentation" class=""><a href="#tab4" aria-controls="home" role="tab" data-toggle="tab"><?php// echo $this->lang->line('labels')['inpatient_records'];?></a></li> -->
                             </ul>
                             <!-- Tab panes -->
                             <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
@@ -339,9 +336,8 @@ $this->load->view("template/left.php");
                                   <div class="form-group">
                                   <label for="PatientStatus"><?php echo $this->lang->line('labels')['patientStatus']; ?></label>
                                       <select class="form-control" name="ptStatus" id="ptStatus">
-                                         <option selected value="0">Not Admitted</option>
-                                         <option value="1">Admitted</option>
-                                         <option value="2">Discharged</option>
+                                         <option value="1">Yes</option>
+                                         <option selected value="0">No</option>
                                       </select>
                                   </div>
                                 </div>
@@ -383,54 +379,6 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-12">
-                                    <lable class="control-label"><b><h3>Prescription for Medicines </h3></b></label><br>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Drug</th>
-                                                <th>Strength</th>
-                                                <th>Dosage</th>
-                                                <th>Duration</th>
-                                                <th>Quantity</th>
-                                                <th>Note</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tbody">
-                                            <tr data-row="1" id="row_1">
-                                                <td class='drug_nos'>
-                                                    <input type="hidden" name="item_id[]" name="item_id[]" id="item_id_1"></input>1
-                                                </td>
-                                                <td>
-                                                    <input type="text" data-row="1" name="drug[]" value="" class="form-control" id="drug_1"></input>
-                                                </td>
-                                                <td>
-                                                    <input type="text" data-row="1" name="strength[]" value="" class="form-control" id="strength_1"></input>
-                                                </td>
-                                                <td>
-                                                    <input type="text" data-row="1" name="dosage[]" value="" class="form-control dosage" id="dosage_1" placeholder="1-0-1"></input>
-                                                </td>
-                                                <td>
-                                                    <input type="text" data-row="1" name="duration[]" value="" class="form-control" id="duration_1" placeholder="30 Days"></input>
-                                                </td>
-                                                <td>
-                                                    <input type="text" data-row="1" name="quantity[]" value="" class="form-control" id="quantity_1" placeholder="1"></input>
-                                                </td>
-                                                <td>
-                                                    <input type="text" data-row="1" name="note[]" value="" class="form-control" id="note_1" placeholder="After Food" />
-                                                </td>
-                                                <td>
-                                                    <button type="button" id="remove_id_1" data-len="1" class="btn removeitemrow"><i class="fa fa-minus"></i></button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button type="button" id="item_btn_1" class="btn additemrow pull-right" style=""><i class="fa fa-plus"></i> &nbsp; Add Another Item</button>   
-                                </div> 
-                                <Br><br>
                                 <div class="col-md-12" id="medReportDiv">
                                     <lable class="control-label"><b><h3>Prescription for Medical Tests </h3></b></label><br>
                                     <table width="100%" id="medRepTbl">
@@ -619,8 +567,7 @@ $this->load->view("template/footer.php");
                 'drug[]':{ required : true },
                 'strength[]' : { required : true },
                 'dosage[]': { required : true },
-                'duration[]' :{ required : true },
-                'quantity[]' :{ required : true }
+                'duration[]' :{ required : true }
             },
             messages: {
                 
@@ -638,10 +585,7 @@ $this->load->view("template/footer.php");
                 },
                 'duration[]':{
                     required: "<?php echo $this->lang->line('validation')['requiredDuration'];?>"
-                },
-                'quantity[]':{
-                    required: "<?php echo $this->lang->line('validation')['requiredQuantity'];?>"
-                } 
+                }
             },
             invalidHandler: validationInvalidHandler,
             errorPlacement: validationErrorPlacement
@@ -754,52 +698,6 @@ $this->load->view("template/footer.php");
             
         }); 
 
-        var isEdit = false;
-        var gotoP = 0;
-        gotoP = '<?php if(isset($_GET["p"]) && $_GET["p"]==1){ echo 1;}else{ echo 0;} ?>';
-        gotoP = '<?php if(isset($_GET["p"]) && $_GET["p"]==2){ echo 2;}else{ echo 0;} ?>';
-        if(gotoP == 1){
-            $('#tabDiv a[href="#tab2"]').click();
-            updateTabshow('#tab2');
-        }
-        else if(gotoP == 2){
-            $('#tabDiv a[href="#tab4"]').click();
-            updateTabshow('#tab4');
-        }
-
-        $("#editBtn").click(function(){
-            toggleEditButton();
-        });
-
-        $("#cancelBtn").click(function(){
-            isEdit = false;
-             var eb = $("#editBtn");
-            $("#cancelBtn").hide();
-            disableFields();
-            $(eb).data('isEdit','0');
-            $(eb).addClass('btn-primary');
-            $(eb).removeClass('btn-success');
-            $(eb).html('Edit');
-            disableFields();
-        });
-
-        function toggleEditButton(){
-            var eb = $("#editBtn");
-            if($(eb).data('isEdit') == "1"){
-                isEdit = false;
-                saveData();
-                $("#cancelBtn").hide();
-            }else{
-                isEdit = true;
-                $(eb).data('isEdit','1');
-                $(eb).removeClass('btn-primary');
-                $(eb).addClass('btn-success');
-                $(eb).html('Save');
-                enableFields();
-                $("#cancelBtn").show();
-            }
-        }
-
         function disableFields(){
             $("#tabDiv input").prop("disabled", true);
             $("#tabDiv textarea").prop("disabled", true);
@@ -829,62 +727,20 @@ $this->load->view("template/footer.php");
 
         function updateTabshow(target){
             if(target == "#tab1"){
-                $("#editBtn").show();
-                $("#inPatientBtn").hide();
                 $("#cancelBtn").hide();
                 $("#add_noteBtn").hide();
-                $("#addPrescriptionBtn").hide();
                 $("#canPatientBtnHist").hide();    
             }else if(target == "#tab2"){
-                $("#inPatientBtn").hide();
-                $("#editBtn").hide();
                 $("#cancelBtn").hide();
                 $("#add_noteBtn").hide();
-                $("#addPrescriptionBtn").show();
                 $("#canPatientBtnHist").hide();
             }else if(target == "#tab3"){
-                $("#editBtn").hide();
-                $("#inPatientBtn").hide();
                 $("#cancelBtn").hide();
                 $("#add_noteBtn").hide();
-                $("#addPrescriptionBtn").hide();
-                $("#canPatientBtnHist").hide();
-            }else if(target == "#tab4"){
-                $("#editBtn").hide();
-                $("#cancelBtn").hide();
-                $("#addPrescriptionBtn").hide();
-                $("#inPatientBtn").show();
-                $("#inPatientTblDiv").show();
-                $("#inPatientTblHistoryDiv").hide();
                 $("#canPatientBtnHist").hide();
             }
         }
 
-        $("#addPrescriptionBtn").click(function(){
-            $("#addPrescriptionBtn").hide();
-            $("#tabDiv").hide();
-            $("#preDiv").show();
-            $("#date").val(moment().format("DD-MM-YYYY"));
-            $("#title").val("");
-            $("#edit_id").val("");
-            $("#tbody").html("");
-            $("#sbtn").html("Save");
-            //addNewItemRow();
-            $("#div_title").html("<?php echo $this->lang->line('newPrescription');?>");
-        });
-        $("#inPatientBtn").click(function(){
-            $("#inPatientBtn").hide();
-            $("#addPrescriptionBtn").hide();
-            $("#tabDiv").hide();
-            $("#inPatientDiv").show();
-          //   $("#datepicker").val(moment().format("DD-MM-YYYY"));
-            // $("#title").val("");
-            // $("#edit_id").val("");
-            // $("#tbody").html("");
-          //  $("#sbtn").html("Save");
-           // addNewItemRow();
-            $("#div_title").html("<?php echo $this->lang->line('newinPatient');?>");
-        });
         $('#canPatientBtnHist').click(function(){
           $('#canPatientBtnHist').hide();
           $('#add_noteBtn').hide();
@@ -893,59 +749,6 @@ $this->load->view("template/footer.php");
           $('#inPatientBtn').show();
         });
 
-        $(document).on('click','.editbtn1', function(){
-            var id = $(this).data('id');            
-            $("#edit_id").val(id);
-            $.get('<?php echo site_url();?>/doctors/getprescription/'+id,{}, function(data) {
-                $("#addPrescriptionBtn").hide();
-                $("#tabDiv").hide();
-                $("#preDiv").show();
-                $("#sbtn").html("Update");
-
-                $("#div_title").html("<?php echo $this->lang->line('newPrescription');?>");
-                data = JSON.parse(data);
-                
-                $("#date").val(data.date);
-                $("#title").val(data.title);
-                $("#note").val(data.note);
-                
-                $("#tbody").html("");
-                
-                for(var i=1; i<=data.items.length; i++){
-                    var item = data.items[i-1];
-                    addNewItemRow();
-                    $("#drug_"+i).val(item.drug);
-                    $("#strength_"+i).val(item.strength);
-                    $("#dosage_"+i).val(item.dosage);
-                    $("#duration_"+i).val(item.duration);
-                    $("#quantity"+i).val(item.qty);
-                    $("#note_"+i).val(item.note);
-                    $("#item_id_"+i).val(item.id);
-                }
-
-                if(data.reports!=undefined){
-                    var cnt =1;
-                    for(var i=0; i<data.reports.length; i++){
-                        var _rep = data.reports[i];
-                        var report = "<tr>";
-                        report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
-                        report += "<td style='width:20%' valign='top'><span class='mr_tit'>"+_rep.title+"</span></td>";
-                        report += "<td valign='top'><span class='mr_des'>"+_rep.description+"</span>";
-                        for(var j=0; j<_rep.files.length; j++){
-                            var f = _rep.files[j];
-                            report += "<br>";
-                            report += "<span><a data-fancybox='gallery' title='Report - "+(j+1)+"' href='"+f.file_url+"'>Report - "+(j+1)+"</a></span><br><br>";
-                        }
-                        report += "</td>";
-                        report += '<td valign="top" style="width:10px"></td>';
-                        report += "</tr>";
-                        $("#medRepTbl").append(report);
-                        cnt++;
-                    }
-                    updateMrCnt();  
-                }
-            });
-        });
      $(document).on('click','.editinpatient',function(){
         var id = $(this).data('id');
         $('#inpatient_id').val(id);
@@ -971,17 +774,15 @@ $this->load->view("template/footer.php");
                                 tempselectize_bed_ID.addOption([{"id":inpatient_data.bed_id,"text":inpatient_data.bed_id}]);
                                 tempselectize_bed_ID.refreshItems();
                                 tempselectize_bed_ID.setValue(inpatient_data.bed_id);
-                                 //$('#datepicker').val(inpatient_data.join_date);
-                                 //
-                                 $('#datepicker').datepicker('setDate',inpatient_data.join_date);
-
+                                 $('#datepicker').val(inpatient_data.join_date);
                                  $('#ptStatus').val(inpatient_data.status);
                                  $('#patient_reason').val(inpatient_data.reason);
                              //   callback($.parseJSON(res));
                             }
                         });
-       // }
+
      });
+
      $(document).on('click','.historyinpatient',function(){
                var patient_id= $(this).data('id');
                $('#hsinpatientadd_id').val(patient_id);
@@ -996,7 +797,6 @@ $this->load->view("template/footer.php");
                 $('#hs_status').text(hs_status);
                 $('#hs_reason').text(hs_reason);
                 $('#hs_ldate').text(ldate);
-                //row.find(".historyinpatient").hide();
               $('#inPatientTblDiv').hide();
               $('#canPatientBtnHist').show();
               $('#inPatientBtn').hide();
@@ -1024,7 +824,6 @@ $this->load->view("template/footer.php");
          $('#Hsnew_note').val(inpHisEdit_note);
     }); 
         $("#canPrescriptionBtn").click(function(){
-            $("#addPrescriptionBtn").show();
             $("#tabDiv").show();
             $("#preDiv").hide();
 
@@ -1034,7 +833,7 @@ $this->load->view("template/footer.php");
          $("form").trigger("reset");
         });
         $("#canPatientBtn").click(function(){
-            $("#inPatientBtn").show();
+            // $("#inPatientBtn").show();
             $("#tabDiv").show();
             $("#inPatientDiv").hide();
             $("#div_title").html("<?php echo $this->lang->line('newPatient');?>");
@@ -1044,11 +843,6 @@ $this->load->view("template/footer.php");
             addNewItemRow();
         });
 
-        function addNewItemRow(){
-            $("#tbody").append(getRow());
-            $(".dosage").inputmask("*{+}-*{+}-*{+}");
-            updateDrugNo();
-        }
         
         $(document).on('click','.removeitemrow',function(){
             if($(this).data("id") == undefined){
@@ -1074,22 +868,6 @@ $this->load->view("template/footer.php");
             }   
         });
 
-        function getRow() {
-            var length = $("#tbody").children().length;
-            length += 1;
-            var tr = "";
-            tr = '<tr id="row_'+length+'">';
-            tr += '<td class="drug_nos"><input type="hidden" name="item_id[]" name="item_id[]" id="item_id_'+length+'"></input><span id="pnum_'+length+'">'+length+'</span></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="drug[]" value="" class="form-control" id="drug_'+length+'"></input></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="strength[]" value="" class="form-control" id="strength_'+length+'"></input></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="dosage[]" value="" class="form-control dosage" id="dosage_'+length+'" placeholder="1-0-1"></input></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="duration[]" value="" class="form-control" id="duration_'+length+'" placeholder="30 Days"></input></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="quantity[]" value="" class="form-control" id="quantity_'+length+'" placeholder="1"></input></td>';
-            tr += '<td><input type="text" data-row="'+length+'" name="note[]" value="" class="form-control" id="note_'+length+'" placeholder="After Food" /></td>';
-            tr += '<td><button type="button" id="remove_id_'+length+'" data-len="'+length+'" class="btn removeitemrow"><i class="fa fa-minus"></i></button></td>';
-            tr += '</tr>';
-            return tr;
-        }
 
         function updateDrugNo(){
             var all = $(".drug_nos");
@@ -1105,7 +883,7 @@ $this->load->view("template/footer.php");
             "paging":   true,
             "ordering": false,
             "info":     false,
-            "ajax": '<?php echo site_url();?>/doctors/getDTPrescription/'+"<?php echo $profile['id'];?>"
+            "ajax": '<?php echo site_url();?>/nurse/getDTPrescription/'+"<?php echo $appoitment['id'];?>"
         });
         $("#prescriptionTbl_filter").hide();
         $("#prescriptionTbl_length").hide();
@@ -1116,7 +894,7 @@ $this->load->view("template/footer.php");
             "paging":   true,
             "ordering": false,
             "info":     false,
-            "ajax": '<?php echo site_url();?>/medical_lab/getDTPReports/'+"<?php echo $profile['id'];?>"
+            "ajax": '<?php echo site_url();?>/nurse/getDTPReports/'+"<?php echo $appoitment['id'];?>"
         });
         $("#reportTbl_filter").hide();
         $("#reportTbl_length").hide();

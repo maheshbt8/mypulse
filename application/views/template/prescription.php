@@ -199,6 +199,9 @@
                                                     Duration
                                                 </td>
                                                 <td style="padding:5px 10px 5px 5px;word-wrap: break-word;width:120px;" class="pcs-itemtable-header" align="right">
+                                                    Quantity
+                                                </td>
+                                                <td style="padding:5px 10px 5px 5px;word-wrap: break-word;width:120px;" class="pcs-itemtable-header" align="right">
                                                     Note
                                                 </td>
                                             </tr>
@@ -222,6 +225,9 @@
                                                         </td>
                                                         <td style="text-align:right;padding: 10px 10px 10px 5px;word-wrap: break-word;" class="pcs-item-row" valign="top">
                                                             <span id="tmp_item_qty"><?php echo $item['duration']; ?></span>
+                                                        </td>
+                                                        <td style="text-align:right;padding: 10px 10px 10px 5px;word-wrap: break-word;" class="pcs-item-row" valign="top">
+                                                            <span id="tmp_item_qty"><?php echo $item['qty']; ?></span>
                                                         </td>
                                                         <td style="text-align:right;padding: 10px 10px 10px 5px;word-wrap: break-word;" class="pcs-item-row" valign="top">
                                                             <span id="tmp_item_qty"><?php echo $item['note']; ?></span>

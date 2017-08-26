@@ -12,6 +12,7 @@ $lang['home'] = "Home";
 $lang['users'] = "Users";
 $lang['customers'] = "Customers";
 $lang['patients'] = "Patients";
+$lang['addplaceorder'] = "Add Place Order";
 $lang['license'] = "License";
 $lang['hospitals'] = "Hospitals";
 $lang['departments'] = "Departments";
@@ -143,6 +144,8 @@ $lang['msg_inpatien_saved'] = "Inpatient Added successfully";
 $lang['msg_inpatien_error'] = "Inpatient Already Existed";
 
 $lang['msg_inpatien_updated'] = "Inpatient Updated successfully";
+
+$lang['msg_inpatien_rec_error'] = " Inpatient Record Not Found";
 
 $lang['msg_no_outstanding_tests'] = "No outstanding test requests found";
 $lang['msg_no_outstanding_orders'] = "No outstanding orders found";
@@ -459,6 +462,7 @@ $lang['validation'] = array(
     'requriedStrength' => 'Enter strength',
     'requiredDosage' => 'Enter dosage',
     'requiredDuration' => 'Enter duration',
+    'requiredQuantity' => 'Enter Quantity',
     'requiredMedicalLab' => 'Select Medical Lab',
     'takenEmail' => 'This email is already registered. Please try another',
     'takenPhone' => 'This mobile is already registered. Please try another',

@@ -117,6 +117,18 @@ class Dashboard_model extends CI_Model {
         $doc_data_result = $doc_data->result_array();
         $doc_count =count($doc_data_result); 
         $res['doc_count'] = $doc_count;
+        $doc_ids_count = array();
+         foreach ($doc_data_result as $row_doc_ids) {
+             $doc_ids[] = $row_doc_ids['id']; 
+         }
+         if(count($doc_ids) == 0)
+         {
+            $doc_ids[] = -1;
+         }
+           
+         $patientquery = $this->db->query('select * from `hms_inpatient`  where isDeleted = 0 and isActive = 1 and doctor_id in ("'.implode(",", $doc_ids).'")');
+        $patientResult = $patientquery->result_array();
+        $res['patient_count'] = count($patientResult);
         return $res;
     }
 

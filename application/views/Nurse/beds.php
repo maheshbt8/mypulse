@@ -12,6 +12,8 @@ $this->load->view("template/left.php");
 					  <input type="hidden" id="left_active_sub_menu" value="204" />';
 			}else if($this->auth->isHospitalAdmin()){
 				echo '<input type="hidden" id="left_active_menu" value="14" />';
+			}else{
+				echo '<input type="hidden" id="left_active_menu" value="5" />';
 			}
 		?>
 		<div id="main-wrapper">
