@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Aug 14, 2017 at 04:33 AM
+-- Generation Time: Aug 26, 2017 at 03:14 PM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -56,7 +56,7 @@ INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department
 (5, 'APT5', 26, 1, 2, '2017-07-09', '11:30:00', '12:30:00', 3, 'aaaaa', '', '0000-00-00 00:00:00', '2017-07-10 03:24:04', 0),
 (9, 'APT9', 144, 1, 2, '2017-07-24', '14:00:00', '14:30:00', 0, 'Deep Appit.', '', '0000-00-00 00:00:00', '2017-07-23 05:27:36', 0),
 (8, 'APT8', 26, 1, 2, '2017-07-19', '09:00:00', '09:30:00', 3, 'Appt for testing ', 'New Remarks...', '0000-00-00 00:00:00', '2017-07-22 04:43:23', 0),
-(11, 'APT11', 26, 1, 2, '2017-07-24', '14:00:00', '14:30:00', 0, 'nEW appIT TWTSSGI', '', '0000-00-00 00:00:00', '2017-07-23 17:14:15', 0);
+(11, 'APT11', 26, 1, 2, '2017-07-24', '14:00:00', '14:30:00', 3, 'nEW appIT TWTSSGI', '', '0000-00-00 00:00:00', '2017-08-23 09:19:53', 0);
 
 -- --------------------------------------------------------
 
@@ -1048,6 +1048,7 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient` (
   `user_id` int(11) NOT NULL,
   `bed_id` int(11) NOT NULL DEFAULT '0',
   `doctor_id` int(11) NOT NULL,
+  `appointment_id` int(11) NOT NULL,
   `join_date` date NOT NULL,
   `left_date` date DEFAULT NULL,
   `reason` text NOT NULL,
@@ -1055,7 +1056,15 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_inpatient`
+--
+
+INSERT INTO `hms_inpatient` (`id`, `user_id`, `bed_id`, `doctor_id`, `appointment_id`, `join_date`, `left_date`, `reason`, `status`, `isDeleted`, `isActive`) VALUES
+(1, 26, 1, 2, 0, '2017-08-14', NULL, 'Nothing much..', 0, 0, 1),
+(2, 143, 1, 2, 0, '2017-08-18', NULL, 'Testing..', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1070,8 +1079,16 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient_history` (
   `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` text NOT NULL,
   `cost` float NOT NULL,
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_inpatient_history`
+--
+
+INSERT INTO `hms_inpatient_history` (`id`, `in_patient_id`, `datetime`, `note`, `cost`, `isDeleted`) VALUES
+(1, 2, '2017-08-18 05:27:05', 'Testing Note', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1290,7 +1307,6 @@ CREATE TABLE IF NOT EXISTS `hms_nurse` (
 INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
 (1, 16, 1, 1, 0, '2017-05-26 10:43:08', '2017-06-02 09:33:59'),
 (2, 20, 1, 1, 1, '2017-06-06 08:50:27', '2017-06-13 10:47:32'),
-(3, 25, -1, 1, 1, '2017-06-09 06:11:18', '2017-06-13 10:47:23'),
 (4, 30, -1, 1, 1, '2017-06-13 10:46:59', '2017-06-13 10:47:20'),
 (5, 38, -1, 1, 0, '2017-06-15 08:51:42', '2017-06-15 08:51:42'),
 (6, 48, 55, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
@@ -1317,9 +1333,7 @@ INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDelete
 (27, 30, 25, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (28, 65, 19, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (29, 91, 26, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
-(30, 25, 100, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (31, 137, 69, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
-(32, 25, 14, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (33, 91, 71, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (34, 38, 82, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (35, 66, 48, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
@@ -1327,7 +1341,6 @@ INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDelete
 (37, 65, 26, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (38, 124, 61, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (39, 124, 89, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
-(40, 25, 80, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (41, 38, 89, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (42, 115, 23, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (43, 48, 6, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
@@ -1339,7 +1352,7 @@ INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDelete
 (49, 38, 11, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (50, 57, 46, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (51, 115, 84, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
-(52, 25, 100, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
+(52, 25, 1, 1, 0, '0000-00-00 00:00:00', '2017-08-18 17:35:10'),
 (53, 138, 30, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (54, 30, 89, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (55, 137, 13, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
@@ -1374,7 +1387,7 @@ CREATE TABLE IF NOT EXISTS `hms_prescription` (
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `title` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_prescription`
@@ -1382,7 +1395,8 @@ CREATE TABLE IF NOT EXISTS `hms_prescription` (
 
 INSERT INTO `hms_prescription` (`id`, `patient_id`, `doctor_id`, `appoitment_id`, `note`, `store_id`, `order_status`, `isDeleted`, `created_at`, `modified_at`, `title`) VALUES
 (15, 26, 2, 8, '', 0, 0, 0, '2017-07-22 05:01:49', '2017-07-22 05:01:49', 'Ency Test'),
-(16, 26, 2, 8, '', 0, 0, 0, '2017-07-22 05:02:14', '2017-07-22 05:02:14', 'Ency Test2');
+(16, 26, 2, 8, '', 0, 0, 0, '2017-07-22 05:02:14', '2017-07-22 05:02:14', 'Ency Test2'),
+(17, 26, 2, 11, '', NULL, 0, 0, '2017-08-23 09:19:53', '2017-08-23 09:19:53', '');
 
 -- --------------------------------------------------------
 
@@ -1400,7 +1414,7 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
   `duration` text NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_prescription_item`
@@ -1408,7 +1422,8 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
 
 INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`, `dosage`, `duration`, `note`) VALUES
 (16, 16, 'MThudktsU3RGOERWOHJISlpJUUk2QT09OjqKohEDfz8R7l1LTNfO9ve6', 'Z21vVmV2cUM3dlJndzhuRjg3Z2Nodz09Ojr+bSJn3W5vlIkTTCWG5/oI', 'enpva1RVUGNsRG8xK2NHTVI4NVg0UT09OjpaJU+j4GSq9JPhyCfJrcAU', 'SHFmak0vaDB6QXhGZVIxUDR0VGFoZz09Ojo5R93G3bDMAyI6e/OL95KV', 'YXFoRzI4MFJ3a0lLNFVaeDhWbytOUT09OjqmhXezna4WnSqwVeurjM8R'),
-(15, 15, 'MnlVVEIvamhJYzZSY0lwOWpGSS9XUT09OjrvmB0k6i7XWLLC4UeYSae/', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'YUVmN1E4dkFVbnpXdjZHTHdzUTI5QT09OjpoyesPk79n9rwQj7BpeuqH', 'ektEMXZpYlZETzdVM1g0d2lobCtDUT09OjpWddSEv/C/9NsNOgls26wz', 'd05kYXBualZLejJmdW56Y2QyK21YUT09OjqwaY3FAmAjBzaxFWDThsb9');
+(15, 15, 'MnlVVEIvamhJYzZSY0lwOWpGSS9XUT09OjrvmB0k6i7XWLLC4UeYSae/', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'YUVmN1E4dkFVbnpXdjZHTHdzUTI5QT09OjpoyesPk79n9rwQj7BpeuqH', 'ektEMXZpYlZETzdVM1g0d2lobCtDUT09OjpWddSEv/C/9NsNOgls26wz', 'd05kYXBualZLejJmdW56Y2QyK21YUT09OjqwaY3FAmAjBzaxFWDThsb9'),
+(17, 17, 'Y3l1ck9YUXRpWnVwcUxvWEs1Y0dLdz09Ojp+O4kxm15yyRYnxTYkx8Mh', 'ck5FVGhvVis4WnBYb2s3TGcrL283UT09Ojol+dneiiacz7YuhqptOYnn', 'ZjluK1ltNVRCNDBRdHhPT2tMZWd3dz09OjpdtDl7UG3ElHpMXDcoeEZh', 'bG94MGhIUVlWQnFFbjFOdGM5L2ZjQT09OjpW4Q4L1gRm5yTOsd0H+Ejd', 'QTJHR1ZpU1BuNG51dm9WNnpIUFU1UT09Ojrd0OUMus80hL5V6WkjMJyR');
 
 -- --------------------------------------------------------
 
