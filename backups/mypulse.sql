@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Aug 26, 2017 at 03:14 PM
+-- Generation Time: Aug 29, 2017 at 08:45 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -1196,7 +1196,7 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report_file` (
   `file_path` text NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_medical_report_file`
@@ -1205,7 +1205,8 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report_file` (
 INSERT INTO `hms_medical_report_file` (`id`, `medical_report_id`, `file_url`, `file_type`, `file_path`, `isDeleted`) VALUES
 (5, 0, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725667_null.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725667_null.png', 0),
 (6, 1, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725681_1.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725681_1.png', 0),
-(7, 0, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725695_null.png', 'image/jpeg', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725695_null.png', 0);
+(7, 0, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725695_null.png', 'image/jpeg', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725695_null.png', 0),
+(10, 1, 'http://[::1]/gridframework/projects/hospital_managment_system//public/reports/1503987241_1.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1503987241_1.png', 0);
 
 -- --------------------------------------------------------
 
@@ -1394,7 +1395,7 @@ CREATE TABLE IF NOT EXISTS `hms_prescription` (
 --
 
 INSERT INTO `hms_prescription` (`id`, `patient_id`, `doctor_id`, `appoitment_id`, `note`, `store_id`, `order_status`, `isDeleted`, `created_at`, `modified_at`, `title`) VALUES
-(15, 26, 2, 8, '', 0, 0, 0, '2017-07-22 05:01:49', '2017-07-22 05:01:49', 'Ency Test'),
+(15, 26, 2, 8, '', 1, 1, 0, '2017-07-22 05:01:49', '2017-08-29 07:01:12', 'Ency Test 15'),
 (16, 26, 2, 8, '', 0, 0, 0, '2017-07-22 05:02:14', '2017-07-22 05:02:14', 'Ency Test2'),
 (17, 26, 2, 11, '', NULL, 0, 0, '2017-08-23 09:19:53', '2017-08-23 09:19:53', '');
 
@@ -1412,6 +1413,8 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
   `strength` text NOT NULL,
   `dosage` text NOT NULL,
   `duration` text NOT NULL,
+  `qty` varchar(250) NOT NULL,
+  `order_qty` varchar(250) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
@@ -1420,10 +1423,34 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
 -- Dumping data for table `hms_prescription_item`
 --
 
-INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`, `dosage`, `duration`, `note`) VALUES
-(16, 16, 'MThudktsU3RGOERWOHJISlpJUUk2QT09OjqKohEDfz8R7l1LTNfO9ve6', 'Z21vVmV2cUM3dlJndzhuRjg3Z2Nodz09Ojr+bSJn3W5vlIkTTCWG5/oI', 'enpva1RVUGNsRG8xK2NHTVI4NVg0UT09OjpaJU+j4GSq9JPhyCfJrcAU', 'SHFmak0vaDB6QXhGZVIxUDR0VGFoZz09Ojo5R93G3bDMAyI6e/OL95KV', 'YXFoRzI4MFJ3a0lLNFVaeDhWbytOUT09OjqmhXezna4WnSqwVeurjM8R'),
-(15, 15, 'MnlVVEIvamhJYzZSY0lwOWpGSS9XUT09OjrvmB0k6i7XWLLC4UeYSae/', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'YUVmN1E4dkFVbnpXdjZHTHdzUTI5QT09OjpoyesPk79n9rwQj7BpeuqH', 'ektEMXZpYlZETzdVM1g0d2lobCtDUT09OjpWddSEv/C/9NsNOgls26wz', 'd05kYXBualZLejJmdW56Y2QyK21YUT09OjqwaY3FAmAjBzaxFWDThsb9'),
-(17, 17, 'Y3l1ck9YUXRpWnVwcUxvWEs1Y0dLdz09Ojp+O4kxm15yyRYnxTYkx8Mh', 'ck5FVGhvVis4WnBYb2s3TGcrL283UT09Ojol+dneiiacz7YuhqptOYnn', 'ZjluK1ltNVRCNDBRdHhPT2tMZWd3dz09OjpdtDl7UG3ElHpMXDcoeEZh', 'bG94MGhIUVlWQnFFbjFOdGM5L2ZjQT09OjpW4Q4L1gRm5yTOsd0H+Ejd', 'QTJHR1ZpU1BuNG51dm9WNnpIUFU1UT09Ojrd0OUMus80hL5V6WkjMJyR');
+INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`, `dosage`, `duration`, `qty`, `order_qty`, `note`) VALUES
+(16, 16, 'MThudktsU3RGOERWOHJISlpJUUk2QT09OjqKohEDfz8R7l1LTNfO9ve6', 'Z21vVmV2cUM3dlJndzhuRjg3Z2Nodz09Ojr+bSJn3W5vlIkTTCWG5/oI', 'enpva1RVUGNsRG8xK2NHTVI4NVg0UT09OjpaJU+j4GSq9JPhyCfJrcAU', 'SHFmak0vaDB6QXhGZVIxUDR0VGFoZz09Ojo5R93G3bDMAyI6e/OL95KV', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', '', 'YXFoRzI4MFJ3a0lLNFVaeDhWbytOUT09OjqmhXezna4WnSqwVeurjM8R'),
+(15, 15, 'MnlVVEIvamhJYzZSY0lwOWpGSS9XUT09OjrvmB0k6i7XWLLC4UeYSae/', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'YUVmN1E4dkFVbnpXdjZHTHdzUTI5QT09OjpoyesPk79n9rwQj7BpeuqH', 'ektEMXZpYlZETzdVM1g0d2lobCtDUT09OjpWddSEv/C/9NsNOgls26wz', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'eWZFenJVUytKOTBobDFYUy9LR3Vodz09Ojq/GUPYJYCkuVORA5pAw7yb', 'd05kYXBualZLejJmdW56Y2QyK21YUT09OjqwaY3FAmAjBzaxFWDThsb9'),
+(17, 17, 'Y3l1ck9YUXRpWnVwcUxvWEs1Y0dLdz09Ojp+O4kxm15yyRYnxTYkx8Mh', 'ck5FVGhvVis4WnBYb2s3TGcrL283UT09Ojol+dneiiacz7YuhqptOYnn', 'ZjluK1ltNVRCNDBRdHhPT2tMZWd3dz09OjpdtDl7UG3ElHpMXDcoeEZh', 'bG94MGhIUVlWQnFFbjFOdGM5L2ZjQT09OjpW4Q4L1gRm5yTOsd0H+Ejd', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', '', 'QTJHR1ZpU1BuNG51dm9WNnpIUFU1UT09Ojrd0OUMus80hL5V6WkjMJyR');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hms_prescription_order_receipt`
+--
+
+DROP TABLE IF EXISTS `hms_prescription_order_receipt`;
+CREATE TABLE IF NOT EXISTS `hms_prescription_order_receipt` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `prescription_id` int(11) NOT NULL,
+  `file_url` text NOT NULL,
+  `file_type` text NOT NULL,
+  `file_path` text NOT NULL,
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_prescription_order_receipt`
+--
+
+INSERT INTO `hms_prescription_order_receipt` (`id`, `prescription_id`, `file_url`, `file_type`, `file_path`, `isDeleted`) VALUES
+(1, 15, 'http://[::1]/gridframework/projects/hospital_managment_system//public/receipt/1503988236_15.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/receipt/1503988236_15.png', 0);
 
 -- --------------------------------------------------------
 

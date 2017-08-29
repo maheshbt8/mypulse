@@ -178,6 +178,16 @@ class Patient_model extends CI_Model {
         $this->db->update('hms_medical_report',$data);
     }
     
+    public function updateMedOrder($id,$item){
+        $this->db->where('id',$id);
+        $this->db->update('hms_prescription_item',$item);
+    }
+
+    public function placeMedOrder($pric_id,$med_id){
+        $this->db->where('id',$pric_id);
+        $this->db->update('hms_prescription',array('store_id'=>$med_id));
+    }
+
     public function prescriptionByApp_id($app_id){
         
 

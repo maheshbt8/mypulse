@@ -12,7 +12,7 @@ $lang['home'] = "Home";
 $lang['users'] = "Users";
 $lang['customers'] = "Customers";
 $lang['patients'] = "Patients";
-$lang['addplaceorder'] = "Add Place Order";
+$lang['addplaceorder'] = "Place Order";
 $lang['license'] = "License";
 $lang['hospitals'] = "Hospitals";
 $lang['departments'] = "Departments";
@@ -48,6 +48,7 @@ $lang['reports'] = 'Reports';
 $lang['about'] = 'About';
 $lang['testreports'] = 'Test Reports';
 $lang['orders'] = "Orders";
+$lang['medOrderPlaced'] = "Your order placed.";
 
 $lang['roles'] = array(
     1 => 'Super Admin',
@@ -464,6 +465,7 @@ $lang['validation'] = array(
     'requiredDuration' => 'Enter duration',
     'requiredQuantity' => 'Enter Quantity',
     'requiredMedicalLab' => 'Select Medical Lab',
+    'requiredMedicalStore' => 'Select Medical Store',
     'takenEmail' => 'This email is already registered. Please try another',
     'takenPhone' => 'This mobile is already registered. Please try another',
 );

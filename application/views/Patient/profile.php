@@ -359,6 +359,34 @@ $this->load->view("template/left.php");
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="uploadReceipt" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+		<div class="modal-dialog modal-m">
+		    <form action="<?php echo site_url(); ?>/medical_lab/uploadreceipt" method="post" id="form" enctype="multipart/form-data">
+			    
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                        <h4 class="modal-title custom_align" id="Edit-Heading">Receipt</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="drop-area" id="dparea-receipt">
+                                <h4 class="drop-text">No Receipt Uploaded Yet</h4>        
+                            </div>
+                            <div style="z-index:1000; position:fixed;top:0;bottom:0;left:0;right:0;display:none" id="loading-img-receipt">
+                                <img style="margin: 0 auto;display: flow-root;background: white;margin-top: 15%;padding: 20px;" src="<?php echo base_url();?>public/images/loading.gif"  />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-defualt" type="button" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 <?php
 $this->load->view("template/footer.php");
 ?>
@@ -716,6 +744,15 @@ $this->load->view("template/footer.php");
             });
         });
 
+        $(document).on('click','.btnup_receipt',function(){
+            var current_id = $(this).data('id');
+            var url = '<?php echo site_url();?>/medical_store/getreceiptpreview/'+current_id;
+            $("#loading-img-receipt").show();
+            $.get(url,function(data){ 
+                showReceipt(data);
+            });
+        });
+
         function resetForm(){
             $("#form input[type=text]").each(function() {
                 if($(this).data('ori') != undefined){
@@ -764,6 +801,22 @@ $this->load->view("template/footer.php");
             $("#dparea").html(imgList);
         }
 
+        
+
+        function showReceipt(data){
+            data = $.parseJSON(data);
+            $("#loading-img-receipt").hide();
+            $("#dparea-receipt").html('<h4 class="drop-text">No Receipt Uploaded Yet</h4>');
+            var imgList= "<div style='display:flex'>";
+            if(data.length == 0)
+                return;
+
+            $.each(data, function () {
+                imgList += '<div id="imgdiv_'+this.id+'" style="margin:0 auto"><img src= "' + this.url + '" /><div style="text-align:center"><a style="font-size:20px" href="javascript:void(0)" onclick="window.open(\''+this.url+'\');return false;"><i class="fa fa-download"></i></a></div></div>';
+            });
+            imgList += "</div>";
+            $("#dparea-receipt").html(imgList);
+        }
 
     });
 </script>

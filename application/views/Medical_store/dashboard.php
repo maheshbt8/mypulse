@@ -93,8 +93,8 @@
                                                 <td><?=$pre['contact_number'];?></td>
                                                 <td><?=$pre['address'];?></td>
                                                 <td><span class="label label-info">Pending</span></td>
-                                                <td><a href='#' data-url='doctors/previewprescription/<?=$pre['id'];?>' data-id='<?=$pre['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>
-                                                <td></td>
+                                                <td><a href='#' data-url='medical_store/previewprescription/<?=$pre['id'];?>' data-id='<?=$pre['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>
+                                                <td><button data-id="<?=$pre['id'];?>" data-toggle="modal" data-target="#uploadMR" class="btn btn-primary btnup">Upload Receipt</button></td>
                                             </tr>
                                             <?php
                                             $cnt++;
@@ -117,17 +117,17 @@
 
     <div class="modal fade" id="uploadMR" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 		<div class="modal-dialog modal-m">
-		    <form action="<?php echo site_url(); ?>/medical_lab/uploadreport" method="post" id="form" enctype="multipart/form-data">
-			    <input type="hidden" name="mrid" id="mrid">
+		    <form action="<?php echo site_url(); ?>/medical_store/uploadreceipt" method="post" id="form" enctype="multipart/form-data">
+			    
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                        <h4 class="modal-title custom_align" id="Edit-Heading">Upload Report</h4>
+                        <h4 class="modal-title custom_align" id="Edit-Heading">Upload Receipt</h4>
                     </div>
                     <div class="modal-body">
                         <div>
                             <div class="drop-area" id="dparea">
-                                <h4 class="drop-text">Drag and Drop Test-Report Here</h4>        
+                                <h4 class="drop-text">Drag and Drop Receipt Here</h4>        
                             </div>
                             <div style="z-index:1000; position:fixed;top:0;bottom:0;left:0;right:0;display:none" id="loading-img">
                                 <img style="margin: 0 auto;display: flow-root;background: white;margin-top: 15%;padding: 20px;" src="<?php echo base_url();?>public/images/loading.gif"  />
@@ -149,7 +149,7 @@
         var current_id = null;
         $(".btnup").click(function(){
             current_id = $(this).data('id');
-            var url = '<?php echo site_url();?>/medical_lab/getreportspreview/'+current_id;
+            var url = '<?php echo site_url();?>/medical_store/getreceiptpreview/'+current_id;
             $("#loading-img").show();
             $.get(url,function(data){ 
                 showImages(data);
@@ -211,17 +211,17 @@
             var id = $(this).data('id');
             swal({
                 title: 'Are you sure?',
-                text: "You want to delete this report",
+                text: "You want to delete this receipt",
                 type: 'warning',
                 showCancelButton: true,
                 showConfirmButton: true,
                 cancelButtonColor: '#d33',
             }).then(function(){
                 console.log(id);
-                $.post('<?php echo site_url();?>/medical_lab/removereportfile',{id: id},function(data){
+                $.post('<?php echo site_url();?>/medical_store/removereceiptfile',{id: id},function(data){
                     $("#imgdiv_"+id).remove();
                     if($("#dparea").children().length == 0){
-                        $("#dparea").html('<h4 class="drop-text">Drag and Drop Test-Report Here</h4>');
+                        $("#dparea").html('<h4 class="drop-text">Drag and Drop Receipt Here</h4>');
                     }
                 });
             });
@@ -230,7 +230,7 @@
         function uploadFormData(formData,id) 
         {
             $.ajax({
-                url: "<?php echo site_url().'/medical_lab/uploadreport';?>",
+                url: "<?php echo site_url().'/medical_store/uploadreceipt';?>",
                 type: "POST",
                 data: formData,
                 contentType:false,
@@ -245,7 +245,7 @@
         function showImages(data){
             data = $.parseJSON(data);
             $("#loading-img").hide();
-            $("#dparea").html('<h4 class="drop-text">Drag and Drop Test-Report Here</h4>');
+            $("#dparea").html('<h4 class="drop-text">Drag and Drop Receipt Here</h4>');
             var imgList= "<div style='display:flex'>";
             if(data.length == 0)
                 return;

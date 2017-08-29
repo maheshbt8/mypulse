@@ -208,6 +208,8 @@
                                         </thead>
                                         <tbody class="itemBody">
                                             <?php
+                                                $isMedStore = isset($data['isMedStore']) ? $data['isMedStore'] === true : false;
+
                                                 $cnt = 1;
                                                 
                                                 foreach ($data['items'] as $key => $item) {
@@ -227,7 +229,13 @@
                                                             <span id="tmp_item_qty"><?php echo $item['duration']; ?></span>
                                                         </td>
                                                         <td style="text-align:right;padding: 10px 10px 10px 5px;word-wrap: break-word;" class="pcs-item-row" valign="top">
-                                                            <span id="tmp_item_qty"><?php echo $item['qty']; ?></span>
+                                                            <span id="tmp_item_qty"><?php 
+                                                                if($isMedStore){
+                                                                    echo $item['order_qty']; 
+                                                                }else{
+                                                                    echo $item['qty']; 
+                                                                }
+                                                            ?></span>
                                                         </td>
                                                         <td style="text-align:right;padding: 10px 10px 10px 5px;word-wrap: break-word;" class="pcs-item-row" valign="top">
                                                             <span id="tmp_item_qty"><?php echo $item['note']; ?></span>
@@ -240,7 +248,7 @@
                                         </tbody>
                                     </table>
                             <?php
-                                if(count($data['reports']) > 0){ 
+                                if(count($data['reports']) > 0 && !$isMedStore){ 
                                     echo '<h3>Medical Test Reports</h3>';
                                     $cnt = 1;
                                     foreach($data['reports'] as $report){

@@ -88,7 +88,11 @@
                                                 <td><?=$mr['title'];?></td>
                                                 <td><?=$mr['doctor_name'];?></td>
                                                 <td><a href='#' data-url='doctors/previewprescription/<?=$mr['id'];?>' data-id='<?=$mr['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>
-                                                <td><a href='#' title="Cancel" data-id='<?=$mr['id'];?>' class='CanPresOrderBtn'><i class="glyphicon glyphicon-remove"></i></a> &nbsp; <a href="<?php echo site_url().'/patients/addplaceorder/'.$mr['id'];?>" data-id='<?=$mr['id'];?>' class='PlacePresOrderBtn'><i class="glyphicon glyphicon-plus"></i></a></td>
+                                                <td>
+                                                    <a href="<?php echo site_url().'/patients/addplaceorder/'.$mr['id'];?>" data-id='<?=$mr['id'];?>' class='PlacePresOrderBtn'><i class="glyphicon glyphicon-plus"></i></a>
+                                                    &nbsp; 
+                                                    <a href='#' title="Cancel" data-id='<?=$mr['id'];?>' class='CanPresOrderBtn'><i class="glyphicon glyphicon-remove"></i></a> 
+                                                </td>
                                             </tr>
                                             <?php
                                             $cnt++;
