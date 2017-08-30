@@ -9,6 +9,8 @@ class Medical_store extends CI_Controller {
         $this->load->model('medical_store_model');
         $this->load->model('hospitals_model');
         $this->load->model("branches_model");
+        $this->load->model('doctors_model');
+        $this->load->model('users_model');
     }
     public function index() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
@@ -22,7 +24,8 @@ class Medical_store extends CI_Controller {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
-            $result = $this->medical_store_model->search($q, $f);
+            $ci = $this->input->get('city',null,null);
+            $result = $this->medical_store_model->search($q, $f, $ci);
             echo json_encode($result);
         }
     }
@@ -87,6 +90,19 @@ class Medical_store extends CI_Controller {
             echo json_encode($this->medical_store_model->getmedical_storeById($id));
         }
     }
+
+    public function previewprescription($prescription_id){
+        if($this->auth->isLoggedIn()){
+            $prescription = $this->doctors_model->getPrescription($prescription_id);
+            $prescription['isMedStore'] = true;
+            $return['html'] = $this->load->view('template/prescription',array("data"=>$prescription),true);
+            $btn = '';        
+            $btn .= '<a href="#" class="btn btn-primary printtem" data-url="doctors/previewprescription/'.$prescription_id.'">Print</a>&nbsp;&nbsp;';
+            $return['btns'] = $btn;
+            echo json_encode($return);
+        }
+    }
+
     public function getDTmedical_store() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
@@ -176,9 +192,9 @@ class Medical_store extends CI_Controller {
                     return '<span class="label label-success">Completed</span>';
                 }
             }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'><i class='fa fa-file'></i></a>";
+                return "<a href='#' data-url='medical_store/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'><i class='fa fa-file'></i></a>";
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
-                return "";
+                return "<a href='#' class='btnup' data-id='$row[id]' data-toggle='modal' data-target='#uploadMR'>Receipt</a>";
             }));
             
             $cond[] = "isDeleted=0";
@@ -189,6 +205,61 @@ class Medical_store extends CI_Controller {
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function uploadreceipt(){
+        if ($this->auth->isLoggedIn()){
+            $id = isset($_POST['id']) ? $_POST['id'] : 0;
+
+			if(is_array($_FILES) && isset($_FILES['files'])) 
+			{
+                $urls = array();
+                $paths = array();
+                $types = array();
+                for($i=0; $i<count($_FILES['files']['name']); $i++){
+                    if(is_uploaded_file($_FILES['files']['tmp_name'][$i])) {
+                        $sourcePath = $_FILES['files']['tmp_name'][$i];
+                        $fname = time()."_".$id.".png";
+                        $url = base_url()."/public/receipt/".$fname;
+                        $bash = dirname(APPPATH)."/public/receipt/".$fname;
+                        
+                        if(move_uploaded_file($sourcePath,$bash)) {
+                            $urls[$i] = $url;
+                            $paths[$i] = $bash;
+                            $types[$i] = $_FILES['files']['type'][$i];
+                        }
+                    }
+                }
+                $this->medical_store_model->addReceiptUrl($id,$urls,$paths,$types);
+                $data = $this->medical_store_model->getMedicalReceiptFiles($id);
+                $urls = array();
+                foreach($data as $d){
+                    $urls[] = array('url'=>$d['file_url'], 'id'=>$d['id']);
+                }
+                echo json_encode($urls);exit;
+			}
+        }
+        else{
+            redirect('index/login');
+        }
+    }
+
+    public function removereceiptfile(){
+        if ($this->auth->isLoggedIn()){
+            $id = isset($_POST['id']) ? $_POST['id'] : 0;
+            $this->medical_store_model->deleteMedicalReceiptFile($id);
+        }
+    }
+    public function getreceiptpreview($id){
+        if ($this->auth->isLoggedIn()){
+            $data = $this->medical_store_model->getMedicalReceiptFiles($id);
+            
+            $urls = array();
+            foreach($data as $d){
+                $urls[] = array('url'=>$d['file_url'], 'id'=>$d['id']);
+            }
+            echo json_encode($urls);exit;
         }
     }
 }

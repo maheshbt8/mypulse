@@ -391,7 +391,7 @@ class Auth {
         $key = $this->getKeyFromUid($uid);
         $encryption_key = base64_decode($key);
         foreach($data as $k=>$value){
-            list($encrypted_data, $iv) = explode('::', base64_decode($value), 2);
+            @list($encrypted_data, $iv) = explode('::', base64_decode($value), 2);
             $data[$k] = openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
         }
         return $data;

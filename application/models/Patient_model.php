@@ -183,6 +183,16 @@ class Patient_model extends CI_Model {
         $this->notification->saveNotification($medicallab['user_id'], "Patient request for test the medical report");
     }
     
+    public function updateMedOrder($id,$item){
+        $this->db->where('id',$id);
+        $this->db->update('hms_prescription_item',$item);
+    }
+
+    public function placeMedOrder($pric_id,$med_id){
+        $this->db->where('id',$pric_id);
+        $this->db->update('hms_prescription',array('store_id'=>$med_id));
+    }
+
     public function prescriptionByApp_id($app_id){
         
 

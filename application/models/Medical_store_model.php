@@ -36,8 +36,11 @@ class Medical_store_model extends CI_Model {
         $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
     }
-    function search($q, $field) {
+    function search($q, $field, $city) {
         $field = explode(",", $field);
+        if($city!=null){
+            $this->db->where('city',$city);
+        }
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
@@ -148,5 +151,41 @@ class Medical_store_model extends CI_Model {
         $ml = $this->db->get($this->tblname);
         $ml = $ml->row_array();
         return isset($ml['id']) ? $ml['id'] : 0;
+    }
+    
+    function addReceiptUrl($id,$urls,$paths,$types){
+        for($i=0; $i<count($urls); $i++){
+            $d['prescription_id'] = $id;
+            $d['file_url'] = $urls[$i];
+            $d['file_path'] = $paths[$i];
+            $d['file_type'] = $types[$i];
+            $this->db->insert('hms_prescription_order_receipt',$d);
+        }
+        if(count($urls) > 0){
+            $this->db->where('id',$id);
+            $this->db->update('hms_prescription',array('order_status'=>1));
+        }
+    }
+    function getMedicalReceiptFiles($id){
+        $this->db->where('prescription_id',$id);
+        $r = $this->db->get('hms_prescription_order_receipt');
+        $r = $r->result_array();
+        return $r;
+    }
+    function deleteMedicalReceiptFile($id){
+        $this->db->where('id',$id);
+        $d = $this->db->get('hms_prescription_order_receipt');
+        $d = $d->row_array();
+        $med_r_id = $d['prescription_id'];
+
+        @unlink($d['file_path']);
+        $this->db->query("delete from hms_prescription_order_receipt where id=$id");
+
+        $this->db->where('prescription_id',$med_r_id);
+        $c = $this->db->get('hms_prescription_order_receipt');
+        if($c->num_rows() == 0){
+            $this->db->where('id',$med_r_id);
+            $this->db->update('hms_prescription',array('order_status'=>0));
+        }
     }
 }

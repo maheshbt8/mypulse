@@ -30,12 +30,36 @@ class Patients extends CI_Controller {
     
     }
     public function addplaceorder($id){
-            $data["page_title"] = $this->lang->line('addplaceorder');
-            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('addplaceorder'));
-            $data['pres_data'] = $this->doctors_model->getPrescription($id);
-            //$data['pres_data'] = $this->patient_model->addplaceorder($id);
-           $this->load->view('patient/addplaceorder',$data);
+        $data["page_title"] = $this->lang->line('addplaceorder');
+        $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('addplaceorder'));
+        $data['pres_data'] = $this->doctors_model->getPrescription($id);
+
+        $this->db->where('id',$this->auth->getUserid());
+        $user = $this->db->get('hms_users');
+        $user = $user->row_array();
+        $data['profile'] = $user;
+        $data['profile']['country_name'] = $this->auth->getCountryName($user['country']);
+
+        //$data['pres_data'] = $this->patient_model->addplaceorder($id);
+        $this->load->view('patient/addplaceorder',$data);
     }
+
+    public function placemedorder(){
+        $patient_id = $this->auth->getUserId();
+        $prec_id = isset($_POST['pid']) ? $_POST['pid'] : 0;
+        $med_id = isset($_POST['medicalStore']) ? $_POST['medicalStore'] : 0;
+        for($i=0; $i<count($_POST['qty']); $i++){
+            $item_id = $_POST['item_id'][$i];
+            $item['order_qty'] = $_POST['qty'][$i];
+            $item = $this->auth->my_encrypt_array($item,$patient_id);   
+            $this->patient_model->updateMedOrder($item_id,$item);
+        }
+        $this->patient_model->placeMedOrder($prec_id,$med_id);
+        $data['success'] = array($this->lang->line('medOrderPlaced'));
+        $this->session->set_flashdata('data', $data);
+        redirect('index');
+    }
+
     public function inpatient(){
         if($this->auth->isLoggedIn() && ($this->auth->isPatient())){
             $data["page_title"] = $this->lang->line('patients');
@@ -47,11 +71,11 @@ class Patients extends CI_Controller {
         }
     }
 
-    public function updateItemQuantity(){
-             
-           $this->patient_model->Updateitemquantity();
-           echo true;
-        }
+    public function updateItemQuantity(){     
+        $this->patient_model->Updateitemquantity();
+        echo true;
+    }
+
     public function profile(){
         if ($this->auth->isLoggedIn()) {
             $data['page_title'] = $this->lang->line('patients');

@@ -96,7 +96,6 @@ class Medical_lab extends CI_Controller {
        
         if ($this->auth->isLoggedIn()){
             $id = isset($_POST['id']) ? $_POST['id'] : 0;
-
 			if(is_array($_FILES) && isset($_FILES['files'])) 
 			{
                 $urls = array();
