@@ -105,6 +105,8 @@ class Beds_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+        $dept_id = $data['department_id'];
+        unset($data['department_id']);
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
@@ -113,6 +115,31 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            // find nurses which are linked with $dept_id
+            $this->db->where('department_id', $dept_id);
+            $nurses = $this->db->get('hms_nurse')->result_array();
+            //find ward name
+            $this->db->where('id', $data['ward_id']);
+            $ward = $this->db->get('hms_wards')->row_array();
+            //sent notification to nurses
+            foreach ($nurses as $nurse){
+                $this->notification->saveNotification($nurse['user_id'], "new bed is added in <b>".$ward['ward_name']."</b> ward");
+            }
+
+            if ($this->auth->isSuperAdmin()){
+                //find department
+                $this->db->where('id', $dept_id);
+                $dept = $this->db->get('hms_departments')->row_array();
+                //find branch
+                $this->db->where('id', $dept['branch_id']);
+                $branch = $this->db->get('hms_branches')->row_array();
+                //find hospital admin
+                $this->db->where('hospital_id', $branch['hospital_id']);
+                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                //sent notification to hospital admin
+                $this->notification->saveNotification($hadmin['user_id'], "new bed is added in <b>".$ward['ward_name']." </b> ward <br> Department: <b>".$dept['department_name']."</b> <br> Branch: <b>".$branch['branch_name']."</b>");
+            }
+
             return true;
         } else {
             return false;
@@ -120,6 +147,11 @@ class Beds_model extends CI_Model {
     }
     function update($id) {
         $data = $_POST;
+        /*echo "<pre>";
+        var_dump($data);
+        exit();*/
+        $dept_id = $data['department_id'];
+        unset($data['department_id']);
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
@@ -128,6 +160,17 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            // find nurses which are linked with $dept_id
+            $this->db->where('department_id', $dept_id);
+            $nurses = $this->db->get('hms_nurse')->result_array();
+            //find ward name
+            $this->db->where('id', $data['ward_id']);
+            $ward = $this->db->get('hms_wards')->row_array();
+
+
+            foreach ($nurses as $nurse){
+                $this->notification->saveNotification($nurse['user_id'], "Bed <b>".$data['bed']."</b> information is updated in <b>".$ward['ward_name']."</b> ward");
+            }
             return true;
         } else {
             return false;

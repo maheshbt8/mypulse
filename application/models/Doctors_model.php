@@ -81,6 +81,7 @@ class Doctors_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+
         $data['role'] = $this->auth->getDoctorRoleType();
         $doc_id = $this->auth->addUser($data);
         
@@ -95,6 +96,15 @@ class Doctors_model extends CI_Model {
             $doc['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
             $doc['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $doc)) {
+                //find nurses
+                $this->db->where('department_id', $doc['department_id']);
+                $nurses = $this->db->get('hms_nurse')->result_array();
+                //find department name
+                $this->db->where('id', $doc['department_id']);
+                $dep = $this->db->get('hms_departments')->row_array();
+                foreach ($nurses as $nurse){
+                    $this->notification->saveNotification($nurse['user_id'], "New doctor is added in your department <b>".$dep['department_name']."</b>");
+                }
                 return true;
             } else {
                 return false;
@@ -261,7 +271,18 @@ class Doctors_model extends CI_Model {
     public function addAvailability($docid=0){
         $data = array();
         $isOnlyOne = false;
-        
+
+        //code for send notification
+        //find doctor user_id
+        $this->db->where('id', $docid);
+        $doctor = $this->db->get($this->tblname)->row_array();
+        //find doctor name whose userid=$doctor['user_id']
+        $this->db->where('id', $doctor['user_id']);
+        $user = $this->db->get('hms_users')->row_array();
+        //find receptionists which are linked with this doctor ->$docid
+        $this->db->where('doc_id', $docid);
+        $receptionists = $this->db->get('hms_receptionist')->result_array();
+
         if(isset($_POST['onlyOne']) && $_POST['onlyOne']=='yes'){
             $isOnlyOne = true;
             $sd = date("Y-m-d",strtotime($_POST['today']));
@@ -275,14 +296,47 @@ class Doctors_model extends CI_Model {
             $data['start_time'] = $st;
             $data['end_time'] = $et;
             //echo "<pre>";
+
             if($res->num_rows() > 0){
                 $res = $res->row_array();
                 //var_dump($res);
                 $this->db->where('id',$res['id']);
                 $this->db->update('hms_availability',$data);
+                if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                    //send notification to doctor
+                    $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                    //send notification to receptionists
+                    foreach ($receptionists as $receptionist){
+                        $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                    }
+                }elseif ($this->auth->isDoctor()){
+                    //send notification to receptionists
+                    foreach ($receptionists as $receptionist){
+                        $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                    }
+                }elseif ($this->auth->isReceptinest()){
+                    //send notification to doctor
+                    $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                }
             }else{
                 //var_dump($data);
                 $this->db->insert('hms_availability',$data);
+                if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                    //send notification to doctor
+                    $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
+                    //send notification to receptionists
+                    foreach ($receptionists as $receptionist){
+                        $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                    }
+                }elseif ($this->auth->isDoctor()){
+                    //send notification to receptionists
+                    foreach ($receptionists as $receptionist){
+                        $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                    }
+                }elseif ($this->auth->isReceptinest()){
+                    //send notification to doctor
+                    $this->notification->saveNotification($doctor['user_id'], "Your new availability is added");
+                }
             }
             //exit;
         }else{
@@ -299,9 +353,41 @@ class Doctors_model extends CI_Model {
                     if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
                         $this->db->where('id',$_POST['eidt_gf_id']);
                         $this->db->update('hms_availability',$data);
+                        if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                            //send notification to doctor
+                            $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                            //send notification to receptionists
+                            foreach ($receptionists as $receptionist){
+                                $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                            }
+                        }elseif ($this->auth->isDoctor()){
+                            //send notification to receptionists
+                            foreach ($receptionists as $receptionist){
+                                $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                            }
+                        }elseif ($this->auth->isReceptinest()){
+                            //send notification to doctor
+                            $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                        }
                     }
                     else{
                         $this->db->insert('hms_availability',$data);
+                        if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                            //send notification to doctor
+                            $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
+                            //send notification to receptionists
+                            foreach ($receptionists as $receptionist){
+                                $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                            }
+                        }elseif ($this->auth->isDoctor()){
+                            //send notification to receptionists
+                            foreach ($receptionists as $receptionist){
+                                $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                            }
+                        }elseif ($this->auth->isReceptinest()){
+                            //send notification to doctor
+                            $this->notification->saveNotification($doctor['user_id'], "Your new availability is added");
+                        }
                     }   
                 }
             }else if($_POST['repeat_interval'] == 1){
@@ -316,9 +402,41 @@ class Doctors_model extends CI_Model {
                 if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
                     $this->db->where('id',$_POST['eidt_gf_id']);
                     $this->db->update('hms_availability',$data);
+                    if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                        }
+                    }elseif ($this->auth->isDoctor()){
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                        }
+                    }elseif ($this->auth->isReceptinest()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                    }
                 }
                 else{
                     $this->db->insert('hms_availability',$data);
+                    if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                        }
+                    }elseif ($this->auth->isDoctor()){
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                        }
+                    }elseif ($this->auth->isReceptinest()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your new availability is added");
+                    }
                 }
             }else if($_POST['repeat_interval'] == 2){
                 //Custum
@@ -331,9 +449,41 @@ class Doctors_model extends CI_Model {
                 if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
                     $this->db->where('id',$_POST['eidt_gf_id']);
                     $this->db->update('hms_availability',$data);
+                    if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                        }
+                    }elseif ($this->auth->isDoctor()){
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Availability is updated");
+                        }
+                    }elseif ($this->auth->isReceptinest()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
+                    }
                 }
                 else{
                     $this->db->insert('hms_availability',$data);
+                    if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                        }
+                    }elseif ($this->auth->isDoctor()){
+                        //send notification to receptionists
+                        foreach ($receptionists as $receptionist){
+                            $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." added new availability");
+                        }
+                    }elseif ($this->auth->isReceptinest()){
+                        //send notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'], "Your new availability is added");
+                    }
                 }   
             }
         }
@@ -459,6 +609,32 @@ class Doctors_model extends CI_Model {
         $data['availability_text'] = $_POST['availability_text'];
         $this->db->where('id',$docid);
         $this->db->update($this->tblname,$data);
+
+        //find doctor user_id
+        $this->db->where('id', $docid);
+        $doctor = $this->db->get($this->tblname)->row_array();
+        //find doctor name whose userid=$doctor['user_id']
+        $this->db->where('id', $doctor['user_id']);
+        $user = $this->db->get('hms_users')->row_array();
+        //find receptionists which are linked with this doctor ->$docid
+        $this->db->where('doc_id', $docid);
+        $receptionists = $this->db->get('hms_receptionist')->result_array();
+        if ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+            //send notification to doctor
+            $this->notification->saveNotification($doctor['user_id'], "Your Other settings regarding availability is updated");
+            //send notification to receptionists
+            foreach ($receptionists as $receptionist){
+                $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Other settings regarding availability is updated");
+            }
+        }elseif ($this->auth->isReceptinest()){
+            //send notification to doctor
+            $this->notification->saveNotification($doctor['user_id'], "Your Other settings regarding availability is updated");
+        }elseif ($this->auth->isDoctor()){
+            //send notification to receptionists
+            foreach ($receptionists as $receptionist){
+                $this->notification->saveNotification($receptionist['user_id'], $user['first_name']." ".$user['last_name']." Other settings regarding availability is updated");
+            }
+        }
     }
 
     function getSetting($docid){
@@ -512,9 +688,13 @@ class Doctors_model extends CI_Model {
             $pid = $this->db->insert_id();
             $this->db->where('id',$pre['appoitment_id']);
             $this->db->update('hms_appoitments',array('status'=>3));
+            $pre['patient_id']=$_POST['patient_id'];
+            $this->notification->saveNotification($pre['patient_id'],"Some prescriptions are added in your profile ");
         }else{
             $this->db->where('id',$pid);
             $this->db->update('hms_prescription',$pre);
+            $pre['patient_id']=$_POST['patient_id'];
+            $this->notification->saveNotification($pre['patient_id'],"Your prescription information is updated");
         }
         $this->addPrescriptionItems($pid,$patient_id);
         $this->addMedicalReport($pid);

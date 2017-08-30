@@ -98,7 +98,7 @@ $this->load->view("template/left.php");
                                 </div>
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="department_id" name="department_id" class=" form-control" style="width: 100%"></select>
                                 </div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectWard'];?></label>

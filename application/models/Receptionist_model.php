@@ -93,6 +93,8 @@ class Receptionist_model extends CI_Model {
             $rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
             $rec['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $rec)) {
+                //send notification .. you have been linked with this dr....
+
                 return true;
             } else {
                 return false;

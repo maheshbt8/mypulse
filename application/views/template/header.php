@@ -267,22 +267,47 @@
                                     <a class="waves-effect waves-button waves-classic toggle-fullscreen" href="javascript:void(0);"><i class="fa fa-expand"></i></a>
                                 </li>
                             </ul>
+                            <?php
+                                $msgCount = $this->messages->getUnreadMessageCount();
+                            ?>
                             <ul class="nav navbar-nav navbar-right">
                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i><span class="badge badge-success pull-right">1</span></a>
+                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i>
+                                        <?php if($msgCount > 0) { ?>
+                                        <span class="badge badge-success pull-right"><?php echo $msgCount; ?></span>
+                                        <?php } ?>
+                                    </a>
                                     <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                        <li><p class="drop-title">You have 1 new  messages !</p></li>
+                                        <li><p class="drop-title">You have <?php echo $msgCount; ?> new  messages !</p></li>
                                         <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
                                             <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="#">
-                                                        <div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
-                                                        <p class="msg-name">Admin</p>
-                                                        <p class="msg-text">Hey ! Welcome, to HMS.</p>
-                                                        <p class="msg-time">1 day ago</p>
-                                                    </a>
-                                                </li>
-                                                
+                                                <?php
+                                                    $msgs = $this->messages->getTopMessages();
+                                                    foreach ($msgs as $msg){
+                                                        ?>
+                                                        <li>
+                                                            <a href="#">
+                                                                <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                                -->
+                                                                <p class="msg-name"><?php echo $msg['first_name']; ?></p>
+                                                                <p class="msg-text"><?php echo $msg['title'];?></p>
+                                                                <p style="width: auto" class="msg-time"><?php echo $this->notification->time_elapsed_string($msg['created_date']);?></M></p>
+                                                            </a>
+                                                        </li>
+                                                        <?php
+                                                    }
+                                                    if(count($msgs) == 0){ ?>
+                                                        <li>
+                                                            <a href="#">
+                                                                <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                                -->
+                                                                <p class="msg-name">Message box is empty!</p>
+                                                            </a>
+                                                        </li>
+                                                        <?php
+                                                    }
+                                                ?>
+
                                             </ul>
                                         </li><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div></div>
                                         <li class="drop-all"><a href="#" class="text-center">All Messages</a></li>
@@ -290,20 +315,43 @@
                                 </li>
                                 <li class="dropdown">
                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i>
-                                   
-                                   <span class="badge badge-success pull-right">1</span></a>
-                               
+                                   <?php
+                                       $notificationCount = $this->notification->getUnreadNotificationCount();
+                                       if($notificationCount > 0){
+                                           echo "<span class=\"badge badge-success pull-right\">$notificationCount</span>";
+                                       }
+                                   ?>
+                                    <!--<span class="badge badge-success pull-right"><?php echo $notificationCount;?></span>-->
+                                   </a>
+
                                    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
                                        <li><p class="drop-title">Notifications !</p></li>
                                        <li class="dropdown-menu-list slimscroll tasks">
                                            <ul class="list-unstyled">
-                                               <li>
-                                                   <a href="#">
-                                                       <div class="task-icon badge badge-success"><i class="icon-user"></i></div>
-                                                       <!--<span class="badge badge-roundless badge-default pull-right">1min ago</span>-->
-                                                       <p class="task-details">Welcome to HMS.</p>
-                                                   </a>
-                                               </li>
+                                               <?php
+                                                $topNotifications = $this->notification->getTopNotification();
+                                                foreach ($topNotifications as $notification){
+                                                    ?>
+                                                    <li>
+                                                        <a href="#">
+                                                            <!--<div class="task-icon badge badge-success"><i class="icon-user"></i></div>-->
+                                                            <span class="badge badge-roundless badge-default pull-right"><?php echo $this->notification->time_elapsed_string($notification['created_date']);?></span>
+                                                            <p class="msg-name" style="margin: 0px;"><?php echo $notification['first_name']; ?></p>
+                                                            <p class="task-details" style="width: auto;"><?php echo $notification['text'];?></p>
+                                                        </a>
+                                                    </li>
+                                                    <?php
+                                                }
+                                                if(count($topNotifications) == 0){
+                                                    ?>
+                                                    <li>
+                                                        <a href="#"><p class="task-details">Your notification list is empty.</p></a>
+                                                    </li>
+                                                    <?php
+                                                }
+                                               ?>
+
+
                                            </ul>
                                        </li>
                                    </ul>

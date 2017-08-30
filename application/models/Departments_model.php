@@ -77,11 +77,24 @@ class Departments_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+        //echo "<pre>";
+        //var_dump($data);
+        //exit();
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            if($this->auth->isSuperAdmin()) {
+                //find branch name
+                $this->db->where('id', $data['branch_id']);
+                $branch = $this->db->get('hms_branches')->row_array();
+                //find hospital admin
+                $this->db->where('hospital_id', $branch['hospital_id']);
+                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                //sent notification to hospital admin
+                $this->notification->saveNotification($hadmin['user_id'], "New department is added in <b>" . $branch['branch_name'] . "</b> branch");
+            }
             return true;
         } else {
             return false;
@@ -94,6 +107,16 @@ class Departments_model extends CI_Model {
         unset($data['selected_bid']);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            if($this->auth->isSuperAdmin()) {
+                //find branch name
+                $this->db->where('id', $data['branch_id']);
+                $branch = $this->db->get('hms_branches')->row_array();
+                //find hospital admin
+                $this->db->where('hospital_id', $branch['hospital_id']);
+                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                //sent notification to hospital admin
+                $this->notification->saveNotification($hadmin['user_id'], "<b>" . $data['department_name'] . "</b> department information is updated in <b>" . $branch['branch_name'] . "</b> branch");
+            }
             return true;
         } else {
             return false;

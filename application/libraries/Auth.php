@@ -539,6 +539,17 @@ class Auth {
         return $uid;
     }
 
+    public function compareDataWithPost($dbData,$postData){
+        $isChanged = false;
+        foreach ($dbData as $key=>$value){
+            if(isset($postData[$key]) && $postData[$key] != $value) {
+                //echo "Key : $key & Value: $value == $postData[$key]<br>";exit;
+                $isChanged = true;
+            }
+        }
+        return $isChanged;
+    }
+
 }
 
 /* End of file Someclass.php */
