@@ -43,28 +43,25 @@ class Wards_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
-        //echo "<pre>";
-        //var_dump($data);
-        //exit();
+
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
         unset($data['selected_did']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if ($this->db->insert($this->tblname, $data)) {
-
-            //find department name
-            $this->db->where('id', $data['department_id']);
-            $dept = $this->db->get('hms_departments')->row_array();
-            //find branch name
-            $this->db->where('id', $dept['branch_id']);
-            $branch = $this->db->get('hms_branches')->row_array();
-
-            if($this->auth->isSuperAdmin()){
-
-
-            }else{
-
+            if($this->auth->isSuperAdmin()) {
+                //find department name
+                $this->db->where('id', $data['department_id']);
+                $dept = $this->db->get('hms_departments')->row_array();
+                //find branch name
+                $this->db->where('id', $dept['branch_id']);
+                $branch = $this->db->get('hms_branches')->row_array();
+                //find hospital admin
+                $this->db->where('hospital_id', $branch['hospital_id']);
+                $hadmin = $this->db->get('hms_hospital_admin')->roe_array();
+                //sent notification to h.admin
+                $this->notification->saveNotification($hadmin['user_id'], "New ward is added in <b>".$dept['department_name']."</b> department of <b>".$branch['branch_name']."</b> branch" );
             }
             return true;
         } else {
@@ -73,6 +70,9 @@ class Wards_model extends CI_Model {
     }
     function update($id) {
         $data = $_POST;
+        //echo "<pre>";
+        //var_dump($data);
+        //exit();
         unset($data["eidt_gf_id"]);
         unset($data['selected_hid']);
         unset($data['selected_bid']);
@@ -80,6 +80,19 @@ class Wards_model extends CI_Model {
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            if($this->auth->isSuperAdmin()) {
+                //find department name
+                $this->db->where('id', $data['department_id']);
+                $dept = $this->db->get('hms_departments')->row_array();
+                //find branch name
+                $this->db->where('id', $dept['branch_id']);
+                $branch = $this->db->get('hms_branches')->row_array();
+                //find hospital admin
+                $this->db->where('hospital_id', $branch['hospital_id']);
+                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                //sent notification to h.admin
+                $this->notification->saveNotification($hadmin['user_id'], "<b>".$data['ward_name']."</b> ward information is updated in <b>".$dept['department_name']."</b> department of <b>".$branch['branch_name']."</b> branch" );
+            }
             return true;
         } else {
             return false;
