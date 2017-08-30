@@ -54,14 +54,29 @@ class Dashboard_model extends CI_Model {
     }
 
     function getPatientStates(){
-        $res['tot_hos'] = 0;
+        $user_id = $this->auth->getUserid();
         $res['tot_doc'] = 0;
+
+        $res['tot_hos'] = 0;
         $res['tot_medStore'] = 0;
         $res['tot_medLab'] = 0;
         $res['tot_app'] = 0;
         
+        $a_res = $this->db->query("select count(*) as cnt from hms_appoitments where user_id=$user_id and isDeleted=0")->row_array();
+        $res['tot_app'] = isset($a_res['cnt']) ? $a_res['cnt'] : 0;
+
+        $l_res = $this->db->query("SELECT COUNT(DISTINCT medical_lab_id) as cnt FROM `hms_medical_report` where patient_id=$user_id and isDeleted=0")->row_array();
+        $res['tot_medLab'] = isset($l_res['cnt']) ? $l_res['cnt'] : 0;
+
+        $s_res = $this->db->query("SELECT COUNT(DISTINCT store_id) as cnt FROM `hms_prescription` where patient_id=$user_id and isDeleted=0 and store_id > 0")->row_array();
+        $res['tot_medStore'] = isset($s_res['cnt']) ? $s_res['cnt'] : 0;
+
+        $this->load->model('hospitals_model');
+        $hids = $this->hospitals_model->getHospicalIds();
+        $res['tot_hos'] = count($hids);
+
         $res['medical_reports'] = array();
-        $this->db->where('patient_id',$this->auth->getUserid());
+        $this->db->where('patient_id',$user_id);
         $this->db->where('status',0);
         $this->db->where('medical_lab_id',0);
         $reports = $this->db->get('hms_medical_report');
@@ -70,7 +85,7 @@ class Dashboard_model extends CI_Model {
         }
 
         $res['orders'] = array();
-        $this->db->where('patient_id',$this->auth->getUserid());
+        $this->db->where('patient_id',$user_id);
         $this->db->where('order_status',0);
         $this->db->where('store_id',0);
         $ord = $this->db->get('hms_prescription');
@@ -89,7 +104,7 @@ class Dashboard_model extends CI_Model {
         }    
 
         $this->db->select('id,country,state,district,city');
-        $this->db->where('id',$this->auth->getUserid());
+        $this->db->where('id',$user_id);
         $user = $this->db->get('hms_users');
         $user = $user->row_array();
         $res['profile'] = $user;
@@ -126,7 +141,7 @@ class Dashboard_model extends CI_Model {
             $doc_ids[] = -1;
          }
            
-         $patientquery = $this->db->query('select * from `hms_inpatient`  where isDeleted = 0 and isActive = 1 and doctor_id in ("'.implode(",", $doc_ids).'")');
+        $patientquery = $this->db->query('select * from `hms_inpatient` where isDeleted = 0 and isActive = 1 and status in (0,1) and doctor_id in ("'.implode(",", $doc_ids).'")');
         $patientResult = $patientquery->result_array();
         $res['patient_count'] = count($patientResult);
         return $res;

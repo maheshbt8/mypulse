@@ -16,7 +16,7 @@ $this->load->view("template/left.php");
                     <?php
                         $img = base_url().'public/assets/images/user.png';
                         if($profile['profile_photo'] != ""){
-                            $img = $profile['profile_photo'];
+                            $img = $profile['profile_photo']."?t=".time();
                         }
                     ?>
                     <img src="<?php echo $img;?>" alt="" style="width:200px;height:auto;display:block;margin:auto;">

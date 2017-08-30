@@ -115,7 +115,7 @@ class Auth {
     public function getProfileImg(){
       $u = $this->CI->session->all_userdata();
       if(isset($u['profile_img']) && $u['profile_img'] != "")
-        return $u['profile_img'];
+        return $u['profile_img']."?t=".time();
       else
         return base_url()."public/assets/images/user.png";
     }    
