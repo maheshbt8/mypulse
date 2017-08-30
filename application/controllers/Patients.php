@@ -41,7 +41,7 @@ class Patients extends CI_Controller {
         $data['profile']['country_name'] = $this->auth->getCountryName($user['country']);
 
         //$data['pres_data'] = $this->patient_model->addplaceorder($id);
-        $this->load->view('patient/addplaceorder',$data);
+        $this->load->view('Patient/addplaceorder',$data);
     }
 
     public function placemedorder(){
@@ -64,7 +64,7 @@ class Patients extends CI_Controller {
         if($this->auth->isLoggedIn() && ($this->auth->isPatient())){
             $data["page_title"] = $this->lang->line('patients');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('patient'));
-                $this->load->view('patient/patient',$data);
+                $this->load->view('Patient/patient',$data);
         }
         else{
             redirect('index/login');
