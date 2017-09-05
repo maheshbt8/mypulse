@@ -124,6 +124,16 @@ class Hospitals_model extends CI_Model {
         }else if($this->auth->isDoctor()){
             $uid = $this->auth->getDoctorId();
             $qry = "select b.hospital_id as id from  hms_doctors d,hms_departments m,hms_branches b where d.isDeleted=0 and d.id=$uid and d.department_id=m.id and m.branch_id=b.id";
+        }else if($this->auth->isPatient()){
+            $uid = $this->auth->getUserId();
+            $docs = $this->db->query("SELECT DISTINCT doctor_id as did FROM `hms_prescription` where patient_id=$uid and isDeleted=0")->result_array();
+            $doc_ids = array();
+            foreach($docs as $doc){
+                $doc_ids[] = $doc['did'];
+            }
+            if(count($doc_ids) == 0) { $doc_ids[] = -1;}
+            $str_dids = implode(",",$doc_ids);
+            $qry = "select b.hospital_id as id from  hms_doctors d,hms_departments m,hms_branches b where d.isDeleted=0 and d.id in (".$str_dids.") and d.department_id=m.id and m.branch_id=b.id";
         }
         else{
             $qry = "select * from $this->tblname where id=-1";

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Aug 29, 2017 at 08:45 AM
+-- Generation Time: Aug 30, 2017 at 05:27 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -43,20 +43,7 @@ CREATE TABLE IF NOT EXISTS `hms_appoitments` (
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_appoitments`
---
-
-INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department_id`, `doctor_id`, `appoitment_date`, `appoitment_time_start`, `appoitment_time_end`, `status`, `reason`, `remarks`, `created_at`, `modified_at`, `isDeleted`) VALUES
-(2, 'APT2', 26, 1, 2, '2017-07-10', NULL, NULL, 3, 'Nothing ', 'test', '0000-00-00 00:00:00', '2017-07-10 03:24:04', 0),
-(10, 'APT10', 143, 1, 2, '2017-07-24', '14:00:00', '14:30:00', 0, 'Yogeh Apot', '', '0000-00-00 00:00:00', '2017-07-23 05:40:19', 0),
-(4, 'APT4', 26, 1, 4, '2017-07-10', NULL, NULL, 3, 'Nothing', '', '0000-00-00 00:00:00', '2017-07-10 03:24:04', 0),
-(5, 'APT5', 26, 1, 2, '2017-07-09', '11:30:00', '12:30:00', 3, 'aaaaa', '', '0000-00-00 00:00:00', '2017-07-10 03:24:04', 0),
-(9, 'APT9', 144, 1, 2, '2017-07-24', '14:00:00', '14:30:00', 0, 'Deep Appit.', '', '0000-00-00 00:00:00', '2017-07-23 05:27:36', 0),
-(8, 'APT8', 26, 1, 2, '2017-07-19', '09:00:00', '09:30:00', 3, 'Appt for testing ', 'New Remarks...', '0000-00-00 00:00:00', '2017-07-22 04:43:23', 0),
-(11, 'APT11', 26, 1, 2, '2017-07-24', '14:00:00', '14:30:00', 3, 'nEW appIT TWTSSGI', '', '0000-00-00 00:00:00', '2017-08-23 09:19:53', 0);
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1056,15 +1043,7 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_inpatient`
---
-
-INSERT INTO `hms_inpatient` (`id`, `user_id`, `bed_id`, `doctor_id`, `appointment_id`, `join_date`, `left_date`, `reason`, `status`, `isDeleted`, `isActive`) VALUES
-(1, 26, 1, 2, 0, '2017-08-14', NULL, 'Nothing much..', 0, 0, 1),
-(2, 143, 1, 2, 0, '2017-08-18', NULL, 'Testing..', 0, 0, 1);
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1081,14 +1060,7 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient_history` (
   `cost` float NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_inpatient_history`
---
-
-INSERT INTO `hms_inpatient_history` (`id`, `in_patient_id`, `datetime`, `note`, `cost`, `isDeleted`) VALUES
-(1, 2, '2017-08-18 05:27:05', 'Testing Note', 0, 0);
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1172,14 +1144,7 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_medical_report`
---
-
-INSERT INTO `hms_medical_report` (`id`, `patient_id`, `doctor_id`, `medical_lab_id`, `prescription_id`, `title`, `description`, `status`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(1, 26, 2, 1, 15, 'Check Blood Cell', 'Blood Report', 1, 0, '2017-07-17 00:00:00', '2017-07-25 05:04:27');
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1196,17 +1161,7 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report_file` (
   `file_path` text NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_medical_report_file`
---
-
-INSERT INTO `hms_medical_report_file` (`id`, `medical_report_id`, `file_url`, `file_type`, `file_path`, `isDeleted`) VALUES
-(5, 0, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725667_null.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725667_null.png', 0),
-(6, 1, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725681_1.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725681_1.png', 0),
-(7, 0, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System//public/reports/1500725695_null.png', 'image/jpeg', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1500725695_null.png', 0),
-(10, 1, 'http://[::1]/gridframework/projects/hospital_managment_system//public/reports/1503987241_1.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/reports/1503987241_1.png', 0);
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1278,7 +1233,7 @@ CREATE TABLE IF NOT EXISTS `hms_notification` (
   `text` text NOT NULL,
   `isRead` tinyint(4) NOT NULL DEFAULT '0',
   `action` text,
-  `created_date` datetime NOT NULL,
+  `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -1388,16 +1343,7 @@ CREATE TABLE IF NOT EXISTS `hms_prescription` (
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `title` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_prescription`
---
-
-INSERT INTO `hms_prescription` (`id`, `patient_id`, `doctor_id`, `appoitment_id`, `note`, `store_id`, `order_status`, `isDeleted`, `created_at`, `modified_at`, `title`) VALUES
-(15, 26, 2, 8, '', 1, 1, 0, '2017-07-22 05:01:49', '2017-08-29 07:01:12', 'Ency Test 15'),
-(16, 26, 2, 8, '', 0, 0, 0, '2017-07-22 05:02:14', '2017-07-22 05:02:14', 'Ency Test2'),
-(17, 26, 2, 11, '', NULL, 0, 0, '2017-08-23 09:19:53', '2017-08-23 09:19:53', '');
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1417,16 +1363,7 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
   `order_qty` varchar(250) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_prescription_item`
---
-
-INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`, `dosage`, `duration`, `qty`, `order_qty`, `note`) VALUES
-(16, 16, 'MThudktsU3RGOERWOHJISlpJUUk2QT09OjqKohEDfz8R7l1LTNfO9ve6', 'Z21vVmV2cUM3dlJndzhuRjg3Z2Nodz09Ojr+bSJn3W5vlIkTTCWG5/oI', 'enpva1RVUGNsRG8xK2NHTVI4NVg0UT09OjpaJU+j4GSq9JPhyCfJrcAU', 'SHFmak0vaDB6QXhGZVIxUDR0VGFoZz09Ojo5R93G3bDMAyI6e/OL95KV', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', '', 'YXFoRzI4MFJ3a0lLNFVaeDhWbytOUT09OjqmhXezna4WnSqwVeurjM8R'),
-(15, 15, 'MnlVVEIvamhJYzZSY0lwOWpGSS9XUT09OjrvmB0k6i7XWLLC4UeYSae/', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'YUVmN1E4dkFVbnpXdjZHTHdzUTI5QT09OjpoyesPk79n9rwQj7BpeuqH', 'ektEMXZpYlZETzdVM1g0d2lobCtDUT09OjpWddSEv/C/9NsNOgls26wz', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', 'eWZFenJVUytKOTBobDFYUy9LR3Vodz09Ojq/GUPYJYCkuVORA5pAw7yb', 'd05kYXBualZLejJmdW56Y2QyK21YUT09OjqwaY3FAmAjBzaxFWDThsb9'),
-(17, 17, 'Y3l1ck9YUXRpWnVwcUxvWEs1Y0dLdz09Ojp+O4kxm15yyRYnxTYkx8Mh', 'ck5FVGhvVis4WnBYb2s3TGcrL283UT09Ojol+dneiiacz7YuhqptOYnn', 'ZjluK1ltNVRCNDBRdHhPT2tMZWd3dz09OjpdtDl7UG3ElHpMXDcoeEZh', 'bG94MGhIUVlWQnFFbjFOdGM5L2ZjQT09OjpW4Q4L1gRm5yTOsd0H+Ejd', 'QmFYV1V0dlQvekVwdnZJQ0FCVEUvUT09Ojozg5YGKfR6CYbqNCGwapyh', '', 'QTJHR1ZpU1BuNG51dm9WNnpIUFU1UT09Ojrd0OUMus80hL5V6WkjMJyR');
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1443,14 +1380,7 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_order_receipt` (
   `file_path` text NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `hms_prescription_order_receipt`
---
-
-INSERT INTO `hms_prescription_order_receipt` (`id`, `prescription_id`, `file_url`, `file_type`, `file_path`, `isDeleted`) VALUES
-(1, 15, 'http://[::1]/gridframework/projects/hospital_managment_system//public/receipt/1503988236_15.png', 'image/png', 'C:\\wamp64\\www\\GridFramework\\Projects\\Hospital_Managment_System/public/receipt/1503988236_15.png', 0);
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 

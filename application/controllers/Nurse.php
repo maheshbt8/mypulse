@@ -108,7 +108,7 @@ class Nurse extends CI_Controller {
                 }                    
             $pid = $data['appoitment']['user_id'];
             $data['profile'] = $this->patient_model->getProfile($pid);
-            $this->load->view('nurse/patientrecord',$data);
+            $this->load->view('Nurse/patientrecord',$data);
         }else{
             redirect('index/login');
         }
