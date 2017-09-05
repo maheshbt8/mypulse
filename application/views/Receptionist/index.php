@@ -112,6 +112,16 @@ $this->load->view("template/left.php");
 											</div>
 											
 										</div>
+
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['status'];?></label>
+												<select class="form-control" name="isActive" id="isActive">
+													<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
+													<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
+												</select>
+											</div>
+										</div>
 										
 									</div>
 									<div role="tabpanel" class="tab-pane fade in" id="tab2">
@@ -402,7 +412,7 @@ $this->load->view("template/footer.php");
 						
 						$("#useremail").val(data.useremail);
 						
-						
+						$("#isActive").val(data.curIsActive);
 						$("#address").val(data.address);
 						$("#aadhaar_number").val(data.aadhaar_number);
 						$("#mobile").val(data.mobile);

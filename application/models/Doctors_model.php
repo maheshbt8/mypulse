@@ -14,7 +14,7 @@ class Doctors_model extends CI_Model {
     function getdoctorsById($id) {
       
       
-        $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
+        $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         
         $this->db->where('id',$r['user_id']);

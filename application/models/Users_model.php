@@ -283,27 +283,70 @@ class Users_model extends CI_Model {
                 return -1;
             }else{
                 $data = $_POST;
+
                 $data['password'] = md5($data['password']);
                 $data['created_at']= date('Y-m-d H:i:s');
                 $name = explode(" ",$data['first_name']);
-                
+                unset($data['agrree']);
+                unset($data['re_password']);
                 $data['first_name'] = $name[0];
                 if(isset($name[1])){
                     $data['last_name'] = $name[1];
                 }
+                $key = strtoupper(bin2hex(openssl_random_pseudo_bytes(5)));
+                $data['forgotPassCode'] = $key;
 
-                $this->db->insert($this->tblname,$data);
-                return true;
+                $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
+                if ($this->db->insert($this->tblname, $data)) {
+                    $email = $data['useremail'];
+                    $this->load->library('sendmail');
+                    $enc = $key.":".$email;
+                    $url = site_url().'/index/vacc?k='.base64_encode($enc);
+                    $mail_data['body'] = 'To complete your MyPulse profile. Please verify your accout by click on following link <br> <a href="'.$url.'">Verify Account</a>';
+                    $mail_data['subject'] = 'MyPulse Registration Complete';
+                    $mail_data['email'] = $data['useremail'];
+                    $this->sendmail->send($mail_data);
+                    //return true;
+                    return $this->db->insert_id();
+                } else {
+                    $err = $this->db->error();
+                    echo "<pre>";print_r($err);exit;
+                    if($err['code'] == 1062){
+                        $a = $err['message'];
+                        if (strpos($a, 'usernemail') !== false) {
+                            return -1;
+                        }else if(strpos($a, 'mobile') !== false) {
+                            return -2;
+                        }else if(strpos($a, 'aadhaar_number') !== false){
+                            return -3;
+                        }
+                        return -4;
+                    }
+                    return false;
+                }
             }
         }
         else
             return false;
     }
 
+    function verifyAccouunt($key){
+        $this->db->where("forgotPassCode",$key[0]);
+		$this->db->where("useremail",$key[1]);
+        $user = $this->db->get($this->tblname)->row_array();
+        
+        if(isset($user['id'])){
+            $this->db->where("id",$user['id']);
+            $this->db->update($this->tblname,array("forgotPassCode"=>null,"isActive"=>1));
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     function saveImage(){
         try{
-            
-            
+                       
             $basepath = dirname(BASEPATH).'/assets/images/users/';
                 
             $name = substr(md5(date("Y-m-d H:i:s")),0,rand(8,15));
@@ -319,6 +362,51 @@ class Users_model extends CI_Model {
             return "";
         }
     }
+
+    function canUpdateMyRole($uid){
+        $this->db->where('id',$uid);
+        $user = $this->db->get($this->tblname)->row_array();
+        if($user['role'] == -1)
+            return true;
+        return false;
+    }
+
+    function updateMyRole($uid){
+        
+        $role = isset($_POST['role']) ? $_POST['role'] : $this->auth->getPatientRoleType();
+        switch($role){
+            case $this->auth->getHospitalAdminRoleType():
+                $hospital_id = isset($_POST['hospital_id']) ? $_POST['hospital_id'] : 0;
+                $this->db->insert('hms_hospital_admin',array('hospital_id'=>$hospital_id, 'user_id'=> $uid, 'isActive'=> 0));
+                break;
+            case $this->auth->getDoctorRoleType():
+                $department_id = isset($_POST['department_id']) ? $_POST['department_id'] : 0;
+                $this->db->insert('hms_doctors',array('department_id'=>$department_id, 'user_id'=> $uid, 'isActive'=> 0));
+                break;
+            case $this->auth->getNurseRoleType():
+                $department_id = isset($_POST['department_id']) ? $_POST['department_id'] : 0;
+                $this->db->insert('hms_nurse',array('department_id'=>$department_id, 'user_id'=> $uid, 'isActive'=> 0));
+                break;      
+            case $this->auth->getReceptienstRoleType():
+                $doctor_id = isset($_POST['doctor_id']) ? $_POST['doctor_id'] : 0;
+                $this->db->insert('hms_receptionist',array('doc_id'=>$doctor_id, 'user_id'=> $uid, 'isActive'=> 0));
+                break;    
+            case $this->auth->getPatientRoleType():
+                break;
+            case $this->auth->getMedicalStoreRoleType():
+                $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : 0;
+                $this->db->insert('hms_medical_store',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0));
+                break;    
+            case $this->auth->getMedicalLabRoleType():
+                $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : 0;
+                $this->db->insert('hms_medical_lab',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0));
+                break;    
+        }
+        
+        $this->db->where('id',$uid);
+        $this->db->update($this->tblname,array('role'=>$role));
+        return true;
+    }
     
     function validateUsername(){
         $email = $this->input->post('email_id');
@@ -332,7 +420,7 @@ class Users_model extends CI_Model {
                 $this->db->where('useremail',$email);
                 $this->db->update($this->tblname,$data);
                 $data = array();
-                $data['body'] = "Reset password using following linke : ".base_url()."/index.php/index/resetPassword?key=".$key;
+                $data['body'] = "Reset password using following link : ".base_url()."/index.php/index/resetPassword?key=".$key;
                 $data['email']=$this->input->post('email');
                 $data['subject']='Reset Password';
                 return $data;

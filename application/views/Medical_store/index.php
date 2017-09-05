@@ -91,6 +91,15 @@ $this->load->view("template/left.php");
 											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerNumber'];?>" name="owner_contact_number" id="owner_contact_number" />
 										</div>
 									</div>
+									<div class="col-md-12">
+										<div class="form-group col-md-6">
+											<label><?php echo $this->lang->line('labels')['status'];?></label>
+											<select class="form-control" name="isActive" id="isActive">
+												<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
+												<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
+											</select>
+										</div>
+									</div>
 									
 								</div>
 								<div role="tabpanel" class="tab-pane fade in" id="tab2">
@@ -341,11 +350,10 @@ $this->load->view("template/footer.php");
 			    		var data = JSON.parse(data);
 			    		
 						$("#name").val(data.name);
-						
 						$("#owner_name").val(data.owner_name);
 						$("#md_description").val(data.description);
 						$("#owner_contact_number").val(data.owner_contact_number);
-						
+						$("#isActive").val(data.curIsActive);
 						branch_id = data.branch_id;
 
 						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;

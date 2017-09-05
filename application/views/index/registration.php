@@ -50,8 +50,8 @@
                                 ?>
                                 <a href="<?php echo site_url();?>" class="logo-name text-lg text-center"><?php echo ucfirst($this->config->item('title'));?></a>
                                 <p class="text-center m-t-md">Create a account</p>
-                                <form class="m-t-md"  method="post" action="<?php echo site_url().'/index/doReg' ?>">
-                                    <div class="form-group">
+                                <form class="m-t-md"  method="post" id="reg_form" action="<?php echo site_url().'/index/doReg' ?>">
+                                    <!-- <div class="form-group">
                                         <label>Register As</label>
                                         <select class="form-control" name="role" id="role">
                                             <option value="2">Hospital Admin</option>
@@ -60,32 +60,25 @@
                                             <option value="5">Receptienst</option>
                                             <option value="6">Patient</option>
                                         </select>
+                                    </div> -->
+                                    <input type="hidden" name="role" value="-1">
+                                    <div class="form-group">
+                                        <input type="text" name="first_name" class="form-control" placeholder="Name" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="first_name" class="form-control" placeholder="Name" required>
+                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" required>
+                                        <input type="email" name="useremail" class="form-control" placeholder="Email" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="aadhaar_number" class="form-control" placeholder="Aadhaar Number" required>
+                                        <input type="password" name="password" class="form-control" placeholder="Password" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" name="useremail" class="form-control" placeholder="Email" required>
+                                        <input type="password" name="re_password" class="form-control" placeholder="Confirm Password" >
                                     </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" class="form-control" placeholder="Password" required>
-                                    </div>
-                                    <div class="form-group" id="hospital_div">
-                                        <label>Select Hospital</label>
-                                        <select class="form-control" name="hospital">
-                                            <option value="2">Hospital 1</option>
-                                            <option value="3">Hospital 2</option>
-                                        </select>
-                                    </div>
-                                    
                                     <label>
-                                        <input type="checkbox"> Agree the terms and policy
+                                        <input name="agrree" type="checkbox"> Agree the terms and policy
                                     </label>
                                     <button type="submit" class="btn btn-success btn-block m-t-xs">Submit</button>
                                     <p class="text-center m-t-xs text-sm">Already have an account?</p>
@@ -115,14 +108,91 @@
         <script src="<?php echo base_url();?>public/assets/plugins/waves/waves.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/main.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/modern.min.js"></script>
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $("#role").change(function(){
-                    if($(this).val() == 6){
-                        $("#hospital_div").hide();
-                    }else{
-                        $("#hospital_div").show();
-                    }
+                jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+                    phone_number = phone_number.replace(/\s+/g, ""); 
+                    return this.optional(element) || phone_number.length > 9 &&
+                        phone_number.match(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
+                }, "Please specify a valid phone number");
+
+                var validationInvalidHandler = function(event, validator) {
+                // 'this' refers to the form
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    var message = errors == 1 ? "<?php echo $this->lang->line('validation')['missedOne'];?>" : "<?php echo $this->lang->line('validation')['youMissed'];?>" + errors + "<?php echo $this->lang->line('validation')['filedsHighLighed'];?>";
+                    $("div.error span").html(message);
+                    $("div.error").show();
+                } else {
+                    $("div.error").hide();
+                }
+            };
+            var validationErrorPlacement = function(error, element) {
+                if (element.hasClass("selectized")) {
+                    var e = element.siblings(2)
+                    error.insertAfter(e[1]);
+                } else if(element.attr("type") == "checkbox"){
+                    error.appendTo($("#weekerror"));
+                } else {
+                    error.insertAfter(element);
+                }
+            };  
+
+                var validatorCreate = $("#reg_form").validate({
+                    ignore: [],
+                    rules: {
+                        first_name: {
+                            required : true
+                        },
+                        password: {
+                            required: true
+                        },
+                        re_password: {
+                            required: true,
+                            equalTo: '[name="password"]'
+                        },
+                        agrree:{
+                            required: true
+                        },
+                        useremail:{
+                            required:true,
+                            email:true,
+                            remote: "<?php echo site_url();?>/users/checkemail"
+                        },
+                        mobile:{
+                            required:true,
+                            phoneUS:true,
+                            remote: "<?php echo site_url();?>/users/checkmobile"
+                        },
+                    },
+                    messages: {
+                        first_name:{
+                            required: "<?php echo $this->lang->line('validation')['requiredFname'];?>"
+                        },
+                        password:{
+                            required: "<?php echo $this->lang->line('validation')['requiredPassword'];?>"
+                        },
+                        re_password:{
+                            required: "<?php echo $this->lang->line('validation')['requiredConfirmPassword'];?>",
+                            equalTo: "<?php echo $this->lang->line('validation')['passwordNotMatch'];?>"
+                        },
+                        agrree:{
+                            required: "<?php echo $this->lang->line('validation')['requiredTermsCond'];?>"
+                        },
+                        useremail:{
+                            required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
+                            email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>",
+                            remote:"<?php echo $this->lang->line('validation')['takenEmail'];?>"
+                        },
+                        mobile:{
+                            required: "<?php echo $this->lang->line('validation')['requriedPhone'];?>",
+                            phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>",
+                            remote:"<?php echo $this->lang->line('validation')['takenPhone'];?>"
+                        }
+                    },
+                    invalidHandler: validationInvalidHandler,
+                    errorPlacement: validationErrorPlacement
                 });
             });
         </script>

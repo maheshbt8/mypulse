@@ -19,7 +19,7 @@ class Medical_lab_model extends CI_Model {
         return isset($ml['id']) ? $ml['id'] : 0;
     }
     function getmedical_labById($id) {
-        $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
+        $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         $this->db->where('id',$r['user_id']);
         $user = $this->db->get('hms_users');

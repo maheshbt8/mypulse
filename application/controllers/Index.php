@@ -24,7 +24,7 @@ class Index extends CI_Controller {
 			$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('dashboard'));
 			if($this->auth->isSuperAdmin()){
 				$data['states'] = $this->dashboard_model->getSuperAdminStates();
-				$this->load->view($this->index_page,$data);
+				$this->load->view('index/superadmindashboard',$data);
 			}
 			else if($this->auth->isHospitalAdmin()){
 				$data['states'] = $this->dashboard_model->getHospitalAdminStates($this->auth->getHospitalId());
@@ -48,6 +48,21 @@ class Index extends CI_Controller {
 			}else if($this->auth->isNurse()){
 				$data['states'] = $this->dashboard_model->getNurseStates($this->auth->getUserid());
 				$this->load->view('Nurse/dashboard',$data);
+			}else{
+				$uid = $this->auth->getUserid();
+				if(!$this->users_model->canUpdateMyRole($uid)){
+					$_data['infos'] = array("We are processing your request. You will be notify once your request is completed.");
+					$this->session->set_flashdata('data', $_data);
+					$data['profile'] = $this->patient_model->getProfile($uid);
+					$this->load->view('index/profile',$data);
+				}else{
+					$_data['infos'] = array($this->lang->line("select_your_role"));
+					$this->session->set_flashdata('data', $_data);
+					$data['page_title'] = $this->lang->line('profile');
+					$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
+					$this->load->view('index/dashboard',$data);
+				}
+				
 			}
 		}
 		else{
@@ -55,6 +70,29 @@ class Index extends CI_Controller {
 		}
 	}
 	
+	function updaterole(){
+		if(!$this->auth->isLoggedIn()){
+			redirect($this->login_page);
+		}
+		$uid = $this->auth->getUserid();
+		if(!$this->users_model->canUpdateMyRole($uid)){
+			redirect('index');
+		}
+
+		$this->users_model->updateMyRole($uid);
+		$role = isset($_POST['role']) ? $_POST['role'] : $this->auth->getPatientRoleType();
+		
+		if($role == $this->auth->getPatientRoleType()){
+			$this->session->set_userdata('role', $role);
+			$msg = "You have successfully register as MyPulse user";
+			$data['success'] = array($msg);
+		}else{
+			$msg = "We are processing your request. You will be notify once your request is completed.";
+			$data['infos'] = array($msg);
+		}
+		$this->session->set_flashdata('data', $data);
+		redirect('index');
+	}
 	
 	function registration(){
 		if($this->auth->isLoggedIn()){
@@ -95,7 +133,10 @@ class Index extends CI_Controller {
 	
 	function doReg(){
 		$cn = $this->users_model->doReg();
-		if($cn === true){
+		$data = $this->auth->parseUserResult($cn,$this->lang->line('msg_registration_complete'));
+		$this->session->set_flashdata('data', $data);
+		redirect('index/registration');
+		/* if($cn === true){
 			$data['success']=array($this->lang->line('reg_completed'));
 			$this->session->set_flashdata('data', $data);
 			redirect($this->login_page);
@@ -109,7 +150,7 @@ class Index extends CI_Controller {
 			$data['errors']=array($this->lang->line('msg_try_again'));
 			$this->session->set_flashdata('data', $data);
 			$this->load->view('index/registration');
-		}
+		} */
 	}
 
 	function update(){
@@ -131,6 +172,35 @@ class Index extends CI_Controller {
 
 		$this->auth->LoggedOut();
 		redirect('index');
+	}
+
+	/* function mail(){
+		$this->load->library('sendmail');
+		$mail_data['body'] = 'To complete your MyPulse profile. Please verify your accout by click on following link <br> <a href="www.google.com">Verify Account</a>';
+		$mail_data['subject'] = 'MyPulse Registration Complete';
+		$mail_data['email'] = 'patelyogesh093@gmail.com';
+		echo "<pre>";
+		var_dump($this->sendmail->send($mail_data));exit;
+	} */
+
+	function vacc(){
+		$k = isset($_GET['k']) ? $_GET['k'] : false;
+		if($k === false)
+			redirect('index');
+
+		$k = base64_decode($k);
+		$key = explode(":",$k);
+		if(count($key) < 2)	{
+			redirect('index');
+		}
+
+		if($this->users_model->verifyAccouunt($key)){
+			$data['success']=array($this->lang->line('verification_complete'));
+		}else{
+			$data['errors']=array($this->lang->line('msg_unable_to_verify'));
+		}
+		$this->session->set_flashdata('data', $data);
+		$this->load->view('index/login');
 	}
 	
 	function forgot()
