@@ -93,7 +93,25 @@ class Receptionist_model extends CI_Model {
             $rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
             $rec['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $rec)) {
-                //send notification .. you have been linked with this dr....
+                //find doctor user_id which is linked with this receptionist
+                $this->db->where('id', $data['doc_id']);
+                $doctor = $this->db->get('hms_doctors')->row_array();
+                //find doctor name from user table
+                $this->db->where('id', $doctor['user_id']);
+                $dname = $this->db->get('hms_users')->row_array();
+
+                //sent notification to receptionist
+                $this->notification->saveNotification($rec['user_id'], "You are linked with <b>".$dname['first_name']." ".$dname['last_name']."</b> doctor as Receptionist");
+                //sent notification to doctor
+                $this->notification->saveNotification($doctor['user_id'],"New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with you");
+
+                if($this->auth->isSuperAdmin()){
+                    //find hospital admin
+                    $this->db->where('hospital_id', $data['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to hospital admin
+                    $this->notification->saveNotification($hadmin['user_id'], "New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                }
 
                 return true;
             } else {
@@ -122,7 +140,7 @@ class Receptionist_model extends CI_Model {
                 $rec['doc_id'] = $data['doc_id'];
             if(isset($data['isActive']))
                 $rec['isActive'] = intval($data['isActive']);
-            if(count($res) > 0){
+            if(count($rec) > 0){
                 if ($this->db->update($this->tblname, $rec)) {
                     return true;
                 } else {

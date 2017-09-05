@@ -69,7 +69,7 @@ class Branches_model extends CI_Model {
                 $this->db->where('hospital_id', $data['hospital_id']);
                 $hadmin = $this->db->get('hms_hospital_admin')->row_array();
                 //sent notification to hospital admin
-                $this->notification->saveNotification($hadmin['user_id'], "New branch is added");
+                $this->notification->saveNotification($hadmin['user_id'], "New branch <b>".$data['branch_name']."</b> is added");
             }
             return true;
         } else {
@@ -90,7 +90,7 @@ class Branches_model extends CI_Model {
                 $this->db->where('hospital_id', $data['hospital_id']);
                 $hadmin = $this->db->get('hms_hospital_admin')->row_array();
                 //sent notification to hospital admin
-                $this->notification->saveNotification($hadmin['user_id'], "<b>" . $data['branch_name'] . "</b> branch information is updated");
+                $this->notification->saveNotification($hadmin['user_id'], "Branch <b>" . $data['branch_name'] . "</b> information is updated");
             }
             return true;
         } else {

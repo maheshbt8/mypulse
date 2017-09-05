@@ -241,6 +241,7 @@ class Users_model extends CI_Model {
         
         if ($this->db->update($this->tblname, $data)) {
             if($this->auth->getUserId() != $id) {
+                //sent notification to any user
                 $this->notification->saveNotification($id, "Your Profile is updated");
             }
             return $id;

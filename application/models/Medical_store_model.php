@@ -77,6 +77,22 @@ class Medical_store_model extends CI_Model {
             $mstore['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mstore['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $mstore)) {
+                //find hospital name
+                $this->db->where('id', $data['hospital_id']);
+                $hospital = $this->db->get('hms_hospitals')->row_array();
+                //sent notification to medical store
+                $this->notification->saveNotification($mstore['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
+
+                if($this->auth->isSuperAdmin()){
+                    //find branch name
+                    $this->db->where('id',$data['branch_id']);
+                    $branch = $this->db->get('hms_branches')->row_array();
+                    //find hospital admin
+                    $this->db->where('hospital_id', $data['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to hospital admin
+                    $this->notification->saveNotification($hadmin['user_id'], "New medical store <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                }
                 return true;
             } else {
                 return false;
@@ -123,6 +139,7 @@ class Medical_store_model extends CI_Model {
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mstore)) {
                     if(!$this->auth->isMedicalStore()){
+                        // sent notification to medical_store incharge
                         $this->notification->saveNotification($usr['user_id'],"Your profile is updated");
                     }
                     return true;

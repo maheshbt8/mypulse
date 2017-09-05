@@ -38,38 +38,38 @@ class Inpatient extends CI_Controller {
             redirect('index/login');
         }
     }
-       public function add_note(){
-            if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
-                  $appt_id = $_POST['appt_id'];
-                    if(isset($_POST['hsinpatientEdit_id']) && $_POST['hsinpatientEdit_id'] != '' && $_POST['hsinpatientEdit_id'] != null)
-                    {
-                            $data = array(
-                           'id' => $this->input->post('hsinpatientEdit_id'),
-                           'in_patient_id' => $this->input->post('hsinpatientadd_id'),
-                           'datetime' => date('Y-m-d H:i:s',time()),
-                           'note' => $this->input->post('new_note')
-                            );
-                        if ($this->inpatient_model->update_new_note($data)) {
-                            $data['success'] = array("Inpatient  Note Updated Successfully");
-                        } else {
-                            $data['errors'] = array("Please again later");
-                        }
-                            $this->session->set_flashdata('data', $data);
-                            redirect('doctors/patientRecord/'.$appt_id.'?p=2');   
-                    }
- 
-                           $data = array(
-                           'in_patient_id' => $this->input->post('hsinpatientadd_id'),
-                           'datetime' => date('Y-m-d H:i:s',time()),
-                           'note' => $this->input->post('new_note')
-                            );
-                        if ($this->inpatient_model->add_new_note($data)) {
-                            $data['success'] = array("Inpatient  Note Added Successfully");
-                        } else {
-                            $data['errors'] = array("Please again later");
-                        }
-                        $this->session->set_flashdata('data', $data);
-                        redirect('doctors/patientRecord/'.$appt_id.'?p=2');
+    public function add_note(){
+        if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
+            $appt_id = $_POST['appt_id'];
+
+            if(isset($_POST['hsinpatientEdit_id']) && $_POST['hsinpatientEdit_id'] != '' && $_POST['hsinpatientEdit_id'] != null)
+            {
+                $data = array(
+                    'id' => $this->input->post('hsinpatientEdit_id'),
+                    'in_patient_id' => $this->input->post('hsinpatientadd_id'),
+                    'datetime' => date('Y-m-d H:i:s',time()),
+                    'note' => $this->input->post('new_note')
+                    );
+                if ($this->inpatient_model->update_new_note($data)) {
+                    $data['success'] = array("Inpatient  Note Updated Successfully");
+                } else {
+                    $data['errors'] = array("Please again later");
+                }
+                $this->session->set_flashdata('data', $data);
+                redirect('doctors/patientRecord/'.$appt_id.'?p=2');
+            }
+            $data = array(
+                'in_patient_id' => $this->input->post('hsinpatientadd_id'),
+                'datetime' => date('Y-m-d H:i:s',time()),
+                'note' => $this->input->post('new_note')
+                );
+            if ($this->inpatient_model->add_new_note($data)) {
+                $data['success'] = array("Inpatient  Note Added Successfully");
+            } else {
+                $data['errors'] = array("Please again later");
+            }
+            $this->session->set_flashdata('data', $data);
+            redirect('doctors/patientRecord/'.$appt_id.'?p=2');
             }
             else{
                 redirect('index/login');
@@ -77,43 +77,41 @@ class Inpatient extends CI_Controller {
         
     }
 
-       public function add_noteByNurse(){
+    public function add_noteByNurse(){
         print_r($_POST);
             if($this->auth->isLoggedIn() && $this->auth->isNurse()){
 
-                    if(isset($_POST['hsinpatientEdit_id']) && $_POST['hsinpatientEdit_id'] != '' && $_POST['hsinpatientEdit_id'] != null)
-                    {
-                            $data = array(
-                           'id' => $this->input->post('hsinpatientEdit_id'),
-                           'in_patient_id' => $this->input->post('hsinpatientadd_id'),
-                           'datetime' => date('Y-m-d H:i:s',time()),
-                           'note' => $this->input->post('new_note')
-                            );
-                        if ($this->inpatient_model->update_new_note($data)) {
-                            $data['success'] = array("Inpatient  Note Updated Successfully");
-                        } else {
-                            $data['errors'] = array("Please again later");
-                        }
-                            $this->session->set_flashdata('data', $data);
-                            redirect('nurse/inpatient');   
+                if(isset($_POST['hsinpatientEdit_id']) && $_POST['hsinpatientEdit_id'] != '' && $_POST['hsinpatientEdit_id'] != null)
+                {
+                    $data = array(
+                        'id' => $this->input->post('hsinpatientEdit_id'),
+                        'in_patient_id' => $this->input->post('hsinpatientadd_id'),
+                        'datetime' => date('Y-m-d H:i:s',time()),
+                        'note' => $this->input->post('new_note')
+                        );
+                    if ($this->inpatient_model->update_new_note($data)) {
+                        $data['success'] = array("Inpatient  Note Updated Successfully");
+                    } else {
+                        $data['errors'] = array("Please again later");
                     }
-                    else
-                    {
-
-
-                           $data = array(
-                           'in_patient_id' => $this->input->post('hsinpatientadd_id'),
-                           'datetime' => date('Y-m-d H:i:s',time()),
-                           'note' => $this->input->post('new_note')
-                            );
-                        if ($this->inpatient_model->add_new_note($data)) {
-                            $data['success'] = array("Inpatient  Note Added Successfully");
-                        } else {
-                            $data['errors'] = array("Please again later");
-                        }
-                        $this->session->set_flashdata('data', $data);
-                        redirect('nurse/inpatient');
+                    $this->session->set_flashdata('data', $data);
+                    redirect('nurse/inpatient');
+                }
+                else
+                {
+                    $data = array(
+                        'in_patient_id' => $this->input->post('hsinpatientadd_id'),
+                        'datetime' => date('Y-m-d H:i:s',time()),
+                        'note' => $this->input->post('new_note')
+                        );
+                    if ($this->inpatient_model->add_new_note($data)) {
+                        $data['success'] = array("Inpatient  Note Added Successfully");
+                    } else {
+                        $data['errors'] = array("Please again later");
                     }
+                    $this->session->set_flashdata('data', $data);
+                    redirect('nurse/inpatient');
+                }
             }
             else{
                 redirect('index/login');

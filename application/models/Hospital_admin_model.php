@@ -53,6 +53,10 @@ class Hospital_admin_model extends CI_Model {
             $had['hospital_id'] = isset($data['hospital_id']) ? $data['hospital_id'] : -1;
             $had['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $had)) {
+                //get hospital name
+                $hname = $this->db->query("select name from hms_hospitals where id = $had[hospital_id]")->row_array();
+                //sent notification to hadmin
+                $this->notification->saveNotification($had['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Hospital admin");
                 return true;
             } else {
                 return false;

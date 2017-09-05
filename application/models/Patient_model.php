@@ -59,10 +59,12 @@ class Patient_model extends CI_Model {
         if($temp->num_rows() > 0){
             $this->db->where('user_id',$id);
             $this->db->update($this->healthTbl,$hr);
+            //sent notification to patient
             $this->notification->saveNotification($id,"Your health information is updated");
         }else{
             $hr['user_id'] = $id;
             $this->db->insert($this->healthTbl,$hr);
+            //sent notification to patient
             $this->notification->saveNotification($id,"Some health data are added in your helth information");
         }   
         return true;
