@@ -131,6 +131,22 @@ class Medical_lab_model extends CI_Model {
             $mlab['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mlab['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $mlab)) {
+                //find hospital name
+                $this->db->where('id', $data['hospital_id']);
+                $hospital = $this->db->get('hms_hospitals')->row_array();
+                //sent notification to medical lab
+                $this->notification->saveNotification($mlab['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
+
+                if($this->auth->isSuperAdmin()){
+                    //find branch name
+                    $this->db->where('id',$data['branch_id']);
+                    $branch = $this->db->get('hms_branches')->row_array();
+                    //find hospital admin
+                    $this->db->where('hospital_id', $data['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to hospital admin
+                    $this->notification->saveNotification($hadmin['user_id'], "New medical lab <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                }
                 return true;
             } else {
                 return false;
@@ -177,6 +193,7 @@ class Medical_lab_model extends CI_Model {
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mlab)) {
                     if (!$this->auth->isMedicalLab()) {
+                        // sent notification to medical_lab incharge
                         $this->notification->saveNotification($usr['user_id'], "Your profile is updated");
                     }
                     return true;

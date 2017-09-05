@@ -132,7 +132,7 @@ class Dashboard_model extends CI_Model {
         $doc_data_result = $doc_data->result_array();
         $doc_count =count($doc_data_result); 
         $res['doc_count'] = $doc_count;
-        $doc_ids_count = array();
+        $doc_ids = array();
          foreach ($doc_data_result as $row_doc_ids) {
              $doc_ids[] = $row_doc_ids['id']; 
          }
