@@ -2,8 +2,8 @@
 -- version 4.5.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1:3307
--- Generation Time: Aug 30, 2017 at 05:27 AM
+-- Host: 127.0.0.1
+-- Generation Time: Sep 06, 2017 at 09:48 AM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -43,7 +43,14 @@ CREATE TABLE IF NOT EXISTS `hms_appoitments` (
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_appoitments`
+--
+
+INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department_id`, `doctor_id`, `appoitment_date`, `appoitment_time_start`, `appoitment_time_end`, `status`, `reason`, `remarks`, `created_at`, `modified_at`, `isDeleted`) VALUES
+(1, 'APT2', 26, 1, 2, '2017-09-05', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-05 15:05:02', 0);
 
 -- --------------------------------------------------------
 
@@ -66,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `hms_availability` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_availability`
@@ -79,7 +86,12 @@ INSERT INTO `hms_availability` (`id`, `user_id`, `repeat_interval`, `isReatAllDa
 (24, 2, 2, 1, '2017-07-21', '2017-07-21', '21:00:00', '21:30:00', 0, 0, '0000-00-00 00:00:00', '2017-07-19 06:39:17'),
 (30, 2, 0, 1, '2017-07-01', '2017-09-01', '14:00:00', '16:00:00', 1, 0, '0000-00-00 00:00:00', '2017-07-19 07:58:51'),
 (29, 2, 2, 1, '2017-07-01', '2017-07-01', '14:00:00', '17:30:00', 0, 0, '0000-00-00 00:00:00', '2017-07-19 07:46:25'),
-(28, 2, 2, 1, '2017-07-25', '2017-07-25', '09:00:00', '23:30:00', 0, 0, '0000-00-00 00:00:00', '2017-07-19 07:34:56');
+(28, 2, 2, 1, '2017-07-25', '2017-07-25', '09:00:00', '23:30:00', 0, 0, '0000-00-00 00:00:00', '2017-07-19 07:34:56'),
+(33, 2, 0, 1, '2017-09-05', '2017-12-31', '20:00:00', '13:18:00', 1, 0, '0000-00-00 00:00:00', '2017-09-05 14:48:14'),
+(34, 2, 0, 1, '2017-09-05', '2017-12-31', '20:00:00', '13:18:00', 2, 0, '0000-00-00 00:00:00', '2017-09-05 14:48:14'),
+(35, 2, 0, 1, '2017-09-05', '2017-12-31', '08:00:00', '13:18:00', 3, 0, '0000-00-00 00:00:00', '2017-09-05 17:44:36'),
+(36, 2, 0, 1, '2017-09-05', '2017-12-31', '20:00:00', '13:18:00', 4, 0, '0000-00-00 00:00:00', '2017-09-05 14:48:14'),
+(37, 2, 0, 1, '2017-09-05', '2017-12-31', '20:00:00', '13:18:00', 5, 0, '0000-00-00 00:00:00', '2017-09-05 14:48:14');
 
 -- --------------------------------------------------------
 
@@ -688,7 +700,7 @@ CREATE TABLE IF NOT EXISTS `hms_doctors` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `availability_text` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=114 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=116 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_doctors`
@@ -1043,7 +1055,14 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_inpatient`
+--
+
+INSERT INTO `hms_inpatient` (`id`, `user_id`, `bed_id`, `doctor_id`, `appointment_id`, `join_date`, `left_date`, `reason`, `status`, `isDeleted`, `isActive`) VALUES
+(1, 26, 1, 2, 1, '2017-09-05', NULL, 'asd', 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1060,7 +1079,14 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient_history` (
   `cost` float NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_inpatient_history`
+--
+
+INSERT INTO `hms_inpatient_history` (`id`, `in_patient_id`, `datetime`, `note`, `cost`, `isDeleted`) VALUES
+(1, 1, '2017-09-05 15:02:49', 'today activi\r\n', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1236,7 +1262,28 @@ CREATE TABLE IF NOT EXISTS `hms_notification` (
   `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_notification`
+--
+
+INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`, `action`, `created_date`, `isDeleted`) VALUES
+(1, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(2, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(3, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(4, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(5, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(6, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(7, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(8, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(9, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(10, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(11, 12, 26, 'Your appointment <b>APT2</b> has been Approved', 0, NULL, '2017-09-05 20:30:21', 0),
+(12, 12, 26, 'Some prescriptions are added in your profile ', 0, NULL, '2017-09-05 20:35:02', 0),
+(13, 12, 17, 'Dr. Ravi Patel Availability is updated', 0, NULL, '2017-09-05 23:14:36', 0),
+(14, 12, 39, 'Dr. Ravi Patel Availability is updated', 0, NULL, '2017-09-05 23:14:36', 0),
+(15, 3, 146, 'Your Profile is updated', 0, NULL, '2017-09-06 00:40:48', 0);
 
 -- --------------------------------------------------------
 
@@ -1254,7 +1301,7 @@ CREATE TABLE IF NOT EXISTS `hms_nurse` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_nurse`
@@ -1297,6 +1344,7 @@ INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDelete
 (37, 65, 26, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (38, 124, 61, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (39, 124, 89, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
+(66, 146, 1, 1, 0, '0000-00-00 00:00:00', '2017-09-05 19:10:48'),
 (41, 38, 89, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (42, 115, 23, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
 (43, 48, 6, 1, 0, '0000-00-00 00:00:00', '2017-06-20 14:08:12'),
@@ -1343,7 +1391,14 @@ CREATE TABLE IF NOT EXISTS `hms_prescription` (
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `title` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_prescription`
+--
+
+INSERT INTO `hms_prescription` (`id`, `patient_id`, `doctor_id`, `appoitment_id`, `note`, `store_id`, `order_status`, `isDeleted`, `created_at`, `modified_at`, `title`) VALUES
+(1, 26, 2, 1, '', NULL, 0, 0, '2017-09-05 15:05:02', '2017-09-05 15:05:02', 'N1');
 
 -- --------------------------------------------------------
 
@@ -1363,7 +1418,14 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
   `order_qty` varchar(250) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_prescription_item`
+--
+
+INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`, `dosage`, `duration`, `qty`, `order_qty`, `note`) VALUES
+(1, 1, 'aHg3OUM1Y0tJK2o0cFFGNTFHc0JaQT09OjrajjGI7BN+TU0SgJ/xtMWk', 'T0xORjE0M0M5T1FnRTNFOGxjSVN5UT09OjpkolWfPNqUytqONGv47hNp', 'ZXVQcHMxZWZnbzJTR0w3V1ZjY29mQT09Ojoq2M/laMOBzN0SGPQFP2+7', 'Z0Qwa1hrV3dvdVhnVnBPWW5aOXdVQT09OjrwKp1Y7lhudBWI0Lg4pkYE', 'MjJ1djBMcnk3TkxlaUlWYkJZbC9vZz09OjoL80mEkJhogw9bbrhh8+Ho', '', 'b3pDVEVKZWl4dUVhUDVmcW1UMktidz09OjoOX/lrBKVmt9SyIEhj+huH');
 
 -- --------------------------------------------------------
 
@@ -1398,7 +1460,7 @@ CREATE TABLE IF NOT EXISTS `hms_receptionist` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_receptionist`
@@ -1407,7 +1469,8 @@ CREATE TABLE IF NOT EXISTS `hms_receptionist` (
 INSERT INTO `hms_receptionist` (`id`, `user_id`, `doc_id`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
 (1, 17, 2, 1, 0, '2017-05-26 10:48:52', '2017-06-02 09:36:13'),
 (2, 31, 0, 1, 0, '2017-06-13 10:48:13', '2017-06-13 10:48:13'),
-(3, 39, 2, 1, 0, '2017-06-15 08:52:07', '2017-07-01 08:06:15');
+(3, 39, 2, 1, 0, '2017-06-15 08:52:07', '2017-07-01 08:06:15'),
+(4, 146, 2, 0, 0, '0000-00-00 00:00:00', '2017-09-05 18:28:38');
 
 -- --------------------------------------------------------
 
@@ -1500,21 +1563,21 @@ CREATE TABLE IF NOT EXISTS `hms_users` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `forgotPassCode` int(11) DEFAULT NULL,
+  `forgotPassCode` varchar(20) DEFAULT NULL,
   `isRegister` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `usernemail` (`useremail`),
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `aadhaar_number` (`aadhaar_number`)
-) ENGINE=MyISAM AUTO_INCREMENT=145 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=147 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_users`
 --
 
 INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password`, `my_key`, `address`, `mobile`, `aadhaar_number`, `phone`, `profile_photo`, `hospital`, `gender`, `date_of_birth`, `city`, `district`, `state`, `country`, `alternate_mobile_number`, `description`, `role`, `isActive`, `isDeleted`, `created_at`, `updated_at`, `forgotPassCode`, `isRegister`) VALUES
-(1, 'Super Admin', 'Ad...', 'superadmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'YzE4MGY3MTUyMGM5ZGMwNDliZWUxYTc3NGU2MzdlZDdkMzdlOGI5Mzg0YmNmYmJjMzJjMjQ5NmYzZjA2NDEzMw==', 'Ahmedabad1', '9090123409', '542132105467', '', 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/1.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', '', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', 0, 1),
-(2, 'Ramesh', '', 'ramesh@techcrista.in', '64a43b6ca15d128ac6a0679b39bc9c07', 'MjllZjZhZmM2ZWE5MmI2NjIxNTU5MzRkMGEzNjNmOTdhOWU1NjE4NzBlMjBjZTliZmI5YmYzYzk5NTU2NjNmYw==', '', '1234561230', '542132105460', '', '', 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 2, 0, 0, '2017-05-03 18:56:20', '2017-05-03 18:56:20', 3, 1),
+(1, 'Super Admin', 'Ad...', 'superadmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'YzE4MGY3MTUyMGM5ZGMwNDliZWUxYTc3NGU2MzdlZDdkMzdlOGI5Mzg0YmNmYmJjMzJjMjQ5NmYzZjA2NDEzMw==', 'Ahmedabad1', '9090123409', '542132105467', '', 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/1.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', '', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', '0', 1),
+(2, 'Ramesh', '', 'ramesh@techcrista.in', '64a43b6ca15d128ac6a0679b39bc9c07', 'MjllZjZhZmM2ZWE5MmI2NjIxNTU5MzRkMGEzNjNmOTdhOWU1NjE4NzBlMjBjZTliZmI5YmYzYzk5NTU2NjNmYw==', '', '1234561230', '542132105460', '', '', 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 2, 0, 0, '2017-05-03 18:56:20', '2017-05-03 18:56:20', '3', 1),
 (3, 'Hospital Admin', 'LMS', 'hospitaladmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'NzZhZTNlYmRkMjZkY2ZiNjNhM2QyNjYyMzAwMjAyM2NjODk0ZmVlZDhkNzUxOTg1NGRmYmVhMjliMmY3ODM1MQ==', '', '1234561239', '542132105462', '', '', 1, 'M', '2017-06-29', 2, 1, 1, 1, '', 'Some Descsss', 2, 1, 0, '0000-00-00 00:00:00', '2017-05-24 04:22:31', NULL, 1),
 (15, 'Medical', 'Lab', 'medicallab@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'MzVhZGU0NjgyMGFiMmYxYWU0MWRmMzUwOGFlYmIzMDE2Mjg5MGFhZDRiYjhkM2YyYzdjZGE3YzQwNGI3M2VmNw==', NULL, '09099910272', '542132105463', NULL, NULL, 0, '', '0000-00-00', 1, 1, 1, 1, '', '', 8, 1, 0, '2017-05-30 12:36:59', '2017-05-30 12:36:59', NULL, 1),
 (14, 'Ravi', 'Prashad', 'medicalstore@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'OTVmOWRkNWEyZTFmNjRjNjJlOTM0MTUwNzI4MzQ5OWFhMjhiYmUxMTcwZjlhYjRkMzBhZjQxNDJjMGU2OTAxZg==', NULL, '9099910273', '542132105464', NULL, NULL, 0, '', '0000-00-00', 1, 1, 1, 1, '', '', 7, 1, 0, '2017-05-30 12:34:11', '2017-05-30 12:34:11', NULL, 1),
@@ -1647,7 +1710,8 @@ INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password
 (142, 'Yogesh', 'Patel', 'drravi123@lms.com', 'e10adc3949ba59abbe56e057f20f883e', 'MTg5MDFhMjNmNGM3YThiODVkMDg2YzU0MmI5NTliOTA5ZjNhNzE1MGJiMTc3Y2FjY2NmMDZiZWE1MDlmY2M1OQ==', '', '4123643214', '321409875412', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'asdfasdf', 3, 0, 0, '2017-06-28 08:38:21', '2017-06-28 08:38:21', NULL, 1);
 INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password`, `my_key`, `address`, `mobile`, `aadhaar_number`, `phone`, `profile_photo`, `hospital`, `gender`, `date_of_birth`, `city`, `district`, `state`, `country`, `alternate_mobile_number`, `description`, `role`, `isActive`, `isDeleted`, `created_at`, `updated_at`, `forgotPassCode`, `isRegister`) VALUES
 (143, 'Yogesh', 'Patel', 'yogesh@tc.in', '', 'Nzc4ZWMyYjY4YTZjYTkwOGFiM2Y3ZGQzZDczYjRhODZjMGZlYWZkZDczYmFmMmZkMGQ0YjdlODY2YWI0NTFkZQ==', NULL, NULL, NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 6, 0, 0, '2017-07-23 05:16:53', '2017-07-23 05:16:53', NULL, 1),
-(144, 'Depp', 'patel', 'deep@tc.in', '', 'ZmFlNjk5NTk4ZWFhZWE0ODUwOTQwZmUxNjkzYzgzY2U5MTdiM2JmNGI5YjY5NDU1YWNkYTc1MGM4ZTNiM2FlNQ==', NULL, NULL, NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 6, 0, 0, '2017-07-23 05:27:25', '2017-07-23 05:27:25', NULL, 1);
+(144, 'Depp', 'patel', 'deep@tc.in', '', 'ZmFlNjk5NTk4ZWFhZWE0ODUwOTQwZmUxNjkzYzgzY2U5MTdiM2JmNGI5YjY5NDU1YWNkYTc1MGM4ZTNiM2FlNQ==', NULL, NULL, NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 6, 0, 0, '2017-07-23 05:27:25', '2017-07-23 05:27:25', NULL, 1),
+(146, 'Yogesh', 'Patel', 'patelyogesh093@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'ZGM5N2JhYjMxNTU1M2ViN2Y3NDIzZGQzNjEyYmJiZGQ5NGNiYjYzNDM4ZjMzMjliODRmYWE2M2M5YjUxZTFhMg==', '', '9099910200', '1239012301231', NULL, NULL, 0, '', '1970-01-01', 0, 0, 0, 0, '', '', 4, 1, 0, '2017-09-03 12:04:38', '2017-09-03 12:04:38', NULL, 1);
 
 -- --------------------------------------------------------
 
