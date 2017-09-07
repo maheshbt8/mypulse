@@ -12,6 +12,12 @@ class Users_model extends CI_Model {
         else return array();
     }
 
+    public function getSuperAdmin(){
+        $this->db->where('role', '1');
+        $sadmin = $this->db->get('hms_users')->result_array();
+        return $sadmin;
+    }
+
     function updateKeys(){
         $this->db->select('id');
         $users = $this->db->get($this->tblname);
@@ -377,30 +383,56 @@ class Users_model extends CI_Model {
         $role = isset($_POST['role']) ? $_POST['role'] : $this->auth->getPatientRoleType();
         switch($role){
             case $this->auth->getHospitalAdminRoleType():
+                $roleText = $this->lang->line('roles')[2];
                 $hospital_id = isset($_POST['hospital_id']) ? $_POST['hospital_id'] : 0;
                 $this->db->insert('hms_hospital_admin',array('hospital_id'=>$hospital_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $sadmins = $this->getSuperAdmin();
+                //get username
+                $this->db->where('id', $uid);
+                $user = $this->db->get('hms_users')->row_array();
+                //get hospital name
+                $hospital = $this->db->query("select name from hms_hospitals where id = $hospital_id")->row_array();
+                //sent notification to super admin
+                foreach ($sadmins as $sadmin){
+                    $this->notification->saveNotification($sadmin['id'], "<b>".$user['first_name']." ".$user['last_name']."</b> is successfully registered as <b>".$roleText."</b> in Hospital: <b>".$hospital['name']."</b>");
+                }
                 break;
             case $this->auth->getDoctorRoleType():
+                $roleText = $this->lang->line('roles')[3];
+                $hospital_id = $_POST['hospital_id'];
                 $department_id = isset($_POST['department_id']) ? $_POST['department_id'] : 0;
                 $this->db->insert('hms_doctors',array('department_id'=>$department_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, 0, $department_id, 0);
                 break;
             case $this->auth->getNurseRoleType():
+                $roleText = $this->lang->line('roles')[4];
+                $hospital_id = $_POST['hospital_id'];
                 $department_id = isset($_POST['department_id']) ? $_POST['department_id'] : 0;
                 $this->db->insert('hms_nurse',array('department_id'=>$department_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, 0, $department_id, 0);
                 break;      
             case $this->auth->getReceptienstRoleType():
+                $roleText = $this->lang->line('roles')[5];
+                $hospital_id = $_POST['hospital_id'];
                 $doctor_id = isset($_POST['doctor_id']) ? $_POST['doctor_id'] : 0;
                 $this->db->insert('hms_receptionist',array('doc_id'=>$doctor_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, 0, 0, $doctor_id);
                 break;    
             case $this->auth->getPatientRoleType():
                 break;
             case $this->auth->getMedicalStoreRoleType():
+                $roleText = $this->lang->line('roles')[7];
+                $hospital_id = $_POST['hospital_id'];
                 $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : 0;
                 $this->db->insert('hms_medical_store',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, $branch_id, 0, 0);
                 break;    
             case $this->auth->getMedicalLabRoleType():
+                $roleText = $this->lang->line('roles')[8];
+                $hospital_id = $_POST['hospital_id'];
                 $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : 0;
                 $this->db->insert('hms_medical_lab',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, $branch_id, 0, 0);
                 break;    
         }
         
@@ -490,5 +522,35 @@ class Users_model extends CI_Model {
             $this->db->where('id',$id);
             return $this->db->update($this->tblname,array('password'=>md5($np)));
         }
+    }
+
+    public function sendNotificationForUpdateMyRole($role, $uid, $hid, $bid, $did, $doid){
+        //get h.admin user_id
+        $hadmin = $this->db->query("select user_id from hms_hospital_admin where hospital_id = $hid")->row_array();
+        //get user name
+        $this->db->where('id', $uid);
+        $user = $this->db->get('hms_users')->row_array();
+        if($bid == 0 && $doid == 0){
+            //get department name
+            $deptname = $this->db->query("select department_name from hms_departments where id = $did")->row_array();
+
+            $this->notification->saveNotification($hadmin['user_id'], "<b>".$user['first_name']." ".$user['last_name']."</b> is successfully registered as <b>".$role."</b> in Department: <b>".$deptname['department_name']."</b>");
+        }
+        if($bid == 0 && $did == 0){
+            //get doctor user_id
+            $doctor = $this->db->query("select department_name from hms_departments where id = $did")->row_array();
+            //get doctor name
+            $this->db->where('id', $doctor['user_id']);
+            $docname = $this->db->get('hms_users')->row_array();
+
+            $this->notification->saveNotification($hadmin['user_id'], "<b>".$user['first_name']." ".$user['last_name']."</b> is successfully registered as <b>".$role."</b> <br> Linked with doctor: <b>".$docname['first_name']." ".$docname['last_name']."</b>");
+        }
+        if($did == 0 && $doid == 0){
+            //get branch name
+            $bname = $this->db->query("select branch_name from hms_branches where id = $bid")->row_array();
+
+            $this->notification->saveNotification($hadmin['user_id'], "<b>".$user['first_name']." ".$user['last_name']."</b> is successfully registered as <b>".$role."</b> in Branch: <b>".$bname['branch_name']."</b>");
+        }
+
     }
 }

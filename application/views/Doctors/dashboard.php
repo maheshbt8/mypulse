@@ -45,6 +45,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
+                <a href="<?php echo site_url();?>/appoitments">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -56,6 +57,7 @@
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
         </div><!-- Row -->
         <div class="row">

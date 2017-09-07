@@ -6,17 +6,19 @@
     <div id="main-wrapper">
         <div class="row">
             <div class="col-lg-3 col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter"><?php echo $states['tot_bra'];?></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('branches');?></span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="fa fa-hospital-o"></i>
+                <a href="">
+                    <div class="panel info-box panel-white">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter"><?php echo $states['tot_bra'];?></p>
+                                <span class="info-box-title"><?php echo $this->lang->line('branches');?></span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-hospital-o"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-lg-3 col-md-6">
                 <div class="panel info-box panel-white">
