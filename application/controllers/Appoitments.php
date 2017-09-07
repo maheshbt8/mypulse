@@ -16,7 +16,7 @@ class Appoitments extends CI_Controller {
     }
     public function index() {
         $data["page_title"] = $this->lang->line("appoitments");
-            $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitments"));
+        $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitments"));
         if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {    
             $this->load->view('Appoitments/index', $data);
         }
@@ -27,6 +27,16 @@ class Appoitments extends CI_Controller {
             $this->load->view('Appoitments/doctor', $data);
         }
          else redirect('index/login');
+    }
+    public function report(){
+        if($this->auth->isLoggedIn() && $this->auth->isSuperAdmin()){
+            $data["page_title"] = $this->lang->line("reports");
+            $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitment_report"));
+            $data['reports'] = $this->appoitments_model->getReport();
+            $this->load->view('appoitments/report',$data);
+        }else{
+            redirect('index/login');
+        }
     }
     public function search() {
         if ($this->auth->isLoggedIn()) {

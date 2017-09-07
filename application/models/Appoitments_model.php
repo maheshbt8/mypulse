@@ -11,6 +11,9 @@ class Appoitments_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+    function getReport(){
+        return $this->db->query('SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id')->result_array();
+    }
     function getappoitmentsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r =  $r->row_array();
