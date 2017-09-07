@@ -43,15 +43,19 @@
                             <li id="li9"><a href="<?php echo site_url();?>/medical_lab" class="waves-effect waves-button"><span class="menu-icon fa  fa-plus-square "></span><p><?php echo $menu['main_medical_labs'];?></p></a></li>
                             <li id="li52"><a href="<?php echo site_url();?>/appoitments" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-list-alt"></span><p><?php echo $menu['appoitments'];?></p></a></li>
                             <li id="li11"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon fa fa-credit-card "></span><p><?php echo $menu['main_payments'];?></p></a></li>
-                            <li id="li12"><a href="<?php echo site_url();?>" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart "></span><p><?php echo $menu['main_reports'];?></p></a></li>
-                      
-                            <li id="li12" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon  glyphicon glyphicon-bullhorn"></span><p><?php echo $menu['main_services'];?></p><span class="arrow"></span></a>
+                            <li id="li12" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon  icon-bar-chart"></span><p><?php echo $menu['main_reports'];?></p><span class="arrow"></span></a>
+                                <ul class="sub-menu">
+                                    <li id="li1201"><a href="<?php echo site_url();?>/patients/report" ><?php echo $menu['main_patient_report'];?></a></li>
+                                    <li id="li1202"><a href="<?php echo site_url();?>/appoitments/report" ><?php echo $menu['main_appoitment_report'];?></a></li>
+                                </ul>
+                            </li>
+                            <!-- <li id="li12" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon  glyphicon glyphicon-bullhorn"></span><p><?php echo $menu['main_services'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">
                                     <li id="li1201"><a href="<?php echo site_url();?>/" ><?php echo $menu['main_ambulance'];?></a></li>
                                     <li id="li1201"><a href="<?php echo site_url();?>/" ><?php echo $menu['main_bood_bank'];?></a></li>
                                     <li id="li1201"><a href="<?php echo site_url();?>/" ><?php echo $menu['main_insurance'];?></a></li>
                                 </ul>
-                            </li>
+                            </li> -->
 
                             <li id="li13" class="droplink"><a href="#" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-cog"></span><p><?php echo $menu['main_settings'];?></p><span class="arrow"></span></a>
                                 <ul class="sub-menu">

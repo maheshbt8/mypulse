@@ -69,6 +69,16 @@ class Index extends CI_Controller {
 			redirect($this->login_page);
 		}
 	}
+
+	function messages(){
+	    if($this->auth->isLoggedIn()){
+            $data['page_title'] = $this->lang->line('messages');
+            $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('messages'));
+            $this->load->view('index/messages',$data);
+        }else{
+            redirect($this->login_page);
+        }
+    }
 	
 	function updaterole(){
 		if(!$this->auth->isLoggedIn()){

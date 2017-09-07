@@ -23,7 +23,16 @@ class Patients extends CI_Controller {
             }
         } else redirect('index/login');
     }
-     
+    public function report(){
+        if($this->auth->isLoggedIn() && $this->auth->isSuperAdmin()){
+            $data["page_title"] = $this->lang->line("reports");
+            $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("patient_report"));
+            $data['reports'] = $this->patient_model->getReport();
+            $this->load->view('Patient/report',$data);
+        }else{
+            redirect('index/login');
+        }
+    }
     public function cancelPrescriptionOutOrder(){
         $presId = $_REQUEST['prescId'];
        echo $this->patient_model->canOutPrescptionOrder($presId); 

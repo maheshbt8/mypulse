@@ -184,6 +184,10 @@ class Patient_model extends CI_Model {
         $medicallab = $this->db->get('hms_medical_lab')->row_array();
         $this->notification->saveNotification($medicallab['user_id'], "Patient request for test the medical report");
     }
+
+    function getReport(){
+        return $this->db->query('SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id')->result_array();
+    }
     
     public function updateMedOrder($id,$item){
         $this->db->where('id',$id);

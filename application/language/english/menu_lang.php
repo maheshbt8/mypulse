@@ -34,3 +34,5 @@ $lang['main_other'] = 'Others';
 $lang['main_about'] = 'About';
 $lang['reports'] = 'Test Reports';
 $lang['orders'] = 'Orders';
+$lang['main_patient_report'] = 'Patient Report';
+$lang['main_appoitment_report'] = 'Appoitment Report';
