@@ -49,6 +49,7 @@
         <script src="<?php echo base_url();?>public/assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/curvedlines/curvedLines.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/metrojs/MetroJs.min.js"></script>
+        <script src="<?php echo base_url();?>public/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/modern.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/selectize/js/selectize.min.js"></script>
@@ -59,7 +60,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
         <!--<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>-->
-        
+        <script src="<?php echo base_url();?>public/assets/plugins/summernote-master/summernote.min.js"></script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
@@ -75,6 +76,27 @@
                     phone_number.match(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
             }, "Please specify a valid phone number");
 
+            $("#notislimScrollDiv").slimScroll();
+
+            $(document).on('click','.task_read',function(e){
+                e.preventDefault();
+                
+            });
+
+            $('.nonclose-dropdown-menu').click(function(event){
+                event.stopPropagation();
+                var div = event.target;
+                if($(div).hasClass('task_read') || $(div).is('i')){
+                    if($(div).is('i')){
+                        div = $(div).parents('div');
+                    }
+                    var id = $(div).data('id');
+                    $.post("<?php echo site_url();?>/index/readnotification",{id:id},function(d){
+                        $("#not_cont_span").html(d);
+                        $(div).closest('.rm').remove();
+                    });
+                }
+            });
 
             setTimeout(function() {
                 toastr.options = {

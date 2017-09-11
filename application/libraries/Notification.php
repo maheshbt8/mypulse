@@ -22,6 +22,12 @@ class Notification
         return $this->CI->notification_model->getTopNotification($user_id,$top);
     }
 
+    public function getAllNotification(){
+        $this->CI->load->model('notification_model');
+        $user_id = $this->CI->auth->getUserid();
+        return $this->CI->notification_model->getTopNotification($user_id);
+    }
+
     public function getUnreadNotificationCount(){
         $this->CI->load->model('notification_model');
         $user_id = $this->CI->auth->getUserid();

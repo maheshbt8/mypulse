@@ -70,13 +70,65 @@ class Index extends CI_Controller {
 		}
 	}
 
-	function messages(){
+	function sendmsg()
+    {
+        if($this->auth->isLoggedIn()){
+            $uid = isset($_POST['to']) ? explode(",",$_POST['to']) : array();
+            $msg = isset($_POST['message']) ? $_POST['message'] : "";
+            $title = isset($_POST['title']) ? $_POST['title'] : "";
+            $this->messages->saveMessage($uid,$msg,$title);
+
+            $msg = "Message sent successfully";
+            $data['success'] = array($msg);
+            $this->session->set_flashdata('data', $data);
+
+            //$data['page_title'] = $this->lang->line('messages');
+            //$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('messages'));
+            //$this->load->view('index/messages',$data);
+            redirect('index/messages');
+        }
+        else{
+            redirect('index');
+        }
+    }
+
+
+    function readmsg(){
+        if($this->auth->isLoggedIn()) {
+            $mid = $this->input->post('mid');
+            $msg = $this->messages->markRead($mid);
+            $mcount = $this->messages->getUnreadMessageCount();
+            echo json_encode(array("message" => $msg, "count"=>$mcount));exit;
+        }
+    }
+
+	function messages($id=0){
 	    if($this->auth->isLoggedIn()){
             $data['page_title'] = $this->lang->line('messages');
             $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('messages'));
+            if($id > 0){
+                $data['message'] = $this->messages->markRead($id);
+            }
             $this->load->view('index/messages',$data);
         }else{
             redirect($this->login_page);
+        }
+    }
+
+    function readnotification(){
+        if($this->auth->isLoggedIn()) {
+            $id = $this->input->post('id');
+            $this->load->model('notification_model');
+            $this->notification_model->markAsRead($id);
+            echo $this->notification_model->getUnreadNotificationCount($this->auth->getUserid());
+        }
+    }
+
+    function readAllnotification(){
+        if($this->auth->isLoggedIn()) {
+            $this->load->model('notification_model');
+            $this->notification_model->markAllAsRead();
+            redirect($_SERVER["HTTP_REFERER"]);
         }
     }
 	
@@ -337,6 +389,43 @@ class Index extends CI_Controller {
             redirect('index/profile');
 		} else redirect('index/login');
 	}
+
+    public function getDTMessages() {
+        if ($this->auth->isLoggedIn() ) {
+            $this->load->library("tbl");
+            $table = "hms_messages";
+            $primaryKey = "id";
+            $columns = array(array("db" => "created_by", "dt" => 0, "formatter" => function ($d, $row) {
+                $temp = $this->users_model->getusersById($d);
+                $html = "<span class='msg_row' data-id='$row[id]'>";
+                $html .= $this->auth->getUName($temp);
+                $html .= "</span>";
+                return $html;
+            }), array("db" => "title", "dt" => 1, "formatter" => function ($d, $row) {
+                $cls = "";
+                if($row['isRead'] == 0) {
+                    $cls = "bold";
+                }
+                $html = "<span class='msg_row $cls' data-id='$row[id]'>$d</span>";
+                return $html;
+            }), array("db" => "created_date", "dt" => 2, "formatter" => function ($d, $row) {
+                $html = "<span class='msg_row' data-id='$row[id]'>";
+                $html .= date("d-M-Y h:i A",strtotime($d));
+                $html .= "</span>";
+                return $html;
+            }));
+
+            $cond = array();
+            $cond[] = "isDeleted=0";
+            $cond[] = "user_id=".$this->auth->getUserid();
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setTwID(implode(" AND ",$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
 
 	
 }

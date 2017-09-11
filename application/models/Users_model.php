@@ -86,6 +86,10 @@ class Users_model extends CI_Model {
     function search($q, $field,$role) {
         $field = explode(",", $field);
         for($i=0; $i<count($field); $i++){ $field[$i] = "hms_users.".$field[$i]; }
+        $select = implode('`," ",`', $field);
+        if(isset($_GET['m']) && $_GET['m']==1){
+            $field[] = 'hms_users.useremail';
+        }
         if($role > 0){
             $this->db->where('hms_users.role',$role);
         }
@@ -93,7 +97,7 @@ class Users_model extends CI_Model {
             $this->db->like($f, $q);
         }
         $this->db->from($this->tblname);
-        if($this->auth->isHospitalAdmin()){
+        if(!$this->auth->isHospitalAdmin()){
             if($role == 3){ // Doc
                 $bids = $this->auth->getBranchIds();
                 $this->db->where_in("hms_doctors.branch_id",$bids);
@@ -109,9 +113,9 @@ class Users_model extends CI_Model {
             }
         }
 
-        $select = implode('`," ",`', $field);
+
         $this->db->where("hms_users.isDeleted",0);
-        $this->db->select("hms_users.id,CONCAT(`$select`) as text", false);
+        $this->db->select("hms_users.id,CONCAT(`$select`) as text,hms_users.useremail as email", false);
         $res = $this->db->get('hms_users');
         return $res->result_array();
     }
@@ -135,6 +139,12 @@ class Users_model extends CI_Model {
         }
         return true;
     }
+
+    function searchmail($q=""){
+        $res = $this->db->query("SELECT id, CONCAT(first_name,' ',last_name) as name, useremail as email from hms_users where first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR useremail LIKE '%$q%' and isDeleted=0");
+        return $res->result_array();
+    }
+
     function checkMobile($mobile){
         $this->db->where('mobile',$mobile);
         $user = $this->db->get($this->tblname);

@@ -479,5 +479,8 @@ $lang['validation'] = array(
     'requiredMedicalStore' => 'Select Medical Store',
     'takenEmail' => 'This email is already registered. Please try another',
     'takenPhone' => 'This mobile is already registered. Please try another',
+    'requiredMsgTo' => 'Select user to send message',
+    'requiredMsgTitle' => 'Provide title',
+    'requiredMsg' => 'Enter your message',
 );
 //End Validation

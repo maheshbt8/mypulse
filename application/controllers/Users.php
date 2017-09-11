@@ -63,6 +63,11 @@ class Users extends CI_Controller {
         }
         exit;  
     }
+    public function searchmail(){
+        $q = $this->input->get('q');
+        $result = $this->users_model->searchmail($q);
+        echo json_encode($result);
+    }
     public function regUsers(){
         if($this->auth->isLoggedIn()){
             $email = isset($_POST['useremail']) ? $_POST['useremail'] : "";

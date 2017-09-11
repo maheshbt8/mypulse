@@ -26,8 +26,9 @@
         <link href="<?php echo base_url();?>public/assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>    
         <link href="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/> 
-        <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>     
+        <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>
 
+        <link href="<?php echo base_url();?>public/assets/plugins/summernote-master/summernote.css" rel="stylesheet" type="text/css"/>
         <!-- Theme Styles -->
         <link href="<?php echo base_url();?>public/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
         <link href="<?php echo base_url();?>public/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
@@ -238,6 +239,9 @@
                 margin-bottom: 10px;
 
             }
+            .bold{
+                font-weight: 700;
+            }
         </style>
 
     </head>
@@ -271,91 +275,96 @@
                                 $msgCount = $this->messages->getUnreadMessageCount();
                             ?>
                             <ul class="nav navbar-nav navbar-right">
-                               <li class="dropdown">
+                                <li class="dropdown">
                                     <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i>
                                         <?php if($msgCount > 0) { ?>
-                                        <span class="badge badge-success pull-right"><?php echo $msgCount; ?></span>
+                                        <span id="msg_count" class="badge badge-success pull-right"><?php echo $msgCount; ?></span>
                                         <?php } ?>
                                     </a>
                                     <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
                                         <li><p class="drop-title">You have <?php echo $msgCount; ?> new  messages !</p></li>
-                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;"><li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
-                                            <ul class="list-unstyled">
-                                                <?php
-                                                    $msgs = $this->messages->getTopMessages();
-                                                    foreach ($msgs as $msg){
-                                                        ?>
-                                                        <li>
-                                                            <a href="#">
-                                                                <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
-                                                                -->
-                                                                <p class="msg-name"><?php echo $msg['first_name']; ?></p>
-                                                                <p class="msg-text"><?php echo $msg['title'];?></p>
-                                                                <p style="width: auto" class="msg-time"><?php echo $this->notification->time_elapsed_string($msg['created_date']);?></M></p>
-                                                            </a>
-                                                        </li>
-                                                        <?php
-                                                    }
-                                                    if(count($msgs) == 0){ ?>
-                                                        <li>
-                                                            <a href="#">
-                                                                <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
-                                                                -->
-                                                                <p class="msg-name">Message box is empty!</p>
-                                                            </a>
-                                                        </li>
-                                                        <?php
-                                                    }
-                                                ?>
+                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                                            <li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
+                                                <ul class="list-unstyled">
+                                                    <?php
+                                                        $msgs = $this->messages->getTopMessages();
+                                                        foreach ($msgs as $msg){
+                                                            ?>
+                                                            <li>
+                                                                <a href="<?php echo site_url();?>/index/messages/<?php echo $msg['id'];?>">
+                                                                    <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                                    -->
+                                                                    <p class="msg-name"><?php echo $msg['first_name']; ?></p>
+                                                                    <p class="msg-text"><?php echo $msg['title'];?></p>
+                                                                    <p style="width: auto" class="msg-time"><?php echo $this->notification->time_elapsed_string($msg['created_date']);?></M></p>
+                                                                </a>
+                                                            </li>
+                                                            <?php
+                                                        }
+                                                        if(count($msgs) == 0){ ?>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                                    -->
+                                                                    <p class="msg-name">Message box is empty!</p>
+                                                                </a>
+                                                            </li>
+                                                            <?php
+                                                        }
+                                                    ?>
 
-                                            </ul>
-                                        </li><div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div></div>
-                                        <li class="drop-all"><a href="#" class="text-center">All Messages</a></li>
+                                                </ul>
+                                            </li>
+                                            <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div>
+                                        </div>
+                                        <li class="drop-all"><a href="<?php echo site_url();?>/index/messages" class="text-center">All Messages</a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown">
-                                   <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown"><i class="fa fa-bell"></i>
-                                   <?php
-                                       $notificationCount = $this->notification->getUnreadNotificationCount();
-                                       if($notificationCount > 0){
-                                           echo "<span class=\"badge badge-success pull-right\">$notificationCount</span>";
-                                       }
-                                   ?>
-                                    <!--<span class="badge badge-success pull-right"><?php echo $notificationCount;?></span>-->
-                                   </a>
-
-                                   <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                       <li><p class="drop-title">Notifications !</p></li>
-                                       <li class="dropdown-menu-list slimscroll tasks">
-                                           <ul class="list-unstyled">
-                                               <?php
-                                                $topNotifications = $this->notification->getTopNotification();
-                                                foreach ($topNotifications as $notification){
-                                                    ?>
-                                                    <li>
-                                                        <a href="#">
-                                                            <!--<div class="task-icon badge badge-success"><i class="icon-user"></i></div>-->
-                                                            <span class="badge badge-roundless badge-default pull-right"><?php echo $this->notification->time_elapsed_string($notification['created_date']);?></span>
-                                                            <p class="msg-name" style="margin: 0px;"><?php echo $notification['first_name']; ?></p>
-                                                            <p class="task-details" style="width: auto;"><?php echo $notification['text'];?></p>
-                                                        </a>
-                                                    </li>
+                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" ><i class="fa fa-bell"></i>
+                                        <?php $notificationCount = $this->notification->getUnreadNotificationCount(); if($notificationCount > 0) { ?>
+                                        <span id="not_cont_span" class="badge badge-success pull-right"><?php echo $notificationCount; ?></span>
+                                        <?php } ?>
+                                    </a>
+                                    <ul class="nonclose-dropdown-menu dropdown-menu title-caret dropdown-lg" role="menu">
+                                        <li><p class="drop-title">Notifications !</p></li>
+                                        <div class="notislimScrollDiv" class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
+                                            <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
+                                                <ul class="list-unstyled">
                                                     <?php
-                                                }
-                                                if(count($topNotifications) == 0){
+                                                        $topNotifications = $this->notification->getAllNotification();
+                                                        foreach ($topNotifications as $notification){
+                                                            ?>
+                                                            <li class='rm'>
+                                                                <a href="#">
+                                                                    <div data-id="<?php echo $notification['id'];?>" class="task_read task-icon badge pull-right" style="vertical-align: middle; width: 25px; height: 25px; margin-top: 10px;"><i class="glyphicon glyphicon-remove" style="margin: 0 auto;"></i></div>
+                                                                    <span class="badge badge-roundless badge-default pull-right"><?php echo $this->notification->time_elapsed_string($notification['created_date']);?></span>
+                                                                    <p class="msg-name" style="margin: 0px;"><?php echo $notification['first_name']; ?></p>
+                                                                    <p class="task-details" style="width: auto;"><?php echo $notification['text'];?></p>
+                                                                </a>
+                                                            </li>
+                                                            <?php
+                                                        }
+                                                        if(count($topNotifications) == 0){ ?>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                                    -->
+                                                                    <p class="msg-name">Your notification list is empty.</p>
+                                                                </a>
+                                                            </li>
+                                                            <?php
+                                                        }
                                                     ?>
-                                                    <li>
-                                                        <a href="#"><p class="task-details">Your notification list is empty.</p></a>
-                                                    </li>
-                                                    <?php
-                                                }
-                                               ?>
 
-
-                                           </ul>
-                                       </li>
-                                   </ul>
-                               </li>
+                                                </ul>
+                                            </li>
+                                            <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div>
+                                        </div>
+                                        <li class="drop-all"><a href="<?php echo site_url();?>/index/readAllnotification" class="text-center">Mark as read all notifications</a></li>
+                                    </ul>
+                                </li>
+                               
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
                                         <span class="user-name"><?php echo $this->auth->getUsername();?><i class="fa fa-angle-down"></i></span>

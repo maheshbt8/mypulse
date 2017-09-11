@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 06, 2017 at 09:48 AM
+-- Generation Time: Sep 11, 2017 at 06:07 PM
 -- Server version: 5.7.9
 -- PHP Version: 5.6.16
 
@@ -43,14 +43,15 @@ CREATE TABLE IF NOT EXISTS `hms_appoitments` (
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_appoitments`
 --
 
 INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department_id`, `doctor_id`, `appoitment_date`, `appoitment_time_start`, `appoitment_time_end`, `status`, `reason`, `remarks`, `created_at`, `modified_at`, `isDeleted`) VALUES
-(1, 'APT2', 26, 1, 2, '2017-09-05', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-05 15:05:02', 0);
+(1, 'APT2', 26, 1, 2, '2017-09-05', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-05 15:05:02', 0),
+(2, 'APT3', 26, 1, 3, '2017-09-09', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-05 15:05:02', 0);
 
 -- --------------------------------------------------------
 
@@ -1243,7 +1244,16 @@ CREATE TABLE IF NOT EXISTS `hms_messages` (
   `isRead` tinyint(4) NOT NULL DEFAULT '0',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_messages`
+--
+
+INSERT INTO `hms_messages` (`id`, `created_by`, `user_id`, `title`, `body`, `created_date`, `isRead`, `isDeleted`) VALUES
+(1, 1, 1, 'Test Mail message from Super admin to Super admin  :)', 'Test Body Message from Super Admin \r\n\r\nRegards,\r\nSuper Admin', '2017-09-07 00:00:00', 0, 0),
+(2, 2, 1, 'Another message', 'Message body goes here..', '2017-09-06 00:00:00', 0, 0),
+(3, 1, 143, 'Titel', '<p>kjasdfkjkajdfkasdfkjkjkkjkfjkasdj</p><p><br></p>', '0000-00-00 00:00:00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1269,9 +1279,9 @@ CREATE TABLE IF NOT EXISTS `hms_notification` (
 --
 
 INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`, `action`, `created_date`, `isDeleted`) VALUES
-(1, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(1, 12, 1, 'Dr. Ravi Patel added new availability', 1, NULL, '2017-09-05 20:18:14', 0),
 (2, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
-(3, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
+(3, 12, 1, 'Dr. Ravi Patel added new availability', 1, NULL, '2017-09-05 20:18:14', 0),
 (4, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
 (5, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
 (6, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
