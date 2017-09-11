@@ -8,6 +8,7 @@
         </div><!-- Row -->
         <div class="row">
         <div class="col-lg-3 col-md-6">
+            <a href="<?php echo site_url();?>/doctors">
                 <div class="panel info-box panel-white">
                     <div class="panel-body">
                         <div class="info-box-stats">
@@ -19,32 +20,37 @@
                         </div>
                     </div>
                 </div>
+            </a>
             </div>
             <div class="col-lg-3 col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p><span class="counter"><?php echo $states['dep_count'];?></span></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('departments');?></span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="fa fa-users"></i>
+
+                    <div class="panel info-box panel-white">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p><span class="counter"><?php echo $states['dep_count'];?></span></p>
+                                <span class="info-box-title"><?php echo $this->lang->line('departments');?></span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="fa fa-users"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+
             </div>
             <div class="col-lg-3 col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter"><?php  echo $states['patient_count'];?></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('users');?></span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="icon-user"></i>
+
+                    <div class="panel info-box panel-white">
+                        <div class="panel-body">
+                            <div class="info-box-stats">
+                                <p class="counter"><?php  echo $states['patient_count'];?></p>
+                                <span class="info-box-title"><?php echo $this->lang->line('users');?></span>
+                            </div>
+                            <div class="info-box-icon">
+                                <i class="icon-user"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
+
             </div>
         </div>
         </div>

@@ -17,13 +17,14 @@ class Sendmail {
 		$mail->Username = "hospitalsystem160@gmail.com";
 		$mail->Password = "@641f81cd1&295a01";
 		$mail->From = "hospitalsystem160@gmail.com";
-		$mail->FromName = "Hospital Managment System";
+		$mail->FromName = "MyPulse";
+        $mail->SMTPDebug = 2;
 		$mail->Subject  = $data['subject'];
         $mail->Body     = $data['body'];
         $mail->IsHTML(true); 
 		$mail->AddAddress($data['email']);
 		if(!$mail->Send()){
-            var_dump($mail->ErrorInfo);
+            //var_dump($mail->ErrorInfo);exit;
 			return false;
 		}else{
 			return true;
