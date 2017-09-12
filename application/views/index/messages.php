@@ -62,7 +62,7 @@ $this->load->view('template/left.php');
                         <div class="form-group">
                             <label for="to" class="col-sm-2 control-label">From</label>
                             <div class="col-sm-10">
-                                <input type="text" readonly class="form-control" id="read_select-to" value="<?php if(isset($message)){ echo $message['first_name']." ".$message['last_name'];}?>">
+                                <input type="text" readonly class="form-control" id="read_select-to" value="<?php if(isset($message)){ echo $message['fromname'];}?>">
                             </div>
                         </div>
                         <div class="form-group">
@@ -106,7 +106,6 @@ $this->load->view('template/footer.php');
                 item: function(item, escape) {
                     return '<div>' +
                         (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
-                        (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
                         '</div>';
                 },
                 option: function(item, escape) {
@@ -144,7 +143,7 @@ $this->load->view('template/footer.php');
                 var msg = $.parseJSON(d);
                 $("#msg_count").html(msg.count);
                 $(span).removeClass('bold');
-                $("#read_select-to").val(msg.message.first_name+" "+msg.message.last_name);
+                $("#read_select-to").val(msg.message.fromname);
                 //$("#read_message").val(msg.message.body);
                 $("#read_title").val(msg.message.title);
                 $("#read_message").code(msg.message.body);
@@ -172,7 +171,9 @@ $this->load->view('template/footer.php');
         });
         $(".dataTables_filter").attr("style","display: flex;float: right");
         $("#msg_tbl_filter label").hide();
+        <?php if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()) { ?>
         $(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\"  style=\"margin-left:10px\">New Message</a>");
+        <?php } ?>
 
         $(document).on('click','.addbtn',function(){
             $('.note-editable').attr('contenteditable', true);

@@ -19,6 +19,7 @@ class Message_model extends CI_Model
         $this->db->where('hms_messages.isRead',0);
         $this->db->join('hms_users','hms_messages.created_by=hms_users.id');
         $this->db->limit($top,0);
+        $this->db->order_by('created_date','DESC');
         $messages = $this->db->get($this->tblname);
         return $messages->result_array();
     }
@@ -33,13 +34,7 @@ class Message_model extends CI_Model
         $this->db->where('id',$mid);
         $this->db->update($this->tblname, array('isRead'=>1));
 
-
-        $this->db->select('hms_messages.*,hms_users.first_name,hms_users.last_name,hms_users.profile_photo');
-        $this->db->where('hms_messages.user_id',$uid);
-        $this->db->where('hms_messages.id',$mid);
-        $this->db->where('hms_messages.isDeleted',0);
-        $this->db->join('hms_users','hms_messages.created_by=hms_users.id');
-        $message = $this->db->get($this->tblname)->row_array();
+        $message = $this->db->query('SELECT m.*,CONCAT(u1.first_name,\' \',u1.last_name) as toname, CONCAT(u2.first_name,\' \',u2.last_name) as fromname  from hms_messages m left join hms_users u1 on u1.id = m.user_id left join hms_users u2 on u2.id = m.created_by where m.user_id = '.$uid.' and m.id='.$mid)->row_array();
 
         return $message;
     }

@@ -12,7 +12,12 @@ class Index extends CI_Controller {
 		$this->load->model('dashboard_model');
 		$this->load->model('patient_model');
 		$this->load->model('healthinsuranceprovider_model');
-		$this->load->model('medical_lab_model');
+        $this->load->model('hospital_admin_model');
+        $this->load->model('medical_lab_model');
+        $this->load->model('medical_store_model');
+        $this->load->model('doctors_model');
+        $this->load->model('nurse_model');
+        $this->load->model('receptionist_model');
 	}
 
 	function index()
@@ -72,7 +77,7 @@ class Index extends CI_Controller {
 
 	function sendmsg()
     {
-        if($this->auth->isLoggedIn()){
+        if($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())){
             $uid = isset($_POST['to']) ? explode(",",$_POST['to']) : array();
             $msg = isset($_POST['message']) ? $_POST['message'] : "";
             $title = isset($_POST['title']) ? $_POST['title'] : "";
@@ -366,7 +371,24 @@ class Index extends CI_Controller {
 					break;
 				default: 
 					$data['profile'] = $this->patient_model->getProfile($uid);
-					// echo "<pre>";print_r($data);exit;
+                    if($this->auth->isDoctor()){
+                        $data['data'] = $this->doctors_model->getdoctorsById($this->doctors_model->getMyId());
+                    }
+                    if($this->auth->isNurse()){
+                        $data['data'] = $this->nurse_model->getnurseById($this->nurse_model->getMyId());
+                    }
+                    if($this->auth->isReceptinest()){
+                        $data['data'] = $this->receptionist_model->getreceptionistById($this->receptionist_model->getMyId());
+                    }
+                    if($this->auth->isHospitalAdmin()){
+                        $data['data'] = $this->hospital_admin_model->gethospital_adminById($this->hospital_admin_model->getMyId());
+                    }
+                    if($this->auth->isMedicalStore()){
+                        $data['data'] = $this->medical_store_model->getmedical_storeById($this->medical_store_model->getMyId());
+                    }
+                    if($this->auth->isMedicalLab()){
+                        $data['data'] = $this->medical_lab_model->getmedical_labById($this->medical_lab_model->getMyId());
+                    }
 					$this->load->view('index/profile',$data);
 			}
         } else redirect('index/login');
@@ -377,6 +399,19 @@ class Index extends CI_Controller {
 			$data = array();
             $id = $this->input->post('eidt_gf_id');
             $res = $this->auth->addUser($_POST,$id);
+
+            if($this->auth->isDoctor()){
+                $doc_id = $this->doctors_model->getMyId();
+                $this->doctors_model->updateOtherProfile($doc_id);
+            }
+            if($this->auth->isNurse()){
+                $nid = $this->nurse_model->getMyId();
+                $this->nurse_model->updateOtherProfile($nid);
+            }
+            if($this->auth->isReceptinest()){
+                $rid = $this->receptionist_model->getMyId();
+                $this->receptionist_model->updateOtherProfile($rid);
+            }
             
             if($res === -1){
                 $data['errors'] = array($this->lang->line('msg_email_exist'));

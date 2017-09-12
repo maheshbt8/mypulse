@@ -11,6 +11,17 @@ class Hospital_admin_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+    public function getMyId(){
+        $this->db->where('user_id',$this->auth->getUserid());
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $doc = $this->db->get($this->tblname);
+        $doc = $doc->row_array();
+        if(isset($doc['id'])){
+            return $doc['id'];
+        }
+        return 0;
+    }
     function gethospital_adminById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r =  $r->row_array();
@@ -23,6 +34,12 @@ class Hospital_admin_model extends CI_Model {
                 $r[$key] = $value;
             }
         }
+
+        $this->db->where('id',$r['hospital_id']);
+        $this->db->where('isActive',1);
+        $this->db->where('isDeleted',0);
+        $hosp  = $this->db->get('hms_hospitals')->row_array();
+        $r['hospital_name'] = isset($hosp['name']) ? $hosp['name'] : "";
 
         return $r;
     }

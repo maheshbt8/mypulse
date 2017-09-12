@@ -31,12 +31,18 @@ class Receptionist_model extends CI_Model {
             $doctor =$doctor->row_array();
             $r['department_id'] = $doctor['department_id'];
 
+            $this->db->where('id',$doctor['user_id']);
+            $usr = $this->db->get("hms_users")->row_array();
+            $r['doctor_name'] = $this->auth->getUName($usr);
+
             $this->db->where('id',$r['department_id']);
             $this->db->where('isActive',1);
             $this->db->where("isDeleted",0);
             $department = $this->db->get('hms_departments');
             $department =$department->row_array();
             $r['branch_id'] = $department['branch_id'];
+            $r['department_name'] = $department['department_name'];
+
 
 
             $this->db->where('id',$r['branch_id']);
@@ -45,6 +51,13 @@ class Receptionist_model extends CI_Model {
             $branch = $this->db->get('hms_branches');
             $branch =$branch->row_array();
             $r['hospital_id'] = $branch['hospital_id'];
+            $r['branch_name'] = $branch['branch_name'];
+
+            $this->db->where('id',$r['hospital_id']);
+            $this->db->where('isActive',1);
+            $this->db->where('isDeleted',0);
+            $hosp  = $this->db->get('hms_hospitals')->row_array();
+            $r['hospital_name'] = isset($hosp['name']) ? $hosp['name'] : "";
         }else{
             $r['doc_id'] = 0;
             $r['department_id'] = 0;
@@ -91,7 +104,13 @@ class Receptionist_model extends CI_Model {
             $rec = array();
             $rec['user_id'] = $rec_id;
             $rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
+            if(isset($data['qualification']))
+                $rec['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $rec['experience'] = $data['experience'];
             $rec['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['isActive']))
+                $rec['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $rec)) {
                 //find doctor user_id which is linked with this receptionist
                 $this->db->where('id', $data['doc_id']);
@@ -140,6 +159,10 @@ class Receptionist_model extends CI_Model {
                 $rec['doc_id'] = $data['doc_id'];
             if(isset($data['isActive']))
                 $rec['isActive'] = intval($data['isActive']);
+            if(isset($data['qualification']))
+                $rec['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $rec['experience'] = $data['experience'];
             if(count($rec) > 0){
                 if ($this->db->update($this->tblname, $rec)) {
                     return true;
@@ -192,5 +215,28 @@ class Receptionist_model extends CI_Model {
             return $doc['id'];
         }
         return 0;   
+    }
+
+    public function getMyProfile(){
+        $id = $this->getMyId();
+        $this->db->where('id',$id);
+        return $this->db->get($this->tblname)->row_array();
+    }
+
+    public function updateOtherProfile($id){
+        $arr = array();
+        $data = $_POST;
+        if(isset($data['qualification']))
+            $arr['qualification'] = $data['qualification'];
+        if(isset($data['experience']))
+            $arr['experience'] = $data['experience'];
+
+        if(count($arr) > 0){
+            $this->db->where("id", $id);
+            if ($this->db->update($this->tblname, $arr)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

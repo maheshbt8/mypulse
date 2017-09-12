@@ -32,7 +32,7 @@ class Nurse_model extends CI_Model {
             $department = $this->db->get('hms_departments');
             $department =$department->row_array();
             $r['branch_id'] = $department['branch_id'];
-
+            $r['department_name'] = $department['department_name'];
 
             $this->db->where('id',$r['branch_id']);
             $this->db->where('isActive',1);
@@ -40,6 +40,13 @@ class Nurse_model extends CI_Model {
             $branch = $this->db->get('hms_branches');
             $branch =$branch->row_array();
             $r['hospital_id'] = $branch['hospital_id'];
+            $r['branch_name'] = $branch['branch_name'];
+
+            $this->db->where('id',$r['hospital_id']);
+            $this->db->where('isActive',1);
+            $this->db->where('isDeleted',0);
+            $hosp  = $this->db->get('hms_hospitals')->row_array();
+            $r['hospital_name'] = isset($hosp['name']) ? $hosp['name'] : "";
         }else{
             $r['department_id'] = 0;
             $r['branch_id'] = 0;
@@ -82,7 +89,13 @@ class Nurse_model extends CI_Model {
         }else{
             $nurse['user_id'] = $nid;
             $nurse['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
+            if(isset($data['qualification']))
+                $nurse['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $nurse['experience'] = $data['experience'];
             $nurse['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['isActive']))
+                $nurse['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $nurse)) {
                 //get hospital name
                 $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
@@ -129,6 +142,10 @@ class Nurse_model extends CI_Model {
             $nus = array();
             if(isset($data['department_id']))
                 $nus['department_id'] = $data['department_id'];
+            if(isset($data['qualification']))
+                $nus['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $nus['experience'] = $data['experience'];
             if(isset($data['isActive']))
                 $nus['isActive'] = intval($data['isActive']);
             if(count($nus) > 0){
@@ -164,6 +181,29 @@ class Nurse_model extends CI_Model {
             return $doc['id'];
         }
         return 0;   
+    }
+
+    public function getMyProfile(){
+        $id = $this->getMyId();
+        $this->db->where('id',$id);
+        return $this->db->get($this->tblname)->row_array();
+    }
+
+    public function updateOtherProfile($id){
+        $arr = array();
+        $data = $_POST;
+        if(isset($data['qualification']))
+            $arr['qualification'] = $data['qualification'];
+        if(isset($data['experience']))
+            $arr['experience'] = $data['experience'];
+
+        if(count($arr) > 0){
+            $this->db->where("id", $id);
+            if ($this->db->update($this->tblname, $arr)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function getDepartmentIds(){

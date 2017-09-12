@@ -18,6 +18,17 @@ class Medical_lab_model extends CI_Model {
         $ml = $ml->row_array();
         return isset($ml['id']) ? $ml['id'] : 0;
     }
+    public function getMyId(){
+        $this->db->where('user_id',$this->auth->getUserid());
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $doc = $this->db->get($this->tblname);
+        $doc = $doc->row_array();
+        if(isset($doc['id'])){
+            return $doc['id'];
+        }
+        return 0;
+    }
     function getmedical_labById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -130,6 +141,8 @@ class Medical_lab_model extends CI_Model {
             $mlab['owner_contact_number'] = $data['owner_contact_number'];
             $mlab['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mlab['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['isActive']))
+                $mlab['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $mlab)) {
                 //find hospital name
                 $this->db->where('id', $data['hospital_id']);
@@ -189,6 +202,8 @@ class Medical_lab_model extends CI_Model {
             if(isset($data['md_description'])){
                 $mlab['description'] = $data['md_description'];
             }
+            if(isset($data['isActive']))
+                $mlab['isActive'] = intval($data['isActive']);
             if(count($mlab) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mlab)) {

@@ -155,7 +155,7 @@
                                                         <span class="pcs-customer-name" id="zb-pdf-customer-detail"><i class="fa fa-phone"></i> &nbsp;<?php echo $data['doctor_contact'];?></span><br>
                                                     </div>
                                                     <div style="clear:both;width:50%;font-size:10pt;margin-top: 20px;">
-                                                        <label style="font-size: 10pt;" id="tmp_shipping_address_label" class="pcs-label">Patient </label>
+                                                        <label style="font-size: 10pt;" id="tmp_shipping_address_label" class="pcs-label">Prescription for </label>
                                                         <br>
                                                         <span style="white-space: pre-wrap;" id="tmp_shipping_address"><?php echo $data['patient_name'];?></span><br>
                                                         <span style="white-space: pre-wrap;" id="tmp_shipping_address"><i class="fa fa-phone"></i> &nbsp;<?php echo $data['patient_contact'];?></span><br>

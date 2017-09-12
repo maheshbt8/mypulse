@@ -33,7 +33,7 @@ class Doctors_model extends CI_Model {
             $department = $this->db->get('hms_departments');
             $department =$department->row_array();
             $r['branch_id'] = $department['branch_id'];
-
+            $r['department_name'] = $department['department_name'];
 
             $this->db->where('id',$r['branch_id']);
             $this->db->where('isActive',1);
@@ -41,6 +41,13 @@ class Doctors_model extends CI_Model {
             $branch = $this->db->get('hms_branches');
             $branch =$branch->row_array();
             $r['hospital_id'] = $branch['hospital_id'];
+            $r['branch_name'] = $branch['branch_name'];
+
+            $this->db->where('id',$r['hospital_id']);
+            $this->db->where('isActive',1);
+            $this->db->where('isDeleted',0);
+            $hosp  = $this->db->get('hms_hospitals')->row_array();
+            $r['hospital_name'] = isset($hosp['name']) ? $hosp['name'] : "";
         }else{
             $r['department_id'] = 0;
             $r['branch_id'] = 0;
@@ -94,7 +101,15 @@ class Doctors_model extends CI_Model {
             $doc = array();
             $doc['user_id'] = $doc_id;
             $doc['department_id'] = isset($data['department_id']) ? $data['department_id'] : -1;
+            if(isset($data['qualification']))
+                $doc['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $doc['experience'] = $data['experience'];
+            if(isset($data['specialization']))
+                $doc['specialization'] = $data['specialization'];
             $doc['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['isActive']))
+                $doc['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $doc)) {
                 //get hospital name
                 $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
@@ -148,6 +163,14 @@ class Doctors_model extends CI_Model {
             $doc = array();
             if(isset($data['department_id']))
                 $doc['department_id'] = $data['department_id'];
+
+            if(isset($data['qualification']))
+                $doc['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $doc['experience'] = $data['experience'];
+            if(isset($data['specialization']))
+                $doc['specialization'] = $data['specialization'];
+
             if(isset($data['isActive']))
                 $doc['isActive'] = intval($data['isActive']);
             
@@ -163,6 +186,28 @@ class Doctors_model extends CI_Model {
         return true;
 
     }
+
+    function updateOtherProfile($id){
+        $doc = array();
+        $data = $_POST;
+
+        if(isset($data['qualification']))
+            $doc['qualification'] = $data['qualification'];
+        if(isset($data['experience']))
+            $doc['experience'] = $data['experience'];
+        if(isset($data['specialization']))
+            $doc['specialization'] = $data['specialization'];
+
+        if(count($doc) > 0){
+            $this->db->where("id", $id);
+            if ($this->db->update($this->tblname, $doc)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);
@@ -249,6 +294,23 @@ class Doctors_model extends CI_Model {
         return $ids;
     }
 
+    function getDoctorsIdsByDeppartmentId($dep_id=0){
+        if(is_array($dep_id)){
+            if(count($dep_id) == 0){$dep_id[] = -1;}
+            $this->db->where_in("department_id",$dep_id);
+        }
+        $this->db->where("isDeleted",0);
+        $this->db->where("isActive",1);
+
+        $res = $this->db->get($this->tblname);
+        $res = $res->result_array();
+        $ids = array();
+        foreach ($res as $key => $value) {
+            $ids[] = $value['id'];
+        }
+        return $ids;
+    }
+
     public function getMyId(){
         $this->db->where('user_id',$this->auth->getUserid());
         $this->db->where('isDeleted',0);
@@ -261,6 +323,12 @@ class Doctors_model extends CI_Model {
             }
         }
         return 0;   
+    }
+
+    public function getMyProfile(){
+        $id = $this->getMyId();
+        $this->db->where('id',$id);
+        return $this->db->get($this->tblname)->row_array();
     }
 
     public function getMyUserId($id=0){

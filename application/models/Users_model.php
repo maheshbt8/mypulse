@@ -147,7 +147,61 @@ class Users_model extends CI_Model {
     }
 
     function searchmail($q=""){
-        $res = $this->db->query("SELECT id, CONCAT(first_name,' ',last_name) as name, useremail as email from hms_users where first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR useremail LIKE '%$q%' and isDeleted=0");
+        $res = null;
+        if($this->auth->isSuperAdmin()){
+            $res = $this->db->query("SELECT id, CONCAT(first_name,' ',last_name) as name, useremail as email from hms_users where first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR useremail LIKE '%$q%' and isDeleted=0");
+        }else if($this->auth->isHospitalAdmin()){
+
+            $this->load->model('hospitals_model');
+            $this->load->model('branches_model');
+            $this->load->model('departments_model');
+            $this->load->model('doctors_model');
+
+            $hids = $this->hospitals_model->getHospicalIds();
+            $bids = $this->branches_model->getBracheIds($hids);
+            $dids = $this->departments_model->getDepartmentIdsFromBranch($bids);
+            $docIds = $this->doctors_model->getDoctorsIdsByDeppartmentId($dids);
+
+            $uids = array();
+
+            $mlres = $this->db->query("select DISTINCT user_id from hms_medical_lab where branch_id in (".implode(",",$bids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($mlres as $res){
+                $uids[] = $res['user_id'];
+            }
+
+            $msres = $this->db->query("select DISTINCT user_id from hms_medical_store where branch_id in (".implode(",",$bids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($msres as $res){
+                $uids[] = $res['user_id'];
+            }
+
+            $dres = $this->db->query("select DISTINCT user_id from hms_doctors where department_id in (".implode(",",$dids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($dres as $res){
+                $uids[] = $res['user_id'];
+            }
+
+            $nres = $this->db->query("select DISTINCT user_id from hms_nurse where department_id in (".implode(",",$dids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($nres as $res){
+                $uids[] = $res['user_id'];
+            }
+
+            $rres = $this->db->query("select DISTINCT user_id from hms_receptionist where doc_id in (".implode(",",$docIds).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($rres as $res){
+                $uids[] = $res['user_id'];
+            }
+
+            $pres = $this->db->query("select DISTINCT patient_id from hms_prescription where doctor_id in (".implode(",",$docIds).") and isDeleted=0 ")->result_array();
+            foreach ($pres as $res){
+                $uids[] = $res['patient_id'];
+            }
+
+            $sres = $this->db->query("select id from hms_users where role=1 and isActive=1 and isDeleted=0")->result_array();
+            foreach ($sres as $res){
+                $uids[] = $res['id'];
+            }
+
+            $uids = implode(",",$uids);
+            $res = $this->db->query("SELECT id, CONCAT(first_name,' ',last_name) as name, useremail as email from hms_users where (first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR useremail LIKE '%$q%') and isDeleted=0 and id in ($uids)");
+        }
         return $res->result_array();
     }
 
@@ -182,11 +236,29 @@ class Users_model extends CI_Model {
         unset($data["eidt_gf_id"]);
         if (isset($data["role"])) $data["role"] = intval($data["role"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        
+        $key = "";
+        if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+            $key = strtoupper(bin2hex(openssl_random_pseudo_bytes(5)));
+            $data['forgotPassCode'] = $key;
+        }
+
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
         if ($this->db->insert($this->tblname, $data)) {
-            return $this->db->insert_id();
+            $_uid = $this->db->insert_id();
+
+            $email = $data['useremail'];
+            $this->load->library('sendmail');
+            $enc = $key.":".$email;
+            $url = site_url().'/index/vacc?k='.base64_encode($enc);
+            $username = $this->auth->getUsername();
+            $role = $this->lang->line('roles')[$data['role']];
+            $mail_data['body'] = 'Welcome to MyPulse,<br>'.$username.' has register you as '.$role.'<br>To complete your MyPulse profile. Please verify your account by click on following link <br> <a href="'.$url.'">Verify Account</a>';
+            $mail_data['subject'] = 'MyPulse Registration';
+            $mail_data['email'] = $data['useremail'];
+            $this->sendmail->send($mail_data);
+
+            return $_uid;
         } else {
             $err = $this->db->error();
             //echo "<pre>";print_r($err);
@@ -319,8 +391,8 @@ class Users_model extends CI_Model {
                     $this->load->library('sendmail');
                     $enc = $key.":".$email;
                     $url = site_url().'/index/vacc?k='.base64_encode($enc);
-                    $mail_data['body'] = 'To complete your MyPulse profile. Please verify your accout by click on following link <br> <a href="'.$url.'">Verify Account</a>';
-                    $mail_data['subject'] = 'MyPulse Registration Complete';
+                    $mail_data['body'] = 'Welcome to MyPulse,<br>To complete your MyPulse profile. Please verify your account by click on following link <br> <a href="'.$url.'">Verify Account</a>';
+                    $mail_data['subject'] = 'MyPulse Registration ';
                     $mail_data['email'] = $data['useremail'];
                     $this->sendmail->send($mail_data);
                     //return true;

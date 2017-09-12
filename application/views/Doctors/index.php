@@ -213,23 +213,19 @@ $this->load->view("template/left.php");
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['qualification'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name1="qualification" id="qualification" />
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['experience'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name1="experience" id="experience" />
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
 											</div>
-										</div>	
+										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['specilization'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name1="specilization" id="specilization" />
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" />
 											</div>
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['availability'];?></label>
-												<textarea class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['availability'];?>" name1="availability" id="availability" ></textarea>
-											</div>
-										</div>		
+										</div>
 									</div>
 								</div>
 							</div>	
@@ -420,6 +416,9 @@ $this->load->view("template/footer.php");
 
 						$("#gender").val(data.gender);
 
+						$("#qualification").val(data.qualification);
+						$("#experience").val(data.experience);
+						$("#specialization").val(data.specialization);
 						
 						
 						$("#address").val(data.address);

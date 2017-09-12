@@ -8,7 +8,7 @@ $this->load->view("template/left.php");
 ?>
 	<div id="main-wrapper">
 	    <div class="row">
-
+            
             <div class="col-md-3 user-profile">
             
                 <div class="profile-image-container" >
@@ -57,7 +57,30 @@ $this->load->view("template/left.php");
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
-                                <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
+                                <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['Profile'];?></a></li>
+                                <?php
+                                $showHA = "display:none";
+                                $showDoc= "display:none";
+                                $showNur= "display:none";
+                                $showRep= "display:none";
+                                if($this->auth->isHospitalAdmin() || $this->auth->isMedicalStore() || $this->auth->isMedicalLab() || $this->auth->isDoctor() || $this->auth->isNurse() || $this->auth->isReceptinest()){
+                                    $showHA = "";
+                                }
+                                if($this->auth->isDoctor()){
+                                    $showDoc = "";
+                                }
+                                if($this->auth->isNurse()){
+                                    $showNur = "";
+                                }
+                                if($this->auth->isReceptinest()){
+                                    $showRep = "";
+                                }
+                                ?>
+                                <li style="<?php echo $showHA;?>" role="presentation"><a href="#tab4" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+
+                                <li style="<?php echo $showDoc;?>" role="presentation"><a href="#tab_doc" aria-controls="doc" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
+                                <li style="<?php echo $showNur;?>" role="presentation"><a href="#tab_nur" aria-controls="nur" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
+                                <li style="<?php echo $showRep;?>" role="presentation"><a href="#tab_rep" aria-controls="rep" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
                                 
                             </ul>
                             <!-- Tab panes -->
@@ -173,6 +196,88 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                 </div>
+                                <div role="tabpanel" class="tab-pane" id="tab_doc">
+                                    <?php if($this->auth->isDoctor()) { ?>
+                                    <div class="col-md-12">
+                                        <div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['qualification'];?></label>
+                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['experience'];?></label>
+                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['specilization'];?></label>
+                                            <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" data-ori="<?php echo $data['specialization']; ?>" value="<?php echo $data['specialization']; ?>" />
+                                        </div>
+                                    </div>
+                                    <?php } ?>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tab_nur">
+                                    <?php if($this->auth->isNurse()) { ?>
+                                        <div class="col-md-12">
+                                            <div class="form-group col-md-6">
+                                                <label><?php echo $this->lang->line('labels')['qualification'];?></label>
+                                                <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label><?php echo $this->lang->line('labels')['experience'];?></label>
+                                                <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tab_rep">
+                                    <?php if($this->auth->isReceptinest()) { ?>
+                                        <div class="col-md-12">
+                                            <div class="form-group col-md-6">
+                                                <label><?php echo $this->lang->line('labels')['qualification'];?></label>
+                                                <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label><?php echo $this->lang->line('labels')['experience'];?></label>
+                                                <input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="tab4">
+                                    <div class="col-md-12">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label for="input-Default" class="col-sm-3 control-label">Hospital : </label>
+                                                <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['hospital_name']) ? $data['hospital_name'] : "";?></label>
+                                            </div>
+                                            <?php if(!$this->auth->isHospitalAdmin()){
+                                                ?>
+                                                <div class="form-group">
+                                                    <label for="input-Default" class="col-sm-3 control-label">Branch : </label>
+                                                    <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['branch_name']) ? $data['branch_name'] : "";?></label>
+                                                </div>
+                                                <?php if(!$this->auth->isMedicalLab() && !$this->auth->isMedicalStore()){?>
+                                                    <div class="form-group">
+                                                        <label for="input-Default" class="col-sm-3 control-label">Department : </label>
+                                                        <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['department_name']) ? $data['department_name'] : "";?></label>
+                                                    </div>
+                                                    <?php if($this->auth->isReceptinest()){ ?>
+                                                        <div class="form-group">
+                                                            <label for="input-Default" class="col-sm-3 control-label">Doctor : </label>
+                                                            <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['doctor_name']) ? $data['doctor_name'] : "";?></label>
+                                                        </div>
+                                                    <?php
+                                                    } ?>
+                                                <?php
+                                                }?>
+                                                <?php
+                                            }?>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             </form>
                         </div>

@@ -11,6 +11,17 @@ class Medical_store_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+    public function getMyId(){
+        $this->db->where('user_id',$this->auth->getUserid());
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $doc = $this->db->get($this->tblname);
+        $doc = $doc->row_array();
+        if(isset($doc['id'])){
+            return $doc['id'];
+        }
+        return 0;
+    }
     function getmedical_storeById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -76,6 +87,8 @@ class Medical_store_model extends CI_Model {
             $mstore['owner_contact_number'] = $data['owner_contact_number'];
             $mstore['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mstore['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['isActive']))
+                $mstore['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $mstore)) {
                 //find hospital name
                 $this->db->where('id', $data['hospital_id']);
@@ -135,6 +148,8 @@ class Medical_store_model extends CI_Model {
             if(isset($data['md_description'])){
                 $mstore['description'] = $data['md_description'];
             }
+            if(isset($data['isActive']))
+                $mstore['isActive'] = intval($data['isActive']);
             if(count($mstore) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mstore)) {
