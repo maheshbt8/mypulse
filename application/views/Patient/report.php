@@ -18,6 +18,11 @@ $this->load->view("template/left.php");
 								<div class="custome_col8">
 									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('patient_report');?></h4>
 								</div>
+								<div class="custome_col4">
+									<div class="panel_button_top_right">
+										<?php $this->load->view('template/exbtn');?>
+									</div>
+								</div>
 								<br>
 							</div>
 	                    </div>
@@ -71,7 +76,8 @@ $this->load->view("template/footer.php");
 		
 		function loadTable(date){	
 			$("#report").dataTable().fnDestroy();
-			$("#report").DataTable();
+			var dt = $("#report").DataTable();
+			<?php $this->load->view('template/exdt');?>
 			$(".dataTables_filter").attr("style","display: flex;float: right");
 		}
 

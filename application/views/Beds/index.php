@@ -17,7 +17,7 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
+	                <div class="panel panel-white" style="overflow: visible;">
 	                    
 	                    <div class="panel-heading clearfix">
 							<div class="">
@@ -28,7 +28,7 @@ $this->load->view("template/left.php");
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="beds"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn" data-at="beds"  href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<?php $this->load->view('template/exbtn');?>
 									</div>
 								</div>
 								<br>
@@ -55,7 +55,7 @@ $this->load->view("template/left.php");
                             </div>
                             <div class="col-md-12">
 								<div class="table-responsive">
-									<table id="beds" class="display table" cellspacing="0" width="100%">
+									<table id="beds" class="display table tableExport" cellspacing="0" width="100%">
 										<thead>
 											<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['bed'];?></th><th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th><th width="20px">#</th>
 											</tr>
@@ -616,11 +616,17 @@ $this->load->view("template/footer.php");
                 function loadTable(hid,bid,did){
 										
                     $("#beds").dataTable().fnDestroy();
-                    $("#beds").DataTable({
+                    var dt = $("#beds").DataTable({
                         "processing": true,
                         "serverSide": true,
                         "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did
                     });
+					/* 'copyHtml5',
+					 'excelHtml5',
+					 'csvHtml5',
+					 'pdfHtml5'*/
+
+					<?php $this->load->view('template/exdt');?>
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");
                     //$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");

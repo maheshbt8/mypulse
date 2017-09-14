@@ -22,7 +22,7 @@ $this->load->view("template/left.php");
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 										<?php } ?>
 										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="patient" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn" data-at="patient" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<?php $this->load->view('template/exbtn');?>
 									</div>
 								</div>
 								<br>
@@ -318,11 +318,12 @@ $this->load->view("template/footer.php");
 					
 				});
 
-				$("#users").DataTable({
+				var dt = $("#users").DataTable({
 		            "processing": true,
 		            "serverSide": true,
 		            "ajax": "<?php echo site_url(); ?>/patients/getDTusers"
 		        });
+				<?php $this->load->view('template/exdt');?>
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");

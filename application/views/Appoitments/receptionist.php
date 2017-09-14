@@ -27,7 +27,7 @@ $this->load->view("template/left.php");
 										<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
 										<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
 										<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn" data-at="appoitments" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<?php $this->load->view('template/exbtn');?>
 									</div>
 								</div>
 								<br>
@@ -979,11 +979,13 @@ $this->load->view("template/footer.php");
 				showClosed = 1;
 			}
 			$("#appoitments").dataTable().fnDestroy();
-			$("#appoitments").DataTable({
+			var dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
 				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?hid="+hid+"&did="+did+"&d="+date+"&st="+st+"&sc="+showClosed
 			});
+
+			<?php $this->load->view('template/exdt');?>
 			
 			$(".dataTables_filter").attr("style","display: flex;float: right");
 			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");

@@ -25,7 +25,8 @@
         <link href="<?php echo base_url();?>public/assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>  
         <link href="<?php echo base_url();?>public/assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>    
         <link href="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
-        <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/> 
+        <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>
+        <!--<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
         <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>
 
         <link href="<?php echo base_url();?>public/assets/plugins/summernote-master/summernote.css" rel="stylesheet" type="text/css"/>
@@ -111,6 +112,21 @@
             }
             .fc-event-container{
                 cursor: pointer;
+            }
+            .panel-group .panel {
+                overflow: visible;
+            }
+            .panel .panel-heading{
+                overflow: visible !important;
+            }
+            .dt-buttons a {
+                width:100%;
+                display : block;
+                font-weight : normal;
+                text-decoration: none;
+            }
+            .dt-buttons a:hover{
+                font-weight:bold;
             }
             form label {font-weight:bold}
             .drop-area

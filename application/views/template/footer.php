@@ -51,7 +51,17 @@
         <script src="<?php echo base_url();?>public/assets/plugins/metrojs/MetroJs.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/modern.min.js"></script>
-        <script src="<?php echo base_url();?>public/assets/plugins/datatables/js/jquery.datatables.min.js"></script>
+
+        <!--<script src="<?php echo base_url();?>public/assets/plugins/datatables/js/jquery.datatables.min.js"></script>-->
+
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+
+        <script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+
         <script src="<?php echo base_url();?>public/assets/plugins/selectize/js/selectize.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/select2/js/select2.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
@@ -61,7 +71,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js"></script>
         <!--<script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>-->
         <script src="<?php echo base_url();?>public/assets/plugins/summernote-master/summernote.min.js"></script>
-
+        
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
         <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
@@ -97,6 +107,7 @@
                     });
                 }
             });
+
 
             setTimeout(function() {
                 toastr.options = {

@@ -8,7 +8,7 @@ $this->load->view("template/left.php");
 ?>
 	<div id="main-wrapper">
 	    <div class="row">
-            
+
             <div class="col-md-3 user-profile">
             
                 <div class="profile-image-container" >

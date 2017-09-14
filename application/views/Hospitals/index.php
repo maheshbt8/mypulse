@@ -21,7 +21,7 @@ $this->load->view("template/left.php");
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="hospitals"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn"    href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<?php $this->load->view('template/exbtn');?>
 									</div>
 								</div>
 								<br>
@@ -59,18 +59,18 @@ $this->load->view("template/left.php");
 
 				  			 <div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
-									<li role="presentation"><a href="#tab12" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
-                                    <li role="presentation"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/"><?php echo $this->lang->line('branches');?></a></li>
-                                    <li role="presentation"><a href="#tab3" aria-controls="departments" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_departments" data-url="departments/getDTdepartments/"><?php echo $this->lang->line('departments');?></a></li>
-                                    <li role="presentation"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="wards/getDTwards/"><?php echo $this->lang->line('wards');?></a></li>
-                                    <li role="presentation"><a href="#tab5" aria-controls="beds" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_beds" data-url="beds/getDTbeds/"><?php echo $this->lang->line('beds');?></a></li>
-                                    <li role="presentation"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="doctors/getDTdoctors/"><?php echo $this->lang->line('doctors');?></a></li>
-                                    <li role="presentation"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="nurse/getDTnurse/"><?php echo $this->lang->line('nurses');?></a></li>
-                                    <li role="presentation"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="receptionist/getDTreceptionist/"><?php echo $this->lang->line('receptionists');?></a></li>
-                                    <li role="presentation"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="medical_store/getDTmedical_store/"><?php echo $this->lang->line('medicalStore');?></a></li>
-                                    <li role="presentation"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="medical_lab/getDTmedical_lab/"><?php echo $this->lang->line('medicalLab');?></a></li>
-									<li role="presentation"><a href="#tab11" aria-controls="charges" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_charges" data-url="charges/getDTcharges/"><?php echo $this->lang->line('charges');?></a></li>
+                                    <li role="presentation" class="addTab active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab">General</a></li>
+									<li role="presentation" class="addTab"><a href="#tab12" aria-controls="license" role="tab" data-toggle="tab">License</a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab2" aria-controls="branches" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_branches" data-url="branches/getDTbranches/"><?php echo $this->lang->line('branches');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab3" aria-controls="departments" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_departments" data-url="departments/getDTdepartments/"><?php echo $this->lang->line('departments');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab4" aria-controls="wards" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_wards" data-url="wards/getDTwards/"><?php echo $this->lang->line('wards');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab5" aria-controls="beds" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_beds" data-url="beds/getDTbeds/"><?php echo $this->lang->line('beds');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab6" aria-controls="doctors" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_doctors" data-url="doctors/getDTdoctors/"><?php echo $this->lang->line('doctors');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab7" aria-controls="nurses" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_nurses" data-url="nurse/getDTnurse/"><?php echo $this->lang->line('nurses');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab8" aria-controls="receptionis" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_receptionist" data-url="receptionist/getDTreceptionist/"><?php echo $this->lang->line('receptionists');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab9" aria-controls="med_stores" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medstore" data-url="medical_store/getDTmedical_store/"><?php echo $this->lang->line('medicalStore');?></a></li>
+                                    <li role="presentation" class="showTab"><a href="#tab10" aria-controls="med_labs" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_medlabs" data-url="medical_lab/getDTmedical_lab/"><?php echo $this->lang->line('medicalLab');?></a></li>
+									<li role="presentation" class="showTab"><a href="#tab11" aria-controls="charges" role="tab" data-toggle="tab" class="tab_tbl" data-tblid="tbl_charges" data-url="charges/getDTcharges/"><?php echo $this->lang->line('charges');?></a></li>
                                 </ul>
                                 <div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -322,12 +322,14 @@ $this->load->view("template/left.php");
 					var id = $(this).data('tblid');
 					var url = $(this).data('url');
 					$("#"+id).dataTable().fnDestroy();
+
 					if(url == ""){
 						$("#"+id).DataTable({
 							"paging":   false,
 					        "ordering": false,
 					        "info":     false
-						});	
+						});
+
 					}else{
 						$("#"+id).DataTable({
 							"processing": true,
@@ -406,11 +408,12 @@ $this->load->view("template/left.php");
 				});
 
 
-				$("#hospitals").DataTable({
+				var dt = $("#hospitals").DataTable({
 		            "processing": true,
 		            "serverSide": true,
 		            "ajax": "<?php echo site_url(); ?>/hospitals/getDThospitals"
 		        });
+				<?php $this->load->view('template/exdt');?>
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				//$(".dataTables_filter").append("");
@@ -422,6 +425,8 @@ $this->load->view("template/left.php");
 			    $(".addbtn").click(function(){
 					resetForm(validator);
 					resetLocation();
+					$(".showTab").hide();
+					$(".addTabl").show();
 			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewHospital'];?>");
 			    	$("#action-update-btn").parent().hide();
 			    	$("#action-add-btn").parent().show();
@@ -447,6 +452,8 @@ $this->load->view("template/left.php");
 			    });
 
 			    function loadData(id,isEdit){
+					$(".showTab").show();
+					$(".addTabl").show();
 			    	$.post("<?php echo site_url(); ?>/hospitals/gethospitals",{ id: id },function(data){
 			    		var data = JSON.parse(data);
 						$("#name").val(data.name);

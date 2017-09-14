@@ -22,7 +22,7 @@ $this->load->view("template/left.php");
 									<div class="panel_button_top_right">
 										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="license"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<a class="btn btn-primary m-b-sm exportBtn"    href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>
+										<?php $this->load->view('template/exbtn');?>
 									</div>
 								</div>
 								<br>
@@ -124,11 +124,12 @@ $this->load->view("template/footer.php");
 					errorPlacement: validationErrorPlacement
 				});
 
-				$("#license").DataTable({
+				var dt = $("#license").DataTable({
 		            "processing": true,
 		            "serverSide": true,
 		            "ajax": "<?php echo site_url(); ?>/license/getDTlicense"
 		        });
+				<?php $this->load->view('template/exdt');?>
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
 				
