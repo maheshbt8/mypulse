@@ -63,23 +63,24 @@
                                     </div> -->
                                     <input type="hidden" name="role" value="-1">
                                     <div class="form-group">
-                                        <input type="text" name="first_name" class="form-control" placeholder="Name" >
+                                        <input type="text" name="first_name" class="form-control" placeholder="Name*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number" >
+                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" name="useremail" class="form-control" placeholder="Email" >
+                                        <input type="email" name="useremail" class="form-control" placeholder="Email*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="password" class="form-control" placeholder="Password" >
+                                        <input type="password" name="password" class="form-control" placeholder="Password*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="re_password" class="form-control" placeholder="Confirm Password" >
+                                        <input type="password" name="re_password" class="form-control" placeholder="Confirm Password*" >
                                     </div>
                                     <label>
                                         <input name="agrree" type="checkbox"> Agree the terms and policy
                                     </label>
+                                    <p class="mandatory" >* are mandatory</p>
                                     <button type="submit" class="btn btn-success btn-block m-t-xs">Submit</button>
                                     <p class="text-center m-t-xs text-sm">Already have an account?</p>
                                     <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-xs">Login</a>
@@ -90,7 +91,7 @@
                     </div><!-- Row -->
                 </div><!-- Main Wrapper -->
             </div><!-- Page Inner -->
-        </main><!-- Page Content -->
+        </div><!-- Page Content -->
     
 
 

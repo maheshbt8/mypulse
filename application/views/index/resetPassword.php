@@ -55,7 +55,7 @@
                                 ?>
                                 <a href="<?php echo site_url();?>" class="logo-name text-lg text-center"><?php echo ucfirst($this->config->item('title'));?></a>
                                 <p class="text-center m-t-md">Reset Password</p>
-                                <form class="m-t-md" action="<?php echo site_url();?>/index/changePass" method="post">
+                                <form id="re_form" class="m-t-md" action="<?php echo site_url();?>/index/changePass" method="post">
                                     <div class="form-group">
                                         <input type="password" name="password" class="form-control" name="password" placeholder="Password" required/>
                                     </div>
@@ -63,6 +63,8 @@
                                         <input type="password" name="repassword" class="form-control" name="repassword" placeholder="Password" required />
                                     </div>
                                     <input type="hidden" name="key" value="<?php echo $key;?>" />
+                                    <br>
+                                    <p class="mandatory">* are mandatory</p>
                                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                                     <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-md">Login</a>
                                 </form>
@@ -72,7 +74,7 @@
                     </div><!-- Row -->
                 </div><!-- Main Wrapper -->
             </div><!-- Page Inner -->
-        </main><!-- Page Content -->
+        </div><!-- Page Content -->
   
 
         <!-- Javascripts -->
@@ -89,6 +91,61 @@
         <script src="<?php echo base_url();?>public/assets/plugins/waves/waves.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/main.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/modern.min.js"></script>
-        
+        <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
+                    phone_number = phone_number.replace(/\s+/g, "");
+                    return this.optional(element) || phone_number.length > 9 &&
+                        phone_number.match(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
+                }, "Please specify a valid phone number");
+
+                var validationInvalidHandler = function(event, validator) {
+                    // 'this' refers to the form
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        var message = errors == 1 ? "<?php echo $this->lang->line('validation')['missedOne'];?>" : "<?php echo $this->lang->line('validation')['youMissed'];?>" + errors + "<?php echo $this->lang->line('validation')['filedsHighLighed'];?>";
+                        $("div.error span").html(message);
+                        $("div.error").show();
+                    } else {
+                        $("div.error").hide();
+                    }
+                };
+                var validationErrorPlacement = function(error, element) {
+                    if (element.hasClass("selectized")) {
+                        var e = element.siblings(2)
+                        error.insertAfter(e[1]);
+                    } else if(element.attr("type") == "checkbox"){
+                        error.appendTo($("#weekerror"));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                };
+
+                var validatorCreate = $("#re_form").validate({
+                    ignore: [],
+                    rules: {
+                        password: {
+                            required: true
+                        },
+                        repassword: {
+                            required: true,
+                            equalTo: '[name="password"]'
+                        }
+                    },
+                    messages: {
+                        password:{
+                            required: "<?php echo $this->lang->line('validation')['requiredPassword'];?>"
+                        },
+                        repassword:{
+                            required: "<?php echo $this->lang->line('validation')['requiredConfirmPassword'];?>",
+                            equalTo: "<?php echo $this->lang->line('validation')['passwordNotMatch'];?>"
+                        }
+                    },
+                    invalidHandler: validationInvalidHandler,
+                    errorPlacement: validationErrorPlacement
+                });
+            });
+        </script>
     </body>
 </html>

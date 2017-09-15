@@ -41,24 +41,7 @@ class Users_model extends CI_Model {
             foreach ($query->result() as $row)
             {
                 if($row->isActive == 1){
-                    $session_data = array(  'user_name' => $row->first_name.' '.$row->last_name,
-                                            'email_id' => $row->useremail,
-                                            'user_id' => $row->id,
-                                            'role' => $row->role,
-                                            'my_key' => $row->my_key,
-                                            'profile_img' => $row->profile_photo,
-                                            'logged_in' => '1');
-                    if($row->role == $this->auth->getHospitalAdminRoleType()){
-                        $this->db->where('user_id',$row->id);
-                        $this->db->where('isActive',1);
-                        $this->db->where('isDeleted',0);
-                        $adminRecord = $this->db->get('hms_hospital_admin');
-                        $adminRecord = $adminRecord->result_array();
-                        if(isset($adminRecord[0]) && isset($adminRecord[0]['hospital_id'])){
-                            $session_data['hospital_id'] = $adminRecord[0]['hospital_id'];
-                        }
-                    }
-                    $session_set = $this->session->set_userdata($session_data);
+                    $this->setSessionData($row);
                     return true;
                 }else{
                     return -1;
@@ -67,6 +50,27 @@ class Users_model extends CI_Model {
         }
         else
             return false;
+    }
+
+    function setSessionData($row){
+        $session_data = array(  'user_name' => $row->first_name.' '.$row->last_name,
+            'email_id' => $row->useremail,
+            'user_id' => $row->id,
+            'role' => $row->role,
+            'my_key' => $row->my_key,
+            'profile_img' => $row->profile_photo,
+            'logged_in' => '1');
+        if($row->role == $this->auth->getHospitalAdminRoleType()){
+            $this->db->where('user_id',$row->id);
+            $this->db->where('isActive',1);
+            $this->db->where('isDeleted',0);
+            $adminRecord = $this->db->get('hms_hospital_admin');
+            $adminRecord = $adminRecord->result_array();
+            if(isset($adminRecord[0]) && isset($adminRecord[0]['hospital_id'])){
+                $session_data['hospital_id'] = $adminRecord[0]['hospital_id'];
+            }
+        }
+        $session_set = $this->session->set_userdata($session_data);
     }
 
     function getUserKey($id){
@@ -328,9 +332,15 @@ class Users_model extends CI_Model {
         $this->db->where("id", $id);
         
         if ($this->db->update($this->tblname, $data)) {
-            if($this->auth->getUserId() != $id) {
+            if ($this->auth->getUserId() != $id) {
                 //sent notification to any user
                 $this->notification->saveNotification($id, "Your Profile is updated");
+            }
+            $query = $this->db->query("select * from $this->tblname where id=?", array($id));
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    $this->setSessionData($row);
+                }
             }
             return $id;
         } else {

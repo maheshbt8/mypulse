@@ -114,7 +114,7 @@ $this->load->view("template/left.php");
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['gender'];?></label>
                                             <select class="form-control " name="gender" id="gender" data-ori="<?php echo $profile['gender'];?>" />
-
+                                                <option  value=""></option>
                                                 <option <?php if($profile['gender']=="M") { echo "selected";}?>  value="M"><?php echo $this->lang->line('labels')['male'];?></option>
                                                 <option <?php if($profile['gender']=="F") { echo "selected";}?> value="F"><?php echo $this->lang->line('labels')['female'];?></option>
                                                 <option <?php if($profile['gender']=="O") { echo "selected";}?> value="O"><?php echo $this->lang->line('labels')['other'];?></option>
@@ -122,7 +122,13 @@ $this->load->view("template/left.php");
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['dob'];?></label>
-                                            <input data-ori="<?php echo date("d-m-Y",strtotime($profile['date_of_birth']));?>" value="<?php echo date("d-m-Y",strtotime($profile['date_of_birth']));?>" class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
+                                            <?php
+                                                $dob = "";
+                                                if($profile['date_of_birth'] != '0000-00-00') {
+                                                    $dob = date("d-m-Y",strtotime($profile['date_of_birth']));
+                                                }
+                                            ?>
+                                            <input data-ori="<?php echo $dob;?>" value="<?php echo $dob;?>" class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
