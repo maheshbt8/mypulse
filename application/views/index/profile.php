@@ -479,6 +479,18 @@ $this->load->view("template/footer.php");
                     "</div>";
                 }
             },
+            load: function(query, callback){
+                $.ajax({
+                    url: "<?php echo site_url(); ?>/general/getCountries/",
+                    data: { 'q': query },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        return callback(response);
+                    }
+                });
+                
+            },
             onChange: function(value) {
                 if (!value.length) return;
 
@@ -521,8 +533,10 @@ $this->load->view("template/footer.php");
             $selectize_district[0].selectize.clearOptions();
             $selectize_country[0].selectize.clear();
         }
+
         var country = "<?php echo $profile['country'];?>";
         var country_name = '<?php echo trim(preg_replace("/\s\s+/", " ", $profile["country_name"]));?>';
+
         if(country != null && country!=undefined && country != "" && country > 0){
             loc_cid = "<?php echo $profile['city'];?>";
             loc_did = "<?php echo $profile['district'];?>";
@@ -531,7 +545,11 @@ $this->load->view("template/footer.php");
             tempselectize_selectize_country.addOption([{"id":country,"name":country_name}]);
             tempselectize_selectize_country.refreshItems();
             tempselectize_selectize_country.setValue(country);
+        }else{
+            var tempselectize_selectize_country = $selectize_country[0].selectize;
+            tempselectize_selectize_country.refreshItems();
         }
+
         shwoImgFromUrl("<?php echo $profile['profile_photo'];?>");
         
         $("#editBtn").click(function(){
