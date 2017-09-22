@@ -188,7 +188,7 @@ class Patients extends CI_Controller {
         }
     }
 
-public function getDTPatient() {
+    public function getDTPatient() {
 
 
         if ($this->auth->isLoggedIn() && ($this->auth->isPatient())) {
@@ -230,13 +230,18 @@ public function getDTPatient() {
                 return $d;                     
             }), array("db" => "bed_id", "dt" => 4, "formatter" => function ($d, $row) {
                 $bed = $this->beds_model->getbedsById($d);
-                return $bedName = $bed['bed'];   
+                $bedName = "";
+                if(isset($bed['bed']))
+                    $bedName = $bed['bed'];
+                return $bedName;
             }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
                 $status = $this->auth->getInpatientStatus($d);
                 return $status;                     
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 $bed = $this->beds_model->getbedsById($row['bed_id']);
-                $bedName = $bed['bed']; 
+                $bedName = "";
+                if(isset($bed['bed']))
+                    $bedName = $bed['bed'];
                 $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
                 $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
                 $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];

@@ -577,9 +577,17 @@ class Doctors_model extends CI_Model {
 
     //For Calendar View
     public function getDoctorAvailabilties($doc_id=0,$start_date,$end_date){
+        //$this->db->select('hms_availability');
         $this->db->where('user_id',$doc_id);
         $this->db->where('isDeleted',0);
+        $this->db->where('start_date >=',date("Y-m-d",strtotime($start_date)));
+        $this->db->where('end_date >=',date("Y-m-d",strtotime($start_date)));
+
         $red = $this->db->get('hms_availability');
+
+        //echo "<pre>";
+        //var_dump($this->db->last_query());exit;
+
         $red = $red->result_array();
         $data = array();
 
