@@ -301,12 +301,13 @@ class Nurse extends CI_Controller {
         }
     }
 
-        public function getDTPReports($app_id){
-            $pres_id = $this->patient_model->prescriptionByApp_id($app_id);
-            if(count($pres_id) == 0 ){
-              $pres_ids[] = '-1';
-          } 
-            $pres_ids = implode(',',$pres_id);
+    public function getDTPReports($app_id){
+        $pres_id = $this->patient_model->prescriptionByApp_id($app_id);
+        if(count($pres_id) == 0 ){
+            $pres_id[] = '-1';
+        }
+        $pres_ids = implode(',',$pres_id);
+
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_medical_report";

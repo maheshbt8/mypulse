@@ -149,7 +149,7 @@ $lang['msg_prescriptioned_saved'] = "Prescription saved successfully";
 
 $lang['msg_inpatien_saved'] = "Inpatient Added successfully";
 
-$lang['msg_inpatien_error'] = "Inpatient Already Existed";
+$lang['msg_inpatien_error'] = "Patient already admitted.";
 
 $lang['msg_inpatien_updated'] = "Inpatient Updated successfully";
 

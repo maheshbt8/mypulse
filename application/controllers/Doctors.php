@@ -211,7 +211,7 @@ class Doctors extends CI_Controller {
                 $appt_id = $_POST['appt_id'];
                 $message = $this->doctors_model->addPatient();
                 if($this->doctors_model->addPatient() == 0){
-                    $d['error'] = array($this->lang->line('msg_inpatien_error'));    
+                    $d['errors'] = array($this->lang->line('msg_inpatien_error'));
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');
                 }else{

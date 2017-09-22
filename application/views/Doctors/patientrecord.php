@@ -320,43 +320,42 @@ $this->load->view("template/left.php");
                           
                         <div class="row" id="inPatientDiv" style="display:none">
                             <div class="col-md-12"> 
-                              <form id="patientform" method="post" action="<?php echo site_url();?>/doctors/addinpatient">
-                                <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
-                                <input type="hidden" name="patient_id" value="<?php echo $profile['id'];?>" />
-                                 <input type="hidden" name="inpatient_update_id" id="inpatient_id" />
-                                <div class="col-md-6">
-                                  <div class="form-group">
-                                    <label for="Patientbed"><?php echo $this->lang->line('labels')['bed']; ?></label>
-                                      <select id="Patientbed" class="form-control" name="Patientbed" id="Patientbed">
-                                      </select>
-                                  </div>
-                                  <br>
-                                  <div class="form-group">
-                                    <label for="JoinDate"><?php echo $this->lang->line('labels')['join_date']; ?></label>
-                                    <input type="text" class="form-control date-picker" name="join_date" id="datepicker">
-                                  </div>
-                                  <br>
-                                  <div class="form-group">
-                                  <label for="PatientStatus"><?php echo $this->lang->line('labels')['patientStatus']; ?></label>
-                                      <select class="form-control" name="ptStatus" id="ptStatus">
-                                         <option selected value="0">Not Admitted</option>
-                                         <option value="1">Admitted</option>
-                                         <option value="2">Discharged</option>
-                                      </select>
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="form-group">
-                                    <label for="PatientReason"><?php echo $this->lang->line('labels')['reason']; ?></label>
-                                    <textarea class="form-control"  rows="6" name="inPatientReason" id="patient_reason"></textarea>
-                                  </div><br>
-                                  <div class="form-group">                                  
-                                  <button type="button" id="canPatientBtn" class="btn btn-warning pull-right"><i class="fa fa-remove" ></i>Cancel
-                                  </button>
-                                  <button type="submit" class="btn btn-success pull-right" name="inpatient_up_form" id="inpatient_update" style="margin-right: 10px"><i class="fa fa-check"></i> Save</button>
-                                  </div>
-                                </div>
-                             </form>  
+                                <form id="patientform" method="post" action="<?php echo site_url();?>/doctors/addinpatient">
+                                    <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
+                                    <input type="hidden" name="patient_id" value="<?php echo $profile['id'];?>" />
+                                    <input type="hidden" name="inpatient_update_id" id="inpatient_id" />
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Patientbed"><?php echo $this->lang->line('labels')['bed']; ?></label>
+                                            <select id="Patientbed" class="form-control" name="Patientbed" id="Patientbed">
+                                            </select>
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="JoinDate"><?php echo $this->lang->line('labels')['join_date']; ?></label>
+                                            <input type="text" class="form-control date-picker-nopast" name="join_date" id="datepicker">
+                                        </div>
+                                        <br>
+                                        <div class="form-group">
+                                            <label for="PatientStatus"><?php echo $this->lang->line('labels')['patientStatus']; ?></label>
+                                            <select class="form-control" name="ptStatus" id="ptStatus">
+                                                <option selected value="0">Not Admitted</option>
+                                                <option value="1">Admitted</option>
+                                                <option value="2">Discharged</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="PatientReason"><?php echo $this->lang->line('labels')['reason']; ?></label>
+                                            <textarea class="form-control"  rows="6" name="inPatientReason" id="patient_reason"></textarea>
+                                        </div><br>
+                                        <div class="form-group">
+                                            <button type="button" id="canPatientBtn" class="btn btn-warning pull-right"><i class="fa fa-remove" ></i>Cancel</button>
+                                            <button type="submit" class="btn btn-success pull-right" name="inpatient_up_form" id="inpatient_update" style="margin-right: 10px"><i class="fa fa-check"></i> Save</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>    
                         </div>         
 
@@ -665,36 +664,37 @@ $this->load->view("template/footer.php");
             
         });
                        
-                var $selectize_bed_id = $("#Patientbed").selectize({
-                    valueField: "id",
-                    labelField: "text",
-                    searchField: "text",
-                    preload:true,
-                    create: false,
-                    render: {
-                        option: function(item, escape) {
-                            return "<div><span class='title'>" +
-                                    escape(item.text)+
-                                "</span>" +   
-                            "</div>";
-                        }
+        var $selectize_bed_id = $("#Patientbed").selectize({
+            valueField: "id",
+            labelField: "text",
+            searchField: "text",
+            preload:true,
+            create: false,
+            render: {
+                option: function(item, escape) {
+                    return "<div><span class='title'>" +
+                            escape(item.text)+
+                        "</span>" +
+                    "</div>";
+                }
+            },
+            load: function(query, callback) {
+                //if (!query.length) return callback();
+                $.ajax({
+                    url: "<?php echo site_url(); ?>/beds/search",
+                    type: "GET",
+                    data: {"q":query,"f":"bed"},
+                    error: function() {
+                        callback();
                     },
-                    load: function(query, callback) {
-                        //if (!query.length) return callback();
-                        $.ajax({
-                            url: "<?php echo site_url(); ?>/beds/search",
-                            type: "GET",
-                            data: {"q":query,"f":"bed"},
-                            error: function() {
-                                callback();
-                            },
-                            success: function(res) {
-                                callback($.parseJSON(res));
-                            }
-                        });
+                    success: function(res) {
+                        callback($.parseJSON(res));
                     }
                 });
-        var validator = $("#patientform").validate({
+            }
+        });
+
+        var inPatientFormvalidator = $("#patientform").validate({
             ignore: [],
             rules: {
                 
@@ -719,7 +719,7 @@ $this->load->view("template/footer.php");
         $('#patientform').submit(function(event) {
 
             event.preventDefault(); //this will prevent the default submit
-            if(validator.valid()){
+            if(inPatientFormvalidator.valid()){
                 console.log("Here");
                 $(this).unbind('submit').submit();
             }
@@ -946,83 +946,84 @@ $this->load->view("template/footer.php");
                 }
             });
         });
-     $(document).on('click','.editinpatient',function(){
-        var id = $(this).data('id');
-        $('#inpatient_id').val(id);
+        $(document).on('click','.editinpatient',function(){
+            var id = $(this).data('id');
+            $('#inpatient_id').val(id);
             $("#inPatientDiv").show();   
-            // $("#inPatientTbl").hide();
+
             $("#inPatientBtn").hide();
             $("#tabDiv").hide();
-           // $("#inPatientDiv").hide(); 
+
             $("#div_title").html('Edit Inpatient');       
             $("#inpatient_update").html("Update");
             $.ajax({
-                            url: "<?php echo site_url(); ?>/inpatient/getinpatient/",
-                            type: "POST",
-                            data: {id:id},
-                            error: function() {
-                                callback();
-                            },
-                            success: function(res) {
-                                console.log(res);
-                                var inpatient_data = $.parseJSON(res);
+                url: "<?php echo site_url(); ?>/inpatient/getinpatient/",
+                type: "POST",
+                data: {id:id},
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    console.log(res);
+                    var inpatient_data = $.parseJSON(res);
 
-                                var tempselectize_bed_ID = $selectize_bed_id[0].selectize;
-                                tempselectize_bed_ID.addOption([{"id":inpatient_data.bed_id,"text":inpatient_data.bed_id}]);
-                                tempselectize_bed_ID.refreshItems();
-                                tempselectize_bed_ID.setValue(inpatient_data.bed_id);
-                                 //$('#datepicker').val(inpatient_data.join_date);
-                                 //
-                                 $('#datepicker').datepicker('setDate',inpatient_data.join_date);
+                    var tempselectize_bed_ID = $selectize_bed_id[0].selectize;
+                    tempselectize_bed_ID.addOption([{"id":inpatient_data.bed_id,"text":inpatient_data.bed_id}]);
+                    tempselectize_bed_ID.refreshItems();
+                    tempselectize_bed_ID.setValue(inpatient_data.bed_id);
+                     //$('#datepicker').val(inpatient_data.join_date);
+                     //
+                     $('#datepicker').datepicker('setDate',inpatient_data.join_date);
 
-                                 $('#ptStatus').val(inpatient_data.status);
-                                 $('#patient_reason').val(inpatient_data.reason);
-                             //   callback($.parseJSON(res));
-                            }
-                        });
-       // }
-     });
-     $(document).on('click','.historyinpatient',function(){
-               var patient_id= $(this).data('id');
-               $('#hsinpatientadd_id').val(patient_id);
-               var bed_no = $(this).data('bno');
-               var hs_jdate = $(this).data('jdate');
-               var hs_status = $(this).data('status');
-               var hs_reason = $(this).data('reason');
-               var ldate= $(this).data('ldate');
-                console.log($(this).data('bno'));
-                $('#bed_no').text(bed_no);
-                $('#jdate').text(hs_jdate);
-                $('#hs_status').text(hs_status);
-                $('#hs_reason').text(hs_reason);
-                $('#hs_ldate').text(ldate);
+                     $('#ptStatus').val(inpatient_data.status);
+                     $('#patient_reason').val(inpatient_data.reason);
+                 //   callback($.parseJSON(res));
+                }
+            });
+        });
+
+        $(document).on('click','.historyinpatient',function(){
+            var patient_id= $(this).data('id');
+            $('#hsinpatientadd_id').val(patient_id);
+            var bed_no = $(this).data('bno');
+            var hs_jdate = $(this).data('jdate');
+            var hs_status = $(this).data('status');
+            var hs_reason = $(this).data('reason');
+            var ldate= $(this).data('ldate');
+            //console.log($(this).data('bno'));
+            $('#bed_no').text(bed_no);
+            $('#jdate').text(hs_jdate);
+            $('#hs_status').text(hs_status);
+            $('#hs_reason').text(hs_reason);
+            $('#hs_ldate').text(ldate);
                 //row.find(".historyinpatient").hide();
-              $('#inPatientTblDiv').hide();
-              $('#canPatientBtnHist').show();
-              $('#inPatientBtn').hide();
-              $("#add_noteBtn").show();
-              $('#inPatientTblHistoryDiv').show();
-              $("#inPatientTblHistory").dataTable().fnDestroy();
-                $('#inPatientTblHistory').DataTable({ 
+            $('#inPatientTblDiv').hide();
+            $('#canPatientBtnHist').show();
+            $('#inPatientBtn').hide();
+            $("#add_noteBtn").show();
+            $('#inPatientTblHistoryDiv').show();
+            $("#inPatientTblHistory").dataTable().fnDestroy();
+            $('#inPatientTblHistory').DataTable({
                 "processing": true,
                 "serverSide": true,
                 "paging":   true,
                 "ordering": false,
                 "info":     false,
                 "ajax": {
-                "url":'<?php echo site_url();?>/inpatient/getDTHistoryinpatient/'+patient_id,
-                   }              
+                    "url":'<?php echo site_url();?>/inpatient/getDTHistoryinpatient/'+patient_id,
+                }
             });
-                $("#inPatientTblHistory_filter").hide();
-                $("#inPatientTblHistory_length").hide(); 
-
+            $("#inPatientTblHistory_filter").hide();
+            $("#inPatientTblHistory_length").hide();
        });
-    $(document).on('click','.editinpatientHistory',function(){
-         var inpHisEdit_id = $(this).data('id');
-         var inpHisEdit_note = $(this).data('note');
-         $('#hsinpatientEdit_id').val(inpHisEdit_id);
-         $('#Hsnew_note').val(inpHisEdit_note);
-    }); 
+
+        $(document).on('click','.editinpatientHistory',function(){
+            var inpHisEdit_id = $(this).data('id');
+            var inpHisEdit_note = $(this).data('note');
+            $('#hsinpatientEdit_id').val(inpHisEdit_id);
+            $('#Hsnew_note').val(inpHisEdit_note);
+        });
+
         $("#canPrescriptionBtn").click(function(){
             $("#addPrescriptionBtn").show();
             $("#tabDiv").show();
