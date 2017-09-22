@@ -229,7 +229,10 @@ class Nurse extends CI_Controller {
                 return $d;                     
             }), array("db" => "bed_id", "dt" => 4, "formatter" => function ($d, $row) {
                 $bed = $this->beds_model->getbedsById($d);
-                return $bedName = $bed['bed'];   
+                if(isset($bed['bed']))
+                    return $bedName = $bed['bed'];
+                else
+                    return "-";
             }), array("db" => "status", "dt" => 5, "formatter" => function ($d, $row) {
                 $status = $this->auth->getInpatientStatus($d);
                 return $status;                     
