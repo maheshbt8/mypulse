@@ -238,7 +238,9 @@ class Nurse extends CI_Controller {
                 return $status;                     
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 $bed = $this->beds_model->getbedsById($row['bed_id']);
-                $bedName = $bed['bed']; 
+                $bedName = "";
+                if(isset($bed['bed']))
+                    $bedName = $bed['bed'];
                 $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
                 $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
                 $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
