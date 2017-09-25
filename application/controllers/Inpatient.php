@@ -222,7 +222,8 @@ class Inpatient extends CI_Controller {
     }
 
     public function getDTHistoryinpatient($prf_id){
-                 if ($this->auth->isLoggedIn()) {
+
+        if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_inpatient_history";
             $primaryKey = "id";
@@ -237,7 +238,9 @@ class Inpatient extends CI_Controller {
             $this->tbl->setCheckboxColumn(false);                
             $this->tbl->setIndexColumn(true);
             $cond[] = "in_patient_id = $prf_id";
-
+            if($this->auth->isPatient()){
+                unset($columns[2]);
+            }
             $this->tbl->setTwID(implode(" AND ",$cond));           
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host")); 

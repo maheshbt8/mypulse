@@ -10,30 +10,22 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
-	                    
-	                    <div class="panel-heading clearfix">
-							<div class="">
-								<div class="custome_col8">
-									<h4 id="div_title" class="panel-title panel_heading_custome"><?php echo $this->lang->line('patients');?></h4>
-								</div>
-								<div class="custome_col4">
-                                <div class="panel_button_top_right">
-                                   <!--  <a class="btn btn-primary m-b-sm " id="editBtn" style="display:none" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['edit'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['newPrescription'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['newpatient'];?></a>
-                                    <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="modal" data-target="#AddNewNote" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['new_note'];?></a>&nbsp -->
-                                    <button type="button" id="canPatientBtnHist" class="btn btn-warning pull-right" style="display:none"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
-                                    <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
-                                </div>
+	                <div class="card  ">
+                        <div class="card-head">
+                            <header><?php echo $this->lang->line('patients');?></header>
+                            <div class="custome_card_header">
+                                <!--  <a class="btn btn-primary m-b-sm " id="editBtn" style="display:none" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['edit'];?></a>
+                                <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['newPrescription'];?></a>
+                                <a class="btn btn-success m-b-sm " style="display:none" id="inPatientBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['newpatient'];?></a>
+                                <a class="btn btn-success m-b-sm " style="display:none" id="add_noteBtn" data-toggle="modal" data-target="#AddNewNote" href="javascript:void(0);" ><?php //echo $this->lang->line('buttons')['new_note'];?></a>&nbsp -->
+                                <button type="button" id="canPatientBtnHist" class="btn btn-warning pull-right" style="display:none"><i class="fa fa-arrow-left"></i> &nbsp; Back</button>
+                                <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
                             </div>
-                             <br>
-							</div>
-	                    </div>
-	                    <div class="panel-body panel_body_custome">
+                        </div>
+	                    <div class="card-body  ">
 	                        <div class="col-md-12">
-	                                    <div class="table-responsive"  id="patientRecordTbl" >
-				                            <table id="patients" class="display table" cellspacing="0" width="100%">
+	                                    <div class="  "  id="patientRecordTbl" >
+				                            <table id="patients" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 				                                <thead>
 				                                    <tr>
 														<th style="width:10px"></th>
@@ -68,7 +60,7 @@ $this->load->view("template/left.php");
                                             </table>
                                            
                                         </div> -->
-                                        <div class="table-responsive" id="inPatientTblHistoryDiv" style="display: none;">
+                                        <div class="" id="inPatientTblHistoryDiv" style="display: none;">
                                            <div class="Histry_record" style="margin-left: 50px;">                                              
                                               <h4>Bed :  <small id="bed_no"></small></h4>
                                               <h4>Join-Date:  <small id="jdate"></small></h4>
@@ -76,13 +68,12 @@ $this->load->view("template/left.php");
                                               <h4>Reason:  <small id="hs_reason"></small></h4>
                                               <!-- <h4>Left-Date:  <small id="hs_ldate"></small></h4> -->
                                            </div>
-                                             <table id="inPatientTblHistory" class="display table" cellspacing="0" width="100%">
+                                             <table id="inPatientTblHistory" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
                                                         <th><?php echo $this->lang->line('tableHeaders')['note'];?></th>
                                                         <th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
-                                                        <th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

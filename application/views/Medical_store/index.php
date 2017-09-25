@@ -10,41 +10,33 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
-	                    <div class="panel-heading clearfix">
-							<div class="">
-								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('medicalStoreFull');?></h4>
-								</div>
-								<div class="custome_col4">
-									<div class="panel_button_top_right">
-										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="medical_store" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<?php $this->load->view('template/exbtn');?>
-									</div>
-								</div>
-								<br>
+	                <div class="card">
+						<div class="card-head">
+							<header><?php echo $this->lang->line('medicalStoreFull');?></header>
+							<div class="custome_card_header">
+								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
+								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="medical_store" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+								<?php $this->load->view('template/exbtn');?>
 							</div>
-	                    </div>
-	                    <div class="panel-body panel_body_custome">
-	                       <div class="table-responsive">
-	                            <table id="medical_store" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-	                                    <tr>
-											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['ownerName'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['ownerNumber'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
-											<th width="20px">#</th>
-	                                    </tr>
-	                                </thead>
-	                                
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
+						</div>
+	                
+	                    <div class="card-body  ">
+							<table id="medical_store" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+								<thead>
+									<tr>
+										<th style="width:10px"></th>
+										<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['ownerName'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['ownerNumber'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
+										<th width="20px">#</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+								</tbody>
+							</table>  
 	                    </div>
 	                </div>
 	            </div>
@@ -120,7 +112,7 @@ $this->load->view("template/left.php");
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['fname'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['female'];?>" name="first_name" id="first_name" />
+											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
 										</div>
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['lname'];?></label>

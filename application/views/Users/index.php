@@ -10,21 +10,25 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
-	                    <div class="panel-heading clearfix">
-	                        <h4 class="panel-title">Users</h4>
-	                    </div>
-	                    <div class="panel-body">
-	                       <div class="table-responsive">
-	                            <table id="users" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-	                                    <tr><th style="width:10px"></th><th>First Name</th><th>Last Name</th><th>Usernemail</th><th>Address</th><th>Mobile</th><th>Phone</th><th>Profile Photo</th><th>Role</th><th>Action</th>
-	                                    </tr>
-	                                </thead>
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
+	                <div class="card">
+	                    
+						<div class="card-head">
+							<header>Users</header>
+							<div class="custome_card_header">
+								
+							</div>
+						</div>
+
+
+	                    <div class="card-body">
+							<table id="users" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+								<thead>
+									<tr><th style="width:10px"></th><th>First Name</th><th>Last Name</th><th>Usernemail</th><th>Address</th><th>Mobile</th><th>Phone</th><th>Profile Photo</th><th>Role</th><th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>  
 	                    </div>
 	                </div>
 	            </div>

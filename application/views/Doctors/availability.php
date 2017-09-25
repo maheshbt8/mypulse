@@ -345,6 +345,7 @@
             }
 		});
 
+        
         function GetCalendarDateRange() {
             var calendar = $('#calendar').fullCalendar('getCalendar');
             var view = calendar.view;

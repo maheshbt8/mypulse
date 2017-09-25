@@ -235,8 +235,8 @@ $this->load->view("template/left.php");
                                 </div>
                                 <div role="tabpanel" class="tab-pane " id="tab2">
                                     <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table id="prescriptionTbl" class="display table" cellspacing="0" width="100%">
+                                        <div class="">
+                                            <table id="prescriptionTbl" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
@@ -255,8 +255,8 @@ $this->load->view("template/left.php");
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tab3">
                                     <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table id="reportTbl" class="display table" cellspacing="0" width="100%">
+                                        <div class="">
+                                            <table id="reportTbl" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
@@ -273,8 +273,8 @@ $this->load->view("template/left.php");
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tab4">
                                     <div class="col-md-12">
-                                        <div class="table-responsive" id="inPatientTblDiv">
-                                            <table id="inPatientTbl" class="display table" cellspacing="0" width="100%">
+                                        <div class="" id="inPatientTblDiv">
+                                            <table id="inPatientTbl" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>
@@ -291,7 +291,7 @@ $this->load->view("template/left.php");
                                             </table>
                                            
                                         </div>
-                                        <div class="table-responsive" id="inPatientTblHistoryDiv">
+                                        <div class="" id="inPatientTblHistoryDiv">
                                            <div class="Histry_record" style="margin-left: 50px;">                                              
                                               <h4>Bed :  <small id="bed_no"></small></h4>
                                               <h4>Join-Date:  <small id="jdate"></small></h4>
@@ -299,7 +299,7 @@ $this->load->view("template/left.php");
                                               <h4>Reason:  <small id="hs_reason"></small></h4>
                                               <h4>Left-Date:  <small id="hs_ldate"></small></h4>
                                            </div>
-                                             <table id="inPatientTblHistory" class="display table" cellspacing="0" width="100%">
+                                             <table id="inPatientTblHistory" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:10px"></th>

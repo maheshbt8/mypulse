@@ -53,6 +53,7 @@ class Users_model extends CI_Model {
     }
 
     function setSessionData($row){
+       
         $session_data = array(  'user_name' => $row->first_name.' '.$row->last_name,
             'email_id' => $row->useremail,
             'user_id' => $row->id,
@@ -335,11 +336,12 @@ class Users_model extends CI_Model {
             if ($this->auth->getUserId() != $id) {
                 //sent notification to any user
                 $this->notification->saveNotification($id, "Your Profile is updated");
-            }
-            $query = $this->db->query("select * from $this->tblname where id=?", array($id));
-            if ($query->num_rows() > 0) {
-                foreach ($query->result() as $row) {
-                    $this->setSessionData($row);
+            }else{
+                $query = $this->db->query("select * from $this->tblname where id=?", array($id));
+                if ($query->num_rows() > 0) {
+                    foreach ($query->result() as $row) {
+                        $this->setSessionData($row);
+                    }
                 }
             }
             return $id;
@@ -396,6 +398,7 @@ class Users_model extends CI_Model {
                 $data['forgotPassCode'] = $key;
 
                 $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
+                $data['role'] = -1;
                 if ($this->db->insert($this->tblname, $data)) {
                     $email = $data['useremail'];
                     $this->load->library('sendmail');

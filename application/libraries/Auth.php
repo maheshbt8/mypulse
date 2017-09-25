@@ -102,7 +102,10 @@ class Auth {
     public function getRoleText(){
         $u = $this->CI->session->all_userdata();
         $uid = isset($u['role']) ? $u['role'] : 6;
-        return $this->CI->lang->line('roles')[$uid];
+        $roles = $this->CI->lang->line('roles');
+        if(isset($roles[$uid]))
+            return $roles[$uid];
+        return "";
     }
 
     public function getRole(){

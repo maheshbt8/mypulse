@@ -62,51 +62,52 @@
         <!--OutStanding Med Reports -->
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="panel panel-white">
-                    <div class="panel-heading">
-                        <h4 class="panel-title"><?=$this->lang->line('labels')['medicalLabOutStanding'];?></h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive project-stats">  
-                           <table class="table">
-                               <thead>
-                                   <tr>
-                                       <th>#</th>
-                                       <th>Title</th>
-                                       <th>Description</th>
-                                       <th>Doctor</th>
-                                       <th>Patient</th>
-                                       <th>Status</th>
-                                       <th>Action</th>
-                                   </tr>
-                               </thead>
-                               <tbody>
-                                    <?php
-                                        $cnt = 1;
-                                        foreach($states['medical_reports'] as $mr){
-                                            ?>
-                                            <tr>
-                                                <th scope="row"><?=$cnt;?></th>
-                                                <td><?=$mr['title'];?></td>
-                                                <td><?=$mr['description'];?></td>
-                                                <td><?=$mr['doctor_name'];?></td>
-                                                <td><?=$mr['patient_name'];?></td>
-                                                <td><span class="label label-info">Pending</span></td>
-                                                <td><button data-id="<?=$mr['id'];?>" data-toggle="modal" data-target="#uploadMR" class="btn btn-primary btnup">Upload Report</button></td>
-                                            </tr>
-                                            <?php
-                                            $cnt++;
-                                        }
-
-                                        if(count($states['medical_reports'])==0){
-                                            echo "<tr><td colspan='7' align='center'>".$this->lang->line('msg_no_outstanding_tests')."</td></tr>";
-                                        }
-                                    ?>
-                                   
-                                   
-                               </tbody>
-                            </table>
+                <div class="card">
+                    <div class="card-head">
+                        <header><?php echo $this->lang->line('labels')['medicalLabOutStanding'];?></header>
+                        <div class="custome_card_header">
+                            
                         </div>
+                    </div>
+                    <div class="card-body">  
+                        <table class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Doctor</th>
+                                    <th>Patient</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $cnt = 1;
+                                    foreach($states['medical_reports'] as $mr){
+                                        ?>
+                                        <tr>
+                                            <th scope="row"><?=$cnt;?></th>
+                                            <td><?=$mr['title'];?></td>
+                                            <td><?=$mr['description'];?></td>
+                                            <td><?=$mr['doctor_name'];?></td>
+                                            <td><?=$mr['patient_name'];?></td>
+                                            <td><span class="label label-info">Pending</span></td>
+                                            <td><button data-id="<?=$mr['id'];?>" data-toggle="modal" data-target="#uploadMR" class="btn btn-primary btnup">Upload Report</button></td>
+                                        </tr>
+                                        <?php
+                                        $cnt++;
+                                    }
+
+                                    if(count($states['medical_reports'])==0){
+                                        echo "<tr><td colspan='7' align='center'>".$this->lang->line('msg_no_outstanding_tests')."</td></tr>";
+                                    }
+                                ?>
+                                
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

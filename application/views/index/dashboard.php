@@ -48,6 +48,9 @@
                     <div class="row">
                         <button class="btn btn-primary" style="margin-left:15px" type="submit">Save</button>
                     </div>
+					<p>
+						<span style="font-size: 12px"><i>Complete registration by selection your User role.</i></span>
+					</p>
                 </form>
             </div>
         </div>

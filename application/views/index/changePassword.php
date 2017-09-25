@@ -4,7 +4,7 @@
 ?>    
     <div id="main-wrapper">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
             <form id="form" action="<?php echo site_url();?>/index/changepassword" method="post">
                 <div class="form-group">
                     <label><?php echo $this->lang->line('labels')['oldPassword'];?></label>

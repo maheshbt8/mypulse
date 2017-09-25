@@ -9,42 +9,33 @@ $this->load->view("template/left.php");
 		<input type="hidden" id="left_active_menu" value="4" />
 		<div id="main-wrapper">
 	        <div class="row">
-	            <div class="col-md-12">
-	                <div class="panel panel-white">
-	                    
-	                    <div class="panel-heading clearfix">
-							<div class="">
-								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('doctors');?></h4>
-								</div>
-								<div class="custome_col4">
-									<div class="panel_button_top_right">
-										<!--<a class="btn btn-primary m-b-sm exportBtn" data-at="doctors" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>-->
-									</div>
-								</div>
-								<br>
-							</div>
-	                    </div>
-	                    <div class="panel-body panel_body_custome">
-	                       <div class="table-responsive">
-	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-	                                    <tr>
-											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-											<th style="width:10px"><?php echo $this->lang->line('tableHeaders')['action'];?></th>
-	                                    </tr>
-	                                </thead>
-	                                
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
+
+				<div class="col-md-12">
+					<div class="row">
+                        <div class="col-md-12">
+                            <div class="card ">
+                                <div class="card-head">
+									<header><?php echo $this->lang->line('doctors');?></header>
+                                </div>
+                                <div class="card-body ">
+                                    <table class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" id="doctors">
+                                        <thead>
+                                            <tr>
+												<th style="width:10px"></th>
+												<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+												<th style="width:10px"><?php echo $this->lang->line('tableHeaders')['action'];?></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+										</tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div><!--Temp End-->
 	        </div>
 
 	    </div><!-- Main Wrapper -->
@@ -55,7 +46,8 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-
+				$('#example4').DataTable();
+   
 				var branch_id = null;
 				var department_id = null;
 				$("#doctors").DataTable({

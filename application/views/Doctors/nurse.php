@@ -10,37 +10,28 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
-	                    
-	                    <div class="panel-heading clearfix">
-							<div class="">
-								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('doctors');?></h4>
-								</div>
-								<div class="custome_col4">
-									<div class="panel_button_top_right">
-										<!--<a class="btn btn-primary m-b-sm exportBtn" data-at="doctors" href="javascript:void(0);" data-toggle="modal" data-target="#export" style="margin-left:10px"><?php echo $this->lang->line('buttons')['export'];?></a>-->
-									</div>
-								</div>
-								<br>
+	                <div class="card ">
+						<div class="card-head">
+							<header><?php echo $this->lang->line('doctors');?></header>
+							<div class="custome_card_header">
 							</div>
-	                    </div>
-	                    <div class="panel-body panel_body_custome">
-	                       <div class="table-responsive">
-	                            <table id="doctors" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-	                                    <tr>
-											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-	                                    </tr>
-	                                </thead>
-	                                
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
+						</div>
+	                   
+	                    <div class="card-body ">
+	                       
+							<table id="doctors" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" >
+								<thead>
+									<tr>
+										<th style="width:10px"></th>
+										<th><?php echo $this->lang->line('tableHeaders')['name'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+									</tr>
+								</thead>
+								
+								<tbody>
+								</tbody>
+							</table>   
 	                    </div>
 	                </div>
 	            </div>

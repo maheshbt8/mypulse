@@ -426,9 +426,26 @@ class Appoitments extends CI_Controller {
 
             $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
             if($isToday===1){   
-                //$this->tbl->setCheckboxColumn(false);
-                //$this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $this->tbl->setIndexColumn(true);
                 $cond[] = "DATE(appoitment_date)='".date("Y-m-d")."'";
+                $columns[6] = array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
+                    if($row['status'] == 3 || $row['status']=='4'){
+                        if($row['status'] == 3){
+
+                        }
+                        return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".'Record'."</a>";
+                    }
+                    $html = "<span style='display:inline-flex'>";
+                    if($row['status'] != 2){
+                        $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                    }
+                    if($row['status'] !=3){
+                        $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
+                    }
+                    $html .= "</span>";
+                    return $html;
+                });
             }
             $cond[] = "doctor_id = ".$this->auth->getDoctorId();
             

@@ -18,24 +18,17 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
-	                    
-	                    <div class="panel-heading clearfix">
-							<div class="">
-								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('departments');?></h4>
-								</div>
-								<div class="custome_col4">
-									<div class="panel_button_top_right">
-										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-										<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="departments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-										<?php $this->load->view('template/exbtn');?>
-									</div>
-								</div>
-								<br>
+	                <div class="card  ">
+						<div class="card-head">
+							<header><?php echo $this->lang->line('departments');?></header>
+							<div class="custome_card_header">
+								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
+								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="departments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+								<?php $this->load->view('template/exbtn');?>
 							</div>
-	                    </div>
-	                    <div class="panel-body panel_body_custome">
+						</div>
+
+	                    <div class="card-body  ">
 							<div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
@@ -50,17 +43,16 @@ $this->load->view("template/left.php");
                                 </div>
                             </div>
                             <div class="col-md-12">
-								<div class="table-responsive">
-									<table id="departments" class="display table" cellspacing="0" width="100%">
-										<thead>
-											<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th width="20px">#</th>
-											</tr>
-										</thead>
-										
-										<tbody>
-										</tbody>
-									</table>  
-								</div>
+								
+								<table id="departments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+									<thead>
+										<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th width="20px">#</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+									</tbody>
+								</table>  
 							</div>	
 	                    </div>
 	                </div>

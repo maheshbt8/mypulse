@@ -4,9 +4,18 @@ $this->load->view('template/left.php');
 ?>
 <div id="main-wrapper">
     <div class="row">
+        <div class="card">
+            <div class="card-head">
+			    <header>Messages</header>
+                <div class="custome_card_header">
+                    
+                </div>
+            </div>
+
+
         <div class="col-md-12" id="AllMsgDiv" style="<?php if(isset($message)){ echo "display:none";}?>">
             <div class="mailbox-content">
-                <table class="table" id="msg_tbl">
+                <table class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" id="msg_tbl">
                     <thead>
                     <tr colspan="4">
                         <th>#</th>
@@ -84,6 +93,7 @@ $this->load->view('template/left.php');
                     </div>
                 </div>
             </form>
+        </div>
         </div>
     </div>
 </div>

@@ -2,47 +2,40 @@
 <html>
     
 <head>
-        <!-- Title -->
-        <!--<title><?php //echo $this->config->item('validation')['my']; ?></title>-->
-        <title><?php echo $this->config->item('title');?></title>
-        <meta content="width=device-width, initial-scale=1" name="viewport"/>
-        <meta charset="UTF-8">
-
-        <meta name="author" content="http://techcrista.in" />
-
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta name="description" content="MyPulse" />
+    <meta name="author" content="techcrsita.in" />
+    <title><?php echo $this->config->item('title');?></title>
         
         <!-- Styles -->
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-        <link href="<?php echo base_url();?>public/assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
-        <link href="<?php echo base_url();?>public/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet"/>
-        <link href="<?php echo base_url();?>public/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url();?>public/assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url();?>public/assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/> 
-        <link href="<?php echo base_url();?>public/assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>  
-        <link href="<?php echo base_url();?>public/assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/> 
-        <link href="<?php echo base_url();?>public/assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css"/>   
-        <link href="<?php echo base_url();?>public/assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>  
-        <link href="<?php echo base_url();?>public/assets/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>    
-        <link href="<?php echo base_url();?>public/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
-        <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>
-        <!--<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
-        <link href="<?php echo base_url();?>public/assets/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>
-
-        <link href="<?php echo base_url();?>public/assets/plugins/summernote-master/summernote.css" rel="stylesheet" type="text/css"/>
-        <!-- Theme Styles -->
-        <link href="<?php echo base_url();?>public/assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url();?>public/assets/css/themes/white.css" class="theme-color" rel="stylesheet" type="text/css"/>
-        <link href="<?php echo base_url();?>public/assets/css/custom.css" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" />
-        <script src="<?php echo base_url();?>public/assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-        <link href="<?php echo base_url();?>public/assets/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
-        <!--<link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.css" rel="stylesheet" type="text/css"/>-->
         
+        <link href="<?php echo base_url();?>public/assets/js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url();?>public/assets/js/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+
+        <link href="<?php echo base_url();?>public/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+        <link href="<?php echo base_url();?>public/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/> 
+        <link href="<?php echo base_url();?>public/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>    
+        <link href="<?php echo base_url();?>public/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
+        <!--<link href="<?php echo base_url();?>public/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>-->
+        <!--<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
+        <!--<link href="<?php echo base_url();?>public/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>-->
+        <link href="<?php echo base_url();?>public/assets/js/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+        <link href="<?php echo base_url();?>public/plugins/summernote-master/summernote.css" rel="stylesheet" type="text/css"/>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+        <link href="<?php echo base_url();?>public/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
         
+        <link href="<?php echo base_url();?>public/assets/css/theme_style.css" rel="stylesheet" id="rt_style_components" type="text/css" />
+        <link href="<?php echo base_url();?>public/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url();?>public/assets/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url();?>public/assets/css/responsive.css" rel="stylesheet" type="text/css" />
+
         <script>
             var BASEURL = '<?php echo site_url();?>';
             var validationInvalidHandler = function(event, validator) {
@@ -93,13 +86,16 @@
                 
             }
         </script>
-        <link href="<?php echo base_url();?>public/assets/plugins/selectize/css/selectize.css" rel="stylesheet" rel="stylesheet" />
-        <link href="<?php echo base_url();?>public/assets/plugins/select2/css/select2.css" rel="stylesheet" rel="stylesheet" />
+        <link href="<?php echo base_url();?>public/plugins/selectize/css/selectize.css" rel="stylesheet" rel="stylesheet" />
+        <link href="<?php echo base_url();?>public/plugins/select2/css/select2.css" rel="stylesheet" rel="stylesheet" />
         <style type="text/css">
             .selectize-control {
                 width: 100%;
                 padding: 0px !important;
                 border-radius: 0px !important;
+            }
+            .custome_card_header{
+                float:right; margin-top:5px; margin-right:10px
             }
             .select2-selection select2-selection--single{
                 height:30px !important;
@@ -174,6 +170,7 @@
             }
             .panel_heading_custome{
                 max-width:180px;overflow:hidden;white-space: nowrap;text-overflow: ellipsis;
+                display:none;
             }
             .panel_body_custome{
                 margin-top:15px;
@@ -258,148 +255,183 @@
             .bold{
                 font-weight: 700;
             }
+            .error{
+                color:#F96A74;
+            }
         </style>
 
     </head>
-    <body class="page-header-fixed">
-        <div class="overlay"></div>
-        
-        
-        <main class="page-content content-wrap">
-            <div class="navbar">
-                <div class="navbar-inner">
-                    <div class="sidebar-pusher">
-                        <a href="javascript:void(0);" class="waves-effect waves-button waves-classic push-sidebar">
-                            <i class="fa fa-bars"></i>
-                        </a>
-                    </div>
-                    <div class="logo-box">
-                        <a href="<?php echo site_url();?>" class="logo-text"><span><?php echo $this->config->item('title');?></span></a>
-                    </div><!-- Logo Box -->
-                  
-                    <div class="topmenu-outer">
-                        <div class="top-menu">
-                            <ul class="nav navbar-nav navbar-left">
-                                <li>        
-                                    <a class="waves-effect waves-button waves-classic sidebar-toggle" href="javascript:void(0);"><i class="fa fa-bars"></i></a>
-                                </li>
-                                <li>        
-                                    <a class="waves-effect waves-button waves-classic toggle-fullscreen" href="javascript:void(0);"><i class="fa fa-expand"></i></a>
-                                </li>
-                            </ul>
-                            <?php
-                                $msgCount = $this->messages->getUnreadMessageCount();
-                            ?>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i>
-                                        <?php if($msgCount > 0) { ?>
-                                        <span id="msg_count" class="badge badge-success pull-right"><?php echo $msgCount; ?></span>
-                                        <?php } ?>
-                                    </a>
-                                    <ul class="dropdown-menu title-caret dropdown-lg" role="menu">
-                                        <li><p class="drop-title">You have <?php echo $msgCount; ?> new  messages !</p></li>
-                                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                                            <li class="dropdown-menu-list slimscroll messages" style="overflow: hidden; width: auto; height: 100%;">
-                                                <ul class="list-unstyled">
-                                                    <?php
-                                                        $msgs = $this->messages->getTopMessages();
-                                                        foreach ($msgs as $msg){
-                                                            ?>
-                                                            <li>
-                                                                <a href="<?php echo site_url();?>/index/messages/<?php echo $msg['id'];?>">
-                                                                    <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
-                                                                    -->
-                                                                    <p class="msg-name"><?php echo $msg['first_name']; ?></p>
-                                                                    <p class="msg-text"><?php echo $msg['title'];?></p>
-                                                                    <p style="width: auto" class="msg-time"><?php echo $this->notification->time_elapsed_string($msg['created_date']);?></M></p>
-                                                                </a>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                        if(count($msgs) == 0){ ?>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
-                                                                    -->
-                                                                    <p class="msg-name">Message box is empty!</p>
-                                                                </a>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                    ?>
-
-                                                </ul>
-                                            </li>
-                                            <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div>
-                                        </div>
-                                        <li class="drop-all"><a href="<?php echo site_url();?>/index/messages" class="text-center">All Messages</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown" ><i class="fa fa-bell"></i>
-                                        <?php $notificationCount = $this->notification->getUnreadNotificationCount(); if($notificationCount > 0) { ?>
-                                        <span id="not_cont_span" class="badge badge-success pull-right"><?php echo $notificationCount; ?></span>
-                                        <?php } ?>
-                                    </a>
-                                    <ul class="nonclose-dropdown-menu dropdown-menu title-caret dropdown-lg" role="menu">
-                                        <li><p class="drop-title">Notifications !</p></li>
-                                        <div class="notislimScrollDiv" class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 100%;">
-                                            <li class="dropdown-menu-list slimscroll tasks" style="overflow: hidden; width: auto; height: 100%;">
-                                                <ul class="list-unstyled">
-                                                    <?php
-                                                        $topNotifications = $this->notification->getAllNotification();
-                                                        foreach ($topNotifications as $notification){
-                                                            ?>
-                                                            <li class='rm'>
-                                                                <a href="#">
-                                                                    <div data-id="<?php echo $notification['id'];?>" class="task_read task-icon badge pull-right" style="vertical-align: middle; width: 25px; height: 25px; margin-top: 10px;"><i class="glyphicon glyphicon-remove" style="margin: 0 auto;"></i></div>
-                                                                    <span class="badge badge-roundless badge-default pull-right"><?php echo $this->notification->time_elapsed_string($notification['created_date']);?></span>
-                                                                    <p class="msg-name" style="margin: 0px;"><?php echo $notification['first_name']; ?></p>
-                                                                    <p class="task-details" style="width: auto;"><?php echo $notification['text'];?></p>
-                                                                </a>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                        if(count($topNotifications) == 0){ ?>
-                                                            <li>
-                                                                <a href="#">
-                                                                    <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
-                                                                    -->
-                                                                    <p class="msg-name">Your notification list is empty.</p>
-                                                                </a>
-                                                            </li>
-                                                            <?php
-                                                        }
-                                                    ?>
-
-                                                </ul>
-                                            </li>
-                                            <div class="slimScrollBar" style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.3; display: none; border-radius: 0px; z-index: 99; right: 0px; height: 180.723px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;"></div>
-                                        </div>
-                                        <li class="drop-all"><a href="<?php echo site_url();?>/index/readAllnotification" class="text-center">Mark as read all notifications</a></li>
-                                    </ul>
-                                </li>
-                               
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle waves-effect waves-button waves-classic" data-toggle="dropdown">
-                                        <span class="user-name"><?php echo $this->auth->getUsername();?><i class="fa fa-angle-down"></i></span>
-                                        <img class="img-circle avatar" src="<?php echo $this->auth->getProfileImg();?>" width="40" height="40" alt="">
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-list" role="menu">
-                                        <li role="presentation"><a href="<?php echo site_url();?>/index/profile"><i class="fa fa-user"></i><?php echo $_SESSION['menu']['profile'];?></a></li>
-                                        <li role="presentation"><a href="<?php echo site_url();?>/index/changepassword"><i class="fa fa-lock"></i><?php echo $_SESSION['menu']['changePassword'];?></a>
-                                        <li role="presentation" class="divider"></li>
-                                        <li role="presentation"><a href="<?php echo site_url();?>/index/logout"><i class="fa fa-sign-out m-r-xs"></i><?php echo $_SESSION['menu']['logout'];?></a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="<?php echo site_url();?>/index/logout" class="log-out waves-effect waves-button waves-classic">
-                                        <span><i class="fa fa-sign-out m-r-xs"></i><?php echo $_SESSION['menu']['logout'];?></span>
-                                    </a>
-                                </li>
-                            </ul><!-- Nav -->
-                        </div><!-- Top Menu -->
+     <body class="page-header-fixed sidemenu-closed-hidelogo page-container-bg-solid page-content-white page-md" >
+     <div class="page-wrapper">
+        <!-- start header -->
+        <div class="page-header navbar navbar-fixed-top">
+            <div class="page-header-inner ">
+                <!-- logo start -->
+                <div class="page-logo">
+                    <a href="<?php echo site_url();?>">
+                        <img src="<?php echo base_url();?>public/assets/images/logo.png" alt="logo" class="logo-default" style="margin:13px 0 0" />
+                    </a>
+                    <div class="menu-toggler sidebar-toggler">
+                        <span></span>
                     </div>
                 </div>
-            </div><!-- Navbar -->
+                <!-- logo end -->
+             
+                <!-- start mobile menu -->
+                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span></span>
+                </a>
+               <!-- end mobile menu -->
+                <!-- start header menu -->
+                <div class="top-menu">
+                    <ul class="nav navbar-nav pull-right">
+                        <!-- start language menu -->
+                        <li class="dropdown language-switch">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> <img src="<?php echo base_url();?>public/images/flags/gb.png" class="position-left" alt=""> English <span class="fa fa-angle-down"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                
+                                <li>
+                                    <a class="english"><img src="<?php echo base_url();?>public/images/flags/gb.png" alt=""> English</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- end language menu -->
+                        <!-- start notification dropdown -->
+                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="fa fa-bell-o"></i>
+                                <?php
+                                    $notificationCount = $this->notification->getUnreadNotificationCount();
+                                ?>
+                                <?php if($notificationCount > 0) { ?>
+                                <span id="not_cont_span" class="badge orange-bgcolor"><?php echo $notificationCount; ?></span>
+                                <?php } ?>
+                                
+                            </a>
+                            <ul class="dropdown-menu nonclose-dropdown-menu">
+                                <li class="external">
+                                    <h3><span class="bold">Notifications</span></h3>
+                                    <span class="notification-label purple-bgcolor">New <?php echo $notificationCount;?></span>
+                                </li>
+                                <li>
+                                    <ul class="dropdown-menu-list small-slimscroll-style" data-handle-color="#637283">
+                                        
+                                        <?php
+                                            $topNotifications = $this->notification->getAllNotification();
+                                            foreach ($topNotifications as $notification){
+                                            ?>
+                                            <li class="rm">
+                                                <a href="javascript:void(0);">
+                                                    <span class="time" data-id="<?php echo $notification['id'];?>" class="task_read"  style="margin-left: 5px; border-radius: 25px; border: 1px solid"><i class="fa fa-remove"></i></span>
+                                                    <span class="time"><?php echo $this->notification->time_elapsed_string($notification['created_date']);?></span>
+                                                    
+                                                    <span class="details">
+                                                        <?php echo $notification['text'];?>
+                                                        <br>
+                                                        <span><?php echo $notification['first_name'];?></span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <?php
+                                            }
+                                            if(count($topNotifications) == 0){
+                                                ?> 
+                                                <li>
+                                                    <a href="#">
+                                                        <p class="details">Your notification list is empty.</p>
+                                                    </a>    
+                                                </li>
+                                                <?php
+                                            }
+                                        ?>
+                                    </ul>
+                                    <div class="dropdown-menu-footer">
+                                        <a href="<?php echo site_url();?>/index/readAllnotification">Mark as read all notifications</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- end notification dropdown -->
+                        <!-- start message dropdown -->
+                        <?php
+                            $msgCount = $this->messages->getUnreadMessageCount();
+                        ?>
+                        <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <i class="fa fa-envelope-o"></i>
+                                <?php if($msgCount > 0) { ?>
+                                <span id="msg_count" class="badge cyan-bgcolor"> <?php echo $msgCount;?> </span>
+                                <?php } ?>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="external">
+                                    <h3><span class="bold">Messages</span></h3>
+                                    <span class="notification-label cyan-bgcolor">New <?php echo $msgCount;?></span>
+                                </li>
+                                <li>
+                                    <ul class="dropdown-menu-list small-slimscroll-style" data-handle-color="#637283">
+                                        
+                                        <?php
+                                            $msgs = $this->messages->getTopMessages();
+                                            foreach ($msgs as $msg){
+                                                ?>
+                                                <li>
+                                                    <a href="<?php echo site_url();?>/index/messages/<?php echo $msg['id'];?>">
+                                                        <!--<span class="photo"><img src="img/doc/doc2.svg" class="img-circle" alt=""> </span>-->
+                                                        <span class="subject">
+                                                            <span class="from"><?php echo $msg['first_name']; ?></span>
+                                                            <span class="time"><?php echo $this->notification->time_elapsed_string($msg['created_date']);?></span>
+                                                        </span>
+                                                        <span class="message"> <?php echo $msg['title'];?> </span>
+                                                    </a>
+                                                </li>
+                                                <?php
+                                            }
+                                            if(count($msgs) == 0){ ?>
+                                                <li>
+                                                    <a href="#">
+                                                        <!--<div class="msg-img"><div class="online on"></div><img class="img-circle" src="<?php echo $this->auth->getProfileImg();?>" alt=""></div>
+                                                        -->
+                                                        <p class="message">Message box is empty!</p>
+                                                    </a>
+                                                </li>
+                                                <?php
+                                            }
+                                        ?>
+                                    </ul>
+                                    <div class="dropdown-menu-footer">
+                                        <a href="<?php echo site_url();?>/index/messages"> All Messages </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- end message dropdown -->
+                        <!-- start manage user dropdown -->
+                        <li class="dropdown dropdown-user">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                <img alt="" class="img-circle " src="<?php echo $this->auth->getProfileImg();?>" />
+                                <span class="username username-hide-on-mobile"> <?php echo $this->auth->getUsername();?> </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="<?php echo site_url();?>/index/profile"><i class="fa fa-user"></i><?php echo $_SESSION['menu']['profile'];?></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo site_url();?>/index/changepassword"><i class="fa fa-lock"></i><?php echo $_SESSION['menu']['changePassword'];?></a>
+                                </li>
+                                <li class="divider"> </li>
+                                <li>
+                                    <a href="<?php echo site_url();?>/index/logout"><i class="icon-logout"></i><?php echo $_SESSION['menu']['logout'];?></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- end manage user dropdown -->
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- end header -->
+         <div class="clearfix"> </div>

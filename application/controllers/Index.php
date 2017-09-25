@@ -53,7 +53,7 @@ class Index extends CI_Controller {
 			}else if($this->auth->isNurse()){
 				$data['states'] = $this->dashboard_model->getNurseStates($this->auth->getUserid());
 				$this->load->view('Nurse/dashboard',$data);
-			}else{
+			}else if($this->auth->isLoggedIn()){
 				$uid = $this->auth->getUserid();
 				if(!$this->users_model->canUpdateMyRole($uid)){
 					$_data['infos'] = array("We are processing your request. You will be notify once your request is completed.");
@@ -68,6 +68,8 @@ class Index extends CI_Controller {
 					$this->load->view('index/dashboard',$data);
 				}
 				
+			}else{
+				redirect($this->login_page);
 			}
 		}
 		else{
@@ -168,7 +170,7 @@ class Index extends CI_Controller {
 			$this->load->view($this->index_page,$data);
 		}
 		else{
-			$this->load->view('index/registration');
+			$this->load->view('index/login');
 		}
 	}
 	
@@ -272,7 +274,7 @@ class Index extends CI_Controller {
 	
 	function forgot()
 	{
-		$this->load->view('index/forgot');
+		$this->load->view('index/login');
 	}
 	
 	function sendResetKey()
@@ -297,7 +299,7 @@ class Index extends CI_Controller {
 			$temp['errors']=array($this->lang->line('usr_invalid_user'));
 	
 		$this->session->set_flashdata('data', $temp);
-		redirect('index/forgot');		
+		redirect('index/login');		
 	}
 
 	

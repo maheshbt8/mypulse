@@ -62,13 +62,19 @@
         <!--OutStanding Med Reports -->
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="panel panel-white">
-                    <div class="panel-heading">
-                        <h4 class="panel-title"><?=$this->lang->line('labels')['medicalStoreOutStanding'];?></h4>
+                <div class="card ">
+                    
+                    <div class="card-head">
+                        <header><?php echo $this->lang->line('labels')['medicalStoreOutStanding'];?></header>
+                        <div class="custome_card_header">
+                            
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="table-responsive project-stats">  
-                           <table class="table">
+
+
+                    <div class="card-body">
+                        <div class=" project-stats">  
+                           <table class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                <thead>
                                    <tr>
                                        <th>#</th>

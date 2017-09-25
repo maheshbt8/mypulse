@@ -3,7 +3,7 @@
 $lang["msg_success"] = "Operation Completed Successfully";
 $lang["msg_failed"] = "Operation Fielded";
 $lang["msg_try_again"] = "Please Try Again...!!!";
-
+$lang['user_account_verify'] = "Verify your email.";
 $lang['dashboard'] = "Dashboard";
 $lang['superAdmin'] = 'Super Admin';
 $lang['hospitalAdmin'] = 'Hospital Admin';
@@ -445,7 +445,7 @@ $lang['validation'] = array(
     'requiredAadhar' => 'Enter Aadhar number',
     'requiredPassword' => 'Enter password',
     'requiredConfirmPassword' => 'Confirm password',
-    'requiredTermsCond' => 'Agree terms and conditions',
+    'requiredTermsCond' => 'Agree to terms and conditions',
     'passwordNotMatch' => 'Please Confirm password, does not match',
     'requriedMedLab' => 'Enter medical lab name',
     'requiredMedStore' => 'Enter medical store name',
@@ -483,5 +483,6 @@ $lang['validation'] = array(
     'requiredMsgTo' => 'Select user to send message',
     'requiredMsgTitle' => 'Provide title',
     'requiredMsg' => 'Enter your message',
+    'requiredAppoitmentSloat' => 'Select appointment slot'
 );
 //End Validation

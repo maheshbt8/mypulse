@@ -14,45 +14,36 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="panel panel-white">
+	                <div class="card  ">
 	                    
-	                    <div class="panel-heading clearfix">
-							<div class="">
-								<div class="custome_col8">
-									<h4 class="panel-title panel_heading_custome"><?php echo $this->lang->line('appoitments');?></h4>
-								</div>
-								<div class="custome_col4">
-									<div class="panel_button_top_right">
-										<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-										<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_cancel_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
-										<?php $this->load->view('template/exbtn');?>
-									</div>
-								</div>
-								<br>
+	                    <div class="card-head">
+							<header><?php echo $this->lang->line('appoitments');?></header>
+							<div class="custome_card_header">
+								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
+								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_cancel_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
+								<?php $this->load->view('template/exbtn');?>
 							</div>
 	                    </div>
-	                    <div class="panel-body panel_body_custome">
-	                       <div class="table-responsive">
-	                            <table id="appoitments" class="display table" cellspacing="0" width="100%">
-	                                <thead>
-		                                <tr>
-										<th style="width:10px"></th>
-										<!--<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>-->
-										<th>No.</th>
-										<th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
-										<th width="20px">#</th>
-	                                    </tr>
-	                                </thead>
-	                                
-	                                <tbody>
-	                                </tbody>
-	                            </table>  
-	                        </div>
+	                    <div class="card-body ">
+							<table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+								<thead>
+									<tr>
+									<th style="width:10px"></th>
+									<!--<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>-->
+									<th>No.</th>
+									<th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th>
+									<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+									<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+									<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+									<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
+									<th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+									<th width="20px">#</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+								</tbody>
+							</table>  
 	                    </div>
 	                </div>
 	            </div>
@@ -141,11 +132,11 @@ $this->load->view("template/left.php");
 		                    </div>
 
 		                    <div class="form-group col-md-6">
-		                        <button type="submit" class="btn btn-info btn-lg" id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span><?php echo $this->lang->line('buttons')['update'];?></button>
+		                        <button type="button" class="btn btn-info btn-lg appt_submit"  id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span><?php echo $this->lang->line('buttons')['update'];?></button>
 		                    </div>
 		                    
 		                    <div class="form-group col-md-6" style="display:none">
-		                        <button type="submit" class="btn btn-success btn-lg" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['bookAppoitment'];?></button>
+		                        <button type="button" class="btn btn-success btn-lg appt_submit" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['bookAppoitment'];?></button>
 		                    </div>
 		                </div>
 					</div>
@@ -205,6 +196,9 @@ $this->load->view("template/footer.php");
 				},
 				branch_id: {
 					required : true
+				},
+				appoitment_sloat:{
+					required: true
 				}
 			},
 			messages: {
@@ -225,6 +219,9 @@ $this->load->view("template/footer.php");
 				},
 				department_id:{
 					required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+				},
+				appoitment_sloat: {
+					required: "<?php echo $this->lang->line('validation')['requiredAppoitmentSloat']; ?>"
 				}
 				
 			},
@@ -233,7 +230,17 @@ $this->load->view("template/footer.php");
 			
 		});
 
-	
+
+		$(".appt_submit").click(function(){
+			var appst = $("#appoitment_sloat").val();
+			if(validator.form() && appst != null && appst != undefined) {
+				$("#form").submit();
+			}
+		});
+
+
+
+
 		$("[data-toggle=tooltip]").tooltip();
 
 		$(".addbtn").click(function(){
