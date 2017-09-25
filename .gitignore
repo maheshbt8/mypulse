@@ -4,5 +4,4 @@ project.config
 application/config/config.php
 application/config/database.php
 application/cache
-public/images/
 public/reports/
