@@ -77,7 +77,7 @@ class Hospitals_model extends CI_Model {
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
 
         if(isset($_POST['slug'])){
-            $slug = str_replace('http://www.mypulse.com/','',$slug);
+            $slug = str_replace('http://www.mypulse.com/','',$_POST['slug']);
             $_POST['slug'] = $slug;
         }
 
@@ -107,7 +107,7 @@ class Hospitals_model extends CI_Model {
         }
 
         if(isset($_POST['slug'])){
-            $slug = str_replace('http://www.mypulse.com/','',$slug);
+            $slug = str_replace('http://www.mypulse.com/','',$_POST['slug']);
             $_POST['slug'] = $slug;
         }
         
