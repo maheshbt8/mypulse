@@ -12,7 +12,8 @@ class Hospitals extends CI_Controller {
         $this->load->model('general_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+        //|| $this->auth->isHospitalAdmin()
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() )) {
             $data['license'] = $this->license_model->getAlllicense();
             $data['hospital_admins'] = $this->users_model->getUsersByType($this->auth->getHospitalAdminRoleType());
             $data["page_title"] = $this->lang->line('hospitals');
@@ -63,6 +64,31 @@ class Hospitals extends CI_Controller {
             $id = $this->input->post('id');
             echo json_encode($this->hospitals_model->gethospitalsById($id));
         }
+    }
+
+    public function about(){
+        if($this->auth->isLoggedIn() && ($this->auth->isHospitalAdmin())){
+            if(isset($_POST['eidt_gf_id'])){
+                $id = $_POST['eidt_gf_id'];
+                $this->hospitals_model->update($id);
+            }
+            $ids = $this->auth->getAllHospitalIds();
+            $hid = isset($ids[0]) ? $ids[0] : 0;    
+            $data['about'] = $this->hospitals_model->gethospitalsById($hid);
+            $this->load->view('Hospitals/about',$data);
+        }
+    }
+    public function checkslug(){
+        $slug = isset($_GET['slug']) ? $_GET['slug'] : "";
+        if($slug==""){
+            echo 'false';
+        }
+        else if($this->hospitals_model->checkSlug($slug)){
+            echo 'false';
+        }else{
+            echo 'true';
+        }
+        exit; 
     }
     public function getDThospitals() {
         if ($this->auth->isLoggedIn()) {

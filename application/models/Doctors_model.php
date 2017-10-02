@@ -994,4 +994,12 @@ class Doctors_model extends CI_Model {
         $hospital = $hospital->row_array();
         return $hospital;
     }
+
+    function getDepartmentId($doc_id = 0)
+    {
+        $this->db->where('isDeleted',0);
+        $this->db->where('id',$doc_id);
+        $doc = $this->db->get($this->tblname)->row_array();
+        return isset($doc['department_id']) ? $doc['department_id'] : 0;
+    }
 }

@@ -136,11 +136,29 @@ class Medical_lab_model extends CI_Model {
                 $mlab['district'] = $data['district'];
             if(isset($data['city']))
                 $mlab['city'] = $data['city'];
-            $mlab['description'] = $data['md_description'];
+                
+            if(isset($data['address'])){
+                $mlab['address'] = $data['address'];
+            }else if(isset($data['m_address'])){
+                $mlab['address'] = $data['m_address'];
+            }
+
+            if(isset($data['phone_number'])){
+                $mlab['phone_number'] = $data['phone_number'];
+            }else if(isset($data['m_phone_number'])){
+                $mlab['phone_number'] = $data['m_phone_number'];
+            }    
+            if(isset($data['md_description'])){
+                $mlab['description'] = $data['md_description'];
+            }
+            else if(isset($data['description'])){
+                $mlab['description'] = $data['description'];
+            }
             $mlab['owner_name'] = $data['owner_name'];
             $mlab['owner_contact_number'] = $data['owner_contact_number'];
             $mlab['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mlab['created_at'] = date("Y-m-d H:i:s");
+
             if(isset($data['isActive']))
                 $mlab['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $mlab)) {
@@ -202,6 +220,22 @@ class Medical_lab_model extends CI_Model {
             if(isset($data['md_description'])){
                 $mlab['description'] = $data['md_description'];
             }
+            else if(isset($data['description'])){
+                $mlab['description'] = $data['description'];
+            }
+
+            if(isset($data['address'])){
+                $mlab['address'] = $data['address'];
+            }else if(isset($data['m_address'])){
+                $mlab['address'] = $data['m_address'];
+            }
+
+            if(isset($data['phone_number'])){
+                $mlab['phone_number'] = $data['phone_number'];
+            }else if(isset($data['m_phone_number'])){
+                $mlab['phone_number'] = $data['m_phone_number'];
+            }
+
             if(isset($data['isActive']))
                 $mlab['isActive'] = intval($data['isActive']);
             if(count($mlab) > 0){
@@ -229,5 +263,24 @@ class Medical_lab_model extends CI_Model {
         if ($this->db->update($this->tblname, $d)) {
             return true;
         } else return false;
+    }
+
+    function getMedLabIdsFromPatientId($id = 0){
+        
+        $this->db->distinct();
+        $this->db->select('medical_lab_id');
+        if(is_array($id)){
+            if(count($id) == 0){$id[] = -1;}
+            $this->db->where_in('patient_id',$id);
+        }else{
+            $this->db->where('patient_id',$id);
+        }
+        $this->db->where('isDeleted',0);
+        $res = $this->db->get('hms_medical_report')->result_array();
+        $ids = array();
+        foreach($res as $r){
+            $ids[] = $r['medical_lab_id'];
+        }
+        return $ids;
     }
 }

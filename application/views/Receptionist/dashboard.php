@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <a href="<?php echo site_url();?>/patients">
+                <a href="<?php echo site_url();?>/receptionist/patient">
                     <div class="overview-panel orange">
                         <div class="symbol">
                             <i class="fa fa-users"></i>

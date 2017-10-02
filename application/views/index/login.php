@@ -30,7 +30,20 @@
 </head>
 <body>
 <div class="form-title">
-    <h1>My Pulse</h1>
+    <?php
+        $_l = base_url()."public/assets/images/logo.png";
+        if(isset($logo) && $logo != ""){
+            $_l = $logo;
+            if($isHos)
+                $showPower = true;
+        }else{
+            $showPower = false;
+        }
+    ?>
+    <img style="width:300px;margin-top:100px;max-height:100px" src="<?php echo $_l;?>" />
+    <?php if($showPower){ ?>
+    <br><span>Powered by MyPulse</span>
+    <?php } ?>
 </div>
 <!-- Login Form-->
 <div style="width: 300px; margin: 0 auto">

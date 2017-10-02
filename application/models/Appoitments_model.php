@@ -11,9 +11,131 @@ class Appoitments_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getReport(){
-        return $this->db->query('SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id')->result_array();
+        $start_date = isset($_GET['sd']) ? date("Y-m-d",strtotime($_GET['sd'])) : date('Y-m-d',(strtotime ( '-29 day' , time() ) ));
+        $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
+        if($start_date != "" && $end_date != ""){
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';
+        }else if($start_date != ""){
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';
+        }else if($end_date != ""){
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';
+        }else{
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';
+        }
+        return $this->db->query($qry)->result_array();
     }
+
+    function getreportchart(){
+        $hid = isset($_GET['hid']) ? explode(",",$_GET['hid']) : 0;
+        $start_date = isset($_GET['sd']) ? date("Y-m-d",strtotime($_GET['sd'])) : date('Y-m-d',(strtotime ( '-29 day' , time() ) ));
+        $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
+
+        
+        $date1 = new DateTime($start_date);
+        $date2 = new DateTime($end_date);
+        
+        $days = $date2->diff($date1)->format("%a");
+        $data = array();
+        
+        if($days < 30){
+            //Date wise
+            $temp = array();
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1D'),
+                new DateTime($end_date)
+           );
+           $_labls = array();
+           foreach($period as $p){
+               $_labls[] = $p->format("d-M");
+           }
+           $data['labels'] = $_labls;
+           $data['title'] = $date1->format("d-M")." to ".$date2->format("d-M-Y");
+           foreach($hid as $h){
+               $this->db->where('id',$h);
+               $this->db->select('name');
+               $hres = $this->db->get('hms_hospitals')->row_array();
+               $hname = isset($hres['name']) ? $hres['name'] : "Hospital";
+               $_data = array();
+               foreach($period as $d){
+                    $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date="'.$d->format("Y-m-d").'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id HAVING h.id='.$h;
+                    $res = $this->db->query($qry)->row_array();
+                    $_data[] = isset($res['count']) ? $res['count'] : 0;
+               }
+               $temp[] = array(
+                   'label' => $hname,
+                   'data' => $_data
+               );
+           }
+           $data['data'] = $temp;
+        }else if($days < 365){
+            //Month Wise
+            $temp = array();
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1M'),
+                new DateTime($end_date)
+           );
+           $_labls = array();
+           foreach($period as $p){
+               $_labls[] = $p->format("M");
+           }
+           $data['labels'] = $_labls;
+           $data['title'] = $date1->format("M")." to ".$date2->format("M-Y");
+           foreach($hid as $h){
+               $this->db->where('id',$h);
+               $this->db->select('name');
+               $hres = $this->db->get('hms_hospitals')->row_array();
+               $hname = isset($hres['name']) ? $hres['name'] : "Hospital";
+               $_data = array();
+               foreach($period as $d){
+                    $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where MONTH(a.appoitment_date)="'.$d->format("m").'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id HAVING h.id='.$h;
+                    $res = $this->db->query($qry)->row_array();
+                    $_data[] = isset($res['count']) ? $res['count'] : 0;
+               }
+               $temp[] = array(
+                   'label' => $hname,
+                   'data' => $_data
+               );
+           }
+           $data['data'] = $temp;
+        }else{
+            //Year wise
+            $temp = array();
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1Y'),
+                new DateTime($end_date)
+           );
+           $_labls = array();
+           foreach($period as $p){
+               $_labls[] = $p->format("Y");
+           }
+           $data['labels'] = $_labls;
+           $data['title'] = $date1->format("Y")." to ".$date2->format("Y");
+           foreach($hid as $h){
+               $this->db->where('id',$h);
+               $this->db->select('name');
+               $hres = $this->db->get('hms_hospitals')->row_array();
+               $hname = isset($hres['name']) ? $hres['name'] : "Hospital";
+               $_data = array();
+               foreach($period as $d){
+                    $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where YEAR(a.appoitment_date)="'.$d->format("Y").'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id HAVING h.id='.$h;
+                    $res = $this->db->query($qry)->row_array();
+                    $_data[] = isset($res['count']) ? $res['count'] : 0;
+               }
+               $temp[] = array(
+                   'label' => $hname,
+                   'data' => $_data
+               );
+           }
+           $data['data'] = $temp;
+        }
+        return $data;
+    }
+
     function getappoitmentsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r =  $r->row_array();
@@ -403,5 +525,23 @@ class Appoitments_model extends CI_Model {
             }
         }
         return $availableTimeSloats;
+    }
+
+    public function getPatientIdsFromDepartmentIds($id=0){
+        $this->db->distinct();        
+        $this->db->select("user_id");
+        if(is_array($id)){
+            if(count($id) == 0){ $id[] = -1; }
+            $this->db->where_in('department_id',$id);
+        }else{
+            $this->db->where('department_id',$id);
+        }
+        $this->db->where('isDeleted',0);
+        $appts = $this->db->get($this->tblname)->result_array();
+        $ids = array();
+        foreach($appts as $ap){
+            $ids[] = $ap['user_id'];
+        }
+        return $ids;
     }
 }

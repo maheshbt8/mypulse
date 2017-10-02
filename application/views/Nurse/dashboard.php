@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <a href="<?php echo site_url();?>/">
+                <a href="<?php echo site_url();?>/nurse/department">
                     <div class="overview-panel orange">
                         <div class="symbol">
                             <i class="fa fa-users"></i>
@@ -33,14 +33,14 @@
                 </a>
             </div>
             <div class="col-lg-3 col-sm-6">
-                <a href="<?php echo site_url();?>/">
+                <a href="<?php echo site_url();?>/nurse/inpatient">
                     <div class="overview-panel blue-bgcolor">
                         <div class="symbol">
                             <i class="icon-user"></i>
                         </div>
                         <div class="value white">
                             <p class="sbold addr-font-h1" data-counter="counterup" data-value="<?php echo $states['patient_count'];?>"><?php echo $states['patient_count'];?></p>
-                            <p><?php echo $this->lang->line('appointments');?></p>
+                            <p><?php echo $this->lang->line('patients');?></p>
                         </div>
                     </div>
                 </a>

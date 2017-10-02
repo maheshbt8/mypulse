@@ -28,6 +28,12 @@ class Nurse extends CI_Controller {
             $this->load->view('Nurse/index', $data);
         } else redirect('index/login');
     }
+    public function department() {
+        if($this->auth->isNurse()){
+            $this->load->view('nurse/department');
+        }
+        else redirect('index/login');
+    }
     public function beds() {
         if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
             // $data['bedss'] = $this->beds_model->getAllbeds();
@@ -114,7 +120,7 @@ class Nurse extends CI_Controller {
         }
     }
     public function getDTnurse() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isDoctor() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_nurse";
             $primaryKey = "id";
@@ -161,6 +167,20 @@ class Nurse extends CI_Controller {
                 $ids = $this->auth->getAllDepartmentsIds();
                 $ids = implode(",", $ids);
                 $cond[] = "department_id in (".$ids.")";
+            }else if($this->auth->isDoctor()){
+                $did = $this->auth->getDoctorId();
+                $dep_id = $this->doctors_model->getDepartmentId($did);
+                $cond[] = "department_id=".$dep_id;
+                $this->tbl->setCheckboxColumn(false);
+                $this->tbl->setIndexColumn(true);
+                $columns[0]['formatter'] =  function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($d);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
+                    return $name;
+                };
+                unset($columns[4]);
+                unset($columns[5]);
             }else if($hospital_id!=null){
                 $ids = $this->departments_model->getDepartmentIdsFromHospital($hospital_id);
                 if(count($ids) == 0){
@@ -192,8 +212,6 @@ class Nurse extends CI_Controller {
         }
     }
 
-
-  
     public function getDTPatient() {
         if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
             $uid = $this->auth->getuserid();   
@@ -264,8 +282,7 @@ class Nurse extends CI_Controller {
         }
     }
 
-
-     public function getDTPrescription($app_id) {     
+    public function getDTPrescription($app_id) {     
         if ($this->auth->isLoggedIn()) {
             $this->load->library("tbl");
             $table = "hms_prescription";
@@ -333,4 +350,41 @@ class Nurse extends CI_Controller {
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }
+
+    public function getDTdepartments() {
+        if ($this->auth->isLoggedIn()) {
+            $this->load->library("tbl");
+            $table = "hms_departments";
+            $primaryKey = "id";
+            $columns = array( 
+                array("db" => "branch_id", "dt" => 0, "formatter" => function ($d, $row) {
+                    $this->load->model("branches_model");
+                    $temp = $this->branches_model->getbranchesById($d);
+                    return $temp['branch_name'];
+                }),
+                array("db" => "department_name", "dt" => 1, "formatter" => function ($d, $row) {
+                    return $d;
+                })
+            );
+
+            
+            $cond = array("isDeleted=0");
+
+            $dids = $this->departments_model->getDepartmentIds();
+            if(count($dids) == 0 ){ $dids[] = -1; }
+
+            $cond[] = 'id in ('.implode(',',$dids).')';
+
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setIndexColumn(true);
+            
+            $this->tbl->setTwID(implode(' AND ',$cond));
+
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    
 }

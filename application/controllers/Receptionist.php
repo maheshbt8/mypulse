@@ -24,6 +24,13 @@ class Receptionist extends CI_Controller {
             }
         } else redirect('index/login');
     }
+    public function patient() {
+        if ($this->auth->isLoggedIn()) {
+            if($this->auth->isReceptinest()){
+                $this->load->view('Patient/doctor');
+            }
+        } else redirect('index/login');
+    }
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
@@ -62,7 +69,7 @@ class Receptionist extends CI_Controller {
         }
     }
     public function getDTreceptionist() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isDoctor() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_receptionist";
             $primaryKey = "id";
@@ -127,6 +134,19 @@ class Receptionist extends CI_Controller {
                 $ids = $this->doctors_model->getDoctorsIdsByHospitalId($this->auth->getHospitalId());
                 $ids = implode(",", $ids);
                 $cond[] = "doc_id in (".$ids.")";
+            }else if($this->auth->isDoctor()){
+                $did = $this->auth->getDoctorId();
+                $cond[] = "doc_id=".$did;
+                $this->tbl->setCheckboxColumn(false);
+                $columns[0]['formatter'] =  function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($d);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
+                    return $name;
+                };
+                $this->tbl->setIndexColumn(true);
+                unset($columns[6]);
+                unset($columns[5]);
             }else if($hospital_id!=null){
                 $ids = $this->doctors_model->getDoctorsIdsByHospitalId($hospital_id);
                 if(count($ids) == 0){

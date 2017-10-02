@@ -9,7 +9,13 @@ class Patients extends CI_Controller {
         $this->load->model('users_model');
         $this->load->model('patient_model');
         $this->load->model('doctors_model');
+        $this->load->model('departments_model');
+        $this->load->model('appoitments_model');   
+        $this->load->model('receptionist_model');
+        $this->load->model('medical_lab_model');
+        $this->load->model('medical_store_model');
         $this->load->model('beds_model'); 
+        $this->load->model("hospitals_model");
         $this->load->model('healthinsuranceprovider_model');
     }
     public function index() {
@@ -31,6 +37,12 @@ class Patients extends CI_Controller {
             $this->load->view('Patient/report',$data);
         }else{
             redirect('index/login');
+        }
+    }
+    public function getreportchart(){
+        if($this->auth->isLoggedIn() && $this->auth->isSuperAdmin()){
+            $data['data'] = $this->patient_model->getreportchart();
+            echo json_encode($data);
         }
     }
     public function cancelPrescriptionOutOrder(){
@@ -152,9 +164,110 @@ class Patients extends CI_Controller {
         } else redirect('index/login');
     }
 
+    public function hospital(){
+        if($this->auth->isLoggedIn()){
+            $this->load->view('Patient/hospital');
+        }else{
+            redirect('index');
+        }
+    }
+
+    public function medicalstore(){
+        if($this->auth->isLoggedIn()){
+            $this->load->view('Patient/medicalstore');
+        }else{
+            redirect('index');
+        }
+    }
+
+    public function medicallab(){
+        if($this->auth->isLoggedIn()){
+            $this->load->view('Patient/medicallab');
+        }else{
+            redirect('index');
+        }
+    }
+
+    public function getDThospitals(){
+        if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
+            $this->load->library("tbl");
+            $table = "hms_hospitals";
+            $primaryKey = "id";
+            $columns = array(array("db" => "name", "dt" => 0, "formatter" => function ($d, $row) {
+                return $d;
+            }), 
+            array("db" => "address", "dt" => 1, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "phone_numbers", "dt" => 2, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }));
+
+            $hids = $this->hospitals_model->getHospicalIds();
+            if(count($hids) == 0) { $hids[] = -1;}
+            $cond = array("id in (".implode(",",$hids).")");
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function getDTmedical_lab(){
+        if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
+            $this->load->library("tbl");
+            $table = "hms_medical_lab";
+            $primaryKey = "id";
+            $columns = array(array("db" => "name", "dt" => 0, "formatter" => function ($d, $row) {
+                return $d;
+            }), 
+            array("db" => "address", "dt" => 1, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "phone_numbers", "dt" => 2, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }));
+
+            $mids = $this->medical_lab_model->getMedLabIdsFromPatientId($this->auth->getUserid());
+            if(count($mids) == 0) { $mids[] = -1;}
+            $cond = array("id in (".implode(",",$mids).")");
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+
+    public function getDTmedical_store(){
+        if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
+            $this->load->library("tbl");
+            $table = "hms_medical_store";
+            $primaryKey = "id";
+            $columns = array(array("db" => "name", "dt" => 0, "formatter" => function ($d, $row) {
+                return $d;
+            }), 
+            array("db" => "address", "dt" => 1, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "phone_numbers", "dt" => 2, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }));
+
+            $mids = $this->medical_store_model->getMedStoreIdsFromPatientId($this->auth->getUserid());
+            if(count($mids) == 0) { $mids[] = -1;}
+            $cond = array("id in (".implode(",",$mids).")");
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
 
     public function getDTusers() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isReceptinest() || $this->auth->isDoctor() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
             $table = "hms_users";
             $primaryKey = "id";
@@ -175,13 +288,35 @@ class Patients extends CI_Controller {
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                  return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
-
+            $cond = array("role=".$this->auth->getPatientRoleType());
             if($this->auth->isHospitalAdmin()){
+                $dids = $this->departments_model->getDepartmentIds();
+                $pids = $this->appoitments_model ->getPatientIdsFromDepartmentIds($dids);
+                if(count($pids) == 0){ $pids[] = -1; }
+                $cond[] = "id in (".implode(",",$pids).")";
+            }
+            else if($this->auth->isReceptinest() || $this->auth->isDoctor()){
+                $this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $did = array();
+                if($this->auth->isReceptinest()){
+                    $did = $this->receptionist_model->getDoctorsIds();
+                }else{
+                    $did = $this->auth->getDoctorId();
+                }
+                $pids = $this->patient_model->getPatientIdFromDoctorId($did);
+                if(count($pids) == 0){ $pids[] = -1;}
+                $cond[] = "id in (".implode(",",$pids).")";
+                $columns[2] = array("db" => "mobile", "dt" => 2, "formatter" => function ($d, $row) {
+                    return $d;
+                });
+                unset($columns[3]);
+                /*$columns[3] = array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                    return "<a href='".site_url()."/doctors/patientRecord/".$d."'><i class='fa fa-list'></i></a>";
+                });*/
+            }
 
-            }
-            else{
-            }
-            $this->tbl->setTwID("role=".$this->auth->getPatientRoleType());
+            $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

@@ -17,11 +17,18 @@ class Index extends CI_Controller {
         $this->load->model('medical_store_model');
         $this->load->model('doctors_model');
         $this->load->model('nurse_model');
-        $this->load->model('receptionist_model');
+		$this->load->model('receptionist_model');
+		$this->load->model('hospitals_model');
 	}
 
-	function index()
+	function index($slug=null)
 	{
+		if($slug != null && $slug!="index"){
+			$data['logo'] = $this->hospitals_model->getLogoFromSlug($slug);
+			$data['isHos'] = true;
+			$this->load->view('index/login',$data);
+			return;
+		}
 		//$this->users_model->updateKeys();
 		//echo "Updateed";exit;
 		if($this->auth->isLoggedIn()){

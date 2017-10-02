@@ -7,6 +7,7 @@
     <div class="row">
         <div class="state-overview">
             <div class="col-lg-3 col-sm-6">
+                <a href="<?php echo site_url();?>/patients/hospital">
                 <div class="overview-panel purple">
                     <div class="symbol">
                         <i class="fa fa-hospital-o"></i>
@@ -16,8 +17,10 @@
                         <p><?php echo $this->lang->line('hospitals');?></p>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-lg-3 col-sm-6">
+                <a href="<?php echo site_url();?>/patients/medicalstore">
                 <div class="overview-panel green-bgcolor">
                     <div class="symbol">
                         <i class="fa fa-users"></i>
@@ -27,8 +30,10 @@
                         <p><?php echo $this->lang->line('medicalStoreFull');?></p>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-lg-3 col-sm-6">
+                <a href="<?php echo site_url();?>/patients/medicallab">
                 <div class="overview-panel orange">
                     <div class="symbol">
                         <i class="fa fa-users"></i>
@@ -38,6 +43,7 @@
                         <p><?php echo $this->lang->line('medicalLabFull');?></p>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-lg-3 col-sm-6">
                 <a href="<?php echo site_url();?>/appoitments">

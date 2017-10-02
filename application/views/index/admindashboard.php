@@ -6,7 +6,7 @@
     <div class="row">
         <div class="state-overview">
             <div class="col-lg-3 col-sm-6">
-                <a href="<?php echo site_url();?>/hospitals">
+                <a href="<?php echo site_url();?>/branches">
                     <div class="overview-panel purple">
                         <div class="symbol">
                             <i class="fa fa-hospital-o"></i>

@@ -501,7 +501,6 @@ span.online-status {
     width: 9px;
     height: 9px;
     background-repeat: no-repeat!important;
-    text-indent: -10000px;
     outline: 0;
     background-image: url(../img/remove-icon-small.png)!important
 }

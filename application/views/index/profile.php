@@ -592,6 +592,7 @@ $this->load->view("template/footer.php");
             $("#profileBody input").prop("disabled", true);
             $("#profileBody textarea").prop("disabled", true);
             $("#profileBody select").prop("disabled", true);
+            $("#profileBody button").prop("disabled", true);
 
             $selectize_city[0].selectize.disable();
             $selectize_state[0].selectize.disable();
@@ -605,6 +606,7 @@ $this->load->view("template/footer.php");
             $("#profileBody input").prop("disabled", false);
             $("#profileBody textarea").prop("disabled", false);
             $("#profileBody select").prop("disabled", false);
+            $("#profileBody button").prop("disabled", false);
 
             $selectize_city[0].selectize.enable();
             $selectize_state[0].selectize.enable();

@@ -36,6 +36,16 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label><?php echo $this->lang->line('labels')['address'];?></label>
+                                    <input value="<?php echo $about['address'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label><?php echo $this->lang->line('labels')['phone_number'];?></label>
+                                    <input type="text" class="form-control"  placeholder="<?php echo $this->lang->line('labels')['phone_number'];?>" name="phone_number" id="phone_number" value="<?php echo $about['phone_number'];?>" />
+                                </div>
+                            </div>
+                            <div class="col-md-12">
                                 <div class="form-group col-md-3">
                                     <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
                                     <select name="country"  id="country" class=" form-control" style="width: 100%"></select>

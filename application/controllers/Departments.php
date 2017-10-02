@@ -86,6 +86,7 @@ class Departments extends CI_Controller {
             echo json_encode($this->departments_model->getdepartmentsById($id));
         }
     }
+    
     public function getDTdepartments() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");

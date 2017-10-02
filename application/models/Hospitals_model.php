@@ -24,7 +24,17 @@ class Hospitals_model extends CI_Model {
         }else{
             $r['license']['name'] = "Not Found";
         }
+        $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
+    }
+    function checkSlug($slug){
+        $slug = str_replace('http://www.mypulse.com/','',$slug);
+        $this->db->where('slug',$slug);
+        $slug = $this->db->get($this->tblname);
+        if($slug->num_rows() == 0){
+            return false;
+        }
+        return true;
     }
     function search($q, $field) {
         $field = explode(",", $field);
@@ -82,6 +92,14 @@ class Hospitals_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
+
+        if(isset($_FILES["logo"]) && $_FILES['logo']['error'] == 0){
+            $n = time()."_".$id.".png";
+            $url = base_url().'public/images/hl/'.$n;
+            $path = dirname(BASEPATH)."/public/images/hl/".$n;
+            move_uploaded_file($_FILES["logo"]['tmp_name'],$path);
+            $data['logo'] = $url;
+        }
         
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
@@ -107,6 +125,14 @@ class Hospitals_model extends CI_Model {
         if ($this->db->update($this->tblname, $d)) {
             return true;
         } else return false;
+    }
+    function getLogoFromSlug($slug){
+        $this->db->where('slug',$slug);
+        $s = $this->db->get($this->tblname)->row_array();
+        if(isset($s['logo']) && $s['logo'] != null && $s['logo'] !=""){
+            return $s['logo'];
+        }
+        return "";
     }
 
     function getHospicalIds(){

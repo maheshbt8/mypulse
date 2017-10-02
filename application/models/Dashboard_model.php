@@ -23,6 +23,10 @@ class Dashboard_model extends CI_Model {
         $h = $h->row_array();
         $res['tot_pat'] = $h['cnt'];
 
+        $h = $this->db->query("select count(id) as cnt from hms_appoitments where isDeleted=0");
+        $h = $h->row_array();
+        $res['tot_app'] = $h['cnt'];
+
         return $res;
     }
 
@@ -39,16 +43,23 @@ class Dashboard_model extends CI_Model {
             $res['tot_bra'] = count($bids);
         }
         
+        $this->load->model('departments_model');
+        $this->load->model('appoitments_model');
 
-        $dids = $this->auth->getAllDepartmentsIds();
+        $dids = $this->departments_model->getDepartmentIds();
+        $pids = $this->appoitments_model->getPatientIdsFromDepartmentIds($dids);
+
+        if(count($dids) ==0 ) { $dids[] = -1; }
         $dids = implode(",",$dids);
         $h = $this->db->query("select count(id) as cnt from hms_doctors where isDeleted=0 and department_id in ($dids)");
         $h = $h->row_array();
         $res['tot_doc'] = $h['cnt'];
 
-        //$h = $this->db->query("select count(id) as cnt from hms_users where isDeleted=0 and role=".$this->auth->getPatientRoleType());
-        //$h = $h->row_array();
-        $res['tot_pat'] = 0;//$h['cnt'];
+    
+        $res['tot_pat'] = count($pids);
+
+        $a = $this->db->query("select count(id) as cnt from hms_appoitments where isDeleted=0 and department_id in (".$dids.")")->row_array();
+        $res['tot_app'] = $a['cnt'];
 
         return $res;
     }
@@ -183,15 +194,21 @@ class Dashboard_model extends CI_Model {
     }
 
     function getDoctorStates(){
+        
         $res['tot_hos'] = 0;
         $res['tot_nus'] = 0;
         $uid = $this->auth->getUserid();
-        $h = $this->db->query("select count(id) as cnt from hms_doctors where isDeleted=0 and isActive=1 and user_id=".$uid);
-        $h = $h->row_array();
-        if(isset($h['cnt']))
-            $res['tot_hos'] = $h['cnt'];
-
         $did = $this->auth->getDoctorId();
+
+        $doc = $this->db->query("select department_id from hms_doctors where isDeleted=0 and id=".$did)->row_array();
+        if(isset($doc['department_id']))
+        {
+            $n = $this->db->query("select count(id) as cnt from hms_nurse where isDeleted=0 and isActive=1 and department_id=".$doc['department_id']);
+            $n = $n->row_array();
+            if(isset($n['cnt']))
+                $res['tot_nus'] = $n['cnt'];
+        }
+
         $res['tot_rec'] = 0;
         $r = $this->db->query("select count(id) as cnt from hms_receptionist where isDeleted=0 and isActive=1 and doc_id=".$did);
         $r = $r->row_array();

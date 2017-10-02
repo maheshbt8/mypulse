@@ -202,6 +202,9 @@ class Departments_model extends CI_Model {
         }else if($this->auth->isDoctor()){
             $uid = $this->auth->getDoctorId();
             $qry = "select DISTINCT d.department_id as id from  hms_doctors d where d.isDeleted=0 and d.id=$uid ";
+        }else if($this->auth->isNurse()){
+            $uid = $this->auth->getUserid();
+            $qry = 'select DISTINCT department_id as id from `hms_nurse`  where isDeleted = 0 and isActive = 1 and user_id='.$uid;
         }
         
         $res = $this->db->query($qry);

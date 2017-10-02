@@ -27,6 +27,33 @@ class Doctors extends CI_Controller {
         }
         else redirect('index/login');
     }
+    public function nurse() {
+        if ($this->auth->isLoggedIn()) {
+            $this->load->view('Nurse/doctor');
+        }
+        else{
+            redirect('index');
+        }
+    }
+
+    public function receptionist() {
+        if ($this->auth->isLoggedIn()) {
+            $this->load->view('Receptionist/doctor');
+        }
+        else{
+            redirect('index');
+        }
+    }
+
+    public function patient(){
+        if ($this->auth->isLoggedIn()) {
+            $this->load->view('Patient/doctor');
+        }
+        else{
+            redirect('index');
+        }
+    }
+
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");

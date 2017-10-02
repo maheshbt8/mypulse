@@ -77,6 +77,16 @@ $this->load->view("template/left.php");
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['address'];?></label>
+												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="m_address" id="m_address" />
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['phone_number'];?></label>
+												<input type="text" class="form-control"  placeholder="<?php echo $this->lang->line('labels')['phone_number'];?>" name="m_phone_number" id="m_phone_number" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['ownerName'];?></label>
 												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerName'];?>" name="owner_name" id="owner_name" />
 											</div>
@@ -353,6 +363,8 @@ $this->load->view("template/footer.php");
 						$("#owner_name").val(data.owner_name);
 						$("#md_description").val(data.description);
 						$("#owner_contact_number").val(data.owner_contact_number);
+						$("#m_address").val(data.address);
+						$("#m_phone_number").val(data.phone_number);
 						$("#isActive").val(data.curIsActive);
 						branch_id = data.branch_id;
 

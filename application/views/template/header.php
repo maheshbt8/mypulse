@@ -19,6 +19,7 @@
         <link href="<?php echo base_url();?>public/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/> 
         <link href="<?php echo base_url();?>public/plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>    
         <link href="<?php echo base_url();?>public/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" rel="stylesheet" />
+        <link href="<?php echo base_url();?>public/plugins/bootstrap-datetimepicker/css/daterangepicker.css" rel="stylesheet" rel="stylesheet" />
         <!--<link href="<?php echo base_url();?>public/plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>-->
         <!--<link href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css"/>-->
         <!--<link href="<?php echo base_url();?>public/plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>-->
@@ -34,6 +35,7 @@
         <link href="<?php echo base_url();?>public/assets/css/theme_style.css" rel="stylesheet" id="rt_style_components" type="text/css" />
         <link href="<?php echo base_url();?>public/assets/css/plugins.min.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url();?>public/assets/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url();?>public/assets/css/formlayout.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo base_url();?>public/assets/css/responsive.css" rel="stylesheet" type="text/css" />
 
         <script>
@@ -93,6 +95,30 @@
                 width: 100%;
                 padding: 0px !important;
                 border-radius: 0px !important;
+            }
+            .selectize-input{
+                border-radius: 0;
+                box-shadow: none;
+                border-color: #d2d6de;
+                height: 45px !important;
+                padding: 10px;
+            }
+
+            .selectize-input:focus{
+                border-color: #3c8dbc;
+                box-shadow: none
+            }
+            .selectize-dropdown, .selectize-dropdown.form-control{
+                border: 2px solid #ccc;
+                -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+            }
+            .selectize-dropdown-content{
+                overflow-y: auto;
+                overflow-x: auto;
+                max-height: 200px;
+                background-color: #fff !important;
+                border: 1px solid #ccc;
             }
             .custome_card_header{
                 float:right; margin-top:5px; margin-right:10px
@@ -199,6 +225,8 @@
                 color: #333;
                 background-color: #fff;
                 border-color: #ccc;    
+                height: 45px;
+                padding-top : 13px;
             }
             .image-preview-input input[type=file] {
                 position: absolute;
@@ -214,7 +242,14 @@
             .image-preview-input-title {
                 margin-left:2px;
             }
-
+            .image-preview-clear{
+                margin-top:0px;
+                margin-left:0px;
+                margin-bottom:0px;
+                margin-right: 1px;
+                height: 45px;
+                border-right: 1px solid #ccc;
+            }
             .image-attach-input {
                 position: relative;
                 overflow: hidden;

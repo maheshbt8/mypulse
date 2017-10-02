@@ -8,8 +8,10 @@
 .form-control {
 	border-radius: 0;
 	box-shadow: none;
-	border-color: #d2d6de
+	border-color: #d2d6de;
+	height: 45px !important
 }
+
 
 .form-control:focus {
 	border-color: #3c8dbc;

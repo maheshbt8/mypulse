@@ -83,7 +83,26 @@ class Medical_store_model extends CI_Model {
             if(isset($data['city']))
                 $mstore['city'] = $data['city'];    
             $mstore['owner_name'] = $data['owner_name'];
-            $mstore['description'] = $data['md_description'];
+
+            if(isset($data['md_description'])){
+                $mstore['description'] = $data['md_description'];
+            }
+            else if(isset($data['description'])){
+                $mstore['description'] = $data['description'];
+            }
+
+            if(isset($data['address'])){
+                $mstore['address'] = $data['address'];
+            }else if(isset($data['m_address'])){
+                $mstore['address'] = $data['m_address'];
+            }
+
+            if(isset($data['phone_number'])){
+                $mstore['phone_number'] = $data['phone_number'];
+            }else if(isset($data['m_phone_number'])){
+                $mstore['phone_number'] = $data['m_phone_number'];
+            }
+
             $mstore['owner_contact_number'] = $data['owner_contact_number'];
             $mstore['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mstore['created_at'] = date("Y-m-d H:i:s");
@@ -148,6 +167,22 @@ class Medical_store_model extends CI_Model {
             if(isset($data['md_description'])){
                 $mstore['description'] = $data['md_description'];
             }
+            else if(isset($data['description'])){
+                $mstore['description'] = $data['description'];
+            }
+            
+            if(isset($data['address'])){
+                $mstore['address'] = $data['address'];
+            }else if(isset($data['m_address'])){
+                $mstore['address'] = $data['m_address'];
+            }
+
+            if(isset($data['phone_number'])){
+                $mstore['phone_number'] = $data['phone_number'];
+            }else if(isset($data['m_phone_number'])){
+                $mstore['phone_number'] = $data['m_phone_number'];
+            }
+
             if(isset($data['isActive']))
                 $mstore['isActive'] = intval($data['isActive']);
             if(count($mstore) > 0){
@@ -219,5 +254,24 @@ class Medical_store_model extends CI_Model {
             $this->db->where('id',$med_r_id);
             $this->db->update('hms_prescription',array('order_status'=>0));
         }
+    }
+
+    function getMedStoreIdsFromPatientId($id=0){
+        $this->db->distinct();
+        $this->db->select('store_id');
+        if(is_array($id)){
+            if(count($id) == 0){$id[] = -1;}
+            $this->db->where_in('patient_id',$id);
+        }else{
+            $this->db->where('patient_id',$id);
+        }
+        $this->db->where('store_id > ',0);
+        $this->db->where('isDeleted',0);
+        $res = $this->db->get('hms_prescription')->result_array();
+        $ids = array();
+        foreach($res as $r){
+            $ids[] = $r['medical_lab_id'];
+        }
+        return $ids;
     }
 }

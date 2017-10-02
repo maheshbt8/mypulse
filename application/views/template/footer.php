@@ -83,6 +83,7 @@
         
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
         <script src="<?php echo base_url();?>public/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="<?php echo base_url();?>public/plugins/bootstrap-datetimepicker/js/daterangepicker.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/pages/previewimage.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js"></script>

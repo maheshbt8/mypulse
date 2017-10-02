@@ -33,9 +33,15 @@ class Appoitments extends CI_Controller {
             $data["page_title"] = $this->lang->line("reports");
             $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitment_report"));
             $data['reports'] = $this->appoitments_model->getReport();
-            $this->load->view('appoitments/report',$data);
+            $this->load->view('Appoitments/report',$data);
         }else{
             redirect('index/login');
+        }
+    }
+    public function getreportchart(){
+        if($this->auth->isLoggedIn() && $this->auth->isSuperAdmin()){
+            $data['data'] = $this->appoitments_model->getreportchart();
+            echo json_encode($data);
         }
     }
     public function search() {
