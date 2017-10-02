@@ -70,7 +70,25 @@ class Users_model extends CI_Model {
             if(isset($adminRecord[0]) && isset($adminRecord[0]['hospital_id'])){
                 $session_data['hospital_id'] = $adminRecord[0]['hospital_id'];
             }
-        }
+        }else if($row->role == $this->auth->getDoctorRoleType()){
+            $uid = $row->id;
+            $doc = $this->db->query("select b.hospital_id from hms_doctors d,hms_departments p,hms_branches b where d.user_id=$uid and d.department_id = p.id and p.branch_id = b.id")->row_array();
+            if(isset($doc['hospital_id'])){
+                $session_data['hospital_id'] = $doc['hospital_id'];
+            }
+        }else if($row->role == $this->auth->getReceptienstRoleType()){
+            $uid = $row->id;
+            $doc = $this->db->query("select b.hospital_id from hms_receptionist r,hms_doctors d,hms_departments p,hms_branches b where r.user_id=$uid and r.doc_id=d.id and d.department_id = p.id and p.branch_id = b.id")->row_array();
+            if(isset($doc['hospital_id'])){
+                $session_data['hospital_id'] = $doc['hospital_id'];
+            }
+        }else if($row->role == $this->auth->getNurseRoleType()){
+            $uid = $row->id;
+            $doc = $this->db->query("select b.hospital_id from hms_nurse d,hms_departments p,hms_branches b where d.user_id=$uid and d.department_id = p.id and p.branch_id = b.id")->row_array();
+            if(isset($doc['hospital_id'])){
+                $session_data['hospital_id'] = $doc['hospital_id'];
+            }
+        }   
         $session_set = $this->session->set_userdata($session_data);
     }
 

@@ -27,6 +27,20 @@ class Hospitals_model extends CI_Model {
         $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
     }
+    function getHospitalLogo($hid=0){
+        
+        $this->db->select('logo');
+        $this->db->where('id',$hid);
+        $this->db->where('isDeleted',0);
+        $h = $this->db->get($this->tblname);
+        if($h){
+            $h = $h->row_array();
+            if(isset($h['logo']) && $h['logo'] != "" && $h['logo'] != null){
+                return $h['logo'];
+            }
+        }
+        return base_url()."public/assets/images/logo.png";
+    }
     function checkSlug($slug){
         $slug = str_replace('http://www.mypulse.com/','',$slug);
         $this->db->where('slug',$slug);
@@ -183,5 +197,4 @@ class Hospitals_model extends CI_Model {
         }
         return $ids;
     }
-    
 }

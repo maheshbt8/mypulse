@@ -136,10 +136,10 @@
                                     <a href="<?php echo site_url();?>" class="nav-link"><i class="fa-credit-card "></i><span class="title"><?php echo $menu['main_payments'];?></span>
                                     </a>
                                 </li>
-                                <li class="nav-item" id="li12">
+                                <!--<li class="nav-item" id="li12">
                                     <a href="<?php echo site_url();?>" class="nav-link"><i class="  icon-bar-chart "></i><span class="title"><?php echo $menu['main_reports'];?></span>
                                     </a>
-                                </li>
+                                </li>-->
                           
 
                                 <!--<li id="li12" class="nav-item">

@@ -131,6 +131,12 @@ class Auth {
         return 0;
     }
 
+    public function getHospitalLogo(){
+        $hid = $this->getHospitalId();
+        $this->CI->load->model('hospitals_model');
+        return $this->CI->hospitals_model->getHospitalLogo($hid);
+    }
+
     public function getDoctorId(){
         $this->CI->load->model('doctors_model');
         return $this->CI->doctors_model->getMyId();

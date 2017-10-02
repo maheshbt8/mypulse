@@ -304,7 +304,10 @@
                 <!-- logo start -->
                 <div class="page-logo">
                     <a href="<?php echo site_url();?>">
-                        <img src="<?php echo base_url();?>public/assets/images/logo.png" alt="logo" class="logo-default" style="margin:13px 0 0" />
+                        <?php
+                            $logo = $this->auth->getHospitalLogo();
+                        ?>
+                        <img src="<?php echo $logo;?>" alt="logo" class="logo-default" style="margin:13px 0 0" />
                     </a>
                     <div class="menu-toggler sidebar-toggler">
                         <span></span>
