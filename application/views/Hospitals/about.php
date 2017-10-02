@@ -52,7 +52,15 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['hospital_url'];?></label>
-                                    <input data-ori="<?php echo $about['slug'];?>" type="text" class="form-control"  placeholder="<?php echo $this->lang->line('labels')['hospital_url_placeholder'];?>" name="slug" id="slug" value="<?php echo $about['slug'];?>" />
+                                    <?php
+                                        $place = "http://www.mypulse.com";
+                                        if($about['slug'] != ""){
+                                            $place .= "/".$about['slug']; 
+                                        }else{
+                                            $place .= "/yourhospitalname";
+                                        }
+                                    ?>
+                                    <input data-ori="<?php echo $about['slug'];?>" type="text" class="form-control"  placeholder="<?php echo $place;?>" name="slug" id="slug" />
                                 </div>
                             </div>
                             <div class="col-md-12">
