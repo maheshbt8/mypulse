@@ -106,7 +106,7 @@ class Hospitals_model extends CI_Model {
             $data['logo'] = $url;
         }
 
-        if(isset($_POST['slug'])){
+        if(isset($_POST['slug']) && $_POST['slug'] != ""){
             $slug = str_replace('http://www.mypulse.com/','',$_POST['slug']);
             $_POST['slug'] = $slug;
         }

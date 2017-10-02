@@ -268,6 +268,7 @@ $lang['labels'] = array(
     'wardName' => 'Ward Name',
     'selectFromDdate' => 'Select From Date',
     'selectToDdate' => 'Select To Date',
+    'selectDate' => 'Select Date',
     'bed' => 'Bed',
     'all' => 'All',
     'title' => 'Title',

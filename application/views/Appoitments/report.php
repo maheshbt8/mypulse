@@ -23,7 +23,7 @@ $this->load->view("template/left.php");
 	                    <div class="card-body">
 							<div class="col-md-12">
 								<div class="form-group col-md-4">
-									<label><?php echo $this->lang->line('labels')['selectFromDdate'];?></label>
+									<label><?php echo $this->lang->line('labels')['selectDate'];?></label>
 									<input id="sel_from_date" class="dates form-control" /> 
 								</div>
                             </div>
