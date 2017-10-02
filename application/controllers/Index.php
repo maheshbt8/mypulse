@@ -23,7 +23,7 @@ class Index extends CI_Controller {
 
 	function index($slug=null)
 	{
-		if($slug != null && $slug!="index"){
+		if(!$this->auth->isLoggedIn() && $slug != null && $slug!="index"){
 			$data['logo'] = $this->hospitals_model->getLogoFromSlug($slug);
 			$data['isHos'] = true;
 			$this->load->view('index/login',$data);
