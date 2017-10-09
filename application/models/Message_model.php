@@ -8,8 +8,31 @@ class Message_model extends CI_Model
     var $tblname = "hms_messages";
 
     function saveMessage($message){
-        $e = $this->db->insert($this->tblname,$message);
-        return $this->db->insert_id();
+        $uid = $message['user_id'];
+        if($uid > 0){
+            $e = $this->db->insert($this->tblname,$message);
+            return $this->db->insert_id();
+        }else{
+            $users = array();
+            $role = 0;
+            switch($uid){
+                case -1: $role= 2;break;
+                case -2: $role= 4;break;
+                case -3: $role= 5;break;
+                case -4: $role= 3;break;
+                case -5: $role= 8;break;
+                case -6: $role= 7;break;
+                case -7: $role= 6;break;
+            }
+            $this->load->model('users_model');
+            $users = $this->users_model->getUserIdsForMultiMessage($role);
+            
+            foreach($users as $user){
+                $message['user_id'] = $user;
+                $e = $this->db->insert($this->tblname,$message);
+            }
+            return true;
+        }
     }
 
     function getTopMessages($uid,$top){

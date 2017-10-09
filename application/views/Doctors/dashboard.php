@@ -99,12 +99,21 @@
 <script>
     $(document).ready(function(){
         //$("#appoitments").dataTable().fnDestroy();
-        $("#appoitments").DataTable({
-            "processing": true,
-            "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?td=1"
-        });
-        $(".dataTables_filter").hide();
+        function loadTable(){
+            $("#appoitments").dataTable().fnDestroy();
+            $("#appoitments").DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?td=1"
+            });
+            $(".dataTables_filter").hide();
+        }
+
+        setInterval(function() {
+            loadTable();
+        }, 60000);
+
+        loadTable();
 
         $(document).on('click','.apprbtn',function(){
             var id = $(this).attr("data-id");

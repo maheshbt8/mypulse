@@ -123,6 +123,17 @@ class Branches extends CI_Controller {
                 $this->tbl->setIndexColumn(true);
             }
             $this->tbl->setTwID(implode(' AND ',$cond));
+
+            $isExport = isset($_GET['ex']) ? $_GET['ex'] : false;
+            if($isExport){
+                $this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $columns[0]['formatter'] = function($d,$row){ return $d;};
+                $columns[3] = array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                    return "";
+                });
+            }
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
@@ -151,6 +162,17 @@ class Branches extends CI_Controller {
                 $hid = $this->auth->getHospitalId();
                 $this->tbl->setTwID("hospital_id=".$hid);
             }
+
+            $isExport = isset($_GET['ex']) ? $_GET['ex'] : false;
+            if($isExport){
+                $this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $columns[3] = array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                    return "";
+                });
+            }
+
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

@@ -25,6 +25,12 @@ $this->load->view("template/left.php");
 							</div>
 	                    </div>
 	                    <div class="card-body ">
+							<div class="col-md-12">
+                                <div class="form-group col-md-3">
+                                    <label><?php echo $this->lang->line('labels')['select_date'];?></label>
+                                    <input id="sel_date" class=" form-control date-picker" /> 
+								</div>
+							</div>	
 							<table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 								<thead>
 									<tr>
@@ -648,12 +654,27 @@ $this->load->view("template/footer.php");
 
 			
 
-		function loadTable(hid,bid){	
+		function loadTable(date,hid,bid){	
+
+			jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
+				if ( this.context.length ) {
+					var jsonResult = $.ajax({
+						url: "<?php echo site_url(); ?>/appoitments/getDTappoitments?ex=1&d="+date+"&hid="+hid+"&bid="+bid,
+						success: function (result) {
+							//Do nothing
+						},
+						async: false
+					});
+					var data = jQuery.parseJSON(jsonResult.responseText).data;
+					return {body: data, header: $("#appoitments thead tr th").map(function() { return this.innerHTML; }).get()};
+				}
+			} );
+
 			$("#appoitments").dataTable().fnDestroy();
 			var dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?hid="+hid+"&bid="+bid
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?d="+date+"&hid="+hid+"&bid="+bid
 			});
 
 			<?php $this->load->view('template/exdt');?>
@@ -662,7 +683,12 @@ $this->load->view("template/footer.php");
 			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 		}
-		loadTable("all","");	
+		loadTable("","all","");	
+
+		$("#sel_date").change(function(){
+			var date = $("#sel_date").val();
+			loadTable(date,"all","");
+		});
 
 	});
 

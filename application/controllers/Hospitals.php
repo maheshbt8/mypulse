@@ -113,6 +113,28 @@ class Hospitals extends CI_Controller {
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
+
+            $isExport = isset($_GET['ex']) ? $_GET['ex'] : false;
+            if($isExport){
+                $this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $columns[0] = array("db" => "name", "dt" => 0, "formatter" => function ($d, $row) {
+                    return $d;
+                });
+                $columns[1] = array("db" => "license_status", "dt" => 1, "formatter" => function ($d, $row) {
+                    $hos = $this->hospitals_model->gethospitalsById($row['id']);
+                    $name = isset($hos['license']) ? isset($hos['license']['name']) ? $hos['license']['name'] : "" : "";
+                    if($d==1){
+                        return $name.' - Active';
+                    }else{
+                        return $name.' - Inactive';
+                    }
+                });
+                $columns[3] = array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                    return "";
+                });
+            }
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

@@ -69,9 +69,9 @@ $this->load->view("template/left.php");
 									<thead>
 											<tr>
 											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['number_short'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['hospital_branch_department'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>

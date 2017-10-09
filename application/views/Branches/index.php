@@ -387,6 +387,22 @@ $this->load->view("template/footer.php");
                     if(id=="all"){
 						id="";
 					}
+
+					jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
+						if ( this.context.length ) {
+							var jsonResult = $.ajax({
+								url: "<?php echo site_url(); ?>/branches/getDTbranches?hid="+id+"&ex=1",
+								success: function (result) {
+									//Do nothing
+								},
+								async: false
+							});
+							var data = jQuery.parseJSON(jsonResult.responseText).data;
+							return {body: data, header: $("#branches thead tr th").map(function() { return this.innerHTML; }).get()};
+						}
+					} );
+
+
                     $("#branches").dataTable().fnDestroy();
                     var dt = $("#branches").DataTable({
                         "processing": true,

@@ -45,7 +45,7 @@ $this->load->view("template/left.php");
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('patientInfo');?></h3>
                             </div>
                             <div class="custome_col4">
-                                <div class="panel_button_top_right">
+                                <div class="panel_button_top_right" id="editBtnDiv">
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
                                 </div>
@@ -62,6 +62,9 @@ $this->load->view("template/left.php");
                                 <li role="presentation"><a href="#tab3" aria-controls="messages" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['healthInfo'];?></a></li>
                                 <li role="presentation"><a href="#tab4"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescription'];?></a></li>
                                 <li role="presentation"><a href="#tab5" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
+                                <?php if(isset($profile['hasSelectedRole']) && $profile['hasSelectedRole']==0 ){ ?>
+                                <li role="presentation"><a href="#tab6" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['role'];?></a></li>
+                                <?php } ?>
                             </ul>
                             <!-- Tab panes -->
                             <form action="<?php echo site_url(); ?>/patients/updatemyprofile" method="post" id="form" enctype="multipart/form-data">
@@ -330,8 +333,59 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                 </div>
+                                </form>
+                                <?php if(isset($profile['hasSelectedRole']) && $profile['hasSelectedRole']==0){ ?>
+                                <div role="tabpanel" class="tab-pane" id="tab6">
+                                    <div class="col-md-12">
+                                        <form class=""  method="post" id="role_form" action="<?php echo site_url().'/index/updaterole' ?>">
+                                            <div class="row">
+                                                <div class="form-group col-md-6">
+                                                    <label>Register As</label>
+                                                    <select class="form-control" name="role" id="role" >
+                                                        <option value="<?php echo $this->auth->getHospitalAdminRoleType();?>">Hospital Admin</option>
+                                                        <option value="<?php echo $this->auth->getDoctorRoleType();?>">Doctor</option>
+                                                        <option value="<?php echo $this->auth->getNurseRoleType();?>">Nurse</option>
+                                                        <option value="<?php echo $this->auth->getReceptienstRoleType();?>">Receptienst</option>
+                                                        <option value="<?php echo $this->auth->getMedicalStoreRoleType();?>">Medical Store</option>
+                                                        <option value="<?php echo $this->auth->getMedicalLabRoleType();?>">Medical Lab</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row" >
+                                                <div class="form-group col-md-6" id="hdiv" style="display:none">
+                                                    <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
+                                                    <select id="hospital_id" name="hospital_id" class=" form-control" style="width: 100%">
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6" id="bdiv" style="display:none">
+                                                    <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
+                                                    <select id="branch_id" name="branch_id" class=" form-control" style="width: 100%">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6" id="ddiv" style="display:none">
+                                                    <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
+                                                    <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6" id="dddiv" style="display:none">
+                                                    <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
+                                                    <select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <button class="btn btn-primary" id="saveRole" style="margin-left:15px" type="submit">Save</button>
+                                            </div>
+                                            <p>
+                                                <span style="font-size: 12px"><i>Your profile approval may take some time based on your role, you will be notify once your profile is reviewed.</i></span>
+                                            </p>
+                                        </form>
+                                    </div>
+                                </div>
+                                <?php } ?>
                             </div>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -398,6 +452,260 @@ $this->load->view("template/footer.php");
 ?>
 <script type="text/javascript">
     $(document).ready(function(){
+
+        //Role Start
+        var validator = $("#role_form").validate({
+            ignore: [],
+            rules: {
+                
+            },
+            messages: {
+                
+            },
+            invalidHandler: validationInvalidHandler,
+            errorPlacement: validationErrorPlacement
+            
+        });
+
+        $('#role').change(function(){
+            
+            var r = $(this).val();
+            var role = parseInt(r);
+            console.log(typeof(role));
+            //$($selectize_doctor_id).hide();
+            
+            
+            $("#hospital_id").rules("add", {
+                required:true,
+                messages: {
+                    required: "<?php echo $this->lang->line('validation')['selectHospital'];?>"
+                }
+            });
+            $("#branch_id").rules("add", {
+                required:true,
+                messages: {
+                    required: "<?php echo $this->lang->line('validation')['selectBranch'];?>"
+                }
+            });
+            $("#department_id").rules("add", {
+                required:true,
+                messages: {
+                    required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+                }
+            });
+            $("#doctor_id").rules("add", {
+                required:true,
+                messages: {
+                    required: "<?php echo $this->lang->line('validation')['selectDoctor'];?>"
+                }
+            });
+            $("#hdiv").hide();
+            $("#bdiv").hide();
+            $("#ddiv").hide();
+            $("#dddiv").hide();
+            
+            switch(role){
+                case 6:
+                    $("#hospital_id").rules("remove","required");
+                    $("#branch_id").rules("remove","required");
+                    $("#department_id").rules("remove","required");
+                    $("#doctor_id").rules("remove","required");
+                    break;
+                case 2:
+                    $("#hdiv").show();
+                    $("#branch_id").rules("remove","required");
+                    $("#department_id").rules("remove","required");
+                    $("#doctor_id").rules("remove","required");
+                    break;
+                case 3:
+                    $("#hdiv").show();
+                    $("#bdiv").show();
+                    $("#ddiv").show();
+                    $("#doctor_id").rules("remove","required");
+                    break;
+                case 4:
+                    $("#hdiv").show();
+                    $("#bdiv").show();
+                    $("#ddiv").show();
+                    $("#doctor_id").rules("remove","required");
+                    break;        
+                case 5:
+                    $("#hdiv").show();
+                    $("#bdiv").show();
+                    $("#ddiv").show();
+                    $("#dddiv").show();
+                    break;
+				case 7:
+				case 8:
+					$("#department_id").rules("remove","required");
+                    $("#doctor_id").rules("remove","required");
+					$("#hdiv").show();
+                    $("#bdiv").show();
+					break;	
+            }
+            
+        });
+
+        var xhr;
+
+		var $selectize_doctor_id = $("#doctor_id").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					var dis = "";
+					if(item.description != undefined)
+						dis = item.description;
+					return "<div><span class='title' style='font-size:14px'><b>" +
+							escape(item.text)+
+						"</b></span><br><span style='font-size:12px;'><i>"+
+						escape(dis)+
+						"</i></span>" +   
+					"</div>";
+				}
+			},
+			onChange: function(value){
+				if(!value.length) return;
+			}
+		});
+
+		var $selectize_department_id = $("#department_id").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					return "<div><span class='title'>" +
+							escape(item.text)+
+						"</span>" +   
+					"</div>";
+				}
+			},
+			onChange: function(value){
+				if(!value.length) return;
+
+				$selectize_doctor_id[0].selectize.disable();
+				$selectize_doctor_id[0].selectize.clearOptions();
+				$selectize_doctor_id[0].selectize.load(function(callback) {
+					xhr && xhr.abort();
+					xhr = $.ajax({
+						url: "<?php echo site_url(); ?>/doctors/search/",
+						type: "GET",
+						data: { "department_id":value,"f":""},
+						success: function(results) {
+							
+							var res = $.parseJSON(results);
+							callback(res);
+							$selectize_doctor_id[0].selectize.enable();
+						},
+						error: function() {
+							callback();
+						}
+					})
+				}); 
+			}
+		});
+
+		var $selectize_branch_id = $("#branch_id").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					return "<div><span class='title'>" +
+							escape(item.text)+
+						"</span>" +   
+					"</div>";
+				}
+			},
+			onChange: function(value) {
+				if (!value.length) return;
+				
+				$selectize_department_id[0].selectize.disable();
+				$selectize_department_id[0].selectize.clearOptions();
+				$selectize_department_id[0].selectize.load(function(callback) {
+					xhr && xhr.abort();
+					xhr = $.ajax({
+						url: "<?php echo site_url(); ?>/departments/search/",
+						type: "GET",
+						data: { "branch_id":value,"f":"department_name"},
+						success: function(results) {
+							
+							var res = $.parseJSON(results);
+							callback(res);
+							$selectize_department_id[0].selectize.enable();
+						},
+						error: function() {
+							callback();
+						}
+					})
+				}); 
+				
+			}
+		});
+
+		var $selectize_hospital_id = $("#hospital_id").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					return "<div><span class='title'>" +
+							escape(item.text)+
+						"</span>" +   
+					"</div>";
+				}
+			},
+			load: function(query, callback) {
+				//if (!query.length) return callback();
+				$.ajax({
+					url: "<?php echo site_url(); ?>/hospitals/search",
+					type: "GET",
+					data: {"q":query,"f":"name"},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						callback($.parseJSON(res));
+					}
+				});
+			},
+			onChange: function(value) {
+				if (!value.length) return;
+				
+				$selectize_branch_id[0].selectize.disable();
+				$selectize_branch_id[0].selectize.clearOptions();
+				$selectize_branch_id[0].selectize.load(function(callback) {
+					xhr && xhr.abort();
+					xhr = $.ajax({
+						url: "<?php echo site_url(); ?>/branches/search/",
+						type: "GET",
+						data: { "hospital_id":value,"f":"branch_name"},
+						success: function(results) {
+							
+							var res = $.parseJSON(results);
+							callback(res);
+							$selectize_branch_id[0].selectize.enable();
+							
+						},
+						error: function() {
+							callback();
+						}
+					})
+				});                 
+			}
+		});
+        
+        //Role End
 
         var loc_sid = null;
         var loc_did = null;
@@ -809,8 +1117,6 @@ $this->load->view("template/footer.php");
             $("#dparea").html(imgList);
         }
 
-        
-
         function showReceipt(data){
             data = $.parseJSON(data);
             $("#loading-img-receipt").hide();
@@ -825,6 +1131,21 @@ $this->load->view("template/footer.php");
             imgList += "</div>";
             $("#dparea-receipt").html(imgList);
         }
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab',function(e){
+            var target = $(e.target).attr('href');
+            if(target=="#tab6"){
+                $("#editBtnDiv").hide();
+                $("#role").prop("disabled", false);
+                $("#saveRole").prop("disabled", false);
+                $("#hospital_id").prop("disabled", false);
+                $("#branch_id").prop("disabled", false);
+                $("#department_id").prop("disabled", false);
+                $("#doctor_id").prop("disabled", false);    
+            }else{
+                $("#editBtnDiv").show();
+            }
+        });
 
     });
 </script>

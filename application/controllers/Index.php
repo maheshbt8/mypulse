@@ -61,7 +61,10 @@ class Index extends CI_Controller {
 				$data['states'] = $this->dashboard_model->getNurseStates($this->auth->getUserid());
 				$this->load->view('Nurse/dashboard',$data);
 			}else if($this->auth->isLoggedIn()){
-				$uid = $this->auth->getUserid();
+				$data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());
+				$this->load->view('Patient/dashbord',$data);
+
+				/* $uid = $this->auth->getUserid();
 				if(!$this->users_model->canUpdateMyRole($uid)){
 					$_data['infos'] = array("We are processing your request. You will be notify once your request is completed.");
 					$this->session->set_flashdata('data', $_data);
@@ -73,7 +76,7 @@ class Index extends CI_Controller {
 					$data['page_title'] = $this->lang->line('profile');
 					$data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('profile'));
 					$this->load->view('index/dashboard',$data);
-				}
+				} */
 				
 			}else{
 				redirect($this->login_page);
@@ -86,7 +89,7 @@ class Index extends CI_Controller {
 
 	function sendmsg()
     {
-        if($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())){
+        if($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isDoctor() )){
             $uid = isset($_POST['to']) ? explode(",",$_POST['to']) : array();
             $msg = isset($_POST['message']) ? $_POST['message'] : "";
             $title = isset($_POST['title']) ? $_POST['title'] : "";
@@ -158,14 +161,14 @@ class Index extends CI_Controller {
 		$this->users_model->updateMyRole($uid);
 		$role = isset($_POST['role']) ? $_POST['role'] : $this->auth->getPatientRoleType();
 		
-		if($role == $this->auth->getPatientRoleType()){
-			$this->session->set_userdata('role', $role);
-			$msg = "You have successfully register as MyPulse user";
-			$data['success'] = array($msg);
-		}else{
+		//if($role == $this->auth->getPatientRoleType()){
+		//	$this->session->set_userdata('role', $role);
+		//	$msg = "You have successfully register as MyPulse user";
+		//	$data['success'] = array($msg);
+		//}else{
 			$msg = "We are processing your request. You will be notify once your request is completed.";
 			$data['infos'] = array($msg);
-		}
+		//}
 		$this->session->set_flashdata('data', $data);
 		redirect('index');
 	}

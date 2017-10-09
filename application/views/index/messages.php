@@ -43,6 +43,21 @@ $this->load->view('template/left.php');
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="" class="col-sm-2">&nbsp;</label>
+                            <div class="col-sm-10" style="margin-top:10px">
+                                <?php if(!$this->auth->isDoctor()){ ?>
+                                <a class="btn btn-primary btn-circle" id="all_hos">All Hospital Admins</a>
+                                <a class="btn btn-primary btn-circle" id="all_medlb">All Madical Labs</a>
+                                <a class="btn btn-warning btn-circle" id="all_medst">All Medical Stores</a>
+                                <?php }  ?>
+                                <a class="btn btn-warning btn-circle" id="all_nur">All Nurses</a>
+                                <a class="btn btn-danger btn-circle" id="all_rep">All Receptionists</a>
+                                <a class="btn btn-info btn-circle" id="all_doc">All Doctors</a>
+                                <a class="btn btn-success btn-circle" id="all_pat">All Patients</a>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
                             <label for="subject" class="col-sm-2 control-label">Title</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="title" id="title">
@@ -106,7 +121,7 @@ $this->load->view('template/footer.php');
         var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
             '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
 
-        $('#select-to').selectize({
+        var selectTo = $('#select-to').selectize({
             persist: false,
             maxItems: null,
             valueField: 'id',
@@ -181,7 +196,7 @@ $this->load->view('template/footer.php');
         });
         $(".dataTables_filter").attr("style","display: flex;float: right");
         $("#msg_tbl_filter label").hide();
-        <?php if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()) { ?>
+        <?php if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isDoctor()) { ?>
         $(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\"  style=\"margin-left:10px\">New Message</a>");
         <?php } ?>
 
@@ -235,6 +250,54 @@ $this->load->view('template/footer.php');
                 console.log("NO");
             }
         });
+
+        $("#all_hos").click(function(){ setMultiUserSet(-1); });
+        $("#all_nur").click(function(){ setMultiUserSet(-2); });
+        $("#all_rep").click(function(){ setMultiUserSet(-3); });
+        $("#all_doc").click(function(){ setMultiUserSet(-4); });
+        $("#all_medlb").click(function(){ setMultiUserSet(-5); });
+        $("#all_medst").click(function(){ setMultiUserSet(-6); });
+        $("#all_pat").click(function(){ setMultiUserSet(-7); });
+
+        function setMultiUserSet(type){
+            var tempSelectTo = selectTo[0].selectize;
+            var selectedItems = tempSelectTo.getValue();
+            var options = [];
+            if(!Array.isArray(selectedItems))
+                selectedItems = [];
+
+            selectedItems.push(type);
+            for(var i=0; i<selectedItems.length; i++){
+                var name = "";
+                var t = selectedItems[i];
+                switch(t){
+                    case -1: name = "All Hospital admins"; break;
+                    case -2: name = "All Nurses"; break;
+                    case -3: name = "All Receptionists"; break;
+                    case -4: name = "All Doctors"; break;
+                    case -5: name = "All Medical Labs"; break;
+                    case -6: name = "All Medical Stores"; break;
+                    case -7: name = "All Patients"; break;
+                }
+                if(name!=""){
+                    options.push({"id":t,"name":name});
+                }
+
+            }
+             
+            
+             tempSelectTo.addOption(options);
+            for(var i=0; i<selectedItems.length; i++){
+                var _t = selectedItems[i];
+                tempSelectTo.setValue(_t);
+            } 
+
+            if (selectedItems.indexOf(-3) > -1) {
+                tempSelectTo.addItem(-3,true);
+                console.log("HI");
+            }
+
+        }
 
 
     });

@@ -173,7 +173,7 @@ class Users_model extends CI_Model {
         $res = null;
         if($this->auth->isSuperAdmin()){
             $res = $this->db->query("SELECT id, CONCAT(first_name,' ',last_name) as name, useremail as email from hms_users where first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR useremail LIKE '%$q%' and isDeleted=0");
-        }else if($this->auth->isHospitalAdmin()){
+        }else if($this->auth->isHospitalAdmin() || $this->auth->isDoctor()){
 
             $this->load->model('hospitals_model');
             $this->load->model('branches_model');
@@ -222,10 +222,62 @@ class Users_model extends CI_Model {
                 $uids[] = $res['id'];
             }
 
+            $hres = $this->db->query("select id from hms_users where role=2 and isActive=0 and isDeleted=0")->result_array();
+            foreach ($hres as $res){
+                $uids[] = $res['id'];
+            }
+
             $uids = implode(",",$uids);
             $res = $this->db->query("SELECT id, CONCAT(first_name,' ',last_name) as name, useremail as email from hms_users where (first_name LIKE '%$q%' OR last_name LIKE '%$q%' OR useremail LIKE '%$q%') and isDeleted=0 and id in ($uids)");
         }
         return $res->result_array();
+    }
+
+    //Return list of user ids of given role.
+    function getUserIdsForMultiMessage($role=0){
+        $this->load->model('hospitals_model');
+        $this->load->model('branches_model');
+        $this->load->model('departments_model');
+        $this->load->model('doctors_model');
+
+        $hids = $this->hospitals_model->getHospicalIds();
+        $bids = $this->branches_model->getBracheIds($hids);
+        $dids = $this->departments_model->getDepartmentIdsFromBranch($bids);
+        $docIds = $this->doctors_model->getDoctorsIdsByDeppartmentId($dids);
+
+        $uids = array();
+        if($role == 8){
+            $mlres = $this->db->query("select DISTINCT user_id from hms_medical_lab where branch_id in (".implode(",",$bids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($mlres as $res){
+                $uids[] = $res['user_id'];
+            }
+        }else if($role == 7){
+            $msres = $this->db->query("select DISTINCT user_id from hms_medical_store where branch_id in (".implode(",",$bids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($msres as $res){
+                $uids[] = $res['user_id'];
+            }
+        }else if($role == 3){
+            $dres = $this->db->query("select DISTINCT user_id from hms_doctors where department_id in (".implode(",",$dids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($dres as $res){
+                $uids[] = $res['user_id'];
+            }
+        }else if($role == 4){
+            $nres = $this->db->query("select DISTINCT user_id from hms_nurse where department_id in (".implode(",",$dids).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($nres as $res){
+                $uids[] = $res['user_id'];
+            }
+        }else if($role == 5){
+            $rres = $this->db->query("select DISTINCT user_id from hms_receptionist where doc_id in (".implode(",",$docIds).") and isDeleted=0 and isActive=1")->result_array();
+            foreach ($rres as $res){
+                $uids[] = $res['user_id'];
+            }
+        }else if($role == 6){
+            $pres = $this->db->query("select DISTINCT patient_id from hms_prescription where doctor_id in (".implode(",",$docIds).") and isDeleted=0 ")->result_array();
+            foreach ($pres as $res){
+                $uids[] = $res['patient_id'];
+            }
+        }
+        return $uids;
     }
 
     function checkMobile($mobile){
@@ -416,7 +468,7 @@ class Users_model extends CI_Model {
                 $data['forgotPassCode'] = $key;
 
                 $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
-                $data['role'] = -1;
+                $data['role'] = 6;
                 if ($this->db->insert($this->tblname, $data)) {
                     $email = $data['useremail'];
                     $this->load->library('sendmail');
@@ -486,7 +538,7 @@ class Users_model extends CI_Model {
     function canUpdateMyRole($uid){
         $this->db->where('id',$uid);
         $user = $this->db->get($this->tblname)->row_array();
-        if($user['role'] == -1)
+        if($user['hasSelectedRole'] == 0)
             return true;
         return false;
     }

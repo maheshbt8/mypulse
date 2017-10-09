@@ -61,6 +61,39 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">      
+                <div class="card-head">
+                    <header><?php echo $this->lang->line('upcomingappoitments');?></header>
+                    <div class="custome_card_header">
+                    </div>
+                </div>
+                    
+                <div class="card-body">
+                    <table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+                        <thead>
+                            <tr>
+                            <th style="width:10px"></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['hospital_branch'];?></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
+                            <th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                        </tbody>
+                    </table>  
+                </div>
+            </div>
+        </div>    
+    </div>
+
+
         <!--OutStanding Prescription Orders -->
         <?php if(count($states['orders']) > 0) { ?>
         <div class="row">
@@ -214,6 +247,13 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
+
+        $("#appoitments").DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?up=1"
+        });
+        $(".dataTables_filter").hide();
 
         var validator = $("#form").validate({
             ignore: [],

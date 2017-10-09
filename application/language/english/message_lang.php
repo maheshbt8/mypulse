@@ -39,6 +39,7 @@ $lang['medStoreLabs'] = "Medical Store/Labs";
 $lang['healthinsuranceprovider'] = "Health Insurance Provider";
 $lang['hospital_admin'] = 'Hospital Admins';
 $lang['todaysappoitments'] = "Today's Appoitments";
+$lang['upcomingappoitments'] = "Upcoming Appoitments";
 $lang['availability'] = 'Availability';
 $lang['othersetting'] = 'Other Setting';
 $lang['patientrecord'] = 'Patient Record';
@@ -76,7 +77,7 @@ $lang["msg_mobile_exist"] = "This mobile is already registration with us.";
 $lang["msg_aadharnumber_exist"] = "This Aaadhar number is already registration with us.";
 $lang["msg_check_email"] = "Please Check Your Mailbox";
 $lang["msg_email_send_error"] = "Unable to send you EMail. Please try again after sometime.";
-$lang["msg_password_change"] = "Password Successfully Change";
+$lang["msg_password_change"] = "Password Successfully Changed";
 $lang["msg_key_not_match"] = "Key Does Not Match";
 $lang['msg_new_password_notmatch'] = "New password does not match. Please try again";
 $lang['msg_old_password_notmatch'] = "Old password does not match. Please try again";
@@ -193,6 +194,7 @@ $lang['buttons'] = array(
 //End Buttons
 
 $lang['tableHeaders'] = array(
+    'number_short' => 'NO.',
     'name' => "Name",
     'bed no' => "Bed no",
     'join_date' => 'Join Date',
@@ -222,6 +224,7 @@ $lang['tableHeaders'] = array(
     'description' => 'Description',
     'charge' => 'Charge',
     'hospital_branch' => 'Hospital-Branch',
+    'hospital_branch_department' => 'Hospital-Branch-Department',
     'appoitment_date' => 'Appoitment Date',
     'licenseCode' => 'License Code',
     'admin' => 'Admin',
@@ -385,6 +388,7 @@ $lang['labels'] = array(
     'hospital_url_placeholder' => 'http://mypulse.com/yourhospitalname',
     'licenseInfo' => 'License Information',
     'logo' => 'Logo',
+    'role'=> 'Role',
 );
 //End Labels
 

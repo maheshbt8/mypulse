@@ -400,6 +400,21 @@ $this->load->view("template/left.php");
 					errorPlacement: validationErrorPlacement
 				});
 
+			
+				jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
+					if ( this.context.length ) {
+						var jsonResult = $.ajax({
+							url: "<?php echo site_url(); ?>/hospitals/getDThospitals?ex=1",
+							success: function (result) {
+								//Do nothing
+							},
+							async: false
+						});
+						var data = jQuery.parseJSON(jsonResult.responseText).data;
+						console.log(data);
+						return {body: data, header: $("#hospitals thead tr th").map(function() { return this.innerHTML; }).get()};
+					}
+				} );
 
 				var dt = $("#hospitals").DataTable({
 		            "processing": true,

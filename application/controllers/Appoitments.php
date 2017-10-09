@@ -177,6 +177,7 @@ class Appoitments extends CI_Controller {
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
             if($hid == "all")
                 $hid = null;
             $show  = $this->input->get('s',null,false);
@@ -196,6 +197,35 @@ class Appoitments extends CI_Controller {
                 
                 $this->tbl->setIndexColumn(true);
             }
+
+            $up = isset($_GET['up']) ? $_GET['up'] : false;
+            if($up){
+                $this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $cond[] = "appoitment_date >= '".date("Y-m-d")."'";
+                unset($columns[7]);
+                $columns[0] = array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
+                    return $d;
+                });
+            }else if($date != null){
+                $cond[] = "appoitment_date='$date'";
+            }
+
+            $isExport = isset($_GET['ex']) ? $_GET['ex'] : false;
+            if($isExport){
+                $this->tbl->setIndexColumn(true);
+                $this->tbl->setCheckboxColumn(false);
+                $columns[0] = array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
+                    return $d;
+                });
+                $columns[6] = array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
+                    return $this->auth->getAppoitmentStatus($d,true);
+                });
+                $columns[7] = array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                    return "";
+                });
+            }
+
             $this->tbl->setTwID(implode(' AND ',$cond));
 
             // SQL server connection informationhostname" => "localhost",
@@ -217,7 +247,11 @@ class Appoitments extends CI_Controller {
                     return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
                 }
                 
-            }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
+            }), array("db" => "user_id", "dt" => 1, "formatter" => function ($d, $row) {
+                $temp = $this->users_model->getusersById($d);
+                $name = $temp["first_name"]." ".$temp["last_name"];
+                return $name;
+            }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
                 $dep = $this->departments_model->getdepartmentsById($d);
                 $hos = $this->hospitals_model->gethospitalsById($dep['hospital_id']);
                 $name = "";
@@ -226,10 +260,7 @@ class Appoitments extends CI_Controller {
                 if(isset($dep['branch_name'])){
                     $name .= " - ".$dep['branch_name'];
                 }
-                return $name;
-            }), array("db" => "doctor_id", "dt" => 2, "formatter" => function ($d, $row) {
-                $dep = $this->departments_model->getdepartmentsById($d);
-                return $dep['department_name'];
+                return $name." - ".$dep['department_name'];
             }),array("db" => "doctor_id", "dt" => 3, "formatter" => function ($d, $row) {
                 $temp = $this->users_model->getusersById($d);
                 $name = $temp["first_name"]." ".$temp["last_name"];
