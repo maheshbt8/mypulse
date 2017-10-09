@@ -350,7 +350,7 @@
                             <ul class="dropdown-menu nonclose-dropdown-menu">
                                 <li class="external">
                                     <h3><span class="bold">Notifications</span></h3>
-                                    <span class="notification-label purple-bgcolor">New <?php echo $notificationCount;?></span>
+                                    <!-- <span class="notification-label purple-bgcolor">New <?php //echo $notificationCount;?></span> -->
                                 </li>
                                 <li>
                                     <ul class="dropdown-menu-list small-slimscroll-style" data-handle-color="#637283">
@@ -405,7 +405,7 @@
                             <ul class="dropdown-menu">
                                 <li class="external">
                                     <h3><span class="bold">Messages</span></h3>
-                                    <span class="notification-label cyan-bgcolor">New <?php echo $msgCount;?></span>
+                                    <!-- <span class="notification-label cyan-bgcolor">New <?php //echo $msgCount;?></span> -->
                                 </li>
                                 <li>
                                     <ul class="dropdown-menu-list small-slimscroll-style" data-handle-color="#637283">
