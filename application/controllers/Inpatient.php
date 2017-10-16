@@ -7,9 +7,14 @@ class Inpatient extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('inpatient_model');
+        $this->load->model("beds_model");
+        $this->load->model('doctors_model');
+        $this->load->model('patient_model');
+        $this->load->model('wards_model');
+        $this->load->model('hospitals_model');
     }
     public function index() {
-        if ($this->auth->isLoggedIn()) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['inpatients'] = $this->inpatient_model->getAllinpatient();
             $data["page_title"] = "Inpatient";
             $data["breadcrumb"] = array(site_url() => "Home", null => "Inpatient");
@@ -153,20 +158,80 @@ class Inpatient extends CI_Controller {
             $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
                 $this->load->model("users_model");
                 $temp = $this->users_model->getusersById($d);
-                return $temp["users"];
-            }), array("db" => "bed_id", "dt" => 1, "formatter" => function ($d, $row) {
-                $this->load->model("beds_model");
+                return $this->auth->getUName($temp);
+            }), array("db" => "user_id", "dt" => 1, "formatter" => function ($d, $row) {
+                
+                $hosp_name = $this->patient_model->getHospitalnameBybedId($row['user_id']);
+                $hospitalName = '';
+                if(isset($hosp_name['name']))
+                {
+                    $hospitalName = $hosp_name['name'];
+                }    
+                return $hospitalName;
+            }), array("db" => "doctor_id", "dt" => 2, "formatter" => function ($d, $row) {
+                $doctor = $this->doctors_model->getdoctorsById($d);  
+                $user = $this->users_model->getusersById($doctor['user_id']);
+                $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "join_date", "dt" => 3, "formatter" => function ($d, $row) {
+                $l_date = $row['left_date'];
+                $period = '';
+                if($l_date == '' || $l_date == null){
+                 $period = date("d-M",strtotime($d));   
+                }
+                else{
+                 $period = date("d-M",strtotime($d)).' to '.date("d-M-Y",strtotime($l_date));   
+                }
+                return $period; 
+            }), array("db" => "reason", "dt" => 4, "formatter" => function ($d, $row) {
+                return ($d == "" || $d == null) ? "-" : $d;
+            }), array("db" => "bed_id", "dt" => 5, "formatter" => function ($d, $row) {
+                
                 $temp = $this->beds_model->getbedsById($d);
                 return $temp["bed"];
-            }), array("db" => "join_date", "dt" => 2, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "reason", "dt" => 3, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "status", "dt" => 4, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+            }), array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
+                return $this->auth->getInpatientStatus($d);
+            }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
+                $bed = $this->beds_model->getbedsById($row['bed_id']);
+                $bedName = "";
+                if(isset($bed['bed']))
+                    $bedName = $bed['bed'];
+                $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y h:i A",strtotime($row['join_date']));
+                $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
+                $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
+                $doc_id = $row['doctor_id'];
+                $bed_id = $row['bed_id'];  
+                $user_id = $row['user_id'];
+                $ldate = ($row['left_date']== "" || $row['left_date']== null) ? "-" : date("d-M-Y h:i A",strtotime($row['left_date']));    
+                return "<a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-ldate='$ldate' data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
             }));
+            $this->tbl->setCheckboxColumn(false);                
+            $this->tbl->setIndexColumn(true);
+            
+            $hids = $this->hospitals_model->getHospicalIds();
+            $ids = $this->wards_model->getWardIdsFromHospital($hids);
+            if(count($ids) == 0){
+                //If no department created.
+                //Add dummy id to return nothing
+                $ids[] = -1;
+            }
+            $bids = $this->beds_model->getBedIdsFromWardId($ids);
+            if(count($bids) == 0){
+                //If no department created.
+                //Add dummy id to return nothing
+                $bids[] = -1;
+            }
+            $bids = implode(",",$bids);
+            $cond = array();
+            $cond[] = "id in (".$bids.")";
+            $this->tbl->setTwID(implode(" AND ",$cond));
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
@@ -179,7 +244,7 @@ class Inpatient extends CI_Controller {
             $table = "hms_inpatient";
             $primaryKey = "id";
             $columns = array(array("db" => "bed_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $this->load->model("beds_model");
+                
                 $temp = $this->beds_model->getbedsById($d);
 
                 if(isset($temp["bed"])){
@@ -190,9 +255,9 @@ class Inpatient extends CI_Controller {
                     return "-" ;
                 }
             }), array("db" => "join_date", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));
+                return ($d == "" || $d == null) ? "-" : date("d-M-Y h:i A",strtotime($d));
             }), array("db" => "left_date", "dt" => 2, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));
+                return ($d == "" || $d == null) ? "-" : date("d-M-Y h:i A",strtotime($d));
             }), array("db" => "reason", "dt" => 3, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }), array("db" => "status", "dt" => 4, "formatter" => function ($d, $row) {
@@ -205,10 +270,10 @@ class Inpatient extends CI_Controller {
                  $bedno =  $temp["bed"];    
                 }                
                
-               $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
+               $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y h:i A",strtotime($row['join_date']));
                $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
                $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
-                $ldate = ($row['left_date']== "" || $row['left_date']== null) ? "-" : date("d-M-Y",strtotime($row['left_date']));
+                $ldate = ($row['left_date']== "" || $row['left_date']== null) ? "-" : date("d-M-Y h:i A",strtotime($row['left_date']));
                 return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp  <a href=\"javascript:void()\" class=\"historyinpatient\" data-id=\"$d\" data-bno='$bedno' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-ldate='$ldate' data-toggle=\"tooltip\" title=\"History\"><i class=\"glyphicon glyphicon-th-list\"></i></a>";
             }));
             $this->tbl->setCheckboxColumn(false);                

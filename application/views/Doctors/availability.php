@@ -286,10 +286,11 @@
             $("#edit").modal("hide");
             var id = $("#eidt_gf_id").val();
             var isOne = $("#onlyOne").is(":checked");
+            var today = $("#today").val();
             var s = swalDeleteConfig;
             s.text = '<?=$this->lang->line('msg_want_del_availability');?>';
             swal(s).then(function () {
-                $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id,isOne:isOne},function(data){
+                $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id,isOne:isOne,today:today},function(data){
                     if(data==1){
                         getCurrentCalData();
                         toastr.success("<?php echo $this->lang->line('headings')['deleteSuccess'];?>");

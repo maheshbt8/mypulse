@@ -204,7 +204,7 @@
             });
 
             $(".date-time-picker").datetimepicker({
-                format: 'D-M-Y hh:mm A'
+                format: 'DD-MM-YYYY hh:mm A'
             });
 
             var pos = $("#left_active_menu").val();

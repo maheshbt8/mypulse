@@ -17,7 +17,7 @@ $this->load->view("template/left.php");
 								<?php if($this->auth->isSuperAdmin()){ ?>
 								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 								<?php } ?>
-								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="patient" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+								<!-- <a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="patient" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a> -->
 								<?php $this->load->view('template/exbtn');?>	
 							</div>
 						</div>

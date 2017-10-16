@@ -286,7 +286,7 @@ class Patients extends CI_Controller {
             }), array("db" => "isActive", "dt" => 2, "formatter" => function ($d, $row) {
                return $this->auth->getActiveStatus($d);
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                 return "";//"<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             $cond = array("role=".$this->auth->getPatientRoleType());
             if($this->auth->isHospitalAdmin()){
@@ -333,13 +333,13 @@ class Patients extends CI_Controller {
             $primaryKey = "id";
             $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
               
-               $hosp_name = $this->patient_model->getHospitalnameBybedId($row['user_id']);
-              $hospitalName = '';
-            if(isset($hosp_name['name']))
-            {
-              $hospitalName = $hosp_name['name'];
-            }    
-             return $hospitalName;
+                $hosp_name = $this->patient_model->getHospitalnameBybedId($row['user_id']);
+                $hospitalName = '';
+                if(isset($hosp_name['name']))
+                {
+                    $hospitalName = $hosp_name['name'];
+                }    
+                return $hospitalName;
             }), array("db" => "doctor_id", "dt" => 1, "formatter" => function ($d, $row) {
                 $doctor = $this->doctors_model->getdoctorsById($d);  
                 $user = $this->users_model->getusersById($doctor['user_id']);
@@ -377,13 +377,14 @@ class Patients extends CI_Controller {
                 $bedName = "";
                 if(isset($bed['bed']))
                     $bedName = $bed['bed'];
-                $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
+                $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y h:i A",strtotime($row['join_date']));
                 $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
                 $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
                 $doc_id = $row['doctor_id'];
                 $bed_id = $row['bed_id'];  
-                $user_id = $row['user_id'];    
-                return "<a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
+                $user_id = $row['user_id'];
+                $ldate = ($row['left_date']== "" || $row['left_date']== null) ? "-" : date("d-M-Y h:i A",strtotime($row['left_date']));    
+                return "<a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-ldate='$ldate' data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
             }));
 
             //$cond[] = 'doctor_id in ('.$strpatient_ids.')';                                   

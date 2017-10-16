@@ -6,7 +6,7 @@
 $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
-			<input type="hidden" id="left_active_menu" value="1" />
+			<input type="hidden" id="left_active_menu" value="53" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
@@ -15,20 +15,54 @@ $this->load->view("template/left.php");
 						<div class="card-head">
 							<header>Inpatient</header>
 							<div class="custome_card_header">
-								
+								<button type="button" id="canPatientBtnHist" class="btn btn-warning pull-right" style="display:none"><i class="fa fa-arrow-left"></i> &nbsp; Back</button>
+                                
 							</div>
 						</div>
 
 	                    <div class="card-body">
-							<table id="inpatient" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
-								<thead>
-									<tr><th>User Id</th><th>Bed Id</th><th>Join Date</th><th>Reason</th><th>Status</th><th width="20px">#</th>
-									</tr>
-								</thead>
-								
-								<tbody>
-								</tbody>
-							</table>  
+							<div id="patientRecordTbl">
+								<table id="inpatient" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+									<thead>
+										<tr>
+											<th style="width:10px"></th>
+											<th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>								
+											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>								
+											<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['bed'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
+											<th style="width:10px"><?php echo $this->lang->line('tableHeaders')['action'];?></th>
+										</tr>
+									</thead>
+									
+									<tbody>
+									</tbody>
+								</table>  
+							</div>
+							<div class="" id="inPatientTblHistoryDiv" style="display: none;">
+								<div class="Histry_record" style="margin-left: 50px;">                                              
+									<h4><?php echo $this->lang->line('labels')['bed'];?> :  <small id="bed_no"></small></h4>
+									<h4><?php echo $this->lang->line('labels')['join_date'];?> :  <small id="jdate"></small></h4>
+									<h4><?php echo $this->lang->line('labels')['status'];?> :  <small id="hs_status"></small></h4>
+									<h4><?php echo $this->lang->line('labels')['reason'];?> :  <small id="hs_reason"></small></h4>
+									<h4><?php echo $this->lang->line('labels')['left_date'];?> :  <small id="hs_ldate"></small></h4>
+
+									
+								</div>
+									<table id="inPatientTblHistory" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+									<thead>
+										<tr>
+											<th style="width:10px"></th>
+											<th><?php echo $this->lang->line('tableHeaders')['note'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>                                                
+								</table>
+							</div>	
 	                    </div>
 	                </div>
 	            </div>
@@ -130,9 +164,50 @@ $this->load->view("template/footer.php");
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
-				$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+				//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 				
 			    $("[data-toggle=tooltip]").tooltip();
+
+				$(document).on('click','.historyinpatient',function(){
+			        var patient_id= $(this).data('id');
+                    $('#hsinpatientadd_id').val(patient_id);
+                	$('#patientRecordTbl').hide();
+                	$('#inPatientTblHistoryDiv').show();
+					var bed_no = $(this).data('bno');
+					var hs_jdate = $(this).data('jdate');
+					var hs_status = $(this).data('status');
+					var hs_reason = $(this).data('reason');
+					var ldate= $(this).data('ldate');
+					$('#bed_no').text(bed_no);
+					$('#jdate').text(hs_jdate);
+					$('#hs_status').text(hs_status);
+					$('#hs_reason').text(hs_reason);
+					$('#hs_ldate').text(ldate);
+			              
+			    	$('#canPatientBtnHist').show();
+			        
+			    	$("#inPatientTblHistory").dataTable().fnDestroy();
+			        $('#inPatientTblHistory').DataTable({ 
+						"processing": true,
+						"serverSide": true,
+						"paging":   true,
+						"ordering": false,
+						"info":     false,
+						"ajax": {
+						"url":'<?php echo site_url();?>/inpatient/getDTHistoryinpatient/'+patient_id,
+							}              
+					});
+					$("#inPatientTblHistory_filter").hide();
+					$("#inPatientTblHistory_length").hide(); 
+
+                }); 
+
+				$('#canPatientBtnHist').click(function(){
+		          	$('#canPatientBtnHist').hide();
+		          
+		          	$('#inPatientTblHistoryDiv').hide();
+		          	$('#patientRecordTbl').show(); 
+		        });
 
 			    $(".addbtn").click(function(){
 			    	$("#Edit-Heading").html("Add New Record");

@@ -293,11 +293,11 @@ $this->load->view("template/left.php");
                                         </div>
                                         <div class="" id="inPatientTblHistoryDiv">
                                            <div class="Histry_record" style="margin-left: 50px;">                                              
-                                              <h4>Bed :  <small id="bed_no"></small></h4>
-                                              <h4>Join-Date:  <small id="jdate"></small></h4>
-                                              <h4>Status:  <small id="hs_status"></small></h4>
-                                              <h4>Reason:  <small id="hs_reason"></small></h4>
-                                              <h4>Left-Date:  <small id="hs_ldate"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['bed'];?> :  <small id="bed_no"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['join_date'];?> :  <small id="jdate"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['status'];?> :  <small id="hs_status"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['reason'];?> :  <small id="hs_reason"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['left_date'];?> :  <small id="hs_ldate"></small></h4>
                                            </div>
                                              <table id="inPatientTblHistory" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
@@ -333,7 +333,7 @@ $this->load->view("template/left.php");
                                         <br>
                                         <div class="form-group">
                                             <label for="JoinDate"><?php echo $this->lang->line('labels')['join_date']; ?></label>
-                                            <input type="text" class="form-control date-picker-nopast" name="join_date" id="datepicker">
+                                            <input type="text" class="form-control date-time-picker" name="join_date" id="join_date">
                                         </div>
                                         <br>
                                         <div class="form-group">
@@ -960,20 +960,15 @@ $this->load->view("template/footer.php");
                 url: "<?php echo site_url(); ?>/inpatient/getinpatient/",
                 type: "POST",
                 data: {id:id},
-                error: function() {
-                    callback();
-                },
                 success: function(res) {
-                    console.log(res);
                     var inpatient_data = $.parseJSON(res);
 
                     var tempselectize_bed_ID = $selectize_bed_id[0].selectize;
                     tempselectize_bed_ID.addOption([{"id":inpatient_data.bed_id,"text":inpatient_data.bed_id}]);
                     tempselectize_bed_ID.refreshItems();
                     tempselectize_bed_ID.setValue(inpatient_data.bed_id);
-                     //$('#datepicker').val(inpatient_data.join_date);
-                     //
-                     $('#datepicker').datepicker('setDate',inpatient_data.join_date);
+                    $('#join_date').val(inpatient_data.join_date);
+                    //$('#join_date').datepicker('setDate',inpatient_data.join_date);
 
                      $('#ptStatus').val(inpatient_data.status);
                      $('#patient_reason').val(inpatient_data.reason);

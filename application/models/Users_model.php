@@ -146,7 +146,10 @@ class Users_model extends CI_Model {
         $this->db->where("hms_users.isDeleted",0);
         $this->db->select("hms_users.id,CONCAT(`$select`) as text,hms_users.useremail as email", false);
         $res = $this->db->get('hms_users');
-        return $res->result_array();
+        if($res)
+            return $res->result_array();
+        else    
+            return array();
     }
     function searchPatient($q){
         $res = $this->db->query("select id,CONCAT(`first_name`,' ',`last_name`) as text from $this->tblname where isDeleted=0 and role=6 and (useremail='$q' OR mobile='$q' OR aadhaar_number='$q')");

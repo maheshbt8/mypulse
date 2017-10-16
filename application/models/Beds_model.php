@@ -217,4 +217,22 @@ class Beds_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->num_rows();
     }
+
+    function getBedIdsFromWardId($id=0){
+        if(is_array($id)){
+            $this->db->where_in('ward_id',$id);
+        }
+        else{
+            $this->db->where('ward_id',$id);
+        }
+        $this->db->where('isDeleted',0);
+        $this->db->where('isActive',1);
+        $this->db->select('id');
+        $res = $this->db->get($this->tblname)->result_array();
+        $ids = array();
+        foreach($res as $row){
+            $ids[] = $row['id'];
+        }
+        return $ids;
+    }
 }

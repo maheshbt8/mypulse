@@ -236,11 +236,14 @@ class Doctors_model extends CI_Model {
         $this->db->where('id',$id);
         $data = $this->db->get('hms_availability');
         $data = $data->row_array();
-
         $new['repeat_interval'] = 4;
         $new['user_id'] = $data['user_id'];
-        $new['start_date'] = $data['start_date'];
-        return $this->db->insert('hms_availability',$new);
+        $date = isset($_POST['today']) ? date("Y-m-d",strtotime($_POST['today'])) : false;
+        if($date){
+            $new['start_date'] = $date;
+            return $this->db->insert('hms_availability',$new);
+        }
+        return false;
     }
 
     function getDoctorsIdsByHospitalId($hospital_id=0){
@@ -380,11 +383,10 @@ class Doctors_model extends CI_Model {
             $data['end_date'] = $sd;
             $data['start_time'] = $st;
             $data['end_time'] = $et;
-            //echo "<pre>";
-
+            
             if($res->num_rows() > 0){
                 $res = $res->row_array();
-                //var_dump($res);
+                
                 $this->db->where('id',$res['id']);
                 $this->db->update('hms_availability',$data);
                 if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
@@ -639,14 +641,12 @@ class Doctors_model extends CI_Model {
                         'endDate' => $date->format('Y-m-d').' '.$r['end_time'],
                         'title' => date('h:i A',strtotime($r['start_time']))." to ".date('h:i A',strtotime($r['end_time']))
                     );
-                    //echo "<Pre>";
-                    //var_dump($data);exit;
                     $cnt++;
                 }
             }
             
         }
-
+        
         $result = array();
         $sec_datset = $data;
         $dupArr = array();
@@ -670,6 +670,15 @@ class Doctors_model extends CI_Model {
                                     $item['start_time'] <= $_et && $item['end_time'] >= $_et
                                 ){
                                     $hasDup = true;
+                                    //CHeck from result if found use longest time interval.
+                                    for($_z=0; $_z<count($result); $_z++){
+                                        $_ztemp = $result[$_z];
+                                        if($_ztemp['date'] == $d['date']){
+                                            if($d['cnt'] > $_ztemp['cnt']){
+                                                $result[$_z] = $d;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             if(!$hasDup){
@@ -685,6 +694,7 @@ class Doctors_model extends CI_Model {
                 $result[] = $d;
             }
         }
+        
         return $result;
     }
 
@@ -838,15 +848,27 @@ class Doctors_model extends CI_Model {
     public function UpdateInPatient(){
         $uid = $this->auth->getDoctorId(); 
         $id = $this->input->post('inpatient_update_id');
-            $data =array(
-                // 'id' => $this->input->post('inpatient_update_id'),
-                'user_id' =>$this->input->post('patient_id'),
-                'bed_id' => $this->input->post('Patientbed'),
-                'doctor_id' => $uid,
-                'join_date' => date('Y-m-d', strtotime($this->input->post('join_date'))),
-                'reason' => $this->input->post('inPatientReason'),
-                'status'=>$this->input->post('ptStatus')
-                );
+        $_st = isset($_POST['ptStatus']) ? $_POST['ptStatus'] : 0;
+        $data = array();
+        if(isset($_POST['patient_id'])){
+            $data['patient_id'] = $_POST['patient_id'];
+        }
+        if(isset($_POST['Patientbed'])){
+            $data['bed_id'] = $_POST['Patientbed'];
+        }
+        if(isset($_POST['join_date'])){
+            $data['join_date'] = date('Y-m-d H:i:s', strtotime($this->input->post('join_date')));
+        }
+        if(isset($_POST['inPatientReason'])){
+            $data['reason'] = $_POST['inPatientReason'];
+        }
+        if(isset($_POST['ptStatus'])){
+            $data['status'] = $_POST['ptStatus'];
+        }
+
+        if($_st == 2){
+            $data['left_date'] = date("Y-m-d H:i:s");
+        }
             $this->db->set($data);
             $this->db->where('id',$id);
             $this->db->update('hms_inpatient');

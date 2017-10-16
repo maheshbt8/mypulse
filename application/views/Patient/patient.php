@@ -31,7 +31,7 @@ $this->load->view("template/left.php");
 														<th style="width:10px"></th>
 														<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>								
 														<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
-														<th><?php echo $this->lang->line('tableHeaders')['join_date'];?></th>
+														<th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
 														<th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
 														<th><?php echo $this->lang->line('tableHeaders')['bed'];?></th>
 														<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
@@ -62,11 +62,13 @@ $this->load->view("template/left.php");
                                         </div> -->
                                         <div class="" id="inPatientTblHistoryDiv" style="display: none;">
                                            <div class="Histry_record" style="margin-left: 50px;">                                              
-                                              <h4>Bed :  <small id="bed_no"></small></h4>
-                                              <h4>Join-Date:  <small id="jdate"></small></h4>
-                                              <h4>Status:  <small id="hs_status"></small></h4>
-                                              <h4>Reason:  <small id="hs_reason"></small></h4>
-                                              <!-- <h4>Left-Date:  <small id="hs_ldate"></small></h4> -->
+                                              <h4><?php echo $this->lang->line('labels')['bed'];?> :  <small id="bed_no"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['join_date'];?> :  <small id="jdate"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['status'];?> :  <small id="hs_status"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['reason'];?> :  <small id="hs_reason"></small></h4>
+                                              <h4><?php echo $this->lang->line('labels')['left_date'];?> :  <small id="hs_ldate"></small></h4>
+
+                                             
                                            </div>
                                              <table id="inPatientTblHistory" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                                                 <thead>
@@ -216,11 +218,12 @@ $this->load->view("template/footer.php");
 			               var hs_jdate = $(this).data('jdate');
 			               var hs_status = $(this).data('status');
 			               var hs_reason = $(this).data('reason');
+                           var ldate= $(this).data('ldate');
 			                $('#bed_no').text(bed_no);
 			                $('#jdate').text(hs_jdate);
 			                $('#hs_status').text(hs_status);
 			                $('#hs_reason').text(hs_reason);
-			             
+                            $('#hs_ldate').text(ldate);
 			              //   //row.find(".historyinpatient").hide();
 			              //   $('#inPatientTblDiv').hide();
 			              $('#canPatientBtnHist').show();

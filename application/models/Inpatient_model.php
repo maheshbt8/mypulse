@@ -15,7 +15,7 @@ class Inpatient_model extends CI_Model {
     function getinpatientById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
-        $r['join_date'] = date("d-m-Y",strtotime($r['join_date']));
+        $r['join_date'] = date("d-m-Y h:i A",strtotime($r['join_date']));
         return $r;
     }
 
@@ -42,8 +42,8 @@ class Inpatient_model extends CI_Model {
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["join_date"])) $data["join_date"] = date("Y-m-d", strtotime($data["join_date"]));
-        if (isset($data["left_date"])) $data["left_date"] = date("Y-m-d", strtotime($data["left_date"]));
+        if (isset($data["join_date"])) $data["join_date"] = date("Y-m-d H:i:s", strtotime($data["join_date"]));
+        if (isset($data["left_date"])) $data["left_date"] = date("Y-m-d H:i:s", strtotime($data["left_date"]));
         if (isset($data["status"])) $data["status"] = intval($data["status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if ($this->db->insert($this->tblname, $data)) {
@@ -124,8 +124,8 @@ class Inpatient_model extends CI_Model {
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
-        if (isset($data["join_date"])) $data["join_date"] = date("Y-m-d", $data["join_date"]);
-        if (isset($data["left_date"])) $data["left_date"] = date("Y-m-d", $data["left_date"]);
+        if (isset($data["join_date"])) $data["join_date"] = date("Y-m-d H:i:s", $data["join_date"]);
+        if (isset($data["left_date"])) $data["left_date"] = date("Y-m-d H:i:s", $data["left_date"]);
         if (isset($data["status"])) $data["status"] = intval($data["status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
