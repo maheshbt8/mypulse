@@ -70,6 +70,8 @@ class Hospital_admin_model extends CI_Model {
             $had['hospital_id'] = isset($data['hospital_id']) ? $data['hospital_id'] : -1;
             $had['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $had)) {
+				$ha_id = $this->db->insert_id();
+				$this->logger->log("Hospital admin added", Logger::HospitalAdmin, $ha_id);
                 //get hospital name
                 $hname = $this->db->query("select name from hms_hospitals where id = $had[hospital_id]")->row_array();
                 //sent notification to hadmin
@@ -107,6 +109,7 @@ class Hospital_admin_model extends CI_Model {
             if(count($had) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $had)) {
+					$this->logger->log("Hospital admin details updated", Logger::HospitalAdmin, $id);
                     return true;
                 } else {
                     return false;
@@ -119,6 +122,7 @@ class Hospital_admin_model extends CI_Model {
         $this->db->where("id", $id);
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Hospital admin soft deleted ", Logger::HospitalAdmin, $id);
             return true;
         } else return false;
     }

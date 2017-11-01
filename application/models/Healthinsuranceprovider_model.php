@@ -29,6 +29,8 @@ class Healthinsuranceprovider_model extends CI_Model {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
         if ($this->db->insert($this->tblname, $data)) {
+			$id = $this->db->insert_id();
+			$this->logger->log("HealthInsuranceProvider added", Logger::HealthInsuranceProvider, $id);
             return true;
         } else {
             return false;
@@ -39,6 +41,7 @@ class Healthinsuranceprovider_model extends CI_Model {
         unset($data["eidt_gf_id"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+			$this->logger->log("HealthInsuranceProvider updated", Logger::HealthInsuranceProvider, $id);
             return true;
         } else {
             return false;
@@ -48,6 +51,7 @@ class Healthinsuranceprovider_model extends CI_Model {
         $this->db->where("id", $id);
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("HealthInsuranceProvider soft deleted", Logger::HealthInsuranceProvider, $id);
             return true;
         } else return false;
     }

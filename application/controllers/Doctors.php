@@ -201,6 +201,7 @@ class Doctors extends CI_Controller {
             $data["page_title"] =  $this->lang->line('doctors');
             $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('patientrecord'));
             $data['appoitment'] = $this->appoitments_model->getappoitmentsById($appoitment_id);
+			
             $pid = $data['appoitment']['user_id'];
             $data['profile'] = $this->patient_model->getProfile($pid);
             $this->load->view('Doctors/patientrecord',$data);
@@ -223,6 +224,27 @@ class Doctors extends CI_Controller {
             redirect('index/login');
         }
     }
+	public function recommendnextdate(){
+		if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
+			$data['appointment_id'] = isset($_POST['appointment_id']) ? $_POST['appointment_id'] : 0;
+			$data['recommend_appointment_date'] = isset($_POST['recommend_date']) ? date("Y-m-d",strtotime($_POST['recommend_date'])) : "";
+			$data['user_id'] = isset($_POST['user_id']) ? $_POST['user_id'] : 0;
+			$data['department_id'] = isset($_POST['department_id']) ? $_POST['department_id'] : 0;
+			$data['doctor_id'] = isset($_POST['doctor_id']) ? $_POST['doctor_id'] : 0;
+			if(isset($_POST['recommend_date']) && $_POST['recommend_date'] != "" ){
+				$this->doctors_model->addRecommendNextDate($data);
+				$d['success'] = array($this->lang->line('msg_recommendNextDate_added'));
+				$this->session->set_flashdata('data', $d);
+				redirect('doctors/patientRecord/'.$data['appointment_id']);	
+			}else{
+				$d['errors'] = array($this->lang->line('msg_recommendNextDate_error'));
+				$this->session->set_flashdata('data', $d);
+				redirect('doctors/patientRecord/'.$data['appointment_id']);	
+			}
+		}else{
+            redirect('index/login');
+        }
+	}
 
     public function addinpatient(){
         if($this->auth->isLoggedIn() && $this->auth->isDoctor()){

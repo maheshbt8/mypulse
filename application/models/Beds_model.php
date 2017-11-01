@@ -115,6 +115,9 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            $id = $this->db->insert_id();
+            $this->logger->log("New bed:".$data['bed']." added", Logger::Bed, $id);
+
             // find nurses which are linked with $dept_id
             $this->db->where('department_id', $dept_id);
             $nurses = $this->db->get('hms_nurse')->result_array();
@@ -160,6 +163,8 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            $this->logger->log("Bed:".$data['bed']." updated", Logger::Bed, $id);
+
             // find nurses which are linked with $dept_id
             $this->db->where('department_id', $dept_id);
             $nurses = $this->db->get('hms_nurse')->result_array();
@@ -197,6 +202,13 @@ class Beds_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+            if(is_array($id)){
+				foreach($id as $i){
+					$this->logger->log("Bed soft deleted", Logger::Bed, $i);
+				}
+			}else{
+				$this->logger->log("Bed soft deleted", Logger::Bed, $id);
+			}		
             return true;
         } else return false;
     }

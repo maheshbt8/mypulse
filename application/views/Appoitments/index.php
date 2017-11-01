@@ -245,8 +245,6 @@ $this->load->view("template/footer.php");
 		});
 
 
-
-
 		$("[data-toggle=tooltip]").tooltip();
 
 		$(".addbtn").click(function(){

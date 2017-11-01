@@ -50,6 +50,9 @@ class Wards_model extends CI_Model {
         unset($data['selected_did']);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if ($this->db->insert($this->tblname, $data)) {
+			$id = $this->db->insert_id();
+			$this->logger->log("New ward added", Logger::Ward, $id);
+			
             if($this->auth->isSuperAdmin()) {
                 //find department name
                 $this->db->where('id', $data['department_id']);
@@ -80,6 +83,8 @@ class Wards_model extends CI_Model {
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+			$this->logger->log("Ward details updated", Logger::Ward, $id);
+			
             if($this->auth->isSuperAdmin()) {
                 //find department name
                 $this->db->where('id', $data['department_id']);
@@ -106,6 +111,7 @@ class Wards_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Ward details soft deleted", Logger::Ward, $id);
             return true;
         } else return false;
     }

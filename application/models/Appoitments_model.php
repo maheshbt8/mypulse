@@ -208,7 +208,9 @@ class Appoitments_model extends CI_Model {
 
         $this->db->where('id',$id);
         $this->db->update($this->tblname,array('remarks'=>$r));
-
+		
+		$this->logger->log("Appointment APT".$id." updated", Logger::Appointment, $id);
+		
         //get appointment data
         $this->db->where('id',$id);
         $appointment = $this->db->get($this->tblname)->row_array();
@@ -250,10 +252,11 @@ class Appoitments_model extends CI_Model {
         }
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
+			$this->logger->log("New appointment APT".$id." created", Logger::Appointment, $id);
+
             $this->db->where('id',$id);
             $apt_no ='APT'.$id;
             $this->db->update($this->tblname,array('appoitment_number'=> $apt_no));
-
             //find doctor user_id
             $this->db->where('id', $data['doctor_id']);
             $doctor = $this->db->get('hms_doctors')->row_array();
@@ -311,6 +314,7 @@ class Appoitments_model extends CI_Model {
         }
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            $this->logger->log("Appointment APT".$id." updated", Logger::Appointment, $id);
             //get appt using $id;
             if(!$this->auth->isPatient()) {
                 //find appoitment data
@@ -353,19 +357,36 @@ class Appoitments_model extends CI_Model {
         $this->db->where("id", $id);
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+            $this->logger->log("Appointment APT".$id." soft deleted", Logger::Appointment, $id);
             return true;
         } else return false;
     }
-    function cancel($id){
-        return $this->updateStatus($id,4);
+    function cancel($id)
+    {
+        if ($this->updateStatus($id, 4)) {
+            $this->logger->log("Appointment APT" . $id . "canceled", Logger::Appointment, $id);
+            return true;
+        }
+        return false;
     }
 
-    function reject($id){
-        return $this->updateStatus($id,2);
+    function reject($id)
+    {
+        if ($this->updateStatus($id, 2)) {
+            $this->logger->log("Appointment APT" . $id . " rejected", Logger::Appointment, $id);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     function approve($id){
-        return $this->updateStatus($id,1);
+        if($this->updateStatus($id,1)){
+            $this->logger->log("Appointment APT".$id." approved", Logger::Appointment, $id);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     function updateStatus($id,$status=0){
@@ -382,7 +403,6 @@ class Appoitments_model extends CI_Model {
                 $msg = $this->auth->getAppoitmentStatus($status,true);
                 //sent notification to patient
                 $this->notification->saveNotification($apt['user_id'],"Your appointment <b>".$apt['appoitment_number']."</b> has been ".$msg);
-
                 //find doctor user_id
                 $this->db->where('id', $apt['doctor_id']);
                 $doctor = $this->db->get('hms_doctors')->row_array();

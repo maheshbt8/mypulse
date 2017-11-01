@@ -279,7 +279,10 @@
                                     <a href="<?php echo site_url();?>medical_lab/reports" class="nav-link"><i class=" glyphicon glyphicon-list-alt"></i><span class="title"><?php echo $menu['reports'];?></span>
                                     </a>
                                 </li>
-                                
+                                <li class="nav-item" id="li82">
+									<a href="<?php echo site_url(); ?>medical_lab/patient" class="nav-link"><i class="fa fa-users"></i><span class="title"><?php echo $menu['main_patients'];?></span>
+									</a>
+								</li>
                                 <li id="li80" class="nav-item">
                                     <a href="#" class="nav-link nav-toggle">
                                         <i class="glyphicon glyphicon-cog"></i>
@@ -299,6 +302,10 @@
                                     <a href="<?php echo site_url();?>medical_store/orders" class="nav-link"><i class=" glyphicon glyphicon-list-alt"></i><span class="title"><?php echo $menu['orders'];?></span>
                                     </a>
                                 </li>
+								<li class="nav-item" id="li82">
+									<a href="<?php echo site_url(); ?>medical_store/patient" class="nav-link"><i class="fa fa-users"></i><span class="title"><?php echo $menu['main_patients'];?></span>
+									</a>
+								</li>
                                 <li id="li80" class="nav-item">
                                     <a href="#" class="nav-link nav-toggle">
                                         <i class="glyphicon glyphicon-cog"></i>

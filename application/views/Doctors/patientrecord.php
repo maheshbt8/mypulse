@@ -48,13 +48,50 @@ $this->load->view("template/left.php");
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="input-Default" class="control-label"><?php echo $this->lang->line('labels')['remarks'];?></label>
-                                    <textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['patientRecordRemark'];?>" <?php if($appoitment['status'] == 3) { echo "disabled"; } ?>><?php echo $appoitment['remarks'];?></textarea>
-                                </div>
-                                <?php if($appoitment['status'] != 3) { ?>
-                                <button class="btn btn-success pull-right" data-id="<?php echo $appoitment['id'];?>" id="saveaptr">Save</button>
-                                <?php } ?>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label for="input-Default" class="control-label"><?php echo $this->lang->line('labels')['remarks'];?></label>
+									</div>
+								</div>
+                                <div class="row">
+									<div class="col-md-8">
+										<div class="form-group">
+											<textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['patientRecordRemark'];?>" <?php if($appoitment['status'] == 3) { echo "disabled"; } ?>><?php echo $appoitment['remarks'];?></textarea>
+										</div>
+									</div>	
+									<div class="col-md-4">
+										<div class="form-group">
+										<label>&nbsp;</label>
+										<?php if($appoitment['status'] != 3) { ?>
+										<button class="btn btn-success pull-" data-id="<?php echo $appoitment['id'];?>" id="saveaptr">Save</button>
+										<?php } ?>
+										</div>
+									</div>	
+								</div>
+								<form method="post" action="<?php echo site_url(); ?>/doctors/recommendnextdate">
+								<input type="hidden" name="appointment_id" value="<?php echo $appoitment['id'];?>" />
+								<input type="hidden" name="user_id" value="<?php echo $appoitment['user_id'];?>" />
+								<input type="hidden" name="department_id" value="<?php echo $appoitment['department_id'];?>" />
+								<input type="hidden" name="doctor_id" value="<?php echo $appoitment['doctor_id'];?>" />
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label for="RecommendDate"><?php echo $this->lang->line('recommend_date'); ?></label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-8">
+										<div class="form-group">
+											<input type="text" class="form-control date-picker" name="recommend_date" placeholder="<?php echo $this->lang->line('addRecommendDate'); ?>" >
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label>&nbsp;</label>
+										<?php //if($appoitment['status'] != 3) { ?>
+										<button class="btn btn-info pull-"  type="submit"><?php echo $this->lang->line('recommend');?></button>
+										<?php //} ?>
+									</div>
+								</div>
+								</form>
                             </div>
                             </div>
                         </div>

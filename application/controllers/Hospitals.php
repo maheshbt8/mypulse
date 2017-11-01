@@ -10,7 +10,7 @@ class Hospitals extends CI_Controller {
         $this->load->model('license_model');
         $this->load->model('users_model');
         $this->load->model('general_model');
-    }
+	}
     public function index() {
         //|| $this->auth->isHospitalAdmin()
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() )) {

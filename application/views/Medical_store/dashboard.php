@@ -5,60 +5,48 @@
     <input type="hidden" id="left_active_menu" value="1" />
     <div id="main-wrapper">
         <div class="row">
-        <!--
-            <div class="col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter"><?php echo $states['tot_rep'];?></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('reports');?></span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="fa fa-hospital-o"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p><span class="counter"><?php echo $states['tot_users'];?></span></p>
-                            <span class="info-box-title"><?php echo $this->lang->line('customers');?></span>
-                        </div>
-                        <div class="info-box-icon">
+            <div class="state-overview">
+                <div class="col-lg-3 col-sm-6">
+                    <a href="<?php echo site_url();?>/medical_store/patient">
+                    <div class="overview-panel purple">
+                        <div class="symbol">
                             <i class="fa fa-users"></i>
                         </div>
+                        <div class="value white">
+                            <p class="sbold addr-font-h1" data-counter="counterup" data-value="<?php echo $states['total_pat'];?>"><?php echo $states['total_pat'];?></p>
+                            <p><?php echo $this->lang->line('patients');?></p>
+                        </div>
                     </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <a href="<?php echo site_url();?>/medical_store/orders?s=0">
+                    <div class="overview-panel green-bgcolor">
+                        <div class="symbol">
+                            <i class=" glyphicon glyphicon-list-alt"></i>
+                        </div>
+                        <div class="value white">
+                            <p class="sbold addr-font-h1" data-counter="counterup" data-value="<?php echo $states['total_outstanding_order'];?>"><?php echo $states['total_outstanding_order'];?></p>
+                            <p><?php echo $this->lang->line('Outstanding_order');?></p>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-sm-6">
+                    <a href="<?php echo site_url();?>/medical_store/orders?s=1">
+                    <div class="overview-panel orange">
+                        <div class="symbol">
+                            <i class="fa fa-check-square"></i>
+                        </div>
+                        <div class="value white">
+                            <p class="sbold addr-font-h1" data-counter="counterup" data-value="<?php echo $states['total_complete_order'];?>"><?php echo $states['total_complete_order'];?></p>
+                            <p><?php echo $this->lang->line('Complete_order');?></p>
+                        </div>
+                    </div>
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p><span class="counter"><?php //echo $states['tot_medLab'];?></span></p>
-                            <span class="info-box-title"><?php //echo $this->lang->line('medicalLabFull');?></span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="fa fa-users"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel info-box panel-white">
-                    <div class="panel-body">
-                        <div class="info-box-stats">
-                            <p class="counter"><?php //echo $states['tot_app'];?></p>
-                            <span class="info-box-title"><?php //echo $this->lang->line('appointments');?></span>
-                        </div>
-                        <div class="info-box-icon">
-                            <i class="icon-envelope"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
-        </div><!-- Row -->
+        </div>
         <!--OutStanding Med Reports -->
         <div class="row">
             <div class="col-lg-12 col-md-12">

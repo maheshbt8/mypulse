@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.7.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2017 at 08:19 AM
--- Server version: 5.7.9
--- PHP Version: 5.6.16
+-- Generation Time: Nov 01, 2017 at 12:59 PM
+-- Server version: 10.1.25-MariaDB
+-- PHP Version: 5.6.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,17 +28,83 @@ SET time_zone = "+00:00";
 -- Table structure for table `hms_activitylog`
 --
 
-DROP TABLE IF EXISTS `hms_activitylog`;
-CREATE TABLE IF NOT EXISTS `hms_activitylog` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_activitylog` (
+  `id` int(11) NOT NULL,
   `description` varchar(250) NOT NULL,
   `item_type` varchar(250) NOT NULL,
   `item_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `user_name` varchar(250) NOT NULL,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` datetime NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_activitylog`
+--
+
+INSERT INTO `hms_activitylog` (`id`, `description`, `item_type`, `item_id`, `user_id`, `user_name`, `created_at`) VALUES
+(1, 'New hospital created', 'Hospital', 112, 1, 'Super Admin Ad...', '2017-10-22 10:44:55'),
+(2, 'New hospital created', 'Hospital', 0, 1, 'Super Admin Ad...', '2017-10-22 10:51:19'),
+(3, 'Appointment APT10 is updated', 'Appointment', 10, 1, 'Super Admin', '2017-10-23 11:28:42'),
+(4, 'Appointment APT10 is rejected', 'Appointment', 10, 1, 'Super Admin', '2017-10-23 11:44:03'),
+(5, 'Appointment APT10 remark updated', 'Appointment', 10, 12, 'Dr. Ravi Patel', '2017-10-23 11:45:58'),
+(6, 'New bed:B62 added', 'Bed', 101, 1, 'Super Admin', '2017-10-23 12:03:15'),
+(7, 'Bed:B62 updated', 'Bed', 101, 1, 'Super Admin', '2017-10-23 12:03:47'),
+(8, 'Bed deleted', 'Bed', 101, 1, 'Super Admin', '2017-10-23 12:04:03'),
+(9, 'New branch Twinkal added', 'Branch', 101, 1, 'Super Admin', '2017-10-23 12:14:06'),
+(10, 'New branch: Twinkal added', 'Branch', 102, 1, 'Super Admin', '2017-10-23 12:16:27'),
+(11, 'Branch: Twinkal updated', 'Branch', 102, 1, 'Super Admin', '2017-10-23 12:16:52'),
+(12, 'Branch deleted', 'Branch', 102, 1, 'Super Admin', '2017-10-23 12:17:07'),
+(13, 'Charge updated', 'Charge', 1, 1, 'Super Admin', '2017-10-23 13:28:40'),
+(14, 'New charge created', 'Charge', 106, 1, 'Super Admin', '2017-10-23 13:30:47'),
+(15, 'Charge soft deleted', 'Charge', 1, 1, 'Super Admin', '2017-10-23 13:32:18'),
+(16, 'Charge soft deleted', 'Charge', 16, 1, 'Super Admin', '2017-10-23 13:39:44'),
+(17, 'New department: twinkal created', 'Department', 105, 1, 'Super Admin', '2017-10-23 13:51:19'),
+(18, 'Department: twinkallll updated', 'Department', 105, 1, 'Super Admin', '2017-10-23 13:51:36'),
+(19, 'Department deleted', 'Department', 105, 1, 'Super Admin', '2017-10-23 13:52:03'),
+(20, 'New doctor added', 'Doctor', 120, 1, 'Super Admin', '2017-10-24 14:27:38'),
+(21, 'Doctor details updated', 'Doctor', 120, 1, 'Super Admin', '2017-10-24 14:29:53'),
+(22, 'Doctor availability inserted', 'Availability', 54, 1, 'Super Admin', '2017-10-24 15:07:49'),
+(23, 'Doctor availability inserted', 'Availability', 55, 1, 'Super Admin', '2017-10-24 15:07:49'),
+(24, 'Doctor availability inserted', 'Availability', 56, 1, 'Super Admin', '2017-10-24 15:07:49'),
+(25, 'Doctor availability inserted', 'Availability', 57, 1, 'Super Admin', '2017-10-24 15:07:49'),
+(26, 'Doctor availability inserted', 'Availability', 58, 1, 'Super Admin', '2017-10-24 15:07:49'),
+(27, 'Doctor availability inserted', 'Availability', 59, 1, 'Super Admin', '2017-10-24 15:07:49'),
+(28, 'Doctor availability inserted', 'Availability', 60, 1, 'Super Admin', '2017-10-24 15:13:57'),
+(29, 'Doctor availability inserted', 'Availability', 61, 1, 'Super Admin', '2017-10-24 15:14:49'),
+(30, 'Doctor availability soft deleted', 'Availability', 57, 1, 'Super Admin', '2017-10-24 15:16:50'),
+(31, 'Doctor Other settings updated regarding availability', 'Doctor', 120, 1, 'Super Admin', '2017-10-24 15:18:07'),
+(32, 'prescription added', 'Prescription', 3, 12, 'Dr. Ravi Patel', '2017-10-24 15:20:35'),
+(33, 'Hospital admin details updated', 'HospitalAdmin', 1, 1, 'Super Admin', '2017-10-25 13:11:41'),
+(34, 'Patient Inpatient history updated', 'Inpatient', 1, 12, 'Dr. Ravi Patel', '2017-10-25 13:29:03'),
+(35, 'New patient added in Inpatient', 'Inpatient', 2, 12, 'Dr. Ravi Patel', '2017-10-25 13:30:51'),
+(36, 'Patient Inpatient history updated', 'Inpatient', 2, 12, 'Dr. Ravi Patel', '2017-10-25 13:36:08'),
+(37, 'Patient Inpatient history updated', 'Inpatient', 2, 12, 'Dr. Ravi Patel', '2017-10-25 13:37:12'),
+(38, 'New patient added in Inpatient', 'Inpatient', 3, 12, 'Dr. Ravi Patel', '2017-10-25 13:39:52'),
+(39, 'License updated', 'License', 2, 1, 'Super Admin', '2017-10-25 14:16:10'),
+(40, 'Patient Inpatient history updated', 'Inpatient', 3, 12, 'Dr. Ravi Patel', '2017-10-31 10:47:56'),
+(41, 'Patient Inpatient history updated', 'Inpatient', 3, 12, 'Dr. Ravi Patel', '2017-10-31 10:48:49'),
+(42, 'Patient Inpatient history updated', 'Inpatient', 3, 12, 'Dr. Ravi Patel', '2017-10-31 10:51:59'),
+(43, 'Prescription order receipt added', 'MedicalStore', 1, 14, 'Ravi Prashad', '2017-10-31 11:35:14'),
+(44, 'prescription added', 'Prescription', 4, 12, 'Dr. Ravi Patel', '2017-10-31 14:11:12'),
+(45, 'Appointment status changed', 'Appointment', 4, 12, 'Dr. Ravi Patel', '2017-10-31 14:11:12'),
+(46, 'Medical report added', 'Medicalreport', 1, 12, 'Dr. Ravi Patel', '2017-10-31 14:11:13'),
+(47, 'prescription updated', 'Prescription', 4, 12, 'Dr. Ravi Patel', '2017-10-31 14:11:51'),
+(48, 'Medical report added', 'Medicalreport', 2, 12, 'Dr. Ravi Patel', '2017-10-31 14:11:51'),
+(49, 'prescription updated', 'Prescription', 3, 12, 'Dr. Ravi Patel', '2017-10-31 14:15:15'),
+(50, 'Medical report added', 'Medicalreport', 3, 12, 'Dr. Ravi Patel', '2017-10-31 14:15:15'),
+(51, 'New appointment APT11 created', 'Appointment', 11, 34, 'Jayes Raval', '2017-10-31 14:54:01'),
+(52, 'prescription added', 'Prescription', 5, 12, 'Dr. Ravi Patel', '2017-10-31 14:55:11'),
+(53, 'Appointment status changed', 'Appointment', 11, 12, 'Dr. Ravi Patel', '2017-10-31 14:55:11'),
+(54, 'Medical report added', 'Medicalreport', 4, 12, 'Dr. Ravi Patel', '2017-10-31 14:55:11'),
+(55, 'New medical report file added', 'Medicalreport', 1, 15, 'Medical Lab', '2017-10-31 14:58:46'),
+(56, 'New medical report file added', 'Medicalreport', 2, 15, 'Medical Lab', '2017-10-31 15:01:17'),
+(57, 'Recommned next appointment date added in appointment', 'RecommnedDate', 2, 12, 'Dr. Ravi Patel', '2017-11-01 09:33:20'),
+(58, 'Recommned next appointment date added in appointment', 'RecommnedDate', 3, 12, 'Dr. Ravi Patel', '2017-11-01 09:43:57'),
+(59, 'Recommned next appointment date added in appointment', 'RecommnedDate', 4, 12, 'Dr. Ravi Patel', '2017-11-01 09:54:34'),
+(60, 'Recommned next appointment date added in appointment', 'RecommnedDate', 5, 12, 'Dr. Ravi Patel', '2017-11-01 10:02:51'),
+(61, 'Recommned next appointment date added in appointment', 'RecommnedDate', 6, 12, 'Dr. Ravi Patel', '2017-11-01 10:05:19'),
+(62, 'Recommned next appointment date added in appointment', 'RecommnedDate', 7, 12, 'Dr. Ravi Patel', '2017-11-01 10:08:03');
 
 -- --------------------------------------------------------
 
@@ -44,9 +112,8 @@ CREATE TABLE IF NOT EXISTS `hms_activitylog` (
 -- Table structure for table `hms_appoitments`
 --
 
-DROP TABLE IF EXISTS `hms_appoitments`;
-CREATE TABLE IF NOT EXISTS `hms_appoitments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_appoitments` (
+  `id` int(11) NOT NULL,
   `appoitment_number` varchar(250) NOT NULL,
   `user_id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
@@ -59,9 +126,8 @@ CREATE TABLE IF NOT EXISTS `hms_appoitments` (
   `remarks` text NOT NULL,
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_appoitments`
@@ -71,13 +137,14 @@ INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department
 (1, 'APT2', 30, 1, 2, '2017-09-05', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-30 15:02:43', 0),
 (2, 'APT3', 28, 1, 3, '2017-09-09', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-30 15:02:39', 0),
 (3, 'APT3', 25, 1, 2, '2017-09-28', '09:00:00', '09:30:00', 3, 'Testing', '', '0000-00-00 00:00:00', '2017-09-30 15:02:35', 0),
-(4, 'APT4', 28, 1, 2, '2020-02-27', '00:00:00', '00:00:00', 0, 'j', '', '0000-00-00 00:00:00', '2017-09-30 15:02:29', 0),
+(4, 'APT4', 28, 1, 2, '2020-02-27', '00:00:00', '00:00:00', 3, 'j', '', '0000-00-00 00:00:00', '2017-10-31 13:11:12', 0),
 (5, 'APT5', 27, 1, 2, '2020-12-10', '00:00:00', '00:00:00', 0, 'asdasa', '', '0000-00-00 00:00:00', '2017-09-30 15:02:26', 0),
 (6, 'APT6', 26, 1, 2, '2021-12-10', '00:00:00', '00:00:00', 0, 'K', '', '0000-00-00 00:00:00', '2017-09-22 17:07:37', 0),
 (7, 'APT7', 31, 1, 2, '2017-11-15', '09:00:00', '09:30:00', 0, 'asdf', '', '0000-00-00 00:00:00', '2017-09-30 15:03:51', 0),
 (8, 'APT8', 26, 1, 2, '2017-09-23', '09:00:00', '09:30:00', 0, 'ASD', '', '0000-00-00 00:00:00', '2017-09-23 06:52:51', 0),
 (9, 'APT15', 30, 68, 2, '2017-09-05', '11:00:00', '11:30:00', 3, 'pain', '', '0000-00-00 00:00:00', '2017-09-30 15:02:43', 0),
-(10, 'APT10', 26, 1, 2, '2017-10-31', '09:00:00', '09:30:00', 0, 'New Appointment.', '', '0000-00-00 00:00:00', '2017-10-07 15:43:11', 0);
+(10, 'APT10', 26, 1, 2, '2017-10-31', '09:00:00', '09:30:00', 3, 'New Appointment.', 'ok', '0000-00-00 00:00:00', '2017-10-24 13:20:35', 0),
+(11, 'APT11', 34, 1, 2, '2017-11-01', '09:00:00', '09:30:00', 3, 'Checkup', '', '0000-00-00 00:00:00', '2017-10-31 13:55:11', 0);
 
 -- --------------------------------------------------------
 
@@ -85,9 +152,8 @@ INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department
 -- Table structure for table `hms_availability`
 --
 
-DROP TABLE IF EXISTS `hms_availability`;
-CREATE TABLE IF NOT EXISTS `hms_availability` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_availability` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `repeat_interval` int(11) NOT NULL DEFAULT '0' COMMENT '0-weekly,1-monthly,2-yealy,3-custom,4-Holiday',
   `isReatAllDay` int(11) NOT NULL DEFAULT '1',
@@ -98,9 +164,8 @@ CREATE TABLE IF NOT EXISTS `hms_availability` (
   `day` int(11) NOT NULL DEFAULT '0' COMMENT 'Day of Week,Month or Year',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_availability`
@@ -132,7 +197,16 @@ INSERT INTO `hms_availability` (`id`, `user_id`, `repeat_interval`, `isReatAllDa
 (48, 2, 4, 1, '2017-10-13', NULL, NULL, NULL, 0, 0, '0000-00-00 00:00:00', '2017-10-13 11:33:35'),
 (49, 2, 4, 1, '2017-10-30', NULL, NULL, NULL, 0, 0, '0000-00-00 00:00:00', '2017-10-13 13:08:36'),
 (50, 2, 1, 1, '2017-10-13', '2017-10-31', '10:00:00', '16:00:00', 17, 0, '0000-00-00 00:00:00', '2017-10-13 13:09:10'),
-(53, 2, 2, 1, '2017-10-17', '2017-10-17', '10:00:00', '16:30:00', 0, 0, '0000-00-00 00:00:00', '2017-10-13 13:40:48');
+(53, 2, 2, 1, '2017-10-17', '2017-10-17', '10:00:00', '16:30:00', 0, 0, '0000-00-00 00:00:00', '2017-10-13 13:40:48'),
+(54, 120, 0, 1, '2017-10-24', '2017-11-24', '10:00:00', '17:30:00', 1, 0, '0000-00-00 00:00:00', '2017-10-24 13:07:49'),
+(55, 120, 0, 1, '2017-10-24', '2017-11-24', '10:00:00', '17:30:00', 2, 0, '0000-00-00 00:00:00', '2017-10-24 13:07:49'),
+(56, 120, 0, 1, '2017-10-24', '2017-11-24', '10:00:00', '17:30:00', 3, 0, '0000-00-00 00:00:00', '2017-10-24 13:07:49'),
+(57, 120, 0, 1, '2017-10-24', '2017-11-24', '10:00:00', '17:30:00', 4, 1, '0000-00-00 00:00:00', '2017-10-24 13:16:50'),
+(58, 120, 0, 1, '2017-10-24', '2017-11-24', '10:00:00', '17:30:00', 5, 0, '0000-00-00 00:00:00', '2017-10-24 13:07:49'),
+(59, 120, 0, 1, '2017-10-24', '2017-11-24', '10:00:00', '17:30:00', 6, 0, '0000-00-00 00:00:00', '2017-10-24 13:07:49'),
+(60, 120, 1, 1, '2017-10-24', '2017-12-24', '06:43:00', '18:43:00', 2, 0, '0000-00-00 00:00:00', '2017-10-24 13:13:57'),
+(61, 120, 2, 1, '2017-10-25', '2017-10-25', '06:44:00', '18:44:00', 0, 0, '0000-00-00 00:00:00', '2017-10-24 13:14:49'),
+(62, 120, 4, 1, '2017-10-25', NULL, NULL, NULL, 0, 0, '0000-00-00 00:00:00', '2017-10-24 13:15:25');
 
 -- --------------------------------------------------------
 
@@ -140,18 +214,16 @@ INSERT INTO `hms_availability` (`id`, `user_id`, `repeat_interval`, `isReatAllDa
 -- Table structure for table `hms_beds`
 --
 
-DROP TABLE IF EXISTS `hms_beds`;
-CREATE TABLE IF NOT EXISTS `hms_beds` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_beds` (
+  `id` int(11) NOT NULL,
   `ward_id` int(11) NOT NULL,
   `bed` varchar(250) NOT NULL,
   `isAvailable` tinyint(4) NOT NULL DEFAULT '0',
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=101 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_beds`
@@ -257,7 +329,8 @@ INSERT INTO `hms_beds` (`id`, `ward_id`, `bed`, `isAvailable`, `isActive`, `isDe
 (97, 39, 'T6', 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:43:14'),
 (98, 24, 'Z9', 1, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:43:14'),
 (99, 80, 'G1', 1, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:43:14'),
-(100, 86, 'F9', 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:43:14');
+(100, 86, 'F9', 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:43:14'),
+(101, 1, 'B62', 0, 1, 1, '2017-10-23 12:03:15', '2017-10-23 10:04:03');
 
 -- --------------------------------------------------------
 
@@ -265,9 +338,8 @@ INSERT INTO `hms_beds` (`id`, `ward_id`, `bed`, `isAvailable`, `isActive`, `isDe
 -- Table structure for table `hms_branches`
 --
 
-DROP TABLE IF EXISTS `hms_branches`;
-CREATE TABLE IF NOT EXISTS `hms_branches` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_branches` (
+  `id` int(11) NOT NULL,
   `hospital_id` int(11) NOT NULL,
   `branch_name` varchar(250) NOT NULL,
   `phone_number` varchar(250) NOT NULL,
@@ -280,9 +352,8 @@ CREATE TABLE IF NOT EXISTS `hms_branches` (
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=101 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_branches`
@@ -388,7 +459,9 @@ INSERT INTO `hms_branches` (`id`, `hospital_id`, `branch_name`, `phone_number`, 
 (97, 97, 'Waals-Brabant', '(742) 124-9871', 'et.nunc.Quisque@atlacusQuisque.net', '6555 Ante Street', 0, 0, 0, 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:24:57'),
 (98, 78, 'Louisiana', '(511) 528-7839', 'ut@ultricesiaculis.org', '468-8860 Nec Avenue', 0, 0, 0, 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:24:57'),
 (99, 34, 'Wyoming', '(418) 780-8913', 'luctus.felis@utmolestiein.com', '400-9180 Nec Avenue', 0, 0, 0, 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:24:57'),
-(100, 88, 'KP', '(358) 981-8889', 'sit@Integertincidunt.ca', 'Ap #662-558 Urna, Av.', 0, 0, 0, 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:24:57');
+(100, 88, 'KP', '(358) 981-8889', 'sit@Integertincidunt.ca', 'Ap #662-558 Urna, Av.', 0, 0, 0, 0, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:24:57'),
+(101, 21, 'Twinkal', '9912305689', 'branch@gmail.com', 'Viramgam', 3, 1, 1, 1, 1, 1, '2017-10-23 12:14:06', '2017-10-23 10:15:15'),
+(102, 21, 'Twinkal', '9912305689', 'branchhhh@gmail.com', 'Viramgam', 3, 1, 1, 1, 1, 1, '2017-10-23 12:16:27', '2017-10-23 10:17:07');
 
 -- --------------------------------------------------------
 
@@ -396,9 +469,8 @@ INSERT INTO `hms_branches` (`id`, `hospital_id`, `branch_name`, `phone_number`, 
 -- Table structure for table `hms_charges`
 --
 
-DROP TABLE IF EXISTS `hms_charges`;
-CREATE TABLE IF NOT EXISTS `hms_charges` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_charges` (
+  `id` int(11) NOT NULL,
   `title` varchar(250) NOT NULL,
   `description` text NOT NULL,
   `charge_type` varchar(250) NOT NULL,
@@ -406,16 +478,15 @@ CREATE TABLE IF NOT EXISTS `hms_charges` (
   `branch_id` int(11) NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=106 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_charges`
 --
 
 INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`, `branch_id`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(1, 'Appointment', 'General Appointment', '', 500, 1, 0, '2017-06-02 02:17:34', '2017-06-02 02:17:34'),
+(1, 'Appointment', 'General Appointment', 'general', 450, 1, 1, '2017-06-02 02:17:34', '2017-10-23 11:32:18'),
 (2, 'Test', 'Test Desck', 'Test', 100, 1, 1, '2017-06-11 10:31:30', '2017-06-13 11:02:17'),
 (3, 'Helo', 'asd', 'No ida', 0, 3, 0, '2017-06-13 11:02:03', '2017-06-13 11:02:03'),
 (4, 'LMS_BR2_Gen', 'Gen Charges', 'GEN CHG', 400, 2, 0, '2017-06-16 13:48:58', '2017-06-16 13:48:58'),
@@ -429,7 +500,7 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (13, 'I5E3', 'fringilla est. Mauris eu turpis.', 'Appoitment', 848, 95, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (14, 'O7K2', 'amet risus. Donec egestas. Aliquam nec enim. Nunc', 'Appoitment', 198, 31, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (15, 'G7S0', 'lacus pede', 'Personal Visit', 456, 15, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
-(16, 'B4K6', 'ultrices sit amet, risus.', 'Appoitment', 666, 69, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
+(16, 'B4K6', 'ultrices sit amet, risus.', 'Appoitment', 666, 69, 1, '0000-00-00 00:00:00', '2017-10-23 11:39:44'),
 (17, 'H1X9', 'nisi a', 'Dental', 624, 64, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (18, 'Q8W6', 'tortor. Integer aliquam adipiscing lacus.', 'Appoitment', 286, 89, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (19, 'P2R8', 'turpis egestas. Aliquam fringilla cursus purus.', 'Personal Visit', 523, 96, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
@@ -456,7 +527,7 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (40, 'O6U8', 'lorem, eget', 'Dental', 87, 10, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (41, 'Z1W0', 'diam. Duis mi enim,', 'Dental', 170, 95, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (42, 'R9N4', 'sed dui.', 'Personal Visit', 878, 62, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
-(43, 'A8G1', 'et', 'Appoitment', 699, 94, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
+(43, 'A8G1', 'et', 'Appoitment', 699, 94, 1, '0000-00-00 00:00:00', '2017-10-23 11:35:15'),
 (44, 'J7Z0', 'sodales. Mauris blandit', 'Appoitment', 531, 1, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (45, 'X3C7', 'Proin vel arcu eu odio tristique pharetra. Quisque ac', 'Personal Visit', 440, 47, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (46, 'T3P7', 'est, vitae sodales', 'Appoitment', 769, 69, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
@@ -467,7 +538,7 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (51, 'D0N5', 'ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor, velit', 'Dental', 872, 59, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (52, 'P6M5', 'et malesuada fames ac turpis', 'Appoitment', 207, 60, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (53, 'B9L0', 'dis parturient montes, nascetur ridiculus mus. Donec', 'Dental', 438, 87, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
-(54, 'B3X5', 'feugiat non, lobortis quis,', 'Appoitment', 506, 99, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
+(54, 'B3X5', 'feugiat non, lobortis quis,', 'Appoitment', 506, 99, 1, '0000-00-00 00:00:00', '2017-10-23 11:35:50'),
 (55, 'I1N3', 'lectus. Cum sociis natoque penatibus et magnis', 'Personal Visit', 333, 9, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (56, 'E5P6', 'Duis at lacus. Quisque', 'Appoitment', 175, 31, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (57, 'P9L4', 'Morbi metus.', 'Appoitment', 889, 45, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
@@ -487,7 +558,7 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (71, 'H8P4', 'nibh.', 'Appoitment', 701, 69, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (72, 'J0M3', 'in felis. Nulla tempor augue ac', 'Dental', 172, 65, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (73, 'T3H6', 'feugiat non, lobortis quis, pede. Suspendisse dui. Fusce diam', 'Dental', 24, 58, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
-(74, 'B1O1', 'pharetra sed, hendrerit a, arcu. Sed', 'Personal Visit', 469, 2, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
+(74, 'B1O1', 'pharetra sed, hendrerit a, arcu. Sed', 'Personal Visit', 469, 2, 1, '0000-00-00 00:00:00', '2017-10-23 11:35:50'),
 (75, 'C9E7', 'vulputate', 'Dental', 949, 48, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (76, 'S5L1', 'consectetuer adipiscing elit. Aliquam auctor, velit eget laoreet posuere, enim', 'Dental', 70, 98, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (77, 'P3N7', 'ornare tortor at risus. Nunc ac sem ut', 'Dental', 548, 40, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
@@ -500,7 +571,7 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (84, 'I8V4', 'ipsum non arcu. Vivamus sit amet risus. Donec egestas. Aliquam', 'Personal Visit', 329, 76, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (85, 'Z1W4', 'ac turpis egestas. Aliquam fringilla cursus purus. Nullam scelerisque', 'Dental', 904, 29, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (86, 'I6D0', 'Cras dolor', 'Dental', 70, 52, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
-(87, 'A0D4', 'cursus luctus, ipsum leo elementum', 'Dental', 671, 92, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
+(87, 'A0D4', 'cursus luctus, ipsum leo elementum', 'Dental', 671, 92, 1, '0000-00-00 00:00:00', '2017-10-23 11:37:13'),
 (88, 'Q0Z0', 'eu tellus eu augue porttitor interdum. Sed auctor', 'Personal Visit', 166, 61, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (89, 'I3Y9', 'vitae aliquam eros turpis', 'Personal Visit', 303, 44, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (90, 'I8F5', 'consectetuer adipiscing elit.', 'Appoitment', 58, 22, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
@@ -518,7 +589,8 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (102, 'V9T4', 'lorem semper auctor. Mauris', 'Personal Visit', 746, 27, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (103, 'O2F3', 'augue eu tellus. Phasellus', 'Dental', 825, 37, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
 (104, 'V4A4', 'enim. Etiam gravida molestie arcu. Sed eu', 'Personal Visit', 122, 66, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
-(105, 'D0E3', 'augue eu tellus. Phasellus elit pede, malesuada vel,', 'Personal Visit', 387, 65, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01');
+(105, 'D0E3', 'augue eu tellus. Phasellus elit pede, malesuada vel,', 'Personal Visit', 387, 65, 0, '0000-00-00 00:00:00', '2017-06-20 13:48:01'),
+(106, 'Normal', 'Description', 'Normal', 100, 1, 1, '2017-10-23 13:30:47', '2017-10-23 11:31:31');
 
 -- --------------------------------------------------------
 
@@ -526,13 +598,11 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 -- Table structure for table `hms_city`
 --
 
-DROP TABLE IF EXISTS `hms_city`;
-CREATE TABLE IF NOT EXISTS `hms_city` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_city` (
+  `id` int(11) NOT NULL,
   `district_id` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  `name` varchar(250) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_city`
@@ -551,12 +621,10 @@ INSERT INTO `hms_city` (`id`, `district_id`, `name`) VALUES
 -- Table structure for table `hms_country`
 --
 
-DROP TABLE IF EXISTS `hms_country`;
-CREATE TABLE IF NOT EXISTS `hms_country` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+CREATE TABLE `hms_country` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_country`
@@ -571,17 +639,15 @@ INSERT INTO `hms_country` (`id`, `name`) VALUES
 -- Table structure for table `hms_departments`
 --
 
-DROP TABLE IF EXISTS `hms_departments`;
-CREATE TABLE IF NOT EXISTS `hms_departments` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_departments` (
+  `id` int(11) NOT NULL,
   `branch_id` int(11) NOT NULL,
   `department_name` varchar(250) NOT NULL,
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=105 DEFAULT CHARSET=latin1;
+  `created_at` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_departments`
@@ -643,7 +709,7 @@ INSERT INTO `hms_departments` (`id`, `branch_id`, `department_name`, `isActive`,
 (53, 15, 'Biaa Podlaska', 1, 0, '2017-06-20 13:31:47', '0000-00-00 00:00:00'),
 (54, 47, 'Secunderabad', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
 (55, 77, 'Borsbeek', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
-(56, 35, 'Sant''Angelo in Pontano', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
+(56, 35, 'Sant\'Angelo in Pontano', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
 (57, 3, 'Montebelluna', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
 (58, 94, 'Caledon', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
 (59, 14, 'Corroy ', 1, 0, '2017-06-20 13:31:55', '0000-00-00 00:00:00'),
@@ -691,7 +757,8 @@ INSERT INTO `hms_departments` (`id`, `branch_id`, `department_name`, `isActive`,
 (101, 70, 'Floriffoux', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
 (102, 48, 'Rhemes-Notre-Dame', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
 (103, 34, 'Oudergem', 1, 0, '2017-06-20 13:31:08', '0000-00-00 00:00:00'),
-(104, 85, 'Tirua', 1, 0, '2017-06-20 13:32:39', '0000-00-00 00:00:00');
+(104, 85, 'Tirua', 1, 0, '2017-06-20 13:32:39', '0000-00-00 00:00:00'),
+(105, 57, 'twinkallll', 1, 1, '2017-10-23 11:52:03', '2017-10-23 13:51:19');
 
 -- --------------------------------------------------------
 
@@ -699,13 +766,11 @@ INSERT INTO `hms_departments` (`id`, `branch_id`, `department_name`, `isActive`,
 -- Table structure for table `hms_district`
 --
 
-DROP TABLE IF EXISTS `hms_district`;
-CREATE TABLE IF NOT EXISTS `hms_district` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_district` (
+  `id` int(11) NOT NULL,
   `state_id` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+  `name` varchar(250) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_district`
@@ -728,9 +793,8 @@ INSERT INTO `hms_district` (`id`, `state_id`, `name`) VALUES
 -- Table structure for table `hms_doctors`
 --
 
-DROP TABLE IF EXISTS `hms_doctors`;
-CREATE TABLE IF NOT EXISTS `hms_doctors` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_doctors` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
   `no_appt_handle` int(11) NOT NULL DEFAULT '5',
@@ -742,9 +806,8 @@ CREATE TABLE IF NOT EXISTS `hms_doctors` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `availability_text` text,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=120 DEFAULT CHARSET=latin1;
+  `availability_text` text
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_doctors`
@@ -862,7 +925,8 @@ INSERT INTO `hms_doctors` (`id`, `user_id`, `department_id`, `no_appt_handle`, `
 (116, 147, 1, 5, 30, '', '', '', 1, 0, '2017-09-12 06:51:52', '2017-09-12 06:52:01', NULL),
 (117, 148, 1, 5, 30, '', '', '', 1, 0, '2017-09-12 07:05:44', '2017-09-12 07:07:27', NULL),
 (118, 154, 1, 5, 30, '', '', '', 0, 0, '0000-00-00 00:00:00', '2017-10-07 10:26:05', NULL),
-(119, 154, 1, 5, 30, '', '', '', 0, 0, '0000-00-00 00:00:00', '2017-10-07 10:34:57', NULL);
+(119, 154, 1, 5, 30, '', '', '', 0, 0, '0000-00-00 00:00:00', '2017-10-07 10:34:57', NULL),
+(120, 155, 3, 5, 30, 'M.D', '1 year', 'Normal', 0, 0, '2017-10-24 14:27:38', '2017-10-24 13:18:07', 'available from Monday to Friday');
 
 -- --------------------------------------------------------
 
@@ -870,13 +934,11 @@ INSERT INTO `hms_doctors` (`id`, `user_id`, `department_id`, `no_appt_handle`, `
 -- Table structure for table `hms_healthinsuranceprovider`
 --
 
-DROP TABLE IF EXISTS `hms_healthinsuranceprovider`;
-CREATE TABLE IF NOT EXISTS `hms_healthinsuranceprovider` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_healthinsuranceprovider` (
+  `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_healthinsuranceprovider`
@@ -891,9 +953,8 @@ INSERT INTO `hms_healthinsuranceprovider` (`id`, `name`, `isDeleted`) VALUES
 -- Table structure for table `hms_healthrecords`
 --
 
-DROP TABLE IF EXISTS `hms_healthrecords`;
-CREATE TABLE IF NOT EXISTS `hms_healthrecords` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_healthrecords` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `blood_group` varchar(250) NOT NULL,
   `height_feet` int(11) NOT NULL,
@@ -908,9 +969,8 @@ CREATE TABLE IF NOT EXISTS `hms_healthrecords` (
   `past_medical_history` text NOT NULL,
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_healthrecords`
@@ -927,9 +987,8 @@ INSERT INTO `hms_healthrecords` (`id`, `user_id`, `blood_group`, `height_feet`, 
 -- Table structure for table `hms_hospitals`
 --
 
-DROP TABLE IF EXISTS `hms_hospitals`;
-CREATE TABLE IF NOT EXISTS `hms_hospitals` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_hospitals` (
+  `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `address` text,
   `description` text NOT NULL,
@@ -949,9 +1008,8 @@ CREATE TABLE IF NOT EXISTS `hms_hospitals` (
   `isActive` tinyint(4) NOT NULL DEFAULT '0',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_hospitals`
@@ -1001,7 +1059,7 @@ INSERT INTO `hms_hospitals` (`id`, `name`, `address`, `description`, `logo`, `ba
 (51, 'Imperdiet Ullamcorper Duis PC', '559-3137 Morbi Avenue', '', NULL, '', '(456) 808-9188', 'in.consectetuer.ipsum@augueacipsum.co.uk', 'LIC01', 0, '', 'Logan City', 'QLD', 'IL', 'French Guiana', 'Deborah C. Dejesus', '(696) 955-8382', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (52, 'Cursus Ltd', '959-9596 Consequat St.', '', NULL, '', '(898) 663-9494', 'Curabitur.sed.tortor@justo.org', 'LIC01', 0, '', 'Southwell', 'NT', 'Indiana', 'Comoros', 'Ivan B. Baxter', '(426) 809-4587', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (53, 'Orci Ltd', 'P.O. Box 847, 817 At, St.', '', NULL, '', '(238) 896-8613', 'blandit.mattis@bibendumfermentum.net', 'LIC01', 0, '', 'Galway', 'C', 'Bahia', 'Costa Rica', 'Ulric Washington', '(446) 863-5472', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
-(54, 'Est Tempor Bibendum Inc.', 'P.O. Box 555, 6400 Convallis Rd.', '', NULL, '', '(671) 585-3812', 'nibh.sit@justoeu.net', 'LIC01', 0, '', 'Dublin', 'L', 'Provence-Alpes-Côte d''Azur', 'Korea, South', 'Mason Lee', '(935) 876-8011', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
+(54, 'Est Tempor Bibendum Inc.', 'P.O. Box 555, 6400 Convallis Rd.', '', NULL, '', '(671) 585-3812', 'nibh.sit@justoeu.net', 'LIC01', 0, '', 'Dublin', 'L', 'Provence-Alpes-Côte d\'Azur', 'Korea, South', 'Mason Lee', '(935) 876-8011', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (55, 'Ullamcorper Velit In Limited', 'Ap #209-600 Dui Rd.', '', NULL, '', '(890) 791-5213', 'sem.mollis@cursuspurusNullam.org', 'LIC01', 0, '', 'Anderlecht', 'BU', 'Queensland', 'Indonesia', 'Omar C. Sutton', '(974) 437-4944', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (56, 'Fermentum Incorporated', 'Ap #273-872 Donec Rd.', '', NULL, '', '(804) 953-1113', 'Donec.feugiat@metusInlorem.com', 'LIC01', 0, '', 'Dieppe', 'HA', 'LAZ', 'Jamaica', 'Anika O. Mcconnell', '(254) 104-6391', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (57, 'In Tempus Eu Limited', 'Ap #345-5410 Pede Rd.', '', NULL, '', '(122) 480-9147', 'Morbi.metus.Vivamus@liberomaurisaliquam.com', 'LIC01', 0, '', 'Berlin', 'BE', 'VB', 'Estonia', 'Rebekah Y. Bernard', '(910) 674-4572', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
@@ -1057,7 +1115,9 @@ INSERT INTO `hms_hospitals` (`id`, `name`, `address`, `description`, `logo`, `ba
 (107, 'Sollicitudin Adipiscing Consulting', 'Ap #960-3090 Pede Av.', '', NULL, '', '(385) 269-5179', 'pede.malesuada.vel@eu.net', 'LIC01', 0, '', 'Peñalolén', 'Metropolitana de Santiago', 'Gelderland', 'Antigua and Barbuda', 'Caryn S. Grant', '(476) 642-1714', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (108, 'Nisl LLP', '6403 Nec, Street', '', NULL, '', '(466) 881-7595', 'Sed.nec.metus@nequevitaesemper.ca', 'LIC01', 0, '', 'Liverpool', 'NSW', 'Zeeland', 'Ghana', 'Lila Shelton', '(977) 234-3258', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
 (109, 'Nec Cursus A Foundation', 'P.O. Box 107, 2054 Donec Avenue', '', NULL, '', '(492) 201-2876', 'nibh.sit.amet@consequatpurus.org', 'LIC01', 0, '', 'Bareilly', 'UP', 'Rio de Janeiro', 'Iraq', 'Halla Fields', '(284) 884-7244', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
-(110, 'Ornare Facilisis Eget Company', 'Ap #113-3257 Ut, Avenue', '', NULL, '', '(276) 863-2614', 'odio.sagittis@tellusid.org', 'LIC01', 0, '', 'Grimsby', 'Lincolnshire', 'Leinster', 'Greenland', 'Kerry Weiss', '(935) 675-6404', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13');
+(110, 'Ornare Facilisis Eget Company', 'Ap #113-3257 Ut, Avenue', '', NULL, '', '(276) 863-2614', 'odio.sagittis@tellusid.org', 'LIC01', 0, '', 'Grimsby', 'Lincolnshire', 'Leinster', 'Greenland', 'Kerry Weiss', '(935) 675-6404', 0, 0, '0000-00-00 00:00:00', '2017-06-20 13:23:13'),
+(111, 'twinkal', '743-3040 Quis Rd.', 'SSS', NULL, '', '9902349022', 'mollis@Duisrisus.co.uk', 'LIC01', 1, '', '1', '1', '1', '1', 'AAA', '', 0, 0, '2017-10-22 10:44:13', '2017-10-22 08:44:13'),
+(112, 'twinkal', '743-3040 Quis Rd.', 'SSS', NULL, '', '9902349022', 'mollis@Duisrisus.co.uk', 'LIC01', 1, '', '1', '1', '1', '1', 'AAA', '', 0, 0, '2017-10-22 10:44:55', '2017-10-22 08:44:55');
 
 -- --------------------------------------------------------
 
@@ -1065,17 +1125,15 @@ INSERT INTO `hms_hospitals` (`id`, `name`, `address`, `description`, `logo`, `ba
 -- Table structure for table `hms_hospital_admin`
 --
 
-DROP TABLE IF EXISTS `hms_hospital_admin`;
-CREATE TABLE IF NOT EXISTS `hms_hospital_admin` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_hospital_admin` (
+  `id` int(11) NOT NULL,
   `hospital_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_hospital_admin`
@@ -1090,9 +1148,8 @@ INSERT INTO `hms_hospital_admin` (`id`, `hospital_id`, `user_id`, `isActive`, `i
 -- Table structure for table `hms_inpatient`
 --
 
-DROP TABLE IF EXISTS `hms_inpatient`;
-CREATE TABLE IF NOT EXISTS `hms_inpatient` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_inpatient` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `bed_id` int(11) NOT NULL DEFAULT '0',
   `doctor_id` int(11) NOT NULL,
@@ -1102,16 +1159,17 @@ CREATE TABLE IF NOT EXISTS `hms_inpatient` (
   `reason` text NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0' COMMENT '0- not admitted, 1- admitted, 2-discharged',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  `isActive` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `isActive` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_inpatient`
 --
 
 INSERT INTO `hms_inpatient` (`id`, `user_id`, `bed_id`, `doctor_id`, `appointment_id`, `join_date`, `left_date`, `reason`, `status`, `isDeleted`, `isActive`) VALUES
-(1, 26, 1, 2, 1, '2017-10-14 20:56:00', '2017-10-15 15:26:27', 'asd', 2, 0, 1);
+(1, 26, 1, 2, 1, '2017-10-14 20:56:00', '2017-10-15 15:26:27', 'asd', 2, 0, 1),
+(2, 26, 19, 2, 8, '2017-10-26 00:00:00', NULL, 'fever', 0, 0, 1),
+(3, 28, 1, 2, 4, '2017-10-25 00:00:00', NULL, 'normal', 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -1119,23 +1177,22 @@ INSERT INTO `hms_inpatient` (`id`, `user_id`, `bed_id`, `doctor_id`, `appointmen
 -- Table structure for table `hms_inpatient_history`
 --
 
-DROP TABLE IF EXISTS `hms_inpatient_history`;
-CREATE TABLE IF NOT EXISTS `hms_inpatient_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_inpatient_history` (
+  `id` int(11) NOT NULL,
   `in_patient_id` int(11) NOT NULL,
   `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `note` text NOT NULL,
   `cost` float NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_inpatient_history`
 --
 
 INSERT INTO `hms_inpatient_history` (`id`, `in_patient_id`, `datetime`, `note`, `cost`, `isDeleted`) VALUES
-(1, 1, '2017-09-05 15:02:49', 'today activi\r\n', 0, 0);
+(1, 1, '2017-09-05 15:02:49', 'today activi\r\n', 0, 0),
+(2, 2, '2017-10-25 13:33:56', 'test report for fever', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1143,14 +1200,12 @@ INSERT INTO `hms_inpatient_history` (`id`, `in_patient_id`, `datetime`, `note`, 
 -- Table structure for table `hms_license`
 --
 
-DROP TABLE IF EXISTS `hms_license`;
-CREATE TABLE IF NOT EXISTS `hms_license` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_license` (
+  `id` int(11) NOT NULL,
   `license_code` varchar(250) NOT NULL,
   `name` varchar(250) NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_license`
@@ -1158,7 +1213,7 @@ CREATE TABLE IF NOT EXISTS `hms_license` (
 
 INSERT INTO `hms_license` (`id`, `license_code`, `name`, `isDeleted`) VALUES
 (1, 'LIC01', 'Trial', 0),
-(2, 'LIC02', 'New', 0);
+(2, 'LIC02', 'Trial', 0);
 
 -- --------------------------------------------------------
 
@@ -1166,9 +1221,8 @@ INSERT INTO `hms_license` (`id`, `license_code`, `name`, `isDeleted`) VALUES
 -- Table structure for table `hms_medical_lab`
 --
 
-DROP TABLE IF EXISTS `hms_medical_lab`;
-CREATE TABLE IF NOT EXISTS `hms_medical_lab` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_medical_lab` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
@@ -1184,9 +1238,8 @@ CREATE TABLE IF NOT EXISTS `hms_medical_lab` (
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_medical_lab`
@@ -1207,9 +1260,8 @@ INSERT INTO `hms_medical_lab` (`id`, `user_id`, `name`, `description`, `owner_na
 -- Table structure for table `hms_medical_report`
 --
 
-DROP TABLE IF EXISTS `hms_medical_report`;
-CREATE TABLE IF NOT EXISTS `hms_medical_report` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_medical_report` (
+  `id` int(11) NOT NULL,
   `patient_id` int(11) NOT NULL,
   `doctor_id` int(11) NOT NULL,
   `medical_lab_id` int(11) NOT NULL DEFAULT '0',
@@ -1219,9 +1271,18 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report` (
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_medical_report`
+--
+
+INSERT INTO `hms_medical_report` (`id`, `patient_id`, `doctor_id`, `medical_lab_id`, `prescription_id`, `title`, `description`, `status`, `isDeleted`, `created_at`, `modified_at`) VALUES
+(1, 28, 2, 0, 4, 'Blood', 'check it', 1, 0, '2017-10-31 14:11:13', '2017-10-31 13:58:46'),
+(2, 28, 2, 0, 4, 'Blood', 'check it', 1, 0, '2017-10-31 14:11:51', '2017-10-31 14:01:17'),
+(3, 26, 2, 1, 3, 'Blood group', 'Check blood group', 0, 0, '2017-10-31 14:15:15', '2017-10-31 13:17:00'),
+(4, 34, 2, 1, 5, 'Blood report', 'check blood report', 0, 0, '2017-10-31 14:55:11', '2017-10-31 13:55:58');
 
 -- --------------------------------------------------------
 
@@ -1229,16 +1290,22 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report` (
 -- Table structure for table `hms_medical_report_file`
 --
 
-DROP TABLE IF EXISTS `hms_medical_report_file`;
-CREATE TABLE IF NOT EXISTS `hms_medical_report_file` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_medical_report_file` (
+  `id` int(11) NOT NULL,
   `medical_report_id` int(11) NOT NULL,
   `file_url` text NOT NULL,
   `file_type` text NOT NULL,
   `file_path` text NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_medical_report_file`
+--
+
+INSERT INTO `hms_medical_report_file` (`id`, `medical_report_id`, `file_url`, `file_type`, `file_path`, `isDeleted`) VALUES
+(1, 3, 'http://localhost/mypulse//public/reports/1509458326_3.png', 'image/jpeg', 'C:\\xampp\\htdocs\\mypulse/public/reports/1509458326_3.png', 0),
+(2, 4, 'http://localhost/mypulse//public/reports/1509458477_4.png', 'image/png', 'C:\\xampp\\htdocs\\mypulse/public/reports/1509458477_4.png', 0);
 
 -- --------------------------------------------------------
 
@@ -1246,9 +1313,8 @@ CREATE TABLE IF NOT EXISTS `hms_medical_report_file` (
 -- Table structure for table `hms_medical_store`
 --
 
-DROP TABLE IF EXISTS `hms_medical_store`;
-CREATE TABLE IF NOT EXISTS `hms_medical_store` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_medical_store` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
@@ -1264,9 +1330,8 @@ CREATE TABLE IF NOT EXISTS `hms_medical_store` (
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_medical_store`
@@ -1285,18 +1350,16 @@ INSERT INTO `hms_medical_store` (`id`, `user_id`, `name`, `description`, `owner_
 -- Table structure for table `hms_messages`
 --
 
-DROP TABLE IF EXISTS `hms_messages`;
-CREATE TABLE IF NOT EXISTS `hms_messages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_messages` (
+  `id` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `title` text NOT NULL,
   `body` text NOT NULL,
   `created_date` datetime NOT NULL,
   `isRead` tinyint(4) NOT NULL DEFAULT '0',
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_messages`
@@ -1348,7 +1411,7 @@ INSERT INTO `hms_messages` (`id`, `created_by`, `user_id`, `title`, `body`, `cre
 (43, 12, 3, 'All Patient', 'AAAAAAAAAAAAAAAAA', '2017-10-07 15:35:00', 0, 0),
 (44, 12, 1, 'All Patient', 'AAAAAAAAAA', '2017-10-07 15:36:00', 0, 0),
 (45, 12, 3, 'All Patient', 'AAAAAAAAAA', '2017-10-07 15:36:00', 0, 0),
-(46, 12, 26, 'All Patient', 'AAAAAAAAAA', '2017-10-07 15:38:00', 0, 0);
+(46, 12, 26, 'All Patient', 'AAAAAAAAAA', '2017-10-07 15:38:00', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1356,18 +1419,16 @@ INSERT INTO `hms_messages` (`id`, `created_by`, `user_id`, `title`, `body`, `cre
 -- Table structure for table `hms_notification`
 --
 
-DROP TABLE IF EXISTS `hms_notification`;
-CREATE TABLE IF NOT EXISTS `hms_notification` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_notification` (
+  `id` int(11) NOT NULL,
   `created_by` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `text` text NOT NULL,
   `isRead` tinyint(4) NOT NULL DEFAULT '0',
   `action` text,
   `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=163 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_notification`
@@ -1384,8 +1445,8 @@ INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`,
 (8, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
 (9, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
 (10, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-05 20:18:14', 0),
-(11, 12, 26, 'Your appointment <b>APT2</b> has been Approved', 0, NULL, '2017-09-05 20:30:21', 0),
-(12, 12, 26, 'Some prescriptions are added in your profile ', 0, NULL, '2017-09-05 20:35:02', 0),
+(11, 12, 26, 'Your appointment <b>APT2</b> has been Approved', 1, NULL, '2017-09-05 20:30:21', 0),
+(12, 12, 26, 'Some prescriptions are added in your profile ', 1, NULL, '2017-09-05 20:35:02', 0),
 (13, 12, 17, 'Dr. Ravi Patel Availability is updated', 0, NULL, '2017-09-05 23:14:36', 0),
 (14, 12, 39, 'Dr. Ravi Patel Availability is updated', 0, NULL, '2017-09-05 23:14:36', 0),
 (15, 3, 153, 'Your Profile is updated', 1, NULL, '2017-09-06 00:40:48', 0),
@@ -1402,7 +1463,7 @@ INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`,
 (26, 1, 16, 'Your Profile is updated', 0, NULL, '2017-09-12 18:14:55', 0),
 (27, 1, 16, 'Your Profile is updated', 0, NULL, '2017-09-12 18:16:02', 0),
 (28, 1, 17, 'Your Profile is updated', 0, NULL, '2017-09-12 18:17:21', 0),
-(29, 12, 26, 'Your prescription information is updated', 0, NULL, '2017-09-21 10:26:04', 0),
+(29, 12, 26, 'Your prescription information is updated', 1, NULL, '2017-09-21 10:26:04', 0),
 (30, 12, 17, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-22 15:03:41', 0),
 (31, 12, 31, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-22 15:03:41', 0),
 (32, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-22 15:03:41', 0),
@@ -1431,29 +1492,29 @@ INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`,
 (55, 12, 31, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-22 15:03:41', 0),
 (56, 12, 39, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-22 15:03:41', 0),
 (57, 12, 146, 'Dr. Ravi Patel added new availability', 0, NULL, '2017-09-22 15:03:41', 0),
-(58, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT3 </b>', 0, NULL, '2017-09-22 15:04:09', 0),
+(58, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT3 </b>', 1, NULL, '2017-09-22 15:04:09', 0),
 (59, 12, 17, 'New appointment is booked.<br> Appointment number:<b> APT3 </b>', 0, NULL, '2017-09-22 15:04:09', 0),
 (60, 12, 31, 'New appointment is booked.<br> Appointment number:<b> APT3 </b>', 0, NULL, '2017-09-22 15:04:09', 0),
 (61, 12, 39, 'New appointment is booked.<br> Appointment number:<b> APT3 </b>', 0, NULL, '2017-09-22 15:04:09', 0),
 (62, 12, 146, 'New appointment is booked.<br> Appointment number:<b> APT3 </b>', 0, NULL, '2017-09-22 15:04:09', 0),
-(63, 12, 26, 'Some prescriptions are added in your profile ', 0, NULL, '2017-09-22 16:37:29', 0),
-(64, 12, 26, 'Your prescription information is updated', 0, NULL, '2017-09-22 16:46:13', 0),
-(65, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT4 </b>', 0, NULL, '2017-09-22 21:51:51', 0),
+(63, 12, 26, 'Some prescriptions are added in your profile ', 1, NULL, '2017-09-22 16:37:29', 0),
+(64, 12, 26, 'Your prescription information is updated', 1, NULL, '2017-09-22 16:46:13', 0),
+(65, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT4 </b>', 1, NULL, '2017-09-22 21:51:51', 0),
 (66, 12, 17, 'New appointment is booked.<br> Appointment number:<b> APT4 </b>', 0, NULL, '2017-09-22 21:51:51', 0),
 (67, 12, 31, 'New appointment is booked.<br> Appointment number:<b> APT4 </b>', 0, NULL, '2017-09-22 21:51:51', 0),
 (68, 12, 39, 'New appointment is booked.<br> Appointment number:<b> APT4 </b>', 0, NULL, '2017-09-22 21:51:51', 0),
 (69, 12, 146, 'New appointment is booked.<br> Appointment number:<b> APT4 </b>', 0, NULL, '2017-09-22 21:51:51', 0),
-(70, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT5 </b>', 0, NULL, '2017-09-22 22:11:08', 0),
+(70, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT5 </b>', 1, NULL, '2017-09-22 22:11:08', 0),
 (71, 12, 17, 'New appointment is booked.<br> Appointment number:<b> APT5 </b>', 0, NULL, '2017-09-22 22:11:08', 0),
 (72, 12, 31, 'New appointment is booked.<br> Appointment number:<b> APT5 </b>', 0, NULL, '2017-09-22 22:11:08', 0),
 (73, 12, 39, 'New appointment is booked.<br> Appointment number:<b> APT5 </b>', 0, NULL, '2017-09-22 22:11:08', 0),
 (74, 12, 146, 'New appointment is booked.<br> Appointment number:<b> APT5 </b>', 0, NULL, '2017-09-22 22:11:08', 0),
-(75, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT6 </b>', 0, NULL, '2017-09-22 22:37:37', 0),
+(75, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT6 </b>', 1, NULL, '2017-09-22 22:37:37', 0),
 (76, 12, 17, 'New appointment is booked.<br> Appointment number:<b> APT6 </b>', 0, NULL, '2017-09-22 22:37:37', 0),
 (77, 12, 31, 'New appointment is booked.<br> Appointment number:<b> APT6 </b>', 0, NULL, '2017-09-22 22:37:37', 0),
 (78, 12, 39, 'New appointment is booked.<br> Appointment number:<b> APT6 </b>', 0, NULL, '2017-09-22 22:37:37', 0),
 (79, 12, 146, 'New appointment is booked.<br> Appointment number:<b> APT6 </b>', 0, NULL, '2017-09-22 22:37:37', 0),
-(80, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT7 </b>', 0, NULL, '2017-09-23 11:12:45', 0),
+(80, 12, 26, 'Your appointment is booked.<br> Appointment number:<b> APT7 </b>', 1, NULL, '2017-09-23 11:12:45', 0),
 (81, 12, 17, 'New appointment is booked.<br> Appointment number:<b> APT7 </b>', 0, NULL, '2017-09-23 11:12:45', 0),
 (82, 12, 31, 'New appointment is booked.<br> Appointment number:<b> APT7 </b>', 0, NULL, '2017-09-23 11:12:45', 0),
 (83, 12, 39, 'New appointment is booked.<br> Appointment number:<b> APT7 </b>', 0, NULL, '2017-09-23 11:12:45', 0),
@@ -1531,11 +1592,121 @@ INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`,
 (155, 12, 16, 'Inpatient history of patient <b>Patient </b> is updated', 0, NULL, '2017-10-15 20:49:55', 0),
 (156, 12, 20, 'Inpatient history of patient <b>Patient </b> is updated', 0, NULL, '2017-10-15 20:49:55', 0),
 (157, 12, 25, 'Inpatient history of patient <b>Patient </b> is updated', 0, NULL, '2017-10-15 20:49:55', 0),
-(158, 12, 26, 'Your Inpatient history is updated', 0, NULL, '2017-10-15 20:49:55', 0),
+(158, 12, 26, 'Your Inpatient history is updated', 1, NULL, '2017-10-15 20:49:55', 0),
 (159, 12, 16, 'Inpatient history of patient <b>Patient </b> is updated', 0, NULL, '2017-10-15 20:56:27', 0),
 (160, 12, 20, 'Inpatient history of patient <b>Patient </b> is updated', 0, NULL, '2017-10-15 20:56:27', 0),
 (161, 12, 25, 'Inpatient history of patient <b>Patient </b> is updated', 0, NULL, '2017-10-15 20:56:27', 0),
-(162, 12, 26, 'Your Inpatient history is updated', 0, NULL, '2017-10-15 20:56:27', 0);
+(162, 12, 26, 'Your Inpatient history is updated', 1, NULL, '2017-10-15 20:56:27', 0),
+(163, 1, 26, 'Your appointment <b>APT10</b> has been Approved', 1, NULL, '2017-10-23 14:42:52', 0),
+(164, 1, 12, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 14:42:52', 0),
+(165, 1, 17, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 14:42:52', 0),
+(166, 1, 31, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 14:42:52', 0),
+(167, 1, 39, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 14:42:52', 0),
+(168, 1, 146, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 14:42:52', 0),
+(169, 1, 26, 'Your appointment <b>APT10</b> has been Rejected', 1, NULL, '2017-10-23 14:57:46', 0),
+(170, 1, 12, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 14:57:46', 0),
+(171, 1, 17, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 14:57:46', 0),
+(172, 1, 31, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 14:57:46', 0),
+(173, 1, 39, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 14:57:46', 0),
+(174, 1, 146, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 14:57:46', 0),
+(175, 1, 26, 'Remark added in your appointment: <b>APT10</b>', 1, NULL, '2017-10-23 14:58:42', 0),
+(176, 1, 12, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 14:58:42', 0),
+(177, 1, 17, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 14:58:42', 0),
+(178, 1, 31, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 14:58:42', 0),
+(179, 1, 39, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 14:58:42', 0),
+(180, 1, 146, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 14:58:42', 0),
+(181, 1, 26, 'Your appointment <b>APT10</b> has been Approved', 1, NULL, '2017-10-23 15:05:58', 0),
+(182, 1, 12, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 15:05:58', 0),
+(183, 1, 17, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 15:05:58', 0),
+(184, 1, 31, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 15:05:58', 0),
+(185, 1, 39, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 15:05:58', 0),
+(186, 1, 146, ' Appointment <b>APT10</b> has been Approved', 0, NULL, '2017-10-23 15:05:58', 0),
+(187, 1, 26, 'Your appointment <b>APT10</b> has been Rejected', 1, NULL, '2017-10-23 15:14:03', 0),
+(188, 1, 12, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 15:14:03', 0),
+(189, 1, 17, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 15:14:03', 0),
+(190, 1, 31, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 15:14:03', 0),
+(191, 1, 39, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 15:14:03', 0),
+(192, 1, 146, ' Appointment <b>APT10</b> has been Rejected', 0, NULL, '2017-10-23 15:14:03', 0),
+(193, 12, 26, 'Remark added in your appointment <b>APT10</b>', 1, NULL, '2017-10-23 15:15:58', 0),
+(194, 12, 17, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 15:15:58', 0),
+(195, 12, 31, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 15:15:58', 0),
+(196, 12, 39, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 15:15:58', 0),
+(197, 12, 146, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-10-23 15:15:58', 0),
+(198, 1, 16, 'new bed <b>B62</b> is added in <b>Word1</b> ward', 0, NULL, '2017-10-23 15:33:15', 0),
+(199, 1, 20, 'new bed <b>B62</b> is added in <b>Word1</b> ward', 0, NULL, '2017-10-23 15:33:15', 0),
+(200, 1, 25, 'new bed <b>B62</b> is added in <b>Word1</b> ward', 0, NULL, '2017-10-23 15:33:15', 0),
+(201, 1, 3, 'new bed <b>B62</b> is added in <b>Word1 </b> ward <br> Department: <b>Dept-1</b> <br> Branch: <b>WB</b>', 0, NULL, '2017-10-23 15:33:15', 0),
+(202, 1, 16, 'Bed <b>B62</b> information is updated in <b>Word1</b> ward', 0, NULL, '2017-10-23 15:33:47', 0),
+(203, 1, 20, 'Bed <b>B62</b> information is updated in <b>Word1</b> ward', 0, NULL, '2017-10-23 15:33:47', 0),
+(204, 1, 25, 'Bed <b>B62</b> information is updated in <b>Word1</b> ward', 0, NULL, '2017-10-23 15:33:47', 0),
+(205, 1, 3, 'Bed <b>B62</b> information is updated in <b>Word1</b> ward <br> Department: <b>Dept-1</b> <br> Branch: <b>WB</b>', 0, NULL, '2017-10-23 15:33:47', 0),
+(206, 1, 3, 'New branch <b>Twinkal</b> is added', 0, NULL, '2017-10-23 15:44:06', 0),
+(207, 1, 3, 'New branch <b>Twinkal</b> is added', 0, NULL, '2017-10-23 15:46:27', 0),
+(208, 1, 3, 'Branch <b>Twinkal</b> information is updated', 0, NULL, '2017-10-23 15:46:52', 0),
+(209, 1, 155, 'Your Profile is updated', 0, NULL, '2017-10-24 17:57:38', 0),
+(210, 1, 155, 'You are linked with <b>Purus Corporation</b> hospital as Doctor', 0, NULL, '2017-10-24 17:57:38', 0),
+(211, 1, 48, 'New doctor <b>Twinkal  Patel</b> is added in your department <b>Dept-2</b>', 0, NULL, '2017-10-24 17:57:38', 0),
+(212, 1, 3, 'New doctor <b>Twinkal  Patel</b> is added in department: <b>Dept-2</b><br>Branch: <b>WB</b>', 0, NULL, '2017-10-24 17:57:38', 0),
+(213, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:37:49', 0),
+(214, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:37:49', 0),
+(215, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:37:49', 0),
+(216, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:37:49', 0),
+(217, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:37:49', 0),
+(218, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:37:49', 0),
+(219, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:43:57', 0),
+(220, 1, 155, 'Your new availability is added ', 0, NULL, '2017-10-24 18:44:49', 0),
+(221, 1, 155, 'Your Other settings regarding availability is updated', 0, NULL, '2017-10-24 18:48:07', 0),
+(222, 12, 26, 'Some prescriptions are added in your profile ', 1, NULL, '2017-10-24 18:50:35', 0),
+(223, 1, 3, 'Your Profile is updated', 0, NULL, '2017-10-25 16:41:41', 0),
+(224, 12, 16, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 16:59:03', 0),
+(225, 12, 20, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 16:59:03', 0),
+(226, 12, 25, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 16:59:03', 0),
+(227, 12, 16, 'New patient <b>Patient </b> is added in Inpatient', 0, NULL, '2017-10-25 17:00:51', 0),
+(228, 12, 20, 'New patient <b>Patient </b> is added in Inpatient', 0, NULL, '2017-10-25 17:00:51', 0),
+(229, 12, 25, 'New patient <b>Patient </b> is added in Inpatient', 0, NULL, '2017-10-25 17:00:51', 0),
+(230, 12, 26, 'You added in Inpatient', 1, NULL, '2017-10-25 17:00:51', 0),
+(231, 12, 16, 'New note is added in Inpatient history of patient <b>Patient </b>', 0, NULL, '2017-10-25 17:03:56', 0),
+(232, 12, 20, 'New note is added in Inpatient history of patient <b>Patient </b>', 0, NULL, '2017-10-25 17:03:56', 0),
+(233, 12, 25, 'New note is added in Inpatient history of patient <b>Patient </b>', 0, NULL, '2017-10-25 17:03:56', 0),
+(234, 12, 16, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 17:06:08', 0),
+(235, 12, 20, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 17:06:08', 0),
+(236, 12, 25, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 17:06:08', 0),
+(237, 12, 16, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 17:07:12', 0),
+(238, 12, 20, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 17:07:12', 0),
+(239, 12, 25, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-25 17:07:12', 0),
+(240, 12, 16, 'New patient <b>Amit patel</b> is added in Inpatient', 0, NULL, '2017-10-25 17:09:52', 0),
+(241, 12, 20, 'New patient <b>Amit patel</b> is added in Inpatient', 0, NULL, '2017-10-25 17:09:52', 0),
+(242, 12, 25, 'New patient <b>Amit patel</b> is added in Inpatient', 0, NULL, '2017-10-25 17:09:52', 0),
+(243, 12, 28, 'You added in Inpatient', 0, NULL, '2017-10-25 17:09:52', 0),
+(244, 12, 16, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:17:56', 0),
+(245, 12, 20, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:17:56', 0),
+(246, 12, 25, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:17:56', 0),
+(247, 12, 16, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:18:49', 0),
+(248, 12, 20, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:18:49', 0),
+(249, 12, 25, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:18:49', 0),
+(250, 12, 16, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:21:59', 0),
+(251, 12, 20, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:21:59', 0),
+(252, 12, 25, 'Inpatient history of patient <b> </b> is updated', 0, NULL, '2017-10-31 15:21:59', 0),
+(253, 12, 28, 'Some prescriptions are added in your profile ', 0, NULL, '2017-10-31 18:41:12', 0),
+(254, 12, 28, 'Your prescription information is updated', 0, NULL, '2017-10-31 18:41:51', 0),
+(255, 12, 26, 'Your prescription information is updated', 0, NULL, '2017-10-31 18:45:15', 0),
+(256, 26, 15, 'Patient request for test the medical report', 0, NULL, '2017-10-31 18:47:00', 0),
+(257, 34, 12, 'New appointment is booked.<br> Appointment number:<b> APT11 </b>', 0, NULL, '2017-10-31 19:24:01', 0),
+(258, 34, 17, 'New appointment is booked.<br> Appointment number:<b> APT11 </b>', 0, NULL, '2017-10-31 19:24:01', 0),
+(259, 34, 31, 'New appointment is booked.<br> Appointment number:<b> APT11 </b>', 0, NULL, '2017-10-31 19:24:01', 0),
+(260, 34, 39, 'New appointment is booked.<br> Appointment number:<b> APT11 </b>', 0, NULL, '2017-10-31 19:24:01', 0),
+(261, 34, 146, 'New appointment is booked.<br> Appointment number:<b> APT11 </b>', 0, NULL, '2017-10-31 19:24:01', 0),
+(262, 12, 34, 'Some prescriptions are added in your profile ', 0, NULL, '2017-10-31 19:25:11', 0),
+(263, 34, 15, 'Patient request for test the medical report', 0, NULL, '2017-10-31 19:25:58', 0),
+(264, 15, 28, 'Your medical report is uploded', 0, NULL, '2017-10-31 19:28:46', 0),
+(265, 15, 12, 'Medical report is uploaded of Patient_Appointment_No: <b>APT3</b>', 0, NULL, '2017-10-31 19:28:46', 0),
+(266, 15, 28, 'Your medical report is uploded', 0, NULL, '2017-10-31 19:31:17', 0),
+(267, 15, 12, 'Medical report is uploaded of Patient_Appointment_No: <b>APT3</b>', 0, NULL, '2017-10-31 19:31:17', 0),
+(268, 12, 27, 'Recommned next appointment date added in you appointment <br>Appointment Number: <b>APT5</b>', 1, NULL, '2017-11-01 14:13:57', 0),
+(269, 12, 26, 'Recommned next appointment date added in you appointment <br>Appointment Number: <b>APT6</b>', 0, NULL, '2017-11-01 14:24:34', 0),
+(270, 12, 26, 'Recommned next appointment date added in you appointment <br>Appointment Number: <b>APT6</b>', 0, NULL, '2017-11-01 14:32:51', 0),
+(271, 12, 26, 'Recommned next appointment date added in you appointment <br>Appointment Number: <b>APT6</b>', 0, NULL, '2017-11-01 14:35:19', 0),
+(272, 12, 26, 'Recommned next appointment date added in you appointment <br>Appointment Number: <b>APT6</b>', 0, NULL, '2017-11-01 14:38:03', 0);
 
 -- --------------------------------------------------------
 
@@ -1543,9 +1714,8 @@ INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`,
 -- Table structure for table `hms_nurse`
 --
 
-DROP TABLE IF EXISTS `hms_nurse`;
-CREATE TABLE IF NOT EXISTS `hms_nurse` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_nurse` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
@@ -1553,9 +1723,8 @@ CREATE TABLE IF NOT EXISTS `hms_nurse` (
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `qualification` text NOT NULL,
-  `experience` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
+  `experience` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_nurse`
@@ -1631,9 +1800,8 @@ INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDelete
 -- Table structure for table `hms_prescription`
 --
 
-DROP TABLE IF EXISTS `hms_prescription`;
-CREATE TABLE IF NOT EXISTS `hms_prescription` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_prescription` (
+  `id` int(11) NOT NULL,
   `patient_id` int(11) NOT NULL,
   `doctor_id` int(11) NOT NULL,
   `appoitment_id` int(11) NOT NULL,
@@ -1643,17 +1811,19 @@ CREATE TABLE IF NOT EXISTS `hms_prescription` (
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `title` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `title` varchar(250) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_prescription`
 --
 
 INSERT INTO `hms_prescription` (`id`, `patient_id`, `doctor_id`, `appoitment_id`, `note`, `store_id`, `order_status`, `isDeleted`, `created_at`, `modified_at`, `title`) VALUES
-(1, 26, 2, 1, '', 0, 0, 0, '2017-09-05 15:05:02', '2017-09-22 11:11:03', 'N1'),
-(2, 26, 2, 3, '', 0, 0, 0, '2017-09-22 11:07:29', '2017-09-22 11:11:06', 'Testing for order');
+(1, 26, 2, 1, '', 1, 1, 0, '2017-09-05 15:05:02', '2017-10-31 10:35:14', 'N1'),
+(2, 26, 2, 3, '', 0, 0, 0, '2017-09-22 11:07:29', '2017-09-22 11:11:06', 'Testing for order'),
+(3, 26, 2, 10, '', 0, 0, 0, '2017-10-24 15:20:35', '2017-10-24 13:20:35', 'normal'),
+(4, 28, 2, 4, '', 0, 0, 0, '2017-10-31 14:11:12', '2017-10-31 13:11:51', 'Test Blood group'),
+(5, 34, 2, 11, '', 0, 0, 0, '2017-10-31 14:55:11', '2017-10-31 13:55:11', 'Blood report');
 
 -- --------------------------------------------------------
 
@@ -1661,9 +1831,8 @@ INSERT INTO `hms_prescription` (`id`, `patient_id`, `doctor_id`, `appoitment_id`
 -- Table structure for table `hms_prescription_item`
 --
 
-DROP TABLE IF EXISTS `hms_prescription_item`;
-CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_prescription_item` (
+  `id` int(11) NOT NULL,
   `prescription_id` int(11) NOT NULL,
   `drug` text NOT NULL,
   `strength` text NOT NULL,
@@ -1671,16 +1840,15 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_item` (
   `duration` text NOT NULL,
   `qty` varchar(250) NOT NULL,
   `order_qty` varchar(250) NOT NULL,
-  `note` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+  `note` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_prescription_item`
 --
 
 INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`, `dosage`, `duration`, `qty`, `order_qty`, `note`) VALUES
-(1, 1, 'Z3dyblhKOHRIcnZtTVJUQktKaEhIUT09OjrPgguNcD4jEfDYImyFv5ec', 'V0JtTXMvQWg3K0s2c2FicEJwOW1GQT09OjqirDWdmfq/kedotJ1Ba/k4', 'ZFFpbldDRnNOenlCRlNSc2lnZUN2UT09OjpQDRERiUomR3Sd5+1SQ+gS', 'djhsTXREZkh6SVZFUU5BK1BMY3lUZz09OjoUWk4BTXVljt8D1Xr7K0kK', 'anl2ZnhmaVNlOE1KbjBXUldHNXVQZz09OjrJ/ivUwbNIARbaThY+YgM5', '', 'OXdwRkVET1NUZHNSV2ZvbjU4UVd4dz09OjpKXumbBwrqnIwOrd6WDO5m'),
+(1, 1, 'Z3dyblhKOHRIcnZtTVJUQktKaEhIUT09OjrPgguNcD4jEfDYImyFv5ec', 'V0JtTXMvQWg3K0s2c2FicEJwOW1GQT09OjqirDWdmfq/kedotJ1Ba/k4', 'ZFFpbldDRnNOenlCRlNSc2lnZUN2UT09OjpQDRERiUomR3Sd5+1SQ+gS', 'djhsTXREZkh6SVZFUU5BK1BMY3lUZz09OjoUWk4BTXVljt8D1Xr7K0kK', 'anl2ZnhmaVNlOE1KbjBXUldHNXVQZz09OjrJ/ivUwbNIARbaThY+YgM5', 'a0l1TXhjaS93YVZkWHRsT1c5VTBJQT09OjrvYH6lH1RuX0XiDGUdJEMW', 'OXdwRkVET1NUZHNSV2ZvbjU4UVd4dz09OjpKXumbBwrqnIwOrd6WDO5m'),
 (2, 2, 'WXZ0NTJtZGFTWUdnMWFKUG8wM0E0UT09OjrUASJks20z5qChtDWS9VBi', 'ampsN3BrT2VHaUFzVkVtSlJJbktiZz09OjrKQ9Jr+t2hVI7OlBT3MPVY', 'M2djUVlnaUZ5bXU5ekxkdUFzVC9WZz09OjpzWNDEj0ALybRxVb5BCNaE', 'WHhvQXQ1MU9ocEpvTmtCclJDZEx4UT09Ojr4X25wNlmloBEYbrRcwVly', 'ZU9DZllPL3pPTllPSHZXeXZNbC90dz09OjpwP/TyA+WumLT8rMWYpE0+', '', 'L21rTEJ4YUtOWk9LWEw5WUNMQmxPQT09Ojpt2KqKD2F+TDw884ONjrK8');
 
 -- --------------------------------------------------------
@@ -1689,16 +1857,21 @@ INSERT INTO `hms_prescription_item` (`id`, `prescription_id`, `drug`, `strength`
 -- Table structure for table `hms_prescription_order_receipt`
 --
 
-DROP TABLE IF EXISTS `hms_prescription_order_receipt`;
-CREATE TABLE IF NOT EXISTS `hms_prescription_order_receipt` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_prescription_order_receipt` (
+  `id` int(11) NOT NULL,
   `prescription_id` int(11) NOT NULL,
   `file_url` text NOT NULL,
   `file_type` text NOT NULL,
   `file_path` text NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_prescription_order_receipt`
+--
+
+INSERT INTO `hms_prescription_order_receipt` (`id`, `prescription_id`, `file_url`, `file_type`, `file_path`, `isDeleted`) VALUES
+(1, 1, 'http://localhost/mypulse//public/receipt/1509446114_1.png', 'image/jpeg', 'C:\\xampp\\htdocs\\mypulse/public/receipt/1509446114_1.png', 0);
 
 -- --------------------------------------------------------
 
@@ -1706,9 +1879,8 @@ CREATE TABLE IF NOT EXISTS `hms_prescription_order_receipt` (
 -- Table structure for table `hms_receptionist`
 --
 
-DROP TABLE IF EXISTS `hms_receptionist`;
-CREATE TABLE IF NOT EXISTS `hms_receptionist` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_receptionist` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `doc_id` int(11) NOT NULL,
   `qualification` text NOT NULL,
@@ -1716,9 +1888,8 @@ CREATE TABLE IF NOT EXISTS `hms_receptionist` (
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
-  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_receptionist`
@@ -1733,16 +1904,44 @@ INSERT INTO `hms_receptionist` (`id`, `user_id`, `doc_id`, `qualification`, `exp
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `hms_recommend_appointments`
+--
+
+CREATE TABLE `hms_recommend_appointments` (
+  `id` int(11) NOT NULL,
+  `appointment_id` int(11) NOT NULL,
+  `recommend_appointment_date` date NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `doctor_id` int(11) NOT NULL,
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hms_recommend_appointments`
+--
+
+INSERT INTO `hms_recommend_appointments` (`id`, `appointment_id`, `recommend_appointment_date`, `user_id`, `department_id`, `doctor_id`, `isDeleted`, `status`) VALUES
+(1, 5, '2017-11-16', 27, 1, 2, 0, 0),
+(2, 5, '2017-11-12', 27, 1, 2, 0, 0),
+(3, 5, '2017-11-23', 27, 1, 2, 0, 0),
+(4, 6, '1970-01-01', 26, 1, 2, 0, 0),
+(5, 6, '1970-01-01', 26, 1, 2, 0, 0),
+(6, 6, '1970-01-01', 26, 1, 2, 0, 0),
+(7, 6, '2017-11-21', 26, 1, 2, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hms_state`
 --
 
-DROP TABLE IF EXISTS `hms_state`;
-CREATE TABLE IF NOT EXISTS `hms_state` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_state` (
+  `id` int(11) NOT NULL,
   `country_id` int(11) NOT NULL,
-  `name` varchar(250) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+  `name` varchar(250) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_state`
@@ -1772,14 +1971,12 @@ INSERT INTO `hms_state` (`id`, `country_id`, `name`) VALUES
 -- Table structure for table `hms_test`
 --
 
-DROP TABLE IF EXISTS `hms_test`;
-CREATE TABLE IF NOT EXISTS `hms_test` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_test` (
+  `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
-  `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `isDeleted` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_test`
@@ -1794,9 +1991,8 @@ INSERT INTO `hms_test` (`id`, `name`, `description`, `isDeleted`) VALUES
 -- Table structure for table `hms_users`
 --
 
-DROP TABLE IF EXISTS `hms_users`;
-CREATE TABLE IF NOT EXISTS `hms_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_users` (
+  `id` int(11) NOT NULL,
   `first_name` varchar(250) NOT NULL,
   `last_name` varchar(250) NOT NULL,
   `useremail` varchar(250) NOT NULL,
@@ -1823,21 +2019,17 @@ CREATE TABLE IF NOT EXISTS `hms_users` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `forgotPassCode` varchar(20) DEFAULT NULL,
   `isRegister` tinyint(4) NOT NULL DEFAULT '1',
-  `hasSelectedRole` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `usernemail` (`useremail`),
-  UNIQUE KEY `mobile` (`mobile`),
-  UNIQUE KEY `aadhaar_number` (`aadhaar_number`)
-) ENGINE=MyISAM AUTO_INCREMENT=155 DEFAULT CHARSET=latin1;
+  `hasSelectedRole` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_users`
 --
 
 INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password`, `my_key`, `address`, `mobile`, `aadhaar_number`, `phone`, `profile_photo`, `hospital`, `gender`, `date_of_birth`, `city`, `district`, `state`, `country`, `alternate_mobile_number`, `description`, `role`, `isActive`, `isDeleted`, `created_at`, `updated_at`, `forgotPassCode`, `isRegister`, `hasSelectedRole`) VALUES
-(1, 'Super', 'Admin', 'superadmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'YzE4MGY3MTUyMGM5ZGMwNDliZWUxYTc3NGU2MzdlZDdkMzdlOGI5Mzg0YmNmYmJjMzJjMjQ5NmYzZjA2NDEzMw==', 'Ahmedabad1', '9090123409', '5421321054671', '', 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/1.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', 'About my profile..', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', '0', 1, 0),
+(1, 'Super', 'Admin', 'superadmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'YzE4MGY3MTUyMGM5ZGMwNDliZWUxYTc3NGU2MzdlZDdkMzdlOGI5Mzg0YmNmYmJjMzJjMjQ5NmYzZjA2NDEzMw==', 'Ahmedabad1', '9090123409', '5421321054671', '', 'http://localhost/mypulse/public/images/ux/1.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', 'About my profile..', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', '0', 1, 0),
 (2, 'Ramesh', '', 'ramesh@techcrista.in', '64a43b6ca15d128ac6a0679b39bc9c07', 'MjllZjZhZmM2ZWE5MmI2NjIxNTU5MzRkMGEzNjNmOTdhOWU1NjE4NzBlMjBjZTliZmI5YmYzYzk5NTU2NjNmYw==', '', '1234561230', '542132105460', '', '', 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 2, 0, 0, '2017-05-03 18:56:20', '2017-05-03 18:56:20', '3', 1, 0),
-(3, 'Hospital Admin', 'LMS', 'hospitaladmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'NzZhZTNlYmRkMjZkY2ZiNjNhM2QyNjYyMzAwMjAyM2NjODk0ZmVlZDhkNzUxOTg1NGRmYmVhMjliMmY3ODM1MQ==', '', '1234561239', '542132105462', '', '', 1, 'M', '2017-06-29', 1, 1, 1, 1, '', 'Some Descsss', 2, 1, 0, '0000-00-00 00:00:00', '2017-05-24 04:22:31', NULL, 1, 0),
+(3, 'Hospital Admin', 'LMS', 'hospitaladmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'NzZhZTNlYmRkMjZkY2ZiNjNhM2QyNjYyMzAwMjAyM2NjODk0ZmVlZDhkNzUxOTg1NGRmYmVhMjliMmY3ODM1MQ==', '', '1234561236', '542132105462', '', '', 1, 'M', '2017-06-29', 1, 1, 1, 1, '', 'Some Descsss', 2, 1, 0, '0000-00-00 00:00:00', '2017-05-24 04:22:31', NULL, 1, 0),
 (15, 'Medical', 'Lab', 'medicallab@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'MzVhZGU0NjgyMGFiMmYxYWU0MWRmMzUwOGFlYmIzMDE2Mjg5MGFhZDRiYjhkM2YyYzdjZGE3YzQwNGI3M2VmNw==', '4234- b123', '09099910272', '542132105463', NULL, NULL, 0, '', '1970-01-01', 1, 1, 1, 1, '', 'My Lab Desc.', 8, 1, 0, '2017-05-30 12:36:59', '2017-05-30 12:36:59', NULL, 1, 0),
 (14, 'Ravi', 'Prashad', 'medicalstore@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'OTVmOWRkNWEyZTFmNjRjNjJlOTM0MTUwNzI4MzQ5OWFhMjhiYmUxMTcwZjlhYjRkMzBhZjQxNDJjMGU2OTAxZg==', '2342- Jsdfa', '9099910273', '542132105464', NULL, NULL, 0, '', '0000-00-00', 1, 1, 1, 1, '', 'My Store Desc', 7, 1, 0, '2017-05-30 12:34:11', '2017-05-30 12:34:11', NULL, 1, 0),
 (13, 'Prakash', 'Reak', 'prakash@lms.com', 'e10adc3949ba59abbe56e057f20f883e', 'MWRhMTk2YmEwOTY1Y2IwYmI0YjcyZjAxZDYxMzYwODQxNGJmYWJkYmJjYjc4YTYxYmQyYzYwMWM4MGQ2MDBmYQ==', NULL, '991820012321', '3214098754122', NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 7, 0, 0, '2017-05-30 12:31:32', '2017-05-30 12:31:32', NULL, 1, 0),
@@ -1852,13 +2044,13 @@ INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password
 (24, 'Partik', 'Sharma', 'pratik@lms.com', 'e10adc3949ba59abbe56e057f20f883e', 'MjgyNzJiOTNkOGQ2NTQwZmJmNzljMzFmZDQxYzdiMDM4ZWQ2YjFhOGJkZDIyOTk4YTBlYzQ2ZmVkYWY4NWI0NA==', '', '81237123981', '82347123128', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'DES', 3, 0, 0, '2017-06-09 06:09:03', '2017-06-09 06:09:03', NULL, 1, 0),
 (25, 'Narshima', 'Ananya', 'nurse@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'ZmUwMDU1NTM1NGVjNjg0NzhlMTYyZmExNjczYzZjODQyN2YyMGY2NWI2NTc5OTYwODc1MjBjMGNmZDg4ZWI5OA==', '', '912031281123', '91231021931', NULL, NULL, 0, 'M', '1970-01-01', 1, 1, 1, 1, '', 'nURHWEMAES ', 4, 1, 0, '2017-06-09 06:11:18', '2017-06-09 06:11:18', NULL, 1, 0),
 (26, 'Patient', '', 'patient@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'NWZhNmNiODZmNThiNGQxZDIxMmM3YzRmMGY0M2M4YjRhMTdiOWVkYjE3ZTM3ZGU4OWJhZWY5NzBmZTdiM2YyYQ==', 'A-312 Avenue, NY-121', '9812831123', '12931892318', NULL, 'http://[::1]/GridFramework/Projects/Hospital_Managment_System/public/images/ux/26.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', 'Reg.', 6, 1, 0, '2017-06-09 06:13:06', '2017-06-09 06:13:06', NULL, 1, 0),
-(27, 'Manoj', 'Vyajpai', 'manoj@lms.com', 'e10adc3949ba59abbe56e057f20f883e', 'YjA2YmZmZmUwZWE5NWU4Yzg2MGYxNWJlYjY3ZmZiN2MwODU4NzQ3OGQxNmU5ZDk5ZjNlNjVkNWZhYTViOTYzNA==', '', '09099910277', '3214098754126', NULL, NULL, 0, 'F', '1970-01-01', 0, 0, 0, 0, '', 'All MEDs Available ', 7, 0, 0, '2017-06-09 06:17:52', '2017-06-09 06:17:52', NULL, 1, 0),
+(27, 'Manoj', 'Vyajpai', 'manoj@lms.com', '5e81f9859d223ea420aca993c647b839', 'YjA2YmZmZmUwZWE5NWU4Yzg2MGYxNWJlYjY3ZmZiN2MwODU4NzQ3OGQxNmU5ZDk5ZjNlNjVkNWZhYTViOTYzNA==', '', '09099910277', '3214098754126', NULL, NULL, 0, 'F', '1970-01-01', 0, 0, 0, 0, '', 'All MEDs Available ', 7, 1, 0, '2017-06-09 06:17:52', '2017-06-09 06:17:52', NULL, 1, 0),
 (28, 'Amit', 'patel', 'dr1ravi@lms.com', 'e10adc3949ba59abbe56e057f20f883e', 'MGQ2ODA2MjY0M2Q3YWUyNDY0ZTg5OGUxNmZjZWQyOTcyZTMwNzJkNmU1YWJmNjdmZGRkNmY0MjM0ZWVlOWUwMw==', '', '09099910271', '3214098754127', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 8, 0, 0, '2017-06-09 06:18:30', '2017-06-09 06:18:30', NULL, 1, 0),
 (30, 'Ranchi', 'Patel', 'mmh@gmail.com', '6a204bd89f3c8348afd5c77c717a097a', 'OTkwMTEyMDFjOTkxODcwM2NiNjNkNGU4M2QwODRjYzZhZTU1OWU0NGM1NzBmNDk4YWFjMDI1MzNmYjg0ZTNiZQ==', '', '9889988822', '1234565748', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'asdfasdf', 4, 0, 0, '2017-06-13 10:46:59', '2017-06-13 10:46:59', NULL, 1, 0),
 (31, 'Door', 'Ship', 'adsfasdf@gmail.com', '912ec803b2ce49e4a541068d495ab570', 'ZDM5ZmQ3ZDY0MjQzMGUzMmQ1OTUzODgzZjgyOTIyNzNmYmIwNGJmOTY0YWY2MzE3Yjk3ZDdkYzM2MWE5NmVjYg==', '', '7994558542', '777454848', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'ASdfas', 5, 0, 0, '2017-06-13 10:48:13', '2017-06-13 10:48:13', NULL, 1, 0),
 (32, 'tghh', 'hdfgdf', 'gsdfgsdfg', '97dec69bf52685aad08bbbf93226a928', 'ZjEzNzJmMWJmNDIyM2RiNTQ0MjkxMTA4ODIxODhjMGYyNDc3NzllOTlhNjE5NDgzNmY2MGE2NjZlYjA0MjE5Nw==', '', 'sdfgsdfgsdfg', 'sdfgsdf', NULL, NULL, 0, 'F', '2017-06-13', 0, 0, 0, 0, '', 'sdfsadfasd', 0, 0, 0, '2017-06-13 10:52:34', '2017-06-13 10:52:34', NULL, 1, 0),
 (33, 'Ramesh', 'Lalo', 'ramesh@ab.com', 'd41d8cd98f00b204e9800998ecf8427e', 'OTMxYmE2MzNhMWQwNTBlZGYwZTUxN2Y1ZjViZWY2OGJiYzdiZGZmMmJmNmIxNjkwMzg1YzM3MTIxMDk4ZDQ4Nw==', '', '9101283281', '12345676781', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD OF ALL', 3, 0, 0, '2017-06-15 05:43:57', '2017-06-15 05:43:57', NULL, 1, 0),
-(34, 'Jayes', 'Raval', 'jayes@hotmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'MWYwZWU3YWQzYzljOTQ3NjEwMDkwYTExOTZhYTgxNzk0ZWY5ZDZjZjllNzI2ZDg1NmVjMTJlNWM3N2ZlYWViZg==', '', '8191782382', '819127176', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'KSla', 6, 1, 0, '2017-06-15 08:32:35', '2017-06-15 08:32:35', NULL, 1, 0),
+(34, 'Jayes', 'Raval', 'jayes@hotmail.com', '4d069b4e77b1d1804bead1d3bea762b8', 'MWYwZWU3YWQzYzljOTQ3NjEwMDkwYTExOTZhYTgxNzk0ZWY5ZDZjZjllNzI2ZDg1NmVjMTJlNWM3N2ZlYWViZg==', '', '8191782382', '819127176', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'KSla', 6, 1, 0, '2017-06-15 08:32:35', '2017-06-15 08:32:35', NULL, 1, 0),
 (35, 'Umang', 'Shah', 'umang@lak.com', 'e10adc3949ba59abbe56e057f20f883e', 'MTk4YjY5OWIwZmVkMTZmMTUwMjdkNTQ5NDMxM2VhOThiMDkzODMxMWZhNTFhOGVjZjYwMDY4MzM4YzZmN2EzMQ==', '', '9081232132', '9812038912831', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'KLakal', 6, 0, 0, '2017-06-15 08:35:43', '2017-06-15 08:35:43', NULL, 1, 0),
 (36, 'Kamelsh', 'Klak', 'kamlesh@kga.com', 'e10adc3949ba59abbe56e057f20f883e', 'MGU0ZGFmNTQxMjUwMzBhZDdlYjkzYTg4MGM4N2NkZjBmNTFkMWMzNWE0ZTExZTgxMTVlNDIwM2FlZWMzZGNmMg==', '', '8902178654', '918028928', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '', 'Iopq', 6, 0, 0, '2017-06-15 08:40:35', '2017-06-15 08:40:35', NULL, 1, 0),
 (37, 'Mahesh', 'Lal', 'mahesh@la.com', 'e10adc3949ba59abbe56e057f20f883e', 'ZmZkZGYyMzk2ZDUyNDA5MDMwNGIzMjcyYTE0YzY2OTVkZjIyODY5MzE4MDYxYmVkNDRjYjc3YWIwNjVkNjI5MQ==', '', '9801232098', '98819281928', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'MD Skin', 3, 0, 0, '2017-06-15 08:51:13', '2017-06-15 08:51:13', NULL, 1, 0),
@@ -1976,7 +2168,8 @@ INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password
 (149, 'New', 'User', 'newuser@gmail', 'e10adc3949ba59abbe56e057f20f883e', 'NTdkNWNiZGQ3NTIwNDg0MDM3ZDBjM2IxYzI5Y2NmOGIzZGZjNjBiY2FlODVlYzUyNTQxM2M5YzVjNWYxYzYxOQ==', NULL, '9010901012', NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 6, 1, 0, '2017-09-15 05:42:32', '2017-09-15 05:42:32', '7063F2E2C8', 1, 0),
 (150, 'Amit', '', 'test@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'M2E2YmRjYjhmM2FiOTA3ZTQ3M2JiMzAzNDBjYjU1YmIxZmUxZWE5NGUxMmMwODFkZjk2NWVmNTUzNzRjOWRjOA==', NULL, '9099910272', NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', -1, 0, 0, '2017-09-23 06:04:05', '2017-09-23 06:04:05', 'F7A0212789', 1, 0),
 (154, 'New', '', 'ramesh@tc.com', 'e10adc3949ba59abbe56e057f20f883e', 'ZDMzYThlMjliZDQ1YWU1NWVmN2U4NTEyNGIyNmJkYTFlYzAwMDRmODc5NWE2ZDY0MmU2ZDAxZTI4ZjdjZGY4YQ==', NULL, '2132354123', NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 3, 1, 0, '2017-10-07 09:05:24', '2017-10-07 09:05:24', NULL, 1, 0),
-(153, 'Yogesh', '', 'patelyogeshawp@gmail.com', 'fcea920f7412b5da7be0cf42b8c93759', 'YzM2ZGVmNzkzOTk3M2I4ZWVkZTYxZGYwNjYwZDU0NzZiOTVjZDlmNDc0MzUwZDE3M2Y3ODU3YjNkYTBhMzAyYg==', NULL, '9099910278', NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 6, 1, 0, '2017-09-25 05:34:51', '2017-09-25 05:34:51', NULL, 1, 0);
+(153, 'Yogesh', '', 'patelyogeshawp@gmail.com', 'fcea920f7412b5da7be0cf42b8c93759', 'YzM2ZGVmNzkzOTk3M2I4ZWVkZTYxZGYwNjYwZDU0NzZiOTVjZDlmNDc0MzUwZDE3M2Y3ODU3YjNkYTBhMzAyYg==', NULL, '9099910278', NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 6, 1, 0, '2017-09-25 05:34:51', '2017-09-25 05:34:51', NULL, 1, 0),
+(155, 'Twinkal ', 'Patel', 'twin@gmail.com', '00bc971f92dd0b23e4a68dfe095d3173', 'N2I2NTIwN2NhYjY4ODM2NTM3YTE0NGYwYWZlOTQ2M2U2YjhlNTZkZjJkZDZiNGI3MTI0ZmUxZWMxNmNiOGY3NA==', 'Ahmedabad', '9737420101', '12301204578012', NULL, 'http://localhost/mypulse/public/images/ux/155.png', 0, 'F', '1996-02-16', 1, 1, 1, 1, '', 'Doctor', 3, 0, 0, '2017-10-24 14:27:30', '2017-10-24 12:27:30', '9665F52C11', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -1984,17 +2177,15 @@ INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password
 -- Table structure for table `hms_wards`
 --
 
-DROP TABLE IF EXISTS `hms_wards`;
-CREATE TABLE IF NOT EXISTS `hms_wards` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `hms_wards` (
+  `id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
   `ward_name` varchar(250) NOT NULL,
   `isActive` tinyint(4) NOT NULL DEFAULT '1',
   `isDeleted` tinyint(4) NOT NULL DEFAULT '0',
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
+  `created_at` datetime NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hms_wards`
@@ -2103,6 +2294,392 @@ INSERT INTO `hms_wards` (`id`, `department_id`, `ward_name`, `isActive`, `isDele
 (100, 24, 'SQ6', 1, 0, '2017-06-20 13:38:26', '0000-00-00 00:00:00'),
 (101, 37, 'BV0', 1, 0, '2017-06-20 13:38:26', '0000-00-00 00:00:00'),
 (102, 68, 'CY3', 1, 0, '2017-06-20 13:38:26', '0000-00-00 00:00:00');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `hms_activitylog`
+--
+ALTER TABLE `hms_activitylog`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_appoitments`
+--
+ALTER TABLE `hms_appoitments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_availability`
+--
+ALTER TABLE `hms_availability`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_beds`
+--
+ALTER TABLE `hms_beds`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_branches`
+--
+ALTER TABLE `hms_branches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_charges`
+--
+ALTER TABLE `hms_charges`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_city`
+--
+ALTER TABLE `hms_city`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_country`
+--
+ALTER TABLE `hms_country`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_departments`
+--
+ALTER TABLE `hms_departments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_district`
+--
+ALTER TABLE `hms_district`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_doctors`
+--
+ALTER TABLE `hms_doctors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_healthinsuranceprovider`
+--
+ALTER TABLE `hms_healthinsuranceprovider`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_healthrecords`
+--
+ALTER TABLE `hms_healthrecords`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_hospitals`
+--
+ALTER TABLE `hms_hospitals`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_hospital_admin`
+--
+ALTER TABLE `hms_hospital_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_inpatient`
+--
+ALTER TABLE `hms_inpatient`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_inpatient_history`
+--
+ALTER TABLE `hms_inpatient_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_license`
+--
+ALTER TABLE `hms_license`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_medical_lab`
+--
+ALTER TABLE `hms_medical_lab`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_medical_report`
+--
+ALTER TABLE `hms_medical_report`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_medical_report_file`
+--
+ALTER TABLE `hms_medical_report_file`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_medical_store`
+--
+ALTER TABLE `hms_medical_store`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_messages`
+--
+ALTER TABLE `hms_messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_notification`
+--
+ALTER TABLE `hms_notification`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_nurse`
+--
+ALTER TABLE `hms_nurse`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_prescription`
+--
+ALTER TABLE `hms_prescription`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_prescription_item`
+--
+ALTER TABLE `hms_prescription_item`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_prescription_order_receipt`
+--
+ALTER TABLE `hms_prescription_order_receipt`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_receptionist`
+--
+ALTER TABLE `hms_receptionist`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_recommend_appointments`
+--
+ALTER TABLE `hms_recommend_appointments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_state`
+--
+ALTER TABLE `hms_state`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_test`
+--
+ALTER TABLE `hms_test`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `hms_users`
+--
+ALTER TABLE `hms_users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `usernemail` (`useremail`),
+  ADD UNIQUE KEY `mobile` (`mobile`),
+  ADD UNIQUE KEY `aadhaar_number` (`aadhaar_number`);
+
+--
+-- Indexes for table `hms_wards`
+--
+ALTER TABLE `hms_wards`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `hms_activitylog`
+--
+ALTER TABLE `hms_activitylog`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+--
+-- AUTO_INCREMENT for table `hms_appoitments`
+--
+ALTER TABLE `hms_appoitments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `hms_availability`
+--
+ALTER TABLE `hms_availability`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+--
+-- AUTO_INCREMENT for table `hms_beds`
+--
+ALTER TABLE `hms_beds`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+--
+-- AUTO_INCREMENT for table `hms_branches`
+--
+ALTER TABLE `hms_branches`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+--
+-- AUTO_INCREMENT for table `hms_charges`
+--
+ALTER TABLE `hms_charges`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+--
+-- AUTO_INCREMENT for table `hms_city`
+--
+ALTER TABLE `hms_city`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `hms_country`
+--
+ALTER TABLE `hms_country`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `hms_departments`
+--
+ALTER TABLE `hms_departments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+--
+-- AUTO_INCREMENT for table `hms_district`
+--
+ALTER TABLE `hms_district`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `hms_doctors`
+--
+ALTER TABLE `hms_doctors`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+--
+-- AUTO_INCREMENT for table `hms_healthinsuranceprovider`
+--
+ALTER TABLE `hms_healthinsuranceprovider`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `hms_healthrecords`
+--
+ALTER TABLE `hms_healthrecords`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `hms_hospitals`
+--
+ALTER TABLE `hms_hospitals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+--
+-- AUTO_INCREMENT for table `hms_hospital_admin`
+--
+ALTER TABLE `hms_hospital_admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `hms_inpatient`
+--
+ALTER TABLE `hms_inpatient`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `hms_inpatient_history`
+--
+ALTER TABLE `hms_inpatient_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `hms_license`
+--
+ALTER TABLE `hms_license`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `hms_medical_lab`
+--
+ALTER TABLE `hms_medical_lab`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `hms_medical_report`
+--
+ALTER TABLE `hms_medical_report`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `hms_medical_report_file`
+--
+ALTER TABLE `hms_medical_report_file`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `hms_medical_store`
+--
+ALTER TABLE `hms_medical_store`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `hms_messages`
+--
+ALTER TABLE `hms_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT for table `hms_notification`
+--
+ALTER TABLE `hms_notification`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=273;
+--
+-- AUTO_INCREMENT for table `hms_nurse`
+--
+ALTER TABLE `hms_nurse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+--
+-- AUTO_INCREMENT for table `hms_prescription`
+--
+ALTER TABLE `hms_prescription`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `hms_prescription_item`
+--
+ALTER TABLE `hms_prescription_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `hms_prescription_order_receipt`
+--
+ALTER TABLE `hms_prescription_order_receipt`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `hms_receptionist`
+--
+ALTER TABLE `hms_receptionist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `hms_recommend_appointments`
+--
+ALTER TABLE `hms_recommend_appointments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `hms_state`
+--
+ALTER TABLE `hms_state`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+--
+-- AUTO_INCREMENT for table `hms_test`
+--
+ALTER TABLE `hms_test`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `hms_users`
+--
+ALTER TABLE `hms_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+--
+-- AUTO_INCREMENT for table `hms_wards`
+--
+ALTER TABLE `hms_wards`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -44,6 +44,8 @@ class Charges_model extends CI_Model {
         $data["created_at"] = date("Y-m-d H:i:s");
         //$data['hospital_id'] = $this->auth->getHospitalId();
         if ($this->db->insert($this->tblname, $data)) {
+			$id = $this->db->insert_id();
+			$this->logger->log("New charge created", Logger::Charge, $id);
             return true;
         } else {
             return false;
@@ -57,6 +59,7 @@ class Charges_model extends CI_Model {
         if (isset($data["charge"])) $data["charge"] = floatval($data["charge"]);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+			$this->logger->log("Charge updated", Logger::Charge, $id);
             return true;
         } else {
             return false;
@@ -70,7 +73,14 @@ class Charges_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
-            return true;
+			if(is_array($id)){
+				foreach($id as $i){
+					$this->logger->log("Charge soft deleted", Logger::Charge, $i);
+				}
+			}else{
+				$this->logger->log("Charge soft deleted", Logger::Charge, $id);
+			}
+			return true;
         } else return false;
     }
 }

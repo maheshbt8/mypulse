@@ -59,11 +59,14 @@ class Patient_model extends CI_Model {
         if($temp->num_rows() > 0){
             $this->db->where('user_id',$id);
             $this->db->update($this->healthTbl,$hr);
+			$this->logger->log("Patient health information updated", Logger::Patient, $id);
+			
             //sent notification to patient
             $this->notification->saveNotification($id,"Your health information is updated");
         }else{
             $hr['user_id'] = $id;
             $this->db->insert($this->healthTbl,$hr);
+			$this->logger->log("Patient health information added", Logger::Patient, $$hr['user_id']);
             //sent notification to patient
             $this->notification->saveNotification($id,"Some health data are added in your helth information");
         }   
@@ -312,6 +315,7 @@ class Patient_model extends CI_Model {
     public function updateMedOrder($id,$item){
         $this->db->where('id',$id);
         $this->db->update('hms_prescription_item',$item);
+		
     }
 
     public function placeMedOrder($pric_id,$med_id){

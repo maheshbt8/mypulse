@@ -85,6 +85,9 @@ class Departments_model extends CI_Model {
         unset($data['selected_bid']);
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+			$id = $this->db->insert_id();
+			$this->logger->log("New department: ".$data['department_name']." created", Logger::Department, $id);
+			
             if($this->auth->isSuperAdmin()) {
                 //find branch name
                 $this->db->where('id', $data['branch_id']);
@@ -107,6 +110,8 @@ class Departments_model extends CI_Model {
         unset($data['selected_bid']);
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+			$this->logger->log("Department: ".$data['department_name']." updated", Logger::Department, $id);
+			
             if($this->auth->isSuperAdmin()) {
                 //find branch name
                 $this->db->where('id', $data['branch_id']);
@@ -130,6 +135,13 @@ class Departments_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			if(is_array($id)){
+				foreach($id as $i){
+					$this->logger->log("Department soft deleted", Logger::Department, $i);
+				}
+			}else{
+				$this->logger->log("Department soft deleted", Logger::Department, $id);
+			}
             return true;
         } else return false;
     }

@@ -74,12 +74,22 @@ $this->load->view("template/left.php");
 <script type="text/javascript">
     
     $(document).ready(function(){
+		
+		var status = "";
+		
+		<?php 
+			if(isset($_GET['s'])){
+		?>
+			status = '<?php echo intval($_GET['s']); ?>';
+		<?php
+			}
+		?>
 
         $("#reports").dataTable().fnDestroy();
         $("#reports").DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/medical_lab/getDTreports"
+            "ajax": "<?php echo site_url(); ?>/medical_lab/getDTreports?s="+status
         });
 
         $(".dataTables_filter").attr("style","display: flex;float: right");

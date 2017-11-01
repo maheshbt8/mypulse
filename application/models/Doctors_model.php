@@ -111,6 +111,9 @@ class Doctors_model extends CI_Model {
             if(isset($data['isActive']))
                 $doc['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $doc)) {
+				$id = $this->db->insert_id();
+				$this->logger->log("New doctor added", Logger::Doctor, $id);
+				
                 //get hospital name
                 $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
                 //sent notification to doctor
@@ -177,6 +180,7 @@ class Doctors_model extends CI_Model {
             if(count($doc) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $doc)) {
+					$this->logger->log("Doctor details updated", Logger::Doctor, $id);
                     return true;
                 } else {
                     return false;
@@ -201,6 +205,7 @@ class Doctors_model extends CI_Model {
         if(count($doc) > 0){
             $this->db->where("id", $id);
             if ($this->db->update($this->tblname, $doc)) {
+				$this->logger->log("Doctor details updated", Logger::Doctor, $id);
                 return true;
             } else {
                 return false;
@@ -216,6 +221,13 @@ class Doctors_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			if(is_array($id)){
+				foreach($id as $i){
+					$this->logger->log("Doctor details soft deleted", Logger::Doctor, $i);
+				}
+			}else{
+				$this->logger->log("Doctor details soft deleted", Logger::Doctor, $id);
+			}
             return true;
         } else return false;
     }
@@ -228,6 +240,13 @@ class Doctors_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update("hms_availability", $d)) {
+			if(is_array($id)){
+				foreach($id as $i){
+					$this->logger->log("Doctor availability soft deleted", Logger::Availability, $i);
+				}
+			}else{
+				$this->logger->log("Doctor availability soft deleted", Logger::Availability, $id);
+			}
             return true;
         } else return false;
     }
@@ -242,6 +261,7 @@ class Doctors_model extends CI_Model {
         if($date){
             $new['start_date'] = $date;
             return $this->db->insert('hms_availability',$new);
+			$this->logger->log("Doctor availability updated,", Logger::Availability, $id);
         }
         return false;
     }
@@ -389,6 +409,8 @@ class Doctors_model extends CI_Model {
                 
                 $this->db->where('id',$res['id']);
                 $this->db->update('hms_availability',$data);
+				$this->logger->log("Doctor availability updated", Logger::Availability, $res['id']);
+				
                 if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                     //send notification to doctor
                     $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
@@ -408,6 +430,9 @@ class Doctors_model extends CI_Model {
             }else{
                 //var_dump($data);
                 $this->db->insert('hms_availability',$data);
+				$id = $this->db->insert_id();
+				$this->logger->log("Doctor availability inserted", Logger::Availability, $id);
+				
                 if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                     //send notification to doctor
                     $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
@@ -440,6 +465,8 @@ class Doctors_model extends CI_Model {
                     if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
                         $this->db->where('id',$_POST['eidt_gf_id']);
                         $this->db->update('hms_availability',$data);
+						$this->logger->log("Doctor availability updated", Logger::Availability, $_POST['eidt_gf_id']);
+						
                         if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                             //send notification to doctor
                             $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
@@ -459,6 +486,9 @@ class Doctors_model extends CI_Model {
                     }
                     else{
                         $this->db->insert('hms_availability',$data);
+						$id = $this->db->insert_id();
+						$this->logger->log("Doctor availability inserted", Logger::Availability, $id);
+						
                         if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                             //send notification to doctor
                             $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
@@ -489,6 +519,8 @@ class Doctors_model extends CI_Model {
                 if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
                     $this->db->where('id',$_POST['eidt_gf_id']);
                     $this->db->update('hms_availability',$data);
+					$this->logger->log("Doctor availability updated", Logger::Availability, $_POST['eidt_gf_id']);
+					
                     if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                         //send notification to doctor
                         $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
@@ -508,6 +540,9 @@ class Doctors_model extends CI_Model {
                 }
                 else{
                     $this->db->insert('hms_availability',$data);
+					$id = $this->db->insert_id();
+					$this->logger->log("Doctor availability inserted", Logger::Availability, $id);
+					
                     if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                         //send notification to doctor
                         $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
@@ -536,6 +571,8 @@ class Doctors_model extends CI_Model {
                 if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){
                     $this->db->where('id',$_POST['eidt_gf_id']);
                     $this->db->update('hms_availability',$data);
+					$this->logger->log("Doctor availability updated", Logger::Availability, $_POST['eidt_gf_id']);
+					
                     if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                         //send notification to doctor
                         $this->notification->saveNotification($doctor['user_id'], "Your Availability is updated");
@@ -555,6 +592,9 @@ class Doctors_model extends CI_Model {
                 }
                 else{
                     $this->db->insert('hms_availability',$data);
+					$id = $this->db->insert_id();
+					$this->logger->log("Doctor availability inserted", Logger::Availability, $id);
+					
                     if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                         //send notification to doctor
                         $this->notification->saveNotification($doctor['user_id'], "Your new availability is added ");
@@ -712,7 +752,8 @@ class Doctors_model extends CI_Model {
         $data['availability_text'] = $_POST['availability_text'];
         $this->db->where('id',$docid);
         $this->db->update($this->tblname,$data);
-
+		$this->logger->log("Doctor Other settings updated regarding availability", Logger::Doctor, $docid);
+		
         //find doctor user_id
         $this->db->where('id', $docid);
         $doctor = $this->db->get($this->tblname)->row_array();
@@ -790,13 +831,18 @@ class Doctors_model extends CI_Model {
         if(!$isEdit){
             $this->db->insert('hms_prescription',$pre);
             $pid = $this->db->insert_id();
+			$this->logger->log("prescription added", Logger::Prescription, $pid);
+			
             $this->db->where('id',$pre['appoitment_id']);
             $this->db->update('hms_appoitments',array('status'=>3));
+			$this->logger->log("Appointment status changed", Logger::Appointment, $pre['appoitment_id']);
             $pre['patient_id']=$_POST['patient_id'];
             $this->notification->saveNotification($pre['patient_id'],"Some prescriptions are added in your profile ");
         }else{
             $this->db->where('id',$pid);
             $this->db->update('hms_prescription',$pre);
+			$this->logger->log("prescription updated", Logger::Prescription, $pid);
+			
             $pre['patient_id']=$_POST['patient_id'];
             $this->notification->saveNotification($pre['patient_id'],"Your prescription information is updated");
         }
@@ -804,6 +850,16 @@ class Doctors_model extends CI_Model {
         $this->addMedicalReport($pid);
        
     }
+	
+	public function addRecommendNextDate($data){
+		$this->db->insert('hms_recommend_appointments',$data);
+		//log
+		$id = $this->db->insert_id();
+		$this->logger->log("Recommned next appointment date added in appointment", Logger::RecommnedDate, $id);
+		//send notification to patient
+		$app_number = $this->db->query("select appoitment_number from hms_appoitments where id=".$data['appointment_id'])->row_array();
+		$this->notification->saveNotification($data['user_id'], "Recommned next appointment date added in you appointment <br>Appointment Number: <b>".$app_number['appoitment_number']."</b>");
+	}
 
     public function addPatient(){
         $uid = $this->auth->getDoctorId();
@@ -826,7 +882,9 @@ class Doctors_model extends CI_Model {
                 'status'=>$this->input->post('ptStatus')
                 );
             $this->db->insert('hms_inpatient',$data);
-
+			$id = $this->db->insert_id();
+			$this->logger->log("New patient added in Inpatient", Logger::Inpatient, $id);
+			
             // get patient name using user_id from user tbl
             $this->db->where('id', $data['user_id']);
             $pname = $this->db->get('hms_users')->row_array();
@@ -872,6 +930,7 @@ class Doctors_model extends CI_Model {
             $this->db->set($data);
             $this->db->where('id',$id);
             $this->db->update('hms_inpatient');
+			$this->logger->log("Patient Inpatient history updated", Logger::Inpatient, $id);
             // $this->db->replace('hms_inpatient', $data);
 
             // get patient name using user_id from user tbl
@@ -904,8 +963,11 @@ class Doctors_model extends CI_Model {
             if(isset($_POST['item_id'][$i]) && $_POST['item_id'][$i]!=""){
                 $this->db->where('id',$_POST['item_id'][$i]);
                 $this->db->update('hms_medical_report',$item);
+				$this->logger->log("Medical report updated", Logger::Medicalreport, $_POST['item_id'][$i]);
             }else{
                 $this->db->insert('hms_medical_report',$item);
+				$id = $this->db->insert_id();
+				$this->logger->log("Medical report added", Logger::Medicalreport, $id);
             }
         }
     }
@@ -927,8 +989,12 @@ class Doctors_model extends CI_Model {
             if(isset($_POST['item_id'][$i]) && $_POST['item_id'][$i]!=""){
                 $this->db->where('id',$_POST['item_id'][$i]);
                 $this->db->update('hms_prescription_item',$item);
+				$this->logger->log("Prescription items updated", Logger::Prescription_items, $_POST['item_id'][$i]);
+				
             }else{
                 $this->db->insert('hms_prescription_item',$item);
+				$id = $this->db->insert_id();
+				$this->logger->log("Prescription items added", Logger::Prescription_items, $id);
             }
         }
     }

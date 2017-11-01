@@ -12,6 +12,14 @@ class Medical_lab extends CI_Controller {
         $this->load->model("users_model");
         $this->load->model("doctors_model");
     }
+	public function patient(){
+        if ($this->auth->isLoggedIn()) {
+            $this->load->view('Medical_lab/patient');
+        }
+        else{
+            redirect('index');
+        }
+    }
     public function index() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['medical_labs'] = $this->medical_lab_model->getAllmedical_lab();
@@ -158,7 +166,7 @@ class Medical_lab extends CI_Controller {
                 }
             }));
             $cond[] = "isDeleted=0";
-            $cond[] = "patient_id=".$paitnet_id;
+            $cond[] = "patient_id=".$paitnet_id;			
             $this->tbl->setCheckboxColumn(false);
             $this->tbl->setIndexColumn(true);
             $this->tbl->setTwID(implode(' AND ',$cond));
@@ -193,6 +201,13 @@ class Medical_lab extends CI_Controller {
             }));
             $cond[] = "isDeleted=0";
             $cond[] = "medical_lab_id=".$this->auth->getMyLabId();
+			
+			$status = isset($_GET['s']) ? $_GET['s'] : false;
+			
+			if($status !== false && $status != ""){
+				$cond[] = "status=$status";
+			}
+			
             $this->tbl->setCheckboxColumn(false);
             $this->tbl->setIndexColumn(false);
             $this->tbl->setTwID(implode(' AND ',$cond));
@@ -260,6 +275,43 @@ class Medical_lab extends CI_Controller {
             }
             $this->tbl->setTwID(implode(' AND ',$cond));
 
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+	
+	public function getDTPatients() {
+        if ($this->auth->isLoggedIn() ) {
+            $this->load->library("tbl");
+            $table = "hms_users";
+            $primaryKey = "id";
+            $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
+                $user = $this->users_model->getusersById($row['id']);
+                $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
+                return "<a href='mailto:$d' >".$d."</a>";
+            }), array("db" => "mobile", "dt" => 2, "formatter" => function ($d, $row) {
+               return $d;
+            }));
+            $cond = array("role=".$this->auth->getPatientRoleType());
+            
+			$ids = $this->medical_lab_model->getMyPatientsIds();
+			if(count($ids) == 0) { $ids[] = -1; }
+			$ids = implode(",",$ids);
+			$cond[] = "id in ($ids)";
+
+			$this->tbl->setCheckboxColumn(false);
+            $this->tbl->setIndexColumn(true);
+			
+            $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

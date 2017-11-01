@@ -29,6 +29,20 @@ class Medical_lab_model extends CI_Model {
         }
         return 0;
     }
+	function getMyPatientsIds(){
+		$lab_id = $this->getMyId();
+		$this->db->distinct();
+		$this->db->where('medical_lab_id',$lab_id);
+		$this->db->where("isDeleted",0);
+		$this->db->select('patient_id');
+		$pids = $this->db->get('hms_medical_report');
+		$pids = $pids->result_array();
+		$ids = array();
+		foreach($pids as $p){
+			$ids[] = $p['patient_id'];
+		}
+		return $ids;
+	}
     function getmedical_labById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -75,6 +89,8 @@ class Medical_lab_model extends CI_Model {
             $d['file_path'] = $paths[$i];
             $d['file_type'] = $types[$i];
             $this->db->insert('hms_medical_report_file',$d);
+			$id = $this->db->insert_id();
+			$this->logger->log("New medical report file added", Logger::Medicalreport, $id);
         }
         if(count($urls) > 0){
             $this->db->where('id',$id);
@@ -108,7 +124,8 @@ class Medical_lab_model extends CI_Model {
 
         @unlink($d['file_path']);
         $this->db->query("delete from hms_medical_report_file where id=$id");
-
+		$this->logger->log("Medical report file deleted", Logger::Medicalreport, $id);
+		
         $this->db->where('medical_report_id',$med_r_id);
         $c = $this->db->get('hms_medical_report_file');
         if($c->num_rows() == 0){
@@ -162,6 +179,9 @@ class Medical_lab_model extends CI_Model {
             if(isset($data['isActive']))
                 $mlab['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $mlab)) {
+				$id = $this->db->insert_id();
+				$this->logger->log("New medical lab added", Logger::MedicalLab, $id);
+				
                 //find hospital name
                 $this->db->where('id', $data['hospital_id']);
                 $hospital = $this->db->get('hms_hospitals')->row_array();
@@ -241,6 +261,8 @@ class Medical_lab_model extends CI_Model {
             if(count($mlab) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mlab)) {
+					$this->logger->log("Medical lab details updated", Logger::MedicalLab, $id);
+					
                     if (!$this->auth->isMedicalLab()) {
                         // sent notification to medical_lab incharge
                         $this->notification->saveNotification($usr['user_id'], "Your profile is updated");
@@ -261,6 +283,7 @@ class Medical_lab_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Medical lab deleted", Logger::MedicalLab, $id);
             return true;
         } else return false;
     }

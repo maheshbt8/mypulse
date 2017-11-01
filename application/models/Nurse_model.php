@@ -97,6 +97,9 @@ class Nurse_model extends CI_Model {
             if(isset($data['isActive']))
                 $nurse['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $nurse)) {
+				$id = $this->db->insert_id();
+				$this->logger->log("New nurse added", Logger::Nurse, $id);
+				
                 //get hospital name
                 $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
                 //sent notification to nurse
@@ -151,6 +154,7 @@ class Nurse_model extends CI_Model {
             if(count($nus) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $nus)) {
+					$this->logger->log("Nurse details updated", Logger::Nurse, $id);
                     return true;
                 } else {
                     return false;
@@ -167,6 +171,7 @@ class Nurse_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Nurse details soft deleted", Logger::Nurse, $id);
             return true;
         } else return false;
     }
@@ -200,6 +205,7 @@ class Nurse_model extends CI_Model {
         if(count($arr) > 0){
             $this->db->where("id", $id);
             if ($this->db->update($this->tblname, $arr)) {
+				$this->logger->log("Nurse profile updated", Logger::Nurse, $id);
                 return true;
             }
         }
@@ -260,7 +266,8 @@ class Nurse_model extends CI_Model {
          $this->db->set($data);
          $this->db->where('id',$id);
          $this->db->update('hms_inpatient');
-
+		 $this->logger->log("Patient Inpatient history updated", Logger::Inpatient, $id);
+		 
          //get inpatient data where id=in_patient_id
          $this->db->where('id', $id);
          $inpatient = $this->db->get('hms_inpatient')->row_array();
