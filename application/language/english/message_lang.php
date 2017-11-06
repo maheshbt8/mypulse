@@ -227,11 +227,11 @@ $lang['unregUser'] = "unregistered  User";
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appointment",//(Raj: Correct the label too)
-	"save" => "Save";
+	"save" => "Save",
     "delete" => "Delete",
     "export" => "Export",
     'cancel' => 'Cancel',
-	'send' => 'Send';
+	'send' => 'Send',
     'done' => 'Done',
     'update' => "Update",
     'reject' => 'Reject',
@@ -243,7 +243,7 @@ $lang['buttons'] = array(
 	'close' => 'Close',
 	'reset' => 'Reset',
 	'login' => 'Login',
-	'register' => 'Register'
+	'register' => 'Register',
 	'back' => 'Back',
     'newPrescription' => 'New Prescription',
     'newpatient' => 'New Inpatient',
@@ -257,7 +257,7 @@ $lang['buttons'] = array(
 	'all_doctor' => 'All Doctors',
 	'all_patients' => 'All Patients',
 	'all_staff' => 'All Staff',
-	'send_verification_email' = "Send Verification Email";
+	'send_verification_email' => "Send Verification Email"
     
 );
 //End Buttons
@@ -317,7 +317,7 @@ $lang['tableHeaders'] = array(
 //End Table Headings
 
 $lang['labels'] = array(
-	'sign_up' = > "Sign Up",
+	'sign_up' => "Sign Up",
 	'user' => "User",
     'name' => "Name",
     'address' => 'Address',
@@ -478,7 +478,7 @@ $lang['labels'] = array(
 	'to' => 'To',
 	'from' => 'From',
 	'title' => 'Title',
-	'message' => 'Message';
+	'message' => 'Message'
 );
 //End Labels
 
