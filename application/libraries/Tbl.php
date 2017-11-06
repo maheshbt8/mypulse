@@ -237,14 +237,14 @@ class Tbl {
 		$data = array();
 		if($getAllData){
 			$data = self::sql_exec( $db, $bindings,
-				"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+				"SELECT *,`".implode("`, `", self::pluck($columns, 'db'))."`
 				FROM `$table`
 				$where
 				$order"
 			);
 		}else{
 			$data = self::sql_exec( $db, $bindings,
-				"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+				"SELECT *,`".implode("`, `", self::pluck($columns, 'db'))."`
 				FROM `$table`
 				$where
 				$order
