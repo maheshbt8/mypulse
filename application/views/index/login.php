@@ -66,7 +66,7 @@
                     <label for="checkbox2"><?php echo $this->lang->line('remember_me');?></label>
                 </div>
             </div>
-            <button><?php echo $this->lang->line('login');?></button>
+            <button><?php echo $this->lang->line('buttons')['login'];?></button>
             <div class="forgetPassword"><a href="javascript:void(0)"><?php echo $this->lang->line('forgot_your_password');?></a>
             </div>
             <div class="signup"><a href="javascript:void(0)"><?php echo $this->lang->line('do_not_have_account');?></a>

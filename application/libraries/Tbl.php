@@ -213,9 +213,10 @@ class Tbl {
 	 *  @param  string $table SQL table to query
 	 *  @param  string $primaryKey Primary key of the table
 	 *  @param  array $columns Column information array
+	 *  @param  boolean $getAllData get all data
 	 *  @return array          Server-side processing response array
 	 */
-	static function simple ( $request, $conn, $table, $primaryKey, $columns )
+	static function simple ( $request, $conn, $table, $primaryKey, $columns, $getAllData=false )
 	{
 		$bindings = array();
 		$db = self::db( $conn );
@@ -223,19 +224,34 @@ class Tbl {
 		$limit = self::limit( $request, $columns );
 		$order = self::order( $request, $columns );
 		$where = self::filter( $request, $columns, $bindings );
+
+		//echo "<pre>";
+		//var_dump($where);exit;
 		// Main query to actually get the data
 		/*var_dump("SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
 			 FROM `$table`
 			 $where
 			 $order
 			 $limit");exit;*/
-		$data = self::sql_exec( $db, $bindings,
-			"SELECT *
-			 FROM `$table`
-			 $where
-			 $order
-			 $limit"
-		);
+
+		$data = array();
+		if($getAllData){
+			$data = self::sql_exec( $db, $bindings,
+				"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+				FROM `$table`
+				$where
+				$order"
+			);
+		}else{
+			$data = self::sql_exec( $db, $bindings,
+				"SELECT `".implode("`, `", self::pluck($columns, 'db'))."`
+				FROM `$table`
+				$where
+				$order
+				$limit"
+			);
+		}	 
+		
 		// Data set length after filtering
 		$resFilterLength = self::sql_exec( $db, $bindings,
 			"SELECT COUNT(`{$primaryKey}`)

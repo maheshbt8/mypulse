@@ -87,6 +87,20 @@ class Index extends CI_Controller {
 		}
 	}
 
+	function testdt(){
+		$this->load->view('testdt');
+	}
+
+	function getDataTabedoctors(){
+		$this->load->library('datatables');
+		$this->datatables
+			->select('user_id, department_id, department_id, department_id, isActive, id')
+			->from('hms_doctors')
+			->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'id');
+
+		echo $this->datatables->generate();
+	}
+
 	function sendmsg()
     {
         if($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isDoctor() )){

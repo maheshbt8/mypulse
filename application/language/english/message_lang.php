@@ -96,6 +96,7 @@ $lang['remember_me'] = "Remember Me";
 $lang['forgot_your_password'] = "Forgot Your Password?";
 $lang['do_not_have_account'] = "Don't Have Account? Sign Up";
 $lang['enter_email_to_reset_password'] = "Enter your e-mail address below to reset your password";
+$lang['complete_registration_by_selecting_role'] = "Complete registration by selection your User role.";
 
 
 $lang['roles'] = array(
@@ -228,11 +229,11 @@ $lang['unregUser'] = "unregistered  User";
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appointment",//(Raj: Correct the label too)
-	"save" => "Save";
+	"save" => "Save",
     "delete" => "Delete",
     "export" => "Export",
     'cancel' => 'Cancel',
-	'send' => 'Send';
+	'send' => 'Send',
     'done' => 'Done',
     'update' => "Update",
     'reject' => 'Reject',
@@ -244,7 +245,7 @@ $lang['buttons'] = array(
 	'close' => 'Close',
 	'reset' => 'Reset',
 	'login' => 'Login',
-	'register' => 'Register'
+	'register' => 'Register',
 	'back' => 'Back',
     'newPrescription' => 'New Prescription',
     'newpatient' => 'New Inpatient',
@@ -258,7 +259,8 @@ $lang['buttons'] = array(
 	'all_doctor' => 'All Doctors',
 	'all_patients' => 'All Patients',
 	'all_staff' => 'All Staff',
-	'send_verification_email' = "Send Verification Email";
+	'send_verification_email' => "Send Verification Email",
+	"change_password" => "Change Password",
     
 );
 //End Buttons
@@ -318,7 +320,7 @@ $lang['tableHeaders'] = array(
 //End Table Headings
 
 $lang['labels'] = array(
-	'sign_up' = > "Sign Up",
+	'sign_up' => "Sign Up",
 	'user' => "User",
     'name' => "Name",
     'address' => 'Address',
@@ -484,8 +486,8 @@ $lang['labels'] = array(
 	'to' => 'To',
 	'from' => 'From',
 	'title' => 'Title',
-	'message' => 'Message';
 	'register_as' => 'Register As',
+	'message' => 'Message'
 );
 //End Labels
 

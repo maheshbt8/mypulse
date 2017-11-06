@@ -229,26 +229,41 @@ class Appoitments extends CI_Controller {
                 $cond[] = "appoitment_date between '$sdate' and '$edate'";
             }
 
-            $isExport = isset($_GET['ex']) ? $_GET['ex'] : false;
-            if($isExport){
-                $this->tbl->setIndexColumn(true);
+            $isExport = isset($_GET['mpexp']) ? intval($_GET['mpexp']) : false;
+            if($isExport === 1){
+                $this->tbl->setIndexColumn(false);
                 $this->tbl->setCheckboxColumn(false);
+
                 $columns[0] = array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
                     return $d;
                 });
                 $columns[6] = array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
                     return $this->auth->getAppoitmentStatus($d,true);
                 });
-                $columns[7] = array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
-                    return "";
-                });
+                unset($columns[7]);
             }
 
             $this->tbl->setTwID(implode(' AND ',$cond));
 
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            $data = $this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns);
+
+            if($isExport ===1) {
+                $ext = isset($_GET['mpexpt']) ? $_GET['mpexpt'] : "xlsx";
+                $clms = array(
+                    array("name"=>"No.", "width"=> 10),
+                    array("name"=>$this->lang->line('tableHeaders')['hospital_branch'],"width"=> 40),
+                    array("name"=>$this->lang->line('tableHeaders')['department'],"width"=> 30),
+                    array("name"=>$this->lang->line('tableHeaders')['doctor'],"width"=> 30),
+                    array("name"=>$this->lang->line('tableHeaders')['appoitment_date'],"width"=> 30),
+                    array("name"=>$this->lang->line('tableHeaders')['appoitment_sloat'],"width"=> 30),
+                    array("name"=>$this->lang->line('tableHeaders')['status'], "width"=> 20)
+                );
+                $this->auth->export($data['data'],$clms,$ext,$table);
+            }else{
+                echo json_encode($data);
+            }
         }
     }
 

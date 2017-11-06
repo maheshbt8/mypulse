@@ -46,10 +46,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button class="btn btn-primary" style="margin-left:15px" type="submit">Save</button>
+                        <button class="btn btn-primary" style="margin-left:15px" type="submit"><?php echo $this->lang->line('buttons')['save'];?></button>
                     </div>
 					<p>
-						<span style="font-size: 12px"><i>Complete registration by selection your User role.</i></span>
+						<span style="font-size: 12px"><i><?php echo $this->lang->line('complete_registration_by_selecting_role');?></i></span>
 					</p>
                 </form>
             </div>
