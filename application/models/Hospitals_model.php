@@ -103,7 +103,9 @@ class Hospitals_model extends CI_Model {
 
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
-            return true;
+			$hid = $this->db->insert_id();
+			$this->logger->log("New hospital created",Logger::Hospital,$hid);
+			return true;
         } else {
             return false;
         }
@@ -134,6 +136,7 @@ class Hospitals_model extends CI_Model {
         }
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+			$this->logger->log("Hospital details updated", Logger::Hospital, $id);
             return true;
         } else {
             return false;
@@ -147,6 +150,7 @@ class Hospitals_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Hospital soft deleted", Logger::Hospital, $id);
             return true;
         } else return false;
     }

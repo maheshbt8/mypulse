@@ -48,6 +48,82 @@
         </div>
     </div>
 
+	<div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+                
+                <div class="card-head">
+                    <header><?php echo $this->lang->line('todaysappoitments');?></header>
+                    <div class="custome_card_header">
+                        <!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
+                        <a class="btn btn-success m-b-sm bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
+                        <a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
+                        <a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
+	                    <?php $this->load->view('template/exbtn');?>
+						<a class="btn btn-primary" id="menualrefresh"><i class="fa fa-refresh"></i></a>
+                    </div>
+                </div>
+                <div class="card-body ">
+                    <div class="col-md-12">
+                        
+                        <div class="form-group col-md-3">
+                            <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
+                            <select id="hospital_id2" class=" form-control" style="width: 100%">
+                                <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
+                            <select id="doctor_id2" class=" form-control" style="width: 100%">
+                                <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label><?php echo $this->lang->line('labels')['status'];?></label>
+                            <select id="status2" class=" form-control" style="width: 100%">
+                                <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+                                <option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
+                                <option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
+                                <option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
+                                <option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="checkbox checkbox-icon-black pull-right">
+                                <input type="checkbox" id="showClosed2">
+                                <label for="showClosed2">
+                                    <?php echo $this->lang->line('labels')['ShowClosedAppt'];?>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        
+                        <table id="today_appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" >
+                            <thead>
+                                    <tr>
+                                    <th style="width:10px"></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['number_short'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['hospital_branch_department'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
+                                    <th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+                                    <th width="20px">#</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                            </tbody>
+                        </table>  
+                        
+                    </div>	
+                </div>
+            </div>
+        </div>
+    </div>
+	
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
@@ -56,10 +132,11 @@
                     <header><?php echo $this->lang->line('appoitments');?></header>
                     <div class="custome_card_header">
                         <!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
-                        <a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
+                        <a class="btn btn-success m-b-sm bookNew"  data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
                         <a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
                         <a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-                        <?php $this->load->view('template/exbtn');?>
+                       	<?php $this->load->view('template/exbtn');?>
+						<a class="btn btn-primary" id="menualrefresh1"><i class="fa fa-refresh"></i></a>
                     </div>
                 </div>
                 <div class="card-body ">
@@ -403,7 +480,7 @@
 
         $("[data-toggle=tooltip]").tooltip();
 
-		$("#bookNew").click(function(){
+		$(".bookNew").click(function(){
 			resetForm(validator);
 			$("#docAvailability").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
@@ -1046,7 +1123,120 @@
         setInterval(function() {
             loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
         }, 60000);
+		
+		$("#menualrefresh1").click(function(){
+			
+			loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
+		});
+		
+		var $selectize_doctor_id2 = $("#doctor_id2").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					var dis = "";
+					if(item.description != undefined)
+						dis = item.description;
+					return "<div><span class='title' style='font-size:14px'>" +
+							escape(item.text)+
+						"</span></div>";
+				}
+			},
+			load: function(query, callback) {
+				$.ajax({
+					url: "<?php echo site_url(); ?>/doctors/search/",
+					type: "GET",
+					data: {"q":query,"f":""},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						callback($.parseJSON(res));
+					}
+				});
+			},
+			onChange: function(value){
+				if(!value.length) return;
+				loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+			}
+		});	
 
+		var $selectize_hospital_id2 = $("#hospital_id2").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					return "<div><span class='title'>" +
+							escape(item.text)+
+						"</span>" +   
+					"</div>";
+				}
+			},
+			load: function(query, callback) {
+				//if (!query.length) return callback();
+				$.ajax({
+					url: "<?php echo site_url(); ?>/hospitals/search",
+					type: "GET",
+					data: {"q":query,"f":"name"},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						callback($.parseJSON(res));
+					}
+				});
+			},
+			onChange: function(value) {
+				if (!value.length) return;
+				loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+			}
+		});
+
+		$("#status2").change(function(){
+			loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+		});
+
+		$("#showClosed2").change(function(){
+			loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+		});
+		
+		function loadTable1(hid,did){	
+			var st = $("#status1").val();
+			var showClosed = 0;
+			if($("#showClosed1").is(":checked")){
+				showClosed = 1;
+			}
+			$("#today_appoitments").dataTable().fnDestroy();
+			var dt = $("#today_appoitments").DataTable({
+				"processing": true,
+				"serverSide": true,
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?tod=1hid="+hid+"&did="+did+"&sc="+showClosed
+			});
+
+			<?php $this->load->view('template/exdt');?>
+			
+			$(".dataTables_filter").attr("style","display: flex;float: right");
+			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+		}
+		loadTable1("","all","all");	
+		
+		setInterval(function() {
+            loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+        }, 60000);
+		
+		$("#menualrefresh").click(function(){
+			loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+		});
+		
+		
+		
 	});
 
 </script>

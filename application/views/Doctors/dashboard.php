@@ -65,6 +65,7 @@
                 <div class="card-head">
                     <header><?php echo $this->lang->line('todaysappoitments');?></header>
                     <div class="custome_card_header">
+						<a class="btn btn-primary" id="menualrefresh"><i class="fa fa-refresh"></i></a>
                     </div>
                 </div>
                     
@@ -112,7 +113,11 @@
         setInterval(function() {
             loadTable();
         }, 60000);
-
+		
+		$("#menualrefresh").click(function(){
+			loadTable();
+		});
+		
         loadTable();
 
         $(document).on('click','.apprbtn',function(){

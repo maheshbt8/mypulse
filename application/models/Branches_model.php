@@ -64,6 +64,8 @@ class Branches_model extends CI_Model {
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            $id = $this->db->insert_id();
+            $this->logger->log("New branch: ".$data['branch_name']." added", Logger::Branch, $id);
             if($this->auth->isSuperAdmin()) {
                 //find hospital admin
                 $this->db->where('hospital_id', $data['hospital_id']);
@@ -85,6 +87,7 @@ class Branches_model extends CI_Model {
         
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            $this->logger->log("Branch: ".$data['branch_name']." updated", Logger::Branch, $id);
             if($this->auth->isSuperAdmin()) {
                 //find hospital admin
                 $this->db->where('hospital_id', $data['hospital_id']);
@@ -105,6 +108,13 @@ class Branches_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			if(is_array($id)){
+				foreach($id as $i){
+					$this->logger->log("Branch soft deleted", Logger::Branch, $i);
+				}
+			}else{
+				$this->logger->log("Branch soft deleted", Logger::Branch, $id);
+			}        
             return true;
         } else return false;
     }

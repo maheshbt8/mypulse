@@ -56,27 +56,25 @@
     <div class="toggle" style="width:50px; height: 50px"><i class="fa fa-user-plus" style="font-size: 25px; margin-top: 10px;margin-left: 4px;"></i>
     </div>
     <div class="form formLogin">
-        <h2>Login to your account</h2>
+        <h2><?php echo $this->lang->line('login_to_your_account');?></h2>
         <form id="loginform"  action="<?php echo site_url();?>/index/doLogin" method="post">
             <input type="text" placeholder="Username" name="email_id" />
             <input type="password" placeholder="Password" name="password"/>
             <div class="remember text-left">
                 <div class="checkbox checkbox-primary">
                     <input id="checkbox2" type="checkbox" checked>
-                    <label for="checkbox2">
-                        Remember me
-                    </label>
+                    <label for="checkbox2"><?php echo $this->lang->line('remember_me');?></label>
                 </div>
             </div>
-            <button>Login</button>
-            <div class="forgetPassword"><a href="javascript:void(0)">Forgot your password?</a>
+            <button><?php echo $this->lang->line('login');?></button>
+            <div class="forgetPassword"><a href="javascript:void(0)"><?php echo $this->lang->line('forgot_your_password');?></a>
             </div>
-            <div class="signup"><a href="javascript:void(0)">Don't have account? Sign up</a>
+            <div class="signup"><a href="javascript:void(0)"><?php echo $this->lang->line('do_not_have_account');?></a>
             </div>
         </form>
     </div>
     <div class="form formRegister">
-        <h2>Create an account</h2>
+        <h2><?php echo $this->lang->line('labels')['create_account'];?></h2>
         <form method="post" id="reg_form" action="<?php echo site_url().'/index/doReg' ?>">
             <input type="text" name="first_name" placeholder="Name*" >
             <input type="text" name="mobile" placeholder="Mobile Number*" >
@@ -87,19 +85,19 @@
                 <div class="checkbox checkbox-primary">
                     <input id="checkbox3" type="checkbox" name="agrree">
                     <label for="checkbox3">
-                        Agree the terms and policy
-                    </label>
+                        <?php echo $this->lang->line('labels')['agree_terms_policy'];?>
+					</label>
                 </div>
             </div>
             <div id="checkbox_err"></div>
-            <button>Register</button>
+            <button><?php echo $this->lang->line('buttons')['register'];?></button>
         </form>
     </div>
     <div class="form formReset">
-        <h2>Reset your password?</h2>
+        <h2><?php echo $this->lang->line('reset_password');?></h2>
         <form id="forgotform"  action="<?php echo site_url();?>/index/sendResetKey" method="post">
             <input type="email" placeholder="Email Address" name="email_id"/>
-            <button>Send Verification Email</button>
+            <button><?php echo $this->lang->line('buttons')['send_verification_email'];?></button>
         </form>
     </div>
 </div>

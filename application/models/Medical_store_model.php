@@ -109,6 +109,9 @@ class Medical_store_model extends CI_Model {
             if(isset($data['isActive']))
                 $mstore['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $mstore)) {
+				$id = $this->db->insert_id();
+				$this->logger->log("New medical store added", Logger::MedicalStore, $id);
+				
                 //find hospital name
                 $this->db->where('id', $data['hospital_id']);
                 $hospital = $this->db->get('hms_hospitals')->row_array();
@@ -188,6 +191,8 @@ class Medical_store_model extends CI_Model {
             if(count($mstore) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $mstore)) {
+					$this->logger->log("Medical store details updated", Logger::MedicalStore, $id);
+					
                     if(!$this->auth->isMedicalStore()){
                         // sent notification to medical_store incharge
                         $this->notification->saveNotification($usr['user_id'],"Your profile is updated");
@@ -208,6 +213,7 @@ class Medical_store_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Medical store deleted", Logger::MedicalStore, $id);
             return true;
         } else return false;
     }
@@ -219,7 +225,20 @@ class Medical_store_model extends CI_Model {
         $ml = $ml->row_array();
         return isset($ml['id']) ? $ml['id'] : 0;
     }
-    
+    function getMyPatientsIds(){
+		$store_id = $this->getMyStoreId();
+		$this->db->distinct();
+		$this->db->where('store_id',$store_id);
+		$this->db->where("isDeleted",0);
+		$this->db->select('patient_id');
+		$pids = $this->db->get('hms_prescription');
+		$pids = $pids->result_array();
+		$ids = array();
+		foreach($pids as $p){
+			$ids[] = $p['patient_id'];
+		}
+		return $ids;
+	}
     function addReceiptUrl($id,$urls,$paths,$types){
         for($i=0; $i<count($urls); $i++){
             $d['prescription_id'] = $id;
@@ -227,6 +246,8 @@ class Medical_store_model extends CI_Model {
             $d['file_path'] = $paths[$i];
             $d['file_type'] = $types[$i];
             $this->db->insert('hms_prescription_order_receipt',$d);
+			$id = $this->db->insert_id();
+			$this->logger->log("Prescription order receipt added", Logger::MedicalStore, $id);
         }
         if(count($urls) > 0){
             $this->db->where('id',$id);
@@ -247,7 +268,8 @@ class Medical_store_model extends CI_Model {
 
         @unlink($d['file_path']);
         $this->db->query("delete from hms_prescription_order_receipt where id=$id");
-
+		$this->logger->log("Prescription order receipt deletd", Logger::MedicalStore, $id);
+		
         $this->db->where('prescription_id',$med_r_id);
         $c = $this->db->get('hms_prescription_order_receipt');
         if($c->num_rows() == 0){
@@ -270,7 +292,7 @@ class Medical_store_model extends CI_Model {
         $res = $this->db->get('hms_prescription')->result_array();
         $ids = array();
         foreach($res as $r){
-            $ids[] = $r['medical_lab_id'];
+            $ids[] = $r['store_id'];
         }
         return $ids;
     }

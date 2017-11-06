@@ -76,11 +76,21 @@ $this->load->view("template/left.php");
     
     $(document).ready(function(){
 
+		var status = "";
+		
+		<?php 
+			if(isset($_GET['s'])){
+		?>
+			status = '<?php echo intval($_GET['s']); ?>';
+		<?php
+			}
+		?>
+	
         $("#orders").dataTable().fnDestroy();
         $("#orders").DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/medical_store/getDTorders"
+            "ajax": "<?php echo site_url(); ?>/medical_store/getDTorders?s="+status
         });
 
         $(".dataTables_filter").attr("style","display: flex;float: right");

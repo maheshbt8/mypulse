@@ -113,11 +113,11 @@
                     <div class="col-md-12">
                         <table cellspacing="10" class="table  " style="margin-top:10px">
                             <tr>
-                                <td style="width:150px" align="right">License : </td>
+                                <td style="width:150px" align="right"><?php echo $this->lang->line('labels')['license'];?> : </td>
                                 <td><?php echo $about['license_category'];?></label></td>
                             </tr>
                             <tr>
-                                <td style="width:150px" align="right">Status : </td>
+                                <td style="width:150px" align="right"><?php echo $this->lang->line('labels')['status'];?> : </td>
                                 <td><?php echo $this->auth->getActiveStatus($about['license_status']);?></label></td>
                             </tr>
                         </table>

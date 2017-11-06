@@ -81,7 +81,7 @@ class Dashboard_model extends CI_Model {
 
         $s_res = $this->db->query("SELECT COUNT(DISTINCT store_id) as cnt FROM `hms_prescription` where patient_id=$user_id and isDeleted=0 and store_id > 0")->row_array();
         $res['tot_medStore'] = isset($s_res['cnt']) ? $s_res['cnt'] : 0;
-
+		$this->load->model('departments_model');
         $this->load->model('hospitals_model');
         $hids = $this->hospitals_model->getHospicalIds();
         $res['tot_hos'] = count($hids);
@@ -121,6 +121,28 @@ class Dashboard_model extends CI_Model {
         $res['profile'] = $user;
         $res['profile']['country_name'] = $this->auth->getCountryName($user['country']);
 
+		$recommend_appointment = $this->db->query("Select * from hms_recommend_appointments where status=0 and user_id=".$user_id)->result_array();
+		for($i=0; $i<count($recommend_appointment); $i++){
+			$row = $recommend_appointment[$i];
+			$dep = $this->departments_model->getdepartmentsById($row['department_id']);
+			$hos = $this->hospitals_model->gethospitalsById($dep['hospital_id']);
+			$name = "";
+			if(isset($hos['name']))
+				$name = $hos['name'];
+			if(isset($dep['branch_name'])){
+				$name .= " - ".$dep['branch_name'];
+			}
+			$row['hbname'] = $name;
+			$row['dpname'] = $dep['department_name'];
+			
+			$d = $this->auth->getUserIdFromRoleId($row['doctor_id'],$this->auth->getDoctorRoleType());
+			$temp = $this->users_model->getusersById($d);
+			$dname = $temp["first_name"]." ".$temp["last_name"];
+			
+			$row['dname'] = $dname;
+			$recommend_appointment[$i] = $row;
+		}
+		$res['recommend_appointment'] = $recommend_appointment;
         return $res;
     }
 
@@ -232,8 +254,9 @@ class Dashboard_model extends CI_Model {
 
     function getMedicalLabStates(){
         $res = array();
-        $res['tot_rep'] = 0;
-        $res['tot_users'] = 0;
+        $res['total_pat'] = 0;
+		$res['total_outstanding_report'] = 0;
+		$res['total_complete_report'] = 0;
         $mid = $this->auth->getMyLabId();
         $medical_reports = array();
         $this->db->where('status',0);
@@ -258,11 +281,33 @@ class Dashboard_model extends CI_Model {
             $medical_reports[$i] = $mr;
         }
         $res['medical_reports'] = $medical_reports;
+		
+		$p = $this->db->query("select count(DISTINCT patient_id) as cnt from hms_medical_report where isDeleted=0 and medical_lab_id=".$mid);
+		$p = $p->row_array();
+		if(isset($p['cnt'])){
+			$res['total_pat'] = $p['cnt'];
+		}
+		
+		$r = $this->db->query("select count(id) as cnt from hms_medical_report where isDeleted=0 and status=0 and medical_lab_id=".$mid);
+		$r = $r->row_array();
+		if(isset($r['cnt'])){
+			$res['total_outstanding_report'] = $r['cnt'];
+		}
+		
+		$r = $this->db->query("select count(id) as cnt from hms_medical_report where isDeleted=0 and status=1 and medical_lab_id=".$mid);
+		$r = $r->row_array();
+		if(isset($r['cnt'])){
+			$res['total_complete_report'] = $r['cnt'];
+		}
+		
         return $res;
     }
 
     function getMedicalStoreStates($id){
         $res = array();
+		$res['total_pat'] = 0;
+		$res['total_outstanding_order'] = 0;
+		$res['total_complete_order'] = 0;
         $sid = $this->auth->getMyStoreId();
 
         $prescriptions = array();
@@ -290,6 +335,24 @@ class Dashboard_model extends CI_Model {
             $prescriptions[$i] = $pre;
         }
         $res['orders'] = $prescriptions;
+		
+		$p = $this->db->query("select count(DISTINCT patient_id) as cnt from hms_prescription where isDeleted=0 and store_id=".$sid);
+		$p = $p->row_array();
+		if(isset($p['cnt'])){
+			$res['total_pat'] = $p['cnt'];
+		}
+		
+		$o = $this->db->query("select count(id) as cnt from hms_prescription where isDeleted=0 and order_status=0 and store_id=".$sid);
+		$o = $o->row_array();
+		if(isset($o['cnt'])){
+			$res['total_outstanding_order'] = $o['cnt'];
+		}
+		
+		$o = $this->db->query("select count(id) as cnt from hms_prescription where isDeleted=0 and order_status=1 and store_id=".$sid);
+		$o = $o->row_array();
+		if(isset($o['cnt'])){
+			$res['total_complete_order'] = $o['cnt'];
+		}
         return $res;
     }
 }

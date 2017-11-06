@@ -255,23 +255,23 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-horizontal">
                                             <div class="form-group">
-                                                <label for="input-Default" class="col-sm-3 control-label">Hospital : </label>
+                                                <label for="input-Default" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['hospital'];?> : </label>
                                                 <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['hospital_name']) ? $data['hospital_name'] : "";?></label>
                                             </div>
                                             <?php if(!$this->auth->isHospitalAdmin()){
                                                 ?>
                                                 <div class="form-group">
-                                                    <label for="input-Default" class="col-sm-3 control-label">Branch : </label>
+                                                    <label for="input-Default" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['branch'];?> : </label>
                                                     <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['branch_name']) ? $data['branch_name'] : "";?></label>
                                                 </div>
                                                 <?php if(!$this->auth->isMedicalLab() && !$this->auth->isMedicalStore()){?>
                                                     <div class="form-group">
-                                                        <label for="input-Default" class="col-sm-3 control-label">Department : </label>
+                                                        <label for="input-Default" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['department'];?> : </label>
                                                         <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['department_name']) ? $data['department_name'] : "";?></label>
                                                     </div>
                                                     <?php if($this->auth->isReceptinest()){ ?>
                                                         <div class="form-group">
-                                                            <label for="input-Default" class="col-sm-3 control-label">Doctor : </label>
+                                                            <label for="input-Default" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['doctor'];?> : </label>
                                                             <label class="col-sm-8 " style="padding-top:7px; font-weight: 500"><?php echo isset($data['doctor_name']) ? $data['doctor_name'] : "";?></label>
                                                         </div>
                                                     <?php

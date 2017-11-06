@@ -7,55 +7,62 @@ $this->load->view("template/header.php");
 $this->load->view("template/left.php");
 ?>
 	<input type="hidden" id="left_active_menu" value="12" />
-    <input type="hidden" id="left_active_sub_menu" value="1202" />
+    <input type="hidden" id="left_active_sub_menu" value="1201" />
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="card ">
-	                    
+	                <div class="card">
 	                    <div class="card-head">
-							<header><?php echo $this->lang->line('appoitment_report');?></header>
+							<header><?php echo $this->lang->line('patient_report');?></header>
 							<div class="custome_card_header">
 								<a href="#" data-toggle='modal' data-target="#chart" class="btn btn-primary chartsbtn"><i class="fa fa-bar-chart-o"></i></a>
 								<?php $this->load->view('template/exbtn');?>
 							</div>
-	                    </div>
-	                    <div class="card-body">
+						</div>
+	                    <div class="card-body  ">
 							<div class="col-md-12">
-								<div class="form-group col-md-4">
-									<label><?php echo $this->lang->line('labels')['selectDate'];?></label>
-									<input id="sel_from_date" class="dates form-control" /> 
+                                <div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['selectDate'];?></label>
+                                    <input id="sel_from_date" class="dates form-control" /> 
 								</div>
+								<!--<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['selectToDdate'];?></label>
+                                    <input id="sel_to_date" class="dates form-control date-picker" /> 
+                                </div>-->
+								<!--<div>
+									<label>Refresh</label><br>
+									<button class="btn btn-primary"><i class="fa fa-refresh"></i></button>
+								</div>-->
                             </div>
 							<div class="col-md-12">
-								
-								<table id="report" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
-									<thead>
-										<tr>
-											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['numOFAppt'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php
-											foreach($reports as $res){
-												?>
-												<tr>
-													<td>
-														<input type="checkbox" class="chk" data-id="<?=$res['hid'];?>">
-													</td>
-													<td><?=$res['name'];?></td>
-													<td><?=$res['count'];?></td>
-													<td><a href="#" data-toggle='modal' data-id="<?=$res['hid'];?>" data-target="#chart" class="btn btn-primary chartbtns"><i class="fa fa-bar-chart-o"></i></a></td>
-												</tr>
-												<?php
-											}
-										?>
-									</tbody>
-								</table>  
-								
+								<div class="">
+									<table id="report" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+										<thead>
+											<tr>
+												<th style="width:10px"></th>
+												<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['numOFPt'];?></th>
+												<th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
+											</tr>
+										</thead>
+										<tbody>
+                                            <?php
+                                                foreach($hareports as $res){
+                                                    ?>
+                                                    <tr>
+                                                        <td>
+															<input type="checkbox" class="chk" data-id="<?=$res['bid'];?>">
+														</td>
+                                                        <td><?=$res['branch_name'];?></td>
+														<td><?=$res['count'];?></td>
+														<td><a href="#" data-toggle='modal' data-id="<?=$res['bid'];?>" data-target="#chart" class="btn btn-primary chartbtns"><i class="fa fa-bar-chart-o"></i></a></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            ?>
+										</tbody>
+									</table>  
+								</div>
 							</div>	
 	                    </div>
 	                </div>
@@ -63,36 +70,31 @@ $this->load->view("template/left.php");
 	        </div>
 	    </div><!-- Main Wrapper -->
 
-
-
+		
 		<div class="modal fade" id="chart" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"><?=$this->lang->line('patient_trend');?></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading">Patient trend</h4>
 					</div>
 				  	<div class="modal-body" id="chartjs_line_parent">
 					  	<div class="row">
 							<div class="col-md-12">
 					  			<canvas id="chartjs_line"></canvas>
-								<span id="herr" style="display:none"><?=$this->lang->line('select_one_hospital');?></span>  
+								<span id="herr" style="display:none">Select at least one hospital.</span>  
 							</div>	  
 				  		</div>
 					</div>
 				</div>
 			</div>
-		</div>											
-		
-	
+		</div>
 <?php
 $this->load->view("template/footer.php");
 ?>
-
 <script src="<?php echo base_url();?>public/assets/js/chart-js/Chart.bundle.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>public/assets/js/chart-js/utils.js" type="text/javascript"></script>
-
 
 <script type="text/javascript">
 		
@@ -100,14 +102,12 @@ $this->load->view("template/footer.php");
 		
 		function loadTable(date){	
 			$("#report").dataTable().fnDestroy();
-
 			var dt = $("#report").DataTable();
 			<?php $this->load->view('template/exdt');?>
 			$(".dataTables_filter").attr("style","display: flex;float: right");
 		}
 
 		loadTable("");
-
 		var start = moment().subtract(29, 'days');
 		var end = moment();
 
@@ -147,19 +147,19 @@ $this->load->view("template/footer.php");
 		$(document).on('click','.chartbtns',function(){
 			$("#herr").hide();
 			$("#chartjs_line").hide();
-			var hid = $(this).data('id');
-			updateChart(hid);
+			var bid = $(this).data('id');
+			updateChart(bid);
 		});
 
 		var randomColorGenerator = function () { 
 			return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
 		}
 
-		function updateChart(hid){
+		function updateChart(bid){
 			var sd = $('#sel_from_date').data('daterangepicker').startDate.format("YYYY-MM-DD");
 			var ed = $('#sel_from_date').data('daterangepicker').endDate.format("YYYY-MM-DD");
 			
-			$.get('<?php echo site_url();?>appoitments/getreportchart',{hid, hid,sd: sd, ed:ed},function(d){
+			$.get('<?php echo site_url();?>patients/gethareportchart',{bid, bid,sd: sd, ed:ed},function(d){
 				var _data = $.parseJSON(d);
 				_data =_data.data;
 				var _datasets = [];
@@ -220,9 +220,12 @@ $this->load->view("template/footer.php");
 			});
 		}
 
+		//var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		
+	
 		function cb(start, end) {
 			//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
-			window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
+			window.location.href = '<?php echo site_url();?>patients/hareport?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD');
 		}
 		
 		$('#sel_from_date').daterangepicker({
@@ -230,6 +233,7 @@ $this->load->view("template/footer.php");
 			endDate: end,
 			locale: { 
 				applyLabel : '<?php echo $this->lang->line('apply');?>',
+				cancelLabel: '<?php echo $this->lang->line('clear');?>',
 				"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
 			},  
 			ranges: {
@@ -241,8 +245,7 @@ $this->load->view("template/footer.php");
 				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			}
 		},cb);
-		
-		
+
 	});
 
 </script>

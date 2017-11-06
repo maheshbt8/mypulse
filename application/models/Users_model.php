@@ -26,6 +26,7 @@ class Users_model extends CI_Model {
             $this->db->where('id',$u['id']);
             $key = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
             $this->db->update($this->tblname,array("my_key"=>$key));
+			$this->logger->log("User key updated", Logger::User, $u['id']);
         }
     }
     
@@ -302,6 +303,8 @@ class Users_model extends CI_Model {
         $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
         $this->db->insert($this->tblname,$data);
         $uid = $this->db->insert_id();
+		//check log
+		$this->logger->log("New user registered", Logger::User, $uid);
         return $uid;
     }
     function add($user=null) {
@@ -324,7 +327,9 @@ class Users_model extends CI_Model {
         $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
         if ($this->db->insert($this->tblname, $data)) {
             $_uid = $this->db->insert_id();
-
+			//check log
+			$this->logger->log("New user created", Logger::User, $_uid);
+			
             $email = $data['useremail'];
             $this->load->library('sendmail');
             $enc = $key.":".$email;
@@ -406,6 +411,9 @@ class Users_model extends CI_Model {
         $this->db->where("id", $id);
         
         if ($this->db->update($this->tblname, $data)) {
+			//check log
+			$this->logger->log("User details updated", Logger::User, $id);
+			
             if ($this->auth->getUserId() != $id) {
                 //sent notification to any user
                 $this->notification->saveNotification($id, "Your Profile is updated");
@@ -442,6 +450,8 @@ class Users_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			//check log
+			$this->logger->log("User soft deleted", Logger::User, $id);
             return true;
         } else return false;
     }
@@ -473,6 +483,10 @@ class Users_model extends CI_Model {
                 $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
                 $data['role'] = 6;
                 if ($this->db->insert($this->tblname, $data)) {
+					$uid = $this->db->insert_id();
+					//check log
+					$this->logger->log("New user created", Logger::User, $uid);
+					
                     $email = $data['useremail'];
                     $this->load->library('sendmail');
                     $enc = $key.":".$email;
@@ -513,6 +527,8 @@ class Users_model extends CI_Model {
         if(isset($user['id'])){
             $this->db->where("id",$user['id']);
             $this->db->update($this->tblname,array("forgotPassCode"=>null,"isActive"=>1));
+			//check log
+			$this->logger->log("User profile verfied", Logger::User, $user['id']);
             return true;
         }else{
             return false;
@@ -528,8 +544,9 @@ class Users_model extends CI_Model {
             
             $ext = '.'.pathinfo($_FILES['pic']['name'], PATHINFO_EXTENSION);
             $temp = $basepath.$name.$ext;
-            if(move_uploaded_file($_FILES['pic']['tmp_name'], $temp))
-                return $name.$ext;
+            if(move_uploaded_file($_FILES['pic']['tmp_name'], $temp)){
+				return $name.$ext;
+			}
             else
                 return "";
         }
@@ -606,6 +623,8 @@ class Users_model extends CI_Model {
         
         $this->db->where('id',$uid);
         $this->db->update($this->tblname,array('role'=>$role));
+		//check log
+		$this->logger->log("User role updated", Logger::User, $uid);
         return true;
     }
     
@@ -639,10 +658,14 @@ class Users_model extends CI_Model {
         $pass = $this->input->post('password');
         $repass = $this->input->post('repassword');
         if($pass==$repass){
+			$this->db->where('forgotPassCode', $key);
+			$id = $this->db->get($this->tblname)->row_array();
+			$id = isset($id['id']) ? $id['id'] : 0;
             $q = "update ".$this->tblname." set password=?,forgotPassCode=NULL where forgotPassCode=?";
             $rs=$this->db->query($q,array(md5($pass),$key));
             if($this->db->affected_rows()>0)
             {
+				$this->logger->log("Password reset", Logger::User, $id);
                 return true;
             }
             else
@@ -688,7 +711,11 @@ class Users_model extends CI_Model {
             return -1;
         else{
             $this->db->where('id',$id);
-            return $this->db->update($this->tblname,array('password'=>md5($np)));
+            if($this->db->update($this->tblname,array('password'=>md5($np)))){
+				//check log
+				$this->logger->log("User password chanaged", Logger::User, $id);
+				return true;
+			}
         }
     }
 

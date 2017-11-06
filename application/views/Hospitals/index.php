@@ -132,7 +132,7 @@ $this->load->view("template/left.php");
 							  				<div class="col-md-6 form-group">
 							  					<label><?php echo $this->lang->line('labels')['selectHospitalAdmin'];?></label>
 							  					<select name="hospital_id" id="hospital_id" class=" form-control">
-							  						<option value="-1">Hospital Admin</option>
+							  						<option value="-1"><?php echo $this->lang->line('hospital_admin');?></option>
 							  						<?php
 							  							foreach ($hospital_admins as $key => $value) {
 							  								echo "<option value='$value[id]'>$value[first_name] $value[last_name]</option>";
@@ -158,8 +158,8 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['licenseStatus'];?></label>
 												<select class="form-control" name="license_status" id="license_status">
-													<option value="1">Active</option>
-													<option value="0">In-Active</option>
+													<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
+													<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
 												</select>
 											</div>
 											<div class="form-group col-md-6">

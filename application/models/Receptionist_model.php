@@ -112,6 +112,9 @@ class Receptionist_model extends CI_Model {
             if(isset($data['isActive']))
                 $rec['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $rec)) {
+				$id = $this->db->insert_id();
+				$this->logger->log("New receptionist added", Logger::Receptionist, $id);
+				
                 //find doctor user_id which is linked with this receptionist
                 $this->db->where('id', $data['doc_id']);
                 $doctor = $this->db->get('hms_doctors')->row_array();
@@ -165,6 +168,7 @@ class Receptionist_model extends CI_Model {
                 $rec['experience'] = $data['experience'];
             if(count($rec) > 0){
                 if ($this->db->update($this->tblname, $rec)) {
+					$this->logger->log("Receptionist details updated", Logger::Receptionist, $id);
                     return true;
                 } else {
                     return false;
@@ -181,6 +185,7 @@ class Receptionist_model extends CI_Model {
         }
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Receptionist details soft deleted", Logger::Receptionist, $id);
             return true;
         } else return false;
     }
@@ -234,6 +239,7 @@ class Receptionist_model extends CI_Model {
         if(count($arr) > 0){
             $this->db->where("id", $id);
             if ($this->db->update($this->tblname, $arr)) {
+				$this->logger->log("Receptionist details updated", Logger::Receptionist, $id);
                 return true;
             }
         }

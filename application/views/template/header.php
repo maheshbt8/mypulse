@@ -414,17 +414,18 @@
                                             $msgs = $this->messages->getTopMessages();
                                             foreach ($msgs as $msg){
                                                 ?>
-                                                <li>
+                                                <li class="rm">
                                                     <a href="<?php echo site_url();?>/index/messages/<?php echo $msg['id'];?>">
                                                         <!--<span class="photo"><img src="img/doc/doc2.svg" class="img-circle" alt=""> </span>-->
                                                         <span class="subject">
                                                             <span class="from"><?php echo $msg['first_name']; ?></span>
+															<!--<span class="time task_read" data-id="<?php echo $msg['id'];?>" style="margin-left: 5px; padding:0px 2px 0px 2px; border-radius: 25px; border: 1px solid"><i class="fa fa-remove"></i></span>-->
                                                             <span class="time"><?php echo $this->notification->time_elapsed_string($msg['created_date']);?></span>
                                                         </span>
                                                         <span class="message"> <?php echo $msg['title'];?> </span>
-                                                    </a>
+												    </a>
                                                 </li>
-                                                <?php
+												<?php
                                             }
                                             if(count($msgs) == 0){ ?>
                                                 <li>

@@ -16,7 +16,13 @@ class Inpatient_model extends CI_Model {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         $r['join_date'] = date("d-m-Y h:i A",strtotime($r['join_date']));
-        return $r;
+		$this->load->model('beds_model');
+        $b = $this->beds_model->getbedsById($r['bed_id']);
+		$r['status_txt'] = addslashes($this->auth->getInpatientStatus($r['status'],true));
+               
+		if(isset($b['bed']))
+            $r['bed_name'] = $b['bed'];
+		return $r;
     }
 
     function getinpatientBybedId($id) {
@@ -47,6 +53,7 @@ class Inpatient_model extends CI_Model {
         if (isset($data["status"])) $data["status"] = intval($data["status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
         if ($this->db->insert($this->tblname, $data)) {
+			
             return true;
         } else {
             return false;
@@ -55,7 +62,9 @@ class Inpatient_model extends CI_Model {
 
     public function add_new_note($data){
         $hsdata = $this->db->insert('hms_inpatient_history',$data);
-
+		$id = $this->db->insert_id();
+		$this->logger->log("New note added in inpatient history", Logger::Inpatient, $id);
+		
         //get inpatient data where id=in_patient_id
         $this->db->where('id', $data['in_patient_id']);
         $inpatient = $this->db->get('hms_inpatient')->row_array();
@@ -89,7 +98,8 @@ class Inpatient_model extends CI_Model {
 
     public function update_new_note($data){
         $hsdata = $this->db->replace('hms_inpatient_history',$data);
-
+		$this->logger->log("Note updated in inpatient history", Logger::Inpatient, $id);
+		
         //get inpatient data where id=in_patient_id
         $this->db->where('id', $data['in_patient_id']);
         $inpatient = $this->db->get('hms_inpatient')->row_array();
@@ -139,6 +149,7 @@ class Inpatient_model extends CI_Model {
         $this->db->where("id", $id);
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+			$this->logger->log("Patient soft deleted from inpatient", Logger::Inpatient, $id);
             return true;
         } else return false;
     }

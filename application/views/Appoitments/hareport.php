@@ -33,22 +33,22 @@ $this->load->view("template/left.php");
 									<thead>
 										<tr>
 											<th style="width:10px"></th>
-											<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['numOFAppt'];?></th>
 											<th><?php echo $this->lang->line('tableHeaders')['action'];?></th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php
-											foreach($reports as $res){
+											foreach($hareports as $res){
 												?>
 												<tr>
 													<td>
-														<input type="checkbox" class="chk" data-id="<?=$res['hid'];?>">
+														<input type="checkbox" class="chk" data-id="<?=$res['bid'];?>">
 													</td>
-													<td><?=$res['name'];?></td>
+													<td><?=$res['branch_name'];?></td>
 													<td><?=$res['count'];?></td>
-													<td><a href="#" data-toggle='modal' data-id="<?=$res['hid'];?>" data-target="#chart" class="btn btn-primary chartbtns"><i class="fa fa-bar-chart-o"></i></a></td>
+													<td><a href="#" data-toggle='modal' data-id="<?=$res['bid'];?>" data-target="#chart" class="btn btn-primary chartbtns"><i class="fa fa-bar-chart-o"></i></a></td>
 												</tr>
 												<?php
 											}
@@ -147,19 +147,19 @@ $this->load->view("template/footer.php");
 		$(document).on('click','.chartbtns',function(){
 			$("#herr").hide();
 			$("#chartjs_line").hide();
-			var hid = $(this).data('id');
-			updateChart(hid);
+			var bid = $(this).data('id');
+			updateChart(bid);
 		});
 
 		var randomColorGenerator = function () { 
 			return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
 		}
 
-		function updateChart(hid){
+		function updateChart(bid){
 			var sd = $('#sel_from_date').data('daterangepicker').startDate.format("YYYY-MM-DD");
 			var ed = $('#sel_from_date').data('daterangepicker').endDate.format("YYYY-MM-DD");
 			
-			$.get('<?php echo site_url();?>appoitments/getreportchart',{hid, hid,sd: sd, ed:ed},function(d){
+			$.get('<?php echo site_url();?>appoitments/gethareportchart',{bid, bid,sd: sd, ed:ed},function(d){
 				var _data = $.parseJSON(d);
 				_data =_data.data;
 				var _datasets = [];
@@ -222,7 +222,7 @@ $this->load->view("template/footer.php");
 
 		function cb(start, end) {
 			//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
-			window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
+			window.location.href = '<?php echo site_url();?>appoitments/hareport?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
 		}
 		
 		$('#sel_from_date').daterangepicker({
@@ -231,7 +231,7 @@ $this->load->view("template/footer.php");
 			locale: { 
 				applyLabel : '<?php echo $this->lang->line('apply');?>',
 				"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
-			},  
+			},
 			ranges: {
 				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
 				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -241,8 +241,7 @@ $this->load->view("template/footer.php");
 				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			}
 		},cb);
-		
-		
+
 	});
 
 </script>

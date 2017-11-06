@@ -48,7 +48,7 @@ $this->load->view("template/left.php");
                             <div class="col-md-12">
 								<table id="beds" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 									<thead>
-										<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['bed'];?></th><th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th><th width="20px">#</th>
+										<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['bed'];?></th><th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th><th><?php echo $this->lang->line('tableHeaders')['patient']; ?></th>
 										</tr>
 									</thead>
 									

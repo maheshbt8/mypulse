@@ -12,6 +12,16 @@ class Medical_store extends CI_Controller {
         $this->load->model('doctors_model');
         $this->load->model('users_model');
     }
+	
+	public function patient(){
+        if ($this->auth->isLoggedIn()) {
+            $this->load->view('Medical_store/patient');
+        }
+        else{
+            redirect('index');
+        }
+    }
+	
     public function index() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $data['medical_stores'] = $this->medical_store_model->getAllmedical_store();
@@ -201,6 +211,13 @@ class Medical_store extends CI_Controller {
             $cond[] = "store_id=".$this->auth->getMyStoreId();
             $this->tbl->setCheckboxColumn(false);
             $this->tbl->setIndexColumn(false);
+			
+			$status = isset($_GET['s']) ? $_GET['s'] : false;
+			
+			if($status !== false && $status != ""){
+				$cond[] = "order_status=$status";
+			}
+			
             $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
@@ -260,6 +277,43 @@ class Medical_store extends CI_Controller {
                 $urls[] = array('url'=>$d['file_url'], 'id'=>$d['id']);
             }
             echo json_encode($urls);exit;
+        }
+    }
+	
+	public function getDTPatients() {
+        if ($this->auth->isLoggedIn() ) {
+            $this->load->library("tbl");
+            $table = "hms_users";
+            $primaryKey = "id";
+            $columns = array(array("db" => "first_name", "dt" => 0, "formatter" => function ($d, $row) {
+                $user = $this->users_model->getusersById($row['id']);
+                $name = "";
+                if(isset($user['first_name'])){
+                    $name = $user['first_name'];
+                }
+                if(isset($user['last_name'])){
+                    $name .= " ".$user['last_name'];
+                }
+                return $name;
+            }), array("db" => "useremail", "dt" => 1, "formatter" => function ($d, $row) {
+                return "<a href='mailto:$d' >".$d."</a>";
+            }), array("db" => "mobile", "dt" => 2, "formatter" => function ($d, $row) {
+               return $d;
+            }));
+            $cond = array("role=".$this->auth->getPatientRoleType());
+            
+			$ids = $this->medical_store_model->getMyPatientsIds();
+			if(count($ids) == 0) { $ids[] = -1; }
+			$ids = implode(",",$ids);
+			$cond[] = "id in ($ids)";
+
+			$this->tbl->setCheckboxColumn(false);
+            $this->tbl->setIndexColumn(true);
+			
+            $this->tbl->setTwID(implode(' AND ',$cond));
+            // SQL server connection informationhostname" => "localhost",
+            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }
 }

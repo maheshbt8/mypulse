@@ -61,4 +61,23 @@ class Message_model extends CI_Model
 
         return $message;
     }
+	
+	function deleteMessages($msg_id){
+		$this->db->where('id', $msg_id);
+		$this->db->where('user_id', $this->auth->getUserid());
+		if($this->db->delete($this->tblname)){
+			$this->logger->log("Message deleted", Logger::Message, $msg_id);
+			return true;
+		}else 
+			return false;
+	}
+	
+	function deleteAllMessages(){
+		$this->db->where('user_id', $this->auth->getUserid());
+		if($this->db->delete($this->tblname)){
+			$this->logger->log("All Messages deleted", Logger::Message, 0);
+			return true;
+		}else 
+			return false;
+	}
 }

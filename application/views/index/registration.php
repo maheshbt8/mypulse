@@ -4,7 +4,7 @@
 
 <head>
         <!-- Title -->
-        <title><?php echo $this->config->item('title');?> | Sign Up</title>
+        <title><?php echo $this->config->item('title');?> | <?php echo $this->lang->line('labels')['sign_up'];?></title>
         
         <meta content="width=device-width, initial-scale=1" name="viewport"/>
         <meta charset="UTF-8">
@@ -49,7 +49,7 @@
                                   $this->load->view('template/alert');
                                 ?>
                                 <a href="<?php echo site_url();?>" class="logo-name text-lg text-center"><?php echo ucfirst($this->config->item('title'));?></a>
-                                <p class="text-center m-t-md">Create a account</p>
+                                <p class="text-center m-t-md"><?php echo $this->lang->line('labels')['create_account'];?></p>
                                 <form class="m-t-md"  method="post" id="reg_form" action="<?php echo site_url().'/index/doReg' ?>">
                                     <!-- <div class="form-group">
                                         <label>Register As</label>
@@ -63,27 +63,27 @@
                                     </div> -->
                                     <input type="hidden" name="role" value="-1">
                                     <div class="form-group">
-                                        <input type="text" name="first_name" class="form-control" placeholder="Name*" >
+                                        <input type="text" name="first_name" class="form-control" placeholder="<?php echo $this->lang->line('labels')['name'];?>*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number*" >
+                                        <input type="text" name="mobile" class="form-control" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" name="useremail" class="form-control" placeholder="Email*" >
+                                        <input type="email" name="useremail" class="form-control" placeholder="<?php echo $this->lang->line('labels')['email'];?>*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="password" class="form-control" placeholder="Password*" >
+                                        <input type="password" name="password" class="form-control" placeholder="<?php echo $this->lang->line('labels')['password'];?>*" >
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="re_password" class="form-control" placeholder="Confirm Password*" >
+                                        <input type="password" name="re_password" class="form-control" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*" >
                                     </div>
                                     <label>
-                                        <input name="agrree" type="checkbox"> Agree the terms and policy
+                                        <input name="agrree" type="checkbox"> <?php echo $this->lang->line('labels')['agree_terms_policy'];?>
                                     </label>
-                                    <p class="mandatory" >* are mandatory</p>
-                                    <button type="submit" class="btn btn-success btn-block m-t-xs">Submit</button>
-                                    <p class="text-center m-t-xs text-sm">Already have an account?</p>
-                                    <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-xs">Login</a>
+                                    <p class="mandatory" >* <?php echo $this->lang->line('labels')['are_mendatory'];?></p>
+                                    <button type="submit" class="btn btn-success btn-block m-t-xs"><?php echo $this->lang->line('buttons')['submit'];?></button>
+                                    <p class="text-center m-t-xs text-sm"><?php echo $this->lang->line('labels')['already_have_an_account'];?></p>
+                                    <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-xs"><?php echo $this->lang->line('buttons')['login'];?></a>
                                 </form>
                                 <p class="text-center m-t-xs text-sm"><?php echo date('Y'); ?> &copy; JagruMs Technologies.</p>
                             </div>

@@ -21,40 +21,77 @@ $this->load->view("template/left.php");
                             <div class="col-md-6">
                                 <table width="100%" style="border-collapse:separate; border-spacing:0 8px;">
                                     <tr>
-                                        <td style='width:30%' align="right" valign="top"><strong>Appoitment # : </strong></td>
+                                        <td style='width:30%' align="right" valign="top"><strong><?php echo $this->lang->line('appointment#');?></strong></td>
                                         <td style="width:2%">&nbsp;</td>
                                         <td style='width:69%' align="left" valign="center"><?php echo $appoitment['appoitment_number'];?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:30%' align="right" valign="top"><strong>Appoitment Date : </strong></td>
+                                        <td style='width:30%' align="right" valign="top"><strong><?php echo $this->lang->line('appointment_date');?></strong></td>
                                         <td style="width:2%">&nbsp;</td>
                                         <td style='width:69%' align="left" valign="center"><?php echo date('d-M-Y',strtotime($appoitment['appoitment_date']));?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:30%' align="right"><strong>Appoitment Sloat : </strong></td>
+                                        <td style='width:30%' align="right"><strong><?php echo $this->lang->line('appointment_sloat');?></strong></td>
                                         <td style="width:2%">&nbsp;</td>
                                         <td style='width:69%' align="left"><?php echo date('h:i A',strtotime($appoitment['appoitment_time_start'])).' to '.date('h:i A',strtotime($appoitment['appoitment_time_end']));?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:30%' align="right"><strong>Reason : </strong></td>
+                                        <td style='width:30%' align="right"><strong><?php echo $this->lang->line('appointment_reason');?></strong></td>
                                         <td style="width:2%">&nbsp;</td>
                                         <td style='width:69%' align="left"><?php echo $appoitment['reason'];?></td>
                                     </tr>
                                     <tr>
-                                        <td style='width:30%' align="right"><strong>Status : </strong></td>
+                                        <td style='width:30%' align="right"><strong><?php echo $this->lang->line('appointment_status');?></strong></td>
                                         <td style="width:2%">&nbsp;</td>
                                         <td style='width:69%' align="left"><?php echo $this->auth->getAppoitmentStatus($appoitment['status']);?></td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="input-Default" class="control-label"><?php echo $this->lang->line('labels')['remarks'];?></label>
-                                    <textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['patientRecordRemark'];?>" <?php if($appoitment['status'] == 3) { echo "disabled"; } ?>><?php echo $appoitment['remarks'];?></textarea>
-                                </div>
-                                <?php if($appoitment['status'] != 3) { ?>
-                                <button class="btn btn-success pull-right" data-id="<?php echo $appoitment['id'];?>" id="saveaptr">Save</button>
-                                <?php } ?>
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label for="input-Default" class="control-label"><?php echo $this->lang->line('labels')['remarks'];?></label>
+									</div>
+								</div>
+                                <div class="row">
+									<div class="col-md-8">
+										<div class="form-group">
+											<textarea class="form-control" id="apt_remark" placeholder="<?php echo $this->lang->line('labels')['patientRecordRemark'];?>" <?php if($appoitment['status'] == 3) { echo "disabled"; } ?>><?php echo $appoitment['remarks'];?></textarea>
+										</div>
+									</div>	
+									<div class="col-md-4">
+										<div class="form-group">
+										<label>&nbsp;</label>
+										<?php if($appoitment['status'] != 3) { ?>
+										<button class="btn btn-success pull-" data-id="<?php echo $appoitment['id'];?>" id="saveaptr">Save</button>
+										<?php } ?>
+										</div>
+									</div>	
+								</div>
+								<form method="post" action="<?php echo site_url(); ?>/doctors/recommendnextdate">
+								<input type="hidden" name="appointment_id" value="<?php echo $appoitment['id'];?>" />
+								<input type="hidden" name="user_id" value="<?php echo $appoitment['user_id'];?>" />
+								<input type="hidden" name="department_id" value="<?php echo $appoitment['department_id'];?>" />
+								<input type="hidden" name="doctor_id" value="<?php echo $appoitment['doctor_id'];?>" />
+								<div class="row">
+									<div class="form-group col-md-12">
+										<label for="RecommendDate"><?php echo $this->lang->line('recommend_date'); ?></label>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-8">
+										<div class="form-group">
+											<input type="text" class="form-control date-picker" name="recommend_date" placeholder="<?php echo $this->lang->line('addRecommendDate'); ?>" >
+										</div>
+									</div>
+									<div class="col-md-4">
+										<label>&nbsp;</label>
+										<?php //if($appoitment['status'] != 3) { ?>
+										<button class="btn btn-info pull-"  type="submit"><?php echo $this->lang->line('recommend');?></button>
+										<?php //} ?>
+									</div>
+								</div>
+								</form>
                             </div>
                             </div>
                         </div>
@@ -339,9 +376,9 @@ $this->load->view("template/left.php");
                                         <div class="form-group">
                                             <label for="PatientStatus"><?php echo $this->lang->line('labels')['patientStatus']; ?></label>
                                             <select class="form-control" name="ptStatus" id="ptStatus">
-                                                <option selected value="0">Not Admitted</option>
-                                                <option value="1">Admitted</option>
-                                                <option value="2">Discharged</option>
+                                                <option selected value="0"><?php echo $this->lang->line('not_admitted'); ?></option>
+                                                <option value="1"><?php echo $this->lang->line('admitted'); ?></option>
+                                                <option value="2"><?php echo $this->lang->line('discharged'); ?></option>
                                             </select>
                                         </div>
                                     </div>
@@ -384,17 +421,17 @@ $this->load->view("template/left.php");
                                 </div>
                                 
                                 <div class="col-md-12">
-                                    <lable class="control-label"><b><h3>Prescription for Medicines </h3></b></label><br>
+                                    <lable class="control-label"><b><h3><?php echo $this->lang->line('prescriptionForMedicines');?></h3></b></label><br>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Drug</th>
-                                                <th>Strength</th>
-                                                <th>Dosage</th>
-                                                <th>Duration</th>
-                                                <th>Quantity</th>
-                                                <th>Note</th>
+                                                <th><?php echo $this->lang->line('drug');?></th>
+                                                <th><?php echo $this->lang->line('strength');?></th>
+                                                <th><?php echo $this->lang->line('dosage');?></th>
+                                                <th><?php echo $this->lang->line('duration');?></th>
+                                                <th><?php echo $this->lang->line('quantity');?></th>
+                                                <th><?php echo $this->lang->line('note');?></th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -431,14 +468,24 @@ $this->load->view("template/left.php");
                                 </div> 
                                 <Br><br>
                                 <div class="col-md-12" id="medReportDiv">
-                                    <lable class="control-label"><b><h3>Prescription for Medical Tests </h3></b></label><br>
-                                    <table width="100%" id="medRepTbl">
+                                    <lable class="control-label"><b><h3><?php echo $this->lang->line('prescriptionForMedicalTests');?></h3></b></label><br>
+                                    <table width="100%" id="medRepTbl" class="table table-bordered">
+										<thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th><?php echo $this->lang->line('labels')['title'];?></th>
+                                                <th><?php echo $this->lang->line('labels')['discription'];?></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+										<tbody>
+                                        </tbody>
                                     </table>
                                 <div>
                                 <Br><br>
                                 <div class="row">
                                         <div class="col-md-4">
-                                            <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report</button>   
+                                            <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report<?php echo $this->lang->line('labels')['discription'];?></button>   
                                         </div>
                                         <div class="col-md-8">
                                             <textarea class="form-control" id="note" name="note" placeholder="Note"></textarea>
@@ -446,8 +493,8 @@ $this->load->view("template/left.php");
                                 </div><br><br>
                                 <div class="row">
                                     <div class="col-md-12 pull-right" >
-                                        <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; Cancel</button>
-                                        <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn">Save</span></button>
+                                        <button type="button" id="canPrescriptionBtn" class="btn btn-warning pull-right"><i class="fa fa-remove"></i> &nbsp; <?php echo $this->lang->line('buttons')['cancel'];?></button>
+                                        <button type="submit" id="submitbtn" class="btn btn-success pull-right" style="margin-right:10px"><i class="fa fa-check"></i> &nbsp; <span id="sbtn"><?php echo $this->lang->line('buttons')['save'];?></span></button>
                                     </div>
                                 </div>
                             </form>
@@ -464,7 +511,7 @@ $this->load->view("template/left.php");
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                    <h4 class="modal-title custom_align" id="Edit-Heading">Add Medical Report</h4>
+                    <h4 class="modal-title custom_align" id="Edit-Heading"><?php echo $this->lang->line('add_medical_report');?></h4>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -483,8 +530,8 @@ $this->load->view("template/left.php");
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-warning pull-right">Cancel</button>
-                    <button type="button" data-dismiss="modal" id="addMRBtn" class="btn btn-success pull-right" style="margin-right:10px">Add</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-warning pull-right"><?php echo $this->lang->line('buttons')['cancel'];?></button>
+                    <button type="button" data-dismiss="modal" id="addMRBtn" class="btn btn-success pull-right" style="margin-right:10px"><?php echo $this->lang->line('buttons')['add'];?></button>
                 </div>
             </div>    
         </div>
@@ -499,11 +546,9 @@ $this->load->view("template/left.php");
                 <button type="button" class="close" 
                    data-dismiss="modal">
                        <span aria-hidden="true">&times;</span>
-                       <span class="sr-only">Close</span>
+                       <span class="sr-only"><?php echo $this->lang->line('buttons')['close'];?></span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    Add New Note
-                </h4>
+                <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('add_new_note');?></h4>
             </div>
             
             <!-- Modal Body -->
@@ -513,8 +558,7 @@ $this->load->view("template/left.php");
                 <input type="hidden" name="hsinpatientadd_id" id="hsinpatientadd_id">
                 <input type="hidden" name="hsinpatientEdit_id" id="hsinpatientEdit_id">
                   <div class="form-group">
-                    <label  class="col-sm-2 control-label"
-                              for="">New Note</label>
+                    <label  class="col-sm-2 control-label" for=""><?php echo $this->lang->line('new_note');?></label>
                     <div class="col-sm-10">
                     <textarea class="form-control" 
                       name="new_note"   id="Hsnew_note" placeholder="Write Note" rows="5"></textarea>
@@ -522,9 +566,9 @@ $this->load->view("template/left.php");
                   </div>
                   <div class="form-group text-center">
                   <button  type="submit" class="btn btn-primary" >
-                    <i class="glyphicon glyphicon-plus"></i> Save </button>
+                    <i class="glyphicon glyphicon-plus"></i> <?php echo $this->lang->line('buttons')['save'];?> </button>
                    <button type="button" class="btn btn-warning" data-dismiss="modal">
-                        <i class="fa fa-remove"></i>  Cancel </button>                    
+                        <i class="fa fa-remove"></i>  <?php echo $this->lang->line('buttons')['cancel'];?> </button>                    
                   </div>
                 </form>                  
             </div>
@@ -543,12 +587,12 @@ $this->load->view("template/left.php");
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                        <h4 class="modal-title custom_align" id="Edit-Heading">Test Report</h4>
+                        <h4 class="modal-title custom_align" id="Edit-Heading">Test Report<?php echo $this->lang->line('new_note');?></h4>
                     </div>
                     <div class="modal-body">
                         <div>
                             <div class="drop-area" id="dparea">
-                                <h4 class="drop-text">No Test-Report Uploaded Yet</h4>        
+                                <h4 class="drop-text"><?php echo $this->lang->line('no_test_report_uploaded_yet');?></h4>        
                             </div>
                             <div style="z-index:1000; position:fixed;top:0;bottom:0;left:0;right:0;display:none" id="loading-img">
                                 <img style="margin: 0 auto;display: flow-root;background: white;margin-top: 15%;padding: 20px;" src="<?php echo base_url();?>public/images/loading.gif"  />
@@ -556,7 +600,7 @@ $this->load->view("template/left.php");
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-defualt" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-defualt" type="button" data-dismiss="modal"><?php echo $this->lang->line('cancel');?></button>
                     </div>
                 </div>
             </form>
@@ -588,16 +632,20 @@ $this->load->view("template/footer.php");
         $("#addMRBtn").click(function(){
             var tit = $("#mr_title").val();
             var des = $("#mr_description").val();
-            var cnt = $("#medRepTbl").children().length;
-            cnt += 1;
-            var report = "<tr>";
-            report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
-            report += "<td style='width:20%' valign='top'><span class='mr_tit'>"+tit+"</span></td>";
-            report += "<td valign='top'><span class='mr_des'>"+des+"</span></td>";
-            report += '<td valign="top" style="width:10px"><a href="javascript:void(0)" class="mr_remove"><i class="fa fa-remove"></i></a></td>';
-            report += "</tr>";
-            $("#medRepTbl").append(report);
-            updateMrCnt();
+			if(tit!="" && des !=""){				
+				var cnt = $("#medRepTbl").children().length;
+				cnt += 1;
+				var report = "<tr>";
+				report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
+				report += "<td style='width:20%' valign='top'><span class='mr_tit'>"+tit+"</span></td>";
+				report += "<td valign='top'><span class='mr_des'>"+des+"</span></td>";
+				report += '<td valign="top" style="width:10px"><a href="javascript:void(0)" class="mr_remove"><i class="fa fa-remove"></i></a></td>';
+				report += "</tr>";
+				$("#medRepTbl").append(report);
+				updateMrCnt();
+			}else{
+				toastr.error('Please add title and discription');
+			}
         });
 
         function updateMrCnt(){

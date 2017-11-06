@@ -46,17 +46,57 @@ $lang['patientrecord'] = 'Patient Record';
 $lang['newPrescription'] = 'New Prescription';
 $lang['newinPatient'] = 'New Patient';
 $lang['reports'] = 'Reports';
+$lang['Outstanding_report'] = 'Outstanding Reports';
+$lang['Complete_report'] = 'Complete Report';
 $lang['appoitment_report'] = 'Appointment Report';
 $lang['patient_report'] = 'Patient Report';
 $lang['about'] = 'About';
 $lang['testreports'] = 'Test Reports';
 $lang['orders'] = "Orders";
+$lang['Outstanding_order'] = "Outstanding Orders";
+$lang['Complete_order'] = "Complete Orders";
 $lang['medOrderPlaced'] = "Your order placed.";
 $lang['verification_complete'] = 'Email id verified successfully';
 $lang['msg_unable_to_verify'] = 'Unable to verify your email id.';
 $lang['msg_registration_complete'] = 'Registration completed. Please check your email';
 $lang['select_your_role'] = 'Complete your profile by selecting your role';
-$lang['messages'] = 'Messages   ';
+$lang['messages'] = 'Messages';
+$lang['recommend_date'] = 'Recommend Appointment Date';
+$lang['recommend'] = "Recommend";
+$lang['addRecommendDate'] = "Add Recommend Appointment Date";
+$lang['recommend_appointment'] = "Recommend Appointments";
+$lang['delete_all'] = 'Delete All';
+$lang['patient_trend'] = 'Patient Treand';
+$lang['select_one_hospital'] = 'Select at least one hospital.';
+$lang['appointment#'] = "Appoitment # :";
+$lang['appointment_date'] = "Appoitment Date :";
+$lang['appointment_sloat'] = "Appoitment Sloat :";
+$lang['appointment_reason'] = "Reason :";
+$lang['appointment_status'] = "Status :";	
+$lang['not_admitted'] = "Not Admitted";
+$lang['admitted'] = "Admitted";
+$lang['discharged'] = "Discharged";
+$lang['prescriptionForMedicines'] = "Prescription for Medicines ";
+$lang['prescriptionForMedicalTests'] = "Prescription for Medical Tests ";
+$lang['add_medical_report'] = "Add Medical Report";
+$lang['drug'] = "Drug";
+$lang['strength'] = "Strength";
+$lang['dosage'] = "Dosage";
+$lang['duration'] = "Duration";
+$lang['quantity'] = "Quantity";
+$lang['note'] = "Note";
+$lang['add_new_note'] = "Add New Note";
+$lang['new_note'] = "New Note";
+$lang['no_test_report_uploaded_yet'] = "No Test-Report Uploaded Yet";
+$lang['hospital_admin'] = "Hospital Admin";
+$lang['my_pulse'] = "My Pulse";
+$lang['reset_password'] = "Reset Password";
+$lang['login_to_your_account'] = "Login to your account";
+$lang['remember_me'] = "Remember Me";
+$lang['forgot_your_password'] = "Forgot Your Password?";
+$lang['do_not_have_account'] = "Don't Have Account? Sign Up";
+
+
 $lang['roles'] = array(
     -1 => '',
     1 => 'Super Admin',
@@ -68,6 +108,16 @@ $lang['roles'] = array(
     7 => 'Medical Store Incharge',
     8 => 'Medical Lab Incharge'
 );
+
+$lang['clear'] = "Clear";
+$lang['apply'] = "Apply";
+$lang['custom'] = "Custom Range";
+$lang['today'] = "Today";
+$lang['yesterday'] = "Yesterday";
+$lang['last_7_day'] = "Last 7 day";
+$lang['last_30_day'] = "Last 30 day";
+$lang['this_month'] = "This Month";
+$lang['last_month'] = "Last Month";
 
 //Index
 $lang["msg_welcome"] = "Welcome %s";
@@ -130,6 +180,8 @@ $lang['msg_patient_updated'] = "Patient Updated Successfully";
 
 $lang['msg_appoitment_added'] = "Appointment Added Successfully";//(Raj: Correct label too)
 $lang['msg_appoitment_updated'] = "Appointment Updated Successfully";//(Raj: Correct label too)
+$lang['msg_recommendNextDate_added'] = "Recommend Next Appointment Date added Successfully";
+$lang['msg_recommendNextDate_error'] = "Please Select Recommend Date";
 
 $lang['msg_hip_added'] = "Health insurance provider Added Successfully";
 $lang['msg_hip_updated'] = "Health insurance provider Updated Successfully";
@@ -175,9 +227,11 @@ $lang['unregUser'] = "unregistered  User";
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appointment",//(Raj: Correct the label too)
+	"save" => "Save";
     "delete" => "Delete",
     "export" => "Export",
     'cancel' => 'Cancel',
+	'send' => 'Send';
     'done' => 'Done',
     'update' => "Update",
     'reject' => 'Reject',
@@ -186,9 +240,24 @@ $lang['buttons'] = array(
     'no' => 'No',
     'edit' => 'Edit',
     'approve' => 'Approve',
+	'close' => 'Close',
+	'reset' => 'Reset',
+	'login' => 'Login',
+	'register' => 'Register'
+	'back' => 'Back',
     'newPrescription' => 'New Prescription',
     'newpatient' => 'New Inpatient',
     'new_note' => 'New Note',
+	'submit' => 'Submit',
+	'all_hospital_admins' => 'All Hospital Admins',
+	'all_medical_labs' => 'All Medical Labs',
+	'all_medical_stores' => 'All Medical Stores',
+	'all_nurses' => 'All Nurses',
+	'all_receptionists' => 'All Receptionists',
+	'all_doctor' => 'All Doctors',
+	'all_patients' => 'All Patients',
+	'all_staff' => 'All Staff',
+	'send_verification_email' = "Send Verification Email";
     
 );
 //End Buttons
@@ -240,13 +309,20 @@ $lang['tableHeaders'] = array(
     'remarks' => 'Remarks',
     'prescriptionFor' => 'Title(Prescription for)',
     'action' => 'Action',
+	'from' => 'From',
+	'message' => 'Message',
+	'date' => 'Date',
+	
 );
 //End Table Headings
 
 $lang['labels'] = array(
+	'sign_up' = > "Sign Up",
+	'user' => "User",
     'name' => "Name",
     'address' => 'Address',
     'email' => 'Email',
+	'user_email' => 'Useremail',
     'phoneNumber' => 'Phone Number',
     'selectCountry' => 'Country',
     'selectState' => 'State',
@@ -262,10 +338,14 @@ $lang['labels'] = array(
     'licenseStatus' => 'License Status',
     'licenseValidity' => 'License Validity',
     'selectHospital' => 'Hospital',
+	'hospital' => 'Hospital',
     'selectBranch' => 'Branch',
+	'branch' => 'Branch',
     'selectDepartment' => 'Department',
+	'department' => 'Department',
     'selectWard' => 'Ward',
     'selectDoctor' => 'Doctor',
+	'doctor' => 'Doctor',
     'isBedOccupied' => 'Is Bed Occupied?',
     'branchName' => 'Branch Name',
     'departmentName' => "Department Name",
@@ -324,6 +404,7 @@ $lang['labels'] = array(
     'selectHeightIc' => 'Inch',
     'oldPassword' => 'Old Password',
     'newPassword' => 'New Password',
+	'confirm_password' => 'Confirm Password',
     'reNewPassword' => 'Confirm New Password',
     'inactive' => 'Inactive',
     'active' => 'Active',
@@ -390,6 +471,14 @@ $lang['labels'] = array(
     'licenseInfo' => 'License Information',
     'logo' => 'Logo',
     'role'=> 'Role',
+	'create_account' => 'Create an account',
+	'agree_terms_policy' => 'Agree the terms and policy',
+	'are_mendatory' => 'are mandatory',
+	'already_have_an_account' => 'Already have an account?',
+	'to' => 'To',
+	'from' => 'From',
+	'title' => 'Title',
+	'message' => 'Message';
 );
 //End Labels
 

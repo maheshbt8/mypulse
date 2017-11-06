@@ -176,6 +176,74 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
+				
+				var isShowIn = "";
+				var intPatId = "";
+				<?php
+				
+				if(isset($_GET['sip']) && $_GET['sip'] != ""){	
+				?>
+					isShowIn = '<?php echo $_GET['sip']; ?>';
+					
+				<?php 
+				}
+				?>
+				<?php
+				if(isset($_GET['pid']) && $_GET['pid'] != ""){	
+				?>
+					intPatId = '<?php echo $_GET['pid']; ?>';
+					
+				<?php 
+				}
+				?>
+				
+				console.log(isShowIn);
+				console.log(isShowIn==1);
+				console.log(isShowIn=="1");
+				
+				if(isShowIn=="1"){
+					$.post("<?php echo site_url();?>/inpatient/getinpatient",{id : intPatId}, function(data){
+						data = JSON.parse(data);
+						console.log(data);
+					
+						//Show Inpatient
+						var patient_id= intPatId;
+						$('#hsinpatientadd_id').val(patient_id);
+                         $('#inPatientTblDiv').hide();
+                	     $('#patientRecordTbl').hide();
+                	     $('#inPatientTblHistoryDiv').show();
+			               var bed_no = data.bed_name;
+			               var hs_jdate = data.join_date;
+			               var hs_status = data.status_txt;
+			               var hs_reason = data.reason;
+			                $('#bed_no').text(bed_no);
+			                $('#jdate').text(hs_jdate);
+			                $('#hs_status').text(hs_status);
+			                $('#hs_reason').text(hs_reason);
+			             
+			              //   //row.find(".historyinpatient").hide();
+			              //   $('#inPatientTblDiv').hide();
+			              $('#canPatientBtnHist').show();
+			              // $('#inPatientBtn').hide();
+			               $("#add_noteBtn").show();
+			              // $('#inPatientTblHistoryDiv').show();
+			              $("#inPatientTblHistory").dataTable().fnDestroy();
+			                $('#inPatientTblHistory').DataTable({ 
+			                "processing": true,
+			                "serverSide": true,
+			                "paging":   true,
+			                "ordering": false,
+			                "info":     false,
+			                "ajax": {
+			                "url":'<?php echo site_url();?>/inpatient/getDTHistoryinpatient/'+patient_id,
+			                   }              
+			            });
+			                $("#inPatientTblHistory_filter").hide();
+			                $("#inPatientTblHistory_length").hide();
+					
+					});
+				}
+				
 				var branch_id = null;
 				var department_id = null;
 				$("#patients").DataTable({

@@ -135,6 +135,130 @@ class Appoitments_model extends CI_Model {
         }
         return $data;
     }
+	
+	function getHAReport(){
+        $start_date = isset($_GET['sd']) ? date("Y-m-d",strtotime($_GET['sd'])) : date('Y-m-d',(strtotime ( '-29 day' , time() ) ));
+        $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
+        if($start_date != "" && $end_date != ""){
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id';
+        }else if($start_date != ""){
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id';
+        }else if($end_date != ""){
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id';
+        }else{
+            $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id';
+        }
+        return $this->db->query($qry)->result_array();
+    }
+
+    function getHAreportchart(){
+        $bid = isset($_GET['bid']) ? explode(",",$_GET['bid']) : 0;
+        $start_date = isset($_GET['sd']) ? date("Y-m-d",strtotime($_GET['sd'])) : date('Y-m-d',(strtotime ( '-29 day' , time() ) ));
+        $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
+
+        
+        $date1 = new DateTime($start_date);
+        $date2 = new DateTime($end_date);
+        
+        $days = $date2->diff($date1)->format("%a");
+        $data = array();
+        
+        if($days < 30){
+            //Date wise
+            $temp = array();
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1D'),
+                new DateTime($end_date)
+           );
+           $_labls = array();
+           foreach($period as $p){
+               $_labls[] = $p->format("d-M");
+           }
+           $data['labels'] = $_labls;
+           $data['title'] = $date1->format("d-M")." to ".$date2->format("d-M-Y");
+           foreach($bid as $b){
+               $this->db->where('id',$b);
+               $this->db->select('branch_name');
+               $bres = $this->db->get('hms_branches')->row_array();
+               $bname = isset($bres['branch_name']) ? $bres['branch_name'] : "Branch";
+               $_data = array();
+               foreach($period as $d){
+                    $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date="'.$d->format("Y-m-d").'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id HAVING b.id='.$b;
+                    $res = $this->db->query($qry)->row_array();
+                    $_data[] = isset($res['count']) ? $res['count'] : 0;
+               }
+               $temp[] = array(
+                   'label' => $bname,
+                   'data' => $_data
+               );
+           }
+           $data['data'] = $temp;
+        }else if($days < 365){
+            //Month Wise
+            $temp = array();
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1M'),
+                new DateTime($end_date)
+           );
+           $_labls = array();
+           foreach($period as $p){
+               $_labls[] = $p->format("M");
+           }
+           $data['labels'] = $_labls;
+           $data['title'] = $date1->format("M")." to ".$date2->format("M-Y");
+           foreach($bid as $b){
+               $this->db->where('id',$b);
+               $this->db->select('branch_name');
+               $bres = $this->db->get('hms_branches')->row_array();
+               $bname = isset($bres['branch_name']) ? $bres['branch_name'] : "Branch";
+               $_data = array();
+               foreach($period as $d){
+                    $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where MONTH(a.appoitment_date)="'.$d->format("m").'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id HAVING b.id='.$b;
+                    $res = $this->db->query($qry)->row_array();
+                    $_data[] = isset($res['count']) ? $res['count'] : 0;
+               }
+               $temp[] = array(
+                   'label' => $bname,
+                   'data' => $_data
+               );
+           }
+           $data['data'] = $temp;
+        }else{
+            //Year wise
+            $temp = array();
+            $period = new DatePeriod(
+                new DateTime($start_date),
+                new DateInterval('P1Y'),
+                new DateTime($end_date)
+           );
+           $_labls = array();
+           foreach($period as $p){
+               $_labls[] = $p->format("Y");
+           }
+           $data['labels'] = $_labls;
+           $data['title'] = $date1->format("Y")." to ".$date2->format("Y");
+           foreach($bid as $b){
+               $this->db->where('id',$b);
+               $this->db->select('branch_name');
+               $bres = $this->db->get('hms_branches')->row_array();
+               $bname = isset($bres['branch_name']) ? $bres['branch_name'] : "Branch";
+               $_data = array();
+               foreach($period as $d){
+                    $qry = 'SELECT @s:=@s+1 as ind,COUNT(a.id) as count,b.branch_name,b.id as bid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where YEAR(a.appoitment_date)="'.$d->format("Y").'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by b.id HAVING b.id='.$b;
+                    $res = $this->db->query($qry)->row_array();
+                    $_data[] = isset($res['count']) ? $res['count'] : 0;
+               }
+               $temp[] = array(
+                   'label' => $bname,
+                   'data' => $_data
+               );
+           }
+           $data['data'] = $temp;
+        }
+        return $data;
+    }
 
     function getappoitmentsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
@@ -208,7 +332,9 @@ class Appoitments_model extends CI_Model {
 
         $this->db->where('id',$id);
         $this->db->update($this->tblname,array('remarks'=>$r));
-
+		
+		$this->logger->log("Appointment APT".$id." updated", Logger::Appointment, $id);
+		
         //get appointment data
         $this->db->where('id',$id);
         $appointment = $this->db->get($this->tblname)->row_array();
@@ -250,10 +376,11 @@ class Appoitments_model extends CI_Model {
         }
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
+			$this->logger->log("New appointment APT".$id." created", Logger::Appointment, $id);
+
             $this->db->where('id',$id);
             $apt_no ='APT'.$id;
             $this->db->update($this->tblname,array('appoitment_number'=> $apt_no));
-
             //find doctor user_id
             $this->db->where('id', $data['doctor_id']);
             $doctor = $this->db->get('hms_doctors')->row_array();
@@ -311,6 +438,7 @@ class Appoitments_model extends CI_Model {
         }
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
+            $this->logger->log("Appointment APT".$id." updated", Logger::Appointment, $id);
             //get appt using $id;
             if(!$this->auth->isPatient()) {
                 //find appoitment data
@@ -353,19 +481,36 @@ class Appoitments_model extends CI_Model {
         $this->db->where("id", $id);
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
+            $this->logger->log("Appointment APT".$id." soft deleted", Logger::Appointment, $id);
             return true;
         } else return false;
     }
-    function cancel($id){
-        return $this->updateStatus($id,4);
+    function cancel($id)
+    {
+        if ($this->updateStatus($id, 4)) {
+            $this->logger->log("Appointment APT" . $id . "canceled", Logger::Appointment, $id);
+            return true;
+        }
+        return false;
     }
 
-    function reject($id){
-        return $this->updateStatus($id,2);
+    function reject($id)
+    {
+        if ($this->updateStatus($id, 2)) {
+            $this->logger->log("Appointment APT" . $id . " rejected", Logger::Appointment, $id);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     function approve($id){
-        return $this->updateStatus($id,1);
+        if($this->updateStatus($id,1)){
+            $this->logger->log("Appointment APT".$id." approved", Logger::Appointment, $id);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     function updateStatus($id,$status=0){
@@ -382,7 +527,6 @@ class Appoitments_model extends CI_Model {
                 $msg = $this->auth->getAppoitmentStatus($status,true);
                 //sent notification to patient
                 $this->notification->saveNotification($apt['user_id'],"Your appointment <b>".$apt['appoitment_number']."</b> has been ".$msg);
-
                 //find doctor user_id
                 $this->db->where('id', $apt['doctor_id']);
                 $doctor = $this->db->get('hms_doctors')->row_array();
