@@ -95,6 +95,7 @@ $lang['login_to_your_account'] = "Login to your account";
 $lang['remember_me'] = "Remember Me";
 $lang['forgot_your_password'] = "Forgot Your Password?";
 $lang['do_not_have_account'] = "Don't Have Account? Sign Up";
+$lang['enter_email_to_reset_password'] = "Enter your e-mail address below to reset your password";
 
 
 $lang['roles'] = array(
@@ -346,6 +347,11 @@ $lang['labels'] = array(
     'selectWard' => 'Ward',
     'selectDoctor' => 'Doctor',
 	'doctor' => 'Doctor',
+	'selectPatient' => 'Patient',
+	'selectNurse' => 'Nurse',
+	'selectReceptionist' => 'Receptionist',
+	'selectMedicalStore' => 'Medical Store',
+	'selectMedicalLab' => 'Medical Lab',
     'isBedOccupied' => 'Is Bed Occupied?',
     'branchName' => 'Branch Name',
     'departmentName' => "Department Name",
@@ -479,6 +485,7 @@ $lang['labels'] = array(
 	'from' => 'From',
 	'title' => 'Title',
 	'message' => 'Message';
+	'register_as' => 'Register As',
 );
 //End Labels
 

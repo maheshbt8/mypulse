@@ -9,15 +9,15 @@
                 <form class=""  method="post" id="reg_form" action="<?php echo site_url().'/index/updaterole' ?>">
                     <div class="row">
                         <div class="form-group col-md-6">
-                            <label>Register As</label>
+                            <label><?php echo $this->lang->line('labels')['register_as'];?></label>
                             <select class="form-control" name="role" id="role">
-                                <option value="<?php echo $this->auth->getPatientRoleType();?>">Patient</option>
-                                <option value="<?php echo $this->auth->getHospitalAdminRoleType();?>">Hospital Admin</option>
-                                <option value="<?php echo $this->auth->getDoctorRoleType();?>">Doctor</option>
-                                <option value="<?php echo $this->auth->getNurseRoleType();?>">Nurse</option>
-                                <option value="<?php echo $this->auth->getReceptienstRoleType();?>">Receptienst</option>
-								<option value="<?php echo $this->auth->getMedicalStoreRoleType();?>">Medical Store</option>
-								<option value="<?php echo $this->auth->getMedicalLabRoleType();?>">Medical Lab</option>
+                                <option value="<?php echo $this->auth->getPatientRoleType();?>">Patient<?php echo $this->lang->line('labels')['selectPatient'];?></option>
+                                <option value="<?php echo $this->auth->getHospitalAdminRoleType();?>">Hospital Admin<?php echo $this->lang->line('labels')['selectHospitalAdmin'];?></option>
+                                <option value="<?php echo $this->auth->getDoctorRoleType();?>">Doctor<?php echo $this->lang->line('labels')['selectDoctor'];?></option>
+                                <option value="<?php echo $this->auth->getNurseRoleType();?>">Nurse<?php echo $this->lang->line('labels')['selectNurse'];?></option>
+                                <option value="<?php echo $this->auth->getReceptienstRoleType();?>">Receptienst<?php echo $this->lang->line('labels')['selectReceptionist'];?></option>
+								<option value="<?php echo $this->auth->getMedicalStoreRoleType();?>">Medical Store<?php echo $this->lang->line('labels')['selectMedicalStore'];?></option>
+								<option value="<?php echo $this->auth->getMedicalLabRoleType();?>">Medical Lab<?php echo $this->lang->line('labels')['selectMedicalLab'];?></option>
                             </select>
                         </div>
                     </div>

@@ -54,14 +54,14 @@
                                   $this->load->view('template/alert');
                                 ?>
                                 <a href="<?php echo site_url();?>" class="logo-name text-lg text-center"><?php echo ucfirst($this->config->item('title'));?></a>
-                                <p class="text-center m-t-md">Enter your e-mail address below to reset your password</p>
+                                <p class="text-center m-t-md"><?php echo $this->lang->line('enter_email_to_reset_password');?></p>
                                 <form id="forgotform" class="m-t-md" action="<?php echo site_url();?>/index/sendResetKey" method="post">
                                     <div class="form-group">
                                         <input type="email" name="email_id" class="form-control" placeholder="Email*" >
                                     </div><br>
-                                    <p class="mandatory">* are mandatory</p>
-                                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                                    <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-md">Back</a>
+                                    <p class="mandatory">* <?php echo $this->lang->line('labels')['are_mendatory'];?></p>
+                                    <button type="submit" class="btn btn-primary btn-block"><?php echo $this->lang->line('buttons')['submit'];?></button>
+                                    <a href="<?php echo site_url();?>" class="btn btn-default btn-block m-t-md"><?php echo $this->lang->line('buttons')['back'];?></a>
                                 </form>
                                 <p class="text-center m-t-xs text-sm"><?php echo date('Y'); ?> &copy; JagruMs Technologies.</p>
                             </div>
