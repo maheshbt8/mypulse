@@ -138,6 +138,18 @@
                                     <a href="<?php echo site_url();?>" class="nav-link"><i class="fa-credit-card "></i><span class="title"><?php echo $menu['main_payments'];?></span>
                                     </a>
                                 </li>
+								<li id="li12" class="nav-item">
+                                    <a href="#" class="nav-link nav-toggle">
+                                        <i class="icon-bar-chart"></i>
+                                        <span><?php echo $menu['main_reports'];?></span><span class="arrow"></span>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li id="li1201" class="nav-item"><a class="nav-link " href="<?php echo site_url();?>patients/hareport"><?php echo $menu['main_patient_report'];?></a></li>
+                                        <li id="li1202" class="nav-item"><a class="nav-link " href="<?php echo site_url();?>appoitments/hareport" ><?php echo $menu['main_appoitment_report'];?></a></li>
+                                        
+                                    </ul>
+                                </li>
+								
                                 <!--<li class="nav-item" id="li12">
                                     <a href="<?php echo site_url();?>" class="nav-link"><i class="  icon-bar-chart "></i><span class="title"><?php echo $menu['main_reports'];?></span>
                                     </a>

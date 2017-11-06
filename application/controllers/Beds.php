@@ -208,8 +208,10 @@ class Beds extends CI_Controller {
                 $temp = $this->inpatient_model->getinpatientBybedId($d);
                 if(is_array($temp)){
                     $user_id = $temp['user_id'];                  
-                    $userdata = $this->users_model->getProfile($user_id);
-                    return $this->auth->getUName($userdata);
+                    $userdata = $this->users_model->getProfile($user_id);	
+                    $pname = $this->auth->getUName($userdata);
+					//return $pname;
+					return "<a href='".site_url()."nurse/inpatient?sip=1&pid=".$temp['id']."'>$pname</a>";
                 }else{
                     return "-";
                 }

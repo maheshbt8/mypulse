@@ -16,7 +16,13 @@ class Inpatient_model extends CI_Model {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         $r['join_date'] = date("d-m-Y h:i A",strtotime($r['join_date']));
-        return $r;
+		$this->load->model('beds_model');
+        $b = $this->beds_model->getbedsById($r['bed_id']);
+		$r['status_txt'] = addslashes($this->auth->getInpatientStatus($r['status'],true));
+               
+		if(isset($b['bed']))
+            $r['bed_name'] = $b['bed'];
+		return $r;
     }
 
     function getinpatientBybedId($id) {

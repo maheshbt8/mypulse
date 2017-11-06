@@ -292,7 +292,7 @@ class Medical_store_model extends CI_Model {
         $res = $this->db->get('hms_prescription')->result_array();
         $ids = array();
         foreach($res as $r){
-            $ids[] = $r['medical_lab_id'];
+            $ids[] = $r['store_id'];
         }
         return $ids;
     }

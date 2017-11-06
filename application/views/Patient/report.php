@@ -231,13 +231,18 @@ $this->load->view("template/footer.php");
 		$('#sel_from_date').daterangepicker({
 			startDate: start,
 			endDate: end,
+			locale: { 
+				applyLabel : '<?php echo $this->lang->line('apply');?>',
+				cancelLabel: '<?php echo $this->lang->line('clear');?>',
+				"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+			},  
 			ranges: {
-				'Today': [moment(), moment()],
-				'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-				'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-				'This Month': [moment().startOf('month'), moment().endOf('month')],
-				'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
+				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			}
 		},cb);
 

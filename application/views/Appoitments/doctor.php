@@ -32,7 +32,7 @@ $this->load->view("template/left.php");
 							<div class="col-md-12">
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
-                                    <input id="sel_date" class=" form-control date-picker" /> 
+                                    <input id="sel_date" class=" form-control" /> 
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
@@ -192,19 +192,19 @@ $this->load->view("template/left.php");
 				  	<div class="modal-body">
 				  		<div class="row">
 							<div class="form-group col-md-12">
-								<label>First Name</label>
+								<label><?=$this->lang->line('labels')['fname']?></label>
 								<input name="first_name" id="first_name" class="form-control"  placeholder="First Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label>Last Name</label>
+								<label><?=$this->lang->line('labels')['lname']?></label>
 								<input name="last_name" id="last_name" class="form-control"  placeholder="Last Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label>Mobile</label>
+								<label><?=$this->lang->line('labels')['mobile']?></label>
 								<input name="mobile" id="mobile" class="form-control"  placeholder="Mobile"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label>Useremail</label>
+								<label><?=$this->lang->line('labels')['user_email']?></label>
 								<input name="useremail" id="useremail" class="form-control"  placeholder="User emailid"/>
 							</div>
 						</div>
@@ -225,6 +225,9 @@ $this->load->view("template/footer.php");
 	$(document).ready(function(){
 		$(".js-example-basic-multiple").select2();
 
+		var _sd = "";
+		var _ed = "";
+		
 		var hid = null;
 		<?php
 			if(isset($_GET['hid'])){
@@ -911,7 +914,7 @@ $this->load->view("template/footer.php");
 		
 		$("#sel_date").change(function(){
 			var date = $("#sel_date").val();
-			loadTable(date,$("#hospital_id1").val());
+			loadTable($("#hospital_id1").val());
 		});
 
 		var $selectize_hospital_id1 = $("#hospital_id1").selectize({
@@ -944,19 +947,19 @@ $this->load->view("template/footer.php");
 			},
 			onChange: function(value) {
 				if (!value.length) return;
-				loadTable($("#sel_date").val(),$("#hospital_id1").val());
+				loadTable($("#hospital_id1").val());
 			}
 		});
 
 		$("#status").change(function(){
-			loadTable($("#sel_date").val(),$("#hospital_id1").val());
+			loadTable($("#hospital_id1").val());
 		});
 			
 		$("#showClosed").change(function(){
-			loadTable($("#sel_date").val(),$("#hospital_id1").val());
+			loadTable($("#hospital_id1").val());
 		});
 
-		function loadTable(date,hid){	
+		function loadTable(hid){	
 			var st = $("#status").val();
 			var showClosed = 0;
 			if($("#showClosed").is(":checked")){
@@ -966,7 +969,7 @@ $this->load->view("template/footer.php");
 			var dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&d="+date+"&st="+st+"&sc="+showClosed
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&sd="+_sd+"&ed="+_ed+"&st="+st+"&sc="+showClosed
 			});
 
 			<?php $this->load->view('template/exdt');?>
@@ -975,7 +978,46 @@ $this->load->view("template/footer.php");
 			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 		}
-		loadTable("","all");
+		
+		function cb(start, end) {
+			//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
+			//window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
+			_sd = start.format('YYYY-MM-D');
+			_ed = end.format('YYYY-MM-D');
+			loadTable($("#hospital_id1").val());
+		}
+		
+		var start = moment().subtract(29, 'days');
+		var end = moment();
+		
+		$('#sel_date').daterangepicker({
+			startDate: start,
+			endDate: end,
+			locale: { 
+				applyLabel : '<?php echo $this->lang->line('apply');?>',
+				cancelLabel: '<?php echo $this->lang->line('clear');?>',
+				"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+			},  
+			ranges: {
+				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
+				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			}
+		},cb);
+		
+		$('#sel_date').on('cancel.daterangepicker', function(ev, picker) {
+			//do something, like clearing an input
+			$('#sel_date').val('');
+			_sd = "";
+			_ed = "";
+			loadTable($("#hospital_id1").val());
+		});
+		
+		$("#sel_date").val("");	
+		loadTable("all");
 
 	});
 

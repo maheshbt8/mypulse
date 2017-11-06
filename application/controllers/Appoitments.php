@@ -44,6 +44,22 @@ class Appoitments extends CI_Controller {
             echo json_encode($data);
         }
     }
+	public function hareport(){
+        if($this->auth->isLoggedIn() && $this->auth->isHospitalAdmin()){
+            $data["page_title"] = $this->lang->line("reports");
+            $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitment_report"));
+            $data['hareports'] = $this->appoitments_model->getHAReport();
+            $this->load->view('Appoitments/hareport',$data);
+        }else{
+            redirect('index/login');
+        }
+    }
+    public function gethareportchart(){
+        if($this->auth->isLoggedIn() && $this->auth->isHospitalAdmin()){
+            $data['data'] = $this->appoitments_model->getHAreportchart();
+            echo json_encode($data);
+        }
+    }
     public function search() {
         if ($this->auth->isLoggedIn()) {
             $q = $this->input->get("q", null, "");
@@ -177,7 +193,9 @@ class Appoitments extends CI_Controller {
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
-            $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
+            $sdate = isset($_GET['sd']) ? $_GET['sd'] != "" ? date("Y-m-d",strtotime($_GET['sd'])) : null : null;
+            $edate = isset($_GET['ed']) ? $_GET['ed'] != "" ? date("Y-m-d",strtotime($_GET['ed'])) : null : null;
+			
             if($hid == "all")
                 $hid = null;
             $show  = $this->input->get('s',null,false);
@@ -207,8 +225,8 @@ class Appoitments extends CI_Controller {
                 $columns[0] = array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
                     return $d;
                 });
-            }else if($date != null){
-                $cond[] = "appoitment_date='$date'";
+            }else if($sdate != null && $edate != null){
+                $cond[] = "appoitment_date between '$sdate' and '$edate'";
             }
 
             $isExport = isset($_GET['ex']) ? $_GET['ex'] : false;
@@ -291,7 +309,8 @@ class Appoitments extends CI_Controller {
             $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
             $did = isset($_GET['did']) ? $_GET['did']!="" ? $_GET['did'] : null : null;
-            $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
+			$sdate = isset($_GET['sd']) ? $_GET['sd'] != "" ? date("Y-m-d",strtotime($_GET['sd'])) : null : null;
+            $edate = isset($_GET['ed']) ? $_GET['ed'] != "" ? date("Y-m-d",strtotime($_GET['ed'])) : null : null;
             
             if($hid === "all")
                 $hid = null;
@@ -317,8 +336,8 @@ class Appoitments extends CI_Controller {
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
 
-            if($date != null){
-                $cond[] = "appoitment_date='$date'";
+            if($sdate != null && $edate != null){
+                $cond[] = "appoitment_date between '$sdate' and '$edate'";
             }
             
             if(count($status) > 0){
@@ -348,6 +367,12 @@ class Appoitments extends CI_Controller {
                 $dids = implode(",",$dids);
                 $cond[] = "doctor_id in (".$dids.")";
             }
+			
+			$isToday = isset($_GET['tod']) ? intval($_GET['tod']) : false;
+			if($isToday && $isToday === 1){
+				date_default_timezone_get("Asia/Kolkata");
+				$cond[] = "appoitment_date='".date("Y-m-d")."'";
+			}
 
             if($show){
                 $this->tbl->setCheckboxColumn(false);
@@ -421,7 +446,8 @@ class Appoitments extends CI_Controller {
             $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
             $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? $_GET['hid'] : null : null;
-            $date = isset($_GET['d']) ? $_GET['d'] != "" ? date("Y-m-d",strtotime($_GET['d'])) : null : null;
+            $sdate = isset($_GET['sd']) ? $_GET['sd'] != "" ? date("Y-m-d",strtotime($_GET['sd'])) : null : null;
+            $edate = isset($_GET['ed']) ? $_GET['ed'] != "" ? date("Y-m-d",strtotime($_GET['ed'])) : null : null;
 
             if($hid === "all")
                 $hid = null;
@@ -444,8 +470,8 @@ class Appoitments extends CI_Controller {
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
 
-            if($date != null){
-                $cond[] = "appoitment_date='$date'";
+			if($sdate != null && $edate != null){
+                $cond[] = "appoitment_date between '$sdate' and '$edate'";
             }
         
             if(count($status) > 0){

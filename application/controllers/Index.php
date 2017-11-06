@@ -460,6 +460,8 @@ class Index extends CI_Controller {
                 $html .= date("d-M-Y h:i A",strtotime($d));
                 $html .= "</span>";
                 return $html;
+            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                return "<a href=\"#\" data-id='$d' class=\"delbtn\" id='dellink_$d' data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 
             $cond = array();
@@ -473,6 +475,26 @@ class Index extends CI_Controller {
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
         }
     }
+	
+	public function deleteMessages(){
+		if($this->auth->isLoggedIn()){
+			$msg_id = isset($_POST['id']) ? $_POST['id'] : 0;
+			$this->message_model->deleteMessages($msg_id);
+			echo 1;	
+		}else{
+			echo 0;
+		} 
+		
+	}
+	
+	public function deleteAllMessages(){
+		if($this->auth->isLoggedIn()){
+			$this->message_model->deleteAllMessages();
+			echo 1;	
+		}else{
+			echo 0;
+		}
+	}
 
 	
 }

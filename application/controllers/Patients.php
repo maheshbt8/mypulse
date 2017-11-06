@@ -45,6 +45,22 @@ class Patients extends CI_Controller {
             echo json_encode($data);
         }
     }
+	public function hareport(){
+        if($this->auth->isLoggedIn() && $this->auth->isHospitalAdmin()){
+            $data["page_title"] = $this->lang->line("reports");
+            $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("patient_report"));
+            $data['hareports'] = $this->patient_model->getHAReport();
+            $this->load->view('Patient/hareport',$data);
+        }else{
+            redirect('index/login');
+        }
+    }
+	public function gethareportchart(){
+        if($this->auth->isLoggedIn() && $this->auth->isHospitalAdmin()){
+            $data['data'] = $this->patient_model->getHAreportchart();
+            echo json_encode($data);
+        }
+    }
     public function cancelPrescriptionOutOrder(){
         $presId = $_REQUEST['prescId'];
        echo $this->patient_model->canOutPrescptionOrder($presId); 

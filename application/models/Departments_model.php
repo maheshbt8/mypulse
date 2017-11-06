@@ -152,16 +152,21 @@ class Departments_model extends CI_Model {
             if(count($hospital_id) > 0){
                 $hospital_id = implode(",",$hospital_id);
                 $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.isDeleted=0");
-                $res = $res->result_array();
+                if($res)
+					$res = $res->result_array();
             }
         }else{
+			if($hospital_id=="" && $hospital_id!="undefined"){ $hospital_id = -1;}
             $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id and d.isDeleted=0");
-            $res = $res->result_array();
+            if($res)
+				$res = $res->result_array();
         }
         $ids = array();
-        foreach ($res as $key => $value) {
-            $ids[] = $value['id'];
-        }
+		if($res){
+			foreach ($res as $key => $value) {
+				$ids[] = $value['id'];
+			}
+		}
         return $ids;
     }
 

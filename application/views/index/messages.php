@@ -6,9 +6,9 @@ $this->load->view('template/left.php');
     <div class="row">
         <div class="card">
             <div class="card-head">
-			    <header>Messages</header>
+			    <header><?php echo $this->lang->line('messages');?></header>
                 <div class="custome_card_header">
-                    
+					<a class="btn btn-danger" id="deleteallmsg" ><i class="fa fa-remove"></i> <?php echo $this->lang->line('delete_all');?></a>
                 </div>
             </div>
 
@@ -19,9 +19,10 @@ $this->load->view('template/left.php');
                     <thead>
                     <tr colspan="4">
                         <th>#</th>
-                        <th>From</th>
-                        <th>Message</th>
-                        <th>Date</th>
+                        <th><?php echo $this->lang->line('tableHeaders')['from'];?></th>
+                        <th><?php echo $this->lang->line('tableHeaders')['message'];?></th>
+                        <th><?php echo $this->lang->line('tableHeaders')['date'];?></th>
+						<th width="10px"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,7 +38,7 @@ $this->load->view('template/left.php');
                 <div class="compose-body">
 
                         <div class="form-group">
-                            <label for="to" class="col-sm-2 control-label">To</label>
+                            <label for="to" class="col-sm-2 control-label"><?php echo $this->lang->line('labels')['to'];?></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="to" id="select-to">
                             </div>
@@ -46,33 +47,34 @@ $this->load->view('template/left.php');
                             <label for="" class="col-sm-2">&nbsp;</label>
                             <div class="col-sm-10" style="margin-top:10px">
                                 <?php if(!$this->auth->isDoctor()){ ?>
-                                <a class="btn btn-primary btn-circle" id="all_hos">All Hospital Admins</a>
-                                <a class="btn btn-primary btn-circle" id="all_medlb">All Madical Labs</a>
-                                <a class="btn btn-warning btn-circle" id="all_medst">All Medical Stores</a>
+                                <a class="btn btn-primary btn-circle" id="all_hos"><?php echo $this->lang->line('buttons')['all_hospital_admins'];?></a>
+                                <a class="btn btn-primary btn-circle" id="all_medlb"><?php echo $this->lang->line('buttons')['all_medical_labs'];?></a>
+                                <a class="btn btn-warning btn-circle" id="all_medst"><?php echo $this->lang->line('buttons')['all_medical_stores'];?></a>
                                 <?php }  ?>
-                                <a class="btn btn-warning btn-circle" id="all_nur">All Nurses</a>
-                                <a class="btn btn-danger btn-circle" id="all_rep">All Receptionists</a>
-                                <a class="btn btn-info btn-circle" id="all_doc">All Doctors</a>
-                                <a class="btn btn-success btn-circle" id="all_pat">All Patients</a>
+                                <a class="btn btn-warning btn-circle" id="all_nur"><?php echo $this->lang->line('buttons')['all_nurses'];?></a>
+                                <a class="btn btn-danger btn-circle" id="all_rep"><?php echo $this->lang->line('buttons')['all_receptionists'];?></a>
+                                <a class="btn btn-info btn-circle" id="all_doc"><?php echo $this->lang->line('buttons')['all_doctor'];?></a>
+                                <a class="btn btn-success btn-circle" id="all_pat"><?php echo $this->lang->line('buttons')['all_patients'];?></a>
+								<a class="btn btn-primary btn-circle" id="all_staff"><?php echo $this->lang->line('buttons')['all_staff'];?></a>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="subject" class="col-sm-2 control-label">Title</label>
+                            <label for="subject" class="col-sm-2 control-label"><?php echo $this->lang->line('labels')['title'];?></label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" name="title" id="title">
                             </div>
                         </div>
 
                 </div>
-                <label for="subject" class="col-sm-2 control-label">Message</label>
+                <label for="subject" class="col-sm-2 control-label"><?php echo $this->lang->line('labels')['message'];?></label>
                 <div class="col-md-12" >
                     <textarea id="message" name="message" class="summernote" rows="30"></textarea>
                 </div><br>
                 <div class="compose-options col-md-12" style="margin-top: 10px">
                     <div class="pull-right">
-                        <button type="button" id="cancelNewMsg" class="showAllMsg btn btn-default"><i class="fa fa-remove m-r-xs"></i>Cancel</button>
-                        <button type="submit" class="btn btn-success"><i class="fa fa-send m-r-xs"></i>Send</button>
+                        <button type="button" id="cancelNewMsg" class="showAllMsg btn btn-default"><i class="fa fa-remove m-r-xs"></i><?php echo $this->lang->line('buttons')['cancel'];?></button>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-send m-r-xs"></i><?php echo $this->lang->line('buttons')['send'];?></button>
                     </div>
                 </div>
             </div>
@@ -84,26 +86,26 @@ $this->load->view('template/left.php');
                     <div class="compose-body">
 
                         <div class="form-group">
-                            <label for="to" class="col-sm-2 control-label">From</label>
+                            <label for="to" class="col-sm-2 control-label"><?php echo $this->lang->line('labels')['from'];?></label>
                             <div class="col-sm-10">
                                 <input type="text" readonly class="form-control" id="read_select-to" value="<?php if(isset($message)){ echo $message['fromname'];}?>">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="subject" class="col-sm-2 control-label">Title</label>
+                            <label for="subject" class="col-sm-2 control-label"><?php echo $this->lang->line('labels')['title'];?></label>
                             <div class="col-sm-10">
                                 <input type="text" readonly class="form-control" id="read_title" value="<?php if(isset($message)){ echo $message['title'];}?>">
                             </div>
                         </div>
 
                     </div>
-                    <label for="subject" class="col-sm-2 control-label">Message</label>
+                    <label for="subject" class="col-sm-2 control-label"><?php echo $this->lang->line('labels')['message'];?></label>
                     <div class="col-md-12" >
                         <textarea id="read_message"  class="summernote" rows="30"><?php if(isset($message)){ echo $message['body'];}?></textarea>
                     </div><br>
                     <div class="compose-options col-md-12" style="margin-top: 13px">
                         <div class="pull-right">
-                            <button type="button" id="backMsg" class="showAllMsg btn btn-default"><i class="fa fa-arrow-left m-r-xs"></i>Back</button>
+                            <button type="button" id="backMsg" class="showAllMsg btn btn-default"><i class="fa fa-arrow-left m-r-xs"></i><?php echo $this->lang->line('buttons')['back'];?></button>
                         </div>
                     </div>
                 </div>
@@ -121,6 +123,32 @@ $this->load->view('template/footer.php');
         var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
             '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
 
+		$(document).on('click','.delbtn',function(){
+			var id = $(this).data('id');
+			swal({
+				title: 'Are you sure?',
+				text: "You want to delete this message!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes'
+			}).then(function () {
+				
+				console.log(BASEURL);
+				$.post(BASEURL+"index/deleteMessages",{ id : id },function(data){
+					if(data==1){
+						$("#dellink_"+id).parents('tr').remove();
+						toastr.success('Message deleted.');
+				 	}else{
+						toastr.error('Please try again.');
+					}
+				});
+			});
+		});
+			
+		
+			
         var selectTo = $('#select-to').selectize({
             persist: false,
             maxItems: null,
@@ -189,7 +217,7 @@ $this->load->view('template/footer.php');
         }
         checkisRead();
 
-        $("#msg_tbl").DataTable({
+        var tbl = $("#msg_tbl").DataTable({
             "processing": true,
             "serverSide": true,
             "ajax": "<?php echo site_url(); ?>/index/getDTMessages"
@@ -200,7 +228,30 @@ $this->load->view('template/footer.php');
         $(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\"  style=\"margin-left:10px\">New Message</a>");
         <?php } ?>
 
-        $(document).on('click','.addbtn',function(){
+        $(document).on('click','#deleteallmsg',function(){
+			swal({
+				title: 'Are you sure?',
+				text: "You want to delete all messages!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes'
+			}).then(function () {
+				
+				console.log(BASEURL);
+				$.post(BASEURL+"index/deleteAllMessages",{},function(data){
+					if(data==1){
+						tbl.ajax.reload();
+						toastr.success('All messages deleted.');
+				 	}else{
+						toastr.error('Please try again.');
+					}
+				});
+			});
+		});
+		
+		$(document).on('click','.addbtn',function(){
             $('.note-editable').attr('contenteditable', true);
             $('.note-toolbar').show();
             $("#NewMsgDiv").show();
@@ -258,6 +309,8 @@ $this->load->view('template/footer.php');
         $("#all_medlb").click(function(){ setMultiUserSet(-5); });
         $("#all_medst").click(function(){ setMultiUserSet(-6); });
         $("#all_pat").click(function(){ setMultiUserSet(-7); });
+		$("#all_staff").click(function(){ setMultiUserSet(-8); });
+		
 
         function setMultiUserSet(type){
             var tempSelectTo = selectTo[0].selectize;
@@ -278,6 +331,7 @@ $this->load->view('template/footer.php');
                     case -5: name = "All Medical Labs"; break;
                     case -6: name = "All Medical Stores"; break;
                     case -7: name = "All Patients"; break;
+					case -8: name = "All Staff"; break;
                 }
                 if(name!=""){
                     options.push({"id":t,"name":name});

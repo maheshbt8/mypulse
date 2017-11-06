@@ -26,6 +26,7 @@ class Logger
 	const User = "User";
 	const Ward = "Ward";
 	const RecommnedDate = "RecommnedDate";
+	const Message = "Message";
 
     public function __construct()
     {
