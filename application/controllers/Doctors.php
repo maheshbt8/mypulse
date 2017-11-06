@@ -360,10 +360,41 @@ class Doctors extends CI_Controller {
                 };
                 $this->tbl->setIndexColumn(true);
             }
+
+            $isExport = isset($_GET['mpexp']) ? intval($_GET['mpexp']) : false;
+            if($isExport === 1){
+                $this->tbl->setIndexColumn(false);
+                $this->tbl->setCheckboxColumn(false);
+                $columns[0]['formatter'] =  function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($d);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
+                    return $name;
+                };
+                $columns[4]['formatter'] =  function ($d, $row) {
+                    return $this->auth->getActiveStatus($d,true);
+                };
+                unset($columns[5]);
+            }
             $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            
+            if($isExport ===1) {
+                $data = $this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns, true);
+                $ext = isset($_GET['mpexpt']) ? $_GET['mpexpt'] : "xlsx";
+                $clms = array(
+                    array("name"=>$this->lang->line('tableHeaders')['doctor'],"width"=> 40),
+                    array("name"=>$this->lang->line('tableHeaders')['hospital'],"width"=> 40),
+                    array("name"=>$this->lang->line('tableHeaders')['branch'],"width"=> 30),
+                    array("name"=>$this->lang->line('tableHeaders')['department'],"width"=> 30),
+                    array("name"=>$this->lang->line('tableHeaders')['status'],"width"=> 30)
+                );
+                $this->auth->export($data['data'],$clms,$ext,$table);
+            }else{
+                $data = $this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns);
+                echo json_encode($data);
+            }
         }
     }
 

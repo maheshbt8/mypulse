@@ -559,6 +559,78 @@ class Auth {
         return $isChanged;
     }
 
+    public function export($data,$columns,$type,$fname){
+        $cnames = array();
+        foreach($columns as $col){
+            $_n = "";
+            if(isset($col['db']))
+                $_n = str_replace("_"," ",$col['db']);
+            else if(isset($col['name']))  
+                $_n = str_replace("_"," ",$col['name']);
+            else
+                $_n = str_replace("_"," ",$col);
+            $_n = ucwords($_n);
+            $cnames[] = $_n;
+        }
+
+        $file_name = str_replace("hms_","",$fname);
+        $file_name = str_replace("_"," ",$file_name);
+        $file_name = ucwords($file_name);
+        
+        $file_path =  dirname(APPPATH).DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.$file_name.".";
+        
+        switch($type){
+            case "pdf":
+                $file_path.="pdf";
+                $this->CI->load->library('fpdf/fpdf','','fpdf');
+               
+                $this->CI->fpdf->AddPage();
+                $this->CI->fpdf->SetFont('Arial','',10);
+                
+                
+                foreach($columns as $col)
+                    $this->CI->fpdf->Cell($col['width'],7,$col['name'],1);
+                $this->CI->fpdf->Ln();
+                
+                foreach($data as $row)
+                {
+                    for($i=0; $i<count($row); $i++){
+                        $this->CI->fpdf->Cell($columns[$i]['width'],6,$row[$i],1);
+                    }
+                        
+                    $this->CI->fpdf->Ln();
+                }
+                $this->CI->fpdf->Output($file_path,'F');
+                $this->downloadfile($file_path);
+                break;
+            default:
+                $file_path.="csv";
+                $file = fopen($file_path,"w");                
+                fputcsv($file,$cnames);
+                foreach ($data as $d)
+                {
+                    fputcsv($file,$d);
+                }
+                fclose($file);
+                $this->downloadfile($file_path);
+                break;
+        }
+    }
+
+    public function downloadfile($file){
+        if (file_exists($file)) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="'.basename($file).'"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        }
+    }
+
 }
 
-/* End of file Someclass.php */
+/* End of file Auth.php */
