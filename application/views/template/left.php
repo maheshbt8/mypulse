@@ -121,7 +121,7 @@
                                     <a href="<?php echo site_url();?>patients" class="nav-link"><i class="icon icon-users "></i><span class="title"><?php echo $menu['main_patients'];?></span>
                                     </a>
                                 </li>
-                                <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-eye "></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span></a></li>
+                                <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-eye "></i><span class="title"><?php echo $menu['main_inpatient'];?></span></a></li>
                                 <li class="nav-item" id="li8">
                                     <a href="<?php echo site_url();?>medical_store" class="nav-link"><i class=" fa fa-medkit "></i><span class="title"><?php echo $menu['main_medical_stores'];?></span>
                                     </a>
