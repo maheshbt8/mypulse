@@ -213,7 +213,7 @@ class Nurse extends CI_Controller {
     }
 
     public function getDTPatient() {
-        if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
+        if ($this->auth->isLoggedIn() && ($this->auth->isNurse() || $this->auth->isDoctor())) {
             $uid = $this->auth->getuserid();   
             $patients_ids =  $this->nurse_model->getDoctorIds($uid);
             
@@ -266,7 +266,7 @@ class Nurse extends CI_Controller {
                 $bed_id = $row['bed_id'];  
                 $user_id = $row['user_id'];    
 				
-                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
+                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
             }));
             if(count($patients_ids) == 0){
                 $patients_ids[] = '-1';

@@ -63,7 +63,7 @@ $lang['select_your_role'] = 'Complete your profile by selecting your role';
 $lang['messages'] = 'Messages';
 $lang['recommend_date'] = 'Recommend Appointment Date';
 $lang['recommend'] = "Recommend";
-$lang['addRecommendDate'] = "Add Recommend Appointment Date";
+$lang['addRecommendDate'] = "Recommend Appointment Date";
 $lang['recommend_appointment'] = "Recommend Appointments";
 $lang['delete_all'] = 'Delete All';
 $lang['patient_trend'] = 'Patient Treand';
@@ -78,7 +78,7 @@ $lang['admitted'] = "Admitted";
 $lang['discharged'] = "Discharged";
 $lang['prescriptionForMedicines'] = "Prescription for Medicines ";
 $lang['prescriptionForMedicalTests'] = "Prescription for Medical Tests ";
-$lang['add_medical_report'] = "Add Medical Report";
+$lang['add_medical_report'] = "Add Prescription for Medical Test";
 $lang['drug'] = "Drug";
 $lang['strength'] = "Strength";
 $lang['dosage'] = "Dosage";
@@ -97,6 +97,7 @@ $lang['forgot_your_password'] = "Forgot Your Password?";
 $lang['do_not_have_account'] = "Don't Have Account? Sign Up";
 $lang['enter_email_to_reset_password'] = "Enter your e-mail address below to reset your password";
 $lang['complete_registration_by_selecting_role'] = "Complete registration by selection your User role.";
+$lang['additional_note'] = "Additional Note";
 
 
 $lang['roles'] = array(
@@ -261,6 +262,7 @@ $lang['buttons'] = array(
 	'all_staff' => 'All Staff',
 	'send_verification_email' => "Send Verification Email",
 	"change_password" => "Change Password",
+	"add_medical_report" => "Add Medical Report",
     
 );
 //End Buttons
@@ -485,7 +487,6 @@ $lang['labels'] = array(
 	'already_have_an_account' => 'Already have an account?',
 	'to' => 'To',
 	'from' => 'From',
-	'title' => 'Title',
 	'register_as' => 'Register As',
 	'message' => 'Message'
 );

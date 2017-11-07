@@ -209,7 +209,7 @@ class Inpatient extends CI_Controller {
                 $bed_id = $row['bed_id'];  
                 $user_id = $row['user_id'];
                 $ldate = ($row['left_date']== "" || $row['left_date']== null) ? "-" : date("d-M-Y h:i A",strtotime($row['left_date']));    
-                return "<a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-ldate='$ldate' data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"glyphicon glyphicon-log-in\"></i></a>";
+                return "<a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-ldate='$ldate' data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
             }));
             $this->tbl->setCheckboxColumn(false);                
             $this->tbl->setIndexColumn(true);

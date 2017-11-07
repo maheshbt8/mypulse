@@ -1037,10 +1037,11 @@ class Doctors_model extends CI_Model {
         $pre['doctor_contact'] = isset($doctor['mobile']) ? $doctor['mobile'] : ''; 
 
         $hospital = $this->getMyHospital($doc_id);
-        $pre['hospital_name'] = isset($hospital['name']) ? $hospital['name'] : '';
+		$pre['hospital_name'] = isset($hospital['name']) ? $hospital['name'] : '';
         $pre['hospital_address'] = isset($hospital['address']) ? $hospital['address'] : '';
         $pre['hospital_email'] =  isset($hospital['email']) ? $hospital['email'] : '';
-        
+        $pre['hospital_logo'] = isset($hospital['logo']) ? $hospital['logo'] : '';
+		
         $this->db->where('prescription_id',$pid);
         $items = $this->db->get('hms_prescription_item');
         $items = $items->result_array();

@@ -152,7 +152,10 @@ class Appoitments extends CI_Controller {
             $primaryKey = "id";
             $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
                 
-                if($row['status'] == 3){
+				if($row['status'] == 2){
+					return $d;
+				}
+                else if($row['status'] == 3){
                     $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
                     return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
                 }else{
@@ -184,7 +187,7 @@ class Appoitments extends CI_Controller {
             }), array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
                 return $this->auth->getAppoitmentStatus($d);
             }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
-                if($row['status']==3)
+                if($row['status']==3 || $row['status']==2)
                     return "";
                 if($row['status']!=4)
                     return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";

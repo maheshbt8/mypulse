@@ -126,12 +126,19 @@
                                         <tbody>
                                             <tr>
                                                 <td style="vertical-align: top; width:50%;">
-                                                    <div>
-                                                        <img src="" style="width:240.00px;height:100.42px;" id="logo_content">
-                                                    </div>
+                                                    <span class="pcs-entity-title">
+														<img style="width:250px;max-height:100px" src="<?php echo base_url()."public/assets/images/logo.png";?>" />
+													</span>
                                                 </td>
                                                 <td style="vertical-align: top; text-align:right;width:50%;">
-                                                    <span class="pcs-entity-title">MyPulse</span><br>
+                                                    <span class="pcs-entity-title">
+														<?php 
+															if(isset($data['hospital_logo']) && $data['hospital_logo'] != ""){
+														?>
+                                                        <img src="<?php echo $data['hospital_logo'];?>" style="width:250px;max-height:100px;" id="logo_content">
+														<?php } ?>
+														    <!--<img style="width:250px;max-height:100px" src="<?php echo base_url()."public/assets/images/logo.png";?>" />-->
+													</span><br>
                                                     <span id="tmp_entity_number" style="font-size: 10pt;" class="pcs-label"><b></b></span>
                                                     <div style="clear:both;margin-top:20px;">
                                                         <label style="font-size: 10pt;" class="pcs-label">Hospital</label>
@@ -179,6 +186,9 @@
                                             </tr>
                                         </tbody>
                                     </table>
+									<?php $isMedStore = isset($data['isMedStore']) ? $data['isMedStore'] === true : false; 
+									if(isset($data['items']) && count($data['items']) > 0) { 
+									?>
                                     <h3>Medicine</h3>
                                     <table style="width:100%;margin-top:20px;table-layout:fixed;" class="pcs-itemtable" cellspacing="0" cellpadding="0" border="0">
                                         <thead>
@@ -208,10 +218,7 @@
                                         </thead>
                                         <tbody class="itemBody">
                                             <?php
-                                                $isMedStore = isset($data['isMedStore']) ? $data['isMedStore'] === true : false;
-
                                                 $cnt = 1;
-                                                
                                                 foreach ($data['items'] as $key => $item) {
                                                     ?>
                                                     <tr>
@@ -247,6 +254,7 @@
                                             ?>
                                         </tbody>
                                     </table>
+									<?php } ?>
                             <?php
                                 if(count($data['reports']) > 0 && !$isMedStore){ 
                                     echo '<h3>Medical Test Reports</h3>';
@@ -301,10 +309,14 @@
                             
                                 } ?>
                                     <br><br>
-                                    <label style="font-size: 10pt;" class="pcs-label">Note</label>
-                                    <br>
-                                    <span class="pcs-customer-name" id="zb-pdf-customer-detail"><?php if(isset($data['note'])) { echo $data['note']; }?></span><br>
-                                </div>
+									<?php 
+										if(isset($data['note']) && $data['note'] != ""){
+									?>
+										<label style="font-size: 10pt;" class="pcs-label"><?php echo $this->lang->line('additional_note');?></label>
+										<br>
+										<span class="pcs-customer-name" id="zb-pdf-customer-detail"><?php if(isset($data['note'])) { echo $data['note']; }?></span><br>
+									<?php } ?>
+								</div>
                                 <div class="pcs-template-footer">
                                     <div class="pcs-footer-content">
                                         <span style="font-size:8.0pt;mso-bidi-font-size:
