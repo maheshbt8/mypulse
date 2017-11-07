@@ -397,6 +397,7 @@ $this->load->view("template/left.php");
                         </div>         
 
                         <div class="row" id="preDiv" style="display:none">
+                            <lable class="control-label" ><h3 style="font-weight:bold;margin-left:20px"><?php echo $this->lang->line('addNewPrescription');?></h3></label><br>
                             <form action="<?php echo site_url();?>/doctors/newprescription" method="post" id="pre_form">
                                 <input type="hidden" name="edit_id" id="edit_id" value='' />
                                 <input type="hidden" name="appt_id" value='<?php echo $appoitment['id'];?>' />
@@ -421,7 +422,7 @@ $this->load->view("template/left.php");
                                 </div>
                                 
                                 <div class="col-md-12">
-                                    <lable class="control-label"><b><h3><?php echo $this->lang->line('prescriptionForMedicines');?></h3></b></label><br>
+                                    <lable class="control-label"><h4><?php echo $this->lang->line('prescriptionForMedicines');?></h4></label><br>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -468,7 +469,7 @@ $this->load->view("template/left.php");
                                 </div> 
                                 <Br><br>
                                 <div class="col-md-12" id="medReportDiv">
-                                    <lable class="control-label" <b><h3><?php echo $this->lang->line('prescriptionForMedicalTests');?></h3></b></label><br>
+                                    <lable class="control-label" ><h4><?php echo $this->lang->line('prescriptionForMedicalTests');?></h4></label><br>
                                     <table width="100%" id="medRepTbl" class="table table-bordered">
 										<thead>
                                             <tr>

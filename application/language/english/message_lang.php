@@ -98,7 +98,7 @@ $lang['do_not_have_account'] = "Don't Have Account? Sign Up";
 $lang['enter_email_to_reset_password'] = "Enter your e-mail address below to reset your password";
 $lang['complete_registration_by_selecting_role'] = "Complete registration by selection your User role.";
 $lang['additional_note'] = "Additional Note";
-
+$lang['addNewPrescription'] = "Add new prescription ";
 
 $lang['roles'] = array(
     -1 => '',
