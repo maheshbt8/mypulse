@@ -582,7 +582,7 @@ class Auth {
         switch($type){
             case "pdf":
                 $file_path.="pdf";
-                $this->CI->load->library('fpdf/fpdf','','fpdf');
+                $this->CI->load->library('fpdf/FPDF','','fpdf');
                
                 $this->CI->fpdf->AddPage();
                 $this->CI->fpdf->SetFont('Arial','',10);
