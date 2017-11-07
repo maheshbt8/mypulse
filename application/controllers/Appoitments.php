@@ -451,10 +451,8 @@ class Appoitments extends CI_Controller {
                 return $this->auth->getAppoitmentStatus($d);
             }), array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 if($row['status'] == 3 || $row['status']=='4'){
-                    if($row['status'] == 3){
-
-                    }
-                    return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".'Record'."</a>";
+                    return "-";
+                    //return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".."</a>";
                 }
                 $html = "<span style='display:inline-flex'>";
                 if($row['status'] != 2){
