@@ -322,6 +322,7 @@ $lang['tableHeaders'] = array(
 //End Table Headings
 
 $lang['labels'] = array(
+	'bookAppoitment' => 'Book Appointment',
 	'sign_up' => "Sign Up",
 	'user' => "User",
     'name' => "Name",

@@ -909,7 +909,7 @@ class Doctors_model extends CI_Model {
         $_st = isset($_POST['ptStatus']) ? $_POST['ptStatus'] : 0;
         $data = array();
         if(isset($_POST['patient_id'])){
-            $data['patient_id'] = $_POST['patient_id'];
+            $data['user_id'] = $_POST['patient_id'];
         }
         if(isset($_POST['Patientbed'])){
             $data['bed_id'] = $_POST['Patientbed'];
@@ -927,26 +927,31 @@ class Doctors_model extends CI_Model {
         if($_st == 2){
             $data['left_date'] = date("Y-m-d H:i:s");
         }
-            $this->db->set($data);
-            $this->db->where('id',$id);
-            $this->db->update('hms_inpatient');
-			$this->logger->log("Patient Inpatient history updated", Logger::Inpatient, $id);
-            // $this->db->replace('hms_inpatient', $data);
+		
+		$this->db->set($data);
+		
+		$this->db->where('id',$id);
+		$st = $this->db->update('hms_inpatient');
 
-            // get patient name using user_id from user tbl
-            $this->db->where('id', $data['user_id']);
-            $pname = $this->db->get('hms_users')->row_array();
-            // get department_id and doctor user_id using doctor_id
-            $this->db->where('id', $uid);
-            $doctor = $this->db->get('hms_doctors')->row_array();
-            // get nurses which are linked with this $dept_id
-            $nurses = $this->db->query("select user_id from hms_nurse where department_id = $doctor[department_id]")->result_array();
-            // sent notification to nurse
-            foreach ($nurses as $nurse){
-                $this->notification->saveNotification($nurse['user_id'], "Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b> is updated");
-            }
-            // sent notification to patient
-            $this->notification->saveNotification($data['user_id'], "Your Inpatient history is updated");
+		$this->logger->log("Patient Inpatient history updated", Logger::Inpatient, $id);
+		// $this->db->replace('hms_inpatient', $data);
+
+		// get patient name using user_id from user tbl
+		$this->db->where('id', $data['user_id']);
+		$pname = $this->db->get('hms_users')->row_array();
+		// get department_id and doctor user_id using doctor_id
+		$this->db->where('id', $uid);
+		$doctor = $this->db->get('hms_doctors')->row_array();
+		
+		// get nurses which are linked with this $dept_id
+		$nurses = $this->db->query("select user_id from hms_nurse where department_id = $doctor[department_id]")->result_array();
+		// sent notification to nurse
+		foreach ($nurses as $nurse){
+			$this->notification->saveNotification($nurse['user_id'], "Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b> is updated");
+		}
+		// sent notification to patient
+		$this->notification->saveNotification($data['user_id'], "Your Inpatient history is updated");
+		
     }
 
     function addMedicalReport($pid=0){

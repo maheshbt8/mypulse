@@ -128,6 +128,13 @@ class Appoitments extends CI_Controller {
             echo json_encode($this->appoitments_model->getappoitmentsById($id));
         }
     }
+	
+	public function getrecommendappoitments() {
+        if ($this->auth->isLoggedIn()) {
+            $id = $this->input->post('id');
+            echo json_encode($this->appoitments_model->getrecommendappoitmentsById($id));
+        }
+    }
 
     public function getNewSloat(){
         if($this->auth->isLoggedIn()){

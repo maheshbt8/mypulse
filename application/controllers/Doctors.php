@@ -250,10 +250,11 @@ class Doctors extends CI_Controller {
 
     public function addinpatient(){
         if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
-            if(isset($_POST['inpatient_update_id']) && $_POST['inpatient_update_id'] != ''){
-                $appt_id = $_POST['appt_id'];            
+            
+			if(isset($_POST['inpatient_update_id']) && $_POST['inpatient_update_id'] != ''){
+				$appt_id = $_POST['appt_id'];            
                 $this->doctors_model->UpdateInPatient();
-                $d['success'] = array($this->lang->line('msg_inpatien_updated'));
+				$d['success'] = array($this->lang->line('msg_inpatien_updated'));
                 $this->session->set_flashdata('data', $d);
                 redirect('doctors/patientRecord/'.$appt_id.'?p=2');                 
             }
@@ -274,8 +275,10 @@ class Doctors extends CI_Controller {
                 
             }
         }else{
+			exit;
             redirect('index/login');
         }
+		exit;
     }
 	
 	public function inpatient(){

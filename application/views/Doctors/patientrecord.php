@@ -408,13 +408,13 @@ $this->load->view("template/left.php");
                                         <div class="form-group col-md-6">
                                             <label for="input-Default" class="col-sm4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
                                             <div class="8">
-                                                <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
+                                                <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>" required />
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="input-Default" class="col-s-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
                                             <div class="">
-                                                <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
+                                                <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -699,7 +699,8 @@ $this->load->view("template/footer.php");
            $('#pre_form').submit(function(event) {
 
             event.preventDefault(); //this will prevent the default submit
-            if(validator.valid()){
+            
+            if($(this).valid()){
                 console.log("Here");
                 var tits = $('.mr_tit');
                 var des = $(".mr_des");

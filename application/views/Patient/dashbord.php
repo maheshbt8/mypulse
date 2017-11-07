@@ -128,7 +128,7 @@
 												<td><?=$ra['dpname'];?></td>
 												<td><?=$ra['dname'];?></td>
                                                 <td><?=date('d-M-Y',strtotime($ra['recommend_appointment_date']));?></td>
-												<td><button class="btn btn-info"  data-toggle="modal" data-target="#edit">Book Appointment</button></td>
+												<td><button class="btn btn-info bookAppointment"  data-id="<?php echo $ra['id'];?>" data-toggle="modal" data-target="#edit">Book Appointment</button></td>
 												<!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>-->
                                                 <!--<td><a href='#' data-url='doctors/previewprescription/<?=$mr['id'];?>' data-id='<?=$mr['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>-->
                                             </tr>
@@ -302,7 +302,7 @@
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"><?php echo $this->lang->line('labels')['bookAppoitment'];?></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -374,11 +374,8 @@
 		                         <button type="button" class="btn btn-default btn-lg" data-dismiss="modal" style="width: 100%;"><span class="fa fa-remove" style="margin: 5px"></span><?php echo $this->lang->line('buttons')['cancel'];?></button>
 		                    </div>
 
+		                  
 		                    <div class="form-group col-md-6">
-		                        <button type="button" class="btn btn-info btn-lg appt_submit"  id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span><?php echo $this->lang->line('buttons')['update'];?></button>
-		                    </div>
-		                    
-		                    <div class="form-group col-md-6" style="display:none">
 		                        <button type="button" class="btn btn-success btn-lg appt_submit" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['bookAppoitment'];?></button>
 		                    </div>
 		                </div>
@@ -430,7 +427,7 @@
         var loc_sid = null;
         var loc_did = null;
         var loc_cid = null; 
-
+		var cur_v = null;
         var xhr_1;
 
         var $selectize_medicalLab = $("#medicalLab").selectize({
@@ -941,7 +938,11 @@
 
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
-			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+			var did = t_oid;
+			if(did == null){
+				did = $("#doctor_id").val();
+			}
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:did},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");
 				$("#noApptTimeSloat").hide();
@@ -1030,6 +1031,44 @@
 				$("#apptform").submit();
 			}
 		});
+		
+		$(document).on("click",".bookAppointment",function(){
+			
+			resetForm(validator);
+			$("#docAvailability").html("");
+			var id = $(this).attr("data-id");
+			loadData(id);
+			$("#form input").attr("disabled",false);
+			
+			<?php if($this->auth->isPatient()){
+				?>
+				$("#remarks").attr("disabled",true);
+			<?php
+			}
+			?>
+			
+		});
+
+		function loadData(id){
+			$.post("<?php echo site_url(); ?>/appoitments/getrecommendappoitments",{ id: id },function(data){
+				var data = JSON.parse(data);
+	
+
+				t_bid = data.branch_id;
+				t_did = data.department_id;
+				t_oid = data.doctor_id;
+				
+				var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+				tempselectize_hospital_id.refreshItems();
+				tempselectize_hospital_id.setValue(data.hospital_id);
+				
+				
+				$("#appoitment_date").datepicker("setDate",data.recommend_appointment_date);
+				$selectize_hospital_id[0].selectize.disable();
+			});
+		}
+		
 		
     });
 </script>
