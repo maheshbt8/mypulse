@@ -408,13 +408,13 @@ $this->load->view("template/left.php");
                                         <div class="form-group col-md-6">
                                             <label for="input-Default" class="col-sm4 control-label"><?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?></label>
                                             <div class="8">
-                                                <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>"  />
+                                                <input class="form-control  " type="text" id="title" name="title" placeholder="<?php echo $this->lang->line('tableHeaders')['prescriptionFor'];?>" required />
                                             </div>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="input-Default" class="col-s-4 control-label"><?php echo $this->lang->line('tableHeaders')['date'];?></label>
                                             <div class="">
-                                                <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>"/>
+                                                <input class="form-control  date-picker" type="text" id="date" name="date" disabled placeholder="Date"  value="<?php echo date('d-m-Y');?>" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -468,13 +468,13 @@ $this->load->view("template/left.php");
                                 </div> 
                                 <Br><br>
                                 <div class="col-md-12" id="medReportDiv">
-                                    <lable class="control-label"><b><h3><?php echo $this->lang->line('prescriptionForMedicalTests');?></h3></b></label><br>
+                                    <lable class="control-label" <b><h3><?php echo $this->lang->line('prescriptionForMedicalTests');?></h3></b></label><br>
                                     <table width="100%" id="medRepTbl" class="table table-bordered">
 										<thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th><?php echo $this->lang->line('labels')['title'];?></th>
-                                                <th><?php echo $this->lang->line('labels')['discription'];?></th>
+                                                <th><?php echo $this->lang->line('tableHeaders')['title'];?></th>
+                                                <th><?php echo $this->lang->line('tableHeaders')['description'];?></th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -484,12 +484,14 @@ $this->load->view("template/left.php");
                                 <div>
                                 <Br><br>
                                 <div class="row">
-                                        <div class="col-md-4">
-                                            <button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport"><i class="fa fa-plus"></i> &nbsp; Add Medical Report<?php echo $this->lang->line('labels')['discription'];?></button>   
-                                        </div>
-                                        <div class="col-md-8">
-                                            <textarea class="form-control" id="note" name="note" placeholder="Note"></textarea>
-                                        </div>
+									<div class="col-md-12">
+										<button type="button" id="addireport" data-toggle="modal" data-target="#medReportModal" class="btn btn-primary addireport pull-right" style="margin:-45px 0px 45px 0px;"><i class="fa fa-plus"></i> &nbsp; <?php echo $this->lang->line('buttons')['add_medical_report'];?></button>   
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<textarea class="form-control" id="note" name="note" placeholder="<?php echo $this->lang->line('additional_note');?>"></textarea>
+									</div>
                                 </div><br><br>
                                 <div class="row">
                                     <div class="col-md-12 pull-right" >
@@ -507,7 +509,7 @@ $this->load->view("template/left.php");
     </div>
 
     <div class="modal fade" id="medReportModal" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-sm" style="width:325px;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
@@ -697,7 +699,8 @@ $this->load->view("template/footer.php");
            $('#pre_form').submit(function(event) {
 
             event.preventDefault(); //this will prevent the default submit
-            if(validator.valid()){
+            
+            if($(this).valid()){
                 console.log("Here");
                 var tits = $('.mr_tit');
                 var des = $(".mr_des");

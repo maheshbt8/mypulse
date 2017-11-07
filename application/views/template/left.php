@@ -54,7 +54,7 @@
                                 <li id="li5" class="nav-item"><a href="<?php echo site_url();?>nurse" class="nav-link"><i class="menu-icon  icon-user "></i><span class="title"><?php echo $menu['main_nurses'];?></span></a></li>
                                 <li id="li6" class="nav-item"><a href="<?php echo site_url();?>receptionist" class="nav-link"><i class="menu-icon  icon-user-following "></i><span class="title"><?php echo $menu['main_receptionists'];?></span></a></li>
                                 <li id="li7" class="nav-item"><a href="<?php echo site_url();?>patients" class="nav-link"><i class="menu-icon icon-users "></i><span class="title"><?php echo $menu['main_patients'];?></span></a></li>
-                                <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-credit-card "></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span></a></li>
+                                <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-eye "></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span></a></li>
                                 <li id="li8" class="nav-item"><a href="<?php echo site_url();?>medical_store" class="nav-link"><i class="menu-icon fa fa-medkit "></i><span class="title"><?php echo $menu['main_medical_stores'];?></span></a></li>
                                 <li id="li9" class="nav-item"><a href="<?php echo site_url();?>medical_lab" class="nav-link"><i class="menu-icon fa  fa-plus-square "></i><span class="title"><?php echo $menu['main_medical_labs'];?></span></a></li>
                                 <li id="li52" class="nav-item"><a href="<?php echo site_url();?>appoitments" class="nav-link"><i class="menu-icon glyphicon glyphicon-list-alt"></i><span class="title"><?php echo $menu['appoitments'];?></span></a></li>
@@ -121,7 +121,7 @@
                                     <a href="<?php echo site_url();?>patients" class="nav-link"><i class="icon icon-users "></i><span class="title"><?php echo $menu['main_patients'];?></span>
                                     </a>
                                 </li>
-                                <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-credit-card "></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span></a></li>
+                                <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-eye "></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span></a></li>
                                 <li class="nav-item" id="li8">
                                     <a href="<?php echo site_url();?>medical_store" class="nav-link"><i class=" fa fa-medkit "></i><span class="title"><?php echo $menu['main_medical_stores'];?></span>
                                     </a>
@@ -201,7 +201,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item" id="li55">
-                                    <a href="<?php echo site_url();?>patients/inpatient" class="nav-link"><i class="  fa fa-credit-card"></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span>
+                                    <a href="<?php echo site_url();?>patients/inpatient" class="nav-link"><i class="  fa fa-eye"></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span>
                                     </a>
                                 </li>
                                 <!--<li id="li51"><a href="<?php //echo site_url();?>patients/profile" class="waves-effect waves-button"><span class="menu-icon glyphicon glyphicon-user"></span><p><?php //echo $menu['profile'];?></p></a></li>-->
@@ -270,6 +270,11 @@
 
                                 <li class="nav-item" id="li55">
                                     <a href="<?php echo site_url();?>doctors/patient" class="nav-link"><i class="fa fa-users"></i><span class="title"><?php echo $menu['main_patients'];?></span>
+                                    </a>
+                                </li>
+								
+								<li class="nav-item" id="li6">
+                                    <a href="<?php echo site_url();?>doctors/inpatient" class="nav-link"><i class="  fa fa-bed"></i><span class="title"><?php echo $menu['main_inpatient'];?></span>
                                     </a>
                                 </li>
 

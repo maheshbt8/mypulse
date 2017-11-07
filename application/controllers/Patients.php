@@ -240,7 +240,7 @@ class Patients extends CI_Controller {
             }), 
             array("db" => "address", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "phone_numbers", "dt" => 2, "formatter" => function ($d, $row) {
+            }), array("db" => "phone_number", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }));
 
@@ -266,7 +266,7 @@ class Patients extends CI_Controller {
             }), 
             array("db" => "address", "dt" => 1, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "phone_numbers", "dt" => 2, "formatter" => function ($d, $row) {
+            }), array("db" => "phone_number", "dt" => 2, "formatter" => function ($d, $row) {
                 return ($d == "" || $d == null) ? "-" : $d;
             }));
 

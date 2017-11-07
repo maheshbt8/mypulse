@@ -325,6 +325,62 @@ class Appoitments_model extends CI_Model {
         return $r;
 
     }
+	
+	function getrecommendappoitmentsById($id) {
+        $r = $this->db->query("select * from hms_recommend_appointments where id=$id and isDeleted=0");
+        $r =  $r->row_array();
+        if(count($r) == 0){
+			return 0;
+		}
+		
+        if(isset($r['department_id'])){
+            $this->db->where('id',$r['department_id']);
+            $this->db->where('isActive',1);
+            $this->db->where("isDeleted",0);
+            $department = $this->db->get('hms_departments');
+            $department =$department->row_array();
+            $r['branch_id'] = $department['branch_id'];
+
+            $this->db->where('id',$r['branch_id']);
+            $this->db->where('isActive',1);
+            $this->db->where("isDeleted",0);
+            $branch = $this->db->get('hms_branches');
+            $branch =$branch->row_array();
+            $r['hospital_id'] = $branch['hospital_id'];
+        }else{
+            $r['department_id'] = 0;
+            $r['branch_id'] = 0;
+            $r['hospital_id'] = 0;
+        } 
+        $r['user_name'] = "";
+        if(isset($r['user_id'])){
+            $this->db->select('id,first_name,last_name');
+            $this->db->where('id',$r['user_id']);
+            $u = $this->db->get('hms_users');
+            $u = $u->row_array();
+            $r['user_name'] = $this->auth->getUName($u);
+        }
+
+        if(isset($r['doctor_id'])){
+            $uid = $this->auth->getDoctorUserId($r['doctor_id']);
+            $this->db->where('id',$uid);
+            $u = $this->db->get('hms_users');
+            $u = $u->row_array();
+            $na = "";
+            if(isset($u['first_name']))
+                $na .=$u['first_name']." ";
+            if(isset($u['last_name']))
+                $na .= $u['last_name'];
+            $r['doctor_name'] = $na;
+        }else{
+            $r['doctor_name'] = "";
+        }
+        if(isset($r['recommend_appointment_date']))
+            $r['recommend_appointment_date'] = date("d-m-Y",strtotime($r['recommend_appointment_date']));
+        
+        return $r;
+
+    }
 
     function udpateremark(){
         $id = isset($_POST['id']) ? $_POST['id'] : 0;
@@ -608,6 +664,8 @@ class Appoitments_model extends CI_Model {
         $doc_set = $this->db->get('hms_doctors');
         $doc_set = $doc_set->row_array();
         $noAppt = $doc_set['no_appt_handle'];
+		if($noAppt == 0)
+			$noAppt = 1;
         $apptInterval = floor(60/$noAppt);
 
         //Get TimeSloats

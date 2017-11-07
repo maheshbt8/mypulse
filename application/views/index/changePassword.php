@@ -18,7 +18,7 @@
                     <label><?php echo $this->lang->line('labels')['reNewPassword'];?></label>
                     <input class="form-control " type="password" placeholder="<?php echo $this->lang->line('labels')['reNewPassword'];?>" name="repassword" required/>
                 </div>
-                <button type="submit" class="btn btn-primary">Change Password</button>
+                <button type="submit" class="btn btn-primary"><?php echo $this->lang->line('buttons')['change_password'];?></button>
             </form>    
             </div>
         </div>
