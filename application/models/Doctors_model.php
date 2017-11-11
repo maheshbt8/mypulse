@@ -881,6 +881,7 @@ class Doctors_model extends CI_Model {
                 'reason' => $this->input->post('inPatientReason'),
                 'status'=>$this->input->post('ptStatus')
                 );
+
             $this->db->insert('hms_inpatient',$data);
 			$id = $this->db->insert_id();
 			$this->logger->log("New patient added in Inpatient", Logger::Inpatient, $id);
@@ -900,6 +901,18 @@ class Doctors_model extends CI_Model {
             // sent notification to patient
             $this->notification->saveNotification($data['user_id'], "You added in Inpatient");
 
+            //Set bed to not available
+            $bed_availbe_status = 1;
+        
+            $_st = isset($data['status']) ? $data['status'] : 0;
+            if($_st == 2){
+                //Set bed to available
+                $bed_availbe_status = 0;
+            }
+            $this->db->where('id',$this->input->post('Patientbed'));
+            $this->db->update("hms_beds",array("isAvailable"=>$bed_availbe_status));
+
+            
         }
     }
 
@@ -929,7 +942,6 @@ class Doctors_model extends CI_Model {
         }
 		
 		$this->db->set($data);
-		
 		$this->db->where('id',$id);
 		$st = $this->db->update('hms_inpatient');
 
@@ -951,7 +963,18 @@ class Doctors_model extends CI_Model {
 		}
 		// sent notification to patient
 		$this->notification->saveNotification($data['user_id'], "Your Inpatient history is updated");
-		
+        
+        //Set bed to not available
+        $bed_availbe_status = 1;
+        
+        if($_st == 2){
+            //Set bed to available
+            $bed_availbe_status = 0;
+        }
+        $this->db->where('id',$id);
+        $inp = $this->db->get('hms_inpatient')->row_array();
+        $this->db->where('id',$inp['bed_id']);
+        $this->db->update("hms_beds",array("isAvailable"=>$bed_availbe_status));
     }
 
     function addMedicalReport($pid=0){

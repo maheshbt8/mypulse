@@ -24,7 +24,12 @@ class Hospitals_model extends CI_Model {
         }else{
             $r['license']['name'] = "Not Found";
         }
-        $r['country_name'] = $this->auth->getCountryName($r['country']);
+        $c_name = "";
+        if(isset($r['country'])){
+            $c_name = $this->auth->getCountryName($r['country']);
+        }
+        $r['country_name'] = $c_name;
+        //echo "<pre>";var_dump($r['country_name']);exit;
         return $r;
     }
     function getHospitalLogo($hid=0){

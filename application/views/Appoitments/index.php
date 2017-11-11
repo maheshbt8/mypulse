@@ -357,6 +357,9 @@ $this->load->view("template/footer.php");
 					if(data==1){
 						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
 						toastr.success("<?php echo $this->lang->line('headings')['cancelSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -393,11 +396,14 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/cancel",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
-							}
+							// for(var i=0; i<selected.length; i++){
+							// 	var temp = selected[i];
+							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+							// }
 							toastr.success('selected item(s) cancled.');
+							if(dt != undefined){
+								dt.ajax.reload();
+							}
 						}else{
 							toastr.error('Please try again.');
 						}
@@ -651,10 +657,7 @@ $this->load->view("template/footer.php");
 			}
 		});
 
-		
-
-			
-
+		var dt;
 		function loadTable(hid,bid){	
 
 			jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
@@ -672,7 +675,7 @@ $this->load->view("template/footer.php");
 			} );
 
 			$("#appoitments").dataTable().fnDestroy();
-			var dt = $("#appoitments").DataTable({
+			dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
 				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid

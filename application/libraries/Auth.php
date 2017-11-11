@@ -350,6 +350,16 @@ class Auth {
         return $this->CI->medical_store_model->getMyStoreId();
     }
 
+    public function isPast($date){
+        $date = new DateTime($date);
+        $now = new DateTime();
+        
+        if($date < $now) {
+            return true;
+        }
+        return false;
+    }
+
     public function getAppoitmentStatus($status=0,$onlytax = false){
         
         $status = intval($status);

@@ -66,19 +66,19 @@
                 <div class="card-body ">
                     <div class="col-md-12">
                         
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                             <select id="hospital_id2" class=" form-control" style="width: 100%">
                                 <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
                             <select id="doctor_id2" class=" form-control" style="width: 100%">
                                 <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label><?php echo $this->lang->line('labels')['status'];?></label>
                             <select id="status2" class=" form-control" style="width: 100%">
                                 <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
@@ -586,6 +586,9 @@
 					if(data==1){
 						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
 						toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -606,6 +609,9 @@
 						$($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
 						//$("#dellink_"+id).parents('tr').remove();	
 						toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -673,9 +679,12 @@
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-                                $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+							// for(var i=0; i<selected.length; i++){
+							// 	var temp = selected[i];
+                            //     $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+							// }
+							if(dt != undefined){
+								dt.ajax.reload();
 							}
 							toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
 						}else{
@@ -716,9 +725,12 @@
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+							//for(var i=0; i<selected.length; i++){
+							//	var temp = selected[i];
+							//	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+							//}
+							if(dt != undefined){
+								dt.ajax.reload();
 							}
 							toastr.success('selected item(s) cancled.');
 						}else{

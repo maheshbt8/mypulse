@@ -478,6 +478,9 @@ $this->load->view("template/footer.php");
 					if(data==1){
 						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
 						toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -498,6 +501,9 @@ $this->load->view("template/footer.php");
 						$($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
 						//$("#dellink_"+id).parents('tr').remove();	
 						toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -565,11 +571,15 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-                                $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+							// for(var i=0; i<selected.length; i++){
+							// 	var temp = selected[i];
+                            //     $($("#apprlink_"+temp).parents('td').siblings()[7]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+							// }
+							if(dt != undefined){
+								dt.ajax.reload();
 							}
 							toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+							
 						}else{
 							toastr.error('Please try again.');
 						}
@@ -608,11 +618,14 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
-							}
+							// for(var i=0; i<selected.length; i++){
+							// 	var temp = selected[i];
+							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+							// }
 							toastr.success('selected item(s) cancled.');
+							if(dt != undefined){
+								dt.ajax.reload();
+							}
 						}else{
 							toastr.error('Please try again.');
 						}
@@ -908,11 +921,6 @@ $this->load->view("template/footer.php");
 			}
 		});
 
-		
-		$("#sel_date").change(function(){
-			var date = $("#sel_date").val();
-			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
-		});
 			
 		var $selectize_doctor_id1 = $("#doctor_id1").selectize({
 			valueField: "id",
@@ -983,6 +991,11 @@ $this->load->view("template/footer.php");
 			}
 		});
 
+		$("#sel_date").change(function(){
+			var date = $("#sel_date").val();
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+		});
+
 		$("#status").change(function(){
 			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		});
@@ -991,6 +1004,7 @@ $this->load->view("template/footer.php");
 			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		});
 
+		var dt;
 		function loadTable(hid,did){	
 			//console.log($("#sel_date").data('daterangepicker'));
 			//var sd = $('#sel_date').data('daterangepicker').startDate.format("YYYY-MM-DD");
@@ -1002,7 +1016,7 @@ $this->load->view("template/footer.php");
 				showClosed = 1;
 			}
 			$("#appoitments").dataTable().fnDestroy();
-			var dt = $("#appoitments").DataTable({
+			dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
 				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?hid="+hid+"&did="+did+"&sd="+_sd+"&ed="+_ed+"&st="+st+"&sc="+showClosed

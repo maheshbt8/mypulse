@@ -77,7 +77,6 @@
                                 <th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
                                 <th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
                                 <th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
-                                <th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
                                 <th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
                                 <th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
                                 <th width="20px">#</th>
@@ -105,7 +104,7 @@
             $("#appoitments").DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?td=1"
+                "ajax": "<?php echo site_url(); ?>/appoitments/getDTTodayspappoitments"
             });
             $(".dataTables_filter").hide();
         }
@@ -133,6 +132,9 @@
                         $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
                         //$("#dellink_"+id).parents('tr').remove();
                         toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+                        if(dt != undefined){
+                            dt.ajax.reload();
+                        }
                     }else{
                         toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
                     }
@@ -152,6 +154,9 @@
                     if(data==1){
                         $($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
                         toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
+                        if(dt != undefined){
+                            dt.ajax.reload();
+                        }
                     }else{
                         toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
                     }
@@ -188,10 +193,13 @@
                 }).then(function () {
                     $.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
                         if(data==1){
-                            for(var i=0; i<selected.length; i++){
-                                var temp = selected[i];
-                                $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
-                            }
+                            // for(var i=0; i<selected.length; i++){
+                            //     var temp = selected[i];
+                            //     $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+                            // }
+                            if(dt != undefined){
+								dt.ajax.reload();
+							}
                             toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
                         }else{
                             toastr.error('Please try again.');
@@ -231,10 +239,13 @@
                 }).then(function () {
                     $.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
                         if(data==1){
-                            for(var i=0; i<selected.length; i++){
-                                var temp = selected[i];
-                                $($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
-                            }
+                            // for(var i=0; i<selected.length; i++){
+                            //     var temp = selected[i];
+                            //     $($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+                            // }
+                            if(dt != undefined){
+								dt.ajax.reload();
+							}
                             toastr.success('selected item(s) cancled.');
                         }else{
                             toastr.error('Please try again.');

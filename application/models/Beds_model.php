@@ -99,6 +99,7 @@ class Beds_model extends CI_Model {
         }
         $select = implode('`," ",`', $field);
         $this->db->where("isDeleted",0);
+        $this->db->where('isAvailable',0);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();
