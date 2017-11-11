@@ -17,7 +17,6 @@
                 <table id="doctors" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" >
                     <thead>
                         <tr>
-                            <th style="width:10px"></th>
                             <th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
                             <th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
                             <th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
@@ -41,7 +40,15 @@
         var dt = $("#doctors").DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/index/getDataTabedoctors"
+            "ajax": "<?php echo site_url(); ?>/index/getDataTabedoctors",
+            "columns": [
+                { "data": "user_id" },
+                { "data": "department_id" },
+                { "data": "isActive" },
+                { "data": "id" },
+                { "data": "id" },
+                { "data": "edit", "orderable": false, "searchable": false }
+            ]
         });
         <?php $this->load->view('template/exdt');?>
         $(".dataTables_filter").attr("style","display: flex;float: right");

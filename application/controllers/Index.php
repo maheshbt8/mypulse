@@ -94,11 +94,12 @@ class Index extends CI_Controller {
 	function getDataTabedoctors(){
 		$this->load->library('datatables');
 		$this->datatables
-			->select('user_id, department_id, department_id, department_id, isActive, id')
+			->select('hms_users.first_name as user_id, department_id, department_id, department_id, hms_doctors.isActive, hms_doctors.id')
 			->from('hms_doctors')
+			->join('hms_users','hms_doctors.user_id = hms_users.id','left')
 			->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'id');
 
-		echo $this->datatables->generate();
+		echo $this->datatables->generate('json');
 	}
 
 	function sendmsg()

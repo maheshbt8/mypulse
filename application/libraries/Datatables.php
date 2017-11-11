@@ -282,8 +282,8 @@
     */
     private function get_paging()
     {
-      $iStart = $this->ci->input->post('start');
-      $iLength = $this->ci->input->post('length');
+      $iStart = $this->ci->input->get('start');
+      $iLength = $this->ci->input->get('length');
 
       if($iLength != '' && $iLength != '-1')
         $this->ci->db->limit($iLength, ($iStart)? $iStart : 0);
@@ -297,11 +297,11 @@
     private function get_ordering()
     {
 
-      $Data = $this->ci->input->post('columns');
+      $Data = $this->ci->input->get('columns');
 
 
-      if ($this->ci->input->post('order'))
-        foreach ($this->ci->input->post('order') as $key)
+      if ($this->ci->input->get('order'))
+        foreach ($this->ci->input->get('order') as $key)
           if($this->check_cType())
             $this->ci->db->order_by($Data[$key['column']]['data'], $key['dir']);
           else
@@ -317,10 +317,10 @@
     private function get_filtering()
     {
 
-      $mColArray = $this->ci->input->post('columns');
+      $mColArray = $this->ci->input->get('columns');
 
       $sWhere = '';
-      $search = $this->ci->input->post('search');
+      $search = $this->ci->input->get('search');
       $sSearch = $this->ci->db->escape_like_str(trim($search['value']));
       $columns = array_values(array_diff($this->columns, $this->unset_columns));
 
@@ -364,6 +364,7 @@
     private function produce_output($output, $charset)
     {
       $aaData = array();
+      
       $rResult = $this->get_display_result();
 
       if($output == 'json')
@@ -398,7 +399,7 @@
       {
         $sOutput = array
         (
-          'draw'                => intval($this->ci->input->post('draw')),
+          'draw'                => intval($this->ci->input->get('draw')),
           'recordsTotal'        => $iTotal,
           'recordsFiltered'     => $iFilteredTotal,
           'data'                => $aaData
@@ -508,7 +509,7 @@
     */
     private function check_cType()
     {
-      $column = $this->ci->input->post('columns');
+      $column = $this->ci->input->get('columns');
       if(is_numeric($column[0]['data']))
         return FALSE;
       else
