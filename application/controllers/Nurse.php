@@ -62,12 +62,15 @@ class Nurse extends CI_Controller {
         }
     }
     public function addinpatient(){
-        if($this->auth->isLoggedIn() && $this->auth->isNurse()){
+        if($this->auth->isLoggedIn() && ($this->auth->isNurse() || $this->auth->isDoctor() )){
             if(isset($_POST['inpatient_update_id']) && $_POST['inpatient_update_id'] != ''){           
                 $this->nurse_model->UpdateInPatient();
                 $d['success'] = array($this->lang->line('msg_inpatien_updated'));
                 $this->session->set_flashdata('data', $d);
-                redirect('nurse/inpatient');                 
+                if($this->auth->isNurse())
+                    redirect('nurse/inpatient');                 
+                else
+                    redirect('doctors/inpatient');
             }
         }
     }
@@ -119,6 +122,7 @@ class Nurse extends CI_Controller {
             redirect('index/login');
         }
     }
+
     public function getDTnurse() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isDoctor() || $this->auth->isHospitalAdmin())) {
             $this->load->library("tbl");
@@ -268,6 +272,25 @@ class Nurse extends CI_Controller {
 				
                 return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
             }));
+
+            $st = isset($_GET['st']) ? $_GET['st']!="" ? intval($_GET['st']) : null : null;
+			$join_sdate = isset($_GET['j_sd']) ? $_GET['j_sd'] != "" ? date("Y-m-d",strtotime($_GET['j_sd'])) : null : null;
+            $join_edate = isset($_GET['j_ed']) ? $_GET['j_ed'] != "" ? date("Y-m-d",strtotime($_GET['j_ed'])) : null : null;
+            $left_sdate = isset($_GET['l_sd']) ? $_GET['l_sd'] != "" ? date("Y-m-d",strtotime($_GET['l_sd'])) : null : null;
+            $left_edate = isset($_GET['l_ed']) ? $_GET['l_ed'] != "" ? date("Y-m-d",strtotime($_GET['l_ed'])) : null : null;
+
+            if($st !== null){
+                $cond[] = "status=$st";
+            }
+
+            if($join_sdate != null && $join_edate != null){
+                $cond[] = "DATE(join_date) between '$join_sdate' and '$join_edate'";
+            }
+
+            if($left_sdate != null && $left_edate != null){
+                $cond[] = "DATE(left_date) between '$left_sdate' and '$left_edate'";
+            }
+
             if(count($patients_ids) == 0){
                 $patients_ids[] = '-1';
             }   
@@ -309,10 +332,12 @@ class Nurse extends CI_Controller {
             $cond[] = "appoitment_id=".$app_id;
             
             $this->tbl->setIndexColumn(true);
-            $this->tbl->setCheckboxColumn(false);
-
-            
+            $this->tbl->setCheckboxColumn(false); 
             $this->tbl->setTwID(implode(' AND ',$cond));
+
+            if(!isset($_GET['order'])){
+                $_GET['order'] = array(array('column'=>2,'dir'=>'DESC'));
+            }
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

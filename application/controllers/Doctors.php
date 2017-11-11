@@ -266,11 +266,9 @@ class Doctors extends CI_Controller {
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');
                 }else{
-
                     $d['success'] = array($this->lang->line('msg_inpatien_saved'));
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');    
-
                 }
                 
             }
@@ -457,6 +455,7 @@ class Doctors extends CI_Controller {
             $this->load->library("tbl");
             $table = "hms_prescription";
             $primaryKey = "id";
+            
             $columns = array(array("db" => "title", "dt" => 0, "formatter" => function ($d, $row) {
                 return "<a href='#' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$d."</a>";
             }), array("db" => "appoitment_id", "dt" => 1, "formatter" => function ($d, $row) {
@@ -482,12 +481,14 @@ class Doctors extends CI_Controller {
             $hospital_id = $this->input->get('hid',null,null);
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
-            $cond = array("patient_id=".$pid);
-            
+            $cond[] = "patient_id=".$pid;
+          
             $this->tbl->setIndexColumn(true);
             $this->tbl->setCheckboxColumn(false);
 
-            
+            if(!isset($_GET['order'])){
+                $_GET['order'] = array(array('column'=>3,'dir'=>'DESC'));
+            }
             $this->tbl->setTwID(implode(' AND ',$cond));
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
@@ -537,8 +538,27 @@ class Doctors extends CI_Controller {
                 $bed_id = $row['bed_id'];  
                 $user_id = $row['user_id'];    
 				
-                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
+                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-bname='".$bedName."' data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
             }));
+
+            $st = isset($_GET['st']) ? $_GET['st']!="" ? intval($_GET['st']) : null : null;
+			$join_sdate = isset($_GET['j_sd']) ? $_GET['j_sd'] != "" ? date("Y-m-d",strtotime($_GET['j_sd'])) : null : null;
+            $join_edate = isset($_GET['j_ed']) ? $_GET['j_ed'] != "" ? date("Y-m-d",strtotime($_GET['j_ed'])) : null : null;
+            $left_sdate = isset($_GET['l_sd']) ? $_GET['l_sd'] != "" ? date("Y-m-d",strtotime($_GET['l_sd'])) : null : null;
+            $left_edate = isset($_GET['l_ed']) ? $_GET['l_ed'] != "" ? date("Y-m-d",strtotime($_GET['l_ed'])) : null : null;
+
+            if($st !== null){
+                $cond[] = "status=$st";
+            }
+
+            if($join_sdate != null && $join_edate != null){
+                $cond[] = "DATE(join_date) between '$join_sdate' and '$join_edate'";
+            }
+
+            if($left_sdate != null && $left_edate != null){
+                $cond[] = "DATE(left_date) between '$left_sdate' and '$left_edate'";
+            }
+
             $doc_id = $this->auth->getDoctorId();   
             $cond[] = 'doctor_id='.$doc_id;                                   
             $cond[] = 'status in (0,1)';

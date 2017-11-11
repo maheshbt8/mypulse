@@ -199,10 +199,11 @@ class Beds extends CI_Controller {
                 // return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
             }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
                 if($d==0){
-                    //Return yes, It is occupied or not availabe.
-                    return "<span class='label label-danger'>Yes</span>";
-                }else{
+                    //Return no, Is occupied?=no
                     return "<span class='label label-success'>No</span>";
+                }else{
+                    return "<span class='label label-danger'>Yes</span>";
+                    
                 }
             }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {                                
                 $temp = $this->inpatient_model->getinpatientBybedId($d);

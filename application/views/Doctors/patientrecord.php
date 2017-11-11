@@ -132,7 +132,7 @@ $this->load->view("template/left.php");
                             <div class="custome_col8">
                                 <h3 id="div_title" class="panel-title panel_heading_custome"><?php echo $this->lang->line('patientInfo');?></h3>
                             </div>
-                            <div class="custome_col4">
+                            <div class="custome_col4" id="patient_action_buttons">
                                 <div class="panel_button_top_right">
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-success m-b-sm " style="display:none" id="addPrescriptionBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['newPrescription'];?></a>
@@ -479,7 +479,7 @@ $this->load->view("template/left.php");
                                                 <th></th>
                                             </tr>
                                         </thead>
-										<tbody>
+										<tbody id="mdRepBody">
                                         </tbody>
                                     </table>
                                 <div>
@@ -603,7 +603,7 @@ $this->load->view("template/left.php");
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-defualt" type="button" data-dismiss="modal"><?php echo $this->lang->line('cancel');?></button>
+                        <button class="btn btn-defualt" type="button" data-dismiss="modal"><?php echo $this->lang->line('buttons')['cancel'];?></button>
                     </div>
                 </div>
             </form>
@@ -614,6 +614,14 @@ $this->load->view("template/footer.php");
 ?>
 <script type="text/javascript">
     $(document).ready(function(){
+
+        <?php
+            if($appoitment['status'] == 2 || $appoitment['status'] == 4){
+                ?>
+                $("#patient_action_buttons").hide();
+                <?php
+            }    
+        ?>
 
         $("#saveaptr").click(function(){
             var id = $(this).data("id");
@@ -636,7 +644,7 @@ $this->load->view("template/footer.php");
             var tit = $("#mr_title").val();
             var des = $("#mr_description").val();
 			if(tit!="" && des !=""){				
-				var cnt = $("#medRepTbl").children().length;
+				var cnt = $("#mdRepBody").children().length;
 				cnt += 1;
 				var report = "<tr>";
 				report += "<td style='width:20px' valign='top'><span class='mr_cnt'>"+cnt+"</span></td>";
@@ -644,7 +652,7 @@ $this->load->view("template/footer.php");
 				report += "<td valign='top'><span class='mr_des'>"+des+"</span></td>";
 				report += '<td valign="top" style="width:10px"><a href="javascript:void(0)" class="mr_remove"><i class="fa fa-remove"></i></a></td>';
 				report += "</tr>";
-				$("#medRepTbl").append(report);
+				$("#mdRepBody").append(report);
 				updateMrCnt();
 			}else{
 				toastr.error('Please add title and discription');
@@ -977,6 +985,7 @@ $this->load->view("template/footer.php");
 
                 if(data.reports!=undefined){
                     var cnt =1;
+                    $("#mdRepBody").html("");
                     for(var i=0; i<data.reports.length; i++){
                         var _rep = data.reports[i];
                         var report = "<tr>";
@@ -991,7 +1000,7 @@ $this->load->view("template/footer.php");
                         report += "</td>";
                         report += '<td valign="top" style="width:10px"></td>';
                         report += "</tr>";
-                        $("#medRepTbl").append(report);
+                        $("#mdRepBody").append(report);
                         cnt++;
                     }
                     updateMrCnt();  
@@ -1151,7 +1160,7 @@ $this->load->view("template/footer.php");
             "processing": true,
             "serverSide": true,
             "paging":   true,
-            "ordering": false,
+            "ordering": true,
             "info":     false,
             "ajax": '<?php echo site_url();?>/doctors/getDTPrescription/'+"<?php echo $profile['id'];?>"
         });
@@ -1173,7 +1182,7 @@ $this->load->view("template/footer.php");
             "processing": true,
             "serverSide": true,
             "paging":   true,
-            "ordering": false,
+            "ordering": true,
             "info":     false,
             "ajax": '<?php echo site_url();?>/inpatient/getDTPatientinpatient/'+"<?php echo $profile['id'];?>"
         });

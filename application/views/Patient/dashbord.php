@@ -296,9 +296,11 @@
 	<!--Book appointments model-->
 	<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/appoitments/update" method="post" id="apptform">
+				<form action="<?php echo site_url(); ?>/appoitments/add" method="post" id="apptform">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
-				
+				<input type="hidden" name="doctor_id" id="hd_doctor_id" />
+                <input type="hidden" name="department_id" id="hd_department_id" />
+                <input type="hidden" name="recommend_id" id="recommend_id" />
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
@@ -326,12 +328,12 @@
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
+                                    <select id="department_id" class=" form-control" style="width: 100%">
 					                </select>
                                 </div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
-									<select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
+									<select id="doctor_id" class=" form-control" style="width: 100%">
 									</select>
 								</div>
 							</div>
@@ -1053,11 +1055,14 @@
 			$.post("<?php echo site_url(); ?>/appoitments/getrecommendappoitments",{ id: id },function(data){
 				var data = JSON.parse(data);
 	
-
+                
 				t_bid = data.branch_id;
 				t_did = data.department_id;
 				t_oid = data.doctor_id;
-				
+
+                $("#hd_doctor_id").val(data.doctor_id);
+                $("#hd_department_id").val(data.department_id);
+                $("#recommend_id").val(id);
 				var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
 				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
 				tempselectize_hospital_id.refreshItems();

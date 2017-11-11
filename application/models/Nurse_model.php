@@ -260,9 +260,19 @@ class Nurse_model extends CI_Model {
 
      public function UpdateInPatient(){
          $id = $this->input->post('inpatient_update_id');
-         $data =array(
-             'bed_id' => $this->input->post('Patientbed'),
-            );
+        
+         $data = array();
+         if(isset($_POST['Patientbed'])){
+             $data['bed_id'] = $_POST['Patientbed'];
+         }   
+         if(isset($_POST['ptStatus'])){
+            $data['status'] = intval($_POST['ptStatus']);
+        }   
+        if(isset($_POST['inPatientReason'])){
+            $data['reason'] = $_POST['inPatientReason'];
+        }   
+        
+        
          $this->db->set($data);
          $this->db->where('id',$id);
          $this->db->update('hms_inpatient');
@@ -280,7 +290,17 @@ class Nurse_model extends CI_Model {
          //sent notification to doctor
          $this->notification->saveNotification($doctor['user_id'], "Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b> is updated");
 
-
+        //Set bed to not available
+        $bed_availbe_status = 1;
+        
+        if(isset($data['status']) && $data['status'] == 2){
+            //Set bed to available
+            $bed_availbe_status = 0;
+        }
+        $this->db->where('id',$id);
+        $inp = $this->db->get('hms_inpatient')->row_array();
+        $this->db->where('id',$inp['bed_id']);
+        $this->db->update("hms_beds",array("isAvailable"=>$bed_availbe_status));
      }
 
     public function getDoctorIds($userid){

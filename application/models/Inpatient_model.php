@@ -22,7 +22,8 @@ class Inpatient_model extends CI_Model {
                
 		if(isset($b['bed']))
             $r['bed_name'] = $b['bed'];
-		return $r;
+        return $r;   
+        
     }
 
     function getinpatientBybedId($id) {

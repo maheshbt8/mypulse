@@ -84,7 +84,7 @@ class Inpatient extends CI_Controller {
 
     public function add_noteByNurse(){
         print_r($_POST);
-            if($this->auth->isLoggedIn() && $this->auth->isNurse()){
+            if($this->auth->isLoggedIn() && ($this->auth->isNurse() || $this->auth->isDoctor())){
 
                 if(isset($_POST['hsinpatientEdit_id']) && $_POST['hsinpatientEdit_id'] != '' && $_POST['hsinpatientEdit_id'] != null)
                 {
@@ -100,7 +100,10 @@ class Inpatient extends CI_Controller {
                         $data['errors'] = array("Please again later");
                     }
                     $this->session->set_flashdata('data', $data);
-                    redirect('nurse/inpatient');
+                    if($this->auth->isNurse())
+                        redirect('nurse/inpatient');
+                    else
+                        redirect('doctors/inpatient');
                 }
                 else
                 {
@@ -115,7 +118,10 @@ class Inpatient extends CI_Controller {
                         $data['errors'] = array("Please again later");
                     }
                     $this->session->set_flashdata('data', $data);
-                    redirect('nurse/inpatient');
+                    if($this->auth->isNurse())
+                        redirect('nurse/inpatient');
+                    else
+                        redirect('doctors/inpatient');
                 }
             }
             else{
@@ -211,25 +217,51 @@ class Inpatient extends CI_Controller {
                 $ldate = ($row['left_date']== "" || $row['left_date']== null) ? "-" : date("d-M-Y h:i A",strtotime($row['left_date']));    
                 return "<a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-ldate='$ldate' data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
             }));
+
+            $st = isset($_GET['st']) ? $_GET['st']!="" ? intval($_GET['st']) : null : null;
+			$join_sdate = isset($_GET['j_sd']) ? $_GET['j_sd'] != "" ? date("Y-m-d",strtotime($_GET['j_sd'])) : null : null;
+            $join_edate = isset($_GET['j_ed']) ? $_GET['j_ed'] != "" ? date("Y-m-d",strtotime($_GET['j_ed'])) : null : null;
+            $left_sdate = isset($_GET['l_sd']) ? $_GET['l_sd'] != "" ? date("Y-m-d",strtotime($_GET['l_sd'])) : null : null;
+            $left_edate = isset($_GET['l_ed']) ? $_GET['l_ed'] != "" ? date("Y-m-d",strtotime($_GET['l_ed'])) : null : null;
+
+            if($st !== null){
+                $cond[] = "status=$st";
+            }
+
+            if($join_sdate != null && $join_edate != null){
+                $cond[] = "DATE(join_date) between '$join_sdate' and '$join_edate'";
+            }
+
+            if($left_sdate != null && $left_edate != null){
+                $cond[] = "DATE(left_date) between '$left_sdate' and '$left_edate'";
+            }
+
+            // echo "<Pre>";
+            // var_dump($_GET);
+            // var_dump($cond);exit;
             $this->tbl->setCheckboxColumn(false);                
             $this->tbl->setIndexColumn(true);
             
             $hids = $this->hospitals_model->getHospicalIds();
             $ids = $this->wards_model->getWardIdsFromHospital($hids);
+         
             if(count($ids) == 0){
                 //If no department created.
                 //Add dummy id to return nothing
                 $ids[] = -1;
             }
             $bids = $this->beds_model->getBedIdsFromWardId($ids);
+        
             if(count($bids) == 0){
                 //If no department created.
                 //Add dummy id to return nothing
                 $bids[] = -1;
             }
             $bids = implode(",",$bids);
-            $cond = array();
-            $cond[] = "id in (".$bids.")";
+            
+            //$cond = array();
+            $cond[] = "bed_id in (".$bids.")";
+            
             $this->tbl->setTwID(implode(" AND ",$cond));
 
             // SQL server connection informationhostname" => "localhost",
@@ -280,6 +312,11 @@ class Inpatient extends CI_Controller {
             $this->tbl->setIndexColumn(true);
             $cond[] = "user_id = $patient_id";
             $this->tbl->setTwID(implode(" AND ",$cond));
+
+            if(!isset($_GET['order'])){
+                $_GET['order'] = array(array('column'=>3,'dir'=>'DESC'));
+            }
+
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host")); 
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));

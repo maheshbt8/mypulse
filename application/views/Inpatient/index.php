@@ -21,6 +21,25 @@ $this->load->view("template/left.php");
 						</div>
 
 	                    <div class="card-body">
+							<div class="col-md-12" id="inpatient_filters">
+                                <div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['select_join_date'];?></label>
+                                    <input id="sel_join_date" class="dates form-control" /> 
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['select_left_date'];?></label>
+                                    <input id="sel_left_date" class="dates form-control" /> 
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['status'];?></label>
+                                    <select id="status" class=" form-control" style="width: 100%">
+										<option value=""><?php echo $this->lang->line('labels')['all'];?></option>
+										<option value="0"><?php echo  $this->lang->line('labels')['notAdmitted']; ?></option>
+										<option value="1"><?php echo  $this->lang->line('labels')['admitted']; ?></option>
+										<option value="2"><?php echo  $this->lang->line('labels')['discharged']; ?></option>
+									</select>
+                                </div>
+							</div>
 							<div id="patientRecordTbl">
 								<table id="inpatient" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 									<thead>
@@ -157,22 +176,35 @@ $this->load->view("template/footer.php");
 ?><script type="text/javascript">
 		
 			$(document).ready(function(){
-				$("#inpatient").DataTable({
-		            "processing": true,
-		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/inpatient/getDTinpatient"
-		        });
 
-				$(".dataTables_filter").attr("style","display: flex;float: right");
-				//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+				var _j_sd = "";
+		        var _j_ed = "";
+				var _l_sd = "";
+				var _l_ed = "";
+
+				function loadTable(){
+
+					var st = $("#status").val();
+					$("#inpatient").dataTable().fnDestroy();
+					$("#inpatient").DataTable({
+						"processing": true,
+						"serverSide": true,
+						"ajax": "<?php echo site_url(); ?>/inpatient/getDTinpatient?j_sd="+_j_sd+"&j_ed="+_j_ed+"&l_sd="+_l_sd+"&l_ed="+_l_ed+"&st="+st
+					});
+
+					$(".dataTables_filter").attr("style","display: flex;float: right");
+					//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 				
+				}
+
 			    $("[data-toggle=tooltip]").tooltip();
 
 				$(document).on('click','.historyinpatient',function(){
 			        var patient_id= $(this).data('id');
                     $('#hsinpatientadd_id').val(patient_id);
+					$('#inpatient_filters').hide();
                 	$('#patientRecordTbl').hide();
-                	$('#inPatientTblHistoryDiv').show();
+					$('#inPatientTblHistoryDiv').show();
 					var bed_no = $(this).data('bno');
 					var hs_jdate = $(this).data('jdate');
 					var hs_status = $(this).data('status');
@@ -206,6 +238,7 @@ $this->load->view("template/footer.php");
 		          	$('#canPatientBtnHist').hide();
 		          
 		          	$('#inPatientTblHistoryDiv').hide();
+					$('#inpatient_filters').show();  
 		          	$('#patientRecordTbl').show(); 
 		        });
 
@@ -348,8 +381,6 @@ $this->load->view("template/footer.php");
 				    }
 				});
 
-					
-
 				var $selectize_doctor_id = $("#doctor_id").selectize({
 				    valueField: "id",
 				    labelField: "text",
@@ -380,7 +411,92 @@ $this->load->view("template/footer.php");
 				    }
 				});
 
-					
+				/*$("#sel_date").change(function(){
+					var date = $("#sel_date").val();
+					loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+				});*/
+
+				$("#status").change(function(){
+					loadTable();
+				});
+
+				function cb(j_start, j_end) {
+					//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
+					//window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
+					_j_sd = j_start.format('YYYY-MM-D');
+					_j_ed = j_end.format('YYYY-MM-D');
+					loadTable();
+				}
+
+				function cb1(l_start, l_end) {
+					//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
+					//window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
+					_l_sd = l_start.format('YYYY-MM-D');
+					_l_ed = l_end.format('YYYY-MM-D');
+					loadTable();
+				}
+
+				var j_start = moment().subtract(29, 'days');
+				var j_end = moment();
+				var l_start = moment().subtract(29, 'days');
+				var l_end = moment();
+
+				$('#sel_join_date').daterangepicker({
+					startDate: j_start,
+					endDate: j_end,
+					locale: { 
+						applyLabel : '<?php echo $this->lang->line('apply');?>',
+						cancelLabel: '<?php echo $this->lang->line('clear');?>',
+						"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+					},  
+					ranges: {
+						'<?php echo $this->lang->line('today');?>': [moment(), moment()],
+						'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+						'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+						'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+						'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+						'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+					}
+				},cb);
+
+				$('#sel_left_date').daterangepicker({
+					startDate: l_start,
+					endDate: l_end,
+					locale: { 
+						applyLabel : '<?php echo $this->lang->line('apply');?>',
+						cancelLabel: '<?php echo $this->lang->line('clear');?>',
+						"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+					},  
+					ranges: {
+						'<?php echo $this->lang->line('today');?>': [moment(), moment()],
+						'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+						'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+						'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+						'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+						'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+					}
+				},cb1);
+		
+				$('#sel_join_date').on('cancel.daterangepicker', function(ev, picker) {
+					//do something, like clearing an input
+					$('#sel_join_date').val('');
+					_j_sd = "";
+					_j_ed = "";
+					loadTable();
+				});
+
+				$('#sel_left_date').on('cancel.daterangepicker', function(ev, picker) {
+					//do something, like clearing an input
+					$('#sel_left_date').val('');
+					_l_sd = "";
+					_l_ed = "";
+					loadTable();
+				});
+		
+				$("#sel_join_date").val("");
+				$("#sel_left_date").val("");	
+
+				loadTable();	
 
 			});
 

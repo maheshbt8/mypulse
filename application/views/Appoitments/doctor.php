@@ -19,13 +19,10 @@ $this->load->view("template/left.php");
 	                    <div class="card-head clearfix">
 							<header><?php echo $this->lang->line('appoitments');?></header>
 							<div class="custome_card_header" style="">
-
-							
-										<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-										<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
-										<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-                                        <?php $this->load->view('template/exbtn');?>
-
+								<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
+								<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
+								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
+								<?php $this->load->view('template/exbtn');?>
 							</div>
 	                    </div>
 	                    <div class="card-body ">
@@ -420,6 +417,7 @@ $this->load->view("template/footer.php");
 		$("#appoitments").on("click",".editbtn",function(){
 			resetForm(validator);
 			var id = $(this).attr("data-id");
+			
 			$("#eidt_gf_id").val(id);
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
@@ -490,6 +488,9 @@ $this->load->view("template/footer.php");
 					if(data==1){
 						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
 						toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -510,6 +511,9 @@ $this->load->view("template/footer.php");
 						$($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
 						//$("#dellink_"+id).parents('tr').remove();	
 						toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -576,11 +580,14 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-                                $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
-							}
+							// for(var i=0; i<selected.length; i++){
+							// 	var temp = selected[i];
+                            //     $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+							// }
 							toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+							if(dt != undefined){
+								dt.ajax.reload();
+							}
 						}else{
 							toastr.error('Please try again.');
 						}
@@ -619,11 +626,14 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
 						if(data==1){
-							for(var i=0; i<selected.length; i++){
-								var temp = selected[i];
-								$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
-							}
+							// for(var i=0; i<selected.length; i++){
+							// 	var temp = selected[i];
+							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+							// }
 							toastr.success('selected item(s) cancled.');
+							if(dt != undefined){
+								dt.ajax.reload();
+							}
 						}else{
 							toastr.error('Please try again.');
 						}
@@ -959,6 +969,7 @@ $this->load->view("template/footer.php");
 			loadTable($("#hospital_id1").val());
 		});
 
+		var dt;
 		function loadTable(hid){	
 			var st = $("#status").val();
 			var showClosed = 0;
@@ -966,10 +977,10 @@ $this->load->view("template/footer.php");
 				showClosed = 1;
 			}
 			$("#appoitments").dataTable().fnDestroy();
-			var dt = $("#appoitments").DataTable({
-				"processing": true,
-				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&sd="+_sd+"&ed="+_ed+"&st="+st+"&sc="+showClosed
+				dt = $("#appoitments").DataTable({
+					"processing": true,
+					"serverSide": true,
+					"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&sd="+_sd+"&ed="+_ed+"&st="+st+"&sc="+showClosed
 			});
 
 			<?php $this->load->view('template/exdt');?>

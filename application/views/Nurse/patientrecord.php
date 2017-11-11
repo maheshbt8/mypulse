@@ -881,7 +881,7 @@ $this->load->view("template/footer.php");
             "processing": true,
             "serverSide": true,
             "paging":   true,
-            "ordering": false,
+            "ordering": true,
             "info":     false,
             "ajax": '<?php echo site_url();?>/nurse/getDTPrescription/'+"<?php echo $appoitment['id'];?>"
         });
@@ -892,7 +892,7 @@ $this->load->view("template/footer.php");
             "processing": true,
             "serverSide": true,
             "paging":   true,
-            "ordering": false,
+            "ordering": true,
             "info":     false,
             "ajax": '<?php echo site_url();?>/nurse/getDTPReports/'+"<?php echo $appoitment['id'];?>"
         });
@@ -903,7 +903,7 @@ $this->load->view("template/footer.php");
             "processing": true,
             "serverSide": true,
             "paging":   true,
-            "ordering": false,
+            "ordering": true,
             "info":     false,
             "ajax": '<?php echo site_url();?>/inpatient/getDTPatientinpatient/'+"<?php echo $profile['id'];?>"
         });
