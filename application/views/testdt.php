@@ -43,10 +43,10 @@
             "ajax": "<?php echo site_url(); ?>/index/getDataTabedoctors",
             "columns": [
                 { "data": "user_id" },
-                { "data": "department_id" },
-                { "data": "isActive" },
-                { "data": "id" },
-                { "data": "id" },
+                { "data": "hname" },
+                { "data": "bname" },
+                { "data": "dname" },
+                { "data": "Status" },
                 { "data": "edit", "orderable": false, "searchable": false }
             ]
         });

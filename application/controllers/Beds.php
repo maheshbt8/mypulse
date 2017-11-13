@@ -93,25 +93,37 @@ class Beds extends CI_Controller {
     }
     public function getDTbeds() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() )) {
-            $this->load->library("tbl");
-            $table = "hms_beds";
-            $primaryKey = "id";
-            $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $this->load->model("wards_model");
-                $temp = $this->wards_model->getwardsById($d);
-                return $temp['ward_name'];
-            }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
-                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-            }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
-                if($d==0){
-                    //Return yes, It is occupied or not availabe.
-                    return "<span class='label label-danger'>Yes</span>";
-                }else{
-                    return "<span class='label label-success'>No</span>";
-                }
-            }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
-            }));
+            // $this->load->library("tbl");
+            // $table = "hms_beds";
+            // $primaryKey = "id";
+            // $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
+            //     $this->load->model("wards_model");
+            //     $temp = $this->wards_model->getwardsById($d);
+            //     return $temp['ward_name'];
+            // }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
+            //     return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+            // }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
+            //     if($d==0){
+            //         //Return yes, It is occupied or not availabe.
+            //         return "<span class='label label-danger'>Yes</span>";
+            //     }else{
+            //         return "<span class='label label-success'>No</span>";
+            //     }
+            // }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+            //     return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+            // }));
+            
+            //New Library
+            $this->load->library('datatables');		
+            $this->datatables
+                ->showCheckbox(true)
+                ->from('hms_beds')
+                ->select('hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status',false)
+                ->join('hms_wards', 'hms_beds.ward_id = hms_wards.id','left')
+                ->edit_column('bed', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','id, bed')
+                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn" data-toggle="modal" data-target="bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id');
+                //->add_column('hms_beds.id', '<input type="checkbox" class="chk" data-id="$1" />', 'id');
+                echo $this->datatables->generate('json');                     
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
@@ -178,10 +190,15 @@ class Beds extends CI_Controller {
                 $this->tbl->setIndexColumn(true);
             }
             
-            $this->tbl->setTwID(implode(" AND ",$cond));
+            //$this->tbl->setTwID(implode(" AND ",$cond));
             // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            //$sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
+            //echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            
+            //Set condition to new library
+
+            //Call new library for output
+
         }
     }
 

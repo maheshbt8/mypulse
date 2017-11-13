@@ -46,10 +46,13 @@ $this->load->view("template/left.php");
                                 </div>
                             </div>
                             <div class="col-md-12">
-								
 								<table id="beds" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle tableExport" >
 									<thead>
-										<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['bed'];?></th><th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th><th width="20px">#</th>
+										<tr><th style="width:10px"></th>
+											<th><?php echo $this->lang->line('tableHeaders')['ward'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['bed'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th>
+											<th width="20px">#</th>
 										</tr>
 									</thead>
 									
@@ -610,7 +613,14 @@ $this->load->view("template/footer.php");
                     var dt = $("#beds").DataTable({
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did
+                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did,
+						"columns": [
+							{ "data": 'chk' ,"orderable": false, "searchable": false},
+							{ "data": "wname" },
+							{ "data": "bed" },
+							{ "data": "status" },
+							{ "data": "edit", "orderable": false, "searchable": false }
+						]
                     });
 					/* 'copyHtml5',
 					 'excelHtml5',

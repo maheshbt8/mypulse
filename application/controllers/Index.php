@@ -92,12 +92,19 @@ class Index extends CI_Controller {
 	}
 
 	function getDataTabedoctors(){
-		$this->load->library('datatables');
+		$this->load->library('datatables');		
 		$this->datatables
-			->select('hms_users.first_name as user_id, department_id, department_id, department_id, hms_doctors.isActive, hms_doctors.id')
+			->select('CONCAT(hms_users.first_name," ",hms_users.last_name) as user_id, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "Active" when hms_doctors.isActive=0 THEN "In-Active" end as Status, hms_doctors.id', false)
 			->from('hms_doctors')
 			->join('hms_users','hms_doctors.user_id = hms_users.id','left')
+			->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
+			->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+			->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
 			->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'id');
+
+		//$this->datatables->select("id,name");
+		//$this->datatables->from("hms_dcotors");
+
 
 		echo $this->datatables->generate('json');
 	}

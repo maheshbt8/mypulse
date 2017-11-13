@@ -35,6 +35,7 @@
     private $add_columns    = array();
     private $edit_columns   = array();
     private $unset_columns  = array();
+    private $show_checkbox  = false;
 
     /**
     * Copies an instance of CI
@@ -54,6 +55,12 @@
       $this->ci->db = $db_data;
     }
 
+    public function showCheckbox($canShow){
+      $this->show_checkbox = $canShow;
+      $this->select("'<input type=\"checkbox\" class=\"chk\" data-id=\"".$this->table.".id\" >' as chk");
+      return $this;
+    }
+
     /**
     * Generates the SELECT portion of the query
     *
@@ -63,6 +70,8 @@
     */
     public function select($columns, $backtick_protect = TRUE)
     {
+
+      
       foreach($this->explode(',', $columns) as $val)
       {
         $column = trim(preg_replace('/(.*)\s+as\s+(\w*)/i', '$2', $val));
