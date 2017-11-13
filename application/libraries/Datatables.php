@@ -36,6 +36,7 @@
     private $edit_columns   = array();
     private $unset_columns  = array();
     private $show_checkbox  = false;
+    private $show_index     = false;
 
     /**
     * Copies an instance of CI
@@ -56,10 +57,18 @@
     }
 
     public function showCheckbox($canShow){
+      $this->show_index = !$canShow;
       $this->show_checkbox = $canShow;
-      $this->select("'<input type=\"checkbox\" class=\"chk\" data-id=\"".$this->table.".id\" >' as chk");
+      //$this->select("'<input type=\"checkbox\" class=\"chk\" data-id=\"".$this->table.".id\" /> as chk");
       return $this;
     }
+
+    public function showIndex($canShow){
+      $this->show_checkbox = !$canShow;
+      $this->show_index = $canShow;
+      return $this;
+    }
+
 
     /**
     * Generates the SELECT portion of the query
@@ -333,13 +342,23 @@
       $sSearch = $this->ci->db->escape_like_str(trim($search['value']));
       $columns = array_values(array_diff($this->columns, $this->unset_columns));
 
+
       if($sSearch != '')
-        for($i = 0; $i < count($mColArray); $i++)
-          if ($mColArray[$i]['searchable'] == 'true' && !array_key_exists($mColArray[$i]['data'], $this->add_columns))
+        for($i = 0; $i < count($mColArray); $i++){
+          $tmp_col = "";
+          if ($mColArray[$i]['searchable'] == 'true' && !array_key_exists($mColArray[$i]['data'], $this->add_columns)){
             if($this->check_cType())
-              $sWhere .= $this->select[$mColArray[$i]['data']] . " LIKE '%" . $sSearch . "%' OR ";
-            else
-              $sWhere .= $this->select[$this->columns[$i]] . " LIKE '%" . $sSearch . "%' OR ";
+              $tmp_col = $this->select[$mColArray[$i]['data']];
+            else{
+              if(isset($this->columns[$i]))
+                $tmp_col = $this->select[$this->columns[$i]];
+            }
+
+            if(strpos(strtolower($tmp_col),"case when") === false && $tmp_col!="")  
+              $sWhere .=  $tmp_col. " LIKE '%" . $sSearch . "%' OR ";
+            
+          }
+        }
 
 
       $sWhere = substr_replace($sWhere, '', -3);
@@ -381,9 +400,17 @@
         $iTotal = $this->get_total_results();
         $iFilteredTotal = $this->get_total_results(TRUE);
       }
-
+      $cnt = 1;
       foreach($rResult->result_array() as $row_key => $row_val)
-      {
+      {    
+        $mainid = isset($row_val['mainid']) ? $row_val['mainid'] : false;
+
+        if($this->show_index && $mainid){
+          $row_val['mainid'] = $cnt;
+        }else if($this->show_checkbox && $mainid){
+          $row_val['mainid'] = '<input type="checkbox" class="multiselect chk" data-id="'.$mainid.'" />';
+        }
+
         $aaData[$row_key] =  ($this->check_cType())? $row_val : array_values($row_val);
 
         foreach($this->add_columns as $field => $val)
@@ -402,6 +429,8 @@
         if(!$this->check_cType())
           $aaData[$row_key] = array_values($aaData[$row_key]);
 
+        
+        $cnt++;
       }
 
       if($output == 'json')

@@ -113,22 +113,10 @@ class Beds extends CI_Controller {
             //     return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             // }));
             
-            //New Library
-            $this->load->library('datatables');		
-            $this->datatables
-                ->showCheckbox(true)
-                ->from('hms_beds')
-                ->select('hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status',false)
-                ->join('hms_wards', 'hms_beds.ward_id = hms_wards.id','left')
-                ->edit_column('bed', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','id, bed')
-                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn" data-toggle="modal" data-target="bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id');
-                //->add_column('hms_beds.id', '<input type="checkbox" class="chk" data-id="$1" />', 'id');
-                echo $this->datatables->generate('json');                     
-
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
             $did = isset($_GET['did']) ? $_GET['did']!="" ? intval($_GET['did']) : null : null;
-            $cond = array();
+            $cond = array("hms_beds.isDeleted=0");
 
             if($hid == "all")
                 $hid = null;
@@ -141,7 +129,7 @@ class Beds extends CI_Controller {
                     $wids[] = -1;
                 }
                 $ids = implode(",", $wids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else if($bid == "all"){
                 $bids = $this->branches_model->getBracheIds($hid);
                 $ids = $this->wards_model->getWardIdsFromBranch($bids);
@@ -151,7 +139,7 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else if($bid != null){
                 $ids = $this->wards_model->getWardIdsFromBranch($bid);
                 if(count($ids) == 0){
@@ -160,7 +148,7 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else if($hid!=null){
                 $ids = $this->wards_model->getWardIdsFromHospital($hid);
                 if(count($ids) == 0){
@@ -169,7 +157,7 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else{
                 $hids = $this->hospitals_model->getHospicalIds();
                 $ids = $this->wards_model->getWardIdsFromHospital($hids);
@@ -179,26 +167,31 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",",$ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }
 
+            //New Library
+            $this->load->library('datatables');		
+            $this->datatables
+                ->showCheckbox(true)
+                ->from('hms_beds')
+                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status',false)
+                ->join('hms_wards', 'hms_beds.ward_id = hms_wards.id','left');
+            
             $show = $this->input->get("s",null,false);
             if($show){
-                $this->tbl->setCheckboxColumn(false);
-                $columns[1]['formatter'] = function ($d, $row) { return $d; };
-                unset($columns[3]);
-                $this->tbl->setIndexColumn(true);
+                 $this->datatables->showIndex(true);
+            }else{
+                $this->datatables->edit_column('bed', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','id, bed')
+                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn" data-toggle="modal" data-target="bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id');
             }
             
-            //$this->tbl->setTwID(implode(" AND ",$cond));
-            // SQL server connection informationhostname" => "localhost",
-            //$sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            //echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
-            
             //Set condition to new library
-
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
             //Call new library for output
-
+            echo $this->datatables->generate('json');
         }
     }
 
