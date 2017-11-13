@@ -30,7 +30,7 @@ $this->load->view("template/left.php");
 										<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
-										<th width="20px">#</th>
+										<th width="20px"><?php echo $this->lang->line('tableHeaders')['action'];?></th>
 									</tr>
 								</thead>
 								
@@ -319,7 +319,16 @@ $this->load->view("template/footer.php");
 				var dt = $("#doctors").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/doctors/getDTdoctors"
+		            "ajax": "<?php echo site_url(); ?>/doctors/getDTdoctors",
+					"columns":[
+							{ name: '#',"searchable": false, "orderable": false },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['doctor'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['hospital'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['branch'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['department'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['status'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['action'];?>', "searchable": false, "orderable": false }
+						]
 		        });
 				<?php $this->load->view('template/exdt');?>
 				$(".dataTables_filter").attr("style","display: flex;float: right");

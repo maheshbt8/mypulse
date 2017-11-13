@@ -93,25 +93,27 @@ class Beds extends CI_Controller {
     }
     public function getDTbeds() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() )) {
-            // $this->load->library("tbl");
-            // $table = "hms_beds";
-            // $primaryKey = "id";
-            // $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
-            //     $this->load->model("wards_model");
-            //     $temp = $this->wards_model->getwardsById($d);
-            //     return $temp['ward_name'];
-            // }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
-            //     return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-            // }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
-            //     if($d==0){
-            //         //Return yes, It is occupied or not availabe.
-            //         return "<span class='label label-danger'>Yes</span>";
-            //     }else{
-            //         return "<span class='label label-success'>No</span>";
-            //     }
-            // }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-            //     return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
-            // }));
+            /* 
+                $this->load->library("tbl");
+                $table = "hms_beds";
+                $primaryKey = "id";
+                $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
+                    $this->load->model("wards_model");
+                    $temp = $this->wards_model->getwardsById($d);
+                    return $temp['ward_name'];
+                }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
+                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
+                }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
+                    if($d==0){
+                        //Return yes, It is occupied or not availabe.
+                        return "<span class='label label-danger'>Yes</span>";
+                    }else{
+                        return "<span class='label label-success'>No</span>";
+                    }
+                }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                    return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                }));
+            */
             
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;

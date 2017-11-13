@@ -613,7 +613,14 @@ $this->load->view("template/footer.php");
                     var dt = $("#beds").DataTable({
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did
+                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did,
+						"columns":[
+							{ name: '#' },
+							{ name: 'Ward' },
+							{ name: 'Bed' },
+							{ name: 'Is Occuped?' },
+							{ name: '#' }
+						]
                     });
 					/* 'copyHtml5',
 					 'excelHtml5',

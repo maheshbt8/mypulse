@@ -1,6 +1,5 @@
 Doctor,Hospital,Branch,Department,Status
 "Dr. Ravi Patel","Purus Corporation",WB,Dept-1,Active
-"Dr. Ravi Patel","Ligula Aenean Euismod Consulting",Berlin,"Lauro de Freitas",Inactive
 "Amit patel","Et Industries",KP,Provo,Inactive
 "Amit patel","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Inactive
 "Amit patel","Non Institute",Vienna,Chepstow,Inactive
@@ -111,3 +110,4 @@ Doctor,Hospital,Branch,Department,Status
 "Amit patel","Purus Corporation",WB,Dept-1,Active
 "New ","Purus Corporation",WB,Dept-1,Inactive
 "New ","Purus Corporation",WB,Dept-1,Inactive
+"Twinkal  Patel","Purus Corporation",WB,Dept-2,Inactive

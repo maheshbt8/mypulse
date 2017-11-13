@@ -570,6 +570,7 @@ class Auth {
     }
 
     public function export($data,$columns,$type,$fname){
+        
         $cnames = array();
         foreach($columns as $col){
             $_n = "";
@@ -599,13 +600,13 @@ class Auth {
                 
                 
                 foreach($columns as $col)
-                    $this->CI->fpdf->Cell($col['width'],7,$col['name'],1);
+                    $this->CI->fpdf->Cell(30,7,$col['name'],1);
                 $this->CI->fpdf->Ln();
-                
+                //$columns[$i]['width']
                 foreach($data as $row)
                 {
                     for($i=0; $i<count($row); $i++){
-                        $this->CI->fpdf->Cell($columns[$i]['width'],6,$row[$i],1);
+                        $this->CI->fpdf->Cell(30,6,$row[$i],1);
                     }
                         
                     $this->CI->fpdf->Ln();

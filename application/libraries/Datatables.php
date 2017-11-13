@@ -37,6 +37,8 @@
     private $unset_columns  = array();
     private $show_checkbox  = false;
     private $show_index     = false;
+    private $is_export       = false;
+    private $export_type     = 'xlsx';
 
     /**
     * Copies an instance of CI
@@ -44,6 +46,11 @@
     public function __construct()
     {
       $this->ci =& get_instance();
+      
+      if($this->ci->input->get('mpexpt',null,false)){
+        $this->is_export = true;
+        $this->export_type = $this->ci->input->get('mpexpt',null,'xlsx');
+      }
     }
 
     /**
@@ -300,6 +307,9 @@
     */
     private function get_paging()
     {
+      if($this->is_export){
+        return;
+      }
       $iStart = $this->ci->input->get('start');
       $iLength = $this->ci->input->get('length');
 
@@ -407,23 +417,24 @@
 
         if($this->show_index && $mainid){
           $row_val['mainid'] = $cnt;
-        }else if($this->show_checkbox && $mainid){
+        }else if($this->show_checkbox && $mainid && !$this->is_export){
           $row_val['mainid'] = '<input type="checkbox" class="multiselect chk" data-id="'.$mainid.'" />';
         }
 
         $aaData[$row_key] =  ($this->check_cType())? $row_val : array_values($row_val);
 
-        foreach($this->add_columns as $field => $val)
-         if($this->check_cType())
-            $aaData[$row_key][$field] = $this->exec_replace($val, $aaData[$row_key]);
-          else
-            $aaData[$row_key][] = $this->exec_replace($val, $aaData[$row_key]);
+        if(!$this->is_export){
+          foreach($this->add_columns as $field => $val)
+          if($this->check_cType())
+              $aaData[$row_key][$field] = $this->exec_replace($val, $aaData[$row_key]);
+            else
+              $aaData[$row_key][] = $this->exec_replace($val, $aaData[$row_key]);
 
 
-        foreach($this->edit_columns as $modkey => $modval)
-          foreach($modval as $val)
-            $aaData[$row_key][($this->check_cType())? $modkey : array_search($modkey, $this->columns)] = $this->exec_replace($val, $aaData[$row_key]);
-
+          foreach($this->edit_columns as $modkey => $modval)
+            foreach($modval as $val)
+              $aaData[$row_key][($this->check_cType())? $modkey : array_search($modkey, $this->columns)] = $this->exec_replace($val, $aaData[$row_key]);
+        }
         $aaData[$row_key] = array_diff_key($aaData[$row_key], ($this->check_cType())? $this->unset_columns : array_intersect($this->columns, $this->unset_columns));
 
         if(!$this->check_cType())
@@ -433,23 +444,29 @@
         $cnt++;
       }
 
-      if($output == 'json')
-      {
-        $sOutput = array
-        (
-          'draw'                => intval($this->ci->input->get('draw')),
-          'recordsTotal'        => $iTotal,
-          'recordsFiltered'     => $iFilteredTotal,
-          'data'                => $aaData
-        );
-
-        if($charset == 'utf-8')
-          return json_encode($sOutput);
-        else
-          return $this->jsonify($sOutput);
+      if($this->is_export){
+        $cols =$this->ci->input->get('columns');
+        $this->ci->auth->export($aaData,$cols,$this->export_type,$this->table);
       }
-      else
-        return array('aaData' => $aaData);
+      else{
+        if($output == 'json')
+        {
+          $sOutput = array
+          (
+            'draw'                => intval($this->ci->input->get('draw')),
+            'recordsTotal'        => $iTotal,
+            'recordsFiltered'     => $iFilteredTotal,
+            'data'                => $aaData
+          );
+
+          if($charset == 'utf-8')
+            return json_encode($sOutput);
+          else
+            return $this->jsonify($sOutput);
+        }
+        else
+          return array('aaData' => $aaData);
+      }
     }
 
     /**

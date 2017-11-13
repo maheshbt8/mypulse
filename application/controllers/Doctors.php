@@ -292,149 +292,158 @@ class Doctors extends CI_Controller {
 
     public function getDTdoctors() {
         if ($this->auth->isLoggedIn()) {
-            $this->load->library("tbl");
-            $table = "hms_doctors";
-            $primaryKey = "id";
-            $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $this->load->model("users_model");
-                $temp = $this->users_model->getusersById($d);
-                $name = $temp["first_name"]." ".$temp["last_name"];
-                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
-            }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
-                
-                $temp = $this->departments_model->getdepartmentsById($d);
-                if(!isset($temp['branch_id']))
-                    return "-";
+            /*
+                $this->load->library("tbl");
+                $table = "hms_doctors";
+                $primaryKey = "id";
+                $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($d);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
+                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
+                }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
+                    
+                    $temp = $this->departments_model->getdepartmentsById($d);
+                    if(!isset($temp['branch_id']))
+                        return "-";
 
-                $this->load->model("branches_model");
-                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
-                if(!isset($branch['hospital_id']))
-                    return "-";                    
+                    $this->load->model("branches_model");
+                    $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                    if(!isset($branch['hospital_id']))
+                        return "-";                    
 
-                $this->load->model("hospitals_model");
-                $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
-                if(!isset($hospital['name']))
-                    return "-"; 
+                    $this->load->model("hospitals_model");
+                    $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
+                    if(!isset($hospital['name']))
+                        return "-"; 
 
-                return $hospital["name"];
+                    return $hospital["name"];
 
-            }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
-                $this->load->model("departments_model");
-                $temp = $this->departments_model->getdepartmentsById($d);
-                if(!isset($temp['branch_id']))
-                    return "-";
-                $this->load->model("branches_model");
-                $branch = $this->branches_model->getbranchesById($temp['branch_id']);
-                if(!isset($branch['branch_name']))
-                    return "-"; 
+                }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
+                    $this->load->model("departments_model");
+                    $temp = $this->departments_model->getdepartmentsById($d);
+                    if(!isset($temp['branch_id']))
+                        return "-";
+                    $this->load->model("branches_model");
+                    $branch = $this->branches_model->getbranchesById($temp['branch_id']);
+                    if(!isset($branch['branch_name']))
+                        return "-"; 
 
-                return $branch["branch_name"];
-            }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
-                $temp = $this->departments_model->getdepartmentsById($d);
-                 if(!isset($temp['department_name']))
-                    return "-";
-                return $temp["department_name"];
-            }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
-                return $this->auth->getActiveStatus($d);
-            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                $this->load->model("users_model");
-                $temp = $this->users_model->getusersById($row['user_id']);
-                $name = $temp["first_name"]." ".$temp["last_name"];
+                    return $branch["branch_name"];
+                }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
+                    $temp = $this->departments_model->getdepartmentsById($d);
+                    if(!isset($temp['department_name']))
+                        return "-";
+                    return $temp["department_name"];
+                }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
+                    return $this->auth->getActiveStatus($d);
+                }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
+                    $this->load->model("users_model");
+                    $temp = $this->users_model->getusersById($row['user_id']);
+                    $name = $temp["first_name"]." ".$temp["last_name"];
 
-                return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button>
-                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-name=\"$name\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button></span>";
-            }));
+                    return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button>
+                    <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-name=\"$name\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button></span>";
+                }));
+            */
             
             $hospital_id = $this->input->get('hid',null,null);
             $show  = $this->input->get('s',null,false);
-            $cond = array("isDeleted=0");
+            $cond = array("hms_doctors.isDeleted=0");
             
             if($this->auth->isReceptinest()){
                 $show = true;
                 $ids = $this->receptionist_model->getDoctorsIds();
                 if(count($ids) == 0) { $ids[] = -1;}
                 $ids = implode(",", $ids);
-                $cond[] = "id in (".$ids.")";
+                $cond[] = "hms_doctors.id in (".$ids.")";
             }
             else if($this->auth->isNurse()){
                  $show = true;
                 $ids = $this->nurse_model->getDepartmentIds();
                 if(count($ids) == 0) { $ids[] = -1;}
                 $ids = implode(",", $ids);
-                $cond[] = "department_id in (".$ids.")";
+                $cond[] = "hms_doctors.department_id in (".$ids.")";
             }
             else if($this->auth->isHospitalAdmin()){
                 $ids = $this->auth->getAllDepartmentsIds();
                 $ids = implode(",", $ids);
-                $cond[] = "department_id in (".$ids.")";
+                $cond[] = "hms_doctors.department_id in (".$ids.")";
             }else if($hospital_id!=null){
                 $ids = $this->departments_model->getDepartmentIdsFromHospital($hospital_id);
                 if(count($ids) == 0){
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "department_id in (".$ids.")";
+                $cond[] = "hms_doctors.department_id in (".$ids.")";
             }
 
-            if($show){
-                $this->tbl->setCheckboxColumn(false);
-                $columns = array($columns[0],$columns[2],$columns[3],$columns[4]);
-                $columns[0]["dt"] = 0;
-                $columns[1]["dt"] = 1;
-                $columns[2]['dt'] = 2;
-                $columns[3]['dt'] = 3;
+            /*
+                if($show){
+                    $this->tbl->setCheckboxColumn(false);
+                    $columns = array($columns[0],$columns[2],$columns[3],$columns[4]);
+                    $columns[0]["dt"] = 0;
+                    $columns[1]["dt"] = 1;
+                    $columns[2]['dt'] = 2;
+                    $columns[3]['dt'] = 3;
 
-                if($this->auth->isReceptinest()){
-                    $columns[3] = array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                        return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button></span>";
-                    });
+                    if($this->auth->isReceptinest()){
+                        $columns[3] = array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                            return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button></span>";
+                        });
+                    }
+                    if($this->auth->isNurse()){                        
+                        unset($columns[3]);
+                    }
+                    $columns[0]['formatter'] =  function ($d, $row) {
+                        $this->load->model("users_model");
+                        $temp = $this->users_model->getusersById($d);
+                        $name = $temp["first_name"]." ".$temp["last_name"];
+                        return $name;
+                    };
+                    $this->tbl->setIndexColumn(true);
                 }
-                 if($this->auth->isNurse()){                        
-                    unset($columns[3]);
-                }
-                $columns[0]['formatter'] =  function ($d, $row) {
-                    $this->load->model("users_model");
-                    $temp = $this->users_model->getusersById($d);
-                    $name = $temp["first_name"]." ".$temp["last_name"];
-                    return $name;
-                };
-                $this->tbl->setIndexColumn(true);
-            }
+            */
 
-            $isExport = isset($_GET['mpexp']) ? intval($_GET['mpexp']) : false;
-            if($isExport === 1){
-                $this->tbl->setIndexColumn(false);
-                $this->tbl->setCheckboxColumn(false);
-                $columns[0]['formatter'] =  function ($d, $row) {
-                    $this->load->model("users_model");
-                    $temp = $this->users_model->getusersById($d);
-                    $name = $temp["first_name"]." ".$temp["last_name"];
-                    return $name;
-                };
-                $columns[4]['formatter'] =  function ($d, $row) {
-                    return $this->auth->getActiveStatus($d,true);
-                };
-                unset($columns[5]);
+            //New Library
+            if($show && $this->auth->isReceptinest()){
+                $this->datatables
+                    ->showIndex(true)
+                    ->from('hms_doctors')
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_branches.branch_name as bname, hms_departments.department_name as dname', false)
+                    ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
+                    ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
+                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button></span>', 'hms_doctors.id');
+           
+            }else if($show && $this->auth->isNurse()){
+                $this->datatables
+                    ->showIndex(true)
+                    ->from('hms_doctors')
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_branches.branch_name as bname, hms_departments.department_name as dname', false)
+                    ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
+                    ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
+                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left');
+
+            }else{	
+                $this->datatables
+                    ->showCheckbox(true)
+                    ->from('hms_doctors')
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "Active" when hms_doctors.isActive=0 THEN "In-Active" end as status', false)
+                    ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
+                    ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
+                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+                    ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
+                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'hms_doctors.id')
+                    ->edit_column('docname', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','hms_doctors.id, docname');
             }
-            $this->tbl->setTwID(implode(' AND ',$cond));
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             
-            if($isExport ===1) {
-                $data = $this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns, true);
-                $ext = isset($_GET['mpexpt']) ? $_GET['mpexpt'] : "xlsx";
-                $clms = array(
-                    array("name"=>$this->lang->line('tableHeaders')['doctor'],"width"=> 40),
-                    array("name"=>$this->lang->line('tableHeaders')['hospital'],"width"=> 40),
-                    array("name"=>$this->lang->line('tableHeaders')['branch'],"width"=> 30),
-                    array("name"=>$this->lang->line('tableHeaders')['department'],"width"=> 30),
-                    array("name"=>$this->lang->line('tableHeaders')['status'],"width"=> 30)
-                );
-                $this->auth->export($data['data'],$clms,$ext,$table);
-            }else{
-                $data = $this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns);
-                echo json_encode($data);
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
             }
+            //Call new library for output
+            echo $this->datatables->generate('json');
         }
     }
 

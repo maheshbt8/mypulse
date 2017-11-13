@@ -53,7 +53,14 @@ $this->load->view("template/footer.php");
 				$("#doctors").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/doctors/getDTdoctors"
+		            "ajax": "<?php echo site_url(); ?>/doctors/getDTdoctors",
+					"columns":[
+							{ name: '#',"searchable": false, "orderable": false },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['name'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['branch'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['department'];?>' },
+							{ name: '<?php echo $this->lang->line('tableHeaders')['action'];?>', "searchable": false, "orderable": false }
+						]
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");
