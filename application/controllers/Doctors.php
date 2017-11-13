@@ -337,8 +337,12 @@ class Doctors extends CI_Controller {
             }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
                 return $this->auth->getActiveStatus($d);
             }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
+                $this->load->model("users_model");
+                $temp = $this->users_model->getusersById($row['user_id']);
+                $name = $temp["first_name"]." ".$temp["last_name"];
+
                 return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button>
-                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button></span>";
+                <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-name=\"$name\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button></span>";
             }));
             
             $hospital_id = $this->input->get('hid',null,null);
