@@ -27,7 +27,7 @@ $this->load->view("template/left.php");
 										<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
 									</tr>
 								</thead>
 								

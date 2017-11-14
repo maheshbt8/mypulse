@@ -429,7 +429,7 @@ class Doctors extends CI_Controller {
                 $this->datatables
                     ->showCheckbox(true)
                     ->from('hms_doctors')
-                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "Active" when hms_doctors.isActive=0 THEN "In-Active" end as status', false)
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "'.$this->lang->line('active').'" when hms_doctors.isActive=0 THEN "'.$this->lang->line('active').'" end as status', false)
                     ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')

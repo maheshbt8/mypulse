@@ -315,7 +315,17 @@ $this->load->view("template/footer.php");
 				var dt = $("#receptionist").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/receptionist/getDTreceptionist"
+		            "ajax": "<?php echo site_url(); ?>/receptionist/getDTreceptionist",
+					"columns": [
+						{ name : '#',"searchable": false, "orderable": false },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['receptionist'];?>' },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['hospital'];?>' },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['branch'];?>' },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['department'];?>' },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['doctor'];?>' },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['status'];?>' },
+						{ name : '#',"searchable": false, "orderable": false }	
+					]
 		        });
 				<?php $this->load->view('template/exdt');?>
 

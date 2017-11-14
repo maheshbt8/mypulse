@@ -321,6 +321,9 @@ $lang['tableHeaders'] = array(
 );
 //End Table Headings
 
+$lang['active'] = 'Active';
+$lang['inactive'] = 'Inactive';
+
 $lang['labels'] = array(
 	'bookAppoitment' => 'Book Appointment',
 	'sign_up' => "Sign Up",
