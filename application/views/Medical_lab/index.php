@@ -311,7 +311,16 @@ $this->load->view("template/footer.php");
 				var dt = $("#medical_lab").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/medical_lab/getDTmedical_lab"
+		            "ajax": "<?php echo site_url(); ?>/medical_lab/getDTmedical_lab",
+					"columns":[
+								{ name: '#',"searchable": false, "orderable": false },
+								{ name: '<?php echo $this->lang->line('tableHeaders')['name'];?>' },
+								{ name: '<?php echo $this->lang->line('tableHeaders')['ownerName'];?>' },
+								{ name: '<?php echo $this->lang->line('tableHeaders')['ownerNumber'];?>' },
+								{ name: '<?php echo $this->lang->line('tableHeaders')['hospital'];?>' },
+								{ name: '<?php echo $this->lang->line('tableHeaders')['branch'];?>' },
+								{ name: '#',"searchable": false, "orderable": false}
+							  ]
 		        });
 
 				<?php $this->load->view('template/exdt');?>

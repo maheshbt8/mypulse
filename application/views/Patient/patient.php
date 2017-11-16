@@ -183,7 +183,7 @@ $this->load->view("template/footer.php");
 				$("#patients").DataTable({
 		            "processing": true,
 		            "serverSide": true,
-		            "ajax": "<?php echo site_url(); ?>/patients/getDTpatient"
+		            "ajax": "<?php echo site_url(); ?>/patients/getDTPatient"
 		        });
 
 				$(".dataTables_filter").attr("style","display: flex;float: right");

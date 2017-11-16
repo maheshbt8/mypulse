@@ -189,7 +189,18 @@ $this->load->view("template/footer.php");
 					$("#inpatient").DataTable({
 						"processing": true,
 						"serverSide": true,
-						"ajax": "<?php echo site_url(); ?>/inpatient/getDTinpatient?j_sd="+_j_sd+"&j_ed="+_j_ed+"&l_sd="+_l_sd+"&l_ed="+_l_ed+"&st="+st
+						"ajax": "<?php echo site_url(); ?>/inpatient/getDTinpatient?j_sd="+_j_sd+"&j_ed="+_j_ed+"&l_sd="+_l_sd+"&l_ed="+_l_ed+"&st="+st,
+						"columns":[
+									{ name: '#',"searchable": false, "orderable": false },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['patient'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['hospital'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['doctor'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['date'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['reason'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['bed'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['status'];?>' },
+									{ name: '<?php echo $this->lang->line('tableHeaders')['action'];?>', "searchable": false, "orderable": false }
+								]
 					});
 
 					$(".dataTables_filter").attr("style","display: flex;float: right");

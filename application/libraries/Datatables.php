@@ -444,6 +444,15 @@
         $cnt++;
       }
 
+      /*if($this->is_appointment && !$this->is_export){
+        //
+        for($i=0; $i<count($aaData); $i++){
+          $_t_row = $aaData[$i];
+
+          $aaData[$i] = $_t_row;
+        }
+      }*/
+
       if($this->is_export){
         $cols =$this->ci->input->get('columns');
         $this->ci->auth->export($aaData,$cols,$this->export_type,$this->table);

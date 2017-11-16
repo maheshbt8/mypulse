@@ -292,61 +292,7 @@ class Doctors extends CI_Controller {
 
     public function getDTdoctors() {
         if ($this->auth->isLoggedIn()) {
-            /*
-                $this->load->library("tbl");
-                $table = "hms_doctors";
-                $primaryKey = "id";
-                $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
-                    $this->load->model("users_model");
-                    $temp = $this->users_model->getusersById($d);
-                    $name = $temp["first_name"]." ".$temp["last_name"];
-                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
-                }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
-                    
-                    $temp = $this->departments_model->getdepartmentsById($d);
-                    if(!isset($temp['branch_id']))
-                        return "-";
-
-                    $this->load->model("branches_model");
-                    $branch = $this->branches_model->getbranchesById($temp['branch_id']);
-                    if(!isset($branch['hospital_id']))
-                        return "-";                    
-
-                    $this->load->model("hospitals_model");
-                    $hospital = $this->hospitals_model->gethospitalsById($branch['hospital_id']);
-                    if(!isset($hospital['name']))
-                        return "-"; 
-
-                    return $hospital["name"];
-
-                }), array("db" => "department_id", "dt" => 2, "formatter" => function ($d, $row) {
-                    $this->load->model("departments_model");
-                    $temp = $this->departments_model->getdepartmentsById($d);
-                    if(!isset($temp['branch_id']))
-                        return "-";
-                    $this->load->model("branches_model");
-                    $branch = $this->branches_model->getbranchesById($temp['branch_id']);
-                    if(!isset($branch['branch_name']))
-                        return "-"; 
-
-                    return $branch["branch_name"];
-                }), array("db" => "department_id", "dt" => 3, "formatter" => function ($d, $row) {
-                    $temp = $this->departments_model->getdepartmentsById($d);
-                    if(!isset($temp['department_name']))
-                        return "-";
-                    return $temp["department_name"];
-                }),array("db" => "isActive", "dt" => 4, "formatter" => function ($d, $row) {
-                    return $this->auth->getActiveStatus($d);
-                }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                    $this->load->model("users_model");
-                    $temp = $this->users_model->getusersById($row['user_id']);
-                    $name = $temp["first_name"]." ".$temp["last_name"];
-
-                    return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button>
-                    <a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-name=\"$name\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button></span>";
-                }));
-            */
-            
+                        
             $hospital_id = $this->input->get('hid',null,null);
             $show  = $this->input->get('s',null,false);
             $cond = array("hms_doctors.isDeleted=0");
@@ -377,33 +323,6 @@ class Doctors extends CI_Controller {
                 $ids = implode(",", $ids);
                 $cond[] = "hms_doctors.department_id in (".$ids.")";
             }
-
-            /*
-                if($show){
-                    $this->tbl->setCheckboxColumn(false);
-                    $columns = array($columns[0],$columns[2],$columns[3],$columns[4]);
-                    $columns[0]["dt"] = 0;
-                    $columns[1]["dt"] = 1;
-                    $columns[2]['dt'] = 2;
-                    $columns[3]['dt'] = 3;
-
-                    if($this->auth->isReceptinest()){
-                        $columns[3] = array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                            return "<span class='equalDivParent'><a style='margin-right:5px' href=\"".site_url()."/doctors/availability/".$d."\"  class=\"\"  data-toggle=\"tooltip\" title=\"Availability\"><i class=\"glyphicon glyphicon-calendar\"></i></button></span>";
-                        });
-                    }
-                    if($this->auth->isNurse()){                        
-                        unset($columns[3]);
-                    }
-                    $columns[0]['formatter'] =  function ($d, $row) {
-                        $this->load->model("users_model");
-                        $temp = $this->users_model->getusersById($d);
-                        $name = $temp["first_name"]." ".$temp["last_name"];
-                        return $name;
-                    };
-                    $this->tbl->setIndexColumn(true);
-                }
-            */
 
             //New Library
             if($show && $this->auth->isReceptinest()){
@@ -512,75 +431,48 @@ class Doctors extends CI_Controller {
 	
 	public function getDTInPatient() {
         if ($this->auth->isLoggedIn() && ( $this->auth->isDoctor())) {
-            
-            $this->load->library("tbl");
-            $table = "hms_inpatient";
-            $primaryKey = "id";
-            $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $user = $this->users_model->getusersById($row['user_id']);
-                $name = "";
-                if(isset($user['first_name'])){
-                    $name = $user['first_name'];
-                }
-                if(isset($user['last_name'])){
-                    $name .= " ".$user['last_name'];
-                }     
-             return "<a href='".site_url()."/doctors/patientRecord/".$row['appointment_id']."' data-url='doctors/previewprescription/".$row['id']."' data-id='$row[id]' class='previewtem'>".$name."</a>";
-            }), array("db" => "join_date", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));                   
-            }), array("db" => "reason", "dt" => 2, "formatter" => function ($d, $row) {
-                return $d;                     
-            }), array("db" => "bed_id", "dt" => 3, "formatter" => function ($d, $row) {
-                $bed = $this->beds_model->getbedsById($d);
-                if(isset($bed['bed']))
-                    return $bedName = $bed['bed'];
-                else
-                    return "-";
-            }), array("db" => "status", "dt" => 4, "formatter" => function ($d, $row) {
-                $status = $this->auth->getInpatientStatus($d);
-                return $status;                     
-            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                $bed = $this->beds_model->getbedsById($row['bed_id']);
-                $bedName = "";
-                if(isset($bed['bed']))
-                    $bedName = $bed['bed'];
-                $jdate = ($row['join_date'] == "" || $row['join_date'] == null) ? "-" : date("d-M-Y",strtotime($row['join_date']));
-                $status = addslashes($this->auth->getInpatientStatus($row['status'],true));
-                $reason = ($row['reason'] == "" || $row['reason'] == null) ? "-" : $row['reason'];
-                $doc_id = $row['doctor_id'];
-                $bed_id = $row['bed_id'];  
-                $user_id = $row['user_id'];    
-				
-                return "<a href=\"javascript:void()\" class=\"editinpatient\" data-bname='".$bedName."' data-id=\"$d\" data-bed_id=\"$bed_id\"  data-userid=\"$user_id\" data-docid=\"$doc_id\" data-toggle=\"tooltip\" title=\"Edit\"><i class=\"glyphicon glyphicon-pencil\"></i></a> &nbsp <a href=\"#\" id=\"Patient_id\" class=\"historyinpatient\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-bno='$bedName' data-jdate='$jdate' data-status='$status' data-reason='$reason' data-toggle=\"tooltip\" title=\"Inpatient\"><i class=\"fa fa-eye\"></i></a>";
-            }));
-
+  
             $st = isset($_GET['st']) ? $_GET['st']!="" ? intval($_GET['st']) : null : null;
 			$join_sdate = isset($_GET['j_sd']) ? $_GET['j_sd'] != "" ? date("Y-m-d",strtotime($_GET['j_sd'])) : null : null;
             $join_edate = isset($_GET['j_ed']) ? $_GET['j_ed'] != "" ? date("Y-m-d",strtotime($_GET['j_ed'])) : null : null;
             $left_sdate = isset($_GET['l_sd']) ? $_GET['l_sd'] != "" ? date("Y-m-d",strtotime($_GET['l_sd'])) : null : null;
             $left_edate = isset($_GET['l_ed']) ? $_GET['l_ed'] != "" ? date("Y-m-d",strtotime($_GET['l_ed'])) : null : null;
-
+            $cond = array("hms_inpatient.isDeleted = 0");
+            
             if($st !== null){
-                $cond[] = "status=$st";
+                $cond[] = "hms_inpatient.status=$st";
             }
 
             if($join_sdate != null && $join_edate != null){
-                $cond[] = "DATE(join_date) between '$join_sdate' and '$join_edate'";
+                $cond[] = "DATE(hms_inpatient.join_date) between '$join_sdate' and '$join_edate'";
             }
 
             if($left_sdate != null && $left_edate != null){
-                $cond[] = "DATE(left_date) between '$left_sdate' and '$left_edate'";
+                $cond[] = "DATE(hms_inpatient.left_date) between '$left_sdate' and '$left_edate'";
             }
 
-            $doc_id = $this->auth->getDoctorId();   
-            $cond[] = 'doctor_id='.$doc_id;                                   
-            $cond[] = 'status in (0,1)';
-            $query =  $this->tbl->setTwID(implode(' AND ',$cond));            
-            $this->tbl->setIndexColumn(true);
-            $this->tbl->setCheckboxColumn(false);
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            //New Library
+            $this->datatables
+            ->showIndex(true)
+            ->from('hms_inpatient')
+            ->select('hms_inpatient.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.join_date as jdate, hms_inpatient.reason as reason, hms_beds.bed as bed, case when hms_inpatient.status=0 then "'.$this->lang->line('not_admitted').'" when hms_inpatient.status=1 then "'.$this->lang->line('admitted').'" when hms_inpatient.status=2 then "'.$this->lang->line('discharged').'" end as status, hms_inpatient.id as a_id, hms_inpatient.join_date as a_jd, hms_inpatient.user_id as a_uid, hms_inpatient.doctor_id as a_did, hms_inpatient.bed_id as a_bid', false)
+            ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')
+            ->join('hms_beds','hms_inpatient.bed_id = hms_beds.id','left')
+            ->add_column('edit','<a href="javascript:void()" class="editinpatient" data-bname="$1" data-id="$2" data-bed_id="$3"  data-userid="$4" data-docid="$5" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a> &nbsp <a href="#" id="Patient_$2" class="historyinpatient"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$2" data-bno="$1" data-jdate="$6" data-status="$7" data-reason="$8" data-toggle="tooltip" title="Inpatient"><i class="fa fa-eye"></i></a>','bed, a_id, a_bid, a_uid, a_did, a_jd, status, reason')
+            ->unset_column('a_id')
+            ->unset_column('a_did')
+            ->unset_column('a_uid')
+            ->unset_column('a_bid')
+            ->unset_column('a_jd');
+              
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
+
+        
         }
     }
 	

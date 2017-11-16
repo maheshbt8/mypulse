@@ -93,27 +93,6 @@ class Beds extends CI_Controller {
     }
     public function getDTbeds() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() )) {
-            /* 
-                $this->load->library("tbl");
-                $table = "hms_beds";
-                $primaryKey = "id";
-                $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
-                    $this->load->model("wards_model");
-                    $temp = $this->wards_model->getwardsById($d);
-                    return $temp['ward_name'];
-                }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
-                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-                }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
-                    if($d==0){
-                        //Return yes, It is occupied or not availabe.
-                        return "<span class='label label-danger'>Yes</span>";
-                    }else{
-                        return "<span class='label label-success'>No</span>";
-                    }
-                }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                    return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
-                }));
-            */
             
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
@@ -199,41 +178,11 @@ class Beds extends CI_Controller {
 
     public function getDTNursebeds() {
         if ($this->auth->isLoggedIn() ) {
-            $this->load->library("tbl");
-            $table = "hms_beds";
-            $primaryKey = "id";
-            $columns = array(array("db" => "ward_id", "dt" => 0, "formatter" => function ($d, $row) {
-                $this->load->model("wards_model");
-                $temp = $this->wards_model->getwardsById($d);
-                return $temp['ward_name'];
-            }), array("db" => "bed", "dt" => 1, "formatter" => function ($d, $row) {
-                return $d;
-                // return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-            }), array("db" => "isAvailable", "dt" => 2, "formatter" => function ($d, $row) {
-                if($d==0){
-                    //Return no, Is occupied?=no
-                    return "<span class='label label-success'>No</span>";
-                }else{
-                    return "<span class='label label-danger'>Yes</span>";
-                    
-                }
-            }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {                                
-                $temp = $this->inpatient_model->getinpatientBybedId($d);
-                if(is_array($temp)){
-                    $user_id = $temp['user_id'];                  
-                    $userdata = $this->users_model->getProfile($user_id);	
-                    $pname = $this->auth->getUName($userdata);
-					//return $pname;
-					return "<a href='".site_url()."nurse/inpatient?sip=1&pid=".$temp['id']."'>$pname</a>";
-                }else{
-                    return "-";
-                }
-            }));
 
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
             $did = isset($_GET['did']) ? $_GET['did']!="" ? intval($_GET['did']) : null : null;
-            $cond = array();
+            $cond = array("hms_beds.isDeleted = 0");
 
             if($hid == "all")
                 $hid = null;
@@ -246,7 +195,7 @@ class Beds extends CI_Controller {
                     $wids[] = -1;
                 }
                 $ids = implode(",", $wids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else if($bid == "all"){
                 $bids = $this->branches_model->getBracheIds($hid);
                 $ids = $this->wards_model->getWardIdsFromBranch($bids);
@@ -256,7 +205,7 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else if($bid != null){
                 $ids = $this->wards_model->getWardIdsFromBranch($bid);
                 if(count($ids) == 0){
@@ -265,7 +214,7 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else if($hid!=null){
                 $ids = $this->wards_model->getWardIdsFromHospital($hid);
                 if(count($ids) == 0){
@@ -274,7 +223,7 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }else{
                 $hids = $this->hospitals_model->getHospicalIds();
                 $ids = $this->wards_model->getWardIdsFromHospital($hids);
@@ -284,16 +233,28 @@ class Beds extends CI_Controller {
                     $ids[] = -1;
                 }
                 $ids = implode(",",$ids);
-                $cond[] = "ward_id in (".$ids.")";
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
             }
 
-            $show = $this->input->get("s",null,false);         
-                $this->tbl->setCheckboxColumn(false);                
-                $this->tbl->setIndexColumn(true);
-            $this->tbl->setTwID(implode(" AND ",$cond));
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            //New Library
+            $this->load->library('datatables');		
+            $this->datatables
+                ->showIndex(true)
+                ->from('hms_beds')
+                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.id as pid',false)
+                ->join('hms_wards','hms_beds.ward_id = hms_wards.id','left')
+                ->join('hms_inpatient','hms_beds.id = hms_inpatient.bed_id','left')
+                ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')
+                ->edit_column('pname','<a href="'.site_url().'nurse/inpatient?sip=1&pid=$1">$2</a>','pid, pname');
+            
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+
+            //Call new library for output
+            echo $this->datatables->generate('json');
+
         }
     }
 

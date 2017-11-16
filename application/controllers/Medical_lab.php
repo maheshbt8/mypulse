@@ -178,106 +178,78 @@ class Medical_lab extends CI_Controller {
 
     public function getDTreports(){
         if ($this->auth->isLoggedIn()) {
-            $this->load->library("tbl");
-            $table = "hms_medical_report";
-            $primaryKey = "id";
-            $columns = array(array("db" => "title", "dt" => 0, "formatter" => function ($d, $row) {
-                return "<a href='#' class='btnup' data-id='$row[id]' data-toggle='modal' data-target='#uploadMR'>$d</a>";
-            }), array("db" => "description", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "doctor_id", "dt" => 2, "formatter" => function ($d, $row) {
-                $uid = $this->doctors_model->getMyUserId($d);
-                $data = $this->users_model->getProfile($uid);
-                return $this->auth->getUName($data);
-            }), array("db" => "patient_id", "dt" => 3, "formatter" => function ($d, $row) {
-                $data = $this->users_model->getProfile($d);
-                return $this->auth->getUName($data);
-            }), array("db" => "status", "dt" => 4, "formatter" => function ($d, $row) {
-                if($d=="0"){
-                    return '<span class="label label-info">Pending</span>';
-                }else{
-                    return '<span class="label label-success">Completed</span>';
-                }
-            }));
-            $cond[] = "isDeleted=0";
-            $cond[] = "medical_lab_id=".$this->auth->getMyLabId();
-			
+          
+            $cond = array("hms_medical_report.isDeleted=0");
+            $cond[] = "hms_medical_report.medical_lab_id=".$this->auth->getMyLabId();
 			$status = isset($_GET['s']) ? $_GET['s'] : false;
-			
 			if($status !== false && $status != ""){
-				$cond[] = "status=$status";
-			}
-			
-            $this->tbl->setCheckboxColumn(false);
-            $this->tbl->setIndexColumn(false);
-            $this->tbl->setTwID(implode(' AND ',$cond));
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+				$cond[] = "hms_medical_report.status=$status";
+            }
+            
+            //New Library
+            $this->datatables
+            ->from('hms_medical_report')
+            ->select('hms_medical_report.title as title, hms_medical_report.description as description, CONCAT(docusers.first_name," ",docusers.last_name) as docname, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, case when hms_medical_report.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_medical_report.status=1 then "'.$this->lang->line('labels')['completed'].'" end as status, hms_medical_report.id as re_id', false)
+            ->join('hms_users','hms_medical_report.patient_id = hms_users.id','left')
+            ->join('hms_doctors','hms_medical_report.doctor_id = hms_doctors.id','left')
+            ->join('hms_users as docusers','hms_doctors.user_id = docusers.id','left')
+            ->edit_column('title', '<a href="#" class="btnup" data-id="$1" data-toggle="modal" data-target="#uploadMR">$2</a>', 're_id, title')
+            ->unset_column('re_id');
+            
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
         }
     }
     
     public function getDTmedical_lab() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
-            $this->load->library("tbl");
-            $table = "hms_medical_lab";
-            $primaryKey = "id";
-            $columns = array(array("db" => "name", "dt" => 0, "formatter" => function ($d, $row) {
-                return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$d</a>";
-            }), array("db" => "owner_name", "dt" => 1, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "owner_contact_number", "dt" => 2, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : $d;
-            }), array("db" => "branch_id", "dt" => 3, "formatter" => function ($d, $row) {
-                $temp = $this->branches_model->getbranchesById($d);
-                if(!isset($temp['hospital_id']))
-                    return "-";
-                $hospital = $this->hospitals_model->gethospitalsById($temp['hospital_id']);
-                if(!isset($hospital['name']))
-                    return "-";
-                return $hospital["name"];
-            }), array("db" => "branch_id", "dt" => 4, "formatter" => function ($d, $row) {
-                $temp = $this->branches_model->getbranchesById($d);
-                if(!isset($temp['branch_name']))
-                    return "-";
-                return $temp["branch_name"];
-            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
-            }));
-
+            
             $hospital_id = $this->input->get('hid',null,null);
             $show  = $this->input->get('s',null,false);
-            $cond = array("isDeleted=0");
+            $cond = array("hms_medical_lab.isDeleted=0");
+
             if($this->auth->isHospitalAdmin()){
                 $ids = $this->auth->getBranchIds();
                 $ids = implode(",", $ids);
-                $cond[] = "branch_id in (".$ids.")";
+                $cond[] = "hms_medical_lab.branch_id in (".$ids.")";
             }else if($hospital_id!=null){
                 $ids = $this->branches_model->getBracheIds($hospital_id);
                 if(count($ids) == 0){
                     $ids[] = -1;
                 }
                 $ids = implode(",", $ids);
-                $cond[] = "branch_id in (".$ids.")";
+                $cond[] = "hms_medical_lab.branch_id in (".$ids.")";
             }
             
-            if($show){
-                $this->tbl->setCheckboxColumn(false);
-                $columns = array($columns[0],$columns[1],$columns[2],$columns[4]);
-                $columns[0]["dt"] = 0;
-                $columns[1]["dt"] = 1;
-                $columns[2]['dt'] = 2;
-                $columns[3]['dt'] = 3;
-                $columns[0]['formatter'] =  function ($d, $row) {
-                    return $d;
-                };
-                $this->tbl->setIndexColumn(true);
-            }
-            $this->tbl->setTwID(implode(' AND ',$cond));
+            //New library
+            $this->datatables
+            ->showCheckbox(true)
+            ->from('hms_medical_lab')
+            ->select('hms_medical_lab.id as mainid, hms_medical_lab.name as mlname, hms_medical_lab.owner_name as owname, hms_medical_lab.owner_contact_number as contact, hms_hospitals.name as hname, hms_branches.branch_name as bname', false)
+            ->join('hms_branches','hms_medical_lab.branch_id = hms_branches.id', 'left')
+            ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left');
+        
 
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            if($show){
+                $this->datatables->unset_column('hname');
+                $this->datatables
+                    ->showIndex(true);            
+            }else{
+                $this->datatables
+                    ->edit_column('mlname','<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'hms_medical_lab.id, mlname')
+                    ->add_column('edit','<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'hms_medical_lab.id');
+            }
+
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
         }
     }
 	
