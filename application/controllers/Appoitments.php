@@ -626,48 +626,6 @@ class Appoitments extends CI_Controller {
 
     public function getDTTodayspappoitments(){
         if ($this->auth->isLoggedIn()) {
-            /*
-            $this->load->library("tbl");
-            $table = "hms_appoitments";
-            $primaryKey = "id";
-
-            $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
-                if($row['status'] == 3){
-                    $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
-                    return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
-                }else if($row['status'] == 4){
-                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-                }else{
-                    //return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-                    return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".$d."</a>";
-                }
-            }), array("db" => "user_id", "dt" => 1, "formatter" => function ($d, $row) {
-                $temp = $this->users_model->getusersById($d);
-                $name = $temp["first_name"]." ".$temp["last_name"];
-                return $name;
-            }), array("db" => "reason", "dt" => 2, "formatter" => function ($d, $row) {
-                return $d;
-            }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                $a = $this->appoitments_model->getappoitmentsById($d);
-                return date('h:i A',strtotime($a['appoitment_time_start'])).' to '.date('h:i A',strtotime($a['appoitment_time_end']));
-            }),array("db" => "status", "dt" => 4, "formatter" => function ($d, $row) {
-                return $this->auth->getAppoitmentStatus($d);
-            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                if($row['status'] == 3 || $row['status']=='4'){
-                    return "-";
-                    //return "<a href='".site_url()."/doctors/patientRecord/".$row['id']."' >".."</a>";
-                }
-                $html = "<span style='display:inline-flex'>";
-                if($row['status'] != 2){
-                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
-                }
-                if($row['status'] !=3){
-                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
-                }
-                $html .=  "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
-                $html .= "</span>";
-                return $html;
-            })); */
 
             $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
             $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
@@ -713,19 +671,18 @@ class Appoitments extends CI_Controller {
                 $cond[] = "hms_appoitments.department_id in (".$_dids.")";
             }
 
+            $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
+
+            $cond[] = "DATE(hms_appoitments.appoitment_date)='".date("Y-m-d")."'";
+            $cond[] = "hms_appoitments.doctor_id = ".$this->auth->getDoctorId();
+
             //New Library
+            //
             $this->datatables
                 ->showIndex(true)
                 ->from('hms_appoitments')
                 ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_appoitments.reason as reason, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
                 ->join('hms_users','hms_appoitments.user_id = hms_users.id','left');
-
-            $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
-
-                $cond[] = "DATE(hms_appoitments.appoitment_date)='".date("Y-m-d")."'";
-                $cond[] = "hms_appoitments.doctor_id = ".$this->auth->getDoctorId();
-
-                
 
 
             //Set condition to new library
@@ -735,38 +692,7 @@ class Appoitments extends CI_Controller {
             //Call new library for output
             echo $this->datatables->generate('json');
 
-            /*
-            $columns[6] = array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
-                if($row['status'] == 3 || $row['status']=='4'){
-                    return "-";
-                }
-                $html = "<span style='display:inline-flex'>";
-                if($row['status'] != 2){
-                    $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
-                }
-                if($row['status'] !=3){
-                    $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
-                }
-                $html .= "</span>";
-                return $html;
-            }); */
-              
             
-            /*
-            if($show){
-                $this->tbl->setCheckboxColumn(false);
-                $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
-                $columns[0]['formatter'] = function ($d, $row) {
-                    return $d;
-                };
-                
-                $this->tbl->setIndexColumn(true);
-            }
-            $this->tbl->setTwID(implode(' AND ',$cond));
-
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns)); */
         }    
     }
 
