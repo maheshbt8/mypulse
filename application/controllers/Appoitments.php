@@ -158,53 +158,6 @@ class Appoitments extends CI_Controller {
 
     public function getDTappoitments() {
         if ($this->auth->isLoggedIn()) {
-            $this->load->library("tbl");
-            $table = "hms_appoitments";
-            $primaryKey = "id";
-            $columns = array(array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
-                
-				if($row['status'] == 2){
-					return $d;
-				}
-                else if($row['status'] == 3){
-                    $prescription_id = $this->doctors_model->getPrescriptionIdFromApptid($row['id']);
-                    return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$row[id]' class='previewtem'>".$d."</a>";
-                }else{
-                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
-                }
-            }), array("db" => "department_id", "dt" => 1, "formatter" => function ($d, $row) {
-                $dep = $this->departments_model->getdepartmentsById($d);
-                $hos = $this->hospitals_model->gethospitalsById($dep['hospital_id']);
-                $name = "";
-                if(isset($hos['name']))
-                    $name = $hos['name'];
-                if(isset($dep['branch_name'])){
-                    $name .= " - ".$dep['branch_name'];
-                }
-                return $name;
-            }), array("db" => "doctor_id", "dt" => 2, "formatter" => function ($d, $row) {
-                $dep = $this->departments_model->getdepartmentsById($d);
-                return isset($dep['department_name']) ? $dep['department_name'] : "";
-            }),array("db" => "doctor_id", "dt" => 3, "formatter" => function ($d, $row) {
-                $d = $this->auth->getUserIdFromRoleId($d,$this->auth->getDoctorRoleType());
-                $temp = $this->users_model->getusersById($d);
-                $name = $temp["first_name"]." ".$temp["last_name"];
-                return $name;
-            }), array("db" => "appoitment_date", "dt" => 4, "formatter" => function ($d, $row) {
-                return ($d == "" || $d == null) ? "-" : date("d-M-Y",strtotime($d));
-            }), array("db" => "id", "dt" => 5, "formatter" => function ($d, $row) {
-                $a = $this->appoitments_model->getappoitmentsById($d);
-                return date('h:i A',strtotime($a['appoitment_time_start'])).' to '.date('h:i A',strtotime($a['appoitment_time_end']));
-            }), array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
-                return $this->auth->getAppoitmentStatus($d);
-            }), array("db" => "id", "dt" => 7, "formatter" => function ($d, $row) {
-                if($row['status']==3 || $row['status']==2)
-                    return "";
-                if($row['status']!=4)
-                    return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
-                return "";
-            }));
-
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
             $sdate = isset($_GET['sd']) ? $_GET['sd'] != "" ? date("Y-m-d",strtotime($_GET['sd'])) : null : null;
@@ -212,73 +165,49 @@ class Appoitments extends CI_Controller {
 			
             if($hid == "all")
                 $hid = null;
+
             $show  = $this->input->get('s',null,false);
-            $cond = array("isDeleted=0");
+            $cond = array("hms_appoitments.isDeleted=0");
 
             if($this->auth->isPatient()){
                 $uid = $this->auth->getUserid();
-                $cond[] = 'user_id='.$uid;
-            }
-
-            if($show){
-                $this->tbl->setCheckboxColumn(false);
-                $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
-                $columns[0]['formatter'] = function ($d, $row) {
-                    return $d;
-                };
-                
-                $this->tbl->setIndexColumn(true);
+                $cond[] = 'hms_appoitments.user_id='.$uid;
             }
 
             $up = isset($_GET['up']) ? $_GET['up'] : false;
             if($up){
-                $this->tbl->setIndexColumn(true);
-                $this->tbl->setCheckboxColumn(false);
-                $cond[] = "appoitment_date >= '".date("Y-m-d")."'";
-                $cond[] = "status = 0";
-                unset($columns[7]);
-                $columns[0] = array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
-                    return $d;
-                });
+                $cond[] = "hms_appoitments.appoitment_date >= '".date("Y-m-d")."'";
+                $cond[] = "hms_appoitments.status = 0";
             }else if($sdate != null && $edate != null){
-                $cond[] = "appoitment_date between '$sdate' and '$edate'";
+                $cond[] = "hms_appoitments.appoitment_date between '$sdate' and '$edate'";
+            }   
+
+            //New Library
+            $this->datatables
+            ->showCheckbox(true)
+            ->from('hms_appoitments')
+            ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_hospitals.name," - ",hms_branches.branch_name) as h_b_name, hms_departments.department_name as dname, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
+            ->join('hms_departments','hms_appoitments.department_id = hms_departments.id','left')
+            ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+            ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
+            ->join('hms_doctors','hms_appoitments.doctor_id = hms_doctors.id','left')
+            ->join('hms_users','hms_doctors.user_id = hms_users.id','left');
+
+            
+            if($show || $up){
+                //New Library
+                $this->datatables
+                ->showIndex(true)
+                ->unset_column('appt_id');
             }
 
-            $isExport = isset($_GET['mpexp']) ? intval($_GET['mpexp']) : false;
-            if($isExport === 1){
-                $this->tbl->setIndexColumn(false);
-                $this->tbl->setCheckboxColumn(false);
-
-                $columns[0] = array("db" => "appoitment_number", "dt" => 0, "formatter" => function ($d, $row) {
-                    return $d;
-                });
-                $columns[6] = array("db" => "status", "dt" => 6, "formatter" => function ($d, $row) {
-                    return $this->auth->getAppoitmentStatus($d,true);
-                });
-                unset($columns[7]);
+             //Set condition to new library
+             foreach($cond as $con){
+                $this->datatables->where($con);
             }
-
-            $this->tbl->setTwID(implode(' AND ',$cond));
-
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            $data = $this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns);
-
-            if($isExport ===1) {
-                $ext = isset($_GET['mpexpt']) ? $_GET['mpexpt'] : "xlsx";
-                $clms = array(
-                    array("name"=>"No.", "width"=> 10),
-                    array("name"=>$this->lang->line('tableHeaders')['hospital_branch'],"width"=> 40),
-                    array("name"=>$this->lang->line('tableHeaders')['department'],"width"=> 30),
-                    array("name"=>$this->lang->line('tableHeaders')['doctor'],"width"=> 30),
-                    array("name"=>$this->lang->line('tableHeaders')['appoitment_date'],"width"=> 30),
-                    array("name"=>$this->lang->line('tableHeaders')['appoitment_sloat'],"width"=> 30),
-                    array("name"=>$this->lang->line('tableHeaders')['status'], "width"=> 20)
-                );
-                $this->auth->export($data['data'],$clms,$ext,$table);
-            }else{
-                echo json_encode($data);
-            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
+            
         }
     }
 
