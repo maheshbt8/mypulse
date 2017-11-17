@@ -284,6 +284,7 @@ class Appoitments extends CI_Controller {
 
     public function getDTRespappoitments(){
         if ($this->auth->isLoggedIn()) {
+            /*
             $this->load->library("tbl");
             $table = "hms_appoitments";
             $primaryKey = "id";
@@ -338,7 +339,7 @@ class Appoitments extends CI_Controller {
                 }
                 $html .= "</span>";
                 return $html;
-            }));
+            })); */
             
             $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
             $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
@@ -355,7 +356,6 @@ class Appoitments extends CI_Controller {
                 $st = null;
             }
             
-
             $all_status = array(0,1,2,4);
             $status = array();
             if($st !== null){
@@ -369,46 +369,72 @@ class Appoitments extends CI_Controller {
             }  
 
             $show  = $this->input->get('s',null,false);
-            $cond = array("isDeleted=0");
+            $cond = array("hms_appoitments.isDeleted=0");
 
             if($sdate != null && $edate != null){
-                $cond[] = "appoitment_date between '$sdate' and '$edate'";
+                $cond[] = "hms_appoitments.appoitment_date between '$sdate' and '$edate'";
             }
             
             if(count($status) > 0){
-                $cond[] = "status in (".implode(",",$status).")";
+                $cond[] = "hms_appoitments.status in (".implode(",",$status).")";
             }else{
-                $cond[] = "status in (".implode(",",$all_status).")";
+                $cond[] = "hms_appoitments.status in (".implode(",",$all_status).")";
             }
 
             if($hid != null){
                 $_dids = $this->departments_model->getDepartmentIdsFromHospital($hid);
                 if(count($_dids) == 0){ $_dids[] = -1;}
                 $_dids = implode(",",$_dids);
-                $cond[] = "department_id in (".$_dids.")";
+                $cond[] = "hms_appoitments.department_id in (".$_dids.")";
             }
 
             if($did != null){
-                $cond[] = "doctor_id=$did";
+                $cond[] = "hms_appoitments.doctor_id=$did";
             }
             else if($this->auth->isReceptinest()){
                 $dids = $this->receptionist_model->getDoctorsIds();
                 if(count($dids) == 0){ $dids[] = -1;}
                 $dids = implode(",",$dids);
-                $cond[] = "doctor_id in (".$dids.")";
+                $cond[] = "hms_appoitments.doctor_id in (".$dids.")";
             }else if($this->auth->isHospitalAdmin()){
                 $dids = $this->doctors_model->getDoctorsIdsByHospital();
                 if(count($dids) == 0){ $dids[] = -1;}
                 $dids = implode(",",$dids);
-                $cond[] = "doctor_id in (".$dids.")";
+                $cond[] = "hms_appoitments.doctor_id in (".$dids.")";
             }
-			
+            //New Library
+            $this->datatables
+            ->showCheckbox(true)
+            ->from('hms_appoitments')
+            ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, CONCAT(hms_hospitals.name," - ",hms_branches.branch_name," - ",hms_departments.department_name) as h_b_d_name, CONCAT(docusers.first_name," ",docusers.last_name) as docname, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
+            ->join('hms_users','hms_appoitments.user_id = hms_users.id','left')
+            ->join('hms_departments','hms_appoitments.department_id = hms_departments.id','left')
+            ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+            ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
+            ->join('hms_doctors','hms_appoitments.doctor_id = hms_doctors.id','left')
+            ->join('hms_users as docusers','hms_doctors.user_id = docusers.id','left');
+            
+
 			$isToday = isset($_GET['tod']) ? intval($_GET['tod']) : false;
 			if($isToday && $isToday === 1){
 				date_default_timezone_get("Asia/Kolkata");
-				$cond[] = "appoitment_date='".date("Y-m-d")."'";
-			}
+                $cond[] = "hms_appoitments.appoitment_date='".date("Y-m-d")."'";
+                
+                //New library
+                $this->datatables
+                    ->unset_column('apt_date')
+                    ->showCheckbox(true);  
 
+            }
+            
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
+
+            /*
             if($show){
                 $this->tbl->setCheckboxColumn(false);
                 $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
@@ -422,7 +448,7 @@ class Appoitments extends CI_Controller {
 
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns)); */
         }    
     }
 
@@ -600,6 +626,7 @@ class Appoitments extends CI_Controller {
 
     public function getDTTodayspappoitments(){
         if ($this->auth->isLoggedIn()) {
+            /*
             $this->load->library("tbl");
             $table = "hms_appoitments";
             $primaryKey = "id";
@@ -640,7 +667,7 @@ class Appoitments extends CI_Controller {
                 $html .=  "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
                 $html .= "</span>";
                 return $html;
-            }));
+            })); */
 
             $st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
             $sc = isset($_GET['sc']) ? intval($_GET['sc']) : 0;
@@ -667,31 +694,48 @@ class Appoitments extends CI_Controller {
             }    
 
             $show  = $this->input->get('s',null,false);
-            $cond = array("isDeleted=0");
+            $cond = array("hms_appoitments.isDeleted=0");
 
 			if($sdate != null && $edate != null){
-                $cond[] = "appoitment_date between '$sdate' and '$edate'";
+                $cond[] = "hms_appoitments.appoitment_date between '$sdate' and '$edate'";
             }
         
             if(count($status) > 0){
-                $cond[] = "status in (".implode(",",$status).")";
+                $cond[] = "hms_appoitments.status in (".implode(",",$status).")";
             }else{
-                $cond[] = "status in (".implode(",",$all_status).")";
+                $cond[] = "hms_appoitments.status in (".implode(",",$all_status).")";
             }
 
             if($hid != null){
                 $_dids = $this->departments_model->getDepartmentIdsFromHospital($hid);
                 if(count($_dids) == 0){ $_dids[] = -1;}
                 $_dids = implode(",",$_dids);
-                $cond[] = "department_id in (".$_dids.")";
+                $cond[] = "hms_appoitments.department_id in (".$_dids.")";
             }
 
+            //New Library
+            $this->datatables
+                ->showIndex(true)
+                ->from('hms_appoitments')
+                ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_appoitments.reason as reason, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
+                ->join('hms_users','hms_appoitments.user_id = hms_users.id','left');
+
             $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
-            $this->tbl->setCheckboxColumn(false);
-            $this->tbl->setIndexColumn(true);
-            $cond[] = "DATE(appoitment_date)='".date("Y-m-d")."'";
-            
-            
+
+                $cond[] = "DATE(hms_appoitments.appoitment_date)='".date("Y-m-d")."'";
+                $cond[] = "hms_appoitments.doctor_id = ".$this->auth->getDoctorId();
+
+                
+
+
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
+
+            /*
             $columns[6] = array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
                 if($row['status'] == 3 || $row['status']=='4'){
                     return "-";
@@ -705,10 +749,10 @@ class Appoitments extends CI_Controller {
                 }
                 $html .= "</span>";
                 return $html;
-            });
+            }); */
               
-            $cond[] = "doctor_id = ".$this->auth->getDoctorId();
             
+            /*
             if($show){
                 $this->tbl->setCheckboxColumn(false);
                 $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
@@ -722,7 +766,7 @@ class Appoitments extends CI_Controller {
 
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns)); */
         }    
     }
 

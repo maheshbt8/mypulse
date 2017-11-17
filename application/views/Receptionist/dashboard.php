@@ -107,7 +107,7 @@
                                     <th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
                                     <th><?php echo $this->lang->line('tableHeaders')['hospital_branch_department'];?></th>
                                     <th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
-                                    <th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+                                    <!--<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>-->
                                     <th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
                                     <th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
                                     <th width="20px">#</th>
