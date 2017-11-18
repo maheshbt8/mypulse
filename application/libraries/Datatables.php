@@ -410,22 +410,29 @@
         $iTotal = $this->get_total_results();
         $iFilteredTotal = $this->get_total_results(TRUE);
       }
-      $cnt = 1;
+      $cnt = isset($_GET['start']) ? intval($_GET['start']) + 1 : 1;
       foreach($rResult->result_array() as $row_key => $row_val)
       {    
+        //Change First columns as per requirement to show 1,2,3.. index or checkboxes.
         $mainid = isset($row_val['mainid']) ? $row_val['mainid'] : false;
-
         if($this->show_index && $mainid){
           $row_val['mainid'] = $cnt;
         }else if($this->show_checkbox && $mainid && !$this->is_export){
           $row_val['mainid'] = '<input type="checkbox" class="multiselect chk" data-id="'.$mainid.'" />';
         }
 
+        //Only for Appointment Data. if appt_action_id is present set relevant action for that.
+        $appt_action_id = isset($row_val['appt_action_id']) ? $row_val['appt_action_id'] : false;
+        if($appt_action_id){
+          $appt_action_status = isset($row_val['appt_action_status']) ? $row_val['appt_action_status'] : false;
+          $row_val['appt_action_id'] = $this->ci->auth->getAppointmentActionColumn($appt_action_id,$appt_action_status);
+        }
+
         $aaData[$row_key] =  ($this->check_cType())? $row_val : array_values($row_val);
 
         if(!$this->is_export){
           foreach($this->add_columns as $field => $val)
-          if($this->check_cType())
+            if($this->check_cType())
               $aaData[$row_key][$field] = $this->exec_replace($val, $aaData[$row_key]);
             else
               $aaData[$row_key][] = $this->exec_replace($val, $aaData[$row_key]);
@@ -435,6 +442,7 @@
             foreach($modval as $val)
               $aaData[$row_key][($this->check_cType())? $modkey : array_search($modkey, $this->columns)] = $this->exec_replace($val, $aaData[$row_key]);
         }
+
         $aaData[$row_key] = array_diff_key($aaData[$row_key], ($this->check_cType())? $this->unset_columns : array_intersect($this->columns, $this->unset_columns));
 
         if(!$this->check_cType())
@@ -454,7 +462,7 @@
       }*/
 
       if($this->is_export){
-        $cols =$this->ci->input->get('columns');
+        $cols =$this->ci->input->get('columns');      
         $this->ci->auth->export($aaData,$cols,$this->export_type,$this->table);
       }
       else{
