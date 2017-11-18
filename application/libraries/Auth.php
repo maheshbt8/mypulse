@@ -360,6 +360,14 @@ class Auth {
         return false;
     }
 
+    public function getAppointmentActionColumn($id,$status){
+        if($status === false){
+            return "-";
+        }   
+
+        return $this->isSuperAdmin();
+    } 
+
     public function getAppoitmentStatus($status=0,$onlytax = false){
         
         $status = intval($status);
@@ -572,6 +580,14 @@ class Auth {
     public function export($data,$columns,$type,$fname){
         
         $cnames = array();
+        $cnt_t = count($columns) - 1;
+        $last_columns = isset($columns[$cnt_t]) ? $columns[$cnt_t] : array();
+        if(isset($last_columns['name']) 
+            && (strtolower($last_columns['name']) == "action" || 
+                $last_columns['name'] == "#")
+            ){
+            unset($columns[$cnt_t]);
+        }
         foreach($columns as $col){
             $_n = "";
             if(isset($col['db']))

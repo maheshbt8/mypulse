@@ -186,19 +186,20 @@ class Appoitments extends CI_Controller {
             $this->datatables
             ->showCheckbox(true)
             ->from('hms_appoitments')
-            ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_hospitals.name," - ",hms_branches.branch_name) as h_b_name, hms_departments.department_name as dname, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
+            ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_hospitals.name," - ",hms_branches.branch_name) as h_b_name, hms_departments.department_name as dname, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_action_id, hms_appoitments.status as appt_action_status', false)
             ->join('hms_departments','hms_appoitments.department_id = hms_departments.id','left')
             ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
             ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
             ->join('hms_doctors','hms_appoitments.doctor_id = hms_doctors.id','left')
-            ->join('hms_users','hms_doctors.user_id = hms_users.id','left');
+            ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
+            ->unset_column('appt_action_status');
 
             
             if($show || $up){
                 //New Library
                 $this->datatables
                 ->showIndex(true)
-                ->unset_column('appt_id');
+                ->unset_column('appt_action_id');
             }
 
              //Set condition to new library
@@ -335,13 +336,14 @@ class Appoitments extends CI_Controller {
             $this->datatables
             ->showCheckbox(true)
             ->from('hms_appoitments')
-            ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, CONCAT(hms_hospitals.name," - ",hms_branches.branch_name," - ",hms_departments.department_name) as h_b_d_name, CONCAT(docusers.first_name," ",docusers.last_name) as docname, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
+            ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, CONCAT(hms_hospitals.name," - ",hms_branches.branch_name," - ",hms_departments.department_name) as h_b_d_name, CONCAT(docusers.first_name," ",docusers.last_name) as docname, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_action_id, hms_appoitments.status as appt_action_status', false)
             ->join('hms_users','hms_appoitments.user_id = hms_users.id','left')
             ->join('hms_departments','hms_appoitments.department_id = hms_departments.id','left')
             ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
             ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
             ->join('hms_doctors','hms_appoitments.doctor_id = hms_doctors.id','left')
-            ->join('hms_users as docusers','hms_doctors.user_id = docusers.id','left');
+            ->join('hms_users as docusers','hms_doctors.user_id = docusers.id','left')
+            ->unset_column('appt_action_status');
             
 
 			$isToday = isset($_GET['tod']) ? intval($_GET['tod']) : false;
@@ -492,8 +494,9 @@ class Appoitments extends CI_Controller {
             $this->datatables
                 ->showCheckbox(true)
                 ->from('hms_appoitments')
-                ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_appoitments.reason as reason, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
-                ->join('hms_users','hms_appoitments.user_id = hms_users.id','left');
+                ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_appoitments.reason as reason, hms_appoitments.appoitment_date as apt_date, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_action_id, hms_appoitments.status as appt_action_status', false)
+                ->join('hms_users','hms_appoitments.user_id = hms_users.id','left')
+                ->unset_column('appt_action_status');
                 
 
             $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
@@ -610,8 +613,9 @@ class Appoitments extends CI_Controller {
             $this->datatables
                 ->showIndex(true)
                 ->from('hms_appoitments')
-                ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_appoitments.reason as reason, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_id', false)
-                ->join('hms_users','hms_appoitments.user_id = hms_users.id','left');
+                ->select('hms_appoitments.id as mainid, hms_appoitments.appoitment_number as apt_no, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_appoitments.reason as reason, CONCAT(hms_appoitments.appoitment_time_start," to ",hms_appoitments.appoitment_time_end) as time_slot, case when hms_appoitments.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_appoitments.status=1 then "'.$this->lang->line('labels')['approved'].'" when hms_appoitments.status=2 then "'.$this->lang->line('labels')['rejected'].'" when hms_appoitments.status=3 then "'.$this->lang->line('labels')['closed'].'" when hms_appoitments.status=4 then "'.$this->lang->line('labels')['canceled'].'" end as status, hms_appoitments.id as appt_action_id, hms_appoitments.status as appt_action_status', false)
+                ->join('hms_users','hms_appoitments.user_id = hms_users.id','left')
+                ->unset_column('appt_action_status');
 
 
             //Set condition to new library

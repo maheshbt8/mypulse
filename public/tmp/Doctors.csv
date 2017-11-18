@@ -1,113 +1,113 @@
-Doctor,Hospital,Branch,Department,Status
-"Dr. Ravi Patel","Purus Corporation",WB,Dept-1,Active
-"Amit patel","Et Industries",KP,Provo,Inactive
-"Amit patel","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Inactive
-"Amit patel","Non Institute",Vienna,Chepstow,Inactive
-"Amit1 patel",-,-,-,Inactive
-"Amit1 patel","Phasellus At Augue Limited",Louisiana,Timkur,Inactive
-"Amit1 patel","Massa Integer Ltd","Ma opolskie",Hanret,Inactive
-"Amit1 patel","Non Nisi LLC",odzkie,Salles,Inactive
-"Susma Mehta","Purus Corporation",WB,Dept-1,Active
-"Susma Mehta","Non Nisi LLC",odzkie,Kilmarnock,Inactive
-"Susma Mehta","Quam Pellentesque Incorporated",Diy,"Serralunga Alba",Inactive
-"Susma Mehta","A Felis Associates",Goias,Limal,Inactive
-"Partik Sharma",-,-,-,Inactive
-"Partik Sharma","Neque Tellus Imperdiet Ltd",Ontario,Cawdor,Inactive
-" ",-,-,-,Inactive
-" ","Cursus Ltd",Connacht,Cap-de-la-Madeleine,Inactive
-" ","Nullam Lobortis Quam PC",Wie,Columbia,Inactive
-" ","Orci Ltd",X,Springfield,Inactive
-"Ramesh Lalo",-,-,-,Inactive
-"Ramesh Lalo","Eu Sem Pellentesque Company",CM,Langholm,Inactive
-"Ramesh Lalo","Orci Ltd",X,"Tione di Trento",Inactive
-"Ramesh Lalo","Ligula Aenean Euismod Consulting",Berlin,Prestatyn,Inactive
-"Mahesh Lal","Purus Corporation",WB,Dept-1,Inactive
-"Mahesh Lal","Ornare Lectus Incorporated",Veneto,Mahbubnagar,Inactive
-"Mahesh Lal","Vestibulum Ante Industries",LA,Cour-sur-Heure,Inactive
-"Mahesh Lal","Enim Corp.",Ogun,Aligarh,Inactive
-"Bell Meadows","Tincidunt Foundation",Wie,Mesoraca,Inactive
-"Bell Meadows","Amet Ornare Company",Gl,Thon,Inactive
-"Tyler Dickerson","A Felis Associates",Goias,Limal,Inactive
-"Tyler Dickerson","Magna Phasellus Industries",SP,Levis,Inactive
-"Tyler Dickerson","Non Nisi LLC",odzkie,Kilmarnock,Inactive
-"Tyler Dickerson","Tincidunt Foundation",Wie,Mesoraca,Inactive
-"Ayanna Howell","Ornare Lectus Incorporated",IV,Borsbeek,Inactive
-"Ayanna Howell","Pharetra Corporation",Istanbul,Omaha,Inactive
-"Portia Oconnor","Lorem Ac Consulting",Maranhao,Empedrado,Inactive
-"Edan Jordan","Cursus Ltd",Rivers,Luckenwalde,Inactive
-"Carla Irwin","Neque Tellus Imperdiet Ltd",Ontario,Cawdor,Inactive
-"Carla Irwin","Non Nisi LLC",odzkie,Salles,Inactive
-"Carla Irwin","Ac Mi Eleifend Industries",SA,Iquique,Inactive
-"Carla Irwin","Massa Integer Ltd","Ma opolskie",Hanret,Inactive
-"Miriam Atkins","Nullam Lobortis Quam PC",Wie,Columbia,Inactive
-"Miriam Atkins","Facilisis Non Inc.",WA,"Corroy ",Inactive
-"Miriam Atkins","Elit Pharetra Inc.",W,Emblem,Inactive
-"Miriam Atkins","Magna Phasellus Industries",SP,Salamanca,Inactive
-"Miriam Atkins","Vulputate Consulting",Toscana,Curico,Inactive
-"Miriam Atkins","Accumsan Laoreet Ltd",Imo,Pontarlier,Inactive
-"Barclay Watkins","Ligula Aenean Euismod Consulting",Berlin,Prestatyn,Inactive
-"Barclay Watkins","Enim Corp.",Ogun,Aligarh,Inactive
-"Barclay Watkins","Et Industries",Delta,"Dept-2 OF Br2",Inactive
-"Barclay Watkins","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Inactive
-"Libby Durham","Non Nisi LLC",odzkie,Baiso,Inactive
-"Libby Durham","Pharetra Corporation",Istanbul,Omaha,Inactive
-"Libby Durham","Non Nisi LLC",odzkie,Baiso,Inactive
-"Libby Durham","Metus Sit Corporation",Connecticut,Ilheus,Inactive
-"Leigh Molina","Orci Ltd",X,Springfield,Inactive
-"Leigh Molina","Amet Ornare Company",Gl,Thon,Inactive
-"Halla Booker","Massa Integer Ltd","Ma opolskie",Hanret,Inactive
-"Halla Booker","Et Industries",KP,Cheyenne,Inactive
-"Cody Mcclain","Imperdiet Ullamcorper Duis PC",VA,"Biaa Podlaska",Inactive
-"Cody Mcclain","Faucibus Lectus A Foundation",Emilia-Romagna,Evansville,Inactive
-"Cody Mcclain","Imperdiet Ullamcorper Duis PC",VA,"Biaa Podlaska",Inactive
-"Cody Mcclain","Tincidunt Orci Ltd",BA,Jupille-sur-Meuse,Inactive
-"Cody Mcclain","Pharetra Corporation",Istanbul,Omaha,Inactive
-"Cody Mcclain","Non Nisi LLC",odzkie,Kilmarnock,Inactive
-"Maxwell Morse","Nullam Lobortis Quam PC","Vastra Gotalands lan",Goksun,Inactive
-"Maxwell Morse","Vulputate Consulting",Toscana,Curico,Inactive
-"Maxwell Morse","Sagittis Corporation",Wie,Gattatico,Inactive
-"Abraham Pena","Ornare Lectus Incorporated",Veneto,Vergemoli,Inactive
-"Abraham Pena","Et Industries",KP,Provo,Inactive
-"Abraham Pena","Cursus Ltd",Ontario,Kobbegem,Inactive
-"Abraham Pena","Et Industries",Delta,Itterbeek,Inactive
-"Belle Herring","Non Nisi LLC",odzkie,Kilmarnock,Inactive
-"Belle Herring","Vestibulum Ante Industries",LA,Cour-sur-Heure,Inactive
-"Belle Herring","Amet Ornare Company",Gl,Milazzo,Inactive
-"Belle Herring","Gravida Sit Amet LLP",PR,"Little Rock",Inactive
-"Belle Herring","Ullamcorper Velit In Limited","Castilla y Leon","Port Harcourt",Inactive
-"Sebastian Rose","Tincidunt Orci Ltd",BA,Jupille-sur-Meuse,Inactive
-"Sebastian Rose","Lorem Ac Consulting",NE,Morkhoven,Inactive
-"Sebastian Rose","In Tincidunt Corporation",Vienna,Sambreville,Inactive
-"Quamar Moody","Vestibulum Ante Industries",LA,Zaanstad,Inactive
-"Quamar Moody","Et Industries",KP,Provo,Inactive
-"Quamar Moody","Tincidunt Foundation",Wie,Mesoraca,Inactive
-"Quamar Moody","Lorem Ac Consulting","New South Wales",Albacete,Inactive
-"Courtney Morton","Ornare Lectus Incorporated",Veneto,Mahbubnagar,Inactive
-"Courtney Morton","Fames Company",Lancashire,Gibsons,Inactive
-"Courtney Morton","Enim Corp.",Ogun,Aligarh,Inactive
-"Courtney Morton","Et Industries",Delta,"Dept-2 OF Br2",Inactive
-"Courtney Morton","Elit Pharetra Inc.",W,Emblem,Inactive
-"Courtney Morton","Vulputate Consulting",Toscana,Kester,Inactive
-"Courtney Morton","Nibh Phasellus Limited",Odisha,Calbuco,Inactive
-"Laurel Juarez","Cursus Ltd",Rivers,Luckenwalde,Inactive
-"Laurel Juarez","Vulputate Consulting",Toscana,Kester,Inactive
-"Laurel Juarez","Vulputate Consulting",Toscana,Kester,Inactive
-"Laurel Juarez","In Tincidunt Corporation",Vienna,Sambreville,Inactive
-"Laurel Juarez","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Inactive
-"Laurel Juarez","Lorem Ac Consulting","New South Wales",Albacete,Inactive
-"Laurel Juarez","Neque Tellus Imperdiet Ltd",Ontario,Cawdor,Inactive
-"Amela Humphrey","Accumsan Laoreet Ltd",Imo,Pontarlier,Inactive
-"Amela Humphrey","Orci Ltd",X,Springfield,Inactive
-"Amela Humphrey","Non Nisi LLC",odzkie,Kilmarnock,Inactive
-"Amela Humphrey","Non Nisi LLC",odzkie,Salles,Inactive
-"Amela Humphrey","Nibh Phasellus Limited",Odisha,Calbuco,Inactive
-"Amela Humphrey","Nibh Phasellus Limited",Odisha,Calbuco,Inactive
-"Selma Britt","Quam Pellentesque Incorporated",Diy,"Serralunga Alba",Inactive
-"Karleigh Molina","Phasellus At Augue Limited",Louisiana,Timkur,Inactive
-"Karleigh Molina","Vitae Orci Phasellus Limited",BC,Escaillre,Inactive
-"Yogesh Patel",-,-,-,Inactive
-"Parash Oza","Purus Corporation",WB,Dept-1,Active
-"Amit patel","Purus Corporation",WB,Dept-1,Active
-"New ","Purus Corporation",WB,Dept-1,Inactive
-"New ","Purus Corporation",WB,Dept-1,Inactive
-"Twinkal  Patel","Purus Corporation",WB,Dept-2,Inactive
+#,Doctor,Hospital,Branch,Department,Status
+2,"Dr. Ravi Patel","Purus Corporation",WB,Dept-1,Active
+3,"Amit1 patel",,,,Active
+4,"Susma Mehta","Purus Corporation",WB,Dept-1,Active
+5,"Partik Sharma",,,,Active
+6,,,,,Active
+7,"Ramesh Lalo",,,,Active
+8,"Mahesh Lal","Purus Corporation",WB,Dept-1,Active
+9,"Bell Meadows","Tincidunt Foundation",Wie,Mesoraca,Active
+10,"Laurel Juarez","Cursus Ltd",Rivers,Luckenwalde,Active
+11,"Bell Meadows","Amet Ornare Company",Gl,Thon,Active
+12,"Maxwell Morse","Nullam Lobortis Quam PC","Vastra Gotalands lan",Goksun,Active
+13,"Leigh Molina","Orci Ltd",X,Springfield,Active
+14,"Ramesh Lalo","Eu Sem Pellentesque Company",CM,Langholm,Active
+15,"Cody Mcclain","Imperdiet Ullamcorper Duis PC",VA,"Biaa Podlaska",Active
+16,"Mahesh Lal","Ornare Lectus Incorporated",Veneto,Mahbubnagar,Active
+17,"Carla Irwin","Neque Tellus Imperdiet Ltd",Ontario,Cawdor,Active
+18,"Libby Durham","Non Nisi LLC",odzkie,Baiso,Active
+19,"Amit1 patel","Phasellus At Augue Limited",Louisiana,Timkur,Active
+20,"Cody Mcclain","Faucibus Lectus A Foundation",Emilia-Romagna,Evansville,Active
+21,"Amit patel","Et Industries",KP,Provo,Active
+22,"Selma Britt","Quam Pellentesque Incorporated",Diy,"Serralunga Alba",Active
+23,"Libby Durham","Pharetra Corporation",Istanbul,Omaha,Active
+24,"Laurel Juarez","Vulputate Consulting",Toscana,Kester,Active
+25,"Quamar Moody","Vestibulum Ante Industries",LA,Zaanstad,Active
+26,"Susma Mehta","Non Nisi LLC",odzkie,Kilmarnock,Active
+27,"Sebastian Rose","Tincidunt Orci Ltd",BA,Jupille-sur-Meuse,Active
+28,"Amit1 patel","Massa Integer Ltd","Ma opolskie",Hanret,Active
+29,"Cody Mcclain","Imperdiet Ullamcorper Duis PC",VA,"Biaa Podlaska",Active
+30,"Tyler Dickerson","A Felis Associates",Goias,Limal,Active
+31,"Tyler Dickerson","Magna Phasellus Industries",SP,Levis,Active
+32,"Courtney Morton","Ornare Lectus Incorporated",Veneto,Mahbubnagar,Active
+33,"Courtney Morton","Fames Company",Lancashire,Gibsons,Active
+34,"Tyler Dickerson","Non Nisi LLC",odzkie,Kilmarnock,Active
+35,"Maxwell Morse","Vulputate Consulting",Toscana,Curico,Active
+36,"Abraham Pena","Ornare Lectus Incorporated",Veneto,Vergemoli,Active
+37,"Dr. Ravi Patel","Ligula Aenean Euismod Consulting",Berlin,"Lauro de Freitas",Active
+38,"Miriam Atkins","Nullam Lobortis Quam PC",Wie,Columbia,Active
+39,"Cody Mcclain","Tincidunt Orci Ltd",BA,Jupille-sur-Meuse,Active
+40,"Ramesh Lalo","Orci Ltd",X,"Tione di Trento",Active
+41,"Portia Oconnor","Lorem Ac Consulting",Maranhao,Empedrado,Active
+42,"Maxwell Morse","Sagittis Corporation",Wie,Gattatico,Active
+43,,"Cursus Ltd",Connacht,Cap-de-la-Madeleine,Active
+44,"Carla Irwin","Non Nisi LLC",odzkie,Salles,Active
+45,"Ayanna Howell","Ornare Lectus Incorporated",IV,Borsbeek,Active
+46,"Libby Durham","Non Nisi LLC",odzkie,Baiso,Active
+47,"Laurel Juarez","Vulputate Consulting",Toscana,Kester,Active
+48,"Tyler Dickerson","Tincidunt Foundation",Wie,Mesoraca,Active
+49,"Barclay Watkins","Ligula Aenean Euismod Consulting",Berlin,Prestatyn,Active
+50,"Cody Mcclain","Pharetra Corporation",Istanbul,Omaha,Active
+51,"Edan Jordan","Cursus Ltd",Rivers,Luckenwalde,Active
+52,"Quamar Moody","Et Industries",KP,Provo,Active
+53,"Miriam Atkins","Facilisis Non Inc.",WA,"Corroy ",Active
+54,"Laurel Juarez","In Tincidunt Corporation",Vienna,Sambreville,Active
+55,"Belle Herring","Non Nisi LLC",odzkie,Kilmarnock,Active
+56,"Barclay Watkins","Enim Corp.",Ogun,Aligarh,Active
+57,"Mahesh Lal","Vestibulum Ante Industries",LA,Cour-sur-Heure,Active
+58,"Barclay Watkins","Et Industries",Delta,"Dept-2 OF Br2",Active
+59,"Sebastian Rose","Lorem Ac Consulting",NE,Morkhoven,Active
+60,"Belle Herring","Vestibulum Ante Industries",LA,Cour-sur-Heure,Active
+61,"Miriam Atkins","Elit Pharetra Inc.",W,Emblem,Active
+62,"Amit1 patel","Non Nisi LLC",odzkie,Salles,Active
+63,"Libby Durham","Metus Sit Corporation",Connecticut,Ilheus,Active
+64,"Karleigh Molina","Phasellus At Augue Limited",Louisiana,Timkur,Active
+65,"Courtney Morton","Enim Corp.",Ogun,Aligarh,Active
+66,"Amela Humphrey","Accumsan Laoreet Ltd",Imo,Pontarlier,Active
+67,"Courtney Morton","Et Industries",Delta,"Dept-2 OF Br2",Active
+68,"Leigh Molina","Amet Ornare Company",Gl,Thon,Active
+69,"Carla Irwin","Ac Mi Eleifend Industries",SA,Iquique,Active
+70,,"Nullam Lobortis Quam PC",Wie,Columbia,Active
+71,"Amela Humphrey","Orci Ltd",X,Springfield,Active
+72,"Belle Herring","Amet Ornare Company",Gl,Milazzo,Active
+73,"Sebastian Rose","In Tincidunt Corporation",Vienna,Sambreville,Active
+74,"Ayanna Howell","Pharetra Corporation",Istanbul,Omaha,Active
+75,"Belle Herring","Gravida Sit Amet LLP",PR,"Little Rock",Active
+76,"Abraham Pena","Et Industries",KP,Provo,Active
+77,"Quamar Moody","Tincidunt Foundation",Wie,Mesoraca,Active
+78,"Amela Humphrey","Non Nisi LLC",odzkie,Kilmarnock,Active
+79,"Miriam Atkins","Magna Phasellus Industries",SP,Salamanca,Active
+80,"Amela Humphrey","Non Nisi LLC",odzkie,Salles,Active
+81,"Miriam Atkins","Vulputate Consulting",Toscana,Curico,Active
+82,"Courtney Morton","Elit Pharetra Inc.",W,Emblem,Active
+83,"Amit patel","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Active
+84,"Partik Sharma","Neque Tellus Imperdiet Ltd",Ontario,Cawdor,Active
+85,"Ramesh Lalo","Ligula Aenean Euismod Consulting",Berlin,Prestatyn,Active
+86,"Laurel Juarez","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Active
+87,"Abraham Pena","Cursus Ltd",Ontario,Kobbegem,Active
+88,"Barclay Watkins","Magna Phasellus Industries",WA,"Sant'Angelo in Pontano",Active
+89,"Halla Booker","Massa Integer Ltd","Ma opolskie",Hanret,Active
+90,"Laurel Juarez","Lorem Ac Consulting","New South Wales",Albacete,Active
+91,"Courtney Morton","Vulputate Consulting",Toscana,Kester,Active
+92,"Amit patel","Non Institute",Vienna,Chepstow,Active
+93,"Susma Mehta","Quam Pellentesque Incorporated",Diy,"Serralunga Alba",Active
+94,"Mahesh Lal","Enim Corp.",Ogun,Aligarh,Active
+95,,"Orci Ltd",X,Springfield,Active
+96,"Amela Humphrey","Nibh Phasellus Limited",Odisha,Calbuco,Active
+97,"Cody Mcclain","Non Nisi LLC",odzkie,Kilmarnock,Active
+98,"Courtney Morton","Nibh Phasellus Limited",Odisha,Calbuco,Active
+99,"Karleigh Molina","Vitae Orci Phasellus Limited",BC,Escaillre,Active
+100,"Halla Booker","Et Industries",KP,Cheyenne,Active
+101,"Miriam Atkins","Accumsan Laoreet Ltd",Imo,Pontarlier,Active
+102,"Amela Humphrey","Nibh Phasellus Limited",Odisha,Calbuco,Active
+103,"Quamar Moody","Lorem Ac Consulting","New South Wales",Albacete,Active
+104,"Laurel Juarez","Neque Tellus Imperdiet Ltd",Ontario,Cawdor,Active
+105,"Abraham Pena","Et Industries",Delta,Itterbeek,Active
+106,"Carla Irwin","Massa Integer Ltd","Ma opolskie",Hanret,Active
+107,"Susma Mehta","A Felis Associates",Goias,Limal,Active
+108,"Belle Herring","Ullamcorper Velit In Limited","Castilla y Leon","Port Harcourt",Active
+109,"Yogesh Patel",,,,Active
+116,"Parash Oza","Purus Corporation",WB,Dept-1,Active
+117,"Amit patel","Purus Corporation",WB,Dept-1,Active
+118,"New ","Purus Corporation",WB,Dept-1,Active
+119,"New ","Purus Corporation",WB,Dept-1,Active
