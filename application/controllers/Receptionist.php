@@ -130,10 +130,12 @@ class Receptionist extends CI_Controller {
             $hospital_id = $this->input->get('hid',null,null);
             $show  = $this->input->get('s',null,false);
             $cond = array("hms_receptionist.isDeleted=0");
+            
             if($this->auth->isHospitalAdmin()){
                 $ids = $this->doctors_model->getDoctorsIdsByHospitalId($this->auth->getHospitalId());
                 $ids = implode(",", $ids);
                 $cond[] = "hms_receptionist.doc_id in (".$ids.")";
+
             }else if($this->auth->isDoctor()){
                 $did = $this->auth->getDoctorId();
                 $cond[] = "hms_receptionist.doc_id=".$did;

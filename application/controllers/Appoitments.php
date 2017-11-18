@@ -506,44 +506,8 @@ class Appoitments extends CI_Controller {
                 $this->datatables
                     ->showIndex(true)
                     ->unset_column('apt_date');
-                /*
-                $columns[6] = array("db" => "id", "dt" => 6, "formatter" => function ($d, $row) {
-                    if($row['status'] == 3 || $row['status']=='4'){
-                        return "-";
-                    }
-                    $html = "<span style='display:inline-flex'>";
-                    if($row['status'] != 2){
-                        $html .= "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
-                    }
-                    if($row['status'] !=3){
-                        $html .= "<a href=\"#\" id=\"apprlink_".$d."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" data-msg='".$this->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";
-                    }
-                    $html .= "</span>";
-                    return $html;
-                });
-                $columns[4]['dt'] = 3;
-                $columns[5]['dt'] = 4;
-                $columns[6]['dt'] = 5;
-                unset($columns[3]); */
             }
             
-            
-            /*
-            if($show){
-                $this->tbl->setCheckboxColumn(false);
-                $columns = array($columns[0],$columns[1],$columns[2],$columns[3]);
-                $columns[0]['formatter'] = function ($d, $row) {
-                    return $d;
-                };
-                
-                $this->tbl->setIndexColumn(true);
-            }
-            $this->tbl->setTwID(implode(' AND ',$cond));
-
-            // SQL server connection informationhostname" => "localhost",
-            $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-            echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns)); */
-
             //Set condition to new library
             foreach($cond as $con){
                 $this->datatables->where($con);

@@ -168,6 +168,9 @@ class Branches_model extends CI_Model {
             }else{
                 $this->db->where('hospital_id',$hid);
             }
+            if(count($ids) == 0){
+                $ids[] = -1;
+            }
             $this->db->where_in('id',$ids);
             $res = $this->db->get($this->tblname); 
             $res = $res->result_array();
