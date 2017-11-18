@@ -425,8 +425,17 @@
         $appt_action_id = isset($row_val['appt_action_id']) ? $row_val['appt_action_id'] : false;
         if($appt_action_id){
           $appt_action_status = isset($row_val['appt_action_status']) ? $row_val['appt_action_status'] : false;
-          $row_val['appt_action_id'] = $this->ci->auth->getAppointmentActionColumn($appt_action_id,$appt_action_status);
+          $appt_date          = isset($row_val['appt_action_date']) ? $row_val['appt_action_date'] : false;
+          $row_val['appt_action_id'] = $this->ci->auth->getAppointmentActionColumn($appt_action_id,$appt_action_status,$appt_date);
+
+          //Only for Appoitment Data. if apt_no is present set relevant url to appointment.
+          $apt_no = isset($row_val['apt_no']) ? $row_val['apt_no'] : false;
+          if($apt_no){
+            $row_val['apt_no'] = $this->ci->auth->getAppointmentURLColumn($apt_no,$appt_action_id,$appt_action_status);
+          }
         }
+
+        
 
         $aaData[$row_key] =  ($this->check_cType())? $row_val : array_values($row_val);
 

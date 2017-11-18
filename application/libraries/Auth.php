@@ -360,7 +360,11 @@ class Auth {
         return false;
     }
 
-    public function getAppointmentActionColumn($id,$status){
+    public function getAppointmentURLColumn($apt_no,$id,$status){
+        return $apt_no;
+    }
+
+    public function getAppointmentActionColumn($id,$status,$date){
         if($status === false){
             return "-";
         }   
