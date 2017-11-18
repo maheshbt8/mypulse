@@ -361,7 +361,51 @@ class Auth {
     }
 
     public function getAppointmentURLColumn($apt_no,$id,$status){
-        return $apt_no;
+        //return $apt_no;
+        if($status === false){
+            return "-";
+        }   
+        
+        switch($status){
+            case 0:
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isPatient()){
+                    return "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$apt_no."</a>";
+                }
+                if($this->isDoctor()){    
+                    return "<a href='".site_url()."/doctors/patientRecord/".$id."' >".$apt_no."</a>";
+                }
+                break;
+            case 1:
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isPatient()){
+                    return "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$apt_no."</a>";
+                }
+                if($this->isDoctor()){    
+                    return "<a href='".site_url()."/doctors/patientRecord/".$id."' >".$apt_no."</a>";
+                }
+                break;
+            case 2:
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isPatient()){
+                    return "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$apt_no."</a>";
+                }
+                if($this->isDoctor()){    
+                    return "<a href='".site_url()."/doctors/patientRecord/".$id."' >".$apt_no."</a>";
+                }
+                break;
+            case 3:
+                //Load models
+                $this->CI->load->model('doctors_model');
+                $prescription_id = $this->CI->doctors_model->getPrescriptionIdFromApptid($id);
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isDoctor() || $this->isPatient()){
+                   return "<a href='#' data-url='doctors/previewprescription/".$prescription_id."' data-id='$id' class='previewtem'>".$apt_no."</a>";
+                }
+                break;
+            case 4:
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isDoctor() || $this->isPatient()){
+                    return "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$apt_no."</a>";    
+                }
+                break;
+        }
+        return $apt_no;        
     }
 
     public function getAppointmentActionColumn($id,$status,$date){
@@ -369,28 +413,75 @@ class Auth {
             return "-";
         }   
 
-        $html = "";
-
+        $html = "<span style='display:inline-flex'>";
+        $empty_action = "";
         switch($status){
             case 0: 
                 if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest()){
-                    
+                    $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                    $html .= "<a href=\"#\" id=\"apprlink_".$id."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";   
+                }
+                if($this->isDoctor()){
+                    $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                    $html .= "<a href=\"#\" id=\"apprlink_".$id."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";   
+                    $html .=  "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
+                }
+                if($this->isPatient()){
+                    $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
                 }
                 break;
             case 1:
-                
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest()){
+                    if(!$this->isPast($date)){
+                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";             
+                    }else{
+                        $html .= "-";
+                    }
+                }
+                if($this->isDoctor()){
+                    if(!$this->isPast($date)){
+                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                    }
+                    $html .=  "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
+                }
+                if($this->isPatient()){
+                    if(!$this->isPast($date)){
+                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";   
+                    }else{
+                        $html .= "-";
+                    }
+                }
                 break;
             case 2:
-
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest()){
+                    if(!$this->isPast($date)){
+                        $html .= "<a href=\"#\" id=\"apprlink_".$id."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";   
+                    }else{
+                        $html .= "-";
+                    }
+                }
+                if($this->isDoctor()){
+                    if(!$this->isPast($date)){
+                        $html .= "<a href=\"#\" id=\"apprlink_".$id."\" class=\"apprbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_approve_appt')."' title=\"Approve\" style='color:green;margin-left:10px'><i class=\"glyphicon glyphicon-ok\"></i></button>";   
+                    }
+                    $html .=  "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
+                }
+                if($this->isPatient()){
+                    $html .= "-";
+                }
                 break;
             case 3:
-
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isDoctor() || $this->isPatient()){
+                    $html = $empty_action;        
+                }
                 break;
             case 4:
-
+                if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest() || $this->isDoctor() || $this->isPatient()){
+                    $html = $empty_action;
+                }
                 break;
         }
-
+        $html .= "</span>";
         return $html;
     } 
 
