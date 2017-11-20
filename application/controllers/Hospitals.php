@@ -75,7 +75,10 @@ class Hospitals extends CI_Controller {
             $ids = $this->auth->getAllHospitalIds();
             $hid = isset($ids[0]) ? $ids[0] : 0;    
             $data['about'] = $this->hospitals_model->gethospitalsById($hid);
-            $this->load->view('Hospitals/about',$data);
+            if(isset($data['about']['id']))
+                $this->load->view('Hospitals/about',$data);
+            else
+                redirect('index');
         }
     }
     public function checkslug(){

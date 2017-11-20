@@ -225,6 +225,9 @@ class Tbl {
 		$order = self::order( $request, $columns );
 		$where = self::filter( $request, $columns, $bindings );
 
+		if(trim($order) == "ORDER BY"){
+			$order = "";
+		}
 		//echo "<pre>";
 		//var_dump($where);exit;
 		// Main query to actually get the data

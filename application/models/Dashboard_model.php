@@ -185,9 +185,15 @@ class Dashboard_model extends CI_Model {
         $rid = $this->auth->getReceptinestId();
 
         $res['tot_hos'] = 0;
+        $res['tot_doc'] = 0;
+        $res['tot_pat'] = 0;
+        $res['tot_app'] = 0;
+        
         $docs = $this->db->query("select DISTINCT doc_id as doc_id from hms_receptionist where isDeleted=0 and isActive=1 and user_id=".$uid);
         $docs = $docs->row_array();
-
+        if(!is_array($docs)){
+            return $res;
+        }
         $res['tot_doc'] = count($docs);
 
         $dids = array();
@@ -201,13 +207,12 @@ class Dashboard_model extends CI_Model {
         if(isset($h['cnt']))
             $res['tot_hos'] = $h['cnt'];
 
-        $res['tot_pat'] = 0;
+        
         $p = $this->db->query("select COUNT(DISTINCT user_id) as cnt from hms_appoitments where isDeleted=0 and doctor_id in (".implode(",",$dids).") ");
         $p = $p->row_array();
         if(isset($p['cnt']))
             $res['tot_pat'] = $p['cnt'];
         
-        $res['tot_app'] = 0;
         $a = $this->db->query("select COUNT(id) as cnt from hms_appoitments where isDeleted=0 and doctor_id in (".implode(",",$dids).") ");
         $a = $a->row_array();
         if(isset($a['cnt']))

@@ -144,6 +144,9 @@ class Wards extends CI_Controller {
             }else{
                 $hids = $this->hospitals_model->getHospicalIds();
                 $ids = $this->departments_model->getDepartmentIdsFromHospital($hids);
+                if(count($ids) == 0){
+                    $ids[] = -1;
+                }
                 $ids = implode(",",$ids);
                 $cond[] = "department_id in (".$ids.")";
             }

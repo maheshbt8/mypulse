@@ -137,6 +137,9 @@ class Charges extends CI_Controller {
             }else{
                 $hids = $this->hospitals_model->getHospicalIds();
                 $ids = $this->branches_model->getBracheIds($hids);
+                if(count($ids) == 0){
+                    $ids[] = -1;
+                }
                 $ids = implode(",",$ids);
                 $cond[] = "branch_id in (".$ids.")";
             }
