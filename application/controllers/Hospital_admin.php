@@ -89,11 +89,12 @@ class Hospital_admin extends CI_Controller {
             $this->datatables
                 ->showCheckbox(true)
                 ->from('hms_hospital_admin')
-                ->select('hms_hospital_admin.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as hadmin, hms_hospitals.name as hname, case when hms_hospital_admin.isActive=0 then "In-Active" when hms_hospital_admin.isActive=1 then "Active" end as status',false)
+                ->select('hms_hospital_admin.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as hadmin, hms_hospitals.name as hname, case when hms_hospital_admin.isActive=0 then "In-Active" when hms_hospital_admin.isActive=1 then "Active" end as status, hms_hospital_admin.id as id',false)
                 ->join('hms_users', 'hms_hospital_admin.user_id = hms_users.id','left')
                 ->join('hms_hospitals', 'hms_hospital_admin.hospital_id = hms_hospitals.id','left')
-                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id');
-                
+                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id')
+                ->edit_column('hadmin', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'id, hadmin')
+				->unset_column('id');
             //Set condition to new library
             foreach($cond as $con){
                 $this->datatables->where($con);

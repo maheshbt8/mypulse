@@ -388,7 +388,7 @@ $this->load->view("template/left.php");
 
 			    });
 
-				$("#doctors").on("click",".delbtn",function(){
+				$("#hospital_admin").on("click",".delbtn",function(){
 			    	var id = $(this).attr("data-id");
 					swal(swalDeleteConfig).then(function () {
 						$.post("<?php echo site_url(); ?>/hospital_admin/delete",{id:id},function(data){

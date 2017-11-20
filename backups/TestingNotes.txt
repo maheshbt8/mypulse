@@ -1,0 +1,3 @@
+hms_activitylog table user_id column defualt value set null.
+insert empty row in hms_healthrecords.
+User profile Role selection add select option on top.
