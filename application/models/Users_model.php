@@ -442,6 +442,7 @@ class Users_model extends CI_Model {
             return false;
         }
     }
+
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);
@@ -458,7 +459,6 @@ class Users_model extends CI_Model {
 
     function doReg(){
         if(isset($_POST)){
-
             $this->db->where('useremail',$_POST['useremail']);
             $this->db->where('isDeleted',0);
             $user = $this->db->get($this->tblname);

@@ -155,6 +155,7 @@ class Doctors_model extends CI_Model {
         $doc = $doc->row_array();
 
         $doc_id = isset($doc["user_id"]) ? $doc['user_id'] : 0;
+        
         $doc_id = $this->auth->addUser($data,$doc_id);
 
         if($doc_id === false){

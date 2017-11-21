@@ -168,13 +168,14 @@ class Nurse extends CI_Controller {
                 $this->datatables
                     ->showCheckbox(true)
                     ->from('hms_nurse')
-                    ->select('hms_nurse.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as nursename, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname,case when hms_nurse.isActive=1 THEN "'.$this->lang->line('active').'" when hms_nurse.isActive=0 THEN "'.$this->lang->line('inactive').'" end as status', false)
+                    ->select('hms_nurse.id1 as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as nursename, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname,case when hms_nurse.isActive=1 THEN "'.$this->lang->line('active').'" when hms_nurse.isActive=0 THEN "'.$this->lang->line('inactive').'" end as status, hms_nurse.id as action_nurse_id', false)
                     ->join('hms_users','hms_nurse.user_id = hms_users.id','left')
                     ->join('hms_departments','hms_nurse.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
                     ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
-                    ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>', 'hms_nurse.id')
-                    ->edit_column('nursename', "<a href='#' data-id='$1' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$2</a>", 'hms_nurse.id, nursename');
+                    ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>', 'action_nurse_id')
+                    ->edit_column('nursename', "<a href='#' data-id='$1' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$2</a>", 'action_nurse_id, nursename')
+                    ->unset_column('action_nurse_id');
             }
 
             //Set condition to new library

@@ -119,15 +119,16 @@ class Receptionist extends CI_Controller {
                 $this->datatables
                     ->showCheckbox(true)
                     ->from('hms_receptionist') 
-                    ->select('hms_receptionist.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as repname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, CONCAT(docuser.first_name," ",docuser.last_name) as docname, case when hms_receptionist.isActive=1 THEN "'.$this->lang->line('active').'" when hms_receptionist.isActive=0 THEN "'.$this->lang->line('inactive').'" end as status', false)
+                    ->select('hms_receptionist.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as repname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, CONCAT(docuser.first_name," ",docuser.last_name) as docname, case when hms_receptionist.isActive=1 THEN "'.$this->lang->line('active').'" when hms_receptionist.isActive=0 THEN "'.$this->lang->line('inactive').'" end as status, hms_receptionist.id as action_res_id', false)
                     ->join('hms_doctors','hms_receptionist.doc_id = hms_doctors.id','left')
                     ->join('hms_users','hms_receptionist.user_id = hms_users.id','left')
                     ->join('hms_users as docuser','hms_doctors.user_id = docuser.id','left')
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
                     ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
-                    ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>', 'hms_receptionist.id')
-                    ->edit_column('repname', "<a href='#' data-id='$1' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$2</a>", 'hms_receptionist.id, repname');
+                    ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>', 'action_res_id')
+                    ->edit_column('repname', "<a href='#' data-id='$1' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$2</a>", 'action_res_id, repname')
+                    ->unset_column('action_res_id');
             }
 
             //Set condition to new library

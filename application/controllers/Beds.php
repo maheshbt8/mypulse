@@ -156,15 +156,17 @@ class Beds extends CI_Controller {
             $this->datatables
                 ->showCheckbox(true)
                 ->from('hms_beds')
-                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status',false)
+                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status, hms_beds.id as bed_action_id',false)
                 ->join('hms_wards', 'hms_beds.ward_id = hms_wards.id','left');
             
             $show = $this->input->get("s",null,false);
             if($show){
                  $this->datatables->showIndex(true);
             }else{
-                $this->datatables->edit_column('bed', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','id, bed')
-                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn" data-toggle="modal" data-target="bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id');
+                $this->datatables
+                    ->edit_column('bed', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','bed_action_id, bed')
+                    ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn" data-toggle="modal" data-target="bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'bed_action_id')
+                    ->unset_column('bed_action_id');
             }
             
             //Set condition to new library
@@ -241,11 +243,12 @@ class Beds extends CI_Controller {
             $this->datatables
                 ->showIndex(true)
                 ->from('hms_beds')
-                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.id as pid',false)
+                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.id as action_pid',false)
                 ->join('hms_wards','hms_beds.ward_id = hms_wards.id','left')
                 ->join('hms_inpatient','hms_beds.id = hms_inpatient.bed_id','left')
                 ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')
-                ->edit_column('pname','<a href="'.site_url().'nurse/inpatient?sip=1&pid=$1">$2</a>','pid, pname');
+                ->edit_column('pname','<a href="'.site_url().'nurse/inpatient?sip=1&pid=$1">$2</a>','action_pid, pname')
+                ->unset_column('action_pid');
             
             //Set condition to new library
             foreach($cond as $con){

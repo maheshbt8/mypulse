@@ -116,6 +116,7 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
+            
             $id = $this->db->insert_id();
             $this->logger->log("New bed:".$data['bed']." added", Logger::Bed, $id);
 
@@ -222,7 +223,7 @@ class Beds_model extends CI_Model {
         return $res->num_rows();
     }
 
-    function getTotalAvailableBedsByWard($id=0,$isAvailable=1){
+    function getTotalAvailableBedsByWard($id=0,$isAvailable=0){
         $this->db->where('ward_id',$id);
         $this->db->where('isDeleted',0);
         $this->db->where('isActive',1);

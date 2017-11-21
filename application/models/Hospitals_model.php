@@ -29,6 +29,9 @@ class Hospitals_model extends CI_Model {
             $c_name = $this->auth->getCountryName($r['country']);
         }
         $r['country_name'] = $c_name;
+        $this->load->model('hospital_admin_model');
+        $r['hospital_admin'] = $this->hospital_admin_model->getHAFromHospital($r['id']);
+
         //echo "<pre>";var_dump($r['country_name']);exit;
         return $r;
     }
@@ -117,6 +120,7 @@ class Hospitals_model extends CI_Model {
     }
     function update($id) {
         $data = $_POST;
+        
         unset($data["eidt_gf_id"]);
 
         if(isset($_FILES["logo"]) && $_FILES['logo']['error'] == 0){
@@ -134,11 +138,10 @@ class Hospitals_model extends CI_Model {
         
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
-        if(isset($_POST['hospital_id']) && $_POST['hospital_id'] != -1){
-
-        }else{
-            unset($data['hospital_id']);
-        }
+       
+        //Update hospital admin 
+        unset($data['hospital_id']);
+    
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
 			$this->logger->log("Hospital details updated", Logger::Hospital, $id);

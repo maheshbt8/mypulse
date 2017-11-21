@@ -126,5 +126,17 @@ class Hospital_admin_model extends CI_Model {
             return true;
         } else return false;
     }
+
+    function getHAFromHospital($hospital_id){
+        $this->db->where("hospital_id",$hospital_id);
+        $this->db->select("hms_hospital_admin.*,hms_users.first_name as fname,hms_users.last_name as lname");
+        $this->db->join('hms_users','hms_hospital_admin.user_id=hms_users.id','left');
+        $this->db->limit(1);
+        $res = $this->db->get($this->tblname);
+        if($res){
+            return $res->row_array();
+        }
+        return array();
+    }
     
 }

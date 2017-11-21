@@ -137,7 +137,7 @@ class Medical_store extends CI_Controller {
             $this->datatables
                 ->showCheckbox(true)
                 ->from('hms_medical_store')
-                ->select('hms_medical_store.id as mainid, hms_medical_store.name as msname, hms_medical_store.owner_name as owname, hms_medical_store.owner_contact_number as contact, hms_hospitals.name as hname, hms_branches.branch_name as bname', false)
+                ->select('hms_medical_store.id as mainid, hms_medical_store.name as msname, hms_medical_store.owner_name as owname, hms_medical_store.owner_contact_number as contact, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_medical_store.id as action_store_id', false)
                 ->join('hms_branches','hms_medical_store.branch_id = hms_branches.id', 'left')
                 ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left');          
 
@@ -147,8 +147,9 @@ class Medical_store extends CI_Controller {
                     ->showIndex(true);            
             }else{
                 $this->datatables
-                    ->edit_column('msname','<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'hms_medical_store.id, msname')
-                    ->add_column('edit','<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'hms_medical_store.id');
+                    ->edit_column('msname','<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'action_store_id, msname')
+                    ->add_column('edit','<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'action_store_id')
+                    ->unset_column('action_store_id');
             }
 
             //Set condition to new library
@@ -173,13 +174,13 @@ class Medical_store extends CI_Controller {
             //New Library
             $this->datatables
             ->from('hms_prescription')
-            ->select('CONCAT(docusers.first_name," ",docusers.last_name) as docname, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_users.mobile as contact, hms_users.address as address, case when hms_prescription.order_status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_prescription.order_status=1 then "'.$this->lang->line('labels')['completed'].'" end as status, hms_prescription.id as pre_id', false)
+            ->select('CONCAT(docusers.first_name," ",docusers.last_name) as docname, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, hms_users.mobile as contact, hms_users.address as address, case when hms_prescription.order_status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_prescription.order_status=1 then "'.$this->lang->line('labels')['completed'].'" end as status, hms_prescription.id as action_pre_id', false)
             ->join('hms_users','hms_prescription.patient_id = hms_users.id','left')
             ->join('hms_doctors','hms_prescription.doctor_id = hms_doctors.id','left')
             ->join('hms_users as docusers','hms_doctors.user_id = docusers.id','left')
-            ->add_column('prescription', '<a href="#" data-url="medical_store/previewprescription/$1" data-id="$1" class="previewtem"><i class="fa fa-file"></i></a>', 'pre_id')
-            ->add_column('receipt', '<a href="#" class="btnup" data-id="$1" data-toggle="modal" data-target="#uploadMR">Receipt</a>', 'pre_id')
-            ->unset_column('pre_id');
+            ->add_column('prescription', '<a href="#" data-url="medical_store/previewprescription/$1" data-id="$1" class="previewtem"><i class="fa fa-file"></i></a>', 'action_pre_id')
+            ->add_column('receipt', '<a href="#" class="btnup" data-id="$1" data-toggle="modal" data-target="#uploadMR">Receipt</a>', 'action_pre_id')
+            ->unset_column('action_pre_id');
             
             //Set condition to new library
             foreach($cond as $con){

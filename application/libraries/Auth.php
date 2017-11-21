@@ -96,7 +96,7 @@ class Auth {
 
     public function getUsername(){
       $u = $this->CI->session->all_userdata();
-      return $u['user_name'];
+      return isset($u['user_name']) ? $u['user_name'] : ""; 
     }
 
     public function getRoleText(){
@@ -159,7 +159,7 @@ class Auth {
     
     public function getUserid(){
         $u = $this->CI->session->all_userdata();
-        return $u['user_id'];
+        return isset($u['user_id']) ? $u['user_id'] : 0;
     }
 
     public function getMyKey(){

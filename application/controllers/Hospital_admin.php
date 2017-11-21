@@ -58,29 +58,6 @@ class Hospital_admin extends CI_Controller {
     }
     public function getDThospital_admin() {
         if ($this->auth->isLoggedIn() && $this->auth->isSuperAdmin()) {
-            /*
-                $this->load->library("tbl");
-                $table = "hms_hospital_admin";
-                $primaryKey = "id";
-                $columns = array(array("db" => "user_id", "dt" => 0, "formatter" => function ($d, $row) {
-                    $temp = $this->users_model->getusersById($d);
-                    $name = $temp["first_name"]." ".$temp["last_name"];
-                    return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$name."</a>";
-                }), array("db" => "hospital_id", "dt" => 1, "formatter" => function ($d, $row) {
-                    $hospital = $this->hospitals_model->gethospitalsById($d);
-                    if(!isset($hospital['name']))
-                        return "-"; 
-
-                    return $hospital["name"];
-                }), array("db" => "isActive", "dt" => 2, "formatter" => function ($d, $row) {
-                    return $this->auth->getActiveStatus($d);
-                }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
-                    return "<a href=\"#\"  id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
-                }));
-                // SQL server connection informationhostname" => "localhost",
-                $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
-                echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
-            */
 
             $cond = array("hms_hospital_admin.isDeleted=0");
 
@@ -89,12 +66,12 @@ class Hospital_admin extends CI_Controller {
             $this->datatables
                 ->showCheckbox(true)
                 ->from('hms_hospital_admin')
-                ->select('hms_hospital_admin.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as hadmin, hms_hospitals.name as hname, case when hms_hospital_admin.isActive=0 then "In-Active" when hms_hospital_admin.isActive=1 then "Active" end as status, hms_hospital_admin.id as id',false)
+                ->select('hms_hospital_admin.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as hadmin, hms_hospitals.name as hname, case when hms_hospital_admin.isActive=0 then "In-Active" when hms_hospital_admin.isActive=1 then "Active" end as status, hms_hospital_admin.id as action_haid',false)
                 ->join('hms_users', 'hms_hospital_admin.user_id = hms_users.id','left')
                 ->join('hms_hospitals', 'hms_hospital_admin.hospital_id = hms_hospitals.id','left')
-                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'id')
-                ->edit_column('hadmin', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'id, hadmin')
-				->unset_column('id');
+                ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'action_haid')
+                ->edit_column('hadmin', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'action_haid, hadmin')
+				->unset_column('action_haid');
             //Set condition to new library
             foreach($cond as $con){
                 $this->datatables->where($con);

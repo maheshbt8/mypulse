@@ -131,14 +131,7 @@ $this->load->view("template/left.php");
 							  			<div class="col-md-12">
 							  				<div class="col-md-6 form-group">
 							  					<label><?php echo $this->lang->line('labels')['selectHospitalAdmin'];?></label>
-							  					<select name="hospital_id" id="hospital_id" class=" form-control">
-							  						<option value="-1"><?php echo $this->lang->line('hospital_admin');?></option>
-							  						<?php
-							  							foreach ($hospital_admins as $key => $value) {
-							  								echo "<option value='$value[id]'>$value[first_name] $value[last_name]</option>";
-							  							}
-							  						?>
-												</select>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['selectHospitalAdmin'];?>" name="ha_name" id="ha_name" disabled/>
 							  				</div>
 							  				
 							  			</div>            
@@ -457,13 +450,17 @@ $this->load->view("template/left.php");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$('#tabs a[href="#tab1"]').click();
+					$("#ha_name").attr("disabled",true);
 			    });
 
 			    function loadData(id,isEdit){
 					$(".showTab").show();
 					$(".addTabl").show();
+					$("#ha_name").val("");
 			    	$.post("<?php echo site_url(); ?>/hospitals/gethospitals",{ id: id },function(data){
+						
 			    		var data = JSON.parse(data);
+						console.log(data);
 						$("#name").val(data.name);
 						$("#Edit-Heading").html(data.name+" <?php echo $this->lang->line('headings')['info'];?>");
 						$("#address").val(data.address);
@@ -471,6 +468,9 @@ $this->load->view("template/left.php");
 						$("#phone_numbers").val(data.phone_numbers);
 						$("#email").val(data.email);
 						$("#license_status").val(data.license_status);
+						if(data.hospital_admin != null && data.hospital_admin != undefined){
+							$("#ha_name").val(data.hospital_admin.fname+" "+data.hospital_admin.lname);
+						}
 						if(data.country != null && data.country!=undefined && data.country != "" && data.country > 0){
 							loc_cid = data.city;
 							loc_did = data.district;

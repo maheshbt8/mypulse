@@ -189,12 +189,12 @@ class Medical_lab extends CI_Controller {
             //New Library
             $this->datatables
             ->from('hms_medical_report')
-            ->select('hms_medical_report.title as title, hms_medical_report.description as description, CONCAT(docusers.first_name," ",docusers.last_name) as docname, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, case when hms_medical_report.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_medical_report.status=1 then "'.$this->lang->line('labels')['completed'].'" end as status, hms_medical_report.id as re_id', false)
+            ->select('hms_medical_report.title as title, hms_medical_report.description as description, CONCAT(docusers.first_name," ",docusers.last_name) as docname, CONCAT(hms_users.first_name," ",hms_users.last_name) as patient, case when hms_medical_report.status=0 then "'.$this->lang->line('labels')['pending'].'" when hms_medical_report.status=1 then "'.$this->lang->line('labels')['completed'].'" end as status, hms_medical_report.id as action_report_id', false)
             ->join('hms_users','hms_medical_report.patient_id = hms_users.id','left')
             ->join('hms_doctors','hms_medical_report.doctor_id = hms_doctors.id','left')
             ->join('hms_users as docusers','hms_doctors.user_id = docusers.id','left')
-            ->edit_column('title', '<a href="#" class="btnup" data-id="$1" data-toggle="modal" data-target="#uploadMR">$2</a>', 're_id, title')
-            ->unset_column('re_id');
+            ->edit_column('title', '<a href="#" class="btnup" data-id="$1" data-toggle="modal" data-target="#uploadMR">$2</a>', 'action_report_id, title')
+            ->unset_column('action_report_id');
             
             //Set condition to new library
             foreach($cond as $con){
@@ -229,7 +229,7 @@ class Medical_lab extends CI_Controller {
             $this->datatables
             ->showCheckbox(true)
             ->from('hms_medical_lab')
-            ->select('hms_medical_lab.id as mainid, hms_medical_lab.name as mlname, hms_medical_lab.owner_name as owname, hms_medical_lab.owner_contact_number as contact, hms_hospitals.name as hname, hms_branches.branch_name as bname', false)
+            ->select('hms_medical_lab.id as mainid, hms_medical_lab.name as mlname, hms_medical_lab.owner_name as owname, hms_medical_lab.owner_contact_number as contact, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_medical_lab.id as action_lab_id', false)
             ->join('hms_branches','hms_medical_lab.branch_id = hms_branches.id', 'left')
             ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left');
         
@@ -240,8 +240,9 @@ class Medical_lab extends CI_Controller {
                     ->showIndex(true);            
             }else{
                 $this->datatables
-                    ->edit_column('mlname','<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'hms_medical_lab.id, mlname')
-                    ->add_column('edit','<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'hms_medical_lab.id');
+                    ->edit_column('mlname','<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>', 'action_lab_id, mlname')
+                    ->add_column('edit','<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button>', 'action_lab_id')
+                    ->unset_column('action_lab_id');
             }
 
             //Set condition to new library

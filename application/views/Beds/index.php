@@ -105,7 +105,7 @@ $this->load->view("template/left.php");
 									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['bed'];?>" name="bed" id="bed" />
 								</div>
 								<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['isBedOccupied'];?></label>
+									<label><?php echo $this->lang->line('labels')['isBedAvailable'];?></label>
 									<select class="form-control" name="isAvailable" id="isAvailable">
 										<option value="1"><?php echo $this->lang->line('buttons')['no'];?></option>
 										<option value="0"><?php echo $this->lang->line('buttons')['yes'];?></option>

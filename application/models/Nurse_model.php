@@ -100,23 +100,25 @@ class Nurse_model extends CI_Model {
 				$id = $this->db->insert_id();
 				$this->logger->log("New nurse added", Logger::Nurse, $id);
 				
-                //get hospital name
-                $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
-                //sent notification to nurse
-                $this->notification->saveNotification($nurse['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Nurse");
-
-                if($this->auth->isSuperAdmin()){
-                    //find department name
-                    $this->db->where('id', $data['department_id']);
-                    $dept = $this->db->get('hms_departments')->row_array();
-                    //find branch name
-                    $this->db->where('id', $data['branch_id']);
-                    $branch = $this->db->get('hms_branches')->row_array();
-                    //find hospital admin
-                    $this->db->where('hospital_id', $data['hospital_id']);
-                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                    //sent notification to hospital Admin
-                    $this->notification->saveNotification($hadmin['user_id'], "New nurse <b>".$data['first_name']." ".$data['last_name']."</b> is added in department: <b>".$dept['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                if(isset($data['hospital_id']) && $data['hospital_id'] !="" ){
+                    //get hospital name
+                    $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
+                    //sent notification to nurse
+                    $this->notification->saveNotification($nurse['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Nurse");
+                
+                    if($this->auth->isSuperAdmin()){
+                        //find department name
+                        $this->db->where('id', $data['department_id']);
+                        $dept = $this->db->get('hms_departments')->row_array();
+                        //find branch name
+                        $this->db->where('id', $data['branch_id']);
+                        $branch = $this->db->get('hms_branches')->row_array();
+                        //find hospital admin
+                        $this->db->where('hospital_id', $data['hospital_id']);
+                        $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                        //sent notification to hospital Admin
+                        $this->notification->saveNotification($hadmin['user_id'], "New nurse <b>".$data['first_name']." ".$data['last_name']."</b> is added in department: <b>".$dept['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                    }
                 }
                 return true;
             } else {

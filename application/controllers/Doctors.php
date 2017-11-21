@@ -329,11 +329,12 @@ class Doctors extends CI_Controller {
                 $this->datatables
                     ->showIndex(true)
                     ->from('hms_doctors')
-                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_branches.branch_name as bname, hms_departments.department_name as dname', false)
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_branches.branch_name as bname, hms_departments.department_name as dname, hms_doctors.id as edit_action_id', false)
                     ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
-                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button></span>', 'hms_doctors.id');
+                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button></span>', 'edit_action_id')
+                    ->unset_column('edit_action_id');
            
             }else if($show && $this->auth->isNurse()){
                 $this->datatables
@@ -348,13 +349,14 @@ class Doctors extends CI_Controller {
                 $this->datatables
                     ->showCheckbox(true)
                     ->from('hms_doctors')
-                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "'.$this->lang->line('active').'" when hms_doctors.isActive=0 THEN "'.$this->lang->line('active').'" end as status', false)
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "'.$this->lang->line('active').'" when hms_doctors.isActive=0 then "'.$this->lang->line('inactive').'" end as status, hms_doctors.id as edit_action_id', false)
                     ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
                     ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
-                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'hms_doctors.id')
-                    ->edit_column('docname', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','hms_doctors.id, docname');
+                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'edit_action_id')
+                    ->edit_column('docname', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','edit_action_id, docname')
+                    ->unset_column('edit_action_id');
             }
             
             //Set condition to new library
