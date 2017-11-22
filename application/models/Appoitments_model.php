@@ -451,35 +451,37 @@ class Appoitments_model extends CI_Model {
             //find receptionists which are linked with with this doctor
             $this->db->where('doc_id', $data['doctor_id']);
             $receptionists = $this->db->get('hms_receptionist')->result_array();
+                if(!$this->auth->isPatient()){
+                    if(isset($data['user_id']) && $data['user_id'] != ""){
+                        //sent notification to patient
+                        $this->notification->saveNotification($data['user_id'],"Your appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                    }
 
-            if(!$this->auth->isPatient()){
-                //sent notification to patient
-                $this->notification->saveNotification($data['user_id'],"Your appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-
-                if ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                    if ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
+                        //sent notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                        //sent notification to receptionist
+                        foreach ($receptionists as $receptionist) {
+                            $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                        }
+                    }elseif ($this->auth->isReceptinest()){
+                        //sent notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                    }elseif ($this->auth->isDoctor()){
+                        //sent notification to receptionist
+                        foreach ($receptionists as $receptionist) {
+                            $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                        }
+                    }
+                }else{
                     //sent notification to doctor
                     $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
                     //sent notification to receptionist
                     foreach ($receptionists as $receptionist) {
                         $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
                     }
-                }elseif ($this->auth->isReceptinest()){
-                    //sent notification to doctor
-                    $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                }elseif ($this->auth->isDoctor()){
-                    //sent notification to receptionist
-                    foreach ($receptionists as $receptionist) {
-                        $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                    }
+                
                 }
-            }else{
-                //sent notification to doctor
-                $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                //sent notification to receptionist
-                foreach ($receptionists as $receptionist) {
-                    $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                }
-            }
             return true;
         } else {
             return false;

@@ -2,11 +2,27 @@ hms_activitylog table user_id column defualt value set null.
 insert empty row in hms_healthrecords.
 User profile Role selection add select option on top.
 In superadmin module	-> option for active hospital.
-			->beds->qery in page refresh after multiple delete oprat
+			->nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete oprat
 
 Docto should not login as doctor if it's inactive.
+
+Can't change alternet number in all module.
+
+
+By default login as patient if user has already selected a role and not yet approved by authority. Also get required info at the time of selection of role. ( E.g. enter store/lab name if user role is med lab or store )
+
+Query in appointment popup model->timeslote. Also update button does not work properly.
+
+healthinsuranceprovider->query in multiple delete. 
+
+Export query-> SuperAdmin->Does Not work any Where in superAdmin
+
+query in sending msges
+
+
 
 
 
 
 SELECT hms_nurse.id1 as mainid, CONCAT(hms_users.first_name, " ", hms_users.last_name) as nursename, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_nurse.isActive=1 THEN "Active" when hms_nurse.isActive=0 THEN "Inactive" end as status, hms_nurse.id as action_nurse_id FROM `hms_nurse` LEFT JOIN `hms_users` ON `hms_nurse`.`user_id` = `hms_users`.`id` LEFT JOIN `hms_departments` ON `hms_nurse`.`department_id` = `hms_departments`.`id` LEFT JOIN `hms_branches` ON `hms_departments`.`branch_id` = `hms_branches`.`id` LEFT JOIN `hms_hospitals` ON `hms_branches`.`hospital_id` = `hms_hospitals`.`id` WHERE `hms_nurse`.`isDeleted` =0 AND `hms_nurse`.`department_id` in (1,2) ORDER BY `status` ASC LIMIT 10
+

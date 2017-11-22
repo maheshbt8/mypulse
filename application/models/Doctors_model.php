@@ -113,32 +113,33 @@ class Doctors_model extends CI_Model {
             if ($this->db->insert($this->tblname, $doc)) {
 				$id = $this->db->insert_id();
 				$this->logger->log("New doctor added", Logger::Doctor, $id);
-				
-                //get hospital name
-                $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
-                //sent notification to doctor
-                $this->notification->saveNotification($doc['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Doctor");
+				if(isset($data['hospital_id']) && isset($data['department_id']) && isset($data['branch_id']) && $data['hospital_id'] != "" && $data['department_id'] != "" && $data['branch_id'] != ""){
+                    //get hospital name
+                    $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
+                    //sent notification to doctor
+                    $this->notification->saveNotification($doc['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Doctor");
 
-                //find nurses
-                $this->db->where('department_id', $data['department_id']);
-                $nurses = $this->db->get('hms_nurse')->result_array();
-                //find department name
-                $this->db->where('id', $data['department_id']);
-                $dep = $this->db->get('hms_departments')->row_array();
-                foreach ($nurses as $nurse){
-                    //sent notification to nurse
-                    $this->notification->saveNotification($nurse['user_id'], "New doctor <b>".$data['first_name']." ".$data['last_name']."</b> is added in your department <b>".$dep['department_name']."</b>");
-                }
+                    //find nurses
+                    $this->db->where('department_id', $data['department_id']);
+                    $nurses = $this->db->get('hms_nurse')->result_array();
+                    //find department name
+                    $this->db->where('id', $data['department_id']);
+                    $dep = $this->db->get('hms_departments')->row_array();
+                    foreach ($nurses as $nurse){
+                        //sent notification to nurse
+                        $this->notification->saveNotification($nurse['user_id'], "New doctor <b>".$data['first_name']." ".$data['last_name']."</b> is added in your department <b>".$dep['department_name']."</b>");
+                    }
 
-                if($this->auth->isSuperAdmin()){
-                    //find branch
-                    $this->db->where('id', $data['branch_id']);
-                    $branch = $this->db->get('hms_branches')->row_array();
-                    //find hospital admin
-                    $this->db->where('hospital_id', $data['hospital_id']);
-                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                    //sent notification to hospital admin
-                    $this->notification->saveNotification($hadmin['user_id'], "New doctor <b>".$data['first_name']." ".$data['last_name']."</b> is added in department: <b>".$dep['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                    if($this->auth->isSuperAdmin()){
+                        //find branch
+                        $this->db->where('id', $data['branch_id']);
+                        $branch = $this->db->get('hms_branches')->row_array();
+                        //find hospital admin
+                        $this->db->where('hospital_id', $data['hospital_id']);
+                        $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                        //sent notification to hospital admin
+                        $this->notification->saveNotification($hadmin['user_id'], "New doctor <b>".$data['first_name']." ".$data['last_name']."</b> is added in department: <b>".$dep['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                    }
                 }
                 return true;
             } else {

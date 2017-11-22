@@ -15,7 +15,7 @@ $this->load->view("template/left.php");
 							<header><?php echo $this->lang->line('nurses');?></header>
 							<div class="custome_card_header">
 								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="nurses" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
+								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="nurse" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
 								<?php $this->load->view('template/exbtn');?>
 							</div>
 						</div>

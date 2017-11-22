@@ -111,22 +111,23 @@ class Medical_store_model extends CI_Model {
             if ($this->db->insert($this->tblname, $mstore)) {
 				$id = $this->db->insert_id();
 				$this->logger->log("New medical store added", Logger::MedicalStore, $id);
-				
-                //find hospital name
-                $this->db->where('id', $data['hospital_id']);
-                $hospital = $this->db->get('hms_hospitals')->row_array();
-                //sent notification to medical store
-                $this->notification->saveNotification($mstore['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
+				if(isset($data['hospital_id']) && isset($data['branch_id']) && isset($data['name']) && $data['hospital_id'] !="" && $data['branch_id'] !="" && $data['name'] !=""){
+                    //find hospital name
+                    $this->db->where('id', $data['hospital_id']);
+                    $hospital = $this->db->get('hms_hospitals')->row_array();
+                    //sent notification to medical store
+                    $this->notification->saveNotification($mstore['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
 
-                if($this->auth->isSuperAdmin()){
-                    //find branch name
-                    $this->db->where('id',$data['branch_id']);
-                    $branch = $this->db->get('hms_branches')->row_array();
-                    //find hospital admin
-                    $this->db->where('hospital_id', $data['hospital_id']);
-                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                    //sent notification to hospital admin
-                    $this->notification->saveNotification($hadmin['user_id'], "New medical store <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                    if($this->auth->isSuperAdmin()){
+                        //find branch name
+                        $this->db->where('id',$data['branch_id']);
+                        $branch = $this->db->get('hms_branches')->row_array();
+                        //find hospital admin
+                        $this->db->where('hospital_id', $data['hospital_id']);
+                        $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                        //sent notification to hospital admin
+                        $this->notification->saveNotification($hadmin['user_id'], "New medical store <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                    }
                 }
                 return true;
             } else {

@@ -138,7 +138,7 @@ class Medical_store extends CI_Controller {
                 ->showCheckbox(true)
                 ->from('hms_medical_store')
                 ->select('hms_medical_store.id as mainid, hms_medical_store.name as msname, hms_medical_store.owner_name as owname, hms_medical_store.owner_contact_number as contact, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_medical_store.id as action_store_id', false)
-                ->join('hms_branches','hms_medical_store.branch_id = hms_branches.id', 'left')
+                ->join('hms_branches','hms_medical_store.branch_id = hms_branches.id','left')
                 ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left');          
 
             if($show){

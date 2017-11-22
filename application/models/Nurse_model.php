@@ -100,7 +100,7 @@ class Nurse_model extends CI_Model {
 				$id = $this->db->insert_id();
 				$this->logger->log("New nurse added", Logger::Nurse, $id);
 				
-                if(isset($data['hospital_id']) && $data['hospital_id'] !="" ){
+                if(isset($data['hospital_id']) && isset($data['department_id']) && isset($data['branch_id']) && $data['hospital_id'] != "" && $data['department_id'] != "" && $data['branch_id'] != ""){
                     //get hospital name
                     $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
                     //sent notification to nurse

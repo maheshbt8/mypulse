@@ -1,6 +1,4 @@
-#,Name,"Owner Name","Owner Phone Number",Hospital,Branch,#
-1,"Ravi Medi. Store",Ravi,09099910271,"Purus Corporation",WB
-2,"New MED St",MESS,91012931213,"Purus Corporation",WB
-3,Hwrew,SDFee,asde,,
-4,Asdf,asdf,3423423423,"Purus Corporation","Andhra Pradesh"
-5,Test,tes,5461278906,,
+#,Name,"Owner Name","Owner Phone Number",Hospital,Branch
+2,MedicalStore,owner,9587561849,Hospital1,h1_Branch1
+5,"Patrel Medical lStore","Twinkal Patel",9754814299,Hospital1,h1_Branch1
+6,m,twi,9999882150,Hospital1,h1_Branch1
