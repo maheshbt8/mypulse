@@ -56,6 +56,7 @@ class Doctors_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field,$did = -1) {
 
         $dids = $this->auth->getAllDepartmentsIds();
@@ -86,6 +87,7 @@ class Doctors_model extends CI_Model {
         $res = $this->db->get();
         return $res->result_array();
     }
+    
     function add() {
         $data = $_POST;
 
@@ -148,6 +150,7 @@ class Doctors_model extends CI_Model {
         }
         return true;
     }
+    
     function update($id) {
         $data = $_POST;
 

@@ -2,25 +2,57 @@ hms_activitylog table user_id column defualt value set null.
 insert empty row in hms_healthrecords.
 User profile Role selection add select option on top.
 In superadmin module	-> option for active hospital.
-			->nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete oprat
-
-Docto should not login as doctor if it's inactive.
-
-Can't change alternet number in all module.
-
-
-By default login as patient if user has already selected a role and not yet approved by authority. Also get required info at the time of selection of role. ( E.g. enter store/lab name if user role is med lab or store )
-
-Query in appointment popup model->timeslote. Also update button does not work properly.
-
-healthinsuranceprovider->query in multiple delete. 
-
-Export query-> SuperAdmin->Does Not work any Where in superAdmin
-
-query in sending msges
+			->nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete opration
+			->Docto should not login as doctor if it's inactive.
+			->Can't change alternet number in all module.
+			->By default login as patient if user has already selected a role and not yet approved by authority. Also get required info at the time of selection of role. ( E.g. enter store/lab name if user role is med lab or store )
+			->Query in appointment popup model->timeslote. Also update button does not work properly.
+			->healthinsuranceprovider->query in multiple delete. 
+			->Export query-> SuperAdmin->Does Not work any Where in superAdmin
+			->query in sending msges
 
 
+HospitalAdmn Module	->Query in Branch Count(It count isDeleted = 1 so Count value would be wrong)
+		   	->Wards, nurse, Receptionist, MedicalStore, MedicalLab->query in page refresh after multiple delete opration
+			->Query in appointment popup model->timeslote
+			->Doctor Availability Schedule does not work properly
+			->Export query->Does Not work any Where in HospitalAdmin
+			->MedicalStore->Adharnumber can't add or update and Professional Info can't add or update or view data.
+			->MedicalLab->Professional Info can't add or update or view data.
+			->query in sending msges
 
+Doctor Module		->Query in Load Appointment Data
+			->Add In-patient->after Bed selected, In bed select option Occupide Bed_id wil display. 
+			->at 1st time add in-patient at that time msg display like "Patient already admitted".
+			->in case in-patient histroy updated and bed change without discharged then previous bed status would not change and updated bed status(isAvailable=1)....So in these case both bed status like isAvailable=1.
+			->Today's Appointment->Action column(edit button Does't work properly)
+			->query in sending msges
+			->Export Appointment->Excel Sheet not in proper formate
+			->In-patient menu->only load that data which status like admitted or not-admitted but now all records are loaded.
+			->Query in appointment popup model->timeslote				
+
+Receptionist		->Query in appointment popup model->timeslote
+			->Export Appointment->Excel Sheet not in proper formate
+			->Dashboard	->Today's Apoointments->Query in Edit Pop-up on AptNo 
+					->Appointments->refresh problem after any opration
+					->Today's Apoointments->Filters does't work
+					->Export button query(Today's apt and appt both export button are in today's apt) also formate not proper. 
+					
+Nurse			->Beds menu->query in load bed data
+			->Export Appointment->Excel Sheet not in proper formate
+
+Patient			->Export Appointment->Excel Sheet not in proper formate
+			->Dashboard->Upcoming Apoointments->Query in Edit Pop-up on AptNo 
+
+MedicalStore->		->order status problem(status should must be change after upload receipt)
+
+MedicalLab->		->MedicalLab incharge->profile->hospital Association not load
+			->order status problem(status should must be change after upload report)
+			
+
+
+
+			
 
 
 

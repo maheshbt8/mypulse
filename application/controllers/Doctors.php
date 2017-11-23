@@ -453,11 +453,14 @@ class Doctors extends CI_Controller {
                 $cond[] = "DATE(hms_inpatient.left_date) between '$left_sdate' and '$left_edate'";
             }
 
+            $cond[] = 'hms_inpatient.status in (0,1)';
+
+
             //New Library
             $this->datatables
             ->showIndex(true)
             ->from('hms_inpatient')
-            ->select('hms_inpatient.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.join_date as jdate, hms_inpatient.reason as reason, hms_beds.bed as bed, case when hms_inpatient.status=0 then "'.$this->lang->line('not_admitted').'" when hms_inpatient.status=1 then "'.$this->lang->line('admitted').'" when hms_inpatient.status=2 then "'.$this->lang->line('discharged').'" end as status, hms_inpatient.id as a_id, hms_inpatient.join_date as a_jd, hms_inpatient.user_id as a_uid, hms_inpatient.doctor_id as a_did, hms_inpatient.bed_id as a_bid', false)
+            ->select('hms_inpatient.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.join_date as jdate, hms_inpatient.reason as reason, hms_beds.bed as bed, case when hms_inpatient.status=0 then "'.$this->lang->line('not_admitted').'" when hms_inpatient.status=1 then "'.$this->lang->line('admitted').'" end as status, hms_inpatient.id as a_id, hms_inpatient.join_date as a_jd, hms_inpatient.user_id as a_uid, hms_inpatient.doctor_id as a_did, hms_inpatient.bed_id as a_bid', false)
             ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')
             ->join('hms_beds','hms_inpatient.bed_id = hms_beds.id','left')
             ->add_column('edit','<a href="javascript:void()" class="editinpatient" data-bname="$1" data-id="$2" data-bed_id="$3"  data-userid="$4" data-docid="$5" data-toggle="tooltip" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a> &nbsp <a href="#" id="Patient_$2" class="historyinpatient"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$2" data-bno="$1" data-jdate="$6" data-status="$7" data-reason="$8" data-toggle="tooltip" title="Inpatient"><i class="fa fa-eye"></i></a>','bed, a_id, a_bid, a_uid, a_did, a_jd, status, reason')

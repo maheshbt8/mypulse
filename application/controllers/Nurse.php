@@ -221,7 +221,7 @@ class Nurse extends CI_Controller {
             $this->datatables
             ->showIndex(true)
             ->from('hms_inpatient')
-            ->select('hms_inpatient.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, CONCAT(docuser.first_name," ",docuser.last_name) as docname, hms_inpatient.join_date as jdate, hms_inpatient.reason as reason, hms_beds.bed as bed, case when hms_inpatient.status=0 then "'.$this->lang->line('not_admitted').'" when hms_inpatient.status=1 then "'.$this->lang->line('admitted').'" when hms_inpatient.status=2 then "'.$this->lang->line('discharged').'" end as status, hms_inpatient.id as a_id, hms_inpatient.join_date as a_jd, hms_inpatient.user_id as a_uid, hms_inpatient.doctor_id as a_did, hms_inpatient.bed_id as a_bid, hms_inpatient.appointment_id as apt_id', false)
+            ->select('hms_inpatient.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, CONCAT(docuser.first_name," ",docuser.last_name) as docname, hms_inpatient.join_date as jdate, hms_inpatient.reason as reason, hms_beds.bed as bed, case when hms_inpatient.status=0 then "'.$this->lang->line('not_admitted').'" when hms_inpatient.status=1 then "'.$this->lang->line('admitted').'" end as status, hms_inpatient.id as a_id, hms_inpatient.join_date as a_jd, hms_inpatient.user_id as a_uid, hms_inpatient.doctor_id as a_did, hms_inpatient.bed_id as a_bid, hms_inpatient.appointment_id as apt_id', false)
             ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')
             ->join('hms_doctors','hms_inpatient.doctor_id = hms_doctors.id','left')
             ->join('hms_users as docuser','hms_doctors.user_id = docuser.id','left')
