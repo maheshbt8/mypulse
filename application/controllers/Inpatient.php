@@ -201,7 +201,7 @@ class Inpatient extends CI_Controller {
 
             //New Library
             $this->datatables
-                ->showCheckbox(true)
+                ->showIndex(true)
                 ->from('hms_inpatient')
                 ->select('hms_inpatient.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_hospitals.name as hname, CONCAT(docuser.first_name," ",docuser.last_name) as docname, CONCAT(hms_inpatient.join_date," to ",hms_inpatient.left_date) as date, hms_inpatient.reason as reason, hms_beds.bed as bed, case when hms_inpatient.status=0 then "'.$this->lang->line('not_admitted').'" when hms_inpatient.status=1 then "'.$this->lang->line('admitted').'" when hms_inpatient.status=2 then "'.$this->lang->line('discharged').'" end as status, hms_inpatient.id as a_id, hms_inpatient.join_date as a_jd, hms_inpatient.left_date as a_ld', false)
                 ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')

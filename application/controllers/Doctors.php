@@ -345,6 +345,14 @@ class Doctors extends CI_Controller {
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left');
 
+            }else if($show && $this->auth->isSuperAdmin()){
+                $this->datatables
+                    ->showIndex(true)
+                    ->from('hms_doctors')
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "'.$this->lang->line('active').'" when hms_doctors.isActive=0 then "'.$this->lang->line('inactive').'" end as status', false)
+                    ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
+                    ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
+                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left');
             }else{	
                 $this->datatables
                     ->showCheckbox(true)

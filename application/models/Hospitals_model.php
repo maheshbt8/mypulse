@@ -94,6 +94,7 @@ class Hospitals_model extends CI_Model {
     }
     function add() {
         $data = $_POST;
+        //echo "<pre>";var_dump($data);exit;
         unset($data["eidt_gf_id"]);
         if (isset($data["license_status"])) $data["license_status"] = intval($data["license_status"]);
         if (isset($data["isActive"])) $data["isActive"] = intval($data["isActive"]);
@@ -108,6 +109,7 @@ class Hospitals_model extends CI_Model {
         }else{
             unset($data['hospital_id']);
         }
+        unset($data['ha_name']);
 
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {

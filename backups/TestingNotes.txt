@@ -1,15 +1,25 @@
 hms_activitylog table user_id column defualt value set null.
 insert empty row in hms_healthrecords.
 User profile Role selection add select option on top.
-In superadmin module	-> option for active hospital.
-			->nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete opration
+In superadmin module	->put option for active hospital.
+			->validation in add hospital
+			->hospitals, wards, nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete opration
 			->Docto should not login as doctor if it's inactive.
 			->Can't change alternet number in all module.
 			->By default login as patient if user has already selected a role and not yet approved by authority. Also get required info at the time of selection of role. ( E.g. enter store/lab name if user role is med lab or store )
 			->Query in appointment popup model->timeslote. Also update button does not work properly.
-			->healthinsuranceprovider->query in multiple delete. 
+			->healthinsuranceprovider->query in multiple delete.(delete button does't work) 
 			->Export query-> SuperAdmin->Does Not work any Where in superAdmin
 			->query in sending msges
+			->Show inactive hospital in filter and other dropdown menu
+			->Ward->in update ->query in select option for hospital and branch
+			->beds->update->in update pop-up model-> query in select option for wards. and other
+			->HospitalAdmin->does't work multiple delete button
+				       ->add pop-up->status does't work	
+			->receptionist->if we update any one then changes apply to all records of receptionists.
+			---->Patient menu->add or update alternet number.
+			->add option in patient menu for active patients.
+			->medicalstore menu, medical lab->query in adhar number(adharnumber can't get in pop-up so if we update data and display error)
 
 
 HospitalAdmn Module	->Query in Branch Count(It count isDeleted = 1 so Count value would be wrong)
@@ -50,7 +60,7 @@ MedicalLab->		->MedicalLab incharge->profile->hospital Association not load
 			->order status problem(status should must be change after upload report)
 			
 
-
+Note for dublicate entry----> error like dublicate entry for email or any other.....then if we go back then that entry sould be save...
 
 			
 
