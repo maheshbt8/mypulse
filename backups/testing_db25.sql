@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 23, 2017 at 03:08 PM
+-- Generation Time: Nov 25, 2017 at 03:22 PM
 -- Server version: 10.1.25-MariaDB
 -- PHP Version: 5.6.31
 
@@ -384,7 +384,156 @@ INSERT INTO `hms_activitylog` (`id`, `description`, `item_type`, `item_id`, `use
 (339, 'Appointment APT3 updated', 'Appointment', 3, 188, 'Patient Patel', '2017-11-23 13:40:32'),
 (340, 'Prescription order receipt added', 'MedicalStore', 1, 191, 'Medical Store', '2017-11-23 13:47:53'),
 (341, 'Medical lab details updated', 'MedicalLab', 2, 1, 'Super Admin', '2017-11-23 13:56:28'),
-(342, 'New medical report file added', 'Medicalreport', 1, 200, 'Star Patel', '2017-11-23 14:00:00');
+(342, 'New medical report file added', 'Medicalreport', 1, 200, 'Star Patel', '2017-11-23 14:00:00'),
+(343, 'New hospital created', 'Hospital', 3, 1, 'Super Admin', '2017-11-24 08:45:38'),
+(344, 'Hospital soft deleted', 'Hospital', 3, 1, 'Super Admin', '2017-11-24 08:45:50'),
+(345, 'New hospital created', 'Hospital', 4, 1, 'Super Admin', '2017-11-24 08:46:24'),
+(346, 'New hospital created', 'Hospital', 5, 1, 'Super Admin', '2017-11-24 08:46:42'),
+(347, 'New branch: h1_Branch3 added', 'Branch', 5, 1, 'Super Admin', '2017-11-24 10:13:26'),
+(348, 'Branch soft deleted', 'Branch', 5, 1, 'Super Admin', '2017-11-24 10:13:39'),
+(349, 'New hospital created', 'Hospital', 6, 1, 'Super Admin', '2017-11-24 10:14:40'),
+(350, 'New department: deptkjkg;lg created', 'Department', 5, 1, 'Super Admin', '2017-11-24 10:15:51'),
+(351, 'Department soft deleted', 'Department', 5, 1, 'Super Admin', '2017-11-24 10:16:15'),
+(352, 'New ward added', 'Ward', 7, 1, 'Super Admin', '2017-11-24 10:17:27'),
+(353, 'New department: h1_b2_Dept-3 created', 'Department', 6, 1, 'Super Admin', '2017-11-24 10:22:42'),
+(354, 'New ward added', 'Ward', 8, 1, 'Super Admin', '2017-11-24 10:24:58'),
+(355, 'New hospital created', 'Hospital', 7, 1, 'Super Admin', '2017-11-24 10:59:23'),
+(356, 'New bed:B10 added', 'Bed', 14, 1, 'Super Admin', '2017-11-24 11:34:02'),
+(357, 'New bed:B11 added', 'Bed', 15, 1, 'Super Admin', '2017-11-24 11:34:32'),
+(358, 'Bed soft deleted', 'Bed', 15, 1, 'Super Admin', '2017-11-24 11:34:42'),
+(359, 'New charge created', 'Charge', 6, 1, 'Super Admin', '2017-11-24 11:35:45'),
+(360, 'Charge soft deleted', 'Charge', 6, 1, 'Super Admin', '2017-11-24 11:35:55'),
+(361, 'New user created', 'User', 209, 1, 'Super Admin', '2017-11-24 11:41:57'),
+(362, 'Hospital admin added', 'HospitalAdmin', 2, 1, 'Super Admin', '2017-11-24 11:42:02'),
+(363, 'Hospital admin details updated', 'HospitalAdmin', 2, 1, 'Super Admin', '2017-11-24 11:42:15'),
+(364, 'New user created', 'User', 210, 1, 'Super Admin', '2017-11-24 11:45:26'),
+(365, 'Hospital admin added', 'HospitalAdmin', 3, 1, 'Super Admin', '2017-11-24 11:45:30'),
+(366, 'User details updated', 'User', 210, 1, 'Super Admin', '2017-11-24 11:45:52'),
+(367, 'Hospital admin details updated', 'HospitalAdmin', 3, 1, 'Super Admin', '2017-11-24 11:45:52'),
+(368, 'New user created', 'User', 211, 1, 'Super Admin', '2017-11-24 11:47:09'),
+(369, 'Hospital admin added', 'HospitalAdmin', 4, 1, 'Super Admin', '2017-11-24 11:47:13'),
+(370, 'Hospital admin soft deleted ', 'HospitalAdmin', 3, 1, 'Super Admin', '2017-11-24 12:02:28'),
+(371, 'Hospital soft deleted', 'Hospital', 7, 1, 'Super Admin', '2017-11-24 12:02:53'),
+(372, 'New branch: b added', 'Branch', 6, 1, 'Super Admin', '2017-11-24 12:03:27'),
+(373, 'Branch soft deleted', 'Branch', 6, 1, 'Super Admin', '2017-11-24 12:03:32'),
+(374, 'New department: depppppppp created', 'Department', 7, 1, 'Super Admin', '2017-11-24 12:03:45'),
+(375, 'Department soft deleted', 'Department', 7, 1, 'Super Admin', '2017-11-24 12:03:50'),
+(376, 'New ward added', 'Ward', 9, 1, 'Super Admin', '2017-11-24 12:04:07'),
+(377, 'Ward details soft deleted', 'Ward', 9, 1, 'Super Admin', '2017-11-24 12:04:15'),
+(378, 'New bed:b78 added', 'Bed', 16, 1, 'Super Admin', '2017-11-24 12:04:34'),
+(379, 'Bed soft deleted', 'Bed', 16, 1, 'Super Admin', '2017-11-24 12:04:44'),
+(380, 'New charge created', 'Charge', 7, 1, 'Super Admin', '2017-11-24 12:05:00'),
+(381, 'Charge soft deleted', 'Charge', 7, 1, 'Super Admin', '2017-11-24 12:05:04'),
+(382, 'User details updated', 'User', 211, 1, 'Super Admin', '2017-11-24 12:05:31'),
+(383, 'Hospital admin details updated', 'HospitalAdmin', 4, 1, 'Super Admin', '2017-11-24 12:05:31'),
+(384, 'New user created', 'User', 212, 1, 'Super Admin', '2017-11-24 12:06:57'),
+(385, 'New doctor added', 'Doctor', 11, 1, 'Super Admin', '2017-11-24 12:07:02'),
+(386, 'User details updated', 'User', 212, 1, 'Super Admin', '2017-11-24 12:10:18'),
+(387, 'Doctor details updated', 'Doctor', 11, 1, 'Super Admin', '2017-11-24 12:10:18'),
+(388, 'Doctor details soft deleted', 'Doctor', 11, 1, 'Super Admin', '2017-11-24 12:10:36'),
+(389, 'New user created', 'User', 213, 1, 'Super Admin', '2017-11-24 12:11:20'),
+(390, 'New doctor added', 'Doctor', 12, 1, 'Super Admin', '2017-11-24 12:11:25'),
+(391, 'Doctor details soft deleted', 'Doctor', 12, 1, 'Super Admin', '2017-11-24 12:11:30'),
+(392, 'New user created', 'User', 214, 1, 'Super Admin', '2017-11-24 12:16:11'),
+(393, 'New nurse added', 'Nurse', 15, 1, 'Super Admin', '2017-11-24 12:16:15'),
+(394, 'New user created', 'User', 215, 1, 'Super Admin', '2017-11-24 12:16:48'),
+(395, 'New doctor added', 'Doctor', 13, 1, 'Super Admin', '2017-11-24 12:16:57'),
+(396, 'Doctor details soft deleted', 'Doctor', 13, 1, 'Super Admin', '2017-11-24 12:17:03'),
+(397, 'Nurse details soft deleted', 'Nurse', 13, 1, 'Super Admin', '2017-11-24 12:17:11'),
+(398, 'User details updated', 'User', 214, 1, 'Super Admin', '2017-11-24 12:17:48'),
+(399, 'Nurse details updated', 'Nurse', 15, 1, 'Super Admin', '2017-11-24 12:17:48'),
+(400, 'User details updated', 'User', 183, 1, 'Super Admin', '2017-11-24 12:19:48'),
+(401, 'Receptionist details updated', 'Receptionist', 2, 1, 'Super Admin', '2017-11-24 12:19:48'),
+(402, 'New user created', 'User', 216, 1, 'Super Admin', '2017-11-24 12:22:58'),
+(403, 'New receptionist added', 'Receptionist', 7, 1, 'Super Admin', '2017-11-24 12:23:02'),
+(404, 'User details updated', 'User', 216, 1, 'Super Admin', '2017-11-24 12:31:02'),
+(405, 'Receptionist details updated', 'Receptionist', 7, 1, 'Super Admin', '2017-11-24 12:31:02'),
+(406, 'New user created', 'User', 217, 1, 'Super Admin', '2017-11-24 12:32:21'),
+(407, 'New receptionist added', 'Receptionist', 8, 1, 'Super Admin', '2017-11-24 12:32:26'),
+(408, 'Receptionist details updated', 'Receptionist', 1, 1, 'Super Admin', '2017-11-24 12:32:44'),
+(409, 'User details updated', 'User', 216, 1, 'Super Admin', '2017-11-24 12:34:06'),
+(410, 'Receptionist details updated', 'Receptionist', 7, 1, 'Super Admin', '2017-11-24 12:34:06'),
+(411, 'User details updated', 'User', 216, 1, 'Super Admin', '2017-11-24 12:34:37'),
+(412, 'Receptionist details updated', 'Receptionist', 7, 1, 'Super Admin', '2017-11-24 12:34:37'),
+(413, 'New user created', 'User', 218, 1, 'Super Admin', '2017-11-24 12:55:55'),
+(414, 'New nurse added', 'Nurse', 16, 1, 'Super Admin', '2017-11-24 12:56:01'),
+(415, 'User details updated', 'User', 218, 1, 'Super Admin', '2017-11-24 12:56:09'),
+(416, 'Nurse details updated', 'Nurse', 16, 1, 'Super Admin', '2017-11-24 12:56:09'),
+(417, 'User details updated', 'User', 218, 1, 'Super Admin', '2017-11-24 12:56:18'),
+(418, 'Nurse details updated', 'Nurse', 16, 1, 'Super Admin', '2017-11-24 12:56:18'),
+(419, 'User details updated', 'User', 218, 1, 'Super Admin', '2017-11-24 12:56:31'),
+(420, 'Nurse details updated', 'Nurse', 16, 1, 'Super Admin', '2017-11-24 12:56:31'),
+(421, 'Nurse details soft deleted', 'Nurse', 16, 1, 'Super Admin', '2017-11-24 12:56:40'),
+(422, 'User details updated', 'User', 216, 1, 'Super Admin', '2017-11-24 12:58:49'),
+(423, 'Receptionist details updated', 'Receptionist', 7, 1, 'Super Admin', '2017-11-24 12:58:49'),
+(424, 'New user created', 'User', 219, 1, 'Super Admin', '2017-11-24 13:06:20'),
+(425, 'User details updated', 'User', 191, 1, 'Super Admin', '2017-11-24 13:18:42'),
+(426, 'Medical store details updated', 'MedicalStore', 2, 1, 'Super Admin', '2017-11-24 13:18:42'),
+(427, 'User details updated', 'User', 191, 1, 'Super Admin', '2017-11-24 13:22:21'),
+(428, 'Medical store details updated', 'MedicalStore', 2, 1, 'Super Admin', '2017-11-24 13:22:21'),
+(429, 'Medical store deleted', 'MedicalStore', 6, 1, 'Super Admin', '2017-11-24 13:25:38'),
+(430, 'Medical store details updated', 'MedicalStore', 5, 1, 'Super Admin', '2017-11-24 13:25:42'),
+(431, 'Medical store details updated', 'MedicalStore', 5, 1, 'Super Admin', '2017-11-24 13:25:55'),
+(432, 'User details updated', 'User', 200, 1, 'Super Admin', '2017-11-24 13:28:35'),
+(433, 'Medical lab details updated', 'MedicalLab', 2, 1, 'Super Admin', '2017-11-24 13:28:35'),
+(434, 'Appointment APT3 updated', 'Appointment', 3, 1, 'Super Admin', '2017-11-24 13:32:55'),
+(435, 'Appointment APT3 updated', 'Appointment', 3, 1, 'Super Admin', '2017-11-24 13:33:10'),
+(436, 'Appointment APT3 updated', 'Appointment', 3, 1, 'Super Admin', '2017-11-24 13:33:16'),
+(437, 'Appointment APT8 approved', 'Appointment', 8, 1, 'Super Admin', '2017-11-24 13:35:01'),
+(438, 'Appointment APT4 rejected', 'Appointment', 4, 1, 'Super Admin', '2017-11-24 13:36:12'),
+(439, 'Appointment APT8 rejected', 'Appointment', 8, 1, 'Super Admin', '2017-11-24 13:36:12'),
+(440, 'Appointment APT4 approved', 'Appointment', 4, 1, 'Super Admin', '2017-11-24 13:36:33'),
+(441, 'Appointment APT8 approved', 'Appointment', 8, 1, 'Super Admin', '2017-11-24 13:36:33'),
+(442, 'New license added', 'License', 5, 1, 'Super Admin', '2017-11-24 13:37:55'),
+(443, 'License soft deleted', 'License', 5, 1, 'Super Admin', '2017-11-24 13:38:06'),
+(444, 'HealthInsuranceProvider added', 'HealthInsuranceProvider', 4, 1, 'Super Admin', '2017-11-24 13:38:32'),
+(445, 'HealthInsuranceProvider soft deleted', 'HealthInsuranceProvider', 4, 1, 'Super Admin', '2017-11-24 13:39:01'),
+(446, 'New bed:B78 added', 'Bed', 17, 1, 'Super Admin', '2017-11-24 13:57:38'),
+(447, 'New bed:B90 added', 'Bed', 18, 1, 'Super Admin', '2017-11-24 13:59:15'),
+(448, 'New bed:b7 added', 'Bed', 19, 1, 'Super Admin', '2017-11-24 14:01:52'),
+(449, 'New bed:bt added', 'Bed', 20, 1, 'Super Admin', '2017-11-24 14:12:46'),
+(450, 'New bed:bt added', 'Bed', 21, 1, 'Super Admin', '2017-11-24 14:15:05'),
+(451, 'New bed:bt added', 'Bed', 22, 1, 'Super Admin', '2017-11-24 14:15:23'),
+(452, 'Appointment APT9 approved', 'Appointment', 9, 1, 'Super Admin', '2017-11-25 07:13:16'),
+(453, 'Appointment APT4 updated', 'Appointment', 4, 1, 'Super Admin', '2017-11-25 07:13:45'),
+(454, 'New appointment APT10 created', 'Appointment', 10, 1, 'Super Admin', '2017-11-25 07:17:16'),
+(455, 'Appointment APT10 updated', 'Appointment', 10, 1, 'Super Admin', '2017-11-25 07:17:28'),
+(456, 'Appointment APT3 updated', 'Appointment', 3, 1, 'Super Admin', '2017-11-25 07:17:51'),
+(457, 'Appointment APT3 updated', 'Appointment', 3, 1, 'Super Admin', '2017-11-25 07:18:11'),
+(458, 'Appointment APT3 updated', 'Appointment', 3, 1, 'Super Admin', '2017-11-25 07:18:24'),
+(459, 'Appointment APT9 rejected', 'Appointment', 9, 1, 'Super Admin', '2017-11-25 07:20:23'),
+(460, 'Appointment APT9 approved', 'Appointment', 9, 1, 'Super Admin', '2017-11-25 07:20:46'),
+(461, 'Appointment APT9 rejected', 'Appointment', 9, 1, 'Super Admin', '2017-11-25 07:20:55'),
+(462, 'Appointment APT9 rejected', 'Appointment', 9, 1, 'Super Admin', '2017-11-25 07:24:07'),
+(463, 'New branch: h1_Branch3 added', 'Branch', 7, 162, 'Hospital1 Admin', '2017-11-25 07:30:11'),
+(464, 'New branch: h1_Branch4 added', 'Branch', 8, 162, 'Hospital1 Admin', '2017-11-25 07:31:00'),
+(465, 'New branch: h1_Branch5 added', 'Branch', 9, 162, 'Hospital1 Admin', '2017-11-25 07:31:40'),
+(466, 'Branch soft deleted', 'Branch', 9, 162, 'Hospital1 Admin', '2017-11-25 07:31:53'),
+(467, 'New department: h1_b3_Dept1 created', 'Department', 8, 162, 'Hospital1 Admin', '2017-11-25 07:32:37'),
+(468, 'Department: h1_b2_Dept3 updated', 'Department', 6, 162, 'Hospital1 Admin', '2017-11-25 07:32:45'),
+(469, 'Department: h1_b3_Dept4 updated', 'Department', 8, 162, 'Hospital1 Admin', '2017-11-25 07:32:54'),
+(470, 'New department: h1_b4_Dept5 created', 'Department', 9, 162, 'Hospital1 Admin', '2017-11-25 07:33:46'),
+(471, 'New department: h1_b3_Dept6 created', 'Department', 10, 162, 'Hospital1 Admin', '2017-11-25 07:34:22'),
+(472, 'Department soft deleted', 'Department', 10, 162, 'Hospital1 Admin', '2017-11-25 07:34:41'),
+(473, 'New ward added', 'Ward', 10, 162, 'Hospital1 Admin', '2017-11-25 07:36:51'),
+(474, 'Doctor availability inserted', 'Availability', 17, 162, 'Hospital1 Admin', '2017-11-25 08:07:19'),
+(475, 'Doctor availability inserted', 'Availability', 18, 162, 'Hospital1 Admin', '2017-11-25 08:08:25'),
+(476, 'Doctor availability updated', 'Availability', 18, 162, 'Hospital1 Admin', '2017-11-25 08:08:45'),
+(477, 'New user created', 'User', 220, 162, 'Hospital1 Admin', '2017-11-25 08:20:32'),
+(478, 'New nurse added', 'Nurse', 17, 162, 'Hospital1 Admin', '2017-11-25 08:20:37'),
+(479, 'Nurse details updated', 'Nurse', 17, 162, 'Hospital1 Admin', '2017-11-25 08:21:45'),
+(480, 'Nurse details updated', 'Nurse', 17, 162, 'Hospital1 Admin', '2017-11-25 08:21:51'),
+(481, 'New user created', 'User', 221, 162, 'Hospital1 Admin', '2017-11-25 08:23:19'),
+(482, 'New nurse added', 'Nurse', 18, 162, 'Hospital1 Admin', '2017-11-25 08:23:23'),
+(483, 'New user created', 'User', 222, 162, 'Hospital1 Admin', '2017-11-25 08:25:29'),
+(484, 'New nurse added', 'Nurse', 19, 162, 'Hospital1 Admin', '2017-11-25 08:25:34'),
+(485, 'Nurse details soft deleted', 'Nurse', 19, 162, 'Hospital1 Admin', '2017-11-25 08:26:44'),
+(486, 'User details updated', 'User', 216, 162, 'Hospital1 Admin', '2017-11-25 10:31:01'),
+(487, 'Receptionist details updated', 'Receptionist', 7, 162, 'Hospital1 Admin', '2017-11-25 10:31:01'),
+(488, 'User details updated', 'User', 216, 162, 'Hospital1 Admin', '2017-11-25 10:31:11'),
+(489, 'Receptionist details updated', 'Receptionist', 7, 162, 'Hospital1 Admin', '2017-11-25 10:31:11'),
+(490, 'Receptionist details updated', 'Receptionist', 1, 162, 'Hospital1 Admin', '2017-11-25 10:31:24'),
+(491, 'Receptionist details updated', 'Receptionist', 1, 162, 'Hospital1 Admin', '2017-11-25 10:32:21');
 
 -- --------------------------------------------------------
 
@@ -416,13 +565,14 @@ CREATE TABLE `hms_appoitments` (
 INSERT INTO `hms_appoitments` (`id`, `appoitment_number`, `user_id`, `department_id`, `doctor_id`, `appoitment_date`, `appoitment_time_start`, `appoitment_time_end`, `status`, `reason`, `remarks`, `created_at`, `modified_at`, `isDeleted`) VALUES
 (1, 'APT1', 190, 2, 2, '2017-11-23', '10:00:00', '10:30:00', 2, 'Check up', 'k', '0000-00-00 00:00:00', '2017-11-23 09:05:16', 0),
 (2, 'APT2', 188, 2, 2, '2017-11-23', '17:00:00', '17:30:00', 1, 'eye check up', '', '0000-00-00 00:00:00', '2017-11-23 07:42:59', 0),
-(3, 'APT3', 188, 1, 8, '2017-11-29', '10:00:00', '10:30:00', 4, 'Eye Number Check up', 'okk', '0000-00-00 00:00:00', '2017-11-23 12:40:32', 0),
-(4, 'APT4', 190, 1, 8, '2017-12-25', '11:00:00', '11:30:00', 0, 'Check Blood Group', '', '0000-00-00 00:00:00', '2017-11-23 07:44:58', 0),
+(3, 'APT3', 188, 1, 8, '2017-11-29', '10:00:00', '10:30:00', 4, 'Eye Number Check up', 'ok', '0000-00-00 00:00:00', '2017-11-25 06:18:24', 0),
+(4, 'APT4', 190, 1, 8, '2017-12-25', '11:00:00', '11:30:00', 1, 'Check Blood Group', 'nk', '0000-00-00 00:00:00', '2017-11-25 06:13:45', 0),
 (5, 'APT5', 190, 1, 8, '2017-12-25', '10:00:00', '10:30:00', 3, 'General', '', '0000-00-00 00:00:00', '2017-11-23 08:59:29', 0),
 (6, 'APT6', 188, 1, 8, '2017-11-23', '17:00:00', '17:30:00', 3, 'eye number checkup', 'ok', '0000-00-00 00:00:00', '2017-11-23 12:20:23', 0),
 (7, 'APT7', 190, 1, 8, '2017-11-23', '16:00:00', '16:30:00', 1, 'x-ray of  hands', '', '0000-00-00 00:00:00', '2017-11-23 10:11:38', 0),
-(8, 'APT8', 188, 1, 8, '2017-11-23', '17:00:00', '17:30:00', 0, 'check up', '', '0000-00-00 00:00:00', '2017-11-23 10:35:12', 0),
-(9, 'APT9', 188, 1, 8, '2017-11-24', '10:00:00', '10:30:00', 0, 'jkk', '', '0000-00-00 00:00:00', '2017-11-23 12:25:15', 0);
+(8, 'APT8', 188, 1, 8, '2017-11-23', '17:00:00', '17:30:00', 1, 'check up', '', '0000-00-00 00:00:00', '2017-11-24 12:36:33', 0),
+(9, 'APT9', 188, 1, 8, '2017-11-24', '10:00:00', '10:30:00', 2, 'jkk', '', '0000-00-00 00:00:00', '2017-11-25 06:20:55', 0),
+(10, 'APT10', 190, 1, 8, '2017-11-27', '10:00:00', '10:30:00', 0, 'Operation', 'ok', '0000-00-00 00:00:00', '2017-11-25 06:17:28', 0);
 
 -- --------------------------------------------------------
 
@@ -465,7 +615,9 @@ INSERT INTO `hms_availability` (`id`, `user_id`, `repeat_interval`, `isReatAllDa
 (13, 8, 0, 1, '2017-11-23', '2017-11-30', '10:00:00', '18:30:00', 3, 0, '0000-00-00 00:00:00', '2017-11-23 09:03:28'),
 (14, 8, 0, 1, '2017-11-23', '2017-11-30', '10:00:00', '18:30:00', 4, 0, '0000-00-00 00:00:00', '2017-11-23 09:03:28'),
 (15, 8, 0, 1, '2017-11-23', '2017-11-30', '10:00:00', '18:30:00', 5, 0, '0000-00-00 00:00:00', '2017-11-23 09:03:28'),
-(16, 8, 0, 1, '2017-11-23', '2017-11-30', '10:00:00', '18:30:00', 6, 0, '0000-00-00 00:00:00', '2017-11-23 09:03:28');
+(16, 8, 0, 1, '2017-11-23', '2017-11-30', '10:00:00', '18:30:00', 6, 0, '0000-00-00 00:00:00', '2017-11-23 09:03:28'),
+(17, 2, 1, 1, '2017-12-01', '2017-12-31', '10:00:00', '18:30:00', 1, 0, '0000-00-00 00:00:00', '2017-11-25 07:07:19'),
+(18, 2, 2, 1, '2017-12-02', '2017-12-02', '10:30:00', '18:00:00', 0, 0, '0000-00-00 00:00:00', '2017-11-25 07:08:45');
 
 -- --------------------------------------------------------
 
@@ -501,7 +653,16 @@ INSERT INTO `hms_beds` (`id`, `ward_id`, `bed`, `isAvailable`, `isActive`, `isDe
 (10, 3, 'B5', 0, 1, 1, '2017-11-21 11:25:11', '2017-11-21 10:25:19'),
 (11, 4, 'B5', 0, 1, 0, '2017-11-21 11:27:10', '2017-11-21 10:27:10'),
 (12, 1, 'B6', 1, 1, 0, '2017-11-21 13:49:25', '2017-11-23 09:29:19'),
-(13, 1, 'B7', 1, 1, 0, '2017-11-21 13:49:53', '2017-11-23 11:32:39');
+(13, 1, 'B7', 1, 1, 0, '2017-11-21 13:49:53', '2017-11-23 11:32:39'),
+(14, 8, 'B10', 0, 1, 0, '2017-11-24 11:34:02', '2017-11-24 10:34:02'),
+(15, 8, 'B11', 0, 1, 1, '2017-11-24 11:34:32', '2017-11-24 10:34:42'),
+(16, 8, 'b78', 0, 1, 1, '2017-11-24 12:04:34', '2017-11-24 11:04:44'),
+(17, 3, 'B78', 0, 1, 0, '2017-11-24 13:57:38', '2017-11-24 12:57:38'),
+(18, 8, 'B90', 0, 1, 0, '2017-11-24 13:59:15', '2017-11-24 12:59:15'),
+(19, 0, 'b7', 1, 1, 0, '2017-11-24 14:01:52', '2017-11-24 13:01:52'),
+(20, 0, 'bt', 1, 1, 0, '2017-11-24 14:12:46', '2017-11-24 13:12:46'),
+(21, 0, 'bt', 1, 1, 0, '2017-11-24 14:15:05', '2017-11-24 13:15:05'),
+(22, 0, 'bt', 1, 1, 0, '2017-11-24 14:15:23', '2017-11-24 13:15:23');
 
 -- --------------------------------------------------------
 
@@ -533,8 +694,13 @@ CREATE TABLE `hms_branches` (
 INSERT INTO `hms_branches` (`id`, `hospital_id`, `branch_name`, `phone_number`, `email`, `address`, `city`, `district`, `state`, `country`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
 (1, 1, 'h1_Branch1', '9945781240', 'h1branch1@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 0, '2017-11-21 08:20:58', '2017-11-21 09:01:32'),
 (2, 1, 'h1_Branch2', '9945781221', 'h1branch2@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 0, '2017-11-21 10:02:28', '2017-11-21 09:02:28'),
-(3, 1, 'h1_Branch3', '9945781965', 'h1branch3@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 1, '2017-11-21 10:04:14', '2017-11-21 09:04:20'),
-(4, 1, 'h1_Branch4', '9980567430', 'h1branch4@gmail.com', 'Ahmedabad', 2, 1, 1, 1, 1, 1, '2017-11-23 06:53:05', '2017-11-23 05:53:46');
+(3, 2, 'h1_Branch3', '9945781965', 'h1branch3@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 0, '2017-11-21 10:04:14', '2017-11-25 06:04:44'),
+(7, 1, 'h1_Branch3', '9998562333', 'h1branch3@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 0, '2017-11-25 07:30:11', '2017-11-25 06:30:11'),
+(4, 1, 'h1_Branch4', '9980567430', 'h1branch4@gmail.com', 'Ahmedabad', 2, 1, 1, 1, 1, 1, '2017-11-23 06:53:05', '2017-11-23 05:53:46'),
+(5, 1, 'h1_Branch3', '9956784215', 'h1branch3@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 1, '2017-11-24 10:13:26', '2017-11-24 09:13:39'),
+(6, 1, 'b', '9656234512', 'b@tc.in', 'Ahmedabad', 1, 1, 1, 1, 1, 1, '2017-11-24 12:03:27', '2017-11-24 11:03:32'),
+(8, 1, 'h1_Branch4', '7965411020', 'h1branch4@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 0, '2017-11-25 07:31:00', '2017-11-25 06:31:00'),
+(9, 1, 'h1_Branch5', '9856421578', 'h1branch5@gmail.com', 'Ahmedabad', 1, 1, 1, 1, 1, 1, '2017-11-25 07:31:40', '2017-11-25 06:31:53');
 
 -- --------------------------------------------------------
 
@@ -563,7 +729,9 @@ INSERT INTO `hms_charges` (`id`, `title`, `description`, `charge_type`, `charge`
 (2, 'Old case', 'Charges for old cases', 'Appointment Charges', 50, 1, 0, '2017-11-21 11:42:50', '2017-11-21 10:45:00'),
 (3, 'General Check up', 'Charges for General Check Up', 'General CheckUp fees', 1000, 1, 1, '2017-11-21 11:44:37', '2017-11-21 10:45:57'),
 (4, 'Gsn', 'fggf', 'dgnlbn', 20, 1, 1, '2017-11-21 11:45:40', '2017-11-21 10:45:48'),
-(5, 'ghk', 'ihilhi', 'ytyjg', 200, 1, 1, '2017-11-23 08:32:14', '2017-11-23 07:32:49');
+(5, 'ghk', 'ihilhi', 'ytyjg', 200, 1, 1, '2017-11-23 08:32:14', '2017-11-23 07:32:49'),
+(6, 'hgf', 'fghgj', 'dznhnhg', 250, 1, 1, '2017-11-24 11:35:45', '2017-11-24 10:35:55'),
+(7, 'fg', 'hk', 'kl', 10, 1, 1, '2017-11-24 12:05:00', '2017-11-24 11:05:04');
 
 -- --------------------------------------------------------
 
@@ -629,8 +797,11 @@ CREATE TABLE `hms_departments` (
 INSERT INTO `hms_departments` (`id`, `branch_id`, `department_name`, `isActive`, `isDeleted`, `modified_at`, `created_at`) VALUES
 (1, 1, 'h1_b1_Dept1', 1, 0, '2017-11-21 09:05:08', '2017-11-21 10:05:08'),
 (2, 1, 'h1_b1_Dept2', 1, 0, '2017-11-21 09:06:36', '2017-11-21 10:05:36'),
-(3, 2, 'h1_b2_Dept1', 1, 1, '2017-11-21 09:06:11', '2017-11-21 10:06:02'),
-(4, 2, 'h1_b2_Dept3', 1, 1, '2017-11-23 05:55:37', '2017-11-23 06:55:13');
+(9, 8, 'h1_b4_Dept5', 1, 0, '2017-11-25 06:33:46', '2017-11-25 07:33:46'),
+(8, 7, 'h1_b3_Dept4', 1, 0, '2017-11-25 06:32:54', '2017-11-25 07:32:37'),
+(7, 2, 'depppppppp', 1, 1, '2017-11-24 11:03:50', '2017-11-24 12:03:45'),
+(6, 2, 'h1_b2_Dept3', 1, 0, '2017-11-25 06:32:45', '2017-11-24 10:22:42'),
+(10, 7, 'h1_b3_Dept6', 1, 1, '2017-11-25 06:34:41', '2017-11-25 07:34:22');
 
 -- --------------------------------------------------------
 
@@ -686,10 +857,13 @@ CREATE TABLE `hms_doctors` (
 --
 
 INSERT INTO `hms_doctors` (`id`, `user_id`, `department_id`, `no_appt_handle`, `appt_interval`, `qualification`, `experience`, `specialization`, `isActive`, `isDeleted`, `created_at`, `updated_at`, `availability_text`) VALUES
+(11, 212, 1, 5, 30, '', '', '', 0, 1, '2017-11-24 12:07:02', '2017-11-24 11:10:36', NULL),
 (2, 165, 2, 5, 30, 'MBBS', '1 YEAR', 'General', 1, 0, '2017-11-21 14:04:53', '2017-11-23 06:01:12', 'every monday 10 am to 7 pm\r\n'),
 (10, 206, 1, 5, 30, '', '', '', 1, 1, '2017-11-23 07:45:34', '2017-11-23 06:45:44', NULL),
 (9, 202, 1, 5, 30, 'MBBS', '5 Year', 'Heart Specialist', 0, 1, '2017-11-23 07:13:43', '2017-11-23 06:15:06', NULL),
-(8, 201, 1, 3, 30, 'MD', '0 year', 'Eye Specialist ', 1, 0, '2017-11-23 07:05:31', '2017-11-23 10:41:15', 'Every Monday To Friday At 10:30 Am - 6:30 Pm');
+(8, 201, 1, 3, 30, 'MD', '0 year', 'Eye Specialist ', 1, 0, '2017-11-23 07:05:31', '2017-11-23 10:41:15', 'Every Monday To Friday At 10:30 Am - 6:30 Pm'),
+(12, 213, -1, 5, 30, '', '', '', 0, 1, '2017-11-24 12:11:25', '2017-11-24 11:11:30', NULL),
+(13, 215, -1, 5, 30, '', '', '', 0, 1, '2017-11-24 12:16:57', '2017-11-24 11:17:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -710,7 +884,8 @@ CREATE TABLE `hms_healthinsuranceprovider` (
 INSERT INTO `hms_healthinsuranceprovider` (`id`, `name`, `isDeleted`) VALUES
 (1, 'LIC', 0),
 (2, 'LIC Life Time', 0),
-(3, 'fgfhg', 1);
+(3, 'fgfhg', 1),
+(4, 'hkh', 1);
 
 -- --------------------------------------------------------
 
@@ -783,7 +958,12 @@ CREATE TABLE `hms_hospitals` (
 
 INSERT INTO `hms_hospitals` (`id`, `name`, `address`, `description`, `logo`, `background_image`, `phone_numbers`, `email`, `license_category`, `license_status`, `slug`, `city`, `district`, `state`, `country`, `md_name`, `md_contact_number`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
 (1, 'Hospital1', 'Ahmedabad', '', NULL, '', '9457812632', 'hospital1@gmail.com', 'LIC01', 1, '', '1', '1', '1', '1', '', '', 1, 0, '2017-11-21 07:24:52', '2017-11-21 06:24:52'),
-(2, 'Hospital2', 'Ahmedabad', '', NULL, '', '9457812630', 'hospital2@gmail.com', 'LIC01', 1, '', '2', '1', '1', '1', '', '', 0, 0, '2017-11-21 08:16:30', '2017-11-21 07:16:30');
+(2, 'Hospital2', 'Ahmedabad', '', NULL, '', '9457812630', 'hospital2@gmail.com', 'LIC01', 1, '', '2', '1', '1', '1', '', '', 0, 0, '2017-11-21 08:16:30', '2017-11-21 07:16:30'),
+(3, '', '', '', NULL, '', '', '', 'LIC01', 1, '', NULL, NULL, NULL, '', '', '', 0, 1, '2017-11-24 08:45:38', '2017-11-24 07:45:38'),
+(4, '', '', '', NULL, '', '', '', 'LIC02', 1, '', NULL, NULL, NULL, '', '', '', 0, 1, '2017-11-24 08:46:24', '2017-11-24 07:46:24'),
+(5, '', '', '', NULL, '', '', '', 'LIC01', 1, '', NULL, NULL, NULL, '', '', '', 0, 1, '2017-11-24 08:46:42', '2017-11-24 07:46:42'),
+(6, 'Hospital3', 'Ahmedabad', 'Hospital', NULL, '', '5668451231', 'hospital@gmail.com', 'LIC01', 1, '', '1', '1', '1', '1', 'yogesh', '8956421578', 0, 1, '2017-11-24 10:14:40', '2017-11-24 09:14:40'),
+(7, '', '', '', NULL, '', '', '', 'LIC01', 1, '', NULL, NULL, NULL, '', '', '', 0, 1, '2017-11-24 10:59:23', '2017-11-24 09:59:23');
 
 -- --------------------------------------------------------
 
@@ -806,7 +986,10 @@ CREATE TABLE `hms_hospital_admin` (
 --
 
 INSERT INTO `hms_hospital_admin` (`id`, `hospital_id`, `user_id`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(1, 1, 162, 1, 0, '0000-00-00 00:00:00', '2017-11-21 07:12:50');
+(1, 1, 162, 1, 0, '0000-00-00 00:00:00', '2017-11-21 07:12:50'),
+(2, 1, 209, 0, 0, '2017-11-24 11:42:02', '2017-11-24 10:42:15'),
+(3, 1, 210, 0, 1, '2017-11-24 11:45:30', '2017-11-24 11:02:28'),
+(4, 1, 211, 1, 0, '2017-11-24 11:47:13', '2017-11-24 10:47:13');
 
 -- --------------------------------------------------------
 
@@ -883,7 +1066,8 @@ INSERT INTO `hms_license` (`id`, `license_code`, `name`, `isDeleted`) VALUES
 (1, 'LIC01', 'Trial', 0),
 (2, 'LIC02', 'Trial', 0),
 (3, 'LIC03', 'Trial', 1),
-(4, 'lic03', 'Trial', 1);
+(4, 'lic03', 'Trial', 1),
+(5, 'gjhhjhg', 'trial', 1);
 
 -- --------------------------------------------------------
 
@@ -916,8 +1100,8 @@ CREATE TABLE `hms_medical_lab` (
 --
 
 INSERT INTO `hms_medical_lab` (`id`, `user_id`, `name`, `description`, `owner_name`, `owner_contact_number`, `branch_id`, `address`, `phone_number`, `country`, `state`, `city`, `district`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(3, 208, 'Bharat Medical Lab', 'Medical Lab', 'Svaji Patel', '6359908012', 2, 'Ahmedabad', '8877452356', 1, 1, 3, 1, 1, 1, '2017-11-23 08:11:03', '2017-11-23 07:17:40'),
-(2, 200, 'Medicalab', '', 'Twinkal Patel', '9999882232', 1, 'Ahmedabad', '9945781240', 1, 1, 1, 1, 0, 0, '0000-00-00 00:00:00', '2017-11-22 12:40:51');
+(3, 208, 'Bharat Medical Lab', 'Medical Lab', 'Svaji Patel', '6359908012', 2, 'Ahmedabad', '8877452356', 1, 1, 3, 1, 1, 1, '2017-11-23 08:11:03', '2017-11-24 12:28:11'),
+(2, 200, 'Medicalab', '', 'Twinkal Patel', '9999882232', 1, 'Ahmedabad', '9945781240', 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2017-11-24 12:28:35');
 
 -- --------------------------------------------------------
 
@@ -1000,9 +1184,9 @@ CREATE TABLE `hms_medical_store` (
 --
 
 INSERT INTO `hms_medical_store` (`id`, `user_id`, `name`, `description`, `owner_name`, `owner_contact_number`, `branch_id`, `address`, `phone_number`, `country`, `state`, `district`, `city`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(2, 191, 'MedicalStore', 'medical store', 'owner name', '9587561849', 2, 'Ahmedabad', '9945812456', 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2017-11-23 06:50:29'),
-(6, 197, 'm', '', 'twi', '9999882150', 1, '', '', 1, 1, 1, 1, 1, 1, '2017-11-22 12:35:12', '2017-11-23 07:01:00'),
-(5, 196, 'Patrel Medical lStore', 'Medical Store', 'Twinkal Patel', '9754814299', 1, 'Ahmedabad', '7878561230', 1, 1, 1, 1, 1, 1, '2017-11-22 12:29:25', '2017-11-23 07:17:53');
+(2, 191, 'MedicalStore', 'medical store', 'owner name', '9587561849', 1, 'Ahmedabad', '9945812456', 1, 1, 1, 1, 1, 0, '0000-00-00 00:00:00', '2017-11-24 12:23:21'),
+(6, 197, 'm', '', 'twi', '9999882150', 1, '', '', 1, 1, 1, 1, 1, 1, '2017-11-22 12:35:12', '2017-11-24 12:25:38'),
+(5, 196, 'Patrel Medical lStore', 'Medical Store', 'Twinkal Patel', '9754814299', 1, 'Ahmedabad', '7878561230', 1, 1, 1, 1, 0, 1, '2017-11-22 12:29:25', '2017-11-24 12:26:29');
 
 -- --------------------------------------------------------
 
@@ -1051,7 +1235,7 @@ CREATE TABLE `hms_notification` (
 --
 
 INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`, `action`, `created_date`, `isDeleted`) VALUES
-(1, 162, 1, '<b>Hospital Admin</b> is successfully registered as <b>Hospital Admin</b> in Hospital: <b>Hospital1</b>', 0, NULL, '2017-11-20 23:10:24', 0),
+(1, 162, 1, '<b>Hospital Admin</b> is successfully registered as <b>Hospital Admin</b> in Hospital: <b>Hospital1</b>', 1, NULL, '2017-11-20 23:10:24', 0),
 (2, 1, 162, 'Your Profile is updated', 1, NULL, '2017-11-20 23:12:50', 0),
 (3, 1, 162, 'Your Profile is updated', 1, NULL, '2017-11-20 23:54:25', 0),
 (4, 1, 162, 'Branch <b>h1_Branch1</b> information is updated', 1, NULL, '2017-11-21 01:01:32', 0),
@@ -1379,7 +1563,105 @@ INSERT INTO `hms_notification` (`id`, `created_by`, `user_id`, `text`, `isRead`,
 (326, 188, 182, 'New appointment is booked.<br> Appointment number:<b> APT9 </b>', 0, NULL, '2017-11-23 17:55:15', 0),
 (327, 1, 200, 'Your profile is updated', 0, NULL, '2017-11-23 18:26:28', 0),
 (328, 200, 190, 'Your medical report is uploded', 0, NULL, '2017-11-23 18:30:00', 0),
-(329, 200, 201, 'Medical report is uploaded of Patient_Appointment_No: <b>APT1</b>', 0, NULL, '2017-11-23 18:30:00', 0);
+(329, 200, 201, 'Medical report is uploaded of Patient_Appointment_No: <b>APT1</b>', 0, NULL, '2017-11-23 18:30:00', 0),
+(330, 1, 162, 'New branch <b>h1_Branch3</b> is added', 0, NULL, '2017-11-24 14:43:26', 0),
+(331, 1, 162, 'New department <b>deptkjkg;lg</b> is added in <b>h1_Branch1</b> branch', 0, NULL, '2017-11-24 14:45:51', 0),
+(332, 1, 162, 'New ward <b>warddddddddddddd</b> is added in <b>h1_b1_Dept2</b> department of <b>h1_Branch1</b> branch', 0, NULL, '2017-11-24 14:47:27', 0),
+(333, 1, 162, 'New department <b>h1_b2_Dept-3</b> is added in <b>h1_Branch2</b> branch', 0, NULL, '2017-11-24 14:52:42', 0),
+(334, 1, 162, 'New ward <b>h1_b2_d3_Ward4</b> is added in <b>h1_b2_Dept-3</b> department of <b>h1_Branch2</b> branch', 0, NULL, '2017-11-24 14:54:58', 0),
+(335, 1, 162, 'new bed <b>B10</b> is added in <b>h1_b2_d3_Ward4 </b> ward <br> Department: <b>h1_b2_Dept-3</b> <br> Branch: <b>h1_Branch2</b>', 0, NULL, '2017-11-24 16:04:02', 0),
+(336, 1, 162, 'new bed <b>B11</b> is added in <b>h1_b2_d3_Ward4 </b> ward <br> Department: <b>h1_b2_Dept-3</b> <br> Branch: <b>h1_Branch2</b>', 0, NULL, '2017-11-24 16:04:32', 0),
+(337, 1, 209, 'You are linked with <b>Hospital1</b> hospital as Hospital admin', 0, NULL, '2017-11-24 16:12:02', 0),
+(338, 1, 210, 'You are linked with <b>Hospital1</b> hospital as Hospital admin', 0, NULL, '2017-11-24 16:15:30', 0),
+(339, 1, 210, 'Your Profile is updated', 0, NULL, '2017-11-24 16:15:52', 0),
+(340, 1, 211, 'You are linked with <b>Hospital1</b> hospital as Hospital admin', 0, NULL, '2017-11-24 16:17:13', 0),
+(341, 1, 162, 'New branch <b>b</b> is added', 0, NULL, '2017-11-24 16:33:27', 0),
+(342, 1, 162, 'New department <b>depppppppp</b> is added in <b>h1_Branch2</b> branch', 0, NULL, '2017-11-24 16:33:45', 0),
+(343, 1, 162, 'New ward <b>wardddddd</b> is added in <b>h1_b2_Dept-3</b> department of <b>h1_Branch2</b> branch', 0, NULL, '2017-11-24 16:34:07', 0),
+(344, 1, 162, 'new bed <b>b78</b> is added in <b>h1_b2_d3_Ward4 </b> ward <br> Department: <b>h1_b2_Dept-3</b> <br> Branch: <b>h1_Branch2</b>', 0, NULL, '2017-11-24 16:34:34', 0),
+(345, 1, 211, 'Your Profile is updated', 0, NULL, '2017-11-24 16:35:31', 0),
+(346, 1, 212, 'Your Profile is updated', 0, NULL, '2017-11-24 16:40:18', 0),
+(347, 1, 214, 'You are linked with <b>Hospital1</b> hospital as Nurse', 0, NULL, '2017-11-24 16:46:15', 0),
+(348, 1, 162, 'New nurse <b>gfnnbnm hfgnvfg</b> is added in department: <b>h1_b2_Dept-3</b><br>Branch: <b>h1_Branch2</b>', 0, NULL, '2017-11-24 16:46:15', 0),
+(349, 1, 214, 'Your Profile is updated', 0, NULL, '2017-11-24 16:47:48', 0),
+(350, 1, 183, 'Your Profile is updated', 0, NULL, '2017-11-24 16:49:48', 0),
+(351, 1, 216, 'Your Profile is updated', 0, NULL, '2017-11-24 17:01:02', 0),
+(352, 1, 216, 'Your Profile is updated', 0, NULL, '2017-11-24 17:04:06', 0),
+(353, 1, 216, 'Your Profile is updated', 0, NULL, '2017-11-24 17:04:37', 0),
+(354, 1, 218, 'Your Profile is updated', 0, NULL, '2017-11-24 17:26:09', 0),
+(355, 1, 218, 'Your Profile is updated', 0, NULL, '2017-11-24 17:26:18', 0),
+(356, 1, 218, 'Your Profile is updated', 0, NULL, '2017-11-24 17:26:31', 0),
+(357, 1, 216, 'Your Profile is updated', 0, NULL, '2017-11-24 17:28:49', 0),
+(358, 1, 191, 'Your Profile is updated', 0, NULL, '2017-11-24 17:48:42', 0),
+(359, 1, 191, 'Your profile is updated', 0, NULL, '2017-11-24 17:48:42', 0),
+(360, 1, 191, 'Your Profile is updated', 0, NULL, '2017-11-24 17:52:21', 0),
+(361, 1, 191, 'Your profile is updated', 0, NULL, '2017-11-24 17:52:21', 0),
+(362, 1, 196, 'Your profile is updated', 0, NULL, '2017-11-24 17:55:42', 0),
+(363, 1, 196, 'Your profile is updated', 0, NULL, '2017-11-24 17:55:55', 0),
+(364, 1, 200, 'Your Profile is updated', 0, NULL, '2017-11-24 17:58:35', 0),
+(365, 1, 200, 'Your profile is updated', 0, NULL, '2017-11-24 17:58:35', 0),
+(366, 1, 188, 'Remark added in your appointment: <b>APT3</b>', 0, NULL, '2017-11-24 18:02:55', 0),
+(367, 1, 201, 'Remark added in appointment: <b>APT3</b>', 0, NULL, '2017-11-24 18:02:55', 0),
+(368, 1, 188, 'Remark added in your appointment: <b>APT3</b>', 0, NULL, '2017-11-24 18:03:10', 0),
+(369, 1, 201, 'Remark added in appointment: <b>APT3</b>', 0, NULL, '2017-11-24 18:03:10', 0),
+(370, 1, 188, 'Remark added in your appointment: <b>APT3</b>', 0, NULL, '2017-11-24 18:03:16', 0),
+(371, 1, 201, 'Remark added in appointment: <b>APT3</b>', 0, NULL, '2017-11-24 18:03:16', 0),
+(372, 1, 188, 'Your appointment <b>APT8</b> has been Approved', 0, NULL, '2017-11-24 18:05:01', 0),
+(373, 1, 201, ' Appointment <b>APT8</b> has been Approved', 0, NULL, '2017-11-24 18:05:01', 0),
+(374, 1, 190, 'Your appointment <b>APT4</b> has been Rejected', 0, NULL, '2017-11-24 18:06:12', 0),
+(375, 1, 201, ' Appointment <b>APT4</b> has been Rejected', 0, NULL, '2017-11-24 18:06:12', 0),
+(376, 1, 188, 'Your appointment <b>APT8</b> has been Rejected', 0, NULL, '2017-11-24 18:06:12', 0),
+(377, 1, 201, ' Appointment <b>APT8</b> has been Rejected', 0, NULL, '2017-11-24 18:06:12', 0),
+(378, 1, 190, 'Your appointment <b>APT4</b> has been Approved', 0, NULL, '2017-11-24 18:06:33', 0),
+(379, 1, 201, ' Appointment <b>APT4</b> has been Approved', 0, NULL, '2017-11-24 18:06:33', 0),
+(380, 1, 188, 'Your appointment <b>APT8</b> has been Approved', 0, NULL, '2017-11-24 18:06:33', 0),
+(381, 1, 201, ' Appointment <b>APT8</b> has been Approved', 0, NULL, '2017-11-24 18:06:33', 0),
+(382, 1, 203, 'new bed <b>B78</b> is added in <b>h1_b1_d2_Ward1</b> ward', 0, NULL, '2017-11-24 18:27:38', 0),
+(383, 1, 162, 'new bed <b>B78</b> is added in <b>h1_b1_d2_Ward1 </b> ward <br> Department: <b>h1_b1_Dept2</b> <br> Branch: <b>h1_Branch1</b>', 0, NULL, '2017-11-24 18:27:38', 0),
+(384, 1, 214, 'new bed <b>B90</b> is added in <b>h1_b2_d3_Ward4</b> ward', 0, NULL, '2017-11-24 18:29:15', 0),
+(385, 1, 218, 'new bed <b>B90</b> is added in <b>h1_b2_d3_Ward4</b> ward', 0, NULL, '2017-11-24 18:29:15', 0),
+(386, 1, 162, 'new bed <b>B90</b> is added in <b>h1_b2_d3_Ward4 </b> ward <br> Department: <b>h1_b2_Dept-3</b> <br> Branch: <b>h1_Branch2</b>', 0, NULL, '2017-11-24 18:29:15', 0),
+(387, 1, 188, 'Your appointment <b>APT9</b> has been Approved', 0, NULL, '2017-11-25 11:43:16', 0),
+(388, 1, 201, ' Appointment <b>APT9</b> has been Approved', 0, NULL, '2017-11-25 11:43:16', 0),
+(389, 1, 190, 'Remark added in your appointment: <b>APT4</b>', 0, NULL, '2017-11-25 11:43:45', 0),
+(390, 1, 201, 'Remark added in appointment: <b>APT4</b>', 0, NULL, '2017-11-25 11:43:45', 0),
+(391, 1, 190, 'Your appointment is booked.<br> Appointment number:<b> APT10 </b>', 0, NULL, '2017-11-25 11:47:16', 0),
+(392, 1, 201, 'New appointment is booked.<br> Appointment number:<b> APT10 </b>', 0, NULL, '2017-11-25 11:47:16', 0),
+(393, 1, 190, 'Remark added in your appointment: <b>APT10</b>', 0, NULL, '2017-11-25 11:47:28', 0),
+(394, 1, 201, 'Remark added in appointment: <b>APT10</b>', 0, NULL, '2017-11-25 11:47:28', 0),
+(395, 1, 188, 'Remark added in your appointment: <b>APT3</b>', 0, NULL, '2017-11-25 11:47:51', 0),
+(396, 1, 201, 'Remark added in appointment: <b>APT3</b>', 0, NULL, '2017-11-25 11:47:51', 0),
+(397, 1, 188, 'Remark added in your appointment: <b>APT3</b>', 0, NULL, '2017-11-25 11:48:11', 0),
+(398, 1, 201, 'Remark added in appointment: <b>APT3</b>', 0, NULL, '2017-11-25 11:48:11', 0),
+(399, 1, 188, 'Remark added in your appointment: <b>APT3</b>', 0, NULL, '2017-11-25 11:48:24', 0),
+(400, 1, 201, 'Remark added in appointment: <b>APT3</b>', 0, NULL, '2017-11-25 11:48:24', 0),
+(401, 1, 188, 'Your appointment <b>APT9</b> has been Rejected', 0, NULL, '2017-11-25 11:50:23', 0),
+(402, 1, 201, ' Appointment <b>APT9</b> has been Rejected', 0, NULL, '2017-11-25 11:50:23', 0),
+(403, 1, 188, 'Your appointment <b>APT9</b> has been Approved', 0, NULL, '2017-11-25 11:50:46', 0),
+(404, 1, 201, ' Appointment <b>APT9</b> has been Approved', 0, NULL, '2017-11-25 11:50:46', 0),
+(405, 1, 188, 'Your appointment <b>APT9</b> has been Rejected', 0, NULL, '2017-11-25 11:50:55', 0),
+(406, 1, 201, ' Appointment <b>APT9</b> has been Rejected', 0, NULL, '2017-11-25 11:50:55', 0),
+(407, 1, 188, 'Your appointment <b>APT9</b> has been Rejected', 0, NULL, '2017-11-25 11:54:07', 0),
+(408, 1, 201, ' Appointment <b>APT9</b> has been Rejected', 0, NULL, '2017-11-25 11:54:07', 0),
+(409, 162, 165, 'Your new availability is added ', 0, NULL, '2017-11-25 12:37:19', 0),
+(410, 162, 182, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:37:19', 0),
+(411, 162, 183, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:37:19', 0),
+(412, 162, 217, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:37:19', 0),
+(413, 162, 216, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:37:19', 0),
+(414, 162, 165, 'Your new availability is added ', 0, NULL, '2017-11-25 12:38:25', 0),
+(415, 162, 182, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:38:25', 0),
+(416, 162, 183, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:38:25', 0),
+(417, 162, 217, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:38:25', 0),
+(418, 162, 216, 'Dr. Yogesh  Patel added new availability', 0, NULL, '2017-11-25 12:38:25', 0),
+(419, 162, 165, 'Your Availability is updated', 0, NULL, '2017-11-25 12:38:45', 0),
+(420, 162, 182, 'Dr. Yogesh  Patel Availability is updated', 0, NULL, '2017-11-25 12:38:45', 0),
+(421, 162, 183, 'Dr. Yogesh  Patel Availability is updated', 0, NULL, '2017-11-25 12:38:45', 0),
+(422, 162, 217, 'Dr. Yogesh  Patel Availability is updated', 0, NULL, '2017-11-25 12:38:45', 0),
+(423, 162, 216, 'Dr. Yogesh  Patel Availability is updated', 0, NULL, '2017-11-25 12:38:45', 0),
+(424, 162, 220, 'You are linked with <b>Hospital1</b> hospital as Nurse', 0, NULL, '2017-11-25 12:50:37', 0),
+(425, 162, 222, 'You are linked with <b>Hospital1</b> hospital as Nurse', 0, NULL, '2017-11-25 12:55:34', 0),
+(426, 162, 216, 'Your Profile is updated', 0, NULL, '2017-11-25 15:01:01', 0),
+(427, 162, 216, 'Your Profile is updated', 0, NULL, '2017-11-25 15:01:11', 0);
 
 -- --------------------------------------------------------
 
@@ -1412,8 +1694,13 @@ INSERT INTO `hms_nurse` (`id`, `user_id`, `department_id`, `isActive`, `isDelete
 (10, 180, -1, 1, 1, '2017-11-22 08:36:31', '2017-11-22 07:42:10', '', ''),
 (11, 181, -1, 0, 1, '2017-11-22 08:37:03', '2017-11-22 07:37:19', '', ''),
 (12, 203, 2, 1, 1, '2017-11-23 07:39:27', '2017-11-23 06:39:39', '', ''),
-(13, 204, -1, 1, 0, '2017-11-23 07:40:34', '2017-11-23 06:40:34', '', ''),
-(14, 205, 1, 0, 1, '2017-11-23 07:43:02', '2017-11-23 06:43:26', '', '');
+(13, 204, -1, 1, 1, '2017-11-23 07:40:34', '2017-11-24 11:17:11', '', ''),
+(14, 205, 1, 0, 1, '2017-11-23 07:43:02', '2017-11-23 06:43:26', '', ''),
+(15, 214, 6, 0, 1, '2017-11-24 12:16:15', '2017-11-24 11:18:03', '', ''),
+(16, 218, 6, 0, 1, '2017-11-24 12:56:01', '2017-11-24 11:56:40', '', ''),
+(17, 220, 6, 1, 0, '2017-11-25 08:20:37', '2017-11-25 07:21:51', 'Nursing', '1 yr'),
+(18, 221, -1, 0, 0, '2017-11-25 08:23:23', '2017-11-25 07:23:23', '', ''),
+(19, 222, 6, 0, 1, '2017-11-25 08:25:34', '2017-11-25 07:26:31', '', '');
 
 -- --------------------------------------------------------
 
@@ -1514,8 +1801,10 @@ CREATE TABLE `hms_receptionist` (
 --
 
 INSERT INTO `hms_receptionist` (`id`, `user_id`, `doc_id`, `qualification`, `experience`, `isActive`, `isDeleted`, `created_at`, `modified_at`) VALUES
-(1, 182, 8, 'BCA', '0 yr', 1, 0, '0000-00-00 00:00:00', '2017-11-23 11:17:36'),
-(2, 183, 2, '', '', 1, 0, '2017-11-22 09:58:25', '2017-11-22 09:16:55');
+(1, 182, 8, '', '', 0, 0, '0000-00-00 00:00:00', '2017-11-25 09:32:21'),
+(2, 183, 8, '', '', 0, 0, '2017-11-22 09:58:25', '2017-11-25 09:32:21'),
+(8, 217, 8, '', '', 0, 0, '2017-11-24 12:32:26', '2017-11-25 09:32:21'),
+(7, 216, 8, '', '', 0, 1, '2017-11-24 12:23:02', '2017-11-25 09:48:55');
 
 -- --------------------------------------------------------
 
@@ -1631,19 +1920,33 @@ CREATE TABLE `hms_users` (
 
 INSERT INTO `hms_users` (`id`, `first_name`, `last_name`, `useremail`, `password`, `my_key`, `address`, `mobile`, `aadhaar_number`, `phone`, `profile_photo`, `hospital`, `gender`, `date_of_birth`, `city`, `district`, `state`, `country`, `alternate_mobile_number`, `description`, `role`, `isActive`, `isDeleted`, `created_at`, `updated_at`, `forgotPassCode`, `isRegister`, `hasSelectedRole`) VALUES
 (1, 'Super', 'Admin', 'superadmin@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'YzE4MGY3MTUyMGM5ZGMwNDliZWUxYTc3NGU2MzdlZDdkMzdlOGI5Mzg0YmNmYmJjMzJjMjQ5NmYzZjA2NDEzMw==', 'Ahmedabad1', '9090123409', '5421321054671', '', 'http://localhost/mypulse/public/images/ux/1.png', 0, 'M', '1905-05-05', 1, 1, 1, 1, '', 'About my profile..', 1, 1, 0, '0000-00-00 00:00:00', '2017-05-03 18:46:34', '0', 1, 0),
+(221, 'hgkfhd', 'fhjggjb', 'hgjkfh@gmal.com', 'c8da9e161f78705d71fb5b08ef690133', 'YzlmM2U5ZTMwMjU0OGZjNjAwZjY4MTJkMDM3Y2RlNzRlMTgzMWU5OGE3YmQ1ZTA3NDcyMTg1ZmZhNTAzMGZlYw==', '', '9654678216', 'adhar', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', '', 4, 0, 0, '2017-11-25 08:23:19', '2017-11-25 07:23:19', 'E4EF35FF9B', 1, 0),
+(222, 'bkdfgb', 'fdjlh', 'fjhkj@tc.in', '186ee416f1b3e264a063d479bb1c910f', 'NWUzZWQ4YzYyZTVmNThmYjk5ODIwYTRkMjQzNDg1ODkwNzk3N2JiZTJlMGM4M2M4MGE4ZTc3NzM5NTNiNDk3Yw==', '', '9870695034', 'sjkghjh', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'jdfkjkhg', 4, 0, 0, '2017-11-25 08:25:29', '2017-11-25 07:25:29', 'E8558CF544', 1, 0),
+(219, 'patient', 'patient', 'patienttt@tc.in', 'patient', 'Yjg3OGY5YzUwNTU1YTljNGExNDg5YzZjZDc2YWU2ZjJmZmViZDYxMzQ2NzQ3ZjkyYWE5MGY1NzcxMjIyODVjMg==', 'Ahmedabad', '8263104508', '96522457894564', NULL, NULL, 0, 'M', '0000-00-00', 0, 0, 0, 0, '9956412457', 'patient', 6, 0, 0, '2017-11-24 13:06:20', '2017-11-24 12:06:20', '447FFB5C19', 1, 0),
+(218, 'seema', 'patel', 'seema@gmail.com', '4996263ab509ac818f5ea3927fc85308', 'NjFlZDZjZDQ1NDc1NGU0Mjk4YmNmZmEyM2Y5YTNlZmYwZDEyYTljOTNjOTU4YzVjMTIxZTBhNTA2MmRmNzJhZQ==', '', '9982560011', '9654120002356', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'nurse', 4, 0, 0, '2017-11-24 12:55:55', '2017-11-24 11:55:55', 'F43A6CD92C', 1, 0),
+(217, 'patel', 'patel', 'patel@tc.in', '64a43b6ca15d128ac6a0679b39bc9c07', 'ZjFjZDQ1YmE0NWQ3OGNiMGVjNmUyOWNmNTYzYWZmOWRjNDQ1M2ZjNTQzMDQ3MmQyMjgwNDJhMmRiMGY1Y2U4Yg==', '', '9652467856', '965234185', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'patel', 5, 0, 0, '2017-11-24 12:32:21', '2017-11-24 11:32:21', 'C73470DA8A', 1, 0),
+(215, 'ghjh', 'jdhkjlvjj', 'kdb@gmail.com', '6e05b3183be58a1c1c9d07ece44f7aa6', 'YjI3Y2VlMzJmNzU1OTE0NTRjYjgxMzE2YmE2ZmQ2Y2RhNzM0ZDRjYTlmZjEwMTAyMzBmYTY0MDhmNmU0MDQ1ZA==', '', '5897887990', 'nbnkjgb', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'kknfbj', 3, 0, 0, '2017-11-24 12:16:48', '2017-11-24 11:16:48', 'BD8B9B8437', 1, 0),
+(216, 'kjnkjnbkj', 'jhmmmngh', 'njhlh@gmail.com', 'f6171da3e5b3c83c338288a4b4add8e8', 'NWE1MzZkMDM2YTNhZjhjNDMwYjM5NDkxZTM2MTUxZTdmN2YzN2Q3NGRkYjM1ZDU2YTU1ZDc5YTc0NmYyYjViNA==', '', '9653265645', 'gfklmldkn..jgn', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'hnfmn', 5, 0, 0, '2017-11-24 12:22:58', '2017-11-24 11:22:58', 'CB1880714D', 1, 0),
+(214, 'gfnnbnm', 'hfgnvfg', 'hgfh@gmail.com', '7587c3c51ac3b38e48ad47cf158d812e', 'MDZkYjlmZjgxYWU3N2FhMDAwOGNiNTgzNWJiMjg4NjcyMzUxZDJmYmVhNjkxOWYzNWZjMTc3NDUxZjQxZjIzNw==', 'Ahmedabad', '9080347854', 'bkbhfdvk', NULL, NULL, 0, 'M', '2017-11-22', 0, 0, 0, 0, '', 'nnf', 4, 0, 0, '2017-11-24 12:16:11', '2017-11-24 11:16:11', 'C5E6F2F30B', 1, 0),
+(213, 'hjhgj', 'hgkjh', 'hg@email.com', '1f28e49f34e2406fdb6d6158eebd793b', 'NGEyNTY2YTgzY2Q1MWVkNjcxY2U5MWNmMGZhZjgyN2RmZDJhZTlmM2QwMGI3ODFlZWFmYTQ1ZTE4MDZjNTQyMw==', '', '9632521045', 'hfb', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'h,jhk,j,', 3, 0, 0, '2017-11-24 12:11:20', '2017-11-24 11:11:20', '0F84D53BEA', 1, 0),
+(212, 'gn', 'kjh,mhj', 'xbnvbm@gmail.in', '324a2eec207a91517b316dc82cb0c892', 'Y2UzMzcyODVhZmU1NjdkN2U2ZDE5MDFhOTM5NWNkYTQ0MWFiMDNjNDFmM2JiNGI0YTlmMzMxODkxMzIyZWU2OA==', '', '6385421520', '27826', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'dhfgmh', 3, 0, 0, '2017-11-24 12:06:57', '2017-11-24 11:06:57', '57B4869431', 1, 0),
+(211, 'Admin', 'Admin', 'adminn@ac.in', '21232f297a57a5a743894a0e4a801fc3', 'ZWVlYTQwMzg5ZWRhZTI2YzNlMDc3MGIzMGRiN2VmMjQwNDllOWJkOTFmZmZjY2QyZGM2NzdkMTZmNGIyNzMyNQ==', 'Ahmedabad', '9689567412', '96587412356', NULL, NULL, 0, 'M', '1970-01-06', 0, 0, 0, 0, '', 'Admin', 2, 0, 0, '2017-11-24 11:47:09', '2017-11-24 10:47:09', 'A26409C4FB', 1, 0),
 (208, 'Bharat', '         Patel                                                                                                                                                                                                                                            ', ' bharat@mypylse.com', 'c0cb5f0fcf239ab3d9c1fcd31fff1efc', 'MTU2ZmFmZThhOWFmN2E1MmVkNTZkZDM3MGZjZWIwYjkyMjIyZjllNDJkY2M4ZWMzOWEzYTM0YzA3YjEyZDEzZg==', 'Ahmedabad', '9814252855', '201356410023', NULL, NULL, 0, 'M', '2017-11-08', 3, 1, 1, 1, '', '', 8, 0, 0, '2017-11-23 08:10:58', '2017-11-23 07:10:58', '5FB85F9C4D', 1, 0),
+(220, 'Arya ', 'patel', 'arya@gmail.com', '8f80598eaadc75b6b657fdca55cd8f96', 'NzdmNzU2NGUwYjg2OWRkZGNiNjQ1Y2Q3NzY2ZmRkMWYyNjUxMDc2YjYwMDc4ZGRkNjlkM2FlOTQ2YTY5ZWE3Mg==', 'Ahmedabad', '9988563453', '123457', NULL, NULL, 0, 'F', '1970-01-29', 1, 1, 1, 1, '', 'Nurse', 4, 0, 0, '2017-11-25 08:20:32', '2017-11-25 07:20:32', '9471C2A4A4', 1, 0),
 (207, '', '', '', '', 'MTUzZTAwZjQwYTE5ZWVjNTg3NzQyOGU1NDljZDQ5MTk2YWZjM2UzZTFiZjUyZTJhMThjMWU1YmE5MDI0MzZjOA==', NULL, NULL, NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 8, 0, 0, '2017-11-23 08:05:13', '2017-11-23 07:05:13', 'FEC80901AB', 1, 0),
+(210, 'vvhjhj', 'dfdhbvkjf', 'jkhgjkdf@gmail.com', '368a627afda6fdb606c7241d9d1aa63b', 'YzhlYzExNTY2MGJiOWFiMjc3ZWZjNmM4MmVjOWZkOTU5NTZhNjY3ZThlNTMyMjRlY2Q2MjI2MmE1MzhiZjIwYw==', '', '9656895246', 'sjklgnklndbgf', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'fkbvkdfnb', 2, 0, 0, '2017-11-24 11:45:26', '2017-11-24 10:45:26', '31ECE04B31', 1, 0),
 (206, 'gjkld', 'jh lfj', 'hnjnb@gmail.com', '00453218b7fdca03d2673630d2681adf', 'YjM2MjNmZDdiYTNmMzVmMGQxMTlkZWQ4MDg4MDkzMWM4Mjg2NzdjODY3ZDg3NDM3MzljOTQ1YmQzN2I0M2E1Yw==', '', '5534683468', 'njbnxklv', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'jknhf gbjfkl', 3, 0, 0, '2017-11-23 07:45:30', '2017-11-23 06:45:30', '537912199D', 1, 0),
+(209, 'Hospital Adminnnnnn', 'admin', 'admin@gmail.com', 'f89f124c0b230be9557c714912ee3320', 'NmM0OWYxNmM2YzQ5YWE5MGE5YzMwMjc2NzBjNDA0MzZhOTkzNDIyZDg3NTAxNTgyZmYzZjg3OWE0NDFlMDBlYw==', 'Ahmedabad', '6978458956', '56985686568', NULL, NULL, 0, 'M', '1969-12-11', 1, 1, 1, 1, '', 'admin', 2, 0, 0, '2017-11-24 11:41:57', '2017-11-24 10:41:57', 'E4D50F1119', 1, 0),
 (203, 'Marya', 'Patel', 'marya@gmail.com', 'fe7166b2c56d4b7ce2e58427a852664f', 'YTE2MjQzMTA0ZjhhNmQ1ZjM5OTBlZDI1MTZiZTQxNjcxZDNiMDk4ZGFkOWMwNjJkNTdmMjY4YTYyNjM5MDIxYg==', 'Ahmedabad', '9966523560', '96451235689', NULL, NULL, 0, 'F', '2017-11-14', 1, 1, 1, 1, '', 'Nurse', 4, 0, 0, '2017-11-23 07:39:22', '2017-11-23 06:39:22', '5C5D34497F', 1, 0),
 (202, 'Doctor', 'Patel', 'doctor@gmail.com', 'f9f16d97c90d8c6f2cab37bb6d1f1992', 'MDYyOTA0MmNiYTY4ZmRhMzgyNDdkODk5ODc5ZjMyODBlYTA5NWEzYmFlMTVkMWI5ZDdhMzlkZjAzODY0YTc1MA==', 'Ahmedabad', '8090706056', '9546195987299', NULL, NULL, 0, 'M', '2017-11-14', 1, 1, 1, 1, '', 'Doctor', 3, 0, 0, '2017-11-23 07:13:38', '2017-11-23 06:13:38', '7C3D72A72C', 1, 0),
 (198, 'Medical', 'Lab', 'medicallab@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'ZWYwYzRmNWRjNjQxMzRjZGJlMmZmMzYzMmNhM2M2Y2MyZDIyODY5MjgyOWU1ZDVjMjdkMmIyNjE1OGIyNWM3OA==', NULL, '9956935600', NULL, NULL, NULL, 0, '', '0000-00-00', 0, 0, 0, 0, '', '', 8, 1, 0, '2017-11-22 12:55:30', '2017-11-22 11:55:30', '46DD59A63F', 1, 0),
-(191, 'Medical', 'Store', 'medicalstore@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'NjdhZjA2MDBhNDA0ZmI4NmUyYzYxMGY5ZmFkMTVmYTE0ODM3ODllNzUyM2ViYzA4YjJkYjM0YjI4N2FmMzAxNw==', 'Ahmedabad', '9956241578', '465486421.410.', NULL, NULL, 0, 'M', '1969-12-30', 1, 1, 1, 1, '', 'medical store', 7, 1, 0, '2017-11-22 11:18:47', '2017-11-22 10:18:47', '0C852B4AFA', 1, 0),
+(191, 'Medical', 'Store', 'medicalstore@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'NjdhZjA2MDBhNDA0ZmI4NmUyYzYxMGY5ZmFkMTVmYTE0ODM3ODllNzUyM2ViYzA4YjJkYjM0YjI4N2FmMzAxNw==', 'Ahmedabad', '9956241578', '1121566', NULL, NULL, 0, 'M', '1969-12-30', 1, 1, 1, 1, '', 'medical store', 7, 1, 0, '2017-11-22 11:18:47', '2017-11-22 10:18:47', '0C852B4AFA', 1, 0),
 (190, 'Yogi', 'Patel', 'yogi@gmail.com', '', 'Y2MxN2M1MTg2ZjNjMGMxOGE4M2U3MjU3MWY2YjFiYjZhMWRiNWIwNjU0ODU0NmM0YjAzM2FkNWVmYmVkMWU3NQ==', 'Ahmedabad', '9956781230', '89456312457896', NULL, NULL, 0, 'M', '1969-12-31', 1, 1, 1, 1, '8856237845', 'Patient', 6, 1, 0, '2017-11-22 11:16:57', '2017-11-22 10:16:58', 'ACACC7FC9C', 1, 0),
 (201, 'Dr. Ravi', 'Patel', 'doctor@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'OTE5YjM3M2QwN2ViZDhiZTk2N2Y2NzYzNzEwZTA2MGE5ODFjMmMwYWE3YWViNTU1YjA1YmRmNTA1ZjdkYzQ2NA==', 'Ahmedabad', '8866794512', '46531297058358', NULL, NULL, 0, 'M', '1992-03-11', 1, 1, 1, 1, '9956878123', 'Doctor', 3, 1, 0, '2017-11-23 07:05:26', '2017-11-23 06:05:26', '1C436BB02C', 1, 0),
 (199, 'Star', 'Patel', 'tkpatel1996@gmail.com', 'd18505e73a311f5c3a0d6c3f2fa16405', 'NWJkYWI4ZWVmOTYyOTBkMDIxYzY2ZTBlOWU4YjljY2VjMGE5YTA4MGY1NTFkNTc1YzM0MDlmYTc0ZWE4ZmUwMg==', 'Ahmedabad', '9106632825', '9546195987299149', NULL, NULL, 0, 'F', '2017-11-14', 1, 1, 1, 1, '9923456980', 'Star', 6, 1, 0, '2017-11-22 13:02:00', '2017-11-22 12:02:00', '10E43BFA95', 1, 0),
 (182, 'Receptionist', 'Patel', 'receptionist@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'MTc1YzVhMDA0NjQwOWJmZmNlNjIwMTcwMjFmYzUzMGM0M2UwOWNlMzljOGU2YjAzMjc5NmRmODAyZGZjODY5NA==', 'Ahmedabadkhjgh', '9814252852', '89561245763', NULL, NULL, 0, 'F', '2017-11-22', 1, 1, 1, 1, '', 'Receptionist', 5, 1, 0, '2017-11-22 09:25:57', '2017-11-22 08:25:57', 'EBA6367F40', 1, 0),
 (183, 'twinkal', 'Patel', 'twinkalpatel@gmail.com', '473897dcf9d235f5498904a3adde607d', 'YzU1MDBlNTUzOGRhN2I0ZTFkYjUyNDA4MzBmYTNiNjNlMTlhNjIwNDQ0YTI4MmQzMGY0MzM4YWU5OWU1ZmVkMA==', '', '8641164647', '454', NULL, NULL, 0, 'M', '1970-01-01', 0, 0, 0, 0, '', 'hfgghdgh', 5, 0, 0, '2017-11-22 09:58:20', '2017-11-22 08:58:20', '6A23F08DCC', 1, 0),
-(200, 'Star', 'Patel', 'twinkalpatel485@gmail.com', '473897dcf9d235f5498904a3adde607d', 'ZWI2MmU5N2ZlZjU2OGI4MTdkMjM3NjZmZDgyMzZlNDFmN2VmYmZlMDk5YzYzYzE4MDljYWMyYWYyMjVjYzljYw==', 'Ahmedabad', '9157136316', NULL, NULL, NULL, 0, 'F', '2017-11-16', 1, 1, 1, 1, '', '', 8, 1, 0, '2017-11-22 13:05:58', '2017-11-22 12:05:58', NULL, 1, 0),
+(200, 'Star', 'Patel', 'twinkalpatel485@gmail.com', '473897dcf9d235f5498904a3adde607d', 'ZWI2MmU5N2ZlZjU2OGI4MTdkMjM3NjZmZDgyMzZlNDFmN2VmYmZlMDk5YzYzYzE4MDljYWMyYWYyMjVjYzljYw==', 'Ahmedabad', '9157136316', '56562326', NULL, NULL, 0, 'F', '2017-11-16', 1, 1, 1, 1, '', '', 8, 1, 0, '2017-11-22 13:05:58', '2017-11-22 12:05:58', NULL, 1, 0),
 (174, 'Dr. Twinkal', 'Patel', 'twinkl@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'ZmI0NjhkMmVkMmQ1NTYwYTg0MGE0MmNiNzc2Yjg5ODkzYzZjMmU1ZWQxM2ExNzhmOTQ0MmUzMmFiZWE2MWQ1YQ==', '', '9632568974', '457885427570', NULL, NULL, 0, 'M', '1969-12-31', 0, 0, 0, 0, '', 'Doctor', 3, 0, 0, '2017-11-22 07:46:03', '2017-11-22 06:46:03', '24B0C7B570', 1, 0),
 (188, 'Patient', 'Patel', 'patient@mypulse.com', '473897dcf9d235f5498904a3adde607d', 'MjAxNTc0MzA1OTg1MDcyNzAwZDliNTZhZDE0NjljOGE3ZjM2N2ZjMGEzOTk4NWI5ODkwZmVkNzNjY2Y4ZWNiYQ==', 'Ahmedabad', '9569781023 ', '24645634254365', NULL, NULL, 0, 'M', '1969-12-31', 1, 1, 1, 1, '9923568910', 'Patient', 6, 1, 0, '2017-11-22 10:57:34', '2017-11-22 09:57:34', '8450B0F808', 1, 0),
 (177, 'Mansi', 'Patel', 'mansi@gmail.com', '8e183f28f7ac8aaebf5650f728f79a37', 'ZDVlODc0MmY3ZDZjYjU2YWY0Nzc5ZWU1OTEyMGM1Nzc5MjAxNzJmOTAyMGRlZjVlNDMyYWRkMjFhMTY4NmVlNg==', 'Ahmedabad', '8676453155', '8955316878643', NULL, NULL, 0, 'F', '2017-11-15', 1, 1, 1, 1, '', 'Nurse', 4, 0, 0, '2017-11-22 08:12:36', '2017-11-22 07:12:36', '373FC81C59', 1, 0),
@@ -1679,7 +1982,11 @@ INSERT INTO `hms_wards` (`id`, `department_id`, `ward_name`, `isActive`, `isDele
 (3, 2, 'h1_b1_d2_Ward1', 1, 1, '2017-11-21 09:10:43', '0000-00-00 00:00:00'),
 (4, 2, 'h1_b1_d2_Ward3', 1, 0, '2017-11-21 10:26:09', '0000-00-00 00:00:00'),
 (5, 2, 'h1_b1_d2_Ward4', 1, 1, '2017-11-23 05:57:38', '0000-00-00 00:00:00'),
-(6, 1, 'mjfg', 1, 1, '2017-11-23 05:59:56', '0000-00-00 00:00:00');
+(6, 1, 'mjfg', 1, 1, '2017-11-23 05:59:56', '0000-00-00 00:00:00'),
+(7, 2, 'warddddddddddddd', 1, 1, '2017-11-24 09:17:36', '0000-00-00 00:00:00'),
+(8, 6, 'h1_b2_d3_Ward4', 1, 0, '2017-11-24 09:24:58', '0000-00-00 00:00:00'),
+(9, 6, 'wardddddd', 1, 1, '2017-11-24 11:04:15', '0000-00-00 00:00:00'),
+(10, 8, 'h1_b3_d4_Ward5', 1, 1, '2017-11-25 06:37:12', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -1900,32 +2207,32 @@ ALTER TABLE `hms_wards`
 -- AUTO_INCREMENT for table `hms_activitylog`
 --
 ALTER TABLE `hms_activitylog`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=343;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=492;
 --
 -- AUTO_INCREMENT for table `hms_appoitments`
 --
 ALTER TABLE `hms_appoitments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `hms_availability`
 --
 ALTER TABLE `hms_availability`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `hms_beds`
 --
 ALTER TABLE `hms_beds`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `hms_branches`
 --
 ALTER TABLE `hms_branches`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `hms_charges`
 --
 ALTER TABLE `hms_charges`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `hms_city`
 --
@@ -1940,7 +2247,7 @@ ALTER TABLE `hms_country`
 -- AUTO_INCREMENT for table `hms_departments`
 --
 ALTER TABLE `hms_departments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `hms_district`
 --
@@ -1950,12 +2257,12 @@ ALTER TABLE `hms_district`
 -- AUTO_INCREMENT for table `hms_doctors`
 --
 ALTER TABLE `hms_doctors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `hms_healthinsuranceprovider`
 --
 ALTER TABLE `hms_healthinsuranceprovider`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `hms_healthrecords`
 --
@@ -1965,12 +2272,12 @@ ALTER TABLE `hms_healthrecords`
 -- AUTO_INCREMENT for table `hms_hospitals`
 --
 ALTER TABLE `hms_hospitals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `hms_hospital_admin`
 --
 ALTER TABLE `hms_hospital_admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `hms_inpatient`
 --
@@ -1985,7 +2292,7 @@ ALTER TABLE `hms_inpatient_history`
 -- AUTO_INCREMENT for table `hms_license`
 --
 ALTER TABLE `hms_license`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `hms_medical_lab`
 --
@@ -2015,12 +2322,12 @@ ALTER TABLE `hms_messages`
 -- AUTO_INCREMENT for table `hms_notification`
 --
 ALTER TABLE `hms_notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=330;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=428;
 --
 -- AUTO_INCREMENT for table `hms_nurse`
 --
 ALTER TABLE `hms_nurse`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `hms_prescription`
 --
@@ -2040,7 +2347,7 @@ ALTER TABLE `hms_prescription_order_receipt`
 -- AUTO_INCREMENT for table `hms_receptionist`
 --
 ALTER TABLE `hms_receptionist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `hms_recommend_appointments`
 --
@@ -2060,12 +2367,12 @@ ALTER TABLE `hms_test`
 -- AUTO_INCREMENT for table `hms_users`
 --
 ALTER TABLE `hms_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=223;
 --
 -- AUTO_INCREMENT for table `hms_wards`
 --
 ALTER TABLE `hms_wards`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;COMMIT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

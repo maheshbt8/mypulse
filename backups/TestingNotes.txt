@@ -4,10 +4,12 @@ User profile Role selection add select option on top.
 In superadmin module	->put option for active hospital.
 			->validation in add hospital
 			->hospitals, wards, nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete opration
-			->Docto should not login as doctor if it's inactive.
+			->Doctor should not login as doctor if it's inactive.
+			->Doctor Availability Schedule does not work properly
 			->Can't change alternet number in all module.
 			->By default login as patient if user has already selected a role and not yet approved by authority. Also get required info at the time of selection of role. ( E.g. enter store/lab name if user role is med lab or store )
-			->Query in appointment popup model->timeslote. Also update button does not work properly.
+			->Query in appointment popup model->timeslote.
+			->Query in multiple operation on appt.(logic)
 			->healthinsuranceprovider->query in multiple delete.(delete button does't work) 
 			->Export query-> SuperAdmin->Does Not work any Where in superAdmin
 			->query in sending msges
@@ -18,16 +20,18 @@ In superadmin module	->put option for active hospital.
 				       ->add pop-up->status does't work	
 			->receptionist->if we update any one then changes apply to all records of receptionists.
 			---->Patient menu->add or update alternet number.
-			->add option in patient menu for active patients.
+			->add option in patient menu for active patients. Also set Column Index in Patient Load table.
 			->medicalstore menu, medical lab->query in adhar number(adharnumber can't get in pop-up so if we update data and display error)
 
 
 HospitalAdmn Module	->Query in Branch Count(It count isDeleted = 1 so Count value would be wrong)
 		   	->Wards, nurse, Receptionist, MedicalStore, MedicalLab->query in page refresh after multiple delete opration
 			->Query in appointment popup model->timeslote
+			->Ward->in update ->query in select option for branch
+			->beds->update->in update pop-up model-> query in select option for wards. and other
 			->Doctor Availability Schedule does not work properly
 			->Export query->Does Not work any Where in HospitalAdmin
-			->MedicalStore->Adharnumber can't add or update and Professional Info can't add or update or view data.
+			->MedicalStore, MedicalLab->Adharnumber can't add or update and Professional Info can't add or update or view data.
 			->MedicalLab->Professional Info can't add or update or view data.
 			->query in sending msges
 

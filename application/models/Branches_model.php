@@ -143,7 +143,7 @@ class Branches_model extends CI_Model {
             $qry = "select id from $this->tblname where isDeleted=0";
         }else if($this->auth->isHospitalAdmin()){
             $uid = $this->auth->getUserid();
-            $qry = "select b.id as id from hms_hospital_admin a,hms_branches b where a.user_id=$uid and a.isDeleted=0 and a.hospital_id=b.hospital_id";            
+            $qry = "select b.id as id from hms_hospital_admin a,hms_branches b where a.user_id=$uid and a.isDeleted=0 and b.isDeleted=0 and a.hospital_id=b.hospital_id";            
         }else if($this->auth->isReceptinest()){
             $uid = $this->auth->getUserid();
             $qry = "select DISTINCT m.branch_id as id from hms_receptionist r,hms_doctors d,hms_departments m where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id";
