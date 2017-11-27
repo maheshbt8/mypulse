@@ -76,9 +76,11 @@ class Doctors_model extends CI_Model {
         $this->db->like("hms_users.first_name",$q);
         $this->db->like("hms_users.last_name",$q);
         $this->db->where("hms_users.isDeleted",0);
+        $this->db->where("hms_users.isActive",1);
         $this->db->where("hms_users.role",$this->auth->getDoctorRoleType());
         $this->db->select("hms_doctors.id,CONCAT(`first_name`,`last_name`) as text,description", false);
         $this->db->where("hms_doctors.isDeleted",0);
+        $this->db->where("hms_doctors.isActive",1);
         $this->db->from($this->tblname);
 
         $this->db->join("hms_users","hms_doctors.user_id=hms_users.id");
@@ -885,7 +887,7 @@ class Doctors_model extends CI_Model {
                 'join_date' => date('Y-m-d', strtotime($this->input->post('join_date'))),
                 'reason' => $this->input->post('inPatientReason'),
                 'status'=>$this->input->post('ptStatus')
-                );
+            );
 
             $this->db->insert('hms_inpatient',$data);
 			$id = $this->db->insert_id();
@@ -917,13 +919,21 @@ class Doctors_model extends CI_Model {
             $this->db->where('id',$this->input->post('Patientbed'));
             $this->db->update("hms_beds",array("isAvailable"=>$bed_availbe_status));
 
-            
+            return $id;   
         }
     }
 
     public function UpdateInPatient(){
         $uid = $this->auth->getDoctorId(); 
         $id = $this->input->post('inpatient_update_id');
+
+        $this->db->where('id',$id);
+        $oldData = $this->db->get('hms_inpatient');
+        if($oldData && $oldData->num_rows() > 0)
+            $oldData = $oldData->row_array();
+        else 
+            return false;
+
         $_st = isset($_POST['ptStatus']) ? $_POST['ptStatus'] : 0;
         $data = array();
         if(isset($_POST['patient_id'])){
@@ -976,10 +986,18 @@ class Doctors_model extends CI_Model {
             //Set bed to available
             $bed_availbe_status = 0;
         }
+
+        //Check if bed is changed, if so, update old bed status to available and new bed to occupied.
+        if(isset($data['bed_id']) && $oldData['bed_id'] != $data['bed_id']){
+            $this->db->where('id',$oldData['bed_id']);
+            $this->db->update("hms_beds",array("isAvailable"=>0));       
+        }
+
         $this->db->where('id',$id);
         $inp = $this->db->get('hms_inpatient')->row_array();
         $this->db->where('id',$inp['bed_id']);
         $this->db->update("hms_beds",array("isAvailable"=>$bed_availbe_status));
+        return true;
     }
 
     function addMedicalReport($pid=0){

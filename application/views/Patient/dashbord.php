@@ -380,6 +380,10 @@
 		                    <div class="form-group col-md-6">
 		                        <button type="button" class="btn btn-success btn-lg appt_submit" id="action-add-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-plus"></span><?php echo $this->lang->line('buttons')['bookAppoitment'];?></button>
 		                    </div>
+
+                            <div class="form-group col-md-6">
+		                        <button type="button" class="btn btn-info btn-lg appt_submit"  id="action-update-btn" style="width: 100%;"><span style="margin: 5px" class="fa fa-check"></span><?php echo $this->lang->line('buttons')['update'];?></button>
+		                    </div>
 		                </div>
 					</div>
 				</div>
@@ -1050,6 +1054,59 @@
 			?>
 			
 		});
+
+        $(document).on("click",".editbtn",function(){
+			resetForm(validator);
+			$("#docAvailability").html("");
+			var id = $(this).attr("data-id");
+			$("#eidt_gf_id").val(id);
+			loadDataAppt(id);
+			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
+			$("#form input").attr("disabled",false);
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#action-add-btn").parent().hide();
+			$("#action-update-btn").parent().show();
+			<?php if($this->auth->isPatient()){
+				?>
+				$("#remarks").attr("disabled",true);
+				<?php
+			}?>
+			$("#selected_hid").val($("#hospital_id1").val());
+			$("#selected_bid").val($("#branch_id1").val());
+		});
+
+        function loadDataAppt(id){
+			$.post("<?php echo site_url(); ?>/appoitments/getappoitments",{ id: id },function(data){
+				var data = JSON.parse(data);
+				/*var tempselectize_user_id = $selectize_user_id[0].selectize;
+				tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_id}]);
+				tempselectize_user_id.refreshItems();
+				tempselectize_user_id.setValue(data.user_id);*/
+
+				t_bid = data.branch_id;
+				t_did = data.department_id;
+				t_oid = data.doctor_id;
+
+				var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+				tempselectize_hospital_id.refreshItems();
+				tempselectize_hospital_id.setValue(data.hospital_id);
+				cur_v = data.timesloat;
+				
+				
+				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
+				$("#reason").val(data.reason);
+				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				$("#appoitment_date").val(data.appoitment_date);
+				$("#appoitment_date").trigger("change");
+
+				$("#remarks").val(data.remarks);
+			
+				$("#appoitment_date").prop("disabled", true);
+				$("#reason").prop("disabled", false);
+				$selectize_hospital_id[0].selectize.disable();
+			});
+		}
 
 		function loadData(id){
 			$.post("<?php echo site_url(); ?>/appoitments/getrecommendappoitments",{ id: id },function(data){

@@ -82,6 +82,7 @@ $this->load->view("template/left.php");
 												<label><?php echo $this->lang->line('labels')['description'];?></label>
 												<textarea class="form-control " rows="5" placeholder="<?php echo $this->lang->line('labels')['description'];?>" name="description" id="description" ></textarea>					
 											</div>
+											
 							  			</div>
 							  			<div class="col-md-12">
 							  				<!-- <div class="form-group col-md-6">
@@ -115,7 +116,15 @@ $this->load->view("template/left.php");
 												<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
 											</div>
 							  			</div>
-							  			
+							  			<div class="col-md-12">
+										  	<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['status'];?></label>
+												<select class="form-control" name="isActive" id="isActive">
+													<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
+													<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
+												</select>
+											</div>
+										</div>	
 							  			
 							  			<div class="col-md-12">
 							  			<hr>
@@ -129,9 +138,9 @@ $this->load->view("template/left.php");
 											</div>
 							  			</div>
 							  			<div class="col-md-12">
-							  				<div class="col-md-6 form-group">
+							  				<div class="col-md-6 form-group" id="haDiv">
 							  					<label><?php echo $this->lang->line('labels')['selectHospitalAdmin'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['selectHospitalAdmin'];?>" name="ha_name" id="ha_name" disabled/>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['selectHospitalAdmin'];?>" id="ha_name" disabled/>
 							  				</div>
 							  				
 							  			</div>            
@@ -330,7 +339,7 @@ $this->load->view("template/left.php");
 				});
 
 				var validator = $("#form").validate({
-					
+					ignore: [],
 			        rules: {
 			        	
 			        	name: {
@@ -436,6 +445,7 @@ $this->load->view("template/left.php");
 			    	$("#form").attr("action","<?php echo site_url(); ?>/hospitals/add");
 			    	$("#edit").modal("show");
 					$('#tabs a[href="#tab1"]').click();
+					$("#haDiv").hide();
 			    });
 
 				$("#hospitals").on("click",".editbtn",function(){
@@ -451,6 +461,7 @@ $this->load->view("template/left.php");
 			    	$("#action-update-btn").parent().show();
 					$('#tabs a[href="#tab1"]').click();
 					$("#ha_name").attr("disabled",true);
+					$("#haDiv").show();
 			    });
 
 			    function loadData(id,isEdit){
@@ -461,6 +472,7 @@ $this->load->view("template/left.php");
 						
 			    		var data = JSON.parse(data);
 						console.log(data);
+						$("#isActive").val(data.isActive);
 						$("#name").val(data.name);
 						$("#Edit-Heading").html(data.name+" <?php echo $this->lang->line('headings')['info'];?>");
 						$("#address").val(data.address);

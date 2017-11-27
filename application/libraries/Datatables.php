@@ -47,7 +47,7 @@
     {
       $this->ci =& get_instance();
       
-      if($this->ci->input->get('mpexpt',null,false)){
+      if($this->ci->input->get('mpexp',null,false)){
         $this->is_export = true;
         $this->export_type = $this->ci->input->get('mpexpt',null,'xlsx');
       }
@@ -469,7 +469,6 @@
           $aaData[$i] = $_t_row;
         }
       }*/
-
       if($this->is_export){
         $cols =$this->ci->input->get('columns');      
         $this->ci->auth->export($aaData,$cols,$this->export_type,$this->table);

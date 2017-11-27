@@ -37,6 +37,8 @@ class Wards_model extends CI_Model {
             $this->db->where("department_id",$did);
         }
         $select = implode('`," ",`', $field);
+         $this->db->where("isDeleted",0);
+        $this->db->where('isActive',1);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();

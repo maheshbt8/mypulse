@@ -610,6 +610,10 @@ class Appoitments_model extends CI_Model {
         }else{
             $this->db->where("id", $id);
         }
+        date_default_timezone_set('Asia/Kolkata');
+        $today = date("Y-m-d");
+        $this->db->where("appoitment_date >=", $today);
+
         if ($this->db->update($this->tblname, $d)) {
             //get appointment data
             $ids = array();

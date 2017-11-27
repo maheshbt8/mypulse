@@ -167,6 +167,7 @@ class Receptionist_model extends CI_Model {
             if(isset($data['experience']))
                 $rec['experience'] = $data['experience'];
             if(count($rec) > 0){
+                $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $rec)) {
 					$this->logger->log("Receptionist details updated", Logger::Receptionist, $id);
                     return true;

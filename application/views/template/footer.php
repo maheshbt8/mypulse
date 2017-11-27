@@ -99,13 +99,19 @@
                 phone_number = phone_number.replace(/\s+/g, ""); 
                 return this.optional(element) || phone_number.length > 9 &&
                     phone_number.match(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/);
-            }, "Enter a valid phone number");
+            }, "<?php echo $this->lang->line("enterValidNumber");?>");
 
             jQuery.validator.addMethod("email", function(email, element) {
                 email = email.replace(/\s+/g, "");
                 return this.optional(element) || 
                 email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-            }, "Enter a valid email");
+            }, "<?php echo $this->lang->line('enterValidEmail');?>");
+
+            jQuery.validator.addMethod("aadhaar", function(number, element) {
+                number = number.replace(/\s+/g, "");
+                return this.optional(element) || 
+                number.match(/^\d{4}-\d{4}-\d{4}$/);
+            }, "<?php echo $this->lang->line('enterValidAadhaar');?>");
 
             $("#notislimScrollDiv").slimScroll();
 
@@ -278,6 +284,8 @@
                     }
                 });
             });
+
+            $("#aadhaar_number").inputmask("9999-9999-9999");
 
             $(document).on('click','.printtem',function(){
                 var u = $(this).data('url');

@@ -250,18 +250,20 @@ class Doctors extends CI_Controller {
 
     public function addinpatient(){
         if($this->auth->isLoggedIn() && $this->auth->isDoctor()){
-            
+            //Update entry
 			if(isset($_POST['inpatient_update_id']) && $_POST['inpatient_update_id'] != ''){
 				$appt_id = $_POST['appt_id'];            
-                $this->doctors_model->UpdateInPatient();
-				$d['success'] = array($this->lang->line('msg_inpatien_updated'));
+                if($this->doctors_model->UpdateInPatient())
+                    $d['success'] = array($this->lang->line('msg_inpatien_updated'));
+                else
+                    $d['errors'] = array($this->lang->line('msg_inpatien_updated'));
                 $this->session->set_flashdata('data', $d);
                 redirect('doctors/patientRecord/'.$appt_id.'?p=2');                 
             }
-            else{
+            else{ //Add new in-patient
                 $appt_id = $_POST['appt_id'];
                 $message = $this->doctors_model->addPatient();
-                if($this->doctors_model->addPatient() == 0){
+                if($message == 0){
                     $d['errors'] = array($this->lang->line('msg_inpatien_error'));
                     $this->session->set_flashdata('data', $d);
                     redirect('doctors/patientRecord/'.$appt_id.'?p=2');

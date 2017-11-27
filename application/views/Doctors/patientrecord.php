@@ -1023,9 +1023,9 @@ $this->load->view("template/footer.php");
                 data: {id:id},
                 success: function(res) {
                     var inpatient_data = $.parseJSON(res);
-
+                    
                     var tempselectize_bed_ID = $selectize_bed_id[0].selectize;
-                    tempselectize_bed_ID.addOption([{"id":inpatient_data.bed_id,"text":inpatient_data.bed_id}]);
+                    tempselectize_bed_ID.addOption([{"id":inpatient_data.bed_id,"text":inpatient_data.bed_name}]);
                     tempselectize_bed_ID.refreshItems();
                     tempselectize_bed_ID.setValue(inpatient_data.bed_id);
                     $('#join_date').val(inpatient_data.join_date);

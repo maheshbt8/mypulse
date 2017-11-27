@@ -511,7 +511,7 @@
 			$("#reason").attr('disabled',false);
 		});
 
-		$("#appoitments").on("click",".editbtn",function(){
+		$(document).on("click",".editbtn",function(){
 			resetForm(validator);
 			var id = $(this).attr("data-id");
 			$("#docAvailability").html("");
@@ -526,7 +526,7 @@
 			$("#selected_hid").val($("#hospital_id1").val());
 			$("#selected_bid").val($("#branch_id1").val());
 		});
-
+		$("#appoitment_date").val("");
 		function loadData(id){
 			$.post("<?php echo site_url(); ?>/appoitments/getappoitments",{ id: id },function(data){
 				var data = JSON.parse(data);
@@ -545,9 +545,11 @@
 				tempselectize_hospital_id.setValue(data.hospital_id);
 				cur_v = data.timesloat;
 				
-				$("#appoitment_date").val(data.appoitment_date);
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				$("#appoitment_date").val(data.appoitment_date);
+				$("#appoitment_date").trigger("change");
+
 				$("#reason").val(data.reason);
 				
 				$("#remarks").val(data.remarks);

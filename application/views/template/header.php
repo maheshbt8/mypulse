@@ -91,6 +91,9 @@
         <link href="<?php echo base_url();?>public/plugins/selectize/css/selectize.css" rel="stylesheet" rel="stylesheet" />
         <link href="<?php echo base_url();?>public/plugins/select2/css/select2.css" rel="stylesheet" rel="stylesheet" />
         <style type="text/css">
+            textarea{
+                height:135px !important; overflow:hidden
+            }
             .selectize-control {
                 width: 100%;
                 padding: 0px !important;

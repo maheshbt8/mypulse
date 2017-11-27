@@ -157,7 +157,7 @@ $this->load->view("template/left.php");
 											
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -271,7 +271,8 @@ $this->load->view("template/footer.php");
 			        		email:true
 			        	},
 			        	aadhaar_number:{
-			        		required:true
+			        		required:true,
+			        		aadhaar: true
 			        	},
 			        	mobile:{
 			        		required:true,

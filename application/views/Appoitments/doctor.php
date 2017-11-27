@@ -447,10 +447,10 @@ $this->load->view("template/footer.php");
 				tempselectize_hospital_id.refreshItems();
 				tempselectize_hospital_id.setValue(data.hospital_id);
 
-				
-				$("#appoitment_date").val(data.appoitment_date);
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				$("#appoitment_date").val(data.appoitment_date);
+				$("#appoitment_date").trigger("change");
 				$("#reason").val(data.reason);
 				
 				$("#remarks").val(data.remarks);

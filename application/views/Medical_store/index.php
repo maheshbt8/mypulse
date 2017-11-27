@@ -171,7 +171,7 @@ $this->load->view("template/left.php");
 										</div>
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-											<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_numberstate" id="alternate_mobile_number" />
+											<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
 										</div>
 									</div>
 									<div class="col-md-12">
@@ -340,7 +340,6 @@ $this->load->view("template/footer.php");
 			    	$("#form").attr("action","<?php echo site_url(); ?>/medical_store/add");
 			    	$("#edit").modal("show");
 					$('#tabs a[href="#tab1"]').click();
-					
 			    });
 
 				$("#medical_store").on("click",".editbtn",function(){
@@ -399,6 +398,10 @@ $this->load->view("template/footer.php");
 							if(user.date_of_birth!= undefined &&  user.date_of_birth != "" && user.date_of_birth != "0000-00-00"){
 								$("#date_of_birth").datepicker("update", new Date(user.date_of_birth));
 							}
+							if(user.aadhaar_number!= undefined &&  user.aadhaar_number != ""){
+								$("#aadhaar_number").val(aadhaar_number);
+							}
+							
 
 							if(user.country != null && user.country!=undefined && user.country != "" && user.country > 0){
 								loc_cid = user.city;

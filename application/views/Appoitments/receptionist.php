@@ -437,10 +437,11 @@ $this->load->view("template/footer.php");
 				tempselectize_hospital_id.setValue(data.hospital_id);
 				cur_v = data.timesloat;
 				
-				$("#appoitment_date").val(data.appoitment_date);
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#reason").val(data.reason);
+				$("#appoitment_date").val(data.appoitment_date);
+				$("#appoitment_date").trigger("change");
 				
 				$("#remarks").val(data.remarks);
 			
@@ -513,6 +514,7 @@ $this->load->view("template/footer.php");
 
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
+			console.log("Gettig Time SLot for : "+d);
 			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");

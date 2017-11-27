@@ -305,7 +305,10 @@ class Patients extends CI_Controller {
                  return "";//"<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             $cond = array("role=".$this->auth->getPatientRoleType());
+            $this->tbl->setIndexColumn(true);
+            $this->tbl->setCheckboxColumn(false);
             if($this->auth->isHospitalAdmin()){
+                
                 $dids = $this->departments_model->getDepartmentIds();
                 $pids = $this->appoitments_model ->getPatientIdsFromDepartmentIds($dids);
                 if(count($pids) == 0){ $pids[] = -1; }

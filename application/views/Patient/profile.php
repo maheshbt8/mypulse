@@ -342,12 +342,13 @@ $this->load->view("template/left.php");
                                                 <div class="form-group col-md-6">
                                                     <label>Register As</label>
                                                     <select class="form-control" name="role" id="role" >
-                                                        <option value="<?php echo $this->auth->getHospitalAdminRoleType();?>">Hospital Admin</option>
-                                                        <option value="<?php echo $this->auth->getDoctorRoleType();?>">Doctor</option>
-                                                        <option value="<?php echo $this->auth->getNurseRoleType();?>">Nurse</option>
-                                                        <option value="<?php echo $this->auth->getReceptienstRoleType();?>">Receptienst</option>
-                                                        <option value="<?php echo $this->auth->getMedicalStoreRoleType();?>">Medical Store</option>
-                                                        <option value="<?php echo $this->auth->getMedicalLabRoleType();?>">Medical Lab</option>
+                                                        <option value="" ><?php echo $this->lang->line('selectRole');?></option>
+                                                        <option value="<?php echo $this->auth->getHospitalAdminRoleType();?>"><?php echo $this->lang->line('hospitalAdmin');?></option>
+                                                        <option value="<?php echo $this->auth->getDoctorRoleType();?>"><?php echo $this->lang->line('doctor');?></option>
+                                                        <option value="<?php echo $this->auth->getNurseRoleType();?>"><?php echo $this->lang->line('nurse');?></option>
+                                                        <option value="<?php echo $this->auth->getReceptienstRoleType();?>"><?php echo $this->lang->line('receptionist');?></option>
+                                                        <option value="<?php echo $this->auth->getMedicalStoreRoleType();?>"><?php echo $this->lang->line('medicalStoresing');?></option>
+                                                        <option value="<?php echo $this->auth->getMedicalLabRoleType();?>"><?php echo $this->lang->line('medicalLabsing');?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -373,6 +374,16 @@ $this->load->view("template/left.php");
                                                     <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
                                                     <select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-6" id="medStorediv" style="display:none">
+                                                    <label><?php echo $this->lang->line('labels')['MedicalStoreName'];?></label>
+                                                    <input id="store_name" name="store_name" class=" form-control" />
+                                                </div>
+                                                <div class="form-group col-md-6" id="medLabdiv" style="display:none">
+                                                    <label><?php echo $this->lang->line('labels')['MedicalLabName'];?></label>
+                                                    <input id="lab_name" name="lab_name" class=" form-control" />
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -453,6 +464,37 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
     $(document).ready(function(){
 
+        var FormVa = $("#form").validate({
+            ignore: [],
+            rules: {
+                first_name: {
+                    required : true
+                },
+                last_name: {
+                    required: true
+                },
+                aadhaar_number:{
+                    required:true,
+                    aadhaar: true
+                },
+            },
+            messages: {
+                
+                first_name:{
+                    required: "<?php echo $this->lang->line('validation')['requiredFname'];?>"
+                },
+                last_name:{
+                    required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
+                },
+                aadhaar_number:{
+                    required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
+                }
+            },
+            invalidHandler: validationInvalidHandler,
+            errorPlacement: validationErrorPlacement
+            
+        });
+
         //Role Start
         var validator = $("#role_form").validate({
             ignore: [],
@@ -473,7 +515,6 @@ $this->load->view("template/footer.php");
             var role = parseInt(r);
             console.log(typeof(role));
             //$($selectize_doctor_id).hide();
-            
             
             $("#hospital_id").rules("add", {
                 required:true,
@@ -503,6 +544,10 @@ $this->load->view("template/footer.php");
             $("#bdiv").hide();
             $("#ddiv").hide();
             $("#dddiv").hide();
+            $("#medStorediv").hide();
+            $("#medLabdiv").hide();
+            $("#store_name").rules("remove","required");
+            $("#lab_name").rules("remove","required");
             
             switch(role){
                 case 6:
@@ -536,7 +581,15 @@ $this->load->view("template/footer.php");
                     $("#dddiv").show();
                     break;
 				case 7:
+                    $("#medStorediv").show();
+                    $("#store_name").attr("disabled",false);
+                    $("#store_name").rules("add","required");
 				case 8:
+                    if(role==8){
+                        $("#medLabdiv").show();
+                        $("#lab_name").rules("add","required");
+                        $("#lab_name").attr("disabled",false);
+                    }
 					$("#department_id").rules("remove","required");
                     $("#doctor_id").rules("remove","required");
 					$("#hdiv").show();

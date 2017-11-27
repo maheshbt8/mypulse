@@ -55,13 +55,34 @@ class Users_model extends CI_Model {
 
     function setSessionData($row){
        
-        $session_data = array(  'user_name' => $row->first_name.' '.$row->last_name,
+        $session_data = array( 
+            'user_name' => $row->first_name.' '.$row->last_name,
             'email_id' => $row->useremail,
             'user_id' => $row->id,
             'role' => $row->role,
             'my_key' => $row->my_key,
             'profile_img' => $row->profile_photo,
-            'logged_in' => '1');
+            'logged_in' => '1'
+        );
+
+        $RoletblName = "";
+        switch ($row->role) {
+            case $this->auth->getHospitalAdminRoleType(): $RoletblName = "hms_hospital_admin"; break;
+            case $this->auth->getDoctorRoleType(): $RoletblName = "hms_doctors"; break;
+            case $this->auth->getReceptienstRoleType(): $RoletblName = "hms_receptionist"; break;
+            case $this->auth->getNurseRoleType(): $RoletblName = "hms_nurse"; break;            
+            case $this->auth->getMedicalStoreRoleType(): $RoletblName = "hms_medical_store"; break;            
+            case $this->auth->getMedicalLabRoleType(): $RoletblName = "hms_medical_lab"; break;            
+        }
+
+        //Check assigned role is active or not. iF not active set user role as Patient.
+        if($RoletblName != ""){
+            $res = $this->db->query("select * from {$RoletblName} where user_id={$row->id} and isDeleted=0 and isActive=1");
+            if(!$res || $res->num_rows() == 0){
+                $session_data['role'] = $this->auth->getPatientRoleType();   
+            }
+        }
+
         if($row->role == $this->auth->getHospitalAdminRoleType()){
             $this->db->where('user_id',$row->id);
             $this->db->where('isActive',1);
@@ -609,14 +630,16 @@ class Users_model extends CI_Model {
                 $roleText = $this->lang->line('roles')[7];
                 $hospital_id = $_POST['hospital_id'];
                 $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : 0;
-                $this->db->insert('hms_medical_store',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $name = isset($_POST['store_name']) ? $_POST['store_name'] : "New Medical Store";
+                $this->db->insert('hms_medical_store',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0, 'name'=> $name));
                 $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, $branch_id, 0, 0);
                 break;    
             case $this->auth->getMedicalLabRoleType():
                 $roleText = $this->lang->line('roles')[8];
                 $hospital_id = $_POST['hospital_id'];
                 $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : 0;
-                $this->db->insert('hms_medical_lab',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0));
+                $name = isset($_POST['lab_name']) ? $_POST['lab_name'] : "New Medical Lab";
+                $this->db->insert('hms_medical_lab',array('branch_id'=>$branch_id, 'user_id'=> $uid, 'isActive'=> 0, 'name' => $name));
                 $this->sendNotificationForUpdateMyRole($roleText, $uid, $hospital_id, $branch_id, 0, 0);
                 break;    
         }

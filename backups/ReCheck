@@ -1,0 +1,24 @@
+In superadmin module
+	->hospitals, wards, nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete opration - D
+	->Ward->in update ->query in select option for hospital and branch - (Reconsider)
+	-> New HA DB error
+	->medicalstore menu, medical lab->query in adhar number(adharnumber can't get in pop-up so if we update data and display error)
+		-MedicalStore, MedicalLab->Adharnumber can't add or update and Professional Info can't add or update or view data.
+	->Doctor Availability Schedule does not work properly
+	->query in sending msges
+	->Export Appointment->Excel Sheet not in proper formate (HA,Doc,SA,Rep)
+	-> In-patient action don't show edit option for discharged state.
+	
+IN receptionist
+	->Today's Apoointments->Filters does't work
+	->Appointments->refresh problem after any opration
+
+Nurse			
+	->Beds menu->query in load bed data	(Check new table join condition)
+
+MedicalStore
+			->order status problem(status should must be change after upload receipt)
+
+MedicalLab
+			->MedicalLab incharge->profile->hospital Association not load
+			->order status problem(status should must be change after upload report)	

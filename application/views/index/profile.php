@@ -299,6 +299,37 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
     $(document).ready(function(){
 
+        var validator = $("#form").validate({
+            ignore: [],
+            rules: {
+                first_name: {
+                    required : true
+                },
+                last_name: {
+                    required: true
+                },
+                aadhaar_number:{
+                    required:true,
+                    aadhaar: true
+                },
+            },
+            messages: {
+                
+                first_name:{
+                    required: "<?php echo $this->lang->line('validation')['requiredFname'];?>"
+                },
+                last_name:{
+                    required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
+                },
+                aadhaar_number:{
+                    required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
+                }
+            },
+            invalidHandler: validationInvalidHandler,
+            errorPlacement: validationErrorPlacement
+            
+        });
+
         var loc_sid = null;
         var loc_did = null;
         var loc_cid = null; 

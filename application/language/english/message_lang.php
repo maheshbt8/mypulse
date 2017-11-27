@@ -20,11 +20,16 @@ $lang['branches'] = "Branches";
 $lang['wards'] = "Wards";
 $lang['beds'] = "Beds";
 $lang['doctors'] = "Doctors";
+$lang['doctor'] = "Doctor";
 $lang['nurses'] = "Nurses";
+$lang['nurse'] = "Nurse";
 $lang['receptionists'] = "Receptionists";
+$lang['receptionist'] = "Receptionist";
 $lang['medicalStore'] = "Med. Stores";
 $lang['medicalStoreFull'] = "Medical Stores";
 $lang['medicalLabFull'] = "Medical Labs";
+$lang['medicalStoresing'] = "Medical Store";
+$lang['medicalLabsing'] = "Medical Lab";
 $lang['medicalLab'] = "Med. Labs";
 $lang['charges'] = "Charges";
 $lang['appointments'] = "Appointments";
@@ -99,7 +104,9 @@ $lang['enter_email_to_reset_password'] = "Enter your e-mail address below to res
 $lang['complete_registration_by_selecting_role'] = "Complete registration by selection your User role.";
 $lang['additional_note'] = "Additional Note";
 $lang['addNewPrescription'] = "Add new prescription ";
-
+$lang['enterValidNumber'] = "Enter valid number";
+$lang['enterValidEmail'] = "Enter valid email";
+$lang['enterValidAadhaar'] = "Enter valid aadhaar number";
 $lang['roles'] = array(
     -1 => '',
     1 => 'Super Admin',
@@ -208,6 +215,7 @@ $lang['msg_inpatien_saved'] = "Inpatient Added successfully";
 $lang['msg_inpatien_error'] = "Patient already admitted.";
 
 $lang['msg_inpatien_updated'] = "Inpatient Updated successfully";
+$lang['msg_inpatien_updated_error'] = "Unable to update inpatient.";
 
 $lang['msg_inpatien_rec_error'] = " Inpatient Record Not Found";
 
@@ -226,7 +234,7 @@ $lang['msg_want_to_approve_appts'] = "Do you want to approve the selected appoin
 $lang['msg_want_del_availability'] = "Do you want to delete the availability?";
 
 $lang['unregUser'] = "unregistered  User";
-
+$lang['selectRole'] = "Select Role";
 $lang['buttons'] = array(
     "addNew" => "Add New",
     "bookAppoitment" => "Book Appointment",//(Raj: Correct the label too)
@@ -359,7 +367,9 @@ $lang['labels'] = array(
 	'selectNurse' => 'Nurse',
 	'selectReceptionist' => 'Receptionist',
 	'selectMedicalStore' => 'Medical Store',
-	'selectMedicalLab' => 'Medical Lab',
+    'selectMedicalLab' => 'Medical Lab',
+    'MedicalStoreName' => 'Medical Store Name',
+	'MedicalLabName' => 'Medical Lab Name',
     'isBedAvailable' => 'Is Bed Available?',
     'branchName' => 'Branch Name',
     'departmentName' => "Department Name",

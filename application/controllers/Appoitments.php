@@ -474,7 +474,8 @@ class Appoitments extends CI_Controller {
 
             $show  = $this->input->get('s',null,false);
             $cond = array("hms_appoitments.isDeleted=0");
- 
+            $cond[] = "hms_appoitments.doctor_id = ".$this->auth->getDoctorId();
+
 			if($sdate != null && $edate != null){
                 $cond[] = "hms_appoitments.appoitment_date between '$sdate' and '$edate'";
             }
@@ -506,7 +507,7 @@ class Appoitments extends CI_Controller {
             if($isToday===1){   
                 
                 $cond[] = "DATE(hms_appoitments.appoitment_date)='".date("Y-m-d")."'";
-                $cond[] = "hms_appoitments.doctor_id = ".$this->auth->getDoctorId();
+                
 
                 //New Library
                 $this->datatables
