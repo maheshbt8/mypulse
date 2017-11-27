@@ -221,11 +221,11 @@ $this->load->view("template/left.php");
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['qualification'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name1="qualification" id="qualification" />
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['experience'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name1="experience" id="experience" />
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
 											</div>
 										</div>
 									</div>
@@ -376,6 +376,10 @@ $this->load->view("template/footer.php");
 						$("#m_phone_number").val(data.phone_number);
 						$("#isActive").val(data.curIsActive);
 						branch_id = data.branch_id;
+						if(data.qualification != undefined)
+							$("#qualification").val(data.qualification);
+						if(data.experience != undefined)
+							$("#experience").val(data.experience);
 
 						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
 						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);

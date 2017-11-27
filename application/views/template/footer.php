@@ -149,7 +149,7 @@
                     closeButton: false,
                     progressBar: false,
                     showMethod: 'fadeIn',
-                    positionClass : "toast-top-center",
+                    positionClass : "toast-bottom-right",
                     hideMethod: 'fadeOut',
                     timeOut: 5000
                 };

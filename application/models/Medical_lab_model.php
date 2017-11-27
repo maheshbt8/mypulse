@@ -175,6 +175,13 @@ class Medical_lab_model extends CI_Model {
             $mlab['owner_contact_number'] = $data['owner_contact_number'];
             $mlab['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mlab['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['qualification'])){
+                $mlab['qualification'] = $data['qualification'];
+            }
+
+            if(isset($data['experience'])){
+                $mlab['experience'] = $data['experience'];
+            }
 
             if(isset($data['isActive']))
                 $mlab['isActive'] = intval($data['isActive']);
@@ -254,6 +261,13 @@ class Medical_lab_model extends CI_Model {
                 $mlab['phone_number'] = $data['phone_number'];
             }else if(isset($data['m_phone_number'])){
                 $mlab['phone_number'] = $data['m_phone_number'];
+            }
+            if(isset($data['qualification'])){
+                $mlab['qualification'] = $data['qualification'];
+            }
+
+            if(isset($data['experience'])){
+                $mlab['experience'] = $data['experience'];
             }
 
             if(isset($data['isActive']))

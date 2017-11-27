@@ -103,6 +103,14 @@ class Medical_store_model extends CI_Model {
                 $mstore['phone_number'] = $data['m_phone_number'];
             }
 
+            if(isset($data['qualification'])){
+                $mstore['qualification'] = $data['qualification'];
+            }
+
+            if(isset($data['experience'])){
+                $mstore['experience'] = $data['experience'];
+            }
+
             $mstore['owner_contact_number'] = $data['owner_contact_number'];
             $mstore['branch_id'] = isset($data['branch_id']) ? $data['branch_id'] : -1;
             $mstore['created_at'] = date("Y-m-d H:i:s");
@@ -185,6 +193,14 @@ class Medical_store_model extends CI_Model {
                 $mstore['phone_number'] = $data['phone_number'];
             }else if(isset($data['m_phone_number'])){
                 $mstore['phone_number'] = $data['m_phone_number'];
+            }
+
+            if(isset($data['qualification'])){
+                $mstore['qualification'] = $data['qualification'];
+            }
+
+            if(isset($data['experience'])){
+                $mstore['experience'] = $data['experience'];
             }
 
             if(isset($data['isActive']))
