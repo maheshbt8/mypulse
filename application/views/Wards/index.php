@@ -261,7 +261,7 @@ $this->load->view("template/footer.php");
 						selectize_branch_id.addOption([{"id":data.branch_id,"text":data.branch_name}]);
 						selectize_branch_id.refreshItems();
 						selectize_branch_id.setValue(data.branch_id);
-
+						
 						var tempselectize_department_id = $selectize_department_id[0].selectize;
 						tempselectize_department_id.addOption([{"id":data.department_id,"text":data.department_name}]);
 						tempselectize_department_id.refreshItems();

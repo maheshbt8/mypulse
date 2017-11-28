@@ -104,7 +104,6 @@ class Departments extends CI_Controller {
                 $hid = null;
             $show  = $this->input->get('s',null,false);
             $cond = array("isDeleted=0");
-
             if($this->auth->isHospitalAdmin()){
                 $hid = $this->auth->getHospitalId();
                 $ids = $this->branches_model->getBracheIds($hid);

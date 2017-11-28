@@ -14,6 +14,7 @@ class Branches_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+    
     function getbranchesById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -29,6 +30,7 @@ class Branches_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field,$hospital_id=-1) {
         $field = explode(",", $field);
 
@@ -52,10 +54,12 @@ class Branches_model extends CI_Model {
 
         $select = implode('`," ",`', $field);
         $this->db->where("isDeleted",0);
+        $this->db->where("isActive",1);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+    
     function add() {
         $data = $_POST;
 
@@ -65,19 +69,23 @@ class Branches_model extends CI_Model {
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
-            $this->logger->log("New branch: ".$data['branch_name']." added", Logger::Branch, $id);
-            if($this->auth->isSuperAdmin()) {
-                //find hospital admin
-                $this->db->where('hospital_id', $data['hospital_id']);
-                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                //sent notification to hospital admin
-                $this->notification->saveNotification($hadmin['user_id'], "New branch <b>".$data['branch_name']."</b> is added");
+            $this->logger->log("New branch added", Logger::Branch, $id);
+
+            if(isset($data['hospital_id']) && $data['hospital_id'] != "" && isset($data['branch_name']) && $data['branch_name'] != ""){
+                if($this->auth->isSuperAdmin()) {
+                    //find hospital admin
+                    $this->db->where('hospital_id', $data['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to hospital admin
+                    $this->notification->saveNotification($hadmin['user_id'], "New branch <b>".$data['branch_name']."</b> is added");
+                }
             }
             return true;
         } else {
             return false;
         }
     }
+
     function update($id) {
         $data = $_POST;
 
@@ -87,19 +95,23 @@ class Branches_model extends CI_Model {
         
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
-            $this->logger->log("Branch: ".$data['branch_name']." updated", Logger::Branch, $id);
-            if($this->auth->isSuperAdmin()) {
-                //find hospital admin
-                $this->db->where('hospital_id', $data['hospital_id']);
-                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                //sent notification to hospital admin
-                $this->notification->saveNotification($hadmin['user_id'], "Branch <b>" . $data['branch_name'] . "</b> information is updated");
+            $this->logger->log("Branch updated", Logger::Branch, $id);
+
+            if(isset($data['hospital_id']) && $data['hospital_id'] != "" && isset($data['branch_name']) && $data['branch_name'] != ""){
+                if($this->auth->isSuperAdmin()) {
+                    //find hospital admin
+                    $this->db->where('hospital_id', $data['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to hospital admin
+                    $this->notification->saveNotification($hadmin['user_id'], "Branch <b>" . $data['branch_name'] . "</b> information is updated");
+                }
             }
             return true;
         } else {
             return false;
         }
     }
+
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);
@@ -146,10 +158,10 @@ class Branches_model extends CI_Model {
             $qry = "select b.id as id from hms_hospital_admin a,hms_branches b where a.user_id=$uid and a.isDeleted=0 and b.isDeleted=0 and a.hospital_id=b.hospital_id";            
         }else if($this->auth->isReceptinest()){
             $uid = $this->auth->getUserid();
-            $qry = "select DISTINCT m.branch_id as id from hms_receptionist r,hms_doctors d,hms_departments m where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id";
+            $qry = "select DISTINCT m.branch_id as id from hms_receptionist r,hms_doctors d,hms_departments m,hms_branches b where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.branch_id=b.id and b.isActive=1";
         }else if($this->auth->isDoctor()){
             $uid = $this->auth->getDoctorId();
-            $qry = "select DISTINCT m.branch_id as id from  hms_doctors d,hms_departments m where d.isDeleted=0 and d.id=$uid and d.department_id=m.id";
+            $qry = "select DISTINCT m.branch_id as id from  hms_doctors d,hms_departments m,hms_branches b where d.isDeleted=0 and d.id=$uid and d.department_id=m.id and m.branch_id=b.id and b.isActive=1";
         }
         else{
             $qry = "select * from $this->tblname ";

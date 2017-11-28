@@ -11,9 +11,9 @@ class Doctors_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getdoctorsById($id) {
-      
-      
+          
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
         
@@ -116,7 +116,8 @@ class Doctors_model extends CI_Model {
                 $doc['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $doc)) {
 				$id = $this->db->insert_id();
-				$this->logger->log("New doctor added", Logger::Doctor, $id);
+                $this->logger->log("New doctor added", Logger::Doctor, $id);
+                
 				if(isset($data['hospital_id']) && isset($data['department_id']) && isset($data['branch_id']) && $data['hospital_id'] != "" && $data['department_id'] != "" && $data['branch_id'] != ""){
                     //get hospital name
                     $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
@@ -842,16 +843,23 @@ class Doctors_model extends CI_Model {
 			
             $this->db->where('id',$pre['appoitment_id']);
             $this->db->update('hms_appoitments',array('status'=>3));
-			$this->logger->log("Appointment status changed", Logger::Appointment, $pre['appoitment_id']);
-            $pre['patient_id']=$_POST['patient_id'];
-            $this->notification->saveNotification($pre['patient_id'],"Some prescriptions are added in your profile ");
+
+            if(isset($pre['appoitment_id']) && $pre['appoitment_id'] != "")
+			    $this->logger->log("Appointment status changed", Logger::Appointment, $pre['appoitment_id']);
+           
+            if(isset($_POST['patient_id']) && $_POST['patient_id'] != ""){
+                $pre['patient_id']=$_POST['patient_id'];
+                $this->notification->saveNotification($pre['patient_id'],"Some prescriptions are added in your profile ");
+            }
         }else{
             $this->db->where('id',$pid);
             $this->db->update('hms_prescription',$pre);
 			$this->logger->log("prescription updated", Logger::Prescription, $pid);
-			
-            $pre['patient_id']=$_POST['patient_id'];
-            $this->notification->saveNotification($pre['patient_id'],"Your prescription information is updated");
+            
+            if(isset($_POST['patient_id']) && $_POST['patient_id'] != ""){
+                $pre['patient_id']=$_POST['patient_id'];
+                $this->notification->saveNotification($pre['patient_id'],"Your prescription information is updated");
+            }
         }
         $this->addPrescriptionItems($pid,$patient_id);
         $this->addMedicalReport($pid);
@@ -863,10 +871,13 @@ class Doctors_model extends CI_Model {
 		//log
 		$id = $this->db->insert_id();
 		$this->logger->log("Recommned next appointment date added in appointment", Logger::RecommnedDate, $id);
-		//send notification to patient
-		$app_number = $this->db->query("select appoitment_number from hms_appoitments where id=".$data['appointment_id'])->row_array();
-		$this->notification->saveNotification($data['user_id'], "Recommned next appointment date added in you appointment <br>Appointment Number: <b>".$app_number['appoitment_number']."</b>");
-	}
+  
+        if(isset($data['user_id']) && $data['user_id'] != "" && isset($data['appointment_id']) && $data['appointment_id'] != ""){
+            //send notification to patient
+            $app_number = $this->db->query("select appoitment_number from hms_appoitments where id=".$data['appointment_id'])->row_array();        
+		    $this->notification->saveNotification($data['user_id'], "Recommned next appointment date added in you appointment <br>Appointment Number: <b>".$app_number['appoitment_number']."</b>");
+        }
+    }
 
     public function addPatient(){
         $uid = $this->auth->getDoctorId();

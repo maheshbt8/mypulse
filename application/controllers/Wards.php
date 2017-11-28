@@ -106,7 +106,7 @@ class Wards extends CI_Controller {
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? $_GET['bid'] : null : null;
             $did = isset($_GET['did']) ? $_GET['did']!="" ? $_GET['did'] : null : null;
             $show  = $this->input->get('s',null,false);
-            $cond = array();
+            $cond = array("isDeleted=0");
 
             if($hid == "all")
                 $hid = null;

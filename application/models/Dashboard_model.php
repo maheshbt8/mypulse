@@ -81,6 +81,7 @@ class Dashboard_model extends CI_Model {
 
         $s_res = $this->db->query("SELECT COUNT(DISTINCT store_id) as cnt FROM `hms_prescription` where patient_id=$user_id and isDeleted=0 and store_id > 0")->row_array();
         $res['tot_medStore'] = isset($s_res['cnt']) ? $s_res['cnt'] : 0;
+        
 		$this->load->model('departments_model');
         $this->load->model('hospitals_model');
         $hids = $this->hospitals_model->getHospicalIds();

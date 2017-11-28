@@ -15,6 +15,7 @@ class Beds_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getbedsById($id) {
         $qry = "select * from " . $this->tblname . " where id=$id and isDeleted=0";
         $r = $this->db->query($qry);
@@ -36,74 +37,77 @@ class Beds_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field) {
         $field = explode(",", $field);
 
         //If doctor is login, get Department Id -> wards_ids -> 
         //$this->db->where_in('ward_id',$wardids);
-         if($this->auth->isDoctor()){
-                $docid = $this->auth->getDoctorId();
-                $get_dep = $this->db->get_where('hms_doctors',array('id'=>$docid));
-                $get_dep_result = $get_dep->result_array();
-                $dep_id = array();
-                foreach ($get_dep_result as $row) {
-                    $dep_id[] = $row['department_id'];
-                }
-                if(count($dep_id) == 0)
-                {
-                    $dep_id[] = '-1';
-                }
-                $dep_id_str = implode(',',$dep_id);
-                $get_ward = $this->db->query('select * from `hms_wards` where `department_id` in ("'.$dep_id_str.'")');
-                $get_ward_result = $get_ward->result_array();
-                $ward_id = array();
-                foreach ($get_ward_result as $ward_row) {
-                    $ward_id[] = $ward_row['id'];
-                }
-                if(count($ward_id) == 0)
-                {
-                    $ward_id[] = '-1';
-                }
+        if($this->auth->isDoctor()){
+            $docid = $this->auth->getDoctorId();
+            $get_dep = $this->db->get_where('hms_doctors',array('id'=>$docid));
+            $get_dep_result = $get_dep->result_array();
+            $dep_id = array();
+            foreach ($get_dep_result as $row) {
+                $dep_id[] = $row['department_id'];
+            }
+            if(count($dep_id) == 0)
+            {
+                $dep_id[] = '-1';
+            }
+            $dep_id_str = implode(',',$dep_id);
+            $get_ward = $this->db->query('select * from `hms_wards` where `department_id` in ("'.$dep_id_str.'")');
+            $get_ward_result = $get_ward->result_array();
+            $ward_id = array();
+            foreach ($get_ward_result as $ward_row) {
+                $ward_id[] = $ward_row['id'];
+            }
+            if(count($ward_id) == 0)
+            {
+                $ward_id[] = '-1';
+            }
 
-                $this->db->where_in('ward_id',$ward_id);
-         }
+            $this->db->where_in('ward_id',$ward_id);
+        }
 
-         if($this->auth->isNurse()){
-                $docid = $this->auth->getNurseId();
-                $get_dep = $this->db->get_where('hms_nurse',array('id'=>$docid));
-                $get_dep_result = $get_dep->result_array();
-                $dep_id = array();
-                foreach ($get_dep_result as $row) {
-                    $dep_id[] = $row['department_id'];
-                }
-                if(count($dep_id) == 0)
-                {
-                    $dep_id[] = '-1';
-                }
-                $dep_id_str = implode(',',$dep_id);
-                $get_ward = $this->db->query('select * from `hms_wards` where `department_id` in ("'.$dep_id_str.'")');
-                $get_ward_result = $get_ward->result_array();
-                $ward_id = array();
-                foreach ($get_ward_result as $ward_row) {
-                    $ward_id[] = $ward_row['id'];
-                }
-                if(count($ward_id) == 0)
-                {
-                    $ward_id[] = '-1';
-                }
+        if($this->auth->isNurse()){
+            $docid = $this->auth->getNurseId();
+            $get_dep = $this->db->get_where('hms_nurse',array('id'=>$docid));
+            $get_dep_result = $get_dep->result_array();
+            $dep_id = array();
+            foreach ($get_dep_result as $row) {
+                $dep_id[] = $row['department_id'];
+            }
+            if(count($dep_id) == 0)
+            {
+                $dep_id[] = '-1';
+            }
+            $dep_id_str = implode(',',$dep_id);
+            $get_ward = $this->db->query('select * from `hms_wards` where `department_id` in ("'.$dep_id_str.'")');
+            $get_ward_result = $get_ward->result_array();
+            $ward_id = array();
+            foreach ($get_ward_result as $ward_row) {
+                $ward_id[] = $ward_row['id'];
+            }
+            if(count($ward_id) == 0)
+            {
+                $ward_id[] = '-1';
+            }
 
-                $this->db->where_in('ward_id',$ward_id);
-         }
+            $this->db->where_in('ward_id',$ward_id);
+        }
         foreach ($field as $f) {
             $this->db->like($f, $q);
         }
         $select = implode('`," ",`', $field);
         $this->db->where("isDeleted",0);
+        $this->db->where("isActive=1");
         $this->db->where('isAvailable',0);
         $this->db->select("id,CONCAT(`$select`) as text", false);
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
         $dept_id = $data['department_id'];
@@ -117,7 +121,7 @@ class Beds_model extends CI_Model {
         $data["created_at"] = date("Y-m-d H:i:s");
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
-            $this->logger->log("New bed:".$data['bed']." added", Logger::Bed, $id);
+            $this->logger->log("New bed added", Logger::Bed, $id);
             
             if(isset($dep_id) && isset($data['ward_id']) && isset($data['bed']) && $dep_id != "" && $data['ward_id'] != "" && $data['bed'] != ""){
                 // find nurses which are linked with $dept_id
@@ -150,11 +154,9 @@ class Beds_model extends CI_Model {
             return false;
         }
     }
+
     function update($id) {
         $data = $_POST;
-       /* echo "<pre>";
-        var_dump($data);
-        exit(); */
         $dept_id = $data['department_id'];
         unset($data['department_id']);
         unset($data["eidt_gf_id"]);
@@ -165,7 +167,7 @@ class Beds_model extends CI_Model {
         $data['isAvailable'] = isset($data['isAvailable']) ? intval($data['isAvailable']) : 0;
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
-            $this->logger->log("Bed:".$data['bed']." updated", Logger::Bed, $id);
+            $this->logger->log("Bed updated", Logger::Bed, $id);
 
             if(isset($dep_id) && isset($data['ward_id']) && isset($data['bed']) && $dep_id != "" && $data['ward_id'] != "" && $data['bed'] != ""){
                 // find nurses which are linked with $dept_id
@@ -198,6 +200,7 @@ class Beds_model extends CI_Model {
             return false;
         }
     }
+    
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);

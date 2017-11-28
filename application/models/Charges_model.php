@@ -11,6 +11,7 @@ class Charges_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getchargesById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -24,6 +25,7 @@ class Charges_model extends CI_Model {
         }
         return $r;
     }
+
     function search($q, $field) {
         $field = explode(",", $field);
         foreach ($field as $f) {
@@ -35,6 +37,7 @@ class Charges_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
@@ -51,6 +54,7 @@ class Charges_model extends CI_Model {
             return false;
         }
     }
+    
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);

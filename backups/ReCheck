@@ -1,10 +1,11 @@
 In superadmin module
 	-->Hospital Menu-> Apply style on description fild.
-	->Ward->in update ->query in select option for hospital and branch - (Reconsider)
+	-->Ward, beds->in update ->query in select option for branch - (Reconsider)
 	->Doctor Availability Schedule does not work properly
 	->query in sending msges
 	->Export Appointment->Excel Sheet not in proper formate (HA,Doc,SA,Rep)
 	-> In-patient action don't show edit option for discharged status.
+	-->branch->hospital option
 	
 IN receptionist
 	->Today's Apoointments->Filters does't work
@@ -19,3 +20,9 @@ MedicalStore
 MedicalLab
 			->MedicalLab incharge->profile->hospital Association not load
 			->order status problem(status should must be change after upload report)	
+
+
+
+
+Notification--------------check from addPatient()
+	->Doctor_model->add(), addPrescription()

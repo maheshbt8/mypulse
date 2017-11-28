@@ -266,7 +266,7 @@ $this->load->view("template/footer.php");
 			    		var data = JSON.parse(data);
 			    		
 						var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
-						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
+						tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_name}]);
 						tempselectize_hospital_id.refreshItems();
 						tempselectize_hospital_id.setValue(data.hospital_id);
 						

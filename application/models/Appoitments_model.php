@@ -389,19 +389,21 @@ class Appoitments_model extends CI_Model {
         $this->db->where('id',$id);
         $this->db->update($this->tblname,array('remarks'=>$r));
 		
-		$this->logger->log("Appointment APT".$id." updated", Logger::Appointment, $id);
-		
-        //get appointment data
-        $this->db->where('id',$id);
-        $appointment = $this->db->get($this->tblname)->row_array();
-        //get receptionists which are linked with this->$appointment['doctor_id'] doctor
-        $this->db->where('doc_id', $appointment['doctor_id']);
-        $receptionists = $this->db->get('hms_receptionist')->result_array();
-        //sent notification to patient
-        $this->notification->saveNotification($appointment['user_id'], "Remark added in your appointment <b>".$appointment['appoitment_number']."</b>");
-        foreach ($receptionists as $receptionist){
-            //sent notification to receptionist
-            $this->notification->saveNotification($receptionist['user_id'], "Remark added in appointment: <b>".$appointment['appoitment_number']."</b>");
+		$this->logger->log("Appointment updated", Logger::Appointment, $id);
+        
+        if($id !=""){
+            //get appointment data
+            $this->db->where('id',$id);
+            $appointment = $this->db->get($this->tblname)->row_array();
+            //get receptionists which are linked with this->$appointment['doctor_id'] doctor
+            $this->db->where('doc_id', $appointment['doctor_id']);
+            $receptionists = $this->db->get('hms_receptionist')->result_array();
+            //sent notification to patient
+            $this->notification->saveNotification($appointment['user_id'], "Remark added in your appointment <b>".$appointment['appoitment_number']."</b>");
+            foreach ($receptionists as $receptionist){
+                //sent notification to receptionist
+                $this->notification->saveNotification($receptionist['user_id'], "Remark added in appointment: <b>".$appointment['appoitment_number']."</b>");
+            }
         }
     }
 
@@ -415,6 +417,7 @@ class Appoitments_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
         //echo "<pre>";
@@ -440,11 +443,18 @@ class Appoitments_model extends CI_Model {
         }
         if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
-			$this->logger->log("New appointment APT".$id." created", Logger::Appointment, $id);
+			$this->logger->log("New appointment created", Logger::Appointment, $id);
 
             $this->db->where('id',$id);
             $apt_no ='APT'.$id;
             $this->db->update($this->tblname,array('appoitment_number'=> $apt_no));
+
+            if(!$this->auth->isPatient()){
+                if(isset($data['user_id']) && $data['user_id'] != ""){
+                    //sent notification to patient
+                    $this->notification->saveNotification($data['user_id'],"Your appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                }
+            }
 
             if(isset($data['doctor_id']) && $data['doctor_id'] != ""){
                 //find doctor user_id
@@ -453,37 +463,34 @@ class Appoitments_model extends CI_Model {
                 //find receptionists which are linked with with this doctor
                 $this->db->where('doc_id', $data['doctor_id']);
                 $receptionists = $this->db->get('hms_receptionist')->result_array(); 
-                    if(!$this->auth->isPatient()){
-                        if(isset($data['user_id']) && $data['user_id'] != ""){
-                            //sent notification to patient
-                            $this->notification->saveNotification($data['user_id'],"Your appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                        }
-
-                        if ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
-                            //sent notification to doctor
-                            $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                            //sent notification to receptionist
-                            foreach ($receptionists as $receptionist) {
-                                $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                            }
-                        }elseif ($this->auth->isReceptinest()){
-                            //sent notification to doctor
-                            $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                        }elseif ($this->auth->isDoctor()){
-                            //sent notification to receptionist
-                            foreach ($receptionists as $receptionist) {
-                                $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
-                            }
-                        }
-                    }else{
+                
+                if(!$this->auth->isPatient()){
+                
+                    if ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
                         //sent notification to doctor
                         $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
                         //sent notification to receptionist
                         foreach ($receptionists as $receptionist) {
                             $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
                         }
-                    
+                    }elseif ($this->auth->isReceptinest()){
+                        //sent notification to doctor
+                        $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                    }elseif ($this->auth->isDoctor()){
+                        //sent notification to receptionist
+                        foreach ($receptionists as $receptionist) {
+                            $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                        }
                     }
+                }else{
+                    //sent notification to doctor
+                    $this->notification->saveNotification($doctor['user_id'],"New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                    //sent notification to receptionist
+                    foreach ($receptionists as $receptionist) {
+                        $this->notification->saveNotification($receptionist['user_id'], "New appointment is booked.<br> Appointment number:<b> $apt_no </b>");
+                    }
+                
+                }
             }
             return true;
         } else {
@@ -507,7 +514,7 @@ class Appoitments_model extends CI_Model {
         }
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
-            $this->logger->log("Appointment APT".$id." updated", Logger::Appointment, $id);
+            $this->logger->log("Appointment updated", Logger::Appointment, $id);
             //get appt using $id;
             if(!$this->auth->isPatient()) {
                 //find appoitment data
@@ -546,14 +553,16 @@ class Appoitments_model extends CI_Model {
             return false;
         }
     }
+
     function delete($id) {
         $this->db->where("id", $id);
         $d["isDeleted"] = 1;
         if ($this->db->update($this->tblname, $d)) {
-            $this->logger->log("Appointment APT".$id." soft deleted", Logger::Appointment, $id);
+            $this->logger->log("Appointment soft deleted", Logger::Appointment, $id);
             return true;
         } else return false;
     }
+    
     function cancel($id)
     {
         if ($this->updateStatus($id, 4)) {
@@ -564,7 +573,7 @@ class Appoitments_model extends CI_Model {
                 $ids[] = $id;
             }
             foreach($ids as $id)
-                $this->logger->log("Appointment APT" . $id . "canceled", Logger::Appointment, $id);
+                $this->logger->log("Appointment canceled", Logger::Appointment, $id);
             return true;
         }
         return false;
@@ -580,7 +589,7 @@ class Appoitments_model extends CI_Model {
                 $ids[] = $id;
             }
             foreach($ids as $id)
-                $this->logger->log("Appointment APT" . $id . " rejected", Logger::Appointment, $id);
+                $this->logger->log("Appointment rejected", Logger::Appointment, $id);
             return true;
         }else{
             return false;
@@ -596,7 +605,7 @@ class Appoitments_model extends CI_Model {
                 $ids[] = $id;
             }
             foreach($ids as $id)
-                $this->logger->log("Appointment APT".$id." approved", Logger::Appointment, $id);
+                $this->logger->log("Appointment approved", Logger::Appointment, $id);
             return true;
         }else{
             return false;
@@ -625,7 +634,7 @@ class Appoitments_model extends CI_Model {
             
             foreach($ids as $id){
                 $apt = $this->db->query("select * from $this->tblname where id = $id")->row_array();
-                if(isset($apt['id'])){
+                if(isset($apt['id']) && $apt['id'] !=""){
                     $msg = $this->auth->getAppoitmentStatus($status,true);
                     //sent notification to patient
                     $this->notification->saveNotification($apt['user_id'],"Your appointment <b>".$apt['appoitment_number']."</b> has been ".$msg);
