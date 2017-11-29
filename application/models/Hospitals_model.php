@@ -11,6 +11,7 @@ class Hospitals_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function gethospitalsById($id) {
         if($id == "")
             $id = 0;
@@ -35,6 +36,7 @@ class Hospitals_model extends CI_Model {
         //echo "<pre>";var_dump($r['country_name']);exit;
         return $r;
     }
+
     function getHospitalLogo($hid=0){
         
         $this->db->select('logo');
@@ -49,6 +51,7 @@ class Hospitals_model extends CI_Model {
         }
         return base_url()."public/assets/images/logo.png";
     }
+
     function checkSlug($slug){
         $slug = str_replace('http://www.mypulse.com/','',$slug);
         $this->db->where('slug',$slug);
@@ -58,6 +61,7 @@ class Hospitals_model extends CI_Model {
         }
         return true;
     }
+
     function search($q, $field) {
         $field = explode(",", $field);
         
@@ -92,6 +96,7 @@ class Hospitals_model extends CI_Model {
         else
             return array();
     }
+
     function add() {
         $data = $_POST;
         //echo "<pre>";var_dump($data);exit;
@@ -120,6 +125,7 @@ class Hospitals_model extends CI_Model {
             return false;
         }
     }
+
     function update($id) {
         $data = $_POST;
         
@@ -152,6 +158,7 @@ class Hospitals_model extends CI_Model {
             return false;
         }
     }
+
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);
@@ -164,6 +171,7 @@ class Hospitals_model extends CI_Model {
             return true;
         } else return false;
     }
+    
     function getLogoFromSlug($slug){
         $this->db->where('slug',$slug);
         $s = $this->db->get($this->tblname)->row_array();

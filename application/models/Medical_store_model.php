@@ -11,6 +11,7 @@ class Medical_store_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     public function getMyId(){
         $this->db->where('user_id',$this->auth->getUserid());
         $this->db->where('isDeleted',0);
@@ -22,6 +23,7 @@ class Medical_store_model extends CI_Model {
         }
         return 0;
     }
+
     function getmedical_storeById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -47,6 +49,7 @@ class Medical_store_model extends CI_Model {
         $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
     }
+
     function search($q, $field, $city) {
         $field = explode(",", $field);
         if($city!=null){
@@ -62,6 +65,7 @@ class Medical_store_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
 
         $data = $_POST;
@@ -119,8 +123,9 @@ class Medical_store_model extends CI_Model {
                 $mstore['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $mstore)) {
 				$id = $this->db->insert_id();
-				$this->logger->log("New medical store added", Logger::MedicalStore, $id);
-				if(isset($data['hospital_id']) && isset($data['branch_id']) && isset($data['name']) && $data['hospital_id'] !="" && $data['branch_id'] !="" && $data['name'] !=""){
+                $this->logger->log("New medical store added", Logger::MedicalStore, $id);
+                
+				if(isset($data['hospital_id']) && $data['hospital_id'] !=""){
                     //find hospital name
                     $this->db->where('id', $data['hospital_id']);
                     $hospital = $this->db->get('hms_hospitals')->row_array();
@@ -128,14 +133,16 @@ class Medical_store_model extends CI_Model {
                     $this->notification->saveNotification($mstore['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
 
                     if($this->auth->isSuperAdmin()){
-                        //find branch name
-                        $this->db->where('id',$data['branch_id']);
-                        $branch = $this->db->get('hms_branches')->row_array();
-                        //find hospital admin
-                        $this->db->where('hospital_id', $data['hospital_id']);
-                        $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                        //sent notification to hospital admin
-                        $this->notification->saveNotification($hadmin['user_id'], "New medical store <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                        if(isset($data['branch_id']) && $data['branch_id'] != "" && isset($data['name']) && $data['name'] != ""){
+                            //find branch name
+                            $this->db->where('id',$data['branch_id']);
+                            $branch = $this->db->get('hms_branches')->row_array();
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New medical store <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                        }
                     }
                 }
                 return true;
@@ -212,8 +219,10 @@ class Medical_store_model extends CI_Model {
 					$this->logger->log("Medical store details updated", Logger::MedicalStore, $id);
 					
                     if(!$this->auth->isMedicalStore()){
-                        // sent notification to medical_store incharge
-                        $this->notification->saveNotification($usr['user_id'],"Your profile is updated");
+                        if(isset($usr['user_id']) && $usr['user_id'] != ""){    
+                            // sent notification to medical_store incharge
+                            $this->notification->saveNotification($usr['user_id'],"Your profile is updated");
+                        }
                     }
                     return true;
                 } else {

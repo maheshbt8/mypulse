@@ -11,6 +11,7 @@ class Hospital_admin_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     public function getMyId(){
         $this->db->where('user_id',$this->auth->getUserid());
         $this->db->where('isDeleted',0);
@@ -22,6 +23,7 @@ class Hospital_admin_model extends CI_Model {
         }
         return 0;
     }
+
     function gethospital_adminById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r =  $r->row_array();
@@ -43,6 +45,7 @@ class Hospital_admin_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field) {
         $field = explode(",", $field);
         foreach ($field as $f) {
@@ -53,6 +56,7 @@ class Hospital_admin_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
         $data['role'] = $this->auth->getHospitalAdminRoleType();
@@ -71,13 +75,16 @@ class Hospital_admin_model extends CI_Model {
             $had['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $had)) {
 				$ha_id = $this->db->insert_id();
-				$this->logger->log("Hospital admin added", Logger::HospitalAdmin, $ha_id);
-                //get hospital name
-                $hname = $this->db->query("select name from hms_hospitals where id = $had[hospital_id]")->row_array();
-                //sent notification to hadmin
-                $this->notification->saveNotification($had['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Hospital admin");
-                return true;
-            } else {
+                $this->logger->log("Hospital admin added", Logger::HospitalAdmin, $ha_id);
+                
+                if(isset($had[hospital_id]) && $had[hospital_id] != "" && isset($had['user_id']) && $had['user_id'] != ""){
+                    //get hospital name
+                    $hname = $this->db->query("select name from hms_hospitals where id = $had[hospital_id]")->row_array();
+                    //sent notification to hadmin
+                    $this->notification->saveNotification($had['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Hospital admin");
+                }
+            return true;
+            }else{
                 return false;
             }
         }
@@ -109,7 +116,14 @@ class Hospital_admin_model extends CI_Model {
             if(count($had) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $had)) {
-					$this->logger->log("Hospital admin details updated", Logger::HospitalAdmin, $id);
+                    $this->logger->log("Hospital admin details updated", Logger::HospitalAdmin, $id);
+
+                    if(!$this->auth->isHospitalAdmin()){
+                        if(isset($ha['user_id']) && $ha['user_id'] != ""){
+                            //sent notification to hadmin
+                            $this->notification->saveNotification($ha['user_id'], "Your profile is updated");
+                        }
+                    }
                     return true;
                 } else {
                     return false;

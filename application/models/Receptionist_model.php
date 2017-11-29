@@ -11,6 +11,7 @@ class Receptionist_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getreceptionistById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -67,6 +68,7 @@ class Receptionist_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field) {
         
         if($this->auth->isHospitalAdmin()){
@@ -92,6 +94,7 @@ class Receptionist_model extends CI_Model {
 
 
     }
+
     function add() {
         $data = $_POST;
         $data['role'] = $this->auth->getReceptienstRoleType();
@@ -115,8 +118,9 @@ class Receptionist_model extends CI_Model {
                 $rec['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $rec)) {
 				$id = $this->db->insert_id();
-				$this->logger->log("New receptionist added", Logger::Receptionist, $id);
-				if(isset($data['doc_id']) && isset($data['hospital_id']) && $data['doc_id'] != "" && $data['hospital_id'] != ""){
+                $this->logger->log("New receptionist added", Logger::Receptionist, $id);
+                
+				if(isset($data['doc_id']) && $data['doc_id'] != ""){
                     //find doctor user_id which is linked with this receptionist
                     $this->db->where('id', $data['doc_id']);
                     $doctor = $this->db->get('hms_doctors')->row_array();
@@ -124,17 +128,22 @@ class Receptionist_model extends CI_Model {
                     $this->db->where('id', $doctor['user_id']);
                     $dname = $this->db->get('hms_users')->row_array();
 
-                    //sent notification to receptionist
-                    $this->notification->saveNotification($rec['user_id'], "You are linked with <b>".$dname['first_name']." ".$dname['last_name']."</b> doctor as Receptionist");
                     //sent notification to doctor
                     $this->notification->saveNotification($doctor['user_id'],"New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with you");
 
+                    if(isset($rec['user_id']) && $rec['user_id'] != ""){
+                        //sent notification to receptionist
+                        $this->notification->saveNotification($rec['user_id'], "You are linked with <b>".$dname['first_name']." ".$dname['last_name']."</b> doctor as Receptionist");              
+                    }
+
                     if($this->auth->isSuperAdmin()){
-                        //find hospital admin
-                        $this->db->where('hospital_id', $data['hospital_id']);
-                        $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                        //sent notification to hospital admin
-                        $this->notification->saveNotification($hadmin['user_id'], "New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                        if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                        }
                     }
                 }
                 return true;
@@ -144,6 +153,7 @@ class Receptionist_model extends CI_Model {
         }
         return true;
     }
+    
     function update($id) {
         $data = $_POST;
         $this->db->where("id", $id);
@@ -171,7 +181,35 @@ class Receptionist_model extends CI_Model {
             if(count($rec) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $rec)) {
-					$this->logger->log("Receptionist details updated", Logger::Receptionist, $id);
+                    $this->logger->log("Receptionist details updated", Logger::Receptionist, $id);
+                    
+                    if(!$this->auth->isReceptinest()){
+                        if(isset($rec['user_id']) && $rec['user_id'] != ""){
+                            //sent notification to receptionist
+                            $this->notification->saveNotification($rec['user_id'], "Your profile is updated");
+                        }
+                        if(isset($data['doc_id']) && $data['doc_id'] != ""){
+                            //find doctor user_id which is linked with this receptionist
+                            $this->db->where('id', $data['doc_id']);
+                            $doctor = $this->db->get('hms_doctors')->row_array();
+                            
+                            //sent notification to doctor
+                            $this->notification->saveNotification($doctor['user_id'],"Receptionist <b>".$data['first_name']." ".$data['last_name']."</b> profile updated");
+        
+                            if($this->auth->isSuperAdmin()){
+                                if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
+                                    //find hospital admin
+                                    $this->db->where('hospital_id', $data['hospital_id']);
+                                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                                    //find doctor name from user table
+                                    $this->db->where('id', $doctor['user_id']);
+                                    $dname = $this->db->get('hms_users')->row_array();
+                                    //sent notification to hospital admin
+                                    $this->notification->saveNotification($hadmin['user_id'], "Receptionist <b>".$data['first_name']." ".$data['last_name']."</b> profile is updated. <br>Doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                                }
+                            }
+                        }
+                    }
                     return true;
                 } else {
                     return false;
@@ -180,6 +218,7 @@ class Receptionist_model extends CI_Model {
         }
         return true;
     }
+
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);

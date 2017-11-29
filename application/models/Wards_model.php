@@ -11,6 +11,7 @@ class Wards_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getwardsById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -28,6 +29,7 @@ class Wards_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field, $did=0) {
         $field = explode(",", $field);
         foreach ($field as $f) {
@@ -43,6 +45,7 @@ class Wards_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
 
@@ -54,19 +57,21 @@ class Wards_model extends CI_Model {
         if ($this->db->insert($this->tblname, $data)) {
 			$id = $this->db->insert_id();
 			$this->logger->log("New ward added", Logger::Ward, $id);
-			
-            if($this->auth->isSuperAdmin()) {
-                //find department name
-                $this->db->where('id', $data['department_id']);
-                $dept = $this->db->get('hms_departments')->row_array();
-                //find branch name
-                $this->db->where('id', $dept['branch_id']);
-                $branch = $this->db->get('hms_branches')->row_array();
-                //find hospital admin
-                $this->db->where('hospital_id', $branch['hospital_id']);
-                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                //sent notification to h.admin
-                $this->notification->saveNotification($hadmin['user_id'], "New ward <b>".$data['ward_name']."</b> is added in <b>".$dept['department_name']."</b> department of <b>".$branch['branch_name']."</b> branch" );
+            
+            if(isset($data['department_id']) && $data['department_id'] != "" && isset($data['ward_name']) && $data['ward_name'] != ""){
+                if($this->auth->isSuperAdmin()) {
+                    //find department name
+                    $this->db->where('id', $data['department_id']);
+                    $dept = $this->db->get('hms_departments')->row_array();
+                    //find branch name
+                    $this->db->where('id', $dept['branch_id']);
+                    $branch = $this->db->get('hms_branches')->row_array();
+                    //find hospital admin
+                    $this->db->where('hospital_id', $branch['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to h.admin
+                    $this->notification->saveNotification($hadmin['user_id'], "New ward <b>".$data['ward_name']."</b> is added in <b>".$dept['department_name']."</b> department of <b>".$branch['branch_name']."</b> branch" );
+                }
             }
             return true;
         } else {
@@ -86,19 +91,21 @@ class Wards_model extends CI_Model {
         $this->db->where("id", $id);
         if ($this->db->update($this->tblname, $data)) {
 			$this->logger->log("Ward details updated", Logger::Ward, $id);
-			
-            if($this->auth->isSuperAdmin()) {
-                //find department name
-                $this->db->where('id', $data['department_id']);
-                $dept = $this->db->get('hms_departments')->row_array();
-                //find branch name
-                $this->db->where('id', $dept['branch_id']);
-                $branch = $this->db->get('hms_branches')->row_array();
-                //find hospital admin
-                $this->db->where('hospital_id', $branch['hospital_id']);
-                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                //sent notification to h.admin
-                $this->notification->saveNotification($hadmin['user_id'], "Ward <b>".$data['ward_name']."</b> information is updated in <b>".$dept['department_name']."</b> department of <b>".$branch['branch_name']."</b> branch" );
+            
+            if(isset($data['department_id']) && $data['department_id'] != "" && isset($data['ward_name']) && $data['ward_name'] != ""){
+                if($this->auth->isSuperAdmin()) {
+                    //find department name
+                    $this->db->where('id', $data['department_id']);
+                    $dept = $this->db->get('hms_departments')->row_array();
+                    //find branch name
+                    $this->db->where('id', $dept['branch_id']);
+                    $branch = $this->db->get('hms_branches')->row_array();
+                    //find hospital admin
+                    $this->db->where('hospital_id', $branch['hospital_id']);
+                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                    //sent notification to h.admin
+                    $this->notification->saveNotification($hadmin['user_id'], "Ward <b>".$data['ward_name']."</b> information is updated in <b>".$dept['department_name']."</b> department of <b>".$branch['branch_name']."</b> branch" );
+                }
             }
             return true;
         } else {

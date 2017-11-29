@@ -24,5 +24,4 @@ MedicalLab
 
 
 
-Notification--------------check from addPatient()
-	->Doctor_model->add(), addPrescription()
+

@@ -11,6 +11,7 @@ class Nurse_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getnurseById($id) {
         if($id=="")
             $id = 0;
@@ -55,6 +56,7 @@ class Nurse_model extends CI_Model {
 
         return $r;
     }
+
     function search($q, $field) {
 
         if($this->auth->isHospitalAdmin()){
@@ -76,6 +78,7 @@ class Nurse_model extends CI_Model {
         $res = $this->db->get();
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
         /*echo "<pre>";
@@ -102,24 +105,26 @@ class Nurse_model extends CI_Model {
 				$id = $this->db->insert_id();
 				$this->logger->log("New nurse added", Logger::Nurse, $id);
 				
-                if(isset($data['hospital_id']) && isset($data['department_id']) && isset($data['branch_id']) && $data['hospital_id'] != "" && $data['department_id'] != "" && $data['branch_id'] != ""){
+                if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
                     //get hospital name
                     $hname = $this->db->query("select name from hms_hospitals where id = $data[hospital_id]")->row_array();
                     //sent notification to nurse
                     $this->notification->saveNotification($nurse['user_id'], "You are linked with <b>".$hname['name']."</b> hospital as Nurse");
                 
                     if($this->auth->isSuperAdmin()){
-                        //find department name
-                        $this->db->where('id', $data['department_id']);
-                        $dept = $this->db->get('hms_departments')->row_array();
-                        //find branch name
-                        $this->db->where('id', $data['branch_id']);
-                        $branch = $this->db->get('hms_branches')->row_array();
-                        //find hospital admin
-                        $this->db->where('hospital_id', $data['hospital_id']);
-                        $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                        //sent notification to hospital Admin
-                        $this->notification->saveNotification($hadmin['user_id'], "New nurse <b>".$data['first_name']." ".$data['last_name']."</b> is added in department: <b>".$dept['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                        if(isset($data['department_id']) && $data['department_id'] != "" && isset($data['branch_id']) && $data['branch_id'] != ""){
+                            //find department name
+                            $this->db->where('id', $data['department_id']);
+                            $dept = $this->db->get('hms_departments')->row_array();
+                            //find branch name
+                            $this->db->where('id', $data['branch_id']);
+                            $branch = $this->db->get('hms_branches')->row_array();
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital Admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New nurse <b>".$data['first_name']." ".$data['last_name']."</b> is added in department: <b>".$dept['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                        }   
                     }
                 }
                 return true;
@@ -130,6 +135,7 @@ class Nurse_model extends CI_Model {
         }
         return true;
     }
+
     function update($id) {
         $data = $_POST;
 
@@ -158,7 +164,29 @@ class Nurse_model extends CI_Model {
             if(count($nus) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $nus)) {
-					$this->logger->log("Nurse details updated", Logger::Nurse, $id);
+                    $this->logger->log("Nurse details updated", Logger::Nurse, $id);
+
+                    if(!$this->auth->isNurse()){
+                        if($this->auth->isSuperAdmin()){
+                            if(isset($data['hospital_id']) && $data['hospital_id'] != "" && isset($data['department_id']) && $data['department_id'] != "" && isset($data['branch_id']) && $data['branch_id'] != ""){
+                                //find department name
+                                $this->db->where('id', $data['department_id']);
+                                $dept = $this->db->get('hms_departments')->row_array();
+                                //find branch name
+                                $this->db->where('id', $data['branch_id']);
+                                $branch = $this->db->get('hms_branches')->row_array();
+                                //find hospital admin
+                                $this->db->where('hospital_id', $data['hospital_id']);
+                                $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                                //sent notification to hospital Admin
+                                $this->notification->saveNotification($hadmin['user_id'], "Nurse <b>".$data['first_name']." ".$data['last_name']."</b> profile updated in department: <b>".$dept['department_name']."</b><br>Branch: <b>".$branch['branch_name']."</b>");
+                            }   
+                        }
+                        if(isset($nus['user_id']) && $nus['user_id'] != ""){
+                            //sent notification to nurse
+                            $this->notification->saveNotification($nus['user_id'], "Your profile is updated");
+                        }
+                    }
                     return true;
                 } else {
                     return false;
@@ -262,14 +290,14 @@ class Nurse_model extends CI_Model {
         return $patient_ids;
     }
 
-     public function UpdateInPatient(){
-         $id = $this->input->post('inpatient_update_id');
-        
-         $data = array();
-         if(isset($_POST['Patientbed'])){
-             $data['bed_id'] = $_POST['Patientbed'];
-         }   
-         if(isset($_POST['ptStatus'])){
+    public function UpdateInPatient(){
+        $id = $this->input->post('inpatient_update_id');
+
+        $data = array();
+        if(isset($_POST['Patientbed'])){
+            $data['bed_id'] = $_POST['Patientbed'];
+        }   
+        if(isset($_POST['ptStatus'])){
             $data['status'] = intval($_POST['ptStatus']);
         }   
         if(isset($_POST['inPatientReason'])){
@@ -277,23 +305,24 @@ class Nurse_model extends CI_Model {
         }   
         
         
-         $this->db->set($data);
-         $this->db->where('id',$id);
-         $this->db->update('hms_inpatient');
-		 $this->logger->log("Patient Inpatient history updated", Logger::Inpatient, $id);
-		 
-         //get inpatient data where id=in_patient_id
-         $this->db->where('id', $id);
-         $inpatient = $this->db->get('hms_inpatient')->row_array();
-         // get patient name using user_id from user tbl
-         $this->db->where('id', $inpatient['user_id']);
-         $pname = $this->db->get('hms_users')->row_array();
-         // get doctor's user_id using doctor_id
-         $this->db->where('id', $inpatient['doctor_id']);
-         $doctor = $this->db->get('hms_doctors')->row_array();
-         //sent notification to doctor
-         $this->notification->saveNotification($doctor['user_id'], "Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b> is updated");
-
+        $this->db->set($data);
+        $this->db->where('id',$id);
+        $this->db->update('hms_inpatient');
+        $this->logger->log("Patient Inpatient history updated", Logger::Inpatient, $id);
+        
+        if(isset($id) && $id !=""){
+            //get inpatient data where id=in_patient_id
+            $this->db->where('id', $id);
+            $inpatient = $this->db->get('hms_inpatient')->row_array();
+            // get patient name using user_id from user tbl
+            $this->db->where('id', $inpatient['user_id']);
+            $pname = $this->db->get('hms_users')->row_array();
+            // get doctor's user_id using doctor_id
+            $this->db->where('id', $inpatient['doctor_id']);
+            $doctor = $this->db->get('hms_doctors')->row_array();
+            //sent notification to doctor
+            $this->notification->saveNotification($doctor['user_id'], "Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b> is updated");
+        }
         //Set bed to not available
         $bed_availbe_status = 1;
         
@@ -305,7 +334,7 @@ class Nurse_model extends CI_Model {
         $inp = $this->db->get('hms_inpatient')->row_array();
         $this->db->where('id',$inp['bed_id']);
         $this->db->update("hms_beds",array("isAvailable"=>$bed_availbe_status));
-     }
+    }
 
     public function getDoctorIds($userid){
            

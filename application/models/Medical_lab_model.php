@@ -11,6 +11,7 @@ class Medical_lab_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function getMyLabId(){
         $this->db->where('user_id',$this->auth->getUserid());
         $this->db->where('isDeleted',0);
@@ -18,6 +19,7 @@ class Medical_lab_model extends CI_Model {
         $ml = $ml->row_array();
         return isset($ml['id']) ? $ml['id'] : 0;
     }
+
     public function getMyId(){
         $this->db->where('user_id',$this->auth->getUserid());
         $this->db->where('isDeleted',0);
@@ -29,6 +31,7 @@ class Medical_lab_model extends CI_Model {
         }
         return 0;
     }
+
 	function getMyPatientsIds(){
 		$lab_id = $this->getMyId();
 		$this->db->distinct();
@@ -42,7 +45,8 @@ class Medical_lab_model extends CI_Model {
 			$ids[] = $p['patient_id'];
 		}
 		return $ids;
-	}
+    }
+    
     function getmedical_labById($id) {
         $r = $this->db->query("select *,isActive as curIsActive from " . $this->tblname . " where id=$id and isDeleted=0");
         $r = $r->row_array();
@@ -68,6 +72,7 @@ class Medical_lab_model extends CI_Model {
         $r['country_name'] = $this->auth->getCountryName($r['country']);
         return $r;
     }
+
     function search($q, $field,$city) {
         $field = explode(",", $field);
         if($city!=null){
@@ -83,6 +88,7 @@ class Medical_lab_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function addReportUrl($id,$urls,$paths,$types){
         for($i=0; $i<count($urls); $i++){
             $d['medical_report_id'] = $id;
@@ -189,22 +195,26 @@ class Medical_lab_model extends CI_Model {
             if ($this->db->insert($this->tblname, $mlab)) {
 				$id = $this->db->insert_id();
 				$this->logger->log("New medical lab added", Logger::MedicalLab, $id);
-				
-                //find hospital name
-                $this->db->where('id', $data['hospital_id']);
-                $hospital = $this->db->get('hms_hospitals')->row_array();
-                //sent notification to medical lab
-                $this->notification->saveNotification($mlab['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
+                
+                if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
+                    //find hospital name
+                    $this->db->where('id', $data['hospital_id']);
+                    $hospital = $this->db->get('hms_hospitals')->row_array();
+                    //sent notification to medical lab
+                    $this->notification->saveNotification($mlab['user_id'], "You are linked with <b>".$hospital['name']."</b> hospital");
 
-                if($this->auth->isSuperAdmin()){
-                    //find branch name
-                    $this->db->where('id',$data['branch_id']);
-                    $branch = $this->db->get('hms_branches')->row_array();
-                    //find hospital admin
-                    $this->db->where('hospital_id', $data['hospital_id']);
-                    $hadmin = $this->db->get('hms_hospital_admin')->row_array();
-                    //sent notification to hospital admin
-                    $this->notification->saveNotification($hadmin['user_id'], "New medical lab <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                    if($this->auth->isSuperAdmin()){
+                        if(isset($data['branch_id']) && $data['branch_id'] != "" && isset($data['name']) && $data['name'] != ""){
+                            //find branch name
+                            $this->db->where('id',$data['branch_id']);
+                            $branch = $this->db->get('hms_branches')->row_array();
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New medical lab <b>".$data['name']."</b> is linked with branch: <b>".$branch['branch_name']."</b>");
+                        }
+                    }
                 }
                 return true;
             } else {
@@ -279,11 +289,13 @@ class Medical_lab_model extends CI_Model {
 					$this->logger->log("Medical lab details updated", Logger::MedicalLab, $id);
 					
                     if (!$this->auth->isMedicalLab()) {
-                        // sent notification to medical_lab incharge
-                        $this->notification->saveNotification($usr['user_id'], "Your profile is updated");
+                        if(isset($usr['user_id']) && $usr['user_id'] != ""){    
+                            // sent notification to medical_lab incharge
+                            $this->notification->saveNotification($usr['user_id'], "Your profile is updated");
+                        }
                     }
                     return true;
-                } else {
+                }else {
                     return false;
                 }
             }

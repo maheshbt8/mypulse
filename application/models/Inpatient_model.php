@@ -65,29 +65,30 @@ class Inpatient_model extends CI_Model {
         $hsdata = $this->db->insert('hms_inpatient_history',$data);
 		$id = $this->db->insert_id();
 		$this->logger->log("New note added in inpatient history", Logger::Inpatient, $id);
-		
-        //get inpatient data where id=in_patient_id
-        $this->db->where('id', $data['in_patient_id']);
-        $inpatient = $this->db->get('hms_inpatient')->row_array();
-        // get patient name using user_id from user tbl
-        $this->db->where('id', $inpatient['user_id']);
-        $pname = $this->db->get('hms_users')->row_array();
-        // get department_id and doctor user_id using doctor_id
-        $this->db->where('id', $inpatient['doctor_id']);
-        $doctor = $this->db->get('hms_doctors')->row_array();
+        
+        if(isset($data['in_patient_id']) && $data['in_patient_id'] != ""){
+            //get inpatient data where id=in_patient_id
+            $this->db->where('id', $data['in_patient_id']);
+            $inpatient = $this->db->get('hms_inpatient')->row_array();
+            // get patient name using user_id from user tbl
+            $this->db->where('id', $inpatient['user_id']);
+            $pname = $this->db->get('hms_users')->row_array();
+            // get department_id and doctor user_id using doctor_id
+            $this->db->where('id', $inpatient['doctor_id']);
+            $doctor = $this->db->get('hms_doctors')->row_array();
 
-        if($this->auth->isDoctor()){
-            // get nurses which are linked with this $dept_id
-            $nurses = $this->db->query("select user_id from hms_nurse where department_id = $doctor[department_id]")->result_array();
-            // sent notification to nurse
-            foreach ($nurses as $nurse){
-                $this->notification->saveNotification($nurse['user_id'], "New note is added in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
+            if($this->auth->isDoctor()){
+                // get nurses which are linked with this $dept_id
+                $nurses = $this->db->query("select user_id from hms_nurse where department_id = $doctor[department_id]")->result_array();
+                // sent notification to nurse
+                foreach ($nurses as $nurse){
+                    $this->notification->saveNotification($nurse['user_id'], "New note is added in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
+                }
+            }elseif ($this->auth->isNurse()){
+                //sent notification to doctor
+                $this->notification->saveNotification($doctor['user_id'], "New note is added in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
             }
-        }elseif ($this->auth->isNurse()){
-            //sent notification to doctor
-            $this->notification->saveNotification($doctor['user_id'], "New note is added in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
         }
-
         if ($hsdata) {
             return true;
         }
@@ -100,29 +101,30 @@ class Inpatient_model extends CI_Model {
     public function update_new_note($data){
         $hsdata = $this->db->replace('hms_inpatient_history',$data);
 		$this->logger->log("Note updated in inpatient history", Logger::Inpatient, $id);
-		
-        //get inpatient data where id=in_patient_id
-        $this->db->where('id', $data['in_patient_id']);
-        $inpatient = $this->db->get('hms_inpatient')->row_array();
-        // get patient name using user_id from user tbl
-        $this->db->where('id', $inpatient['user_id']);
-        $pname = $this->db->get('hms_users')->row_array();
-        // get department_id and doctor user_id using doctor_id
-        $this->db->where('id', $inpatient['doctor_id']);
-        $doctor = $this->db->get('hms_doctors')->row_array();
+        
+        if(isset($data['in_patient_id']) && $data['in_patient_id'] != ""){
+            //get inpatient data where id=in_patient_id
+            $this->db->where('id', $data['in_patient_id']);
+            $inpatient = $this->db->get('hms_inpatient')->row_array();
+            // get patient name using user_id from user tbl
+            $this->db->where('id', $inpatient['user_id']);
+            $pname = $this->db->get('hms_users')->row_array();
+            // get department_id and doctor user_id using doctor_id
+            $this->db->where('id', $inpatient['doctor_id']);
+            $doctor = $this->db->get('hms_doctors')->row_array();
 
-        if($this->auth->isDoctor()){
-            // get nurses which are linked with this $dept_id
-            $nurses = $this->db->query("select user_id from hms_nurse where department_id = $doctor[department_id]")->result_array();
-            // sent notification to nurse
-            foreach ($nurses as $nurse){
-                $this->notification->saveNotification($nurse['user_id'], "Note is updated in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
+            if($this->auth->isDoctor()){
+                // get nurses which are linked with this $dept_id
+                $nurses = $this->db->query("select user_id from hms_nurse where department_id = $doctor[department_id]")->result_array();
+                // sent notification to nurse
+                foreach ($nurses as $nurse){
+                    $this->notification->saveNotification($nurse['user_id'], "Note is updated in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
+                }
+            }elseif ($this->auth->isNurse()){
+                //sent notification to doctor
+                $this->notification->saveNotification($doctor['user_id'], "Note is updated in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
             }
-        }elseif ($this->auth->isNurse()){
-            //sent notification to doctor
-            $this->notification->saveNotification($doctor['user_id'], "Note is updated in Inpatient history of patient <b>".$pname['first_name']." ".$pname['last_name']."</b>");
         }
-
         if ($hsdata) {
             return true;
         }

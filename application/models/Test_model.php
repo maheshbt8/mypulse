@@ -11,10 +11,12 @@ class Test_model extends CI_Model {
         if ($res->num_rows()) return $res->result_array();
         else return array();
     }
+
     function gettestById($id) {
         $r = $this->db->query("select * from " . $this->tblname . " where id=$id and isDeleted=0");
         return $r->row_array();
     }
+
     function search($q, $field) {
         $field = explode(",", $field);
         foreach ($field as $f) {
@@ -25,6 +27,7 @@ class Test_model extends CI_Model {
         $res = $this->db->get($this->tblname);
         return $res->result_array();
     }
+
     function add() {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
@@ -36,6 +39,7 @@ class Test_model extends CI_Model {
             return false;
         }
     }
+
     function update($id) {
         $data = $_POST;
         unset($data["eidt_gf_id"]);
@@ -47,6 +51,7 @@ class Test_model extends CI_Model {
             return false;
         }
     }
+    
     function delete($id) {
         if(is_array($id)){
             $this->db->where_in('id',$id);
