@@ -573,10 +573,7 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
 						if(data==1){
-							// for(var i=0; i<selected.length; i++){
-							// 	var temp = selected[i];
-                            //     $($("#apprlink_"+temp).parents('td').siblings()[7]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
-							// }
+							
 							if(dt != undefined){
 								dt.ajax.reload();
 							}

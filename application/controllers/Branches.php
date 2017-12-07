@@ -25,7 +25,6 @@ class Branches extends CI_Controller {
             $q = $this->input->get("q", null, "");
             $f = $this->input->get("f", null, "");
             $hid = $this->input->get("hospital_id",null,-1);
-            
             if($hid == -1 && !$this->auth->isSuperAdmin()){
                 $hid = $this->auth->getHospitalId();
             }

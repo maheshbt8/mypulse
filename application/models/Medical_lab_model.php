@@ -96,12 +96,13 @@ class Medical_lab_model extends CI_Model {
             $d['file_path'] = $paths[$i];
             $d['file_type'] = $types[$i];
             $this->db->insert('hms_medical_report_file',$d);
-			$id = $this->db->insert_id();
-			$this->logger->log("New medical report file added", Logger::Medicalreport, $id);
+            $r_file_id = $this->db->insert_id();
+			$this->logger->log("New medical report file added", Logger::Medicalreport, $r_file_id);
         }
         if(count($urls) > 0){
             $this->db->where('id',$id);
             $this->db->update('hms_medical_report',array('status'=>1));
+
             //find patient
             $this->db->where('id', $id);
             $report = $this->db->get('hms_medical_report')->row_array();
@@ -117,12 +118,14 @@ class Medical_lab_model extends CI_Model {
             $this->notification->saveNotification($doctor['user_id'], "Medical report is uploaded of Patient_Appointment_No: <b>".$app_no['appoitment_number']."</b>");
         }
     }
+
     function getMedicalReportFiles($id){
         $this->db->where('medical_report_id',$id);
         $r = $this->db->get('hms_medical_report_file');
         $r = $r->result_array();
         return $r;
     }
+
     function deleteMedicalReportFile($id){
         $this->db->where('id',$id);
         $d = $this->db->get('hms_medical_report_file');

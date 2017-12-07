@@ -130,7 +130,7 @@
                 height:30px !important;
             }
             .swal2-container{
-                z-index: 9999 !important;
+                z-index: 99999 !important;
             }
             .fc-time{
                 display:none !important;

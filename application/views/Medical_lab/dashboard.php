@@ -75,7 +75,7 @@
                                     $cnt = 1;
                                     foreach($states['medical_reports'] as $mr){
                                         ?>
-                                        <tr>
+                                        <tr id="row_<?=$mr['id'];?>">
                                             <th scope="row"><?=$cnt;?></th>
                                             <td><?=$mr['title'];?></td>
                                             <td><?=$mr['description'];?></td>
@@ -223,6 +223,7 @@
                 cache: false,
                 processData: false,
                 success: function(data){
+                    $("#row_"+id).remove();
                     showImages(data);
                 }
             });

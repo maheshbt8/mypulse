@@ -86,7 +86,8 @@ $this->load->view("template/left.php");
 		?>
 
         $("#reports").dataTable().fnDestroy();
-        $("#reports").DataTable({
+
+        var dt = $("#reports").DataTable({
             "processing": true,
             "serverSide": true,
             "ajax": "<?php echo site_url(); ?>/medical_lab/getDTreports?s="+status
@@ -168,6 +169,8 @@ $this->load->view("template/left.php");
                 console.log(id);
                 $.post('<?php echo site_url();?>/medical_lab/removereportfile',{id: id},function(data){
                     $("#imgdiv_"+id).remove();
+                    if(dt != undefined)
+                        dt.ajax.reload();
                     if($("#dparea").children().length == 0){
                         $("#dparea").html('<h4 class="drop-text">Drag and Drop Test-Report Here</h4>');
                     }
@@ -185,6 +188,8 @@ $this->load->view("template/left.php");
                 cache: false,
                 processData: false,
                 success: function(data){
+                    if(dt != undefined)
+                        dt.ajax.reload();
                     showImages(data);
                 }
             });

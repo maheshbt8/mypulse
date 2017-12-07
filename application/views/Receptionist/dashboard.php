@@ -576,7 +576,7 @@
 
 		});
 		
-		 $("#appoitments").on("click",".delbtn",function(){
+		 $(document).on("click",".delbtn",function(){
 			var id = $(this).attr("data-id");
 			var curdel = $(this);
 			var s = swalDeleteConfig;
@@ -586,11 +586,10 @@
 			swal(s).then(function () {
 				$.post("<?php echo site_url(); ?>/appoitments/reject",{id:id},function(data){
 					if(data==1){
-						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+						//$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
 						toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
-						if(dt != undefined){
-							dt.ajax.reload();
-						}
+						loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
+						loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -608,12 +607,14 @@
 			swal(s).then(function () {
 				$.post("<?php echo site_url(); ?>/appoitments/approve",{id:id},function(data){
 					if(data==1){
-						$($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
+						//$($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
 						//$("#dellink_"+id).parents('tr').remove();	
 						toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
-						if(dt != undefined){
-							dt.ajax.reload();
-						}
+						loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
+						loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
+						//if(dt != undefined){
+						//	dt.ajax.reload();
+						//}
 					}else{
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
@@ -681,10 +682,6 @@
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
 						if(data==1){
-							// for(var i=0; i<selected.length; i++){
-							// 	var temp = selected[i];
-                            //     $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
-							// }
 							if(dt != undefined){
 								dt.ajax.reload();
 							}
@@ -1120,6 +1117,7 @@
 				showClosed = 1;
 			}
 			$("#appoitments").dataTable().fnDestroy();
+
 			var dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
@@ -1132,14 +1130,14 @@
 			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 		}
+		
 		loadTable("","all","all");	
 
         setInterval(function() {
             loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
         }, 60000);
 		
-		$("#menualrefresh1").click(function(){
-			
+		$("#menualrefresh1").click(function(){			
 			loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
 		});
 		
@@ -1219,18 +1217,18 @@
 		$("#showClosed2").change(function(){
 			loadTable1($("#hospital_id2").val(),$("#doctor_id2").val());
 		});
-		
+		var dt;
 		function loadTable1(hid,did){	
-			var st = $("#status1").val();
+			var st = $("#status2").val();
 			var showClosed = 0;
 			if($("#showClosed1").is(":checked")){
 				showClosed = 1;
 			}
 			$("#today_appoitments").dataTable().fnDestroy();
-			var dt = $("#today_appoitments").DataTable({
+			dt = $("#today_appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?tod=1hid="+hid+"&did="+did+"&sc="+showClosed
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?tod=1&st="+st+"&hid="+hid+"&did="+did+"&sc="+showClosed
 			});
 
 			<?php $this->load->view('template/exdt');?>

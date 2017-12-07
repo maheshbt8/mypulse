@@ -184,10 +184,10 @@ class Hospitals_model extends CI_Model {
     function getHospicalIds(){
         $qry = "";
         if($this->auth->isSuperAdmin()){
-            $qry = "select id from $this->tblname where isDeleted=0";
+            $qry = "select id from $this->tblname where isDeleted=0 and isActive=1";
         }else if($this->auth->isHospitalAdmin()){
             $uid = $this->auth->getUserid();
-            $qry = "select hospital_id as id from hms_hospital_admin where user_id=$uid and isDeleted=0 ";            
+            $qry = "select ha.hospital_id as id from hms_hospital_admin ha, hms_hospitals h where ha.user_id=$uid and ha.isDeleted=0 and h.isActive=1";            
         }else if($this->auth->isReceptinest()){
             $uid = $this->auth->getUserid();
             $qry = "select b.hospital_id as id from hms_receptionist r,hms_doctors d,hms_departments m,hms_branches b,hms_hospitals h where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.branch_id=b.id and b.hospital_id=h.id and h.isActive=1";

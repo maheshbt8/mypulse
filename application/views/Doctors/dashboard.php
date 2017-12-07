@@ -192,9 +192,10 @@
 <script>
     $(document).ready(function(){
         //$("#appoitments").dataTable().fnDestroy();
-        function loadTable(){
+        var dt;
+		function loadTable(){
             $("#appoitments").dataTable().fnDestroy();
-            $("#appoitments").DataTable({
+            dt = $("#appoitments").DataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": "<?php echo site_url(); ?>/appoitments/getDTTodayspappoitments"

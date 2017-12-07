@@ -273,8 +273,8 @@ class Medical_store_model extends CI_Model {
             $d['file_path'] = $paths[$i];
             $d['file_type'] = $types[$i];
             $this->db->insert('hms_prescription_order_receipt',$d);
-			$id = $this->db->insert_id();
-			$this->logger->log("Prescription order receipt added", Logger::MedicalStore, $id);
+			$receipt_id = $this->db->insert_id();
+			$this->logger->log("Prescription order receipt added", Logger::MedicalStore, $receipt_id);
         }
         if(count($urls) > 0){
             $this->db->where('id',$id);

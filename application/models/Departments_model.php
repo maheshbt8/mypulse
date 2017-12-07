@@ -156,13 +156,13 @@ class Departments_model extends CI_Model {
         if(is_array($hospital_id)){
             if(count($hospital_id) > 0){
                 $hospital_id = implode(",",$hospital_id);
-                $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.isDeleted=0");
+                $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.isDeleted=0 and d.isActive=1");
                 if($res)
 					$res = $res->result_array();
             }
         }else{
 			if($hospital_id=="" && $hospital_id!="undefined"){ $hospital_id = -1;}
-            $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id and d.isDeleted=0");
+            $res = $this->db->query("select d.id from hms_branches b,hms_departments d where b.hospital_id=$hospital_id and b.id=d.branch_id and d.isDeleted=0 and d.isActive=1");
             if($res)
 				$res = $res->result_array();
         }
@@ -180,11 +180,11 @@ class Departments_model extends CI_Model {
         if(is_array($branch_id)){
             if(count($branch_id) > 0){
                 $branch_id = implode(",",$branch_id);
-                $res = $this->db->query("select d.id from hms_departments d where d.branch_id in ($branch_id) and d.isDeleted=0");
+                $res = $this->db->query("select d.id from hms_departments d where d.branch_id in ($branch_id) and d.isDeleted=0 and d.isActive=1");
                 $res = $res->result_array();
             }
         }else{
-            $res = $this->db->query("select d.id from hms_departments d where d.branch_id='$branch_id' and d.isDeleted=0");
+            $res = $this->db->query("select d.id from hms_departments d where d.branch_id='$branch_id' and d.isDeleted=0 and d.isActive=1");
             $res = $res->result_array();
         }
         $ids = array();
@@ -214,10 +214,10 @@ class Departments_model extends CI_Model {
     function getDepartmentIds(){
         $qry = "";
         if($this->auth->isSuperAdmin()){
-            $qry = "select id from $this->tblname where isDeleted=0";
+            $qry = "select id from $this->tblname where isDeleted=0 and isActive=1";
         }else if($this->auth->isHospitalAdmin()){
             $uid = $this->auth->getUserid();
-            $qry = "select d.id as id from hms_hospital_admin a,hms_branches b,hms_departments d where a.user_id=$uid and a.isDeleted=0 and a.hospital_id=b.hospital_id and b.id = d.branch_id";            
+            $qry = "select d.id as id from hms_hospital_admin a,hms_branches b,hms_departments d where a.user_id=$uid and a.isDeleted=0 and a.hospital_id=b.hospital_id and b.id = d.branch_id and d.isActive=1";            
         }else if($this->auth->isReceptinest()){
             $uid = $this->auth->getUserid();
             $qry = "select DISTINCT d.department_id as id from hms_receptionist r,hms_doctors d,hms_departments m where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.isActive=1";

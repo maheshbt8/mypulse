@@ -130,11 +130,11 @@ class Wards_model extends CI_Model {
         if(is_array($hospital_id)){
             if(count($hospital_id) > 0){
                 $hospital_id = implode(",",$hospital_id);
-                $res = $this->db->query("select w.id from hms_branches b,hms_departments d,hms_wards w where w.isDeleted = 0 and b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.id=w.department_id and d.isDeleted=0");
+                $res = $this->db->query("select w.id from hms_branches b,hms_departments d,hms_wards w where w.isDeleted = 0 and w.isActive=1 and b.hospital_id in ($hospital_id) and b.id=d.branch_id and d.id=w.department_id and d.isDeleted=0");
                 $res = $res->result_array();
             }
         }else{
-            $res = $this->db->query("select w.id from hms_branches b,hms_departments d,hms_wards w where w.isDeleted = 0 and  b.hospital_id=$hospital_id and b.id=d.branch_id and d.id=w.department_id and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_branches b,hms_departments d,hms_wards w where w.isDeleted = 0 and w.isActive=1 and b.hospital_id=$hospital_id and b.id=d.branch_id and d.id=w.department_id and d.isDeleted=0");
             $res = $res->result_array();
         }
         $ids = array();
@@ -149,11 +149,11 @@ class Wards_model extends CI_Model {
         if(is_array($branch_id)){
             if(count($branch_id) > 0){
                 $branch_id = implode(",",$branch_id);
-                $res = $this->db->query("select w.id from hms_departments d,hms_wards w where w.isDeleted = 0 and d.branch_id in ($branch_id) and d.id=w.department_id and d.isDeleted=0");    
+                $res = $this->db->query("select w.id from hms_departments d,hms_wards w where w.isDeleted = 0 and w.isActive=1 and d.branch_id in ($branch_id) and d.id=w.department_id and d.isDeleted=0");    
                 $res = $res->result_array();
             }
         }else{
-            $res = $this->db->query("select w.id from hms_departments d,hms_wards w where w.isDeleted = 0 and d.branch_id=$branch_id and d.id=w.department_id and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_departments d,hms_wards w where w.isDeleted = 0 and w.isActive=1 and d.branch_id=$branch_id and d.id=w.department_id and d.isDeleted=0");
             $res = $res->result_array();
         }        
         $ids = array();
@@ -168,12 +168,12 @@ class Wards_model extends CI_Model {
         if(is_array($department_id)){
             if(count($department_id) > 0){
                 $department_id = implode(",",$department_id);
-                $res = $this->db->query("select w.id from hms_wards w where w.isDeleted = 0 and w.department_id in ($department_id) and d.isDeleted=0");
+                $res = $this->db->query("select w.id from hms_wards w where w.isDeleted = 0 and w.isActive=1 and w.department_id in ($department_id) and d.isDeleted=0");
                 $res = $res->result_array();
             }
         }else{
             $department_id = intval($department_id);
-            $res = $this->db->query("select w.id from hms_wards w where w.department_id=$department_id and w.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_wards w where w.department_id=$department_id and w.isDeleted=0 and w.isActive=1 and d.isDeleted=0");
             $res = $res->result_array();
         }
         $ids = array();

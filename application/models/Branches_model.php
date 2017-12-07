@@ -36,7 +36,7 @@ class Branches_model extends CI_Model {
 
         if($this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isReceptinest()){
             $bids = $this->getBranchesIds();
-            $this->db->where_in("id",$bids);
+            $this->db->where_in("id",$bids);       
         }
 
         if($hospital_id > 0){
@@ -152,10 +152,10 @@ class Branches_model extends CI_Model {
     function getBranchesIds($hid=null){
         $qry = "";
         if($this->auth->isSuperAdmin()){
-            $qry = "select id from $this->tblname where isDeleted=0";
+            $qry = "select id from $this->tblname where isDeleted=0 and isActive=1";
         }else if($this->auth->isHospitalAdmin()){
             $uid = $this->auth->getUserid();
-            $qry = "select b.id as id from hms_hospital_admin a,hms_branches b where a.user_id=$uid and a.isDeleted=0 and b.isDeleted=0 and a.hospital_id=b.hospital_id";            
+            $qry = "select b.id as id from hms_hospital_admin a,hms_branches b where a.user_id=$uid and a.isDeleted=0 and b.isDeleted=0 and b.isActive=1 and a.hospital_id=b.hospital_id";            
         }else if($this->auth->isReceptinest()){
             $uid = $this->auth->getUserid();
             $qry = "select DISTINCT m.branch_id as id from hms_receptionist r,hms_doctors d,hms_departments m,hms_branches b where r.user_id=$uid and r.isDeleted=0 and r.doc_id=d.id and d.department_id=m.id and m.branch_id=b.id and b.isActive=1";
