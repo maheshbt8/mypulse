@@ -11,6 +11,6 @@ pipelines:
         caches:
           - composer
         script:
-          - apt-get update 
-          - apt-get -qq install git-ftp
-          - git ftp init --user $FTP_USERNAME --passwd $FTP_PASSWORD ftp://ec2-54-186-236-127.us-west-2.compute.amazonaws.com/var/www/html
+         - apt-get update
+         - apt-get -qq install git-ftp
+         - git ftp push --user $FTP_USERNAME --passwd $FTP_PASSWORD ftp://ec2-54-186-236-127.us-west-2.compute.amazonaws.com/var/www/html
