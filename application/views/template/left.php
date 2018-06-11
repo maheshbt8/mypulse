@@ -53,12 +53,12 @@
                                 <li id="li4" class="nav-item"><a href="<?php echo site_url();?>doctors" class="nav-link"><i class="menu-icon fa  fa-stethoscope "></i><span class="title"><?php echo $menu['main_dectors'];?> </span></a></li>
                                 <li id="li5" class="nav-item"><a href="<?php echo site_url();?>nurse" class="nav-link"><i class="menu-icon  icon-user "></i><span class="title"><?php echo $menu['main_nurses'];?></span></a></li>
                                 <li id="li6" class="nav-item"><a href="<?php echo site_url();?>receptionist" class="nav-link"><i class="menu-icon  icon-user-following "></i><span class="title"><?php echo $menu['main_receptionists'];?></span></a></li>
-                                <li id="li7" class="nav-item"><a href="<?php echo site_url();?>patients" class="nav-link"><i class="menu-icon icon-users "></i><span class="title"><?php echo $menu['main_patients'];?></span></a></li>
+                                <li id="li7" class="nav-item"><a href="<?php echo site_url();?>patients" class="nav-link"><i class="menu-icon icon-users "></i><span class="title"><?php echo $menu['mypulseusers'];?></span></a></li>
                                 <li id="li53" class="nav-item"><a href="<?php echo site_url();?>inpatient" class="nav-link"><i class="menu-icon fa fa-eye "></i><span class="title"><?php echo $menu['main_inpatient_history'];?></span></a></li>
                                 <li id="li8" class="nav-item"><a href="<?php echo site_url();?>medical_store" class="nav-link"><i class="menu-icon fa fa-medkit "></i><span class="title"><?php echo $menu['main_medical_stores'];?></span></a></li>
                                 <li id="li9" class="nav-item"><a href="<?php echo site_url();?>medical_lab" class="nav-link"><i class="menu-icon fa  fa-plus-square "></i><span class="title"><?php echo $menu['main_medical_labs'];?></span></a></li>
                                 <li id="li52" class="nav-item"><a href="<?php echo site_url();?>appoitments" class="nav-link"><i class="menu-icon glyphicon glyphicon-list-alt"></i><span class="title"><?php echo $menu['appoitments'];?></span></a></li>
-                                <li id="li11" class="nav-item"><a href="<?php echo site_url();?>" class="nav-link"><i class="menu-icon fa fa-credit-card "></i><span class="title"><?php echo $menu['main_payments'];?></span></a></li>
+                                <?php /*?><li id="li11" class="nav-item"><a href="<?php echo site_url();?>" class="nav-link"><i class="menu-icon fa fa-credit-card "></i><span class="title"><?php echo $menu['main_payments'];?></span></a></li><?php */?>
 
                                 <li id="li12" class="nav-item">
                                     <a href="#" class="nav-link nav-toggle">

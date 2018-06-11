@@ -1179,4 +1179,40 @@ class Doctors_model extends CI_Model {
         $doc = $this->db->get($this->tblname)->row_array();
         return isset($doc['department_id']) ? $doc['department_id'] : 0;
     }
+	
+	public function validateAadhaarNumber($aadnumber){
+		
+		
+		$checkaad = $this->db->query("SELECT `id` FROM `hms_users` WHERE `aadhaar_number` = '$aadnumber'")->row();
+		if(!empty($checkaad)){
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function validateMobileNumber($mobnumber){
+		
+		
+		$checkmob = $this->db->query("SELECT `id` FROM `hms_users` WHERE `mobile` = '$mobnumber'")->row();
+		if(!empty($checkmob)){
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function validateEmailAvailable($emailval){
+		
+		
+		$checkemail = $this->db->query("SELECT `id` FROM `hms_users` WHERE `useremail` = '$emailval'")->row();
+		if(!empty($checkemail)){
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
 }

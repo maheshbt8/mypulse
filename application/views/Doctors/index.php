@@ -46,7 +46,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/doctors/update" method="post" id="form" enctype="multipart/form-data">
+				<form autocomplete="off" action="<?php echo site_url(); ?>/doctors/update" method="post" id="form" enctype="multipart/form-data">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -58,63 +58,98 @@ $this->load->view("template/left.php");
 						  	<div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
-									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+									<?php /*?><li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li><?php */?>
 									<li role="presentation"><a href="#tab3" aria-controls="other" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
 									<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
 								</ul>
 								<div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
 										<div class="col-md-12">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label><?php echo $this->lang->line('labels')['fname'];?></label>
-													<input class="form-control input-height " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+											
+												<div class="col-md-6 form-group">
+													<label><?php echo $this->lang->line('labels')['fname'];?>*</label>
+													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
 												</div>
-												<div class="form-group">
-													<label><?php echo $this->lang->line('labels')['lname'];?></label>
-													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+												<div class=" col-md-6 form-group">
+													<label><?php echo $this->lang->line('labels')['lname'];?>*</label>
+													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
 												</div>
-											</div>
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['aboutMe'];?></label>
-												<textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"></textarea>
-											</div>
+											
 										</div>
+										
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['email'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
+												<label><?php echo $this->lang->line('labels')['lname'];?>*</label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
 											</div>
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['password'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
+												<label><?php echo $this->lang->line('labels')['aboutMe'];?>*</label>
+												<textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description" style="width: 77%"></textarea>
+												
+											</div>
+										</div>
+										
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['email'];?>*</label>
+												<input class="form-control email_check textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['password'];?>*</label>
+												<input class="form-control textinputfields" type="password" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
 												<span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
 											</div>
 										</div>
 										<div class="col-md-12">
 											
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+												<label><?php echo $this->lang->line('labels')['aadharNumber'];?>*</label>
+												<input class="form-control aadhaar_number textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
 											</div>
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['mobile'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+												<label><?php echo $this->lang->line('labels')['mobile'];?>*</label>
+												<input class="form-control mobile_number textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
 											</div>
 											
 										</div>
 										
+										<!--<section>
+										<h4 style="text-align:center; color:#337ab7"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></h1>-->
+										<div class="panel panel-default" style="color:#1d3bde">
+  											<div class="panel-body"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></div>
+										</div>
+										<div class="col-md-12">
+										    <div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['selectHospital'];?>*</label>
+												<select name="hospital_id"  id="hospital_id" class=" form-control textinputfields" style="width: 77%">
+                                                </select>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
+												<select name="branch_id" id="branch_id" class=" form-control textinputfields" style="width: 77%">
+                                                </select>
+											</div>
+											
+										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
+												<select name="department_id" id="department_id" class=" form-control textinputfields" style="width: 77%">
+                                                </select>
+											</div>
+											 
+											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['status'];?></label>
-												<select class="form-control" name="isActive" id="isActive">
+												<select class="form-control" name="isActive" id="isActive" style="width: 77%">
 													<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
 													<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
 												</select>
 											</div>
 										</div>
+										
+										
 									</div>
-									<div role="tabpanel" class="tab-pane fade in" id="tab2">
+									<?php /*?><div role="tabpanel" class="tab-pane fade in" id="tab2">
 										<div class="col-md-12">
 											<div class="form-group col-md-4">
                                                 <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
@@ -132,7 +167,7 @@ $this->load->view("template/left.php");
                                                 </select>
                                             </div>
 										</div>
-									</div>
+									</div><?php */?>
 									<div role="tabpanel" class="tab-pane fade in" id="tab3">
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
@@ -282,7 +317,8 @@ $this->load->view("template/footer.php");
 			        	},
 			        	aadhaar_number:{
 			        		required:true,
-			        		aadhaar: true
+							aadhaar: true
+							
 			        	},
 			        	mobile:{
 			        		required:true,

@@ -58,8 +58,8 @@
     <div class="form formLogin">
         <h2><?php echo $this->lang->line('login_to_your_account');?></h2>
         <form id="loginform"  action="<?php echo site_url();?>/index/doLogin" method="post">
-            <input type="text" placeholder="Username" name="email_id" />
-            <input type="password" placeholder="Password" name="password"/>
+            <input type="text" placeholder="Username" name="email_id" maxlength="50" />
+            <input type="password" placeholder="Password" name="password" maxlength="50"/>
             <div class="remember text-left">
                 <div class="checkbox checkbox-primary">
                     <input id="checkbox2" type="checkbox" checked>
@@ -75,7 +75,7 @@
     </div>
     <div class="form formRegister">
         <h2><?php echo $this->lang->line('labels')['create_account'];?></h2>
-        <form method="post" id="reg_form" action="<?php echo site_url().'/index/doReg' ?>">
+        <form autocomplete="off" method="post" id="reg_form" action="<?php echo site_url().'/index/doReg' ?>">
             <input type="text" name="first_name" placeholder="Name*" >
             <input type="text" name="mobile" placeholder="Mobile Number*" >
             <input type="email" name="useremail" placeholder="Email*" >
@@ -85,7 +85,11 @@
                 <div class="checkbox checkbox-primary">
                     <input id="checkbox3" type="checkbox" name="agrree">
                     <label for="checkbox3">
-                        <?php echo $this->lang->line('labels')['agree_terms_policy'];?>
+                        <a href="javascript:void(0);" target="_blank"><?php echo $this->lang->line('labels')['agree_terms_policy'];?></a>
+					</label>
+					<input id="checkbox4" type="checkbox" name="agrree">
+					<label for="checkbox4">
+                        <a href="javascript:void(0);" target="_blank"><?php echo $this->lang->line('labels')['agree_privacy_policy'];?></a>
 					</label>
                 </div>
             </div>

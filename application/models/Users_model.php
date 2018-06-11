@@ -547,7 +547,7 @@ class Users_model extends CI_Model {
         
         if(isset($user['id'])){
             $this->db->where("id",$user['id']);
-            $this->db->update($this->tblname,array("forgotPassCode"=>null,"isActive"=>1));
+            $this->db->update($this->tblname,array("forgotPassCode"=>null,"isActive"=>1,"EmailVerified"=>1));
 			//check log
 			$this->logger->log("User profile verfied", Logger::User, $user['id']);
             return true;

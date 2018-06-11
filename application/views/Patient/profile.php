@@ -63,7 +63,7 @@ $this->load->view("template/left.php");
                                 <li role="presentation"><a href="#tab4"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescription'];?></a></li>
                                 <li role="presentation"><a href="#tab5" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
                                 <?php if(isset($profile['hasSelectedRole']) && $profile['hasSelectedRole']==0 ){ ?>
-                                <li role="presentation"><a href="#tab6" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['role'];?></a></li>
+                                <?php /*?><li role="presentation"><a href="#tab6" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['role'];?></a></li><?php */?>
                                 <?php } ?>
                             </ul>
                             <!-- Tab panes -->

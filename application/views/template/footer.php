@@ -108,10 +108,76 @@
             }, "<?php echo $this->lang->line('enterValidEmail');?>");
 
             jQuery.validator.addMethod("aadhaar", function(number, element) {
-                number = number.replace(/\s+/g, "");
+				number = number.replace(/\s+/g, "");
                 return this.optional(element) || 
                 number.match(/^\d{4}-\d{4}-\d{4}$/);
             }, "<?php echo $this->lang->line('enterValidAadhaar');?>");
+			
+			$('.aadhaar_number').on('change', function(){
+				var number = $('input[name="aadhaar_number"]').val();
+				if(number){
+					$.ajax({
+						url : "<?php echo site_url(); ?>/doctors/validateAadhaarNumber",
+						data : {'aadnumber' : number},
+						dataType : "JSON",
+						async:false,
+						type : "POST",
+						success : function(res){
+							if(res.Status==1){
+								alert("This Aaadhaar number is already registered with us.");
+								$('input[name="aadhaar_number"]').val('');
+							}
+							
+						}
+					});
+					
+				}
+				
+            });
+			
+			$('.mobile_number').on('change', function(){
+				var number = $('input[name="mobile"]').val();
+				if(number){
+					$.ajax({
+						url : "<?php echo site_url(); ?>/doctors/validateMobileNumber",
+						data : {'mobnumber' : number},
+						dataType : "JSON",
+						async:false,
+						type : "POST",
+						success : function(res){
+							if(res.Status==1){
+								alert("This Mobile number is already registered with us.");
+								$('input[name="mobile"]').val('');
+							}
+							
+						}
+					});
+					
+				}
+				
+            });
+			
+			$('.email_check').on('change', function(){
+				var eval = $('input[name="useremail"]').val();
+				if(eval){
+					$.ajax({
+						url : "<?php echo site_url(); ?>/doctors/validateEmailAvailable",
+						data : {'emailval' : eval},
+						dataType : "JSON",
+						async:false,
+						type : "POST",
+						success : function(res){
+							if(res.Status==1){
+								alert("This Email is already registered with us.");
+								$('input[name="useremail"]').val('');
+							}
+							
+						}
+					});
+					
+				}
+				
+            });
 
             $("#notislimScrollDiv").slimScroll();
 
