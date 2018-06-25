@@ -30,7 +30,7 @@ class Users_model extends CI_Model {
         }
     }
     
-    function doLogin()
+    /*function doLogin()
     {   
 
         $unm=$this->input->post('email_id');
@@ -41,7 +41,37 @@ class Users_model extends CI_Model {
         {
             foreach ($query->result() as $row)
             {
-                if($row->isActive == 1){
+                if($row->isActive == 1 && ($row->EmailVerified==1 || $row->MobileVerified==1)){
+                    $this->setSessionData($row);
+                    return true;
+                }else{
+                    return -1;
+                }
+            }
+        }
+        else
+            return false;
+    }*/
+	
+	function doLogin()
+    {   
+
+        $unm=$this->input->post('email_id');
+        $pwd=$this->input->post('password');
+        $pwd=md5($pwd);
+        $query=$this->db->query("select * from $this->tblname where useremail=? and password=?",array($unm,$pwd))->result();
+		//print_r()
+		if(empty($query)){
+		    $query = $this->db->query("select * from $this->tblname where mobile=? and password=?",array($unm,$pwd))->result();
+		}
+        if(!empty($query))
+        {
+            foreach ($query as $row)
+            {
+                if($row->isActive == 1 && ($row->EmailVerified==1 || $row->MobileVerified==1)){
+				      if($row->useremail){
+					  $this->db->query("UPDATE $this->tblname SET LastLogintime= '".date("Y-m-d H:i:s")."' WHERE useremail= '".$row->useremail."' ");
+					  }
                     $this->setSessionData($row);
                     return true;
                 }else{
@@ -503,12 +533,26 @@ class Users_model extends CI_Model {
 
                 $data['my_key'] = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
                 $data['role'] = 6;
+				$data['isActive'] = 1;
+				$data['MobileVerified'] = 1;
                 if ($this->db->insert($this->tblname, $data)) {
 					$uid = $this->db->insert_id();
+					
+					/*$otp = rand(100000,999999);
+							$otpdata = array(
+							'user_id' => $uid,
+							'OTPNumber' => $otp,
+							'CreatedDate' => date('Y-m-d H:i:s'),
+							'Status' => 0,
+							);
+							$this->db->insert("hms_users_otp", $otpdata); */
+					
+					
 					//check log
 					$this->logger->log("New user created", Logger::User, $uid);
 					
                     $email = $data['useremail'];
+					$mobile = $data['mobile'];
                     $this->load->library('sendmail');
                     $enc = $key.":".$email;
                     $url = site_url().'/index/vacc?k='.base64_encode($enc);
@@ -517,6 +561,17 @@ class Users_model extends CI_Model {
                     $mail_data['email'] = $data['useremail'];
                     $this->sendmail->send($mail_data);
                     //return true;
+					        
+							
+						/*	$msg = $otp.' is your OTP Number to login';
+        					$message=urlencode($msg);
+							//$urlToSendMsg = "http://absolutesms.in/api?uname=sales@sirisampadafarms.com&pwd=siri123&number=$mobile&sender=SSTRAN&message=$message";
+							$urlToSendMsg = "http://absolutesms.in/api?uname=vb.rao@sigmaedge.com&pwd=asdf1234&number=$mobile&sender=ABBKNS&message=$message";
+							$ch = curl_init(); 
+                            curl_setopt($ch, CURLOPT_URL, $urlToSendMsg); 
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+			     			 $output = curl_exec($ch); 
+        					curl_close($ch); */
                     return $this->db->insert_id();
                 } else {
                     $err = $this->db->error();
@@ -544,7 +599,6 @@ class Users_model extends CI_Model {
         $this->db->where("forgotPassCode",$key[0]);
 		$this->db->where("useremail",$key[1]);
         $user = $this->db->get($this->tblname)->row_array();
-        
         if(isset($user['id'])){
             $this->db->where("id",$user['id']);
             $this->db->update($this->tblname,array("forgotPassCode"=>null,"isActive"=>1,"EmailVerified"=>1));
@@ -659,12 +713,12 @@ class Users_model extends CI_Model {
             if($res->num_rows() > 0)
             {
                 $key = strtoupper(bin2hex(openssl_random_pseudo_bytes(5)));
-                $data = array('forgotPassCode'=>$key);
+                 $data = array('forgotPassCode'=>$key,'updated_at'=>date('Y-m-d H:i:s'));
                 $this->db->where('useremail',$email);
                 $this->db->update($this->tblname,$data);
                 $data = array();
-                $data['body'] = "Reset password using following link : ".base_url()."/index.php/index/resetPassword?key=".$key;
-                $data['email']=$this->input->post('email');
+                $data['body'] = "Reset password using following link : ".base_url()."/index/resetPassword?key=".$key;
+                $data['email']=$this->input->post('email_id');
                 $data['subject']='Reset Password';
                 return $data;
             }
@@ -771,4 +825,216 @@ class Users_model extends CI_Model {
         }
 
     }
+	
+	public function validateOTPNumber($otpnumber, $itemid){
+		
+		$checkuser = $this->db->query("SELECT `item_id` FROM `hms_activitylog` WHERE `id` = '$itemid'")->row();
+		$userid = $checkuser->item_id;
+		
+		
+		$getotpnumber = $this->db->query("SELECT * FROM `hms_users_otp` WHERE `user_id` = '$userid' AND Status = 0 ORDER BY `OTPID` DESC
+")->row();
+		
+		if(!empty($getotpnumber->OTPNumber == $otpnumber)){
+			
+			$otpdata = array(
+							'ModifiedDate' => date('Y-m-d H:i:s'),
+							'Status' => 1,
+							);
+							
+							$this->db->where('OTPID', $getotpnumber->OTPID);
+							$this->db->update("hms_users_otp", $otpdata);
+							
+			$userdata = array(
+							'updated_at' => date('Y-m-d H:i:s'),
+							'isActive' => 1,
+							'MobileVerified' => 1
+							);
+							
+							$this->db->where('id', $userid);
+							$this->db->update("hms_users", $userdata);
+							
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function CheckVerifyMobileNumber($emailid){
+		
+		$verifyuser = $this->db->query("SELECT * FROM `hms_users` WHERE `useremail`  = '$emailid'")->row();
+		
+		
+		if($verifyuser->isActive == 1 && ($verifyuser->EmailVerified==1 || $verifyuser->MobileVerified==1)){
+			return  array('Status' => 1);
+			
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function sendOTPtoMobileNumber($emailid){
+		
+		$verifyuser = $this->db->query("SELECT * FROM `hms_users` WHERE `useremail`  = '$emailid'")->row();
+		
+		
+		if(!empty($verifyuser)){
+						$otp = rand(100000,999999);
+							$otpdata = array(
+							'user_id' => $verifyuser->id,
+							'OTPNumber' => $otp,
+							'CreatedDate' => date('Y-m-d H:i:s'),
+							'Status' => 0,
+							);
+							$this->db->insert("hms_users_otp", $otpdata);
+			
+			return  array('Status' => 1, 'userid' => $verifyuser->id);
+			
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function VerifyNewOTPNumber($otpnumber, $otpid){
+		
+		
+		
+		$getotpnumber = $this->db->query("SELECT * FROM `hms_users_otp` WHERE `OTPID` = '$otpid' AND Status = 0 ORDER BY `OTPID` DESC
+")->row();
+		//print_r($getotpnumber);
+		
+		$dbdate = strtotime($getotpnumber->CreatedDate);
+			if (time() - $dbdate > 10 * 60) {
+				return  array('Status' => 2, 'message' => $this->lang->line('otp_verification_incomplete'));
+			}
+		
+		else if($getotpnumber->OTPNumber == $otpnumber){
+			
+			/*$otpdata = array(
+							'ModifiedDate' => date('Y-m-d H:i:s'),
+							'Status' => 1,
+							);
+							
+							$this->db->where('OTPID', $getotpnumber->OTPID);
+							$this->db->update("hms_users_otp", $otpdata); */
+							
+							$this->db->delete('hms_users_otp', array('OTPID'=>$otpid));
+							
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function sendRegisterOTPtoMobile($mobno){
+		                
+						extract($_POST);
+						$otp = rand(100000,999999);
+						/*$msg = $otp.' is your OTP Number to login';	
+							$message=urlencode($msg);
+							//$urlToSendMsg = "http://absolutesms.in/api?uname=sales@sirisampadafarms.com&pwd=siri123&number=$mobile&sender=SSTRAN&message=$message";
+							$urlToSendMsg = "http://absolutesms.in/api?uname=vb.rao@sigmaedge.com&pwd=asdf1234&number=$mobno&sender=ABBKNS&message=$message";
+							$ch = curl_init(); 
+                            curl_setopt($ch, CURLOPT_URL, $urlToSendMsg); 
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+			     			 $output = curl_exec($ch); 
+        					curl_close($ch);*/
+							$otpdata = array(
+							'MobileNumber' => $mobno,
+							'EmailID' => $useremail,
+							'Name' => $name,
+							'OTPNumber' => $otp,
+							'CreatedDate' => date('Y-m-d H:i:s'),
+							'Status' => 0,
+							);
+							$this->db->insert("hms_users_otp", $otpdata);
+				$idata = $this->db->insert_id();
+			
+			if($idata){
+				
+			return  array('Status' => 1, 'otpid' => $idata);
+			
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+	public function CancelRegOTP($otpid){		
+		
+		
+		$getotpnumber = $this->db->query("SELECT * FROM `hms_users_otp` WHERE `OTPID` = '$otpid' AND Status = 0 ORDER BY `OTPID` DESC
+")->row();
+		//print_r($getotpnumber);
+		
+		if(!empty($getotpnumber)){
+			
+							$this->db->delete('hms_users_otp', array('OTPID'=>$otpid));
+							
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}
+	
+public function verifyStaffMobile($StaffID, $otpnumber, $otpid){
+		
+		
+		
+		$getotpnumber = $this->db->query("SELECT * FROM `hms_users_otp` WHERE `OTPID` = '$otpid' AND Status = 0 ORDER BY `OTPID` DESC
+")->row();
+		//print_r($getotpnumber);
+		
+		$dbdate = strtotime($getotpnumber->CreatedDate);
+			if (time() - $dbdate > 10 * 60) {
+				return  array('Status' => 2, 'message' => $this->lang->line('otp_verification_incomplete'));
+			}
+		
+		else if($getotpnumber->OTPNumber == $otpnumber){
+			
+			$otpdata = array(
+							'updated_at' => date('Y-m-d H:i:s'),
+							'MobileVerified' => 1,
+							);
+							
+							$this->db->where('id', $StaffID);
+							$this->db->update("hms_users", $otpdata); 
+							
+							$this->db->delete('hms_users_otp', array('OTPID'=>$otpid));
+							
+			return  array('Status' => 1);
+		}
+		else{
+			return  array('Status' => 0);
+		}
+	}  
+
+public function sendRegisterVerfEmail($mobno){
+		extract($_POST);
+		$mail_data = array();
+		$key = strtoupper(bin2hex(openssl_random_pseudo_bytes(5)));
+		$my_key = base64_encode((bin2hex(openssl_random_pseudo_bytes(32))));
+		$email = $useremail;
+		$this->db->query("UPDATE hms_users SET my_key='".$my_key."',updated_at='".date('Y-m-d H:i:s')."',forgotPassCode='".$key."' WHERE useremail = '".$email."'");
+		$updateid = $this->db->affected_rows();
+		$this->load->library('sendmail');
+		$enc = $key.":".$email;
+		$url = site_url().'/index/vacc?k='.base64_encode($enc);
+		$mail_data['body'] = 'Please verify your account by click on following link <br> <a href="'.$url.'">Verify Account</a>';
+		$mail_data['subject'] = 'MyPulse Registration ';
+		$mail_data['email'] = $email;
+		$this->sendmail->send($mail_data);
+                    					                
+		if($updateid){
+			return  array('Status' => 1);
+		}else{
+			return  array('Status' => 0);
+		}
+	}
+  	
 }

@@ -107,7 +107,7 @@
                                 <input type="text" class="form-control date-picker" name="date" id="date" />
                             </div>
                             <div class="form-group col-md-6" id="endDiv">
-                                <label><?php echo $this->lang->line('labels')['end_on'];?></label>
+                                <label><?php echo $this->lang->line('labels')['end_date'];?></label>
                                 <input type="text" class="form-control date-picker" name="end_on" id="end_on" />
                             </div>
                         </div>

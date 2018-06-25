@@ -48,8 +48,8 @@
             <input type="password" name="repassword" placeholder="Confirm Password" />
             <input type="hidden" name="key" value="<?php echo $key;?>" />
             <button type="submit"><?php echo $this->lang->line('buttons')['reset'];?></button>
-            <div class=""><a href="<?php echo site_url();?>"><?php echo $this->lang->line('buttons')['login'];?></a>
-            </div>
+            <?php /*?><div class=""><a href="<?php echo site_url();?>"><?php echo $this->lang->line('buttons')['login'];?></a>
+            </div><?php */?>
         </form>
     </div>
     

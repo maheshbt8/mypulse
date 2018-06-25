@@ -71,8 +71,8 @@ $this->load->view("template/left.php");
 													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
 												</div>
 												<div class=" col-md-6 form-group">
-													<label><?php echo $this->lang->line('labels')['lname'];?>*</label>
-													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+													<label><?php echo $this->lang->line('labels')['mname'];?></label>
+													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['mname'];?>" name="middle_name" id="middle_name" />
 												</div>
 											
 										</div>
@@ -443,6 +443,7 @@ $this->load->view("template/footer.php");
 
 						$("#first_name").val(data.first_name);
 						
+						$("#middle_name").val(data.MiddleName);
 						$("#last_name").val(data.last_name);
 						$("#isActive").val(data.curIsActive);
 						$("#useremail").val(data.useremail);
@@ -525,7 +526,7 @@ $this->load->view("template/footer.php");
 				        $.ajax({
 				            url: "<?php echo site_url(); ?>/users/search/3",
 				            type: "GET",
-				            data: {"q":query,"f":"first_name,last_name"},
+				            data: {"q":query,"f":"first_name,middle_name,last_name"},
 				            error: function() {
 				                callback();
 				            },

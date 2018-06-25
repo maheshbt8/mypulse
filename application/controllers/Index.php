@@ -235,7 +235,7 @@ class Index extends CI_Controller {
 	function doReg(){
 		$cn = $this->users_model->doReg();
 		$data = $this->auth->parseUserResult($cn,$this->lang->line('msg_registration_complete'));
-		$this->session->set_flashdata('data', $data);
+		$this->session->set_flashdata('regdata', $cn);
 		redirect('index/registration');
 		/* if($cn === true){
 			$data['success']=array($this->lang->line('reg_completed'));
@@ -315,10 +315,12 @@ class Index extends CI_Controller {
 
 		if($data)
 		{
-			require APPPATH.'libraries/phpMailer/sendMail.php';
-			$mail = new sendRestKey();
+			//require APPPATH.'libraries/phpMailer/sendMail.php';
+			//$mail = new sendRestKey();
 			
-			if($mail->sendRegMail($data))
+			$this->load->library('sendmail');
+			
+			if($this->sendmail->send($data))
 			{
 				$temp['success'] = array($this->lang->line('msg_check_email'));
 				$this->session->set_flashdata('data', $temp);
@@ -517,7 +519,78 @@ class Index extends CI_Controller {
 			echo 0;
 		}
 	}
+	
+	public function validateOTPNumber(){
+		extract($_POST);
+		
+		$response = $this->users_model->validateOTPNumber($otpnumber, $itemid);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function CheckVerifyMobileNumber(){
+		extract($_POST);
+		
+		$response = $this->users_model->CheckVerifyMobileNumber($emailid);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function sendOTPtoMobileNumber(){
+		extract($_POST);
+		
+		$response = $this->users_model->sendOTPtoMobileNumber($emailid);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function VerifyNewOTPNumber(){
+		extract($_POST);
+		
+		$response = $this->users_model->VerifyNewOTPNumber($otpnumber, $otpid);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function sendRegisterOTPtoMobile(){
+		extract($_POST);
+		
+		$response = $this->users_model->sendRegisterOTPtoMobile($mobno);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function CancelRegOTP(){
+		extract($_POST);
+		
+		$response = $this->users_model->CancelRegOTP($otpid);
+		
+		echo json_encode($response);
+		
+	}
 
+public function verifyStaffMobile(){
+		extract($_POST);
+		
+		$response = $this->users_model->verifyStaffMobile($StaffID, $otpnumber, $otpid);
+		
+		echo json_encode($response);
+		
+	}
+	
+public function sendRegisterVerfEmail(){
+		extract($_POST);
+		
+		$response = $this->users_model->sendRegisterVerfEmail($useremail);
+		
+		echo json_encode($response);
+		
+	}
 	
 }
 

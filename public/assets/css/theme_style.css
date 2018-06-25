@@ -6738,3 +6738,12 @@ th>.rt-radio.rt-radio-single {
 	padding: 7px 10px;
 	width: 310px;
 }
+.verifiedsuccess{
+color:#14E91E;
+}
+.notverified{
+color:#FF0000;
+}
+.wid75{
+width:310px;
+}

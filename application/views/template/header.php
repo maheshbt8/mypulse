@@ -28,7 +28,7 @@
         <link href="<?php echo base_url();?>public/plugins/summernote-master/summernote.css" rel="stylesheet" type="text/css"/>
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>public/assets/css/bootstrap-datetimepicker.min.css">
         <link href="<?php echo base_url();?>public/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.0.47/jquery.fancybox.min.css" />
         
@@ -103,8 +103,9 @@
                 border-radius: 0;
                 box-shadow: none;
                 border-color: #d2d6de;
-                height: 45px !important;
+                height: 40px !important;
                 padding: 10px;
+				width:309px;
             }
 
             .selectize-input:focus{
