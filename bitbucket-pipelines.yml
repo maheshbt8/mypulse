@@ -13,4 +13,4 @@ pipelines:
         script:
          - apt-get update
          - apt-get -qq install git-ftp
-         - git ftp push --user $FTP_USERNAME --passwd $FTP_PASSWORD ftp://ec2-54-186-236-127.us-west-2.compute.amazonaws.com/var/www/html
+         - git ftp push --user $AWS_ACCESS_KEY_ID --passwd $AWS_SECRET_ACCESS_KEY ftp://ec2-54-186-236-127.us-west-2.compute.amazonaws.com/var/www/html
