@@ -27,6 +27,7 @@
             color:#F96A74;
         }
     </style>
+	<script src="<?php echo base_url();?>public/assets/js/custom.js"></script>
 </head>
 <body>
 <div class="form-title">
@@ -83,7 +84,8 @@
                 </div>
             </div>
             <button><?php echo $this->lang->line('buttons')['login'];?></button>
-            <div class="forgetPassword"><a href="javascript:void(0);"><?php echo $this->lang->line('forgot_your_password');?></a>
+            <div class="forgetPassword">
+			<a href="javascript:void(0);" style="color:#337ab7;"><?php echo $this->lang->line('forgot_your_password');?></a>
             </div>
             <div class="signup"><a href="javascript:void(0)"><?php echo $this->lang->line('do_not_have_account');?></a>
             </div>
@@ -93,7 +95,7 @@
         <h2><?php echo $this->lang->line('labels')['create_account'];?></h2>
         <form autocomplete="off" method="post" id="reg_newform" action="<?php echo site_url().'/index/doReg' ?>">
             <input type="text" name="first_name" placeholder="Name*" >
-            <input type="text" name="mobile" class="mobile_number" placeholder="Mobile Number*" >
+            <input type="text" name="mobile" class="mobile_number allowonlynumber" placeholder="Mobile Number*" maxlength="10" >
             <input type="email" name="useremail" class="email_check" placeholder="Email*" >
             <input type="password" id="reg_password" name="password" class="password"  placeholder="Password*" >
             <input type="password" name="re_password" placeholder="Confirm Password*" >
@@ -212,7 +214,10 @@
 							if(res.Status==1){
 								toastr.error("<?php echo $this->lang->line('validation')['takenPhone'];?>");
 								$('input[name="mobile"]').val('');
-							}
+							}/*else if(res.Status==0){
+								toastr.error("<?php echo $this->lang->line('validation')['invalidPhone'];?>");
+								$('input[name="mobile"]').val('');
+							}*/
 							
 						}
 					});
@@ -548,6 +553,24 @@
             invalidHandler: validationInvalidHandler,
             errorPlacement: validationErrorPlacement
         });
+
+$('.allowonlynumber').keydown(function(e){
+								 
+// Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+             // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+});
+		
     });
 </script>
 </body>

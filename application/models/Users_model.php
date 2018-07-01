@@ -384,14 +384,16 @@ class Users_model extends CI_Model {
             $email = $data['useremail'];
             $this->load->library('sendmail');
             $enc = $key.":".$email;
-            $url = site_url().'/index/vacc?k='.base64_encode($enc);
+            $url = site_url().'/index/setStaffPassword?k='.base64_encode($enc);
             $username = $this->auth->getUsername();
             $role = $this->lang->line('roles')[$data['role']];
-            $mail_data['body'] = 'Welcome to MyPulse,<br>'.$username.' has register you as '.$role.'<br>To complete your MyPulse profile. Please verify your account by click on following link <br> <a href="'.$url.'">Verify Account</a>';
+            $mail_data['body'] = 'Welcome to MyPulse,<br>'.$username.' has register you as '.$role.'<br>To complete your MyPulse profile. Please verify your account by click on following link and update your password <br> <a href="'.$url.'">Verify Account</a>';
             $mail_data['subject'] = 'MyPulse Registration';
             $mail_data['email'] = $data['useremail'];
             $this->sendmail->send($mail_data);
-
+			$mobno = $data['mobile'];
+            $SMSText = ' Welcome to MyPulse. '.$username.' has register you as '.$role.' To complete your MyPulse profile. Please verify your email '.$email.'';
+$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($SMSText)."&To=".urlencode($mobno)."&Key=raisiVvTbgKISshQjnMNGr"),true);
             return $_uid;
         } else {
             $err = $this->db->error();
@@ -562,16 +564,8 @@ class Users_model extends CI_Model {
                     $this->sendmail->send($mail_data);
                     //return true;
 					        
-							
-						/*	$msg = $otp.' is your OTP Number to login';
-        					$message=urlencode($msg);
-							//$urlToSendMsg = "http://absolutesms.in/api?uname=sales@sirisampadafarms.com&pwd=siri123&number=$mobile&sender=SSTRAN&message=$message";
-							$urlToSendMsg = "http://absolutesms.in/api?uname=vb.rao@sigmaedge.com&pwd=asdf1234&number=$mobile&sender=ABBKNS&message=$message";
-							$ch = curl_init(); 
-                            curl_setopt($ch, CURLOPT_URL, $urlToSendMsg); 
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-			     			 $output = curl_exec($ch); 
-        					curl_close($ch); */
+					/*$msg = $otp.' is your OTP Number to login';
+$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($msg)."&To=".urlencode($mobile)."&Key=raisiVvTbgKISshQjnMNGr"),true);*/
                     return $this->db->insert_id();
                 } else {
                     $err = $this->db->error();
@@ -943,6 +937,8 @@ class Users_model extends CI_Model {
 							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 			     			 $output = curl_exec($ch); 
         					curl_close($ch);*/
+							$msg = $otp.' is your OTP Number to login';
+$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($msg)."&To=".urlencode($mobno)."&Key=raisiVvTbgKISshQjnMNGr"),true);
 							$otpdata = array(
 							'MobileNumber' => $mobno,
 							'EmailID' => $useremail,
@@ -1036,5 +1032,50 @@ public function sendRegisterVerfEmail($mobno){
 			return  array('Status' => 0);
 		}
 	}
+	
+public function verifyStaffAccount($key){
+        $this->db->where("forgotPassCode",$key[0]);
+		$this->db->where("useremail",$key[1]);
+        $user = $this->db->get($this->tblname)->row_array();
+		//print_r($user['created_at']);
+		if (time() - $user['created_at'] > 10 * 60) {
+		
+				return  array('Status' => 2, 'message' => $this->lang->line('otp_verification_incomplete'));
+			}
+			//exit;
+        if(isset($user['id'])){
+            $this->db->where("id",$user['id']);
+            $this->db->update($this->tblname,array("isActive"=>1,"EmailVerified"=>1));
+			//check log
+			$this->logger->log("User profile verified", Logger::User, $user['id']);
+            return true;
+        }else{
+            return false;
+        }
+    }
+	
+public function updateStaffPassword()
+    {   
+	    $key = $this->input->post('key');
+		$k = base64_decode($key);
+		$decode = explode(":",$k);
+        $pass = $this->input->post('password');
+        $repass = $this->input->post('repassword');
+		if($pass==$repass){
+			$this->db->where('forgotPassCode', $decode[0]);
+			$id = $this->db->get($this->tblname)->row_array();
+			$id = isset($id['id']) ? $id['id'] : 0;
+            $q = "update ".$this->tblname." set password=?,forgotPassCode=NULL where forgotPassCode=?";
+            $rs=$this->db->query($q,array(md5($pass),$decode[0]));
+            if($this->db->affected_rows()>0)
+            {
+				$this->logger->log("Password reset", Logger::User, $id);
+                return true;
+            }
+            else
+                return false;   
+        }           
+        return false;
+    }		
   	
 }

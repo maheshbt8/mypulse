@@ -59,7 +59,7 @@ $this->load->view("template/left.php");
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
-                                <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['Profile'];?></a></li>
+                                <li role="presentation"><a href="#tab2" aria-controls="profile" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
                                 <?php
                                 $showHA = "display:none";
                                 $showDoc= "display:none";
@@ -122,7 +122,7 @@ $this->load->view("template/left.php");
 											<span class="<?php if($profile['EmailVerified']==1){echo "verifiedsuccess";}else{echo "notverified";} ?>">
 											<?php if($profile['EmailVerified']==1){echo "Email Verified";}else{echo "Email Not Verified";} ?>
 											  </span>
-                                            <input value="<?php echo $profile['useremail'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>"  id="useremail" name="EmailID" />
+                                            <input value="<?php echo $profile['useremail'];?>" class="textinputmobilefields " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>"  id="useremail" name="EmailID" />
 											
                                         </div>
                                         
@@ -134,7 +134,7 @@ $this->load->view("template/left.php");
 											<!--<a href="javascript:void(0);" class="regsubmitform"></a>-->
 											<button class="sendotp" type="button">Send OTP</button> 
 											<?php }?>
-                                            <input value="<?php echo $profile['mobile'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+                                            <input value="<?php echo $profile['mobile'];?>" class="textinputmobilefields " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
 											
                                         </div>
                                         

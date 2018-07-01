@@ -612,9 +612,9 @@ class Auth {
             return 0;
         }*/
 
-        if(isset($data['password']) && $data['password'] != ""){
+        /*if(isset($data['password']) && $data['password'] != ""){
             $user['password'] = md5($data['password']);
-        }
+        }*/
         if(isset($data['address'])){
             $user['address'] = $data['address'];
         }

@@ -592,6 +592,47 @@ public function sendRegisterVerfEmail(){
 		
 	}
 	
+public function setStaffPassword(){
+		$k = isset($_GET['k']) ? $_GET['k'] : false;
+		if($k === false)
+			redirect('index');
+
+		$k = base64_decode($k);
+		$key = explode(":",$k);
+		if(count($key) < 2)	{
+			redirect('index');
+		}
+
+		if($this->users_model->verifyStaffAccount($key)){
+			$data['success']=array($this->lang->line('verification_complete'));
+		}else{
+			$data['errors']=array($this->lang->line('msg_unable_to_verify'));
+		}
+		$this->session->set_flashdata('data', $data);
+		$temp = array('key'=>$this->input->get('k'));
+		$this->load->view('index/setPassword',$temp);
+	}	
+	
+public function updateStaffPassword()
+	{
+		$temp = array();
+		if($this->users_model->updateStaffPassword()){
+			$temp['success'] = array($this->lang->line('msg_password_change'));
+			$this->session->set_flashdata('data', $temp);
+			$this->load->view($this->login_page);
+		}
+		else{
+			$temp['errors'] = array($this->lang->line('msg_key_not_match'));
+			$temp['key']=null;
+			$this->session->set_flashdata('data', $temp);
+			$this->load->view('index/resetPassword',$temp);
+		}
+		
+	}
+
 }
+
+
+
 
 ?>

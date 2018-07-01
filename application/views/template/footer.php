@@ -91,6 +91,8 @@
         <script src="<?php echo base_url();?>public/assets/js/jquery.slimscroll.js"></script>
         <script src="<?php echo base_url();?>public/assets/js/app.js" type="text/javascript"></script>
         <script src="<?php echo base_url();?>public/assets/js/layout.js" type="text/javascript"></script>
+		
+		<script src="<?php echo base_url();?>public/assets/js/custom.js"></script> 
     
         <script type="text/javascript">
         $(function() {

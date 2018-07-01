@@ -298,7 +298,7 @@
                 color:#F96A74;
             }
         </style>
-
+        
     </head>
      <body class="page-header-fixed sidemenu-closed-hidelogo page-container-bg-solid page-content-white page-md" >
      <div class="page-wrapper">
