@@ -184,7 +184,6 @@ class Auth {
 							 'user_id' => '',
 							 'logged_in' => '0'
                             );
-		$this->CI->db->query("UPDATE hms_users SET LastLogouttime='".date('Y-m-d H:i:s')."' WHERE id='".$this->CI->session->userdata('user_id')."'");
 	   	$this->CI->session->unset_userdata($array_items);
 	    $this->CI->session->sess_destroy();
 		return true;
@@ -598,10 +597,6 @@ class Auth {
         if(isset($data['last_name'])){
             $user['last_name'] = $data['last_name'];
         }
-		
-		if(isset($data['middle_name'])){
-            $user['MiddleName'] = $data['middle_name'];
-        }
         $email = "";
         if(isset($data['useremail'])){
             $user['useremail'] = $data['useremail'];
@@ -612,9 +607,9 @@ class Auth {
             return 0;
         }*/
 
-        /*if(isset($data['password']) && $data['password'] != ""){
+        if(isset($data['password']) && $data['password'] != ""){
             $user['password'] = md5($data['password']);
-        }*/
+        }
         if(isset($data['address'])){
             $user['address'] = $data['address'];
         }

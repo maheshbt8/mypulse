@@ -63,7 +63,7 @@ $this->load->view("template/left.php");
                                 <li role="presentation"><a href="#tab4"  aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['prescription'];?></a></li>
                                 <li role="presentation"><a href="#tab5" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['health_records'];?></a></li>
                                 <?php if(isset($profile['hasSelectedRole']) && $profile['hasSelectedRole']==0 ){ ?>
-                                <li role="presentation"><a href="#tab6" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['role'];?></a></li>
+                                <?php /*?><li role="presentation"><a href="#tab6" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['role'];?></a></li><?php */?>
                                 <?php } ?>
                             </ul>
                             <!-- Tab panes -->
@@ -72,38 +72,57 @@ $this->load->view("template/left.php");
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane active" id="tab1">
                                     <div class="col-md-12">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
+                                        <div class="form-group col-md-6">
+                                            <div class="form-group ">
                                                 <label><?php echo $this->lang->line('labels')['fname'];?></label>
-                                                <input data-ori="<?php echo $profile['first_name'];?>" value="<?php echo $profile['first_name'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+                                                <input data-ori="<?php echo $profile['first_name'];?>" value="<?php echo $profile['first_name'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>"  name="first_name" id="first_name" />
                                             </div>
-                                            <div class="form-group">
+											<div class="form-group ">
                                                 <label><?php echo $this->lang->line('labels')['lname'];?></label>
-                                                <input data-ori="<?php echo $profile['last_name'];?>" value="<?php echo $profile['last_name'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+                                                <input data-ori="<?php echo $profile['last_name'];?>" value="<?php echo $profile['last_name'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
                                             </div>
+                                            
                                         </div>
                                         <div class="form-group col-md-6">
+										   <div class="form-group ">
+                                                <label><?php echo $this->lang->line('labels')['mname'];?></label>
+                                                <input data-ori="<?php echo $profile['MiddleName'];?>" value="<?php echo $profile['MiddleName'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['mname'];?>" name="middle_name" id="middle_name" />
+                                            </div>
+										   
+											<div class="">
                                             <label><?php echo $this->lang->line('labels')['aboutMe'];?></label>
-                                            <textarea data-ori="<?php echo $profile['description'];?>" class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"><?php echo $profile['description'];?></textarea>
+                                            <textarea class="form-control" rows="5" data-ori="<?php echo $profile['description'];?>"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description" style="width: 310px;"><?php echo $profile['description'];?></textarea>
+											</div>
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-12">
                                         
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+										<div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['email'];?></label>
+											<span class="<?php if($profile['EmailVerified']==1){echo "verifiedsuccess";}else{echo "notverified";} ?>">
+											<?php if($profile['EmailVerified']==1){echo "Email Verified";}else{echo "Email Not Verified";} ?>
+											  </span>
+											  <?php if($profile['EmailVerified'] !=1){ ?>
+											<button class="sendemail" type="button">Send Email</button> 
+											<?php }?>
+                                            <input value="<?php echo $profile['useremail'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="EmailID"  id="useremail" />
+											
                                         </div>
+                                        
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['mobile'];?></label>
-                                            <input value="<?php echo $profile['mobile'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+											<span class="<?php if($profile['MobileVerified']==1){echo "verifiedsuccess";}else{echo "notverified";} ?>">
+											<?php if($profile['MobileVerified']==1){echo "Mobile Verified";}else{echo "Mobile Not Verified";} ?></span>
+                                            <input value="<?php echo $profile['mobile'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+											
                                         </div>
                                         
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['email'];?></label>
-                                            <input value="<?php echo $profile['useremail'];?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>"  id="useremail" />
+                                        <div class="col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
+                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
                                         </div>
                                         <!--<div class="form-group col-md-6">
                                             <label><?php //echo $this->lang->line('labels')['password'];?></label>
@@ -116,7 +135,7 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['gender'];?></label>
-                                            <select class="form-control " name="gender" id="gender" data-ori="<?php echo $profile['gender'];?>" />
+                                            <select class="form-control wid75 " name="gender" id="gender" data-ori="<?php echo $profile['gender'];?>" />
                                                 <option  value=""></option>
                                                 <option <?php if($profile['gender']=="M") { echo "selected";}?>  value="M"><?php echo $this->lang->line('labels')['male'];?></option>
                                                 <option <?php if($profile['gender']=="F") { echo "selected";}?> value="F"><?php echo $this->lang->line('labels')['female'];?></option>
@@ -131,40 +150,42 @@ $this->load->view("template/left.php");
                                                     $dob = date("d-m-Y",strtotime($profile['date_of_birth']));
                                                 }
                                             ?>
-                                            <input data-ori="<?php echo $dob;?>" value="<?php echo $dob;?>" class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
+                                            <input data-ori="<?php echo $dob;?>" value="<?php echo $dob;?>" class="textinputfields date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['address'];?></label>
-                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
                                         </div>
                                         
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
+                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-                                            <select  data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class=" form-control" style="width: 100%"></select>
+                                            <select  data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class=" form-control wid75" ></select>
                                         </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectState'];?></label>
                                             <select  data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class=" form-control" style="width: 100%"></select>
                                         </div>
-                                        <div class="form-group col-md-3">
+										</div>
+										<div class="col-md-12">
+                                        <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
                                             <select  data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control" style="width: 100%"></select>
                                         </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCity'];?></label>
                                             <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class=" form-control" style="width: 100%"></select>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group  col-md-12">
+                                        <div class="form-group  col-md-6">
                                             <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
                                             <div class="col-sm-8">
                                                 <div class=" input-group image-preview">
@@ -1200,5 +1221,27 @@ $this->load->view("template/footer.php");
             }
         });
 
+		$(".sendemail").removeAttr("disabled");
+
     });
+</script>
+
+<script>
+$('.sendemail').on('click', function(){
+            
+            $.ajax({
+						url : "<?php echo site_url(); ?>/index/sendRegisterVerfEmail",
+						data : {'useremail':$('input[name="EmailID"]').val()},
+						dataType : "JSON",
+						async:false,
+						type : "POST",
+						success : function(res){
+							if(res.Status==1){
+							    location.reload();							
+							}
+							
+						}
+					
+				});
+        });
 </script>

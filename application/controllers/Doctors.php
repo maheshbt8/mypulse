@@ -491,4 +491,31 @@ class Doctors extends CI_Controller {
         }
     }
 	
+	public function validateAadhaarNumber(){
+		extract($_POST);
+		
+		$response = $this->doctors_model->validateAadhaarNumber($aadnumber);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function validateMobileNumber(){
+		extract($_POST);
+		
+		$response = $this->doctors_model->validateMobileNumber($mobnumber);
+		
+		echo json_encode($response);
+		
+	}
+	
+	public function validateEmailAvailable(){
+		extract($_POST);
+		
+		$response = $this->doctors_model->validateEmailAvailable($emailval);
+		
+		echo json_encode($response);
+		
+	}
+	
 }

@@ -42,12 +42,12 @@
     <div class="toggle" style="width:50px; height: 50px;display:none"><i class="fa fa-user-plus" style="font-size: 25px; margin-top: 10px;margin-left: 4px;"></i>
     </div>
     <div class="form formLogin">
-        <h2><?php echo $this->lang->line('reset_password');?></h2>
-        <form id="re_form"  action="<?php echo site_url();?>/index/changePass" method="post">
+        <h2><?php echo $this->lang->line('set_password');?></h2>
+        <form id="re_form"  action="<?php echo site_url();?>/index/updateStaffPassword" method="post">
             <input type="password" name="password"  placeholder="Password" />
             <input type="password" name="repassword" placeholder="Confirm Password" />
             <input type="hidden" name="key" value="<?php echo $key;?>" />
-            <button type="submit"><?php echo $this->lang->line('buttons')['reset'];?></button>
+            <button type="submit"><?php echo $this->lang->line('buttons')['submit'];?></button>
             <?php /*?><div class=""><a href="<?php echo site_url();?>"><?php echo $this->lang->line('buttons')['login'];?></a>
             </div><?php */?>
         </form>

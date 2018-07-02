@@ -25,6 +25,7 @@ $(document).on('click','.toggle',function(){
 	     $('.formRegister').slideUp("slow");
 	  else
 		 $('.formReset').slideUp("slow");
+	 $('.userVerification').slideUp("slow");
   }
   
 });
@@ -49,6 +50,7 @@ $(document).on('click','.signup',function(){
 	     $('.formRegister').slideUp("slow");
 	  else
 		 $('.formReset').slideUp("slow");
+		$('.userVerification').slideUp("slow");
   }
   
 });
@@ -60,5 +62,14 @@ $(document).on('click','.forgetPassword a',function(){
   $('.toggle').children('i').addClass('fa-times');
   $('.formLogin').slideUp("slow");
   $('.formReset').slideDown("slow");
+});
+
+$(document).on('click','.verifyaccount a',function(){ 
+	'use strict';
+  // Switches the Icon and form
+  $('.toggle').children('i').removeClass('fa-user-plus');
+  $('.toggle').children('i').addClass('fa-times');
+  $('.formLogin').slideUp("slow");
+  $('.userVerification').slideDown("slow");
 });
 

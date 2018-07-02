@@ -37,3 +37,4 @@ $lang['reports'] = 'Test Reports';
 $lang['orders'] = 'Orders';
 $lang['main_patient_report'] = 'Patient Report';
 $lang['main_appoitment_report'] = 'Appoitment Report';
+$lang["mypulseusers"] = "MyPulse Users";//main_patients

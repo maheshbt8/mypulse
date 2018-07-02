@@ -15,7 +15,6 @@ class Branches extends CI_Controller {
             $data['branchess'] = $this->branches_model->getAllbranches();
             $data["page_title"] = $this->lang->line('branches');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('branches'));
-            
             $this->load->view('Branches/index', $data);    
         } else redirect('index/login');
     }
