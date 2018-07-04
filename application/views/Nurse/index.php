@@ -58,87 +58,120 @@ $this->load->view("template/left.php");
 						  	<div role="tabpanel" id="tabs">
                                 <ul class="nav  nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
-									<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+									<?php /*?><li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li><?php */?>
 									<li role="presentation"><a href="#tab3" aria-controls="other" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
 									<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
 								</ul>
 								<div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
 										<div class="col-md-12">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label><?php echo $this->lang->line('labels')['fname'];?></label>
-													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+											
+												<div class="col-md-6 form-group">
+													<label><?php echo $this->lang->line('labels')['fname'];?>*</label>
+													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
 												</div>
-												<div class="form-group">
-													<label><?php echo $this->lang->line('labels')['lname'];?></label>
-													<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+												<div class=" col-md-6 form-group">
+													<label><?php echo $this->lang->line('labels')['mname'];?></label>
+													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['mname'];?>" name="middle_name" id="middle_name" />
 												</div>
-											</div>
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['aboutMe'];?></label>
-												<textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description"></textarea>
-											</div>
+											
 										</div>
+										
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['email'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
+												<label><?php echo $this->lang->line('labels')['lname'];?>*</label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
 											</div>
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['password'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
+												<label><?php echo $this->lang->line('labels')['aboutMe'];?>*</label>
+												<textarea class="form-control" rows="5"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description" style="width: 77%"></textarea>
+												
+											</div>
+										</div>
+										
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['email'];?>*</label>
+												<input class="form-control email_check textinputmobilefields" type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['mobile'];?>*</label>
+												<input class="form-control mobile_number textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" maxlength="10" />
+											</div>
+											<div class="form-group col-md-6 hide">
+												<label><?php echo $this->lang->line('labels')['password'];?>*</label>
+												<input class="form-control textinputfields" type="password" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
 												<span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
 											</div>
 										</div>
+										
+										
+										<!--<section>
+										<h4 style="text-align:center; color:#337ab7"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></h1>-->
+										<div class="panel panel-default" style="color:#1d3bde">
+  											<div class="panel-body"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></div>
+										</div>
 										<div class="col-md-12">
-											
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+										    <div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['selectHospital'];?>*</label>
+												<select name="hospital_id"  id="hospital_id" class=" form-control textinputfields" style="width: 77%">
+												<option value="">Please Select</option>
+                                                </select>
 											</div>
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['mobile'];?></label>
-												<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
+												<select name="branch_id" id="branch_id" class=" form-control textinputfields" style="width: 77%">
+												<option value="">Please Select</option>
+                                                </select>
 											</div>
 											
 										</div>
-
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
+												<select name="department_id" id="department_id" class=" form-control textinputfields" style="width: 77%">
+												<option value="">Please Select</option>
+                                                </select>
+											</div>
+											 
+											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['status'];?></label>
-												<select class="form-control" name="isActive" id="isActive">
+												<select class="form-control" name="isActive" id="isActive" style="width: 77%">
 													<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
 													<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
 												</select>
 											</div>
 										</div>
 										
+										
 									</div>
-									<div role="tabpanel" class="tab-pane fade in" id="tab2">
+									<?php /*?><div role="tabpanel" class="tab-pane fade in" id="tab2">
 										<div class="col-md-12">
 											<div class="form-group col-md-4">
                                                 <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                                <select name="hospital_id"  id="hospital_id" class=" form-control" style="width: 100%">
-                                                </select>
+                                                <select name="hospital_id"  id="hospital_id" class=" form-control allowalphanumeric">
+                                                 <option value="">Please Select</option>
+												</select>
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                                <select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
-                                                </select>
+                                                <select name="branch_id" id="branch_id" class=" form-control allowalphanumeric" >
+                                                 <option value="">Please Select</option>
+												</select>
                                             </div>
                                             <div class="form-group col-md-4">
                                                <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                                <select name="department_id" id="department_id" class=" form-control" style="width: 100%">
+                                                <select name="department_id" id="department_id" class=" form-control allowalphanumeric" >
+												  <option value="">Please Select</option>
                                                 </select>
                                             </div>
 										</div>
-									</div>
+									</div><?php */?>
 									<div role="tabpanel" class="tab-pane fade in" id="tab3">
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['gender'];?></label>
-												<select class="form-control " name="gender" id="gender" />
+												<select class="form-control wid75 textinputfields " name="gender" id="gender" />
 													<option value="M"><?php echo $this->lang->line('labels')['male'];?></option>
 													<option value="F"><?php echo $this->lang->line('labels')['female'];?></option>
 													<option value="O"><?php echo $this->lang->line('labels')['other'];?></option>
@@ -146,42 +179,62 @@ $this->load->view("template/left.php");
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['dob'];?></label>
-												<input class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
+												<input class="form-control textinputfields date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
 											</div>
 										</div>
 										<div class="col-md-12">
+										    
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['address'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+												<label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
+												<input class="form-control aadhaar_number textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
 											</div>
 											
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
+												<input class="form-control textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" maxlength="10" />
 											</div>
 										</div>
 										<div class="col-md-12">
-							  				<div class="form-group col-md-3">
+											
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['address'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+											</div>
+											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-												<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
+												<select name="country"  id="country" class=" form-control textinputfields wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
-											<div class="form-group col-md-3">
+											
+										</div>
+										<div class="col-md-12">
+							  				
+											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectState'];?></label>
-												<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
+												<select name="state"  id="state" class=" form-control textinputfields wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
-							  				<div class="form-group col-md-3">
+											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-												<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
+												<select name="district"  id="district" class=" form-control wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
-											<div class="form-group col-md-3">
-												<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-												<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
-											</div>
+							  				
 							  			</div>
 										<div class="col-md-12">
-											<div class="form-group  col-md-6">
-												<label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
-	                                            <div class="col-sm-8">
+										
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
+												<select name="city"  id="city" class=" form-control wid75" >
+												<option value="">Please Select</option>
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['profilePic'];?></label>
+	                                            
 													<div class=" input-group image-preview">
 										                <input type="text" class="form-control image-preview-filename" id="prephoto" disabled="disabled"> 
 										                <span class="input-group-btn">
@@ -196,20 +249,27 @@ $this->load->view("template/left.php");
 										                        <input type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
 										                    </div>
 										                </span>
-										            </div>
+										            
 									            </div>
 								            </div>
 										</div>
+										
 									</div>
 									<div role="tabpanel" class="tab-pane fade in" id="tab4">
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['qualification'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
+												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['experience'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
+												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['specilization'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" />
 											</div>
 										</div>
 
@@ -271,7 +331,7 @@ $this->load->view("template/footer.php");
 			        		email:true
 			        	},
 			        	aadhaar_number:{
-			        		required:true,
+			        		//required:true,
 			        		aadhaar: true
 			        	},
 			        	mobile:{
@@ -292,7 +352,7 @@ $this->load->view("template/footer.php");
 			        		email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>"
 			        	},
 			        	aadhaar_number:{
-			        		required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
+			        		//required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
 			        	},
 			        	mobile:{
 			        		required:"<?php echo $this->lang->line('validation')['requriedPhone'];?>",
@@ -337,12 +397,12 @@ $this->load->view("template/footer.php");
 			    	$("#form input").attr("disabled",false);
 			    	$("#form").attr("action","<?php echo site_url(); ?>/nurse/add");
 			    	$("#edit").modal("show");
-					$("#password").rules("add", {
+					/*$("#password").rules("add", {
 						required:true,
 						messages: {
 								required: "<?php echo $this->lang->line('validation')['requiredPassword'];?>"
 						}
-					});
+					});*/
 					$('#tabs a[href="#tab1"]').click();
 					clearSelection();
 			    });
@@ -390,6 +450,8 @@ $this->load->view("template/footer.php");
 						department_id = data.department_id;
 					
 						$("#first_name").val(data.first_name);
+						
+						$("#middle_name").val(data.MiddleName);
 						
 						$("#last_name").val(data.last_name);
 						

@@ -93,23 +93,23 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <div class="form-group">
-                                                <label><?php echo $this->lang->line('labels')['fname'];?></label>
+                                                <label><?php echo $this->lang->line('labels')['fname'];?>*</label>
                                                 <input data-ori="<?php echo $profile['first_name'];?>" value="<?php echo $profile['first_name'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>"  name="first_name" id="first_name" />
                                             </div>
 											<div class="">
-                                                <label><?php echo $this->lang->line('labels')['lname'];?></label>
+                                                <label><?php echo $this->lang->line('labels')['lname'];?>*</label>
                                                 <input data-ori="<?php echo $profile['last_name'];?>" value="<?php echo $profile['last_name'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
                                             </div>
                                             
                                         </div>
                                         <div class="form-group col-md-6">
 										   <div class="form-group ">
-                                                <label><?php echo $this->lang->line('labels')['mname'];?></label>
+                                                <label><?php echo $this->lang->line('labels')['mname'];?>*</label>
                                                 <input data-ori="<?php echo $profile['MiddleName'];?>" value="<?php echo $profile['MiddleName'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['mname'];?>" name="middle_name" id="middle_name" />
                                             </div>
 										   
 											<div class="">
-                                            <label><?php echo $this->lang->line('labels')['aboutMe'];?></label>
+                                            <label><?php echo $this->lang->line('labels')['aboutMe'];?>*</label>
                                             <textarea class="form-control" rows="5" data-ori="<?php echo $profile['description'];?>"  placeholder="<?php echo $this->lang->line('labels')['aboutMePlaceholder'];?>" name="description" id="description" style="width: 310px;"><?php echo $profile['description'];?></textarea>
 											</div>
                                         </div>
@@ -118,23 +118,23 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         
 										<div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['email'];?></label>
+                                            <label><?php echo $this->lang->line('labels')['email'];?>*</label>
 											<span class="<?php if($profile['EmailVerified']==1){echo "verifiedsuccess";}else{echo "notverified";} ?>">
 											<?php if($profile['EmailVerified']==1){echo "Email Verified";}else{echo "Email Not Verified";} ?>
 											  </span>
-                                            <input value="<?php echo $profile['useremail'];?>" class="textinputmobilefields " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>"  id="useremail" name="EmailID" />
+                                            <input value="<?php echo $profile['useremail'];?>" class="allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>"  id="useremail" name="EmailID" />
 											
                                         </div>
                                         
                                         <div class="form-group col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['mobile'];?></label>
+                                            <label><?php echo $this->lang->line('labels')['mobile'];?>*</label>
 											<span class="<?php if($profile['MobileVerified']==1){echo "verifiedsuccess";}else{echo "notverified";} ?>">
 											<?php if($profile['MobileVerified']==1){echo "Mobile Verified";}else{echo "Mobile Not Verified";} ?></span>
 											<?php if($profile['MobileVerified'] !=1){ ?>
 											<!--<a href="javascript:void(0);" class="regsubmitform"></a>-->
-											<button class="sendotp" type="button">Send OTP</button> 
+											<a href="javascript:void(0);" class="sendotp" type="button">Send OTP</a> 
 											<?php }?>
-                                            <input value="<?php echo $profile['mobile'];?>" class="textinputmobilefields " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+                                            <input value="<?php echo $profile['mobile'];?>" class="textinputmobilefields allowonlynumber " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" maxlength="10" />
 											
                                         </div>
                                         
@@ -176,33 +176,41 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['address'];?></label>
-                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" style="width:310px;" />
                                         </div>
                                         
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
+                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" maxlength="10" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-                                            <select data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class="form-control wid75" ></select>
+                                            <select data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class="form-control wid75" >
+											<option value="">Please Select</option>
+											</select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectState'];?></label>
-                                            <select data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class="form-control wid75"></select>
+                                            <select data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class="form-control wid75">
+											<option value="">Please Select</option>
+											</select>
                                         </div>
                                         
                                     </div>
 									<div class="col-md-12">
 									<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-                                            <select data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control wid75" ></select>
+                                            <select data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control wid75" >
+											<option value="">Please Select</option>
+											</select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-                                            <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class="form-control wid75" ></select>
+                                            <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class="form-control wid75" >
+											<option value="">Please Select</option>
+											</select>
                                         </div>
 									</div>
                                     <div class="col-md-12">
@@ -233,17 +241,17 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['qualification'];?></label>
-                                            <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['experience'];?></label>
-                                            <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['specilization'];?></label>
-                                            <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" data-ori="<?php echo $data['specialization']; ?>" value="<?php echo $data['specialization']; ?>" />
+                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" data-ori="<?php echo $data['specialization']; ?>" value="<?php echo $data['specialization']; ?>" />
                                         </div>
                                     </div>
                                     <?php } ?>
@@ -253,11 +261,11 @@ $this->load->view("template/left.php");
                                         <div class="col-md-12">
                                             <div class="form-group col-md-6">
                                                 <label><?php echo $this->lang->line('labels')['qualification'];?></label>
-                                                <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                                <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label><?php echo $this->lang->line('labels')['experience'];?></label>
-                                                <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                                <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
                                             </div>
                                         </div>
                                     <?php } ?>
@@ -267,11 +275,11 @@ $this->load->view("template/left.php");
                                         <div class="col-md-12">
                                             <div class="form-group col-md-6">
                                                 <label><?php echo $this->lang->line('labels')['qualification'];?></label>
-                                                <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                                <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label><?php echo $this->lang->line('labels')['experience'];?></label>
-                                                <input class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                                <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
                                             </div>
                                         </div>
                                     <?php } ?>
@@ -301,7 +309,7 @@ $this->load->view("template/left.php");
 										<?php if(!$this->auth->isMedicalLab() && !$this->auth->isMedicalStore()){?>
 										<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['department'];?></label>
-                                            <input value="<?php echo isset($data['department_name']) ? $data['department_name'] : "";?>" class="textinputfields " type="text" />
+                                            <input value="<?php echo isset($data['department_name']) ? $data['department_name'] : "";?>" class="allowalphanumeric " type="text" />
 											
                                         </div>
 										
@@ -368,8 +376,19 @@ $this->load->view("template/left.php");
         <div class="modal-body">
 			<input type="hidden" name="hid_otpid" class="hid_otpid" value="">
 			<input type="hidden" name="txt_mobile" class="txt_mobile" readonly="">
-		  <label><?php echo $this->lang->line('register_otp_msg'); ?></label>&nbsp;&nbsp;<label class="usergivenmobilenumber"></label>&nbsp;<label><?php echo $this->lang->line('register_otp_msg1'); ?></label>
-          <p><label>OTP Number</label><input type="text" name="txt_votp" class="txt_votp"></p>
+			<div class="col-md-12">
+				<div class="form-group col-md-8">
+				<label><?php echo $this->lang->line('register_otp_msg'); ?></label>&nbsp;<label class="usergivenmobilenumber"></label>&nbsp;<label><?php echo $this->lang->line('register_otp_msg1'); ?></label>
+          <p>
+		  <label>OTP Number : </label>
+		  <input type="text" name="txt_votp" class="txt_votp">
+		  <label class="showerrortext notverified"></label>
+		  </p>
+												
+											</div>
+											
+										</div>
+		  
 		</div>
         <div class="modal-footer">
 		<button type="text" class="chkverify_otp btn btn-success">Submit</button>
@@ -401,7 +420,7 @@ $this->load->view("template/footer.php");
                     required: true
                 },
                 aadhaar_number:{
-                    required:true,
+                    //required:true,
                     aadhaar: true
                 },
             },
@@ -414,7 +433,7 @@ $this->load->view("template/footer.php");
                     required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
                 },
                 aadhaar_number:{
-                    required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
+                    //required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
                 }
             },
             invalidHandler: validationInvalidHandler,
@@ -818,8 +837,10 @@ $('.chkverify_otp').on('click', function(){
 						type : "POST",
 						success : function(res){
 							if(res.Status==0){
-								toastr.error("Please enter valid otp");
-								
+								//toastr.error("Please enter valid otp");
+								$('.showerrortext').text('Please enter valid otp');
+								$('.showerrortext').addClass('show');
+								$('.showerrortext').removeClass('hide');
 							}
 							else if(res.Status==1){
 							    toastr.success("Verfication Done");
@@ -850,6 +871,9 @@ $('.regcancel').on('click', function(){
 						success : function(res){
 							if(res.Status==1){
 								$('#otpverificationModal').modal('hide');
+								$('input[name="txt_votp"]').val("");
+								$('.showerrortext').addClass('hide');
+								$('.showerrortext').removeClass('show');
 								
 							}
 							

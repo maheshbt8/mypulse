@@ -20,6 +20,15 @@ $('.allowonlynumber').keydown(function(e){
 
 $( ".textinputfields" ).keypress(function(event) {
                     var inputValue = event.which;
+		// Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (event.keyCode === 65 && (event.ctrlKey === true || event.metaKey === true)) || 
+             // Allow: home, end, left, right, down, up
+            (event.keyCode >= 35 && event.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }			
         // allow letters and whitespaces only.
         if(!(inputValue >= 65 && inputValue <= 120) && (inputValue != 32 && inputValue != 0)) { 
             event.preventDefault(); 

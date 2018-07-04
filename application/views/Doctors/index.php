@@ -56,7 +56,7 @@ $this->load->view("template/left.php");
 				  	<div class="modal-body">
 				  		<div class="row">
 						  	<div role="tabpanel" id="tabs">
-                                <ul class="nav navigationtabs nav-pills" role="tablist">
+                                <ul class="nav nav-pills" role="tablist">
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
 									<?php /*?><li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li><?php */?>
 									<li role="presentation"><a href="#tab3" aria-controls="other" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
@@ -115,11 +115,13 @@ $this->load->view("template/left.php");
 										    <div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectHospital'];?>*</label>
 												<select name="hospital_id"  id="hospital_id" class=" form-control textinputfields" style="width: 77%">
+												<option value="">Please Select</option>
                                                 </select>
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
 												<select name="branch_id" id="branch_id" class=" form-control textinputfields" style="width: 77%">
+												<option value="">Please Select</option>
                                                 </select>
 											</div>
 											
@@ -128,6 +130,7 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
 												<select name="department_id" id="department_id" class=" form-control textinputfields" style="width: 77%">
+												<option value="">Please Select</option>
                                                 </select>
 											</div>
 											 
@@ -185,7 +188,7 @@ $this->load->view("template/left.php");
 											
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-												<input class="form-control textinputmobilefields" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
+												<input class="form-control textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" maxlength="10" />
 											</div>
 										</div>
 										<div class="col-md-12">
@@ -196,7 +199,9 @@ $this->load->view("template/left.php");
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-												<select name="country"  id="country" class=" form-control textinputfields wid75" ></select>
+												<select name="country"  id="country" class=" form-control textinputfields wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
 											
 										</div>
@@ -204,11 +209,15 @@ $this->load->view("template/left.php");
 							  				
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectState'];?></label>
-												<select name="state"  id="state" class=" form-control textinputfields wid75" ></select>
+												<select name="state"  id="state" class=" form-control textinputfields wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-												<select name="district"  id="district" class=" form-control wid75" ></select>
+												<select name="district"  id="district" class=" form-control wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
 							  				
 							  			</div>
@@ -216,7 +225,9 @@ $this->load->view("template/left.php");
 										
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-												<select name="city"  id="city" class=" form-control wid75" ></select>
+												<select name="city"  id="city" class=" form-control wid75" >
+												<option value="">Please Select</option>
+												</select>
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['profilePic'];?></label>
@@ -249,7 +260,7 @@ $this->load->view("template/left.php");
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['experience'];?></label>
-												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
+												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
 											</div>
 										</div>
 										<div class="col-md-12">

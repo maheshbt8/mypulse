@@ -6761,3 +6761,12 @@ width:310px;
     width: 400px;
     margin: 15px auto;
 }
+
+.allowalphanumeric {
+    border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-size: 14px;
+	padding: 7px 10px;
+	width: 310px;
+}

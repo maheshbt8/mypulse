@@ -114,7 +114,7 @@ $this->load->view("template/left.php");
                                             <label><?php echo $this->lang->line('labels')['mobile'];?></label>
 											<span class="<?php if($profile['MobileVerified']==1){echo "verifiedsuccess";}else{echo "notverified";} ?>">
 											<?php if($profile['MobileVerified']==1){echo "Mobile Verified";}else{echo "Mobile Not Verified";} ?></span>
-                                            <input value="<?php echo $profile['mobile'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
+                                            <input value="<?php echo $profile['mobile'];?>" class="textinputmobilefields allowonlynumber " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
 											
                                         </div>
                                         
@@ -156,32 +156,40 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['address'];?></label>
-                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+                                            <input data-ori="<?php echo $profile['address'];?>" value="<?php echo $profile['address'];?>" class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
                                         </div>
                                         
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
+                                            <input data-ori="<?php echo $profile['alternate_mobile_number'];?>" value="<?php echo $profile['alternate_mobile_number'];?>" class="textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-                                            <select  data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class=" form-control wid75" ></select>
+                                            <select  data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class=" form-control wid75" >
+											<option value="">Please Select</option>
+											</select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectState'];?></label>
-                                            <select  data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class=" form-control" style="width: 100%"></select>
+                                            <select  data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class=" form-control" style="width: 100%">
+											<option value="">Please Select</option>
+											</select>
                                         </div>
 										</div>
 										<div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-                                            <select  data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control" style="width: 100%"></select>
+                                            <select  data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control" style="width: 100%">
+											<option value="">Please Select</option>
+											</select>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-                                            <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class=" form-control" style="width: 100%"></select>
+                                            <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class=" form-control" style="width: 100%">
+											<option value="">Please Select</option>
+											</select>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -495,7 +503,7 @@ $this->load->view("template/footer.php");
                     required: true
                 },
                 aadhaar_number:{
-                    required:true,
+                   // required:true,
                     aadhaar: true
                 },
             },
@@ -508,7 +516,7 @@ $this->load->view("template/footer.php");
                     required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
                 },
                 aadhaar_number:{
-                    required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
+                    //required: "<?php echo $this->lang->line('validation')['requiredAadhar'];?>"
                 }
             },
             invalidHandler: validationInvalidHandler,

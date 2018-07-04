@@ -33,20 +33,20 @@ $this->load->view("template/left.php");
 							<div class="col-md-12">
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id1" class=" form-control" style="width: 100%">
+                                    <select id="hospital_id1" class=" form-control allowalphanumeric" >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id1" class=" form-control" style="width: 100%">
-										
+                                    <select id="branch_id1" class=" form-control allowalphanumeric" >
+										<option value="">Please Select</option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                      <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id1" class=" form-control" style="width: 100%">
-										
+                                    <select id="department_id1" class=" form-control allowalphanumeric" >
+										<option value="">Please Select</option>
 					                </select>
                                 </div>
                             </div>
@@ -85,21 +85,27 @@ $this->load->view("template/left.php");
 				  	<div class="modal-body">
 				  		<div class="row">
 				  			<div class="col-md-12">
-							  	<div class="form-group col-md-4">
+							  	<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="hospital_id" class=" form-control allowalphanumeric" >
+									   <option value="">Please Select</option>
+									</select>
                                 </div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="branch_id" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
+									</select>
                                 </div>
-				  				<div class="form-group col-md-4">
+				  				<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-									<select name="department_id" id="department_id" class=" form-control" style="width: 100%"></select>					
+									<select name="department_id" id="department_id" class=" form-control allowalphanumeric">
+									  <option value="">Please Select</option>
+									</select>					
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['wardName'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['wardName'];?>" name="ward_name" id="ward_name" />
+									<input class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['wardName'];?>" name="ward_name" id="ward_name" />
 								</div>
 				  			</div>
 						</div>

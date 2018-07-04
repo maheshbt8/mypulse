@@ -142,7 +142,11 @@
 			<input type="hidden" name="hid_otpid" class="hid_otpid" value="">
 			<input type="hidden" name="txt_mobile" class="txt_mobile" readonly="">
 		  <label><?php echo $this->lang->line('register_otp_msg'); ?></label>&nbsp;&nbsp;<label class="usergivenmobilenumber"></label>&nbsp;<label><?php echo $this->lang->line('register_otp_msg1'); ?></label>
-          <p><label>OTP Number</label><input type="text" name="txt_votp" class="txt_votp"></p>
+          <p>
+		  <label>OTP Number</label>
+		  <input type="text" name="txt_votp" class="txt_votp">
+		  <label class="showerrortext notverified" style="color:#FF0000;"></label>
+		  </p>
 		</div>
         <div class="modal-footer">
 		<button type="text" class="chkverify_otp btn btn-success">Submit</button>
@@ -190,6 +194,9 @@
 						success : function(res){
 							if(res.Status==1){
 								$('#otpverificationModal').modal('hide');
+								$('input[name="txt_votp"]').val("");
+								$('.showerrortext').addClass('hide');
+								$('.showerrortext').removeClass('show');
 								
 							}
 							
@@ -297,7 +304,7 @@
 						success : function(res){
 							if(res.Status==1){
 							    var mobile_num = $('input[name="mobile"]').val();
-								$('.usergivenmobilenumber').text(mobile_num);
+								$('.usergivenmobilenumber').text(mobile_num+'.');
 								//$('input[name="txt_mobile"]').val(mobile_num);
 								$('#otpverificationModal').modal('show');
 								$('input[name="hid_otpid"]').val(res.otpid);
@@ -321,7 +328,10 @@
 						type : "POST",
 						success : function(res){
 							if(res.Status==0){
-								toastr.error("Please enter valid otp");
+								//toastr.error("Please enter valid otp");
+								$('.showerrortext').text('Please enter valid otp');
+								$('.showerrortext').addClass('show');
+								$('.showerrortext').removeClass('hide');
 								
 							}
 							else if(res.Status==1){

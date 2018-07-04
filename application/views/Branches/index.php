@@ -67,45 +67,59 @@ $this->load->view("template/left.php");
 				  			<div class="col-md-12">
 				  				<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-									<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%"></select>
+									<select name="hospital_id" id="hospital_id" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
+									</select>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['branchName'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['branchName'];?>" name="branch_name" id="branch_name" />
+									<input class="form-control textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['branchName'];?>" name="branch_name" id="branch_name" />
 								</div>
 				  			</div>
 				  			<div class="col-md-12">
 				  				<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['phoneNumber'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>" name="phone_number" id="phone_number" />
+									<label><?php echo $this->lang->line('labels')['mobile'];?></label>
+									<input class="form-control allowonlynumber textinputmobilefields " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="phone_number" id="phone_number" maxlength="10" />
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['email'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="email" id="email" />
+									<input class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="email" id="email" />
 								</div>
 				  			</div>
-				  			<div class="col-md-12">
-				  				<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['address'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+				  			
+							<div class="col-md-12">
+								<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
+									<select name="country"  id="country" class=" form-control">
+									<option value="">Please Select</option>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['selectState'];?></label>
+									<select name="state"  id="state" class=" form-control" >
+									<option value="">Please Select</option>
+									</select>
+								</div>
+								
+							</div>
+							<div class="col-md-12">
+							<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
+									<select name="district"  id="district" class=" form-control" >
+									<option value="">Please Select</option>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
+									<select name="city"  id="city" class=" form-control" >
+									<option value="">Please Select</option>
+									</select>
 								</div>
 							</div>
 							<div class="col-md-12">
-								<div class="form-group col-md-3">
-									<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-									<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
-								</div>
-								<div class="form-group col-md-3">
-									<label><?php echo $this->lang->line('labels')['selectState'];?></label>
-									<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
-								</div>
-								<div class="form-group col-md-3">
-									<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-									<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
-								</div>
-								<div class="form-group col-md-3">
-									<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-									<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
+				  				<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['address'];?></label>
+									<input class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
 								</div>
 							</div>
 				  		</div>

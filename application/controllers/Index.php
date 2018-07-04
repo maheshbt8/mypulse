@@ -605,12 +605,16 @@ public function setStaffPassword(){
 
 		if($this->users_model->verifyStaffAccount($key)){
 			$data['success']=array($this->lang->line('verification_complete'));
+			$this->session->set_flashdata('data', $data);
+			$temp = array('key'=>$this->input->get('k'));
+			$this->load->view('index/setPassword',$temp);
 		}else{
 			$data['errors']=array($this->lang->line('msg_unable_to_verify'));
+			$this->session->set_flashdata('data', $data);
+			$temp = array('key'=>$this->input->get('k'));
+			$this->load->view('index/login',$temp);
 		}
-		$this->session->set_flashdata('data', $data);
-		$temp = array('key'=>$this->input->get('k'));
-		$this->load->view('index/setPassword',$temp);
+		
 	}	
 	
 public function updateStaffPassword()

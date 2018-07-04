@@ -46,7 +46,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/medical_store/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/medical_store/update" method="post" id="form" autocomplete="off">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -57,7 +57,7 @@ $this->load->view("template/left.php");
 				  		<div class="row" id="tabs">
 						  	<ul class="nav  nav-pills" role="tablist">
 								<li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
-								<li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+								<?php /*?><li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li><?php */?>
 								<li role="presentation"><a href="#tab3" aria-controls="incharge" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['medStoreInc'];?></a></li>
 								<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
 							</ul>
@@ -65,38 +65,56 @@ $this->load->view("template/left.php");
 								<div role="tabpanel" class="tab-pane active fade in" id="tab1">
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['name'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['name'];?>" name="name" id="name" />
+											<label><?php echo $this->lang->line('labels')['name'];?>*</label>
+											<input class="form-control textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['name'];?>" name="name" id="name" />
 										</div>
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['description'];?></label>
-											<textarea class="form-control"  placeholder="<?php echo $this->lang->line('labels')['description'];?>" name="md_description" id="md_description"></textarea>
+											<textarea class="form-control allowalphanumeric"  placeholder="<?php echo $this->lang->line('labels')['description'];?>" name="md_description" id="md_description"></textarea>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['address'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="m_address" id="m_address" />
+											<input class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="m_address" id="m_address" />
 										</div>
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['phone_number'];?></label>
-											<input type="text" class="form-control"  placeholder="<?php echo $this->lang->line('labels')['phone_number'];?>" name="m_phone_number" id="m_phone_number" />
+											<input type="text" class="form-control allowonlynumber textinputmobilefields"  placeholder="<?php echo $this->lang->line('labels')['phone_number'];?>" name="m_phone_number" id="m_phone_number" />
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['ownerName'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerName'];?>" name="owner_name" id="owner_name" />
+											<label><?php echo $this->lang->line('labels')['ownerName'];?>*</label>
+											<input class="form-control textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerName'];?>" name="owner_name" id="owner_name" />
 										</div>
 										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['ownerNumber'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerNumber'];?>" name="owner_contact_number" id="owner_contact_number" />
+											<label><?php echo $this->lang->line('labels')['ownerNumber'];?>*</label>
+											<input class="form-control textinputmobilefields allowonlynumber " type="text" placeholder="<?php echo $this->lang->line('labels')['ownerNumber'];?>" name="owner_contact_number" id="owner_contact_number" />
+										</div>
+									</div>
+									
+									<div class="panel panel-default" style="color:#1d3bde">
+  											<div class="panel-body"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></div>
+										</div>
+									<div class="col-md-12">	
+										<div class="form-group col-md-6">
+											<label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
+											<select name="hospital_id" id="hospital_id" class=" form-control allowalphanumeric" >
+											<option value="">Please Select</option>
+											</select>
+										</div>
+										<div class="form-group col-md-6">
+											<label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
+											<select name="branch_id" id="branch_id" class=" form-control allowalphanumeric" >
+											<option value="">Please Select</option>
+											</select>
 										</div>
 									</div>
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['status'];?></label>
-											<select class="form-control" name="isActive" id="isActive">
+											<select class="form-control allowalphanumeric" name="isActive" id="isActive">
 												<option value="1"><?php echo $this->lang->line('labels')['active'];?></option>
 												<option value="0"><?php echo $this->lang->line('labels')['inactive'];?></option>
 											</select>
@@ -104,126 +122,131 @@ $this->load->view("template/left.php");
 									</div>
 									
 								</div>
-								<div role="tabpanel" class="tab-pane fade in" id="tab2">
-									<div class="col-md-12">	
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-											<select name="hospital_id" id="hospital_id" class=" form-control" style="width: 100%">
-											</select>
-										</div>
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-											<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%">
-											</select>
-										</div>
-									</div>
-								</div>
+								<?php /*?><div role="tabpanel" class="tab-pane fade in" id="tab2">
+									
+								</div><?php */?>
 								<div role="tabpanel" class="tab-pane fade in" id="tab3">
 									<div class="col-md-12">
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['fname'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+											
+												<div class="col-md-6 form-group">
+													<label><?php echo $this->lang->line('labels')['fname'];?></label>
+													<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['fname'];?>" name="first_name" id="first_name" />
+												</div>
+												<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['lname'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+											</div>
+											
 										</div>
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['lname'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['lname'];?>" name="last_name" id="last_name" />
+										
+										<div class="col-md-12">
+											
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['email'];?></label>
+												<input class="form-control email_check textinputmobilefields" type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['mobile'];?></label>
+												<input class="form-control mobile_number textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" maxlength="10" />
+												
+											</div>
 										</div>
-									</div>
+										
+											
+											<div class="col-md-12">
+											  <div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
+												<input class="form-control aadhaar_number textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+											</div>
+										      <div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
+												<input class="form-control textinputmobilefields allowonlynumber" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" maxlength="10" />
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['gender'];?></label>
+												<select class="form-control wid75 textinputfields " name="gender" id="gender" />
+												    <option value="">Please Select</option>
+													<option value="M"><?php echo $this->lang->line('labels')['male'];?></option>
+													<option value="F"><?php echo $this->lang->line('labels')['female'];?></option>
+													<option value="O"><?php echo $this->lang->line('labels')['other'];?></option>
+												</select>
+											</div>
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['dob'];?></label>
+												<input class="form-control textinputfields date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
+											</div>
+										</div>
+											<div class="form-group col-md-6 hide">
+												<label><?php echo $this->lang->line('labels')['password'];?>*</label>
+												<input class="form-control textinputfields" type="password" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
+												<span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
+											</div>
+										
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['email'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['email'];?>" name="useremail" id="useremail" />
-										</div>
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['password'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
-											<span id="passwordhint" style="display: none"><?php echo $this->lang->line('labels')['passwordHind'];?></span>
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
-										</div>
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['mobile'];?></label>
-											<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['mobile'];?>" name="mobile" id="mobile" />
-										</div>
-									</div> 
-									<div class="col-md-12">
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['gender'];?></label>
-											<select class="form-control " name="gender" id="gender" />
-												<option value="M"><?php echo $this->lang->line('labels')['male'];?></option>
-												<option value="F"><?php echo $this->lang->line('labels')['female'];?></option>
-												<option value="O"><?php echo $this->lang->line('labels')['other'];?></option>
+											<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
+											<select name="country"  id="country" class=" form-control" >
+											<option value="">Please Select</option>
 											</select>
 										</div>
 										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['dob'];?></label>
-											<input class="form-control date-picker" type="text" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" name="date_of_birth" id="date_of_birth" />
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['address'];?></label>
-											<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
-										</div>
-										<div class="form-group col-md-6">
-											<label><?php echo $this->lang->line('labels')['alternateNumber'];?></label>
-											<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['alternateNumber'];?>" name="alternate_mobile_number" id="alternate_mobile_number" />
-										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group col-md-3">
-											<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
-											<select name="country"  id="country" class=" form-control" style="width: 100%"></select>
-										</div>
-										<div class="form-group col-md-3">
 											<label><?php echo $this->lang->line('labels')['selectState'];?></label>
-											<select name="state"  id="state" class=" form-control" style="width: 100%"></select>
+											<select name="state"  id="state" class=" form-control allowalphanumeric" >
+											<option value="">Please Select</option>
+											</select>
 										</div>
-										<div class="form-group col-md-3">
+										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-											<select name="district"  id="district" class=" form-control" style="width: 100%"></select>
+											<select name="district"  id="district" class=" form-control allowalphanumeric" >
+											<option value="">Please Select</option>
+											</select>
 										</div>
-										<div class="form-group col-md-3">
+										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['selectCity'];?></label>
-											<select name="city"  id="city" class=" form-control" style="width: 100%"></select>
+											<select name="city"  id="city" class=" form-control allowalphanumeric" >
+											<option value="">Please Select</option>
+											</select>
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="form-group  col-md-6">
-											<label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
-											<div class="col-sm-8">
-												<div class=" input-group image-preview">
-													<input type="text" class="form-control image-preview-filename" id="prephoto" disabled="disabled"> 
-													<span class="input-group-btn">
-														<!-- image-preview-clear button -->
-														<button type="button" class="btn btn-default image-preview-clear" style="display:none;">
-															<span class="glyphicon glyphicon-remove"></span> <?php echo $this->lang->line('labels')['clear'];?>
-														</button>
-														<!-- image-preview-input -->
-														<div class="btn btn-default image-preview-input">
-															<span class="glyphicon glyphicon-folder-open"></span>
-															<span class="image-preview-input-title"><?php echo $this->lang->line('labels')['browse'];?></span>
-															<input type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
-														</div>
-													</span>
-												</div>
+									    <div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['address'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
 											</div>
-										</div>
+											
+										<div class="form-group col-md-5">
+												<label><?php echo $this->lang->line('labels')['profilePic'];?></label>
+	                                            
+													<div class=" input-group image-preview">
+										                <input type="text" class="form-control image-preview-filename" id="prephoto" disabled="disabled"> 
+										                <span class="input-group-btn">
+										                    <!-- image-preview-clear button -->
+										                    <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
+										                        <span class="glyphicon glyphicon-remove"></span> <?php echo $this->lang->line('labels')['clear'];?>
+										                    </button>
+										                    <!-- image-preview-input -->
+										                    <div class="btn btn-default image-preview-input">
+										                        <span class="glyphicon glyphicon-folder-open"></span>
+										                        <span class="image-preview-input-title"><?php echo $this->lang->line('labels')['browse'];?></span>
+										                        <input type="file" accept="image/png, image/jpeg" name="profile_photo" id="profile_photo" />
+										                    </div>
+										                </span>
+										            
+									            </div>
+								            </div>
 									</div>
 								</div>
 								<div role="tabpanel" class="tab-pane fade in" id="tab4">
 									<div class="col-md-12">
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['qualification'];?></label>
-											<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
+											<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
 										</div>
 										<div class="form-group col-md-6">
 											<label><?php echo $this->lang->line('labels')['experience'];?></label>
-											<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
+											<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
 										</div>
 									</div>	
 								</div>

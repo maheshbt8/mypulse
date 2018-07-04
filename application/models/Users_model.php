@@ -393,7 +393,7 @@ class Users_model extends CI_Model {
             $this->sendmail->send($mail_data);
 			$mobno = $data['mobile'];
             $SMSText = ' Welcome to MyPulse. '.$username.' has register you as '.$role.' To complete your MyPulse profile. Please verify your email '.$email.'';
-$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($SMSText)."&To=".urlencode($mobno)."&Key=raisiVvTbgKISshQjnMNGr"),true);
+$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($SMSText)."&To=".urlencode($mobno)."&Key=raisiVvTbgKISshQjnMNGr"),true);
             return $_uid;
         } else {
             $err = $this->db->error();
@@ -565,7 +565,7 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
                     //return true;
 					        
 					/*$msg = $otp.' is your OTP Number to login';
-$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($msg)."&To=".urlencode($mobile)."&Key=raisiVvTbgKISshQjnMNGr"),true);*/
+$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($msg)."&To=".urlencode($mobile)."&Key=raisiVvTbgKISshQjnMNGr"),true);*/
                     return $this->db->insert_id();
                 } else {
                     $err = $this->db->error();
@@ -928,17 +928,9 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
 		                
 						extract($_POST);
 						$otp = rand(100000,999999);
-						/*$msg = $otp.' is your OTP Number to login';	
-							$message=urlencode($msg);
-							//$urlToSendMsg = "http://absolutesms.in/api?uname=sales@sirisampadafarms.com&pwd=siri123&number=$mobile&sender=SSTRAN&message=$message";
-							$urlToSendMsg = "http://absolutesms.in/api?uname=vb.rao@sigmaedge.com&pwd=asdf1234&number=$mobno&sender=ABBKNS&message=$message";
-							$ch = curl_init(); 
-                            curl_setopt($ch, CURLOPT_URL, $urlToSendMsg); 
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-			     			 $output = curl_exec($ch); 
-        					curl_close($ch);*/
+						
 							$msg = $otp.' is your OTP Number to login';
-$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($msg)."&To=".urlencode($mobno)."&Key=raisiVvTbgKISshQjnMNGr"),true);
+							$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($msg)."&To=".urlencode($mobno)."&Key=vrredbqiVYIctT1koQxs2E"),true);
 							$otpdata = array(
 							'MobileNumber' => $mobno,
 							'EmailID' => $useremail,
@@ -1037,12 +1029,11 @@ public function verifyStaffAccount($key){
         $this->db->where("forgotPassCode",$key[0]);
 		$this->db->where("useremail",$key[1]);
         $user = $this->db->get($this->tblname)->row_array();
-		//print_r($user['created_at']);
-		if (time() - $user['created_at'] > 10 * 60) {
+		$createddate = strtotime($user['created_at']);
+		if (time() - $createddate > 60 * 60) {
 		
-				return  array('Status' => 2, 'message' => $this->lang->line('otp_verification_incomplete'));
+				return  false;
 			}
-			//exit;
         if(isset($user['id'])){
             $this->db->where("id",$user['id']);
             $this->db->update($this->tblname,array("isActive"=>1,"EmailVerified"=>1));

@@ -30,19 +30,21 @@ $this->load->view("template/left.php");
 							<div class="col-md-12">
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id1" class=" form-control" style="width: 100%">
+                                    <select id="hospital_id1" class=" form-control allowalphanumeric" >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id1" class=" form-control" style="width: 100%">
+                                    <select id="branch_id1" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id1" class=" form-control" style="width: 100%">
-					                </select>
+                                    <select id="department_id1" class=" form-control allowalphanumeric" >
+					                <option value="">Please Select</option>
+									</select>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -84,29 +86,37 @@ $this->load->view("template/left.php");
 						  	<div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="hospital_id" class=" form-control allowalphanumeric " >
+									<option value="">Please Select</option>
+									</select>
                                 </div>
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="branch_id" class=" form-control allowalphanumeric">
+									<option value="">Please Select</option>
+									</select>
                                 </div>
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id" name="department_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="department_id" name="department_id" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
+									</select>
                                 </div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectWard'];?></label>
-									<select name="ward_id" id="ward_id" class=" form-control" style="width: 100%"></select>
+									<select name="ward_id" id="ward_id" class=" form-control allowalphanumeric">
+									<option value="">Please Select</option>
+									</select>
 								</div>
                             </div>
 				  			<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['bed'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['bed'];?>" name="bed" id="bed" />
+									<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['bed'];?>" name="bed" id="bed" />
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['isBedAvailable'];?></label>
-									<select class="form-control" name="isAvailable" id="isAvailable">
+									<select class="form-control allowalphanumeric" name="isAvailable" id="isAvailable">
 										<option value="1"><?php echo $this->lang->line('buttons')['no'];?></option>
 										<option value="0"><?php echo $this->lang->line('buttons')['yes'];?></option>
 									</select>

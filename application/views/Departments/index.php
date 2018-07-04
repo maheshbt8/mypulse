@@ -76,15 +76,19 @@ $this->load->view("template/left.php");
 						  	<div class="col-md-12">
 							  	<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id" class=" form-control" style="width: 100%"></select>
+                                    <select id="hospital_id" class=" form-control allowalphanumeric" style="width: 100%">
+									<option value="">Please Select</option>
+									</select>
                                 </div>
 				  				<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-									<select name="branch_id" id="branch_id" class=" form-control" style="width: 100%"></select>
+									<select name="branch_id" id="branch_id" class=" form-control allowalphanumeric">
+									<option value="">Please Select</option>
+									</select>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['departmentName'];?></label>
-									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['departmentName'];?>" name="department_name" id="department_name" />
+									<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['departmentName'];?>" name="department_name" id="department_name" />
 								</div>
 				  			</div>
 						</div>

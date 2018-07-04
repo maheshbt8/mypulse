@@ -77,24 +77,28 @@ $this->load->view("template/left.php");
 								</div>-->
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id" class=" form-control" style="width: 100%">
+                                    <select id="hospital_id" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id" class=" form-control" style="width: 100%">
+                                    <select id="branch_id" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
 					                </select>
                                 </div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
+                                    <select id="department_id" name="department_id" class=" form-control allowalphanumeric">
+									<option value="">Please Select</option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
-									<select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
+									<select name="doctor_id" id="doctor_id" class=" form-control allowalphanumeric" >
+									<option value="">Please Select</option>
 									</select>
 								</div>
 							</div>
@@ -108,11 +112,12 @@ $this->load->view("template/left.php");
 							<div class="col-md-12">	
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
-									<input class="form-control date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
+									<input class="form-control date-picker-nopast allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
-									<select class="form-control" type="text" name="appoitment_sloat" id="appoitment_sloat">
+									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat" id="appoitment_sloat">
+									<option value="">Please Select</option>
 									</select>
 									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
 								</div>
@@ -121,11 +126,11 @@ $this->load->view("template/left.php");
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
-									<textarea class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
+									<textarea class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea>
 								</div>
 							</div>				  		
 						</div>
