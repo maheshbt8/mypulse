@@ -143,9 +143,9 @@
 			<input type="hidden" name="txt_mobile" class="txt_mobile" readonly="">
 		  <label><?php echo $this->lang->line('register_otp_msg'); ?></label>&nbsp;&nbsp;<label class="usergivenmobilenumber"></label>&nbsp;<label><?php echo $this->lang->line('register_otp_msg1'); ?></label>
           <p>
-		  <label>OTP Number</label>
+		  <label>OTP Number : </label>
 		  <input type="text" name="txt_votp" class="txt_votp">
-		  <label class="showerrortext notverified" style="color:#FF0000;"></label>
+		  <label class="showerrortext notverified"></label>
 		  </p>
 		</div>
         <div class="modal-footer">
