@@ -195,7 +195,7 @@ $this->load->view("template/left.php");
 											
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['address'];?></label>
-												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
+												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['address'];?>" name="address" id="address" />
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>

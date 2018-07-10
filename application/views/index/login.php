@@ -103,7 +103,7 @@
                 <div class="checkbox checkbox-primary">
                     <input id="checkbox3" type="checkbox" name="agrree">
                     <label for="checkbox3">
-                        <a href="javascript:void(0);" target="_blank"><?php echo $this->lang->line('labels')['agree_terms_policy'];?></a>
+                        <a href="<?php echo base_url('index/terms_conditions'); ?>" target="_blank"><?php echo $this->lang->line('labels')['agree_terms_policy'];?></a>
 					</label>
 					<input id="checkbox4" type="checkbox" name="agrree">
 					
@@ -112,7 +112,7 @@
             <div id="checkbox_err"></div>
             <button class="regsubmitform" type="button"><?php echo $this->lang->line('buttons')['register'];?></button><br/><br/>
 			
-             <a href="javascript:void(0);" target="_blank" style="text-align:right;"><?php echo $this->lang->line('labels')['privacy_policy'];?></a>
+             <a href="<?php echo base_url('index/privacy_policy'); ?>" target="_blank" style="text-align:right;"><?php echo $this->lang->line('labels')['privacy_policy'];?></a>
 			
         </form>
     </div>

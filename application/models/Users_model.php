@@ -593,6 +593,11 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
         $this->db->where("forgotPassCode",$key[0]);
 		$this->db->where("useremail",$key[1]);
         $user = $this->db->get($this->tblname)->row_array();
+		$createddate = strtotime($user['created_at']);
+		if (time() - $createddate > 60 * 60) {
+		
+				return  false;
+			}
         if(isset($user['id'])){
             $this->db->where("id",$user['id']);
             $this->db->update($this->tblname,array("forgotPassCode"=>null,"isActive"=>1,"EmailVerified"=>1));
@@ -929,8 +934,11 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
 						extract($_POST);
 						$otp = rand(100000,999999);
 						
-							$msg = $otp.' is your OTP Number to login';
-							$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($msg)."&To=".urlencode($mobno)."&Key=vrredbqiVYIctT1koQxs2E"),true);
+							//$msg = $otp.' is your OTP Number to login';
+							//$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($msg)."&To=".urlencode($mobno)."&Key=vrredbqiVYIctT1koQxs2E"),true);
+							$mobile="$mobno";
+							$message="$otp is your OTP Number to login";
+							$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($message)."&To=".urlencode($mobile)."&Key=raisiVvTbgKISshQjnMNGr"),true);
 							$otpdata = array(
 							'MobileNumber' => $mobno,
 							'EmailID' => $useremail,
@@ -1019,10 +1027,11 @@ public function sendRegisterVerfEmail($mobno){
 		$this->sendmail->send($mail_data);
                     					                
 		if($updateid){
-			return  array('Status' => 1);
+			return true;
 		}else{
-			return  array('Status' => 0);
+			return false;
 		}
+		
 	}
 	
 public function verifyStaffAccount($key){

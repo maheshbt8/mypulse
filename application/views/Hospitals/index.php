@@ -95,7 +95,7 @@ $this->load->view("template/left.php");
 												
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['phoneNumber'];?></label>
-												<input class="form-control textinputmobilefields allowonlynumber " type="text" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>" name="phone_numbers" id="phone_numbers" />
+												<input class="form-control textinputmobilefields allowonlynumber " type="text" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>" name="phone_numbers" id="phone_numbers" maxlength="10" />
 											</div>
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['selectCountry'];?></label>

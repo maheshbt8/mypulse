@@ -140,10 +140,7 @@ $this->load->view("template/left.php");
                                         
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
-                                        </div>
+                                        
                                         <!--<div class="form-group col-md-6">
                                             <label><?php //echo $this->lang->line('labels')['password'];?></label>
                                             <input class="form-control" type="text" placeholder="<?php //echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
@@ -185,40 +182,46 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+									    <div class="col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
+                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+                                        </div> 
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
                                             <select data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class="form-control wid75" >
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        
+                                        
+                                    </div>
+									<div class="col-md-12">
+									  <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectState'];?></label>
                                             <select data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class="form-control wid75">
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-                                        
-                                    </div>
-									<div class="col-md-12">
 									<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
                                             <select data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control wid75" >
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        
+									</div>
+                                    <div class="col-md-12">
+									    <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCity'];?></label>
                                             <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class="form-control wid75" >
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-									</div>
-                                    <div class="col-md-12">
-                                        <div class="form-group  col-md-12">
+                                        <div class="form-group  col-md-6">
                                             <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
                                             <div class="col-sm-8">
                                                 <div class=" input-group image-preview">
-                                                    <input type="text" class="textinputfields image-preview-filename" id="prephoto" disabled="disabled"> 
+                                                    <input type="text" class="form-control image-preview-filename" id="prephoto" disabled="disabled"> 
                                                     <span class="input-group-btn">
                                                         <!-- image-preview-clear button -->
                                                         <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
@@ -380,7 +383,7 @@ $this->load->view("template/left.php");
 				<div class="form-group col-md-8">
 				<label><?php echo $this->lang->line('register_otp_msg'); ?></label>&nbsp;<label class="usergivenmobilenumber"></label>&nbsp;<label><?php echo $this->lang->line('register_otp_msg1'); ?></label>
           <p>
-		  <label>OTP Number : </label>
+		  <label>OTP Number: </label>
 		  <input type="text" name="txt_votp" class="txt_votp">
 		  <label class="showerrortext notverified"></label>
 		  </p>
@@ -810,7 +813,7 @@ $('.sendotp').on('click', function(){
 						success : function(res){
 							if(res.Status==1){
 							    var mobile_num = $('input[name="mobile"]').val();
-								$('.usergivenmobilenumber').text(mobile_num);
+								$('.usergivenmobilenumber').text(mobile_num+'.');
 								//$('input[name="txt_mobile"]').val(mobile_num);
 								$('#otpverificationModal').modal('show');
 								$('input[name="hid_otpid"]').val(res.otpid);

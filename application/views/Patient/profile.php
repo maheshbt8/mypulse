@@ -120,10 +120,7 @@ $this->load->view("template/left.php");
                                         
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="col-md-6">
-                                            <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
-                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
-                                        </div>
+                                        
                                         <!--<div class="form-group col-md-6">
                                             <label><?php //echo $this->lang->line('labels')['password'];?></label>
                                             <input class="form-control" type="text" placeholder="<?php //echo $this->lang->line('labels')['password'];?>" name="password" id="password" />
@@ -165,34 +162,40 @@ $this->load->view("template/left.php");
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+									    <div class="col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
+                                            <input data-ori="<?php echo $profile['aadhaar_number'];?>" value="<?php echo $profile['aadhaar_number'];?>" class="textinputfields " type="text" placeholder="<?php echo $this->lang->line('labels')['aadharNumber'];?>" name="aadhaar_number" id="aadhaar_number" />
+                                        </div>
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCountry'];?></label>
                                             <select  data-ori="<?php echo $profile['country'];?>" name="country"  id="country" class=" form-control wid75" >
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        
+										</div>
+										<div class="col-md-12">
+										<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectState'];?></label>
                                             <select  data-ori="<?php echo $profile['state'];?>" name="state"  id="state" class=" form-control" style="width: 100%">
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-										</div>
-										<div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
                                             <select  data-ori="<?php echo $profile['district'];?>" name="district"  id="district" class=" form-control" style="width: 100%">
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        
+                                    </div>
+                                    <div class="col-md-12">
+									    <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['selectCity'];?></label>
                                             <select data-ori="<?php echo $profile['city'];?>" name="city"  id="city" class=" form-control" style="width: 100%">
 											<option value="">Please Select</option>
 											</select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
                                         <div class="form-group  col-md-6">
                                             <label for="input-Default" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
                                             <div class="col-sm-8">
@@ -1236,7 +1239,7 @@ $this->load->view("template/footer.php");
 
 <script>
 $('.sendemail').on('click', function(){
-            
+            toastr.success("A verification link has been sent to your registered email address. Please verify email.");	
             $.ajax({
 						url : "<?php echo site_url(); ?>/index/sendRegisterVerfEmail",
 						data : {'useremail':$('input[name="EmailID"]').val()},
@@ -1244,8 +1247,8 @@ $('.sendemail').on('click', function(){
 						async:false,
 						type : "POST",
 						success : function(res){
-							if(res.Status==1){
-							    location.reload();							
+							if(res==true){
+								location.reload();						
 							}
 							
 						}

@@ -633,6 +633,18 @@ public function updateStaffPassword()
 		}
 		
 	}
+	
+public function terms_conditions(){
+
+	   $this->load->view('index/termsconditions');
+	
+	}
+	
+public function privacy_policy(){
+
+	   $this->load->view('index/privacy_policy');
+	
+	}		
 
 }
 

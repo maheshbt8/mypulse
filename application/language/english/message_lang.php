@@ -1,5 +1,6 @@
 <?php
 
+$lang["profile_email_verify"] = "A verification link has been sent to your registered email address. Please verify email.";
 $lang["register_otp_msg"] = "An OTP has been sent to your mobile";
 $lang['staff_mobile_verified'] = "Mobile Verified Successfully";
 $lang["register_otp_msg1"] = "Please submit OTP to continue.";
