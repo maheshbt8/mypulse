@@ -13,4 +13,4 @@ pipelines:
         script:
          - apt-get update
          - apt-get -qq install git-ftp
-         - git ftp push --user $AWS_ACCESS_KEY_ID --passwd $AWS_SECRET_ACCESS_KEY ftp://ec2-54-186-236-127.us-west-2.compute.amazonaws.com/var/www/html
+         - git ftp init --user $bb_user --passwd $bb_pwd https://ravikumar518@bitbucket.org/mypulse/mypulse.git
