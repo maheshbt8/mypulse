@@ -1,3 +1,9 @@
+<style>
+#country-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;/*overflow: scroll; height:150px;*/}
+#country-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#country-list li:hover{background:#ece3d2;cursor: pointer;}
+#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+</style>
 <?php
 /**
  * @author Yogesh Patel
@@ -111,18 +117,23 @@ $this->load->view("template/left.php");
 									</select>
 								</div>
 								<div class="form-group col-md-6">
+									<label>Search Doctor Name</label>
+									<input type="text" placeholder="Enter Doctor Name" name="DoctorName" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+                                    <div id="suggesstion-box"></div>
+								</div>
+								<div class="form-group col-md-6 ">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
 							</div>
 							<div class="col-md-12">
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                                     <select id="branch_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                                     <select id="department_id" name="department_id" class=" form-control allowalphanumeric" >
 					                </select>
@@ -664,7 +675,7 @@ $this->load->view("template/footer.php");
 			labelField: "text",
 			searchField: "text",
 			loadThrottle: 500,
-			placeholder: "Enter user id",
+			placeholder: "Enter User Email or Mobile number ",
 			preload:true,
 			create: function(input,callback){
 				userCreateCallBack = callback;
@@ -747,7 +758,7 @@ $this->load->view("template/footer.php");
 			}
 		});
 
-		var $selectize_department_id = $("#department_id").selectize({
+		<?php /*?>var $selectize_department_id = $("#department_id").selectize({
 			valueField: "id",
 			labelField: "text",
 			searchField: "text",
@@ -918,7 +929,7 @@ $this->load->view("template/footer.php");
 					})
 				});                 
 			}
-		});
+		});<?php */?>
 
 			
 		var $selectize_doctor_id1 = $("#doctor_id1").selectize({
@@ -1068,6 +1079,42 @@ $this->load->view("template/footer.php");
 		
 		$("#sel_date").val("");	
 		loadTable("all","all");	
+		
+		$('.DoctorName').on('keyup', function(){
+		   $SearchTerm = $(this).val();
+		   if($SearchTerm.length > 3){
+		   $.ajax({
+					url: "<?php echo site_url(); ?>/index/searchDoctor/",
+					type: "POST",
+					data: {"q":$SearchTerm},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						//res = $.parseJSON(res);
+						/*$.each($.parseJSON(res), function(k, v) {
+   						 //alert(k['id'] + ' is ' + v['id']);
+						});*/
+						if(res){
+						$("#suggesstion-box").show();
+			$("#suggesstion-box").html(res);
+			$(".DoctorName").css("background","#FFF");
+						}else{
+							$(".DoctorID").val('');
+							}
+					}
+				});
+		   }
+		});
+		$('body').delegate('.selected-docotr','click',function(){
+			//alert($(this).attr('rel'));
+			selectDoctor($(this).attr('rel'),$(this).attr('rel1'));
+			});
+		function selectDoctor(DName,DID) {
+		$(".DoctorName").val(DName);
+		$(".DoctorID").val(DID);
+		$("#suggesstion-box").hide();
+		}
 	});
 
 </script>

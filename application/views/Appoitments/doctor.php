@@ -104,40 +104,40 @@ $this->load->view("template/left.php");
 									<select name="user_id" id="user_id" class="form-control" style="width: 100%;">
 									</select>
 								</div>
+								<input type="hidden" name="doctor_id" id="doctor_id" value="<?php echo $this->auth->getDoctorId();?>" />
 								<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
+									<br>
+									<span id="docAvailability"></span>
+								</div>
+								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id" class=" form-control" style="width: 100%">
 					                </select>
                                 </div>
 							</div>
 							<div class="col-md-12">
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                                     <select id="branch_id" class=" form-control" style="width: 100%">
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                                     <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
 					                </select>
                                 </div>
-								<input type="hidden" name="doctor_id" id="doctor_id" value="<?php echo $this->auth->getDoctorId();?>" />
+								
 							</div>
-							<div class="col-md-12">
-								<div class="form-group col-md-12">
-									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
-									<br>
-									<span id="docAvailability"></span>
-								</div>
-							</div>	
+								
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
-									<input class="form-control date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
+									<input class="form-control allowalphanumeric  date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
-									<select class="form-control" type="text" name="appoitment_sloat" id="appoitment_sloat">
+									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat" id="appoitment_sloat">
 									</select>
 									<br>
 									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
@@ -146,11 +146,11 @@ $this->load->view("template/left.php");
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
-									<textarea class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
+									<textarea class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
 								</div>
 							</div>				  		
 						</div>
@@ -189,15 +189,15 @@ $this->load->view("template/left.php");
 				  	<div class="modal-body">
 				  		<div class="row">
 							<div class="form-group col-md-12">
-								<label><?=$this->lang->line('labels')['fname']?></label>
+								<label><?=$this->lang->line('labels')['fname']?>*</label>
 								<input name="first_name" id="first_name" class="form-control"  placeholder="First Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label><?=$this->lang->line('labels')['lname']?></label>
+								<label><?=$this->lang->line('labels')['lname']?>*</label>
 								<input name="last_name" id="last_name" class="form-control"  placeholder="Last Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label><?=$this->lang->line('labels')['mobile']?></label>
+								<label><?=$this->lang->line('labels')['mobile']?>*</label>
 								<input name="mobile" id="mobile" class="form-control"  placeholder="Mobile"/>
 							</div><br>
 							<div class="form-group col-md-12">
@@ -258,7 +258,7 @@ $this->load->view("template/footer.php");
 					required: true
 				},
 				useremail:{
-					required:true,
+					//required:true,
 					email:true,
 					remote: "<?php echo site_url();?>/users/checkemail"
 				},
@@ -276,7 +276,7 @@ $this->load->view("template/footer.php");
 					required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
 				},
 				useremail:{
-					required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
+					//required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
 					email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>",
 					remote:"<?php echo $this->lang->line('validation')['takenEmail'];?>"
 				},
@@ -385,7 +385,7 @@ $this->load->view("template/footer.php");
 			$selectize_hospital_id[0].selectize.clear();
 			$selectize_user_id[0].selectize.enable();
 			$selectize_user_id[0].selectize.clear();
-			$("#appoitment_date").attr('disabled',true);
+			//$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
 			$("#appoitment_sloat").html('');
 			$("#reason").attr('disabled',false);
@@ -709,7 +709,7 @@ $this->load->view("template/footer.php");
 			labelField: "text",
 			searchField: "text",
 			loadThrottle: 500,
-			placeholder: "Enter user Email or Mobile number or Aadhaar number",
+			placeholder: "Enter User Email or Mobile number",
 			preload:true,
 			create: function(input,callback){
 				userCreateCallBack = callback;
@@ -720,7 +720,7 @@ $this->load->view("template/footer.php");
 			},
 			render: {
 				option_create: function(data, escape) {
-					return '<div class="create"><strong><?=$this->lang->line('unregUser');?></strong></div>';
+					return '<div class="create"><strong style="color:red;"><?=$this->lang->line('unregUser');?></strong></div>';
 				},
 				option: function(item, escape) {
 					console.log(item);

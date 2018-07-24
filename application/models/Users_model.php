@@ -393,7 +393,7 @@ class Users_model extends CI_Model {
             $this->sendmail->send($mail_data);
 			$mobno = $data['mobile'];
             $SMSText = ' Welcome to MyPulse. '.$username.' has register you as '.$role.' To complete your MyPulse profile. Please verify your email '.$email.'';
-$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($SMSText)."&To=".urlencode($mobno)."&Key=raisiVvTbgKISshQjnMNGr"),true);
+$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($SMSText)."&To=".urlencode($mobno)."&Key=vrredbqiVYIctT1koQxs2E"),true);
             return $_uid;
         } else {
             $err = $this->db->error();
@@ -514,15 +514,14 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
         if(isset($_POST)){
             $this->db->where('useremail',$_POST['useremail']);
             $this->db->where('isDeleted',0);
+			$this->db->where('isRegister !=',0);
             $user = $this->db->get($this->tblname);
-
-            if($user->num_rows() > 0){
+			if($user->num_rows() > 0){
                 return -1;
             }else{
                 $data = $_POST;
 
                 $data['password'] = md5($data['password']);
-                $data['created_at']= date('Y-m-d H:i:s');
                 $name = explode(" ",$data['first_name']);
                 unset($data['agrree']);
                 unset($data['re_password']);
@@ -537,8 +536,20 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
                 $data['role'] = 6;
 				$data['isActive'] = 1;
 				$data['MobileVerified'] = 1;
-                if ($this->db->insert($this->tblname, $data)) {
+				$checkmobile = $this->db->query("SELECT `id` FROM `hms_users` WHERE `mobile` = '".$data['mobile']."'  AND `isRegister` ='0'")->row();
+				if($checkmobile){
+				    $data['updated_at']= date('Y-m-d H:i:s');
+					$data['isRegister']= 1;
+				    $this->db->where('id', $checkmobile->id);
+					$this->db->update($this->tblname, $data);
+					$uid = $this->db->affected_rows();
+					}else {
+					$data['created_at']= date('Y-m-d H:i:s');
+					$this->db->insert($this->tblname, $data);
 					$uid = $this->db->insert_id();
+					}
+                if ($uid) {
+					//$uid = $this->db->insert_id();
 					
 					/*$otp = rand(100000,999999);
 							$otpdata = array(
@@ -938,7 +949,7 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
 							//$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=9739195391&Password=mypulse123&Message=".urlencode($msg)."&To=".urlencode($mobno)."&Key=vrredbqiVYIctT1koQxs2E"),true);
 							$mobile="$mobno";
 							$message="$otp is your OTP Number to login";
-							$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($message)."&To=".urlencode($mobile)."&Key=raisiVvTbgKISshQjnMNGr"),true);
+							//$json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?Mobile=8686824761&Password=9502016142&Message=".urlencode($message)."&To=".urlencode($mobile)."&Key=raisiVvTbgKISshQjnMNGr"),true);
 							$otpdata = array(
 							'MobileNumber' => $mobno,
 							'EmailID' => $useremail,
@@ -1076,6 +1087,44 @@ public function updateStaffPassword()
                 return false;   
         }           
         return false;
-    }		
+    }
+	
+public function searchDoctor($q = NULL){
+       
+	   $search = explode(' ',$q);
+		$ocusearch = count($search);
+		if($ocusearch > '1'){
+		
+$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_hospitals` AS hos ON hos.`id` = doc.`user_id` WHERE users.`first_name` LIKE '%".$search[0]."%' OR users.`MiddleName` LIKE '%".$search[1]."%' OR users.`last_name` LIKE '%".$search[1]."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
+		}else{
+			
+			$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_hospitals` AS hos ON hos.`id` = doc.`user_id` WHERE users.`first_name` LIKE '%".$search[0]."%' OR users.`MiddleName` LIKE '%".$search[0]."%' OR users.`last_name` LIKE '%".$search[0]."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
+			}
+		if($Result->num_rows() > 0){
+		    return $Result->result();
+		}else{
+		  return false;
+		}	
+	}
+	
+public function DepartmentsByBranchID($BranchID = NULL){
+
+    $Result =  $this->db->query("SELECT `id`,`department_name` FROM `hms_departments` WHERE `isActive`='1' AND `isDeleted`='0' AND `branch_id`='$BranchID'")->result();
+    if($Result){
+		return $Result;	  
+	   }else{
+	    return false; 
+	   }
+    }				
   	
+public function getdoctorsByDepartmentID($DeptID = NULL){
+
+    $Result =  $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id` WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`department_id`='$DeptID' GROUP BY doc.user_id ")->result();
+    if($Result){
+		return $Result;	  
+	   }else{
+	    return false; 
+	   }
+    }	
+	
 }

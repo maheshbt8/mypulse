@@ -17,7 +17,8 @@ class Receptionist extends CI_Controller {
             if($this->auth->isReceptinest()){
                 redirect('index');
             }else if($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin()){
-                $data['receptionists'] = $this->receptionist_model->getAllreceptionist();
+			    $data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
+				$data['receptionists'] = $this->receptionist_model->getAllreceptionist();
                 $data["page_title"] = $this->lang->line('receptionists');
                 $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('receptionists'));
                 $this->load->view('Receptionist/index', $data);
@@ -41,7 +42,8 @@ class Receptionist extends CI_Controller {
     }
     public function add() {
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
-            $res = $this->receptionist_model->add();
+            //$res = $this->receptionist_model->add();
+			$res = $this->receptionist_model->addreceptionist();
             $data = $this->auth->parseUserResult($res,$this->lang->line('msg_receptionist_added'));
             $this->session->set_flashdata('data', $data);
             redirect('receptionist/index');
@@ -126,8 +128,10 @@ class Receptionist extends CI_Controller {
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
                     ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
+					->group_by('hms_receptionist.user_id')
                     ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>', 'action_res_id')
                     ->edit_column('repname', "<a href='#' data-id='$1' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$2</a>", 'action_res_id, repname')
+					->edit_column('docname', "<a href='#' data-id='$1'class='GetDoctorsByRECPID' data-toggle='modal' data-target='#viewdoctrs' data-action='". base_url('index/getRecDoctors')."' title='View Doctors'>View Doctors</a>", 'action_res_id, docname')
                     ->unset_column('action_res_id');
             }
 
@@ -139,4 +143,29 @@ class Receptionist extends CI_Controller {
             echo $this->datatables->generate('json');
         }
     }
+	
+	public function viewreceptionistdoctors($id=0){
+	    if($this->auth->isLoggedIn()){
+            $data['page_title'] = $this->lang->line('messages');
+            $data['breadcrumb'] = array(site_url()=>$this->lang->line('home'),null=>$this->lang->line('messages'));
+			$data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
+            $data['ReceptionistDoctors'] = $this->receptionist_model->GetReceptionistDoctorsByID($id);
+            $this->load->view('receptionist/receptionist_doctors',$data);
+        }else{
+            redirect($this->login_page);
+        }
+    }
+
+public function updaterecepdoctors(){
+//print_r($_POST);exit;
+if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+            $id = $this->input->post('receptionistid');
+            $res = $this->receptionist_model->updaterecepdoctors($id);
+            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_receptionist_updated'));
+            $this->session->set_flashdata('data', $data);
+            redirect('receptionist/index');
+        } else redirect('index/login');
+
+}
+
 }

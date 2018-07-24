@@ -228,12 +228,12 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 hide">
                                 <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                                 <select id="branch_id" class=" form-control" style="width: 100%">
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 hide">
                                 <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                                 <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
                                 </select>
@@ -243,22 +243,21 @@
                                 <select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
                                 </select>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group col-md-12">
+							<div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
                                 <br>
                                 <span id="docAvailability"></span>
                             </div>
                         </div>
+                        
                         <div class="col-md-12">
                             <div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
-                                <input class="form-control date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
+                                <input class="form-control date-picker-nopast allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
                             </div>
                             <div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
-                                <select class="form-control" type="text" name="appoitment_sloat" id="appoitment_sloat">
+                                <select class="form-control allowalphanumeric" type="text" name="appoitment_sloat" id="appoitment_sloat">
                                 </select>
                                 <span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
                             </div>
@@ -266,11 +265,11 @@
                         <div class="col-md-12">	
                             <div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
-                                <textarea class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
+                                <textarea class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
                             </div>
                             <div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['remark'];?></label>
-                                <textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
+                                <textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
                             </div>
                         </div>				  		
                     </div>
@@ -771,7 +770,7 @@
 			labelField: "text",
 			searchField: "text",
 			loadThrottle: 500,
-			placeholder: "Enter user id",
+			placeholder: "Enter user Email or Mobile number",
 			preload:true,
 			create: function(input,callback){
 				userCreateCallBack = callback;
@@ -782,7 +781,7 @@
 			},
 			render: {
 				option_create: function(data, escape) {
-					return '<div class="create"><strong><?=$this->lang->line('unregUser');?></strong></div>';
+					return '<div class="create"><strong style="color:red;"><?=$this->lang->line('unregUser');?></strong></div>';
 				},
 				option: function(item, escape) {
 					console.log(item);

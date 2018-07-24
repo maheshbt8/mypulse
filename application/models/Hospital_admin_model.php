@@ -72,6 +72,12 @@ class Hospital_admin_model extends CI_Model {
             $had = array();
             $had['user_id'] = $ha_id;
             $had['hospital_id'] = isset($data['hospital_id']) ? $data['hospital_id'] : -1;
+			if(isset($data['qualification']))
+                $had['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $had['experience'] = $data['experience'];
+            if(isset($data['specialization']))
+                $had['specialization'] = $data['specialization'];
             $had['created_at'] = date("Y-m-d H:i:s");
             if ($this->db->insert($this->tblname, $had)) {
 				$ha_id = $this->db->insert_id();
@@ -110,6 +116,12 @@ class Hospital_admin_model extends CI_Model {
             $had = array();
             if(isset($data['hospital_id']))
                 $had['hospital_id'] = $data['hospital_id'];
+			if(isset($data['qualification']))
+                $had['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $had['experience'] = $data['experience'];
+            if(isset($data['specialization']))
+                $had['specialization'] = $data['specialization'];	
             if(isset($data['isActive']))
                 $had['isActive'] = intval($data['isActive']);
             

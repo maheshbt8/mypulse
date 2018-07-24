@@ -69,6 +69,7 @@ class Appoitments extends CI_Controller {
         }
     }
     public function add() {
+	
         if ($this->auth->isLoggedIn()) {
             if ($this->appoitments_model->add()) {
                 $data['success'] = array($this->lang->line("msg_appoitment_added"));
@@ -80,7 +81,6 @@ class Appoitments extends CI_Controller {
         } else redirect('index/login');
     }
     public function update() {
-
         if ($this->auth->isLoggedIn()) {
             $data = array();
             $id = $this->input->post('eidt_gf_id');

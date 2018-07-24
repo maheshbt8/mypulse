@@ -79,7 +79,7 @@ $this->load->view("template/left.php");
                                 }
                                 ?>
                                 <li style="<?php echo $showHA;?>" role="presentation"><a href="#tab4" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
-
+								<li style="<?php echo $showHA;?>" role="presentation"><a href="#tab_HA" aria-controls="doc" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
                                 <li style="<?php echo $showDoc;?>" role="presentation"><a href="#tab_doc" aria-controls="doc" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
                                 <li style="<?php echo $showNur;?>" role="presentation"><a href="#tab_nur" aria-controls="nur" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
                                 <li style="<?php echo $showRep;?>" role="presentation"><a href="#tab_rep" aria-controls="rep" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
@@ -238,6 +238,27 @@ $this->load->view("template/left.php");
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+								<div role="tabpanel" class="tab-pane" id="tab_HA">
+                                    <?php if($this->auth->isHospitalAdmin()) { ?>
+                                    <div class="col-md-12">
+                                        <div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['qualification'];?></label>
+                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" data-ori="<?php echo $data['qualification']; ?>" value="<?php echo $data['qualification']; ?>" />
+                                        </div>
+										<div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['profession'];?></label>
+                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['profession'];?>" name="specialization" id="specialization" data-ori="<?php echo $data['specialization']; ?>" value="<?php echo $data['specialization']; ?>" />
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-12">
+                                       <div class="form-group col-md-6">
+                                            <label><?php echo $this->lang->line('labels')['experience'];?></label>
+                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" data-ori="<?php echo $data['experience']; ?>" value="<?php echo $data['experience']; ?>"/>
+                                        </div> 
+                                    </div>
+                                    <?php } ?>
                                 </div>
                                 <div role="tabpanel" class="tab-pane" id="tab_doc">
                                     <?php if($this->auth->isDoctor()) { ?>

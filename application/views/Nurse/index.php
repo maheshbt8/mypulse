@@ -29,6 +29,7 @@ $this->load->view("template/left.php");
 										<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
+										<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
 										<th width="20px">#</th>
 									</tr>
@@ -46,7 +47,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/nurse/update" method="post" id="form" enctype="multipart/form-data">
+				<form autocomplete="off" action="<?php echo site_url(); ?>/nurse/update" method="post" id="form" enctype="multipart/form-data">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				<div class="modal-content">
 				  	<div class="modal-header">
@@ -108,28 +109,53 @@ $this->load->view("template/left.php");
 										
 										<!--<section>
 										<h4 style="text-align:center; color:#337ab7"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></h1>-->
-										<div class="panel panel-default" style="color:#1d3bde">
+										<div class="panel panel-default hideinedit" style="color:#1d3bde">
   											<div class="panel-body"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></div>
 										</div>
 										<div class="col-md-12">
-										    <div class="form-group col-md-6">
+										    <div class="form-group col-md-6 hide">
 												<label><?php echo $this->lang->line('labels')['selectHospital'];?>*</label>
 												<select name="hospital_id"  id="hospital_id" class=" form-control textinputfields" style="width: 77%">
 												<option value="">Please Select</option>
                                                 </select>
 											</div>
-											<div class="form-group col-md-6">
+											<div class="form-group col-md-6 hide">
 												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
-												<select name="branch_id" id="branch_id" class=" form-control textinputfields" style="width: 77%">
+												<select name="branch_idss" id="branch_id" class=" form-control textinputfields" style="width: 77%">
 												<option value="">Please Select</option>
                                                 </select>
 											</div>
+											<div class="form-group col-md-6 hideinedit " >
+												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
+												<select name="branch_id" class="branch_id form-control allowalphanumeric" style="width: 77%" >
+												<option value="">Please Select</option>
+												<?php 
+												foreach($Branches as $br){
+												?>
+												<option value="<?php echo $br->id; ?>"><?php echo $br->text; ?></option>
+												<?php } ?>
+												</select>
+											</div>
+											<div class="form-group col-md-6 hideinedit ">
+												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
+												<div class="ddepartment-list">
+												<select name="department_id"  class="DepartmentID form-control allowalphanumeric department_id" style="width: 77%">
+												<option value="">Please Select</option>
+                                                </select>
+												</div>
+											</div>
 											
 										</div>
+										<div class="col-md-12 hideinedit">
+											<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
+											<div class="doctors-list">
+											
+											</div>
+										</div>
 										<div class="col-md-12">
-											<div class="form-group col-md-6">
+											<div class="form-group col-md-6 hide">
 												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
-												<select name="department_id" id="department_id" class=" form-control textinputfields" style="width: 77%">
+												<select name="department_idss" id="department_id" class=" form-control textinputfields" style="width: 77%">
 												<option value="">Please Select</option>
                                                 </select>
 											</div>
@@ -268,8 +294,8 @@ $this->load->view("template/left.php");
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['specilization'];?></label>
-												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" />
+												<label><?php echo $this->lang->line('labels')['specilizations'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['specilizations'];?>" name="specialization" id="specialization" />
 											</div>
 										</div>
 
@@ -305,6 +331,34 @@ $this->load->view("template/left.php");
 			</div>
 		<!-- /.modal-dialog --> 
 		</div>
+		
+		<div class="modal fade GetDoctorsByNurseID" tabindex="-1" role="dialog" aria-labelledby="GetDoctorsByNurseID" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				
+			<!-- /.modal-content --> 
+			</div>
+		<!-- /.modal-dialog --> 
+		</div>
+        <div id="viewdoctrs" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Doctors</h4>
+      </div>
+      <div class="modal-body">
+        
+      		 <div id="load"></div>
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+
 	    <?php
 $this->load->view("template/footer.php");
 ?><script type="text/javascript">
@@ -374,8 +428,9 @@ $this->load->view("template/footer.php");
 						{ name : '<?php echo $this->lang->line('tableHeaders')['hospital'];?>' },
 						{ name : '<?php echo $this->lang->line('tableHeaders')['branch'];?>' },
 						{ name : '<?php echo $this->lang->line('tableHeaders')['department'];?>' },
+						{ name : '<?php echo $this->lang->line('tableHeaders')['doctor'];?>' },
 						{ name : '<?php echo $this->lang->line('tableHeaders')['status'];?>' },
-						{ name : '#',"searchable": false, "orderable": false },
+						{ name : '#',"searchable": false, "orderable": false }	
 					]
 		        });
 				<?php $this->load->view('template/exdt');?>
@@ -387,6 +442,7 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
+				    $('.hideinedit').show();
 					resetForm(validator);
 					resetLocation();
 			    	$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewNurse'];?>");
@@ -415,6 +471,7 @@ $this->load->view("template/footer.php");
 					$selectize_hospital_id[0].selectize.clear();
 				}	
 				$("#nurse").on("click",".editbtn",function(){
+				    $('.hideinedit').hide();
 					resetForm(validator);
 					clearSelection();
 					resetLocation();
@@ -633,8 +690,73 @@ $this->load->view("template/footer.php");
 				    }
 				});
 
+
+$('.branch_id').on('change',function(){
+   $HospitalID = '<?php echo $this->session->userdata('hospital_id'); ?>';
+   $branchid = $(this).val();
+   //$(".department_id").attr("disabled",false);
+   $.ajax({
+				url: "<?php echo site_url(); ?>index/searchDepartment/",
+				type: "GET",
+				data: { "hospital_id":$HospitalID,"branch_id":$branchid,"f":"department_name"},
+				success: function(results) {
+				$(".ddepartment-list").html(results);
+					
+				},
+				error: function() {
+					callback();
+				}
+			})
+  
+  });
+    
+$(document).on('change','.DepartmentID',function(){
+
+   $departmentid = $(this).val();
+   //$(".department_id").attr("disabled",false);
+   $.ajax({
+				url: "<?php echo site_url(); ?>index/searchDepartmentDoctor/",
+				type: "GET",
+				data: {"dept_id":$departmentid},
+				success: function(results) {
+				$(".doctors-list").html(results);
+					
+				},
+				error: function() {
+					callback();
+				}
+			})
+
+	}); 
 					
 
+$('#nurse').on('click', '.GetDoctorsByNurseID', function(e){
+		
+	 var $ID =$(this).attr('data-id');
+	 
+	 var $action =$(this).attr('data-action');
+	 e.preventDefault();
+	 
+		$.ajax({
+				type: "GET",
+				url: $action,
+				data: {ID: $ID},
+				success:function(result){
+					if(result != 0){
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);	
+						
+					} else {
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);
+						
+					}
+				}
 			});
+	});	
+
+});
 
 		</script>

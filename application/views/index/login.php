@@ -27,7 +27,7 @@
             color:#F96A74;
         }
     </style>
-	<script src="<?php echo base_url();?>public/assets/js/custom.js"></script>
+	<!--<script src="<?php echo base_url();?>public/assets/js/custom.js"></script>-->
 </head>
 <body>
 <div class="form-title">
@@ -94,7 +94,7 @@
     <div class="form formRegister">
         <h2><?php echo $this->lang->line('labels')['create_account'];?></h2>
         <form autocomplete="off" method="post" id="reg_newform" action="<?php echo site_url().'/index/doReg' ?>">
-            <input type="text" name="first_name" placeholder="Name*" >
+            <input type="text" class="textinputfields" name="first_name" placeholder="Name*" >
             <input type="text" name="mobile" class="mobile_number allowonlynumber" placeholder="Mobile Number*" maxlength="10" >
             <input type="email" name="useremail" class="email_check" placeholder="Email*" >
             <input type="password" id="reg_password" name="password" class="password"  placeholder="Password*" >
@@ -580,6 +580,23 @@ $('.allowonlynumber').keydown(function(e){
             e.preventDefault();
         }
 });
+
+$( ".textinputfields" ).keypress(function(event) {
+                    var inputValue = event.which;
+		// Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(event.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+             // Allow: Ctrl+A, Command+A
+            (event.keyCode === 65 && (event.ctrlKey === true || event.metaKey === true)) || 
+             // Allow: home, end, left, right, down, up
+            (event.keyCode >= 35 && event.keyCode <= 40)) {
+                 // let it happen, don't do anything
+                 return;
+        }			
+        // allow letters and whitespaces only.
+        if(!(inputValue >= 65 && inputValue <= 122) && (inputValue != 32 && inputValue != 0)) { 
+            event.preventDefault(); 
+        }
+       });
 		
     });
 </script>

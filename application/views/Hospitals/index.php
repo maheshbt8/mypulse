@@ -24,7 +24,7 @@ $this->load->view("template/left.php");
 	                       
 							<table id="hospitals" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 								<thead>
-									<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['licenseStatus'];?></th><th><?php echo $this->lang->line('tableHeaders')['city'];?></th><th  width="20px">#</th>
+									<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['name'];?></th><th><?php echo $this->lang->line('tableHeaders')['licenseStatus'];?></th><th><?php echo $this->lang->line('tableHeaders')['city'];?></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th  width="20px">#</th>
 									</tr>
 								</thead>
 								<tbody>

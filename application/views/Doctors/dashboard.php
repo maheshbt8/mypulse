@@ -63,6 +63,7 @@
         <div class="row">
             <div class="card">      
                 <div class="card-head">
+				<?php echo $date = date('H:i:s', time()); ?>
                     <header><?php echo $this->lang->line('todaysappoitments');?></header>
                     <div class="custome_card_header">
 						<a class="btn btn-primary" id="menualrefresh"><i class="fa fa-refresh"></i></a>

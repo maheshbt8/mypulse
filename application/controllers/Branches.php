@@ -90,6 +90,13 @@ class Branches extends CI_Controller {
             }), array("db" => "city", "dt" => 2, "formatter" => function ($d, $row) {
                 return $this->general_model->getCityName($d);
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+			     if($this->session->userdata('hospital_id')){
+				$hospitalid = $this->session->userdata('hospital_id');
+					}else{
+			    $hospitalid = $this->input->get('hid');
+				}
+                return "<a href=".base_url("departments/index/?hid=".$hospitalid."")."&&bid=".$d." id=\"dellink_".$d."\"   data-id=\"$d\" data-toggle=\"tooltip\" title=\"View Department\"><i class=\"glyphicon glyphicon-eye-open\"></i></button>";
+            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
             

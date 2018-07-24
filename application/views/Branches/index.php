@@ -31,14 +31,14 @@ $this->load->view("template/left.php");
                                 <div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id1" class=" form-control" style="width: 100%">
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_branches'];?></option>
 					                </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
 								<table id="branches" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 									<thead>
-										<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['phoneNumber'];?></th><th><?php echo $this->lang->line('tableHeaders')['city'];?></th><th width="20px">#</th>
+										<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['branch'];?></th><th><?php echo $this->lang->line('tableHeaders')['phoneNumber'];?></th><th><?php echo $this->lang->line('tableHeaders')['city'];?></th><th><?php echo $this->lang->line('tableHeaders')['department'];?></th><th width="20px">#</th>
 										</tr>
 									</thead>											
 									<tbody>
@@ -431,7 +431,7 @@ $this->load->view("template/footer.php");
 					//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"branches\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 				
                 }
-                loadTable('all');
+                loadTable(hid);
 			});
 
 		</script>

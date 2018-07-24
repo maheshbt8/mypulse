@@ -153,6 +153,72 @@ class Receptionist_model extends CI_Model {
         }
         return true;
     }
+	
+	function addreceptionist() {
+        $data = $_POST;
+        $data['role'] = $this->auth->getReceptienstRoleType();
+        $rec_id = $this->auth->addUser($data);
+		//print_r($this->input->post('doc_id'));exit;
+        
+        if($rec_id === false){
+            return false;
+        }else if($rec_id < 0){
+            return $rec_id;
+        }
+        else{
+            $rec = array();
+            $rec['user_id'] = $rec_id;
+            //$rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
+            if(isset($data['qualification']))
+                $rec['qualification'] = $data['qualification'];
+            if(isset($data['experience']))
+                $rec['experience'] = $data['experience'];
+            $rec['created_at'] = date("Y-m-d H:i:s");
+            if(isset($data['isActive']))
+                $rec['isActive'] = intval($data['isActive']);
+				$doctorsid = $this->input->post('doc_id') ? $this->input->post('doc_id') : 0;
+				if($doctorsid){
+            foreach ($doctorsid as $did) {
+			    $rec['doc_id'] = $did;
+			    $this->db->insert($this->tblname, $rec);
+				$id = $this->db->insert_id();
+                $this->logger->log("New receptionist added", Logger::Receptionist, $id);
+                
+				if(isset($did) && $did != ""){
+                    //find doctor user_id which is linked with this receptionist
+                    $this->db->where('id', $did);
+                    $doctor = $this->db->get('hms_doctors')->row_array();
+                    //find doctor name from user table
+                    $this->db->where('id', $doctor['user_id']);
+                    $dname = $this->db->get('hms_users')->row_array();
+
+                    //sent notification to doctor
+                    $this->notification->saveNotification($doctor['user_id'],"New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with you");
+
+                    if(isset($rec['user_id']) && $rec['user_id'] != ""){
+                        //sent notification to receptionist
+                        $this->notification->saveNotification($rec['user_id'], "You are linked with <b>".$dname['first_name']." ".$dname['last_name']."</b> doctor as Receptionist");              
+                    }
+
+                    if($this->auth->isSuperAdmin()){
+                        if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                        }
+                    }
+                }
+                
+            }
+			return true;
+			 } else {
+                return false;
+            }
+        }
+        return true;
+    }
     
     function update($id) {
         $data = $_POST;
@@ -287,4 +353,84 @@ class Receptionist_model extends CI_Model {
         }
         return false;
     }
+public function GetReceptionistDoctorsByID($id = NULL){
+       
+	   $RecpUserID = $this->db->query('SELECT `user_id` FROM `hms_receptionist` WHERE `id`='.$id.'')->row();
+	   $Result = $this->db->query("SELECT rec.`id`,rec.`user_id`,rec.`doc_id`,dep.`id` AS deptid,brc.`id` AS branchid,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS DocName FROM `hms_receptionist` AS rec
+INNER JOIN `hms_doctors` AS doc ON doc.`id`=rec.doc_id
+INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id`
+INNER JOIN `hms_branches` AS brc ON brc.`id`= dep.`branch_id`
+INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id`
+WHERE rec.`user_id`='$RecpUserID->user_id' GROUP BY doc.id")->result();
+     if($Result){
+	    return $Result;
+	    }else{
+		return false;
+		}
+	
+	}
+
+public function updaterecepdoctors($id) {
+        $data = $_POST;
+        $data['role'] = $this->auth->getReceptienstRoleType();
+        $rec_id = $id;
+		//print_r($this->input->post('doc_id'));exit;
+        
+        if($rec_id === false){
+            return false;
+        }else if($rec_id < 0){
+            return $rec_id;
+        }
+        else{
+            $rec = array();
+			$rec['user_id'] = $recuser_id = $data['receptionistuserid'];
+			                         $this->db->where('user_id',$recuser_id);
+			$RemovePreviousDoctors = $this->db->delete('hms_receptionist');
+            //$rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
+            $rec['created_at'] = date("Y-m-d H:i:s");
+			$rec['modified_at'] = date("Y-m-d H:i:s");
+                $doctorsid = $this->input->post('doc_id') ? $this->input->post('doc_id') : 0;
+				if($doctorsid){
+            foreach ($doctorsid as $did) {
+			    $rec['doc_id'] = $did;
+			    $this->db->insert($this->tblname, $rec);
+				$id = $this->db->insert_id();
+                $this->logger->log("receptionist Doctor Updated", Logger::Receptionist, $id);
+                
+				if(isset($did) && $did != ""){
+                    //find doctor user_id which is linked with this receptionist
+                    $this->db->where('id', $did);
+                    $doctor = $this->db->get('hms_doctors')->row_array();
+                    //find doctor name from user table
+                    $this->db->where('id', $doctor['user_id']);
+                    $dname = $this->db->get('hms_users')->row_array();
+
+                    //sent notification to doctor
+                    //$this->notification->saveNotification($doctor['user_id'],"receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with you");
+
+                    if(isset($rec['user_id']) && $rec['user_id'] != ""){
+                        //sent notification to receptionist
+                        $this->notification->saveNotification($rec['user_id'], "You are linked with <b>".$dname['first_name']." ".$dname['last_name']."</b> doctor as Receptionist");              
+                    }
+
+                    if($this->auth->isSuperAdmin()){
+                        if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                        }
+                    }
+                }
+                
+            }
+			return true;
+			 } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

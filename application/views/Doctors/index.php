@@ -29,7 +29,8 @@ $this->load->view("template/left.php");
 										<th><?php echo $this->lang->line('tableHeaders')['hospital'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['branch'];?></th>
 										<th><?php echo $this->lang->line('tableHeaders')['department'];?></th>
-										<th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
+										<!--<th><?php //echo $this->lang->line('tableHeaders')['specilization'];?></th>-->
+                                        <th><?php echo $this->lang->line('tableHeaders')['status'];?></th>
 										<th width="20px"><?php echo $this->lang->line('tableHeaders')['action'];?></th>
 									</tr>
 								</thead>
@@ -265,8 +266,14 @@ $this->load->view("template/left.php");
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['specilization'];?></label>
-												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" />
+												<label><?php echo $this->lang->line('labels')['specilizations'];?></label>
+												
+												<select name="specialization[]" class="form-control allowalphanumeric specialization" id="specialization" multiple="multiple">
+												<option value="">Please Select</option>
+												<?php foreach($Specializations as $Row){ ?>
+												<option value="<?php echo $Row->SpecializationID; ?>"><?php echo $Row->SpecializationName; ?></option>
+												<?php } ?>
+												</select>
 											</div>
 										</div>
 									</div>
@@ -382,6 +389,7 @@ $this->load->view("template/footer.php");
 							{ name: '<?php echo $this->lang->line('tableHeaders')['hospital'];?>' },
 							{ name: '<?php echo $this->lang->line('tableHeaders')['branch'];?>' },
 							{ name: '<?php echo $this->lang->line('tableHeaders')['department'];?>' },
+							/*{ name: '<?php echo $this->lang->line('tableHeaders')['doctor'];?>' },*/
 							{ name: '<?php echo $this->lang->line('tableHeaders')['status'];?>' },
 							{ name: '<?php echo $this->lang->line('tableHeaders')['action'];?>', "searchable": false, "orderable": false }
 						]
@@ -438,6 +446,28 @@ $this->load->view("template/footer.php");
 			    	$("#action-update-btn").parent().show();
 					$("#password").rules("remove","required");
 					$('#tabs a[href="#tab1"]').click();
+					
+					/*get doctors specialization id's*/
+					$.ajax({
+				            url: "<?php echo site_url(); ?>/doctors/doctorsspecialization",
+				            type: "GET",
+							dataType:"json",
+				            data: {"ID":id},
+				            success: function(res) {
+				                //alert(res.DocIDs);
+								if(res.status=='1'){
+								//$(".specialization option:selected").prop("selected", true);
+								$.each(res.DocIDs.split(','), function(index, element){
+								   
+									$('.specialization').find('option[value="'+ element +'"]').attr('Selected', 'Selected');
+									
+								});
+								}else if(res.status=='0'){
+									//$('.specialization').prop('selectedIndex',0);
+									//$(".specialization option:selected").prop("selected", false);
+								}
+				            }
+				        });
 			    });
 
 			    function loadData(id){
@@ -475,7 +505,7 @@ $this->load->view("template/footer.php");
 
 						$("#qualification").val(data.qualification);
 						$("#experience").val(data.experience);
-						$("#specialization").val(data.specialization);
+						//$("#specialization").val(data.specialization);
 						
 						
 						$("#address").val(data.address);

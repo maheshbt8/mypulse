@@ -70,9 +70,15 @@ class Users extends CI_Controller {
     }
     public function regUsers(){
         if($this->auth->isLoggedIn()){
-            $email = isset($_POST['useremail']) ? $_POST['useremail'] : "";
+           // $email = isset($_POST['useremail']) ? $_POST['useremail'] : "";
+		   if($_POST['useremail']){
+		    	$useremail_mobile = isset($_POST['useremail']) ? $_POST['useremail'] : "";
+				}else{
+		   		$useremail_mobile = isset($_POST['mobile']) ? $_POST['mobile'] : "";
+		   	}
+		   	
             $uid = $this->users_model->regUsers();
-            echo json_encode(array("text"=>$email,"id"=>$uid));exit;
+            echo json_encode(array("text"=>$useremail_mobile,"id"=>$uid));exit;
         }
     }
     public function search($role=0) {

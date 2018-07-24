@@ -95,6 +95,13 @@ class Departments extends CI_Controller {
             $columns = array( array("db" => "department_name", "dt" => 0, "formatter" => function ($d, $row) {
                 return "<a href='#' data-id='$row[id]' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>".$d."</a>";
             }), array("db" => "id", "dt" => 1, "formatter" => function ($d, $row) {
+			if($this->session->userdata('hospital_id')){
+				$hospitalid = $this->session->userdata('hospital_id');
+					}else{
+			    $hospitalid = $this->input->get('hid');
+				}
+                return "<a href=".base_url("wards/index/?hid=".$hospitalid."&&bid=".$this->input->get('bid')."&&did=".$d."")." id=\"dellink_".$d."\" title=\"View Wards\"><i class=\"glyphicon glyphicon-eye-open\"></i></button>";
+            }), array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 

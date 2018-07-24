@@ -14,7 +14,7 @@ $this->load->view("template/left.php");
 						<div class="card-head">
 							<header><?php echo $this->lang->line('receptionists');?></header>
 							<div class="custome_card_header">
-								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
+								<a class="btn btn-success m-b-sm addbtn getbranches" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
 								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="receptionist" href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
 								<?php $this->load->view('template/exbtn');?>
 							</div>
@@ -106,39 +106,67 @@ $this->load->view("template/left.php");
 											</div>
 										</div>
 										
-										<div class="panel panel-default" style="color:#1d3bde">
+										<div class="panel panel-default hideinedit" style="color:#1d3bde">
   											<div class="panel-body"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></div>
 										</div>
 										<div class="col-md-12">
-										    <div class="form-group col-md-6">
+										    <div class="form-group col-md-6 hide">
 												<label><?php echo $this->lang->line('labels')['selectHospital'];?>*</label>
 												<select name="hospital_id"  id="hospital_id" class=" form-control textinputfields" style="width: 77%">
 												<option value="">Please Select</option>
                                                 </select>
 											</div>
-											<div class="form-group col-md-6">
+											<div class="form-group col-md-6 hide " >
 												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
-												<select name="branch_id" id="branch_id" class=" form-control textinputfields" style="width: 77%">
+												<div id="branches-list">
+												<select name="branch_idss" id="branch_id" class="form-control allowalphanumeric" style="width: 77%">
 												<option value="">Please Select</option>
                                                 </select>
+												
+												</div>
+											</div>
+											<div class="form-group col-md-6 hideinedit " >
+												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
+												<select name="branch_id" class="branch_id form-control allowalphanumeric" style="width: 77%" >
+												<option value="">Please Select</option>
+												<?php 
+												foreach($Branches as $br){
+												?>
+												<option value="<?php echo $br->id; ?>"><?php echo $br->text; ?></option>
+												<?php } ?>
+												</select>
+											</div>
+											
+											<div class="form-group col-md-6 hide ">
+												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
+												<select name="department_idssss" id="department_id" class="  form-control allowalphanumeric" style="width: 77%">
+												<option value="">Please Select</option>
+                                                </select>
+												
+											</div>
+											
+											<div class="form-group col-md-6 hideinedit ">
+												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
+												<div class="ddepartment-list">
+												<select name="department_id"  class="DepartmentID form-control allowalphanumeric department_id" style="width: 77%">
+												<option value="">Please Select</option>
+                                                </select>
+												</div>
 											</div>
 											
 										</div>
-										<div class="col-md-12">
-											<div class="form-group col-md-6">
-												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
-												<select name="department_id" id="department_id" class=" form-control textinputfields" style="width: 77%">
-												<option value="">Please Select</option>
-                                                </select>
-											</div>
-											
-											<div class="form-group col-md-6">
+										<div class="form-group col-md-6 hide">
                                                <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
-                                                <select name="doc_id" id="doc_id" class=" form-control" style="width: 100%">
+                                                <select name="doc_idsss" id="doc_id" class=" form-control" style="width: 100%">
 												<option value="">Please Select</option>
                                                 </select>
+												
                                             </div>
+										<div class="col-md-12 hideinedit">
+											<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
+											<div class="doctors-list">
 											
+											</div>
 										</div>
 										<div class="col-md-12">
 											<div class="form-group col-md-6">
@@ -307,6 +335,33 @@ $this->load->view("template/left.php");
 			</div>
 		<!-- /.modal-dialog --> 
 		</div>
+        
+        <div class="modal fade GetDoctorsByRECPID" tabindex="-1" role="dialog" aria-labelledby="GetDoctorsByRECPID" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				
+			<!-- /.modal-content --> 
+			</div>
+		<!-- /.modal-dialog --> 
+		</div>
+        <div id="viewdoctrs" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Doctors</h4>
+      </div>
+      <div class="modal-body">
+        
+      		 <div id="load"></div>
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>
 	    <?php
 $this->load->view("template/footer.php");
 ?><script type="text/javascript">
@@ -341,6 +396,14 @@ $this->load->view("template/footer.php");
 			        	mobile:{
 			        		required:true,
 							phoneUS:true
+			        	},
+						branch_id:{
+			        		required:true,
+							
+			        	},
+						department_id:{
+			        		required:true,
+							
 			        	}
 			        },
 			        messages: {
@@ -361,6 +424,14 @@ $this->load->view("template/footer.php");
 			        	mobile:{
 			        		required:"<?php echo $this->lang->line('validation')['requriedPhone'];?>",
 							phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>"
+			        	},
+			        	branch_id:{
+			        		required:"<?php echo $this->lang->line('validation')['selectBranch'];?>"
+							
+			        	},
+			        	department_id:{
+			        		required:"<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+							
 			        	}
 			        },
 					invalidHandler: validationInvalidHandler,
@@ -393,6 +464,7 @@ $this->load->view("template/footer.php");
 			    $("[data-toggle=tooltip]").tooltip();
 
 			    $(".addbtn").click(function(){
+				    $('.hideinedit').show();
 					resetForm(validator);
 					resetLocation();
 					clearSelection();
@@ -424,6 +496,7 @@ $this->load->view("template/footer.php");
 				}
 
 				$("#receptionist").on("click",".editbtn",function(){
+					$('.hideinedit').hide();
 					resetForm(validator);
 					clearSelection();
 					resetLocation();
@@ -690,8 +763,106 @@ $this->load->view("template/footer.php");
 				        });
 				    }
 				});
+				
+/*$('.getbranches').on('click',function(){
+	 $HospitalID = '<?php echo $this->session->userdata('hospital_id'); ?>';
+	 $.ajax({
+				url: "<?php echo site_url(); ?>/index/searchBranches/",
+				type: "GET",
+				data: { "hospital_id":$HospitalID,"f":"branch_name"},
+				success: function(results) {
+				$("#branches-list").show();
+				$("#branches-list").html(results);
 					
+				},
+				error: function() {
+					callback();
+				}
+			})
+  });*/
+$('.branch_id').on('change',function(){
+   $HospitalID = '<?php echo $this->session->userdata('hospital_id'); ?>';
+   $branchid = $(this).val();
+   //$(".department_id").attr("disabled",false);
+   $.ajax({
+				url: "<?php echo site_url(); ?>index/searchDepartment/",
+				type: "GET",
+				data: { "hospital_id":$HospitalID,"branch_id":$branchid,"f":"department_name"},
+				success: function(results) {
+				$(".ddepartment-list").html(results);
+					
+				},
+				error: function() {
+					callback();
+				}
+			})
+  
+  });
+    
+$(document).on('change','.DepartmentID',function(){
 
+   $departmentid = $(this).val();
+   //$(".department_id").attr("disabled",false);
+   $.ajax({
+				url: "<?php echo site_url(); ?>index/searchDepartmentDoctor/",
+				type: "GET",
+				data: {"dept_id":$departmentid},
+				success: function(results) {
+				$(".doctors-list").html(results);
+					
+				},
+				error: function() {
+					callback();
+				}
+			})
+
+}); 
+/*$('#receptionist').on('click', '.GetDoctorsByRECPID', function(){
+	
+	resetForm(validator);
+					clearSelection();
+					resetLocation();
+					$("div.error").hide();
+			    	var id = $(this).attr("data-id");
+			    	$("#eidt_gf_id").val(id);
+					$.ajax({
+						url: "<?php echo site_url(); ?>/index/getRecDoctors",
+				        type: "GET",
+				        data: { "recpid":id},
+				        success: function(results) {
+						//alert(results['user_id']);
+							},
+						});
+	
+	});*/ 
+	
+$('#receptionist').on('click', '.GetDoctorsByRECPID', function(e){
+		
+	 var $ID =$(this).attr('data-id');
+	 
+	 var $action =$(this).attr('data-action');
+	 e.preventDefault();
+	 
+		$.ajax({
+				type: "GET",
+				url: $action,
+				data: {ID: $ID},
+				success:function(result){
+					if(result != 0){
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);	
+						
+					} else {
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);
+						
+					}
+				}
 			});
+	});		
+
+});
 
 		</script>

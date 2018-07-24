@@ -19,6 +19,7 @@ class Index extends CI_Controller {
         $this->load->model('nurse_model');
 		$this->load->model('receptionist_model');
 		$this->load->model('hospitals_model');
+		$this->load->model('branches_model');
 	}
 
 	function index($slug=null)
@@ -644,7 +645,120 @@ public function privacy_policy(){
 
 	   $this->load->view('index/privacy_policy');
 	
-	}		
+	}
+	
+public function searchDoctor() {
+        if ($this->auth->isLoggedIn()) {
+		
+            $q = $this->input->post("q");
+			$this->load->model('users_model');
+            $result = $this->users_model->searchDoctor($q);
+            //$searcresult = $result;
+			if($result){
+			echo "<ul class='searchlist'>";
+			foreach($result as $Row){
+				echo "<li class='selected-docotr' rel='$Row->FullName' rel1='$Row->id'>$Row->FullName</li>";
+				}
+				echo "</ul>";
+			}else{
+				return false;
+				//echo "<ul class='searchlist'><li class='selected-docotr'>No Doctor Found</li></ul>";
+				}
+        }
+    }
+	
+public function searchBranches() {
+        if ($this->auth->isLoggedIn()) {
+            $q = $this->input->get("q", null, "");
+            $f = $this->input->get("f", null, "");
+            $hid = $this->input->get("hospital_id",null,-1);
+            if($hid == -1 && !$this->auth->isSuperAdmin()){
+                $hid = $this->auth->getHospitalId();
+            }
+            $result = $this->branches_model->search($q,$f,$hid);
+			//print_r($result);exit;
+            echo "<select name='branch_id' class='BranchID allowalphanumeric form-control'>";
+			foreach($result as $Row){
+			echo "<option value='$Row[id]'>$Row[text]</option>";
+			}
+			echo "</select>";
+        }
+    }
+	
+public function searchDepartment() {
+       //error_reporting(0);
+        if ($this->auth->isLoggedIn()) {
+           
+            $result = $this->users_model->DepartmentsByBranchID($this->input->get("branch_id"));
+			//print_r($result);exit;
+            echo "<select name='department_id' class='DepartmentID allowalphanumeric form-control'><option value=''>Please Select</option>";
+			foreach($result as $Row){
+			echo "<option value='$Row->id'>$Row->department_name</option>";
+			}
+			echo "</select>";
+        }
+    }
+	
+public function searchDepartmentDoctor() {
+       //error_reporting(0);
+        if ($this->auth->isLoggedIn()) {
+            $result = $this->users_model->getdoctorsByDepartmentID($this->input->get("dept_id"));
+			if($result){
+			echo "<select name='doc_id[]' class='DoctorID form-control allowalphanumeric'  multiple='multiple'>
+			      <option value=''>Please Select</option>";
+			foreach($result as $Row){
+			echo "<option value='$Row->id'>$Row->FullName</option>";
+			}
+			echo "</select>";
+			}else{
+			echo "No Doctors Found.";
+			}
+			
+        }
+    }
+	
+public function getRecDoctors(){
+       $data['ReceptionistID'] = $ReceptionistID = $this->input->get('ID');
+	   $data['RecpUserID']= $RecpUserID = $this->db->query('SELECT `user_id` FROM `hms_receptionist` WHERE `id`='.$ReceptionistID.'')->row();
+	   $data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
+	   $data['Result'] = $this->db->query("SELECT rec.`id`,rec.`user_id`,rec.`doc_id`,dep.`id` AS deptid,brc.`id` AS branchid FROM `hms_receptionist` AS rec
+INNER JOIN `hms_doctors` AS doc ON doc.`id`=rec.doc_id
+INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id`
+INNER JOIN `hms_branches` AS brc ON brc.`id`= dep.`branch_id`
+WHERE rec.`user_id`='$RecpUserID->user_id' GROUP BY doc.id")->result();
+       $data['Departments'] = $this->db->query("SELECT dept.`id` AS deptid,dept.department_name FROM `hms_departments` AS dept WHERE dept.`branch_id`='". $data['Result'][0]->branchid."'  ")->result();
+	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($data['Departments'][0]->deptid); 
+	 /*if($Result){
+	    $response = array('Status'=>1,'data'=>$Result);
+	    }else{
+		$response = array('Status'=>0);
+		}*/
+		echo $this->load->view('Receptionist/receptionist_doctors',$data,TRUE);
+	   
+
+  }							
+
+public function getNurseDoctors(){
+       error_reporting(0);
+       $data['NurseID'] = $NurseID = $this->input->get('ID');
+	   $data['NurseUserID']= $NurseUserID = $this->db->query('SELECT `user_id` FROM `hms_nurse` WHERE `id`='.$NurseID.'')->row();
+	   $data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
+	   $data['Result'] = $this->db->query("SELECT nur.`id`,nur.`user_id`,nur.`doc_id`,dep.`id` AS deptid,brc.`id` AS branchid FROM `hms_nurse` AS nur
+INNER JOIN `hms_doctors` AS doc ON doc.`id`=nur.doc_id
+INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id`
+INNER JOIN `hms_branches` AS brc ON brc.`id`= dep.`branch_id`
+WHERE nur.`user_id`='$NurseUserID->user_id' GROUP BY doc.id")->result();
+       $data['Departments'] = $this->db->query("SELECT dept.`id` AS deptid,dept.department_name FROM `hms_departments` AS dept WHERE dept.`branch_id`='". $data['Result'][0]->branchid."'  ")->result();
+	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($data['Departments'][0]->deptid); 
+	 /*if($Result){
+	    $response = array('Status'=>1,'data'=>$Result);
+	    }else{
+		$response = array('Status'=>0);
+		}*/
+		echo $this->load->view('Nurse/nurse_doctors',$data,TRUE);
+	   
+
+  }
 
 }
 

@@ -34,7 +34,7 @@ $this->load->view("template/left.php");
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id1" class=" form-control allowalphanumeric" >
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_wards'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
@@ -52,9 +52,10 @@ $this->load->view("template/left.php");
                             </div>
                             <div class="col-md-12">
 								<div class="">
+								
 									<table id="wards" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 										<thead>
-											<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['totalBeds'];?></th><th><?php echo $this->lang->line('tableHeaders')['availableBeds'];?></th><th width="20px">#</th>
+											<tr><th style="width:10px"></th><th><?php echo $this->lang->line('tableHeaders')['ward'];?></th><th><?php echo $this->lang->line('tableHeaders')['totalBeds'];?></th><th><?php echo $this->lang->line('tableHeaders')['availableBeds'];?></th><th><?php echo $this->lang->line('tableHeaders')['bed'];?></th><th width="20px">#</th>
 											</tr>
 										</thead>
 										
@@ -470,7 +471,7 @@ $this->load->view("template/footer.php");
 									success: function(results) {
 										$selectize_department_id1[0].selectize.enable();
 										var res = $.parseJSON(results);
-										res.push({id:"all",text:"ALL"});
+										res.push({id:"all",text:"all_departments"});
 										callback(res);
 										if(did==null || did == undefined){
 											did ="all";
@@ -540,7 +541,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_branch_id1[0].selectize.enable();
 									var res = $.parseJSON(results);
-									res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all'];?>"});
+									res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_branches'];?>"});
 				                    callback(res);
 									if(bid==null || bid == undefined){
 										bid ="all";
@@ -577,7 +578,7 @@ $this->load->view("template/footer.php");
 					//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"wards\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
                 }
 
-                loadTable('all',"","");
+                loadTable(hid,bid,did);
 
 					
 

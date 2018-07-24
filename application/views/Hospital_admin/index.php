@@ -58,6 +58,7 @@ $this->load->view("template/left.php");
                                     <li role="presentation" class="active"><a href="#tab1" aria-controls="gen" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['basic'];?></a></li>
 									<?php /*?><li role="presentation"><a href="#tab2" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li><?php */?>
 									<li role="presentation"><a href="#tab3" aria-controls="other" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['otherProfile'];?></a></li>
+									<li role="presentation"><a href="#tab4" aria-controls="prof" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['professionInfo'];?></a></li>
 								</ul>
 								<div class="tab-content">
                                 	<div role="tabpanel" class="tab-pane active fade in" id="tab1">
@@ -222,6 +223,25 @@ $this->load->view("template/left.php");
 								            </div>
 										</div>
 										
+									</div>
+									<div role="tabpanel" class="tab-pane fade in" id="tab4">
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['qualification'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['qualification'];?>" name="qualification" id="qualification" />
+											</div>
+											<div class="form-group col-md-6">
+											    <label><?php echo $this->lang->line('labels')['profession'];?></label>
+												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['profession'];?>" name="specialization" id="specialization" />
+												
+											</div>
+										</div>
+										<div class="col-md-12">
+											<div class="form-group col-md-6">
+												<label><?php echo $this->lang->line('labels')['experience'];?></label>
+												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>	
@@ -391,6 +411,10 @@ $this->load->view("template/left.php");
 						$("#phone").val(data.phone);	
 
 						$("#gender").val(data.gender);
+						
+						$("#qualification").val(data.qualification);
+						$("#experience").val(data.experience);
+						$("#specialization").val(data.specialization);
 
 						$("#address").val(data.address);
 						$("#description").val(data.description);

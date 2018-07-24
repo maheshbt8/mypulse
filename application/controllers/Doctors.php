@@ -18,9 +18,13 @@ class Doctors extends CI_Controller {
     public function index() {
         $data["page_title"] =  $this->lang->line('doctors');
         $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('doctors'));
+		$data["Specializations"] = $this->auth->AllSpecializations();
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $this->load->view('Doctors/index', $data);
-        } 
+        }
+		else if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
+            $this->load->view('Patient/index', $data);
+        }  
         else if($this->auth->isLoggedIn() && $this->auth->isReceptinest()){
             $this->load->view('Doctors/receptionist', $data);
         }
@@ -355,6 +359,7 @@ class Doctors extends CI_Controller {
                     ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left');
+					
             }else{	
                 $this->datatables
                     ->showCheckbox(true)
@@ -364,9 +369,9 @@ class Doctors extends CI_Controller {
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
                     ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
-                    ->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'edit_action_id')
-                    ->edit_column('docname', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','edit_action_id, docname')
-                    ->unset_column('edit_action_id');
+					->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'edit_action_id')
+					->edit_column('docname', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','edit_action_id, docname')
+					->unset_column('edit_action_id');
             }
             
             //Set condition to new library
@@ -516,6 +521,22 @@ class Doctors extends CI_Controller {
 		
 		echo json_encode($response);
 		
+	}
+public function doctorsspecialization(){
+        extract($_GET);
+		$Result = $this->db->query("SELECT SpecializationFKID FROM hms_doctors_specialization WHERE doc_id='".$ID."'")->result();
+	    if($Result){
+		$DID = array();
+		foreach($Result as $Row){
+		    $DID[] = $Row->SpecializationFKID;
+			}
+		$DocIDs = implode(',',$DID);
+		$Result = array('status'=>1,'DocIDs'=>$DocIDs);	
+		}else{
+		$Result = array('status'=>0,'DocIDs'=>0);
+		}
+		
+		echo json_encode($Result);
 	}
 	
 }

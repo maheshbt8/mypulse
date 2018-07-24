@@ -22,6 +22,7 @@ class Nurse extends CI_Controller {
             redirect('index');
         }
         if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+		    $data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
             $data['nurses'] = $this->nurse_model->getAllnurse();
             $data["page_title"] = $this->lang->line('nurses');
             $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('nurses'));
@@ -33,6 +34,14 @@ class Nurse extends CI_Controller {
             $this->load->view('nurse/department');
         }
         else redirect('index/login');
+    }
+	public function wards() {
+        if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
+            // $data['bedss'] = $this->beds_model->getAllbeds();
+            $data["page_title"] = $this->lang->line('beds');
+            $data["breadcrumb"] = array(site_url() => $this->lang->line('home'), null => $this->lang->line('beds'));
+            $this->load->view('Nurse/wards', $data);
+        } else redirect('index/login');
     }
     public function beds() {
         if ($this->auth->isLoggedIn() && ($this->auth->isNurse())) {
@@ -168,13 +177,17 @@ class Nurse extends CI_Controller {
                 $this->datatables
                     ->showCheckbox(true)
                     ->from('hms_nurse')
-                    ->select('hms_nurse.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as nursename, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname,case when hms_nurse.isActive=1 THEN "'.$this->lang->line('active').'" when hms_nurse.isActive=0 THEN "'.$this->lang->line('inactive').'" end as status, hms_nurse.id as action_nurse_id', false)
+                    ->select('hms_nurse.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as nursename, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, CONCAT(docuser.first_name," ",docuser.last_name) as docname, case when hms_nurse.isActive=1 THEN "'.$this->lang->line('active').'" when hms_nurse.isActive=0 THEN "'.$this->lang->line('inactive').'" end as status, hms_nurse.id as action_nurse_id', false)
+					->join('hms_doctors','hms_nurse.doc_id = hms_doctors.id','left')
                     ->join('hms_users','hms_nurse.user_id = hms_users.id','left')
+					->join('hms_users as docuser','hms_doctors.user_id = docuser.id','left')
                     ->join('hms_departments','hms_nurse.department_id = hms_departments.id','left')
                     ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
                     ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left')
+					->group_by('hms_nurse.user_id')
                     ->add_column('edit', '<a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>', 'action_nurse_id')
                     ->edit_column('nursename', "<a href='#' data-id='$1' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit'>$2</a>", 'action_nurse_id, nursename')
+					->edit_column('docname', "<a href='#' data-id='$1'class='GetDoctorsByNurseID' data-toggle='modal' data-target='#viewdoctrs' data-action='". base_url('index/getNurseDoctors')."' title='View Doctors'>View Doctors</a>", 'action_nurse_id, docname')
                     ->unset_column('action_nurse_id');
             }
 
@@ -343,6 +356,18 @@ class Nurse extends CI_Controller {
 
         }
     }
+	
+public function updateNurseDoctors(){
+//print_r($_POST);exit;
+if ($this->auth->isLoggedIn() && ($this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
+            $id = $this->input->post('nurseid');
+            $res = $this->nurse_model->updateNurseDoctors($id);
+            $data = $this->auth->parseUserResult($res,$this->lang->line('msg_nurse_updated'));
+            $this->session->set_flashdata('data', $data);
+            redirect('nurse/index');
+        } else redirect('index/login');
+
+}	
 
     
 }

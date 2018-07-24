@@ -99,6 +99,13 @@ class Wards extends CI_Controller {
             }),array("db" => "id", "dt" => 2, "formatter" => function ($d, $row) {
                 return $this->beds_model->getTotalAvailableBedsByWard($d);
             }),array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+			if($this->session->userdata('hospital_id')){
+				$hospitalid = $this->session->userdata('hospital_id');
+					}else{
+			    $hospitalid = $this->input->get('hid');
+				}
+                return "<a href=".base_url("beds/index/?hid=".$hospitalid."&&bid=".$this->input->get('bid')."&&did=".$this->input->get('did')."")." id=\"dellink_".$d."\" title=\"View Beds\"><i class=\"glyphicon glyphicon-eye-open\"></i></button>";
+            }),array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 
@@ -170,6 +177,89 @@ class Wards extends CI_Controller {
             // SQL server connection informationhostname" => "localhost",
             $sql_details = array("user" => $this->config->item("db_user"), "pass" => $this->config->item("db_password"), "db" => $this->config->item("db_name"), "host" => $this->config->item("db_host"));
             echo json_encode($this->tbl->simple($_GET, $sql_details, $table, $primaryKey, $columns));
+        }
+    }
+	
+	public function getDTNursewards() {
+        if ($this->auth->isLoggedIn() ) {
+
+            $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
+            $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
+            $did = isset($_GET['did']) ? $_GET['did']!="" ? intval($_GET['did']) : null : null;
+            $cond = array("hms_beds.isDeleted = 0");
+
+            if($hid == "all")
+                $hid = null;
+            
+            if($did != "all" && $did != null){
+                $wids = $this->wards_model->getWardIdsFromDepartment($did);
+                if(count($wids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $wids[] = -1;
+                }
+                $ids = implode(",", $wids);
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
+            }else if($bid == "all"){
+                $bids = $this->branches_model->getBracheIds($hid);
+                $ids = $this->wards_model->getWardIdsFromBranch($bids);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
+            }else if($bid != null){
+                $ids = $this->wards_model->getWardIdsFromBranch($bid);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
+            }else if($hid!=null){
+                $ids = $this->wards_model->getWardIdsFromHospital($hid);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",", $ids);
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
+            }else{
+                $hids = $this->hospitals_model->getHospicalIds();
+                $ids = $this->wards_model->getWardIdsFromHospital($hids);
+                if(count($ids) == 0){
+                    //If no department created.
+                    //Add dummy id to return nothing
+                    $ids[] = -1;
+                }
+                $ids = implode(",",$ids);
+                $cond[] = "hms_beds.ward_id in (".$ids.")";
+            }
+
+            //New Library
+            $this->load->library('datatables');		
+            $this->datatables
+                ->showIndex(true)
+                ->from('hms_beds')
+                ->select('hms_beds.id as mainid,hms_wards.ward_name as wname, hms_beds.bed as bed, case when hms_beds.isAvailable=0 then "No" when hms_beds.isAvailable=1 then "Yes" end as status, CONCAT(hms_users.first_name," ",hms_users.last_name) as pname, hms_inpatient.id as action_pid',false)
+                ->join('hms_wards','hms_beds.ward_id = hms_wards.id','left')
+                ->join('hms_inpatient','hms_beds.id = hms_inpatient.bed_id','left')
+                ->join('hms_users','hms_inpatient.user_id = hms_users.id','left')
+                ->edit_column('pname','<a href="'.site_url().'nurse/inpatient?sip=1&pid=$1">$2</a>','action_pid, pname')
+                ->unset_column('action_pid');
+            
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+
+            //Call new library for output
+            echo $this->datatables->generate('json');
+
         }
     }
 }

@@ -12,55 +12,54 @@ $this->load->view("template/left.php");
 					  <input type="hidden" id="left_active_sub_menu" value="204" />';
 			}else if($this->auth->isHospitalAdmin()){
 				echo '<input type="hidden" id="left_active_menu" value="14" />';
+			}else{
+				echo '<input type="hidden" id="left_active_menu" value="5" />';
 			}
 		?>
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="card " style="overflow: visible;">
-						<div class="card-head">
-							<header><?php echo $this->lang->line('beds');?></header>
+	                <div class="card">
+	                    <div class="card-head">
+							<header><?php echo $this->lang->line('wards');?></header>
 							<div class="custome_card_header">
-								<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>
-								<a class="btn btn-danger m-b-sm multiDeleteBtn" data-at="beds"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['delete'];?></a>
-								<?php $this->load->view('template/exbtn');?>
+								
 							</div>
-	                    </div>
-	                    <div class="card-body">
+						</div>
+	                    <div class="card-body  ">
 							<div class="col-md-12">
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id1" class=" form-control allowalphanumeric" >
+                                    <select id="hospital_id1" class=" form-control" style="width: 100%">
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id1" class=" form-control allowalphanumeric" >
-									<option value="">Please Select</option>
+                                    <select id="branch_id1" class=" form-control" style="width: 100%">
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id1" class=" form-control allowalphanumeric" >
-					                <option value="">Please Select</option>
-									</select>
+                                    <select id="department_id1" class=" form-control" style="width: 100%">
+					                </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
-								<table id="beds" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle tableExport" >
+								<table id="beds" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 									<thead>
-										<tr><th style="width:10px"></th>
+										<tr>
+											<th style="width:10px"></th>
 											<th><?php echo $this->lang->line('tableHeaders')['ward'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['bed'];?></th>
-											<th><?php echo $this->lang->line('tableHeaders')['isOccupied'];?></th>
-											<th width="20px">#</th>
+											<!--<th><?php //echo $this->lang->line('tableHeaders')['bed'];?></th>
+											<th><?php //echo $this->lang->line('tableHeaders')['isOccupied'];?></th>
+											<th><?php //echo $this->lang->line('tableHeaders')['patient']; ?></th>-->
 										</tr>
 									</thead>
 									
 									<tbody>
 									</tbody>
-								</table>  
+								</table> 
 							</div>	
 	                    </div>
 	                </div>
@@ -86,37 +85,29 @@ $this->load->view("template/left.php");
 						  	<div class="col-md-12">
                                 <div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id" class=" form-control allowalphanumeric " >
-									<option value="">Please Select</option>
-									</select>
+                                    <select id="hospital_id" class=" form-control" style="width: 100%"></select>
                                 </div>
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id" class=" form-control allowalphanumeric">
-									<option value="">Please Select</option>
-									</select>
+                                    <select id="branch_id" class=" form-control" style="width: 100%"></select>
                                 </div>
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id" name="department_id" class=" form-control allowalphanumeric" >
-									<option value="">Please Select</option>
-									</select>
+                                    <select id="department_id" class=" form-control" style="width: 100%"></select>
                                 </div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['selectWard'];?></label>
-									<select name="ward_id" id="ward_id" class=" form-control allowalphanumeric">
-									<option value="">Please Select</option>
-									</select>
+									<select name="ward_id" id="ward_id" class=" form-control" style="width: 100%"></select>
 								</div>
                             </div>
 				  			<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['bed'];?></label>
-									<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['bed'];?>" name="bed" id="bed" />
+									<input class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['bed'];?>" name="bed" id="bed" />
 								</div>
 								<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['isBedAvailable'];?></label>
-									<select class="form-control allowalphanumeric" name="isAvailable" id="isAvailable">
+									<label><?php echo $this->lang->line('labels')['isBedOccupied'];?></label>
+									<select class="form-control" name="isAvailable" id="isAvailable">
 										<option value="1"><?php echo $this->lang->line('buttons')['no'];?></option>
 										<option value="0"><?php echo $this->lang->line('buttons')['yes'];?></option>
 									</select>
@@ -524,7 +515,7 @@ $this->load->view("template/footer.php");
 									success: function(results) {
 										$selectize_department_id1[0].selectize.enable();
 										var res = $.parseJSON(results);
-										res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_departments'];?>"});
+										res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all'];?>"});
 										callback(res);
 										if(bid==null || bid == undefined){
 											did ="all";
@@ -596,7 +587,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_branch_id1[0].selectize.enable();
 									var res = $.parseJSON(results);
-									res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_branches'];?>"});
+									res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all'];?>"});
 				                    callback(res);
 									if(bid==null || bid == undefined){
 										bid ="all";
@@ -620,24 +611,11 @@ $this->load->view("template/footer.php");
                 function loadTable(hid,bid,did){
 										
                     $("#beds").dataTable().fnDestroy();
-                    var dt = $("#beds").DataTable({
+                    $("#beds").DataTable({
                         "processing": true,
                         "serverSide": true,
-                        "ajax": "<?php echo site_url(); ?>/beds/getDTbeds?hid="+hid+"&bid="+bid+"&did="+did,
-						"columns":[
-							{ name: '#' },
-							{ name: 'Ward' },
-							{ name: 'Bed' },
-							{ name: 'Is Occuped?' },
-							{ name: '#' }
-						]
+                        "ajax": "<?php echo site_url(); ?>/beds/getDTNursebeds?hid="+hid+"&bid="+bid+"&did="+did
                     });
-					/* 'copyHtml5',
-					 'excelHtml5',
-					 'csvHtml5',
-					 'pdfHtml5'*/
-
-					<?php $this->load->view('template/exdt');?>
 
                     $(".dataTables_filter").attr("style","display: flex;float: right");
                     //$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");

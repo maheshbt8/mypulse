@@ -101,7 +101,11 @@ class Nurse_model extends CI_Model {
             $nurse['created_at'] = date("Y-m-d H:i:s");
             if(isset($data['isActive']))
                 $nurse['isActive'] = intval($data['isActive']);
-            if ($this->db->insert($this->tblname, $nurse)) {
+				$doctorsid = $this->input->post('doc_id') ? $this->input->post('doc_id') : 0;
+            if($doctorsid){
+            foreach ($doctorsid as $did) {
+			    $nurse['doc_id'] = $did;
+				$this->db->insert($this->tblname, $nurse);
 				$id = $this->db->insert_id();
 				$this->logger->log("New nurse added", Logger::Nurse, $id);
 				
@@ -127,6 +131,7 @@ class Nurse_model extends CI_Model {
                         }   
                     }
                 }
+				}
                 return true;
             } else {
                 return false;
@@ -359,4 +364,69 @@ class Nurse_model extends CI_Model {
         }     
         return $doc_ids;
     }
+	
+public function updateNurseDoctors($id) {
+        $data = $_POST;
+        $data['role'] = $this->auth->getNurseRoleType();
+        $nurse_id = $id;
+		//print_r($this->input->post('doc_id'));exit;
+        
+        if($nurse_id === false){
+            return false;
+        }else if($nurse_id < 0){
+            return $nurse_id;
+        }
+        else{
+            $nurse = array();
+			$nurse['user_id'] = $nurseuser_id = $data['nurseuserid'];
+			                         $this->db->where('user_id',$nurseuser_id);
+			$RemovePreviousDoctors = $this->db->delete('hms_nurse');
+            //$nurse['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
+            $nurse['created_at'] = date("Y-m-d H:i:s");
+			$nurse['modified_at'] = date("Y-m-d H:i:s");
+			$nurse['department_id'] = $data['department_id'];
+                $doctorsid = $this->input->post('doc_id') ? $this->input->post('doc_id') : 0;
+				if($doctorsid){
+            foreach ($doctorsid as $did) {
+			    $nurse['doc_id'] = $did;
+			    $this->db->insert($this->tblname, $nurse);
+				$id = $this->db->insert_id();
+                $this->logger->log("Nurse Doctor Updated", Logger::Nurse, $id);
+                
+				if(isset($did) && $did != ""){
+                    //find doctor user_id which is linked with this Nurse
+                    $this->db->where('id', $did);
+                    $doctor = $this->db->get('hms_doctors')->row_array();
+                    //find doctor name from user table
+                    $this->db->where('id', $doctor['user_id']);
+                    $dname = $this->db->get('hms_users')->row_array();
+
+                    //sent notification to doctor
+                    //$this->notification->saveNotification($doctor['user_id'],"receptionist <b>".$data['first_name']." ".$data['last_name']."</b> is linked with you");
+
+                    if(isset($nurse['user_id']) && $nurse['user_id'] != ""){
+                        //sent notification to receptionist
+                        $this->notification->saveNotification($nurse['user_id'], "You are linked with <b>".$dname['first_name']." ".$dname['last_name']."</b> doctor as Receptionist");              
+                    }
+
+                    if($this->auth->isSuperAdmin()){
+                        if(isset($data['hospital_id']) && $data['hospital_id'] != ""){
+                            //find hospital admin
+                            $this->db->where('hospital_id', $data['hospital_id']);
+                            $hadmin = $this->db->get('hms_hospital_admin')->row_array();
+                            //sent notification to hospital admin
+                            $this->notification->saveNotification($hadmin['user_id'], "New Nurse <b>".$data['first_name']." ".$data['last_name']."</b> is linked with doctor: <b>".$dname['first_name']." ".$dname['last_name']."</b>");
+                        }
+                    }
+                }
+                
+            }
+			return true;
+			 } else {
+                return false;
+            }
+        }
+        return true;
+    }
+		
 }

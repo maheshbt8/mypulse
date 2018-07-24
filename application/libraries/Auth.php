@@ -782,6 +782,16 @@ class Auth {
             exit;
         }
     }
+	
+	public function AllSpecializations()
+    {
+   		$Result = $this->CI->db->query("SELECT *FROM hms_mstr_specializations WHERE Status='1'")->result();
+	   	if($Result){
+		return $Result;
+		}else{
+		return false;
+		}
+    }
 
 }
 

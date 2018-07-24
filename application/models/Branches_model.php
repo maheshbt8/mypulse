@@ -193,4 +193,25 @@ class Branches_model extends CI_Model {
         }
         return $ids;
     }
+	
+function getHospitalBranches($hospital_id) {
+        if($this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin() || $this->auth->isReceptinest()){
+            $bids = $this->getBranchesIds();
+            $this->db->where_in("id",$bids);       
+        }
+
+        if($hospital_id > 0){
+            $this->db->where('hospital_id',$hospital_id);
+        }else{
+            $hids = $this->auth->getAllHospitalIds();
+            if(count($hids) == 0){ $hids[] = -1;} 
+            $this->db->where_in('hospital_id',$hids);
+        }
+
+        $this->db->where("isDeleted",0);
+        $this->db->where("isActive",1);
+        $this->db->select("id,CONCAT(`branch_name`) as text", false);
+        $res = $this->db->get($this->tblname);
+        return $res->result();
+    }	
 }

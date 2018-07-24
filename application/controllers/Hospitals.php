@@ -114,6 +114,8 @@ class Hospitals extends CI_Controller {
             }), array("db" => "city", "dt" => 2, "formatter" => function ($d, $row) {
                 return $this->general_model->getCityName($d);
             }), array("db" => "id", "dt" => 3, "formatter" => function ($d, $row) {
+                return "<a href=\"branches/index/?hid=".$d."\" id=\"dellink_".$d."\"  title=\"View Branches\"><i class=\"glyphicon glyphicon-eye-open\"></i></button>";
+            }), array("db" => "id", "dt" => 4, "formatter" => function ($d, $row) {
                 return "<a href=\"#\" id=\"dellink_".$d."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$d\" data-toggle=\"tooltip\" title=\"Delete\"><i class=\"glyphicon glyphicon-remove\"></i></button>";
             }));
 

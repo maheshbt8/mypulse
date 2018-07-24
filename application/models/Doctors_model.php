@@ -109,13 +109,28 @@ class Doctors_model extends CI_Model {
                 $doc['qualification'] = $data['qualification'];
             if(isset($data['experience']))
                 $doc['experience'] = $data['experience'];
-            if(isset($data['specialization']))
-                $doc['specialization'] = $data['specialization'];
+            /*if(isset($data['specialization']))
+                $doc['specialization'] = $data['specialization'];*/
             $doc['created_at'] = date("Y-m-d H:i:s");
             if(isset($data['isActive']))
                 $doc['isActive'] = intval($data['isActive']);
             if ($this->db->insert($this->tblname, $doc)) {
 				$id = $this->db->insert_id();
+				$specialization = $this->input->post('specialization') ? $this->input->post('specialization') : 0;
+				if($specialization){
+					foreach($specialization as $spec){
+					   $specializationdata = array('SpecializationFKID' => $spec,
+					   							   'doc_id' =>$id,	
+					                               'CreatedBy' => $this->session->userdata('user_id'),
+					                               'CreatedDate' => date("Y-m-d H:i:s"),
+												   'Status' => 1
+												   );
+						$this->db->insert('hms_doctors_specialization',$specializationdata);						   
+					    $specializationid = $this->db->insert_id(); 
+					    $this->logger->log("New doctor Specialization added", Logger::Doctor, $specializationid);
+					 	
+					 }
+				}
                 $this->logger->log("New doctor added", Logger::Doctor, $id);
                 
 				if(isset($data['hospital_id']) && isset($data['department_id']) && isset($data['branch_id']) && $data['hospital_id'] != "" && $data['department_id'] != "" && $data['branch_id'] != ""){
@@ -179,8 +194,8 @@ class Doctors_model extends CI_Model {
                 $doc['qualification'] = $data['qualification'];
             if(isset($data['experience']))
                 $doc['experience'] = $data['experience'];
-            if(isset($data['specialization']))
-                $doc['specialization'] = $data['specialization'];
+            /*if(isset($data['specialization']))
+                $doc['specialization'] = $data['specialization'];*/
 
             if(isset($data['isActive']))
                 $doc['isActive'] = intval($data['isActive']);
@@ -188,6 +203,23 @@ class Doctors_model extends CI_Model {
             if(count($doc) > 0){
                 $this->db->where("id", $id);
                 if ($this->db->update($this->tblname, $doc)) {
+					$specialization = $this->input->post('specialization') ? $this->input->post('specialization') : 0;
+				if($specialization){
+					$this->db->where('doc_id',$id);
+					$this->db->delete('hms_doctors_specialization');
+					foreach($specialization as $spec){
+					   $specializationdata = array('SpecializationFKID' => $spec,
+					   							   'doc_id' =>$id,	
+					                               'CreatedBy' => $this->session->userdata('user_id'),
+					                               'CreatedDate' => date("Y-m-d H:i:s"),
+												   'Status' => 1
+												   );
+						$this->db->insert('hms_doctors_specialization',$specializationdata);						   
+					    $specializationid = $this->db->insert_id(); 
+					    $this->logger->log("New doctor Specialization added", Logger::Doctor, $specializationid);
+					 	
+					 }
+				}
                     $this->logger->log("Doctor details updated", Logger::Doctor, $id); 
                     
                     if(!$this->auth->isDoctor()){
@@ -1194,8 +1226,7 @@ class Doctors_model extends CI_Model {
 	
 	public function validateMobileNumber($mobnumber){
 		
-		
-		$checkmob = $this->db->query("SELECT `id` FROM `hms_users` WHERE `mobile` = '$mobnumber'")->row();
+		$checkmob = $this->db->query("SELECT `id` FROM `hms_users` WHERE `mobile` = '$mobnumber' AND `isRegister` !='0'")->row();
 		if(!empty($checkmob)){
 			return  array('Status' => 1);
 		}
@@ -1205,9 +1236,8 @@ class Doctors_model extends CI_Model {
 	}
 	
 	public function validateEmailAvailable($emailval){
-		
-		
-		$checkemail = $this->db->query("SELECT `id` FROM `hms_users` WHERE `useremail` = '$emailval'")->row();
+				
+		$checkemail = $this->db->query("SELECT `id` FROM `hms_users` WHERE `useremail` = '$emailval'  AND `isRegister` !='0'")->row();
 		if(!empty($checkemail)){
 			return  array('Status' => 1);
 		}
