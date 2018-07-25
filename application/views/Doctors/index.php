@@ -456,15 +456,13 @@ $this->load->view("template/footer.php");
 				            success: function(res) {
 				                //alert(res.DocIDs);
 								if(res.status=='1'){
-								//$(".specialization option:selected").prop("selected", true);
+								
 								$.each(res.DocIDs.split(','), function(index, element){
-								   
-									$('.specialization').find('option[value="'+ element +'"]').attr('Selected', 'Selected');
+								   $('.specialization').find('option[value="'+ element +'"]').prop('selected', true);
 									
 								});
 								}else if(res.status=='0'){
-									//$('.specialization').prop('selectedIndex',0);
-									//$(".specialization option:selected").prop("selected", false);
+									$(".specialization option:selected").prop("selected", false);
 								}
 				            }
 				        });
