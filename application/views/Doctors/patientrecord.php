@@ -75,13 +75,13 @@ $this->load->view("template/left.php");
 								<input type="hidden" name="doctor_id" value="<?php echo $appoitment['doctor_id'];?>" />
 								<div class="row">
 									<div class="form-group col-md-12">
-										<label for="RecommendDate"><?php echo $this->lang->line('recommend_date'); ?></label>
+										<label for="RecommendDate"><?php echo $this->lang->line('NextAppointmentDate'); ?></label>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-md-8">
 										<div class="form-group">
-											<input type="text" class="form-control date-picker" name="recommend_date" placeholder="<?php echo $this->lang->line('addRecommendDate'); ?>" >
+											<input type="text" class="form-control date-picker-nopast" name="recommend_date" placeholder="<?php echo $this->lang->line('NextAppointmentDate'); ?>" >
 										</div>
 									</div>
 									<div class="col-md-4">

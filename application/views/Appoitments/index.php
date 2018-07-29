@@ -158,6 +158,60 @@ $this->load->view("template/left.php");
 		<!-- /.modal-dialog --> 
 		</div>
 		
+		<!--Recommed Next Appointment List -->
+        <?php if(count($states['recommend_appointment']) > 0) { ?>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="card-head">
+                        <header><?php echo $this->lang->line('recommend_appointment');?></header>
+                        <div class="custome_card_header">
+                            
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="  project-stats">  
+                           <table class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Hospital-Branch</th>
+										<th>Department</th>
+										<th>Doctor</th>
+                                        <th>Recommed Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $cnt = 1;
+                                        foreach($states['recommend_appointment'] as $ra){
+                                            ?>
+                                            <tr>
+                                                <th scope="row"><?=$cnt;?></th>
+                                                <td><?=$ra['hbname'];?></td>
+												<td><?=$ra['dpname'];?></td>
+												<td><?=$ra['dname'];?></td>
+                                                <td><?=date('d-M-Y',strtotime($ra['recommend_appointment_date']));?></td>
+												<td><!--<button class="btn btn-info bookAppointment"  data-id="<?php echo $ra['id'];?>" data-toggle="modal" data-target="#edit">Book Appointment</button>--></td>
+												<!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>-->
+                                                <!--<td><a href='#' data-url='doctors/previewprescription/<?=$mr['id'];?>' data-id='<?=$mr['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>-->
+                                            </tr>
+                                            <?php
+                                            $cnt++;
+                                        }
+                                    ?>
+                                   
+                                   
+                               </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
+		
 <?php
 $this->load->view("template/footer.php");
 ?>

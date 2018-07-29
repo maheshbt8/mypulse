@@ -13,11 +13,13 @@ class Appoitments extends CI_Controller {
         $this->load->model("users_model");
         $this->load->model("doctors_model");
         $this->load->model("receptionist_model");
+		$this->load->model("dashboard_model");
     }
     public function index() {
         $data["page_title"] = $this->lang->line("appoitments");
         $data["breadcrumb"] = array(site_url() => $this->lang->line("home"), null => $this->lang->line("appoitments"));
-        if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {    
+        if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
+		    $data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());    
             $this->load->view('Appoitments/index', $data);
         }
         else if($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())){
@@ -375,7 +377,7 @@ class Appoitments extends CI_Controller {
                 
 
             $isToday = isset($_GET['td']) ? intval($_GET['td']) : 0;
-            if($isToday===1){   
+			if($isToday===1){   
                 
                 $cond[] = "DATE(hms_appoitments.appoitment_date)='".date("Y-m-d")."'";
                 

@@ -265,15 +265,17 @@ $this->load->view("template/left.php");
 											</div>
 										</div>
 										<div class="col-md-12">
-											<div class="form-group col-md-6">
+											<div class="form-group">
 												<label><?php echo $this->lang->line('labels')['specilizations'];?></label>
-												
 												<select name="specialization[]" class="form-control allowalphanumeric specialization" id="specialization" multiple="multiple">
 												<option value="">Please Select</option>
 												<?php foreach($Specializations as $Row){ ?>
 												<option value="<?php echo $Row->SpecializationID; ?>"><?php echo $Row->SpecializationName; ?></option>
 												<?php } ?>
 												</select>
+												<?php /*?><?php foreach($Specializations as $Row){ ?>
+												<input type="checkbox" name="specialization[]" class="specialization" id="specialization" value="<?php echo $Row->SpecializationID; ?>" /> <?php echo $Row->SpecializationName; ?>
+												<?php } ?><?php */?>
 											</div>
 										</div>
 									</div>
@@ -435,6 +437,7 @@ $this->load->view("template/footer.php");
 					resetForm(validator);
 					resetLocation();
 					clearSelection();
+					$(".specialization option:selected").prop("selected", false);
 			    	var id = $(this).attr("data-id");
 			    	$("#eidt_gf_id").val(id);
 			    	loadData(id);
@@ -461,8 +464,6 @@ $this->load->view("template/footer.php");
 								   $('.specialization').find('option[value="'+ element +'"]').prop('selected', true);
 									
 								});
-								}else if(res.status=='0'){
-									$(".specialization option:selected").prop("selected", false);
 								}
 				            }
 				        });
