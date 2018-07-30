@@ -202,7 +202,7 @@ $this->load->view("template/left.php");
 							</div><br>
 							<div class="form-group col-md-12">
 								<label><?=$this->lang->line('labels')['user_email']?></label>
-								<input name="useremail" id="useremail" class="form-control"  placeholder="User emailid"/>
+								<input name="useremail" id="useremail" class="form-control"  placeholder="User Email"/>
 							</div>
 						</div>
 					</div>

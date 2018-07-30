@@ -168,12 +168,12 @@ class Wards_model extends CI_Model {
         if(is_array($department_id)){
             if(count($department_id) > 0){
                 $department_id = implode(",",$department_id);
-                $res = $this->db->query("select w.id from hms_wards w where w.isDeleted = 0 and w.isActive=1 and w.department_id in ($department_id) and d.isDeleted=0");
+                $res = $this->db->query("select w.id from hms_wards w where w.isDeleted = 0 and w.isActive=1 and w.department_id in ($department_id) ");
                 $res = $res->result_array();
             }
         }else{
             $department_id = intval($department_id);
-            $res = $this->db->query("select w.id from hms_wards w where w.department_id=$department_id and w.isDeleted=0 and w.isActive=1 and d.isDeleted=0");
+            $res = $this->db->query("select w.id from hms_wards w where w.department_id=$department_id and w.isDeleted=0 and w.isActive=1 ");
             $res = $res->result_array();
         }
         $ids = array();

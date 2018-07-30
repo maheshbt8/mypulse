@@ -31,19 +31,21 @@ $this->load->view("template/left.php");
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id1" class=" form-control allowalphanumeric" >
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+										<!--<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>-->
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                                     <select id="branch_id1" class=" form-control allowalphanumeric" >
-									<option value="">Please Select</option>
+									<option value=""></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_branches'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                                     <select id="department_id1" class=" form-control allowalphanumeric" >
-					                <option value="">Please Select</option>
+					                <option value=""></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_departments'];?></option>
 									</select>
                                 </div>
                             </div>
@@ -514,7 +516,7 @@ $this->load->view("template/footer.php");
 				        if (!value.length) return;
 						if($("#hospital_id1").val() != "all" && $("#hospital_id1").val() != "-1"){
 							$selectize_department_id1[0].selectize.disable();
-							$selectize_department_id1[0].selectize.clearOptions();
+							//$selectize_department_id1[0].selectize.clearOptions();
 							$selectize_department_id1[0].selectize.load(function(callback) {
 								xhr && xhr.abort();
 								xhr = $.ajax({
@@ -524,7 +526,7 @@ $this->load->view("template/footer.php");
 									success: function(results) {
 										$selectize_department_id1[0].selectize.enable();
 										var res = $.parseJSON(results);
-										res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_departments'];?>"});
+										//res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_departments'];?>"});
 										callback(res);
 										if(bid==null || bid == undefined){
 											did ="all";
@@ -586,7 +588,7 @@ $this->load->view("template/footer.php");
 						loadTable(value,"");
 
 				        $selectize_branch_id1[0].selectize.disable();
-				        $selectize_branch_id1[0].selectize.clearOptions();
+				        //$selectize_branch_id1[0].selectize.clearOptions();
 				        $selectize_branch_id1[0].selectize.load(function(callback) {
 				            xhr && xhr.abort();
 				            xhr = $.ajax({
@@ -596,7 +598,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_branch_id1[0].selectize.enable();
 									var res = $.parseJSON(results);
-									res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_branches'];?>"});
+									//res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_branches'];?>"});
 				                    callback(res);
 									if(bid==null || bid == undefined){
 										bid ="all";
@@ -644,7 +646,7 @@ $this->load->view("template/footer.php");
 					//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"beds\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
                 }
 
-                loadTable("all","", "");	
+               loadTable(hid,bid,did);	
 
 			});
 

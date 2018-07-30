@@ -34,19 +34,21 @@ $this->load->view("template/left.php");
                                 <div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id1" class=" form-control allowalphanumeric" >
-										<option value="all"><?php echo $this->lang->line('labels')['all_wards'];?></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_hospitals'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                                     <select id="branch_id1" class=" form-control allowalphanumeric" >
-										<option value="">Please Select</option>
+										<option value=""></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_branches'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                      <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                                     <select id="department_id1" class=" form-control allowalphanumeric" >
-										<option value="">Please Select</option>
+									    <option value=""></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_departments'];?></option>
 					                </select>
                                 </div>
                             </div>
@@ -461,7 +463,7 @@ $this->load->view("template/footer.php");
 				        if (!value.length) return;
 						if($("#hospital_id1").val() != "all" && $("#hospital_id1").val() != "-1"){
 							$selectize_department_id1[0].selectize.disable();
-							$selectize_department_id1[0].selectize.clearOptions();
+							//$selectize_department_id1[0].selectize.clearOptions();
 							$selectize_department_id1[0].selectize.load(function(callback) {
 								xhr && xhr.abort();
 								xhr = $.ajax({
@@ -471,7 +473,7 @@ $this->load->view("template/footer.php");
 									success: function(results) {
 										$selectize_department_id1[0].selectize.enable();
 										var res = $.parseJSON(results);
-										res.push({id:"all",text:"all_departments"});
+										//res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_departments'];?>"});
 										callback(res);
 										if(did==null || did == undefined){
 											did ="all";
@@ -531,7 +533,7 @@ $this->load->view("template/footer.php");
                         if (!value.length) return;
                         
 						$selectize_branch_id1[0].selectize.disable();
-				        $selectize_branch_id1[0].selectize.clearOptions();
+				        //$selectize_branch_id1[0].selectize.clearOptions();
 				        $selectize_branch_id1[0].selectize.load(function(callback) {
 				            xhr && xhr.abort();
 				            xhr = $.ajax({
@@ -541,7 +543,7 @@ $this->load->view("template/footer.php");
 				                success: function(results) {
 				                    $selectize_branch_id1[0].selectize.enable();
 									var res = $.parseJSON(results);
-									res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_branches'];?>"});
+									//res.push({id:"all",text:"<?php echo $this->lang->line('labels')['all_branches'];?>"});
 				                    callback(res);
 									if(bid==null || bid == undefined){
 										bid ="all";
