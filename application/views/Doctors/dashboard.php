@@ -908,6 +908,7 @@
 		var _sd = "<?php echo date('Y-m-d'); ?>"; 
 		var _ed = "<?php echo date('Y-m-d'); ?>";
 		
+		
 		var hid = null;
 		<?php
 			if(isset($_GET['hid'])){
@@ -1693,13 +1694,23 @@
 				cancelLabel: '<?php echo $this->lang->line('clear');?>',
 				"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
 			},  
-			ranges: {
+			/*Previous dates data*/
+			/*ranges: {
 				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
 				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
 				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
 				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
 				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			}*/
+			/* future dates data*/
+			ranges: {
+				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
+				'<?php echo $this->lang->line('tomorrow');?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+				'<?php echo $this->lang->line('next_7_day');?>': [moment().add(1, 'days'), moment().add(7, 'days')],
+				'<?php echo $this->lang->line('next_30_day');?>': [moment().add(1, 'days'), moment().add(30, 'days')],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
 			}
 		},cb);
 		

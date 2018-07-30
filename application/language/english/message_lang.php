@@ -138,6 +138,11 @@ $lang['last_30_day'] = "Last 30 day";
 $lang['this_month'] = "This Month";
 $lang['last_month'] = "Last Month";
 
+$lang['tomorrow'] = "Tomorrow";
+$lang['next_7_day'] = "Next 7 days";
+$lang['next_30_day'] = "Next 30 day";
+$lang['next_month'] = "Next Month";
+
 //Index
 $lang["msg_welcome"] = "Welcome %s";
 $lang["msg_profile_udpated"] = "Profile updated successfully...!!!";

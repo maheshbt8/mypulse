@@ -792,6 +792,16 @@ class Auth {
 		return false;
 		}
     }
+	
+	public function getdoctorsSpecializationsById($DoctorID = NULL)
+    {
+   		$Result = $this->CI->db->query("SELECT `SpecializationFKID` FROM `hms_doctors_specialization` WHERE `doc_id`='".$DoctorID."'")->result();
+	   	if($Result){
+		return $Result;
+		}else{
+		return false;
+		}
+    }
 
 }
 

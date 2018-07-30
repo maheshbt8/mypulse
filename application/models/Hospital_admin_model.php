@@ -164,5 +164,26 @@ class Hospital_admin_model extends CI_Model {
         }
         return array();
     }
+	
+	public function updateOtherProfile($id){
+        $arr = array();
+        $data = $_POST;
+        if(isset($data['qualification']))
+            $arr['qualification'] = $data['qualification'];
+        if(isset($data['experience']))
+            $arr['experience'] = $data['experience'];
+			
+		if(isset($data['specialization']))
+            $arr['specialization'] = $data['specialization'];	
+
+        if(count($arr) > 0){
+            $this->db->where("id", $id);
+            if ($this->db->update($this->tblname, $arr)) {
+				$this->logger->log("Hospital Admin profile updated", Logger::HospitalAdmin, $id);
+                return true;
+            }
+        }
+        return false;
+    }	
     
 }

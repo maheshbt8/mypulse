@@ -409,6 +409,7 @@ class Index extends CI_Controller {
 				default: 
 					$data['profile'] = $this->patient_model->getProfile($uid);
                     if($this->auth->isDoctor()){
+						$data['DocSpec'] = $this->auth->getdoctorsSpecializationsById($this->doctors_model->getMyId());
                         $data['data'] = $this->doctors_model->getdoctorsById($this->doctors_model->getMyId());
                     }
                     if($this->auth->isNurse()){
@@ -448,6 +449,10 @@ class Index extends CI_Controller {
             if($this->auth->isReceptinest()){
                 $rid = $this->receptionist_model->getMyId();
                 $this->receptionist_model->updateOtherProfile($rid);
+            }
+			if($this->auth->isHospitalAdmin()){
+                $HAid = $this->hospital_admin_model->getMyId();
+                $this->hospital_admin_model->updateOtherProfile($HAid);
             }
             
             if($res === -1){
