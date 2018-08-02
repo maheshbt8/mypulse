@@ -696,7 +696,9 @@ public function searchDepartment() {
            
             $result = $this->users_model->DepartmentsByBranchID($this->input->get("branch_id"));
 			//print_r($result);exit;
-            echo "<select name='department_id' class='DepartmentID allowalphanumeric form-control'><option value=''>Please Select</option>";
+            echo "<select name='department_id' class='DepartmentID allowalphanumeric form-control'>
+			      <option value=''>Please Select</option>
+				  <option value='all'>Frontdesk / All Departments</option>";
 			foreach($result as $Row){
 			echo "<option value='$Row->id'>$Row->department_name</option>";
 			}
@@ -707,9 +709,9 @@ public function searchDepartment() {
 public function searchDepartmentDoctor() {
        //error_reporting(0);
         if ($this->auth->isLoggedIn()) {
-            $result = $this->users_model->getdoctorsByDepartmentID($this->input->get("dept_id"));
+            $result = $this->users_model->getdoctorsByDepartmentID($this->input->get("dept_id"),$this->input->get("branch_id"));
 			if($result){
-			echo "<select name='doc_id[]' class='DoctorID form-control allowalphanumeric'  multiple='multiple'>
+			echo "<select name='doc_id[]' class='DoctorID  allowalphanumeric'  multiple='multiple'>
 			      <option value=''>Please Select</option>";
 			foreach($result as $Row){
 			echo "<option value='$Row->id'>$Row->FullName</option>";

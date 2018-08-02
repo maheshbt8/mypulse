@@ -140,7 +140,7 @@ $this->load->view("template/left.php");
 											<div class="form-group col-md-6 hide ">
 												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
 												<select name="department_idssss" id="department_id" class="  form-control allowalphanumeric" style="width: 77%">
-												<option value="">Please Select</option>
+												<option value="all">Frontdesk / All Departments</option>
                                                 </select>
 												
 											</div>
@@ -802,11 +802,12 @@ $('.branch_id').on('change',function(){
 $(document).on('change','.DepartmentID',function(){
 
    $departmentid = $(this).val();
+   $branchid = $(".branch_id").val();
    //$(".department_id").attr("disabled",false);
    $.ajax({
 				url: "<?php echo site_url(); ?>index/searchDepartmentDoctor/",
 				type: "GET",
-				data: {"dept_id":$departmentid},
+				data: {"dept_id":$departmentid,"branch_id":$branchid},
 				success: function(results) {
 				$(".doctors-list").html(results);
 					

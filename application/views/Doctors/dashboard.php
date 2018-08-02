@@ -215,21 +215,23 @@
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['status'];?></label>
                                     <select id="status" class=" form-control" style="width: 100%">
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
-										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
-										<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
-										<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<!--<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>-->
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
 					                </select>
                                 </div>
-								<div class="col-md-12">
+								<!--<div class="col-md-12">
 									<div class="checkbox checkbox-icon-black pull-right">
 										<input type="checkbox" id="showClosed">
 										<label for="showClosed">
 											<?php echo $this->lang->line('labels')['ShowClosedAppt'];?>
 										</label>
 									</div>
-								</div>
+								</div>-->
                             </div>
 							<div class="col-md-12">
 								<div class="">

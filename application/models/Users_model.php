@@ -1117,10 +1117,18 @@ public function DepartmentsByBranchID($BranchID = NULL){
 	   }
     }				
   	
-public function getdoctorsByDepartmentID($DeptID = NULL){
-
-    $Result =  $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id` WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`department_id`='$DeptID' GROUP BY doc.user_id ")->result();
-    if($Result){
+public function getdoctorsByDepartmentID($DeptID = NULL,$BRID = NULL){
+	if($DeptID=="all"){
+	$Result = $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc
+								INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id`
+								INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id` 
+								INNER JOIN `hms_branches` AS br ON br.`id`=dep.`branch_id`
+								WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`isActive`='1' AND doc.`isDeleted`='0' AND br.`id`='$BRID' GROUP BY doc.user_id ")->result();
+	}else{
+    $Result =  $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id` WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`isActive`='1' AND doc.`isDeleted`='0' AND doc.`department_id`='$DeptID' GROUP BY doc.user_id ")->result();
+    }
+	
+	if($Result){
 		return $Result;	  
 	   }else{
 	    return false; 

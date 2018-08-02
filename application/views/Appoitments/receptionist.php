@@ -26,48 +26,53 @@ $this->load->view("template/left.php");
 							<header><?php echo $this->lang->line('appoitments');?></header>
 							<div class="custome_card_header">
 								<!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
+								
 								<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-								<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
+								
+								<!--<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
 								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-								<?php $this->load->view('template/exbtn');?>
+								<?php $this->load->view('template/exbtn');?>-->
 							</div>
 	                    </div>
 	                    <div class="card-body ">
 							<div class="col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                                     <input id="sel_date" class="dates form-control" /> 
                                 </div>
-								<div class="form-group col-md-1">
+								<div class="form-group col-md-2 hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id1" class=" form-control " style="width: 75%">
+                                    <select id="hospital_id1" class=" form-control " >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
-                                    <select id="doctor_id1" class=" form-control " style="width: 75%">
+                                    <select id="doctor_id1" class=" form-control " >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
-								<div class="form-group col-md-2">
+								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['status'];?></label>
-                                    <select id="status" class=" form-control" style="width: 100%">
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
-										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
-										<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
-										<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
+                                    <select id="status" class=" form-control" >
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<!--<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>-->
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
+                                		
 					                </select>
                                 </div>
-								<div class="col-md-12">
+								<?php /*?><div class="col-md-12">
 									<div class="checkbox checkbox-icon-black pull-right">
 										<input type="checkbox" id="showClosed">
 										<label for="showClosed">
 											<?php echo $this->lang->line('labels')['ShowClosedAppt'];?>
 										</label>
 									</div>
-								</div>
+								</div><?php */?>
                             </div>
 							<div class="col-md-12">
 								
@@ -242,7 +247,7 @@ $this->load->view("template/footer.php");
 		
 	$(document).ready(function(){
 	
-		var _sd = "";
+		var _sd = ""; 
 		var _ed = "";
 		
 		var hid = null;
@@ -1048,7 +1053,8 @@ $this->load->view("template/footer.php");
 			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		}
 		
-		var start = moment().subtract(29, 'days');
+		//var start = moment().subtract(29, 'days');
+		var start = moment().subtract(0, 'days');
 		var end = moment();
 		
 		$('#sel_date').daterangepicker({
@@ -1061,11 +1067,11 @@ $this->load->view("template/footer.php");
 			},  
 			ranges: {
 				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
-				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
-				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('tomorrow');?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+				'<?php echo $this->lang->line('next_7_day');?>': [moment().add(1, 'days'), moment().add(7, 'days')],
+				'<?php echo $this->lang->line('next_30_day');?>': [moment().add(1, 'days'), moment().add(30, 'days')],
 				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
-				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
 			}
 		},cb);
 		
