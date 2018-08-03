@@ -262,8 +262,37 @@ class Doctors_model extends CI_Model {
             $doc['qualification'] = $data['qualification'];
         if(isset($data['experience']))
             $doc['experience'] = $data['experience'];
-        if(isset($data['specialization']))
-            $doc['specialization'] = $data['specialization'];
+			$specialization = $this->input->post('specialization');
+        /*if($specialization){
+			//print_r($specialization);exit;
+             foreach($specialization as $special=>$key){
+				 $specdata = array("doc_id"=>$id,
+				                   "SpecializationFKID"=>$key,
+								   "ModifiedBy"=>$id,
+								   "ModifiedDate"=>date('Y-m-d H:i:s')
+								   );
+				 $this->db->where("doc_id",$id);
+				 $this->db->update("hms_doctors_specialization",$specdata);
+				 }
+		}*/
+		$specialization = $this->input->post('specialization') ? $this->input->post('specialization') : 0;
+				if($specialization){
+					$this->db->where('doc_id',$id);
+					$this->db->delete('hms_doctors_specialization');
+					
+					foreach($specialization as $spec){
+					   $specializationdata = array('SpecializationFKID' => $spec,
+					   							   'doc_id' =>$id,	
+					                               'CreatedBy' => $this->session->userdata('user_id'),
+					                               'CreatedDate' => date("Y-m-d H:i:s"),
+												   'Status' => 1
+												   );
+						$this->db->insert('hms_doctors_specialization',$specializationdata);						   
+					    $specializationid = $this->db->insert_id(); 
+					    
+					 }
+					 $this->logger->log(" '".$this->auth->getUsername()."' updated specialization", Logger::Doctor, $id);
+				}
 
         if(count($doc) > 0){
             $this->db->where("id", $id);

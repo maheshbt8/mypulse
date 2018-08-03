@@ -79,6 +79,7 @@ $this->load->view("template/left.php");
                                 }
                                 ?>
                                 <li style="<?php echo $showHA;?>" role="presentation"><a href="#tab4" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+								<li style="<?php echo $showHA;?>" role="presentation"><a href="#tab_HA" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
 								
                                 <li style="<?php echo $showDoc;?>" role="presentation"><a href="#tab_doc" aria-controls="doc" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
                                 <li style="<?php echo $showNur;?>" role="presentation"><a href="#tab_nur" aria-controls="nur" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
@@ -275,7 +276,20 @@ $this->load->view("template/left.php");
                                     <div class="col-md-12">
                                         <div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['specilization'];?></label>
-                                            <input class="allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['specilization'];?>" name="specialization" id="specialization" data-ori="<?php echo $data['specialization']; ?>" value="<?php echo $data['specialization']; ?>" />
+                                            <select name="specialization[]" class="allowalphanumeric" id="specialization" multiple="multiple">
+											<?php 
+                                            $specids = array();
+                                            foreach($DocSpec as $dspec){ 
+                                            $specids[] = $dspec->SpecializationFKID; 
+                                            
+                                            ?>
+                                            <?php }	?>
+											<?php 
+											$Specializations = $this->auth->AllSpecializations();
+											foreach($Specializations as $Spec){ ?>
+                                            <option value="<?php echo $Spec->SpecializationID;  ?>" <?php if(in_array($Spec->SpecializationID,$specids)){echo "selected='selected'";} ?>><?php echo $Spec->SpecializationName; ?></option>
+                                            <?php } ?>
+                                            </select>
                                         </div>
                                     </div>
                                     <?php } ?>
