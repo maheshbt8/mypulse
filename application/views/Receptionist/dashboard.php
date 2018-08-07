@@ -137,15 +137,15 @@
                         <!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
                        
 					    <a class="btn btn-success m-b-sm bookNew"  data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-                        <!--<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
-                        <a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-                       	<?php $this->load->view('template/exbtn');?>-->
+                        <!--<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>-->
+                        <a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
+                       	<?php $this->load->view('template/exbtn');?>
 						<a class="btn btn-primary" id="menualrefresh1"><i class="fa fa-refresh"></i></a>
                     </div>
                 </div>
                 <div class="card-body ">
                     <div class="col-md-12">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                             <input id="sel_date" class=" form-control dates" /> 
                         </div>
@@ -161,7 +161,7 @@
                                 <option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
                             </select>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-4">
                             <label><?php echo $this->lang->line('labels')['status'];?></label>
                             <select id="status" class=" form-control" style="width: 75%">
                                 <option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
@@ -227,7 +227,12 @@
                                 <select name="user_id" id="user_id" class=" form-control" style="width: 100%">
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
+							<div class="form-group col-md-6">
+									<label>Search Doctor Name</label>
+									<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+                                    <div id="suggesstion-box"></div>
+								</div>
+                            <div class="form-group col-md-6 hide">
                                 <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                 <select id="hospital_id" class=" form-control" style="width: 100%">
                                 </select>
@@ -244,7 +249,7 @@
                                 <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-6 hide">
                                 <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
                                 <select name="doctor_id" id="doctor_id" class=" form-control" style="width: 100%">
                                 </select>
@@ -631,7 +636,7 @@
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
 			console.log("Gettig Time SLot for : "+d);
-			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#DoctorID").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");
 				$("#noApptTimeSloat").hide();
@@ -718,12 +723,12 @@
 					text: 'Please select checkbox.'
 					});
 			}else{
-				var txt = "<?=$this->lang->line('headings')['deleteMessage']?>";
+				var txt = "<?=$this->lang->line('labels')['delSureAppt'];?>";
 				var msg = $(this).data('msg');
 				if(msg!=undefined)
 					txt = msg;
 				swal({
-					title: '<?=$this->lang->line('headings')['areYouSure']?>',
+					title: 'Are you sure?',
 					text: txt,
 					type: 'warning',
 					showCancelButton: true,
@@ -731,11 +736,11 @@
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes'
 				}).then(function () {
-					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
+					$.post(BASEURL+"/"+at+"/cancel",{ id : selected },function(data){
 						if(data==1){
 							// for(var i=0; i<selected.length; i++){
 							// 	var temp = selected[i];
-							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
 							// }
 							toastr.success('selected item(s) cancled.');
 							if(dt != undefined){
@@ -791,7 +796,7 @@
 			},
 			render: {
 				option_create: function(data, escape) {
-					return '<div class="create"><strong><?=$this->lang->line('unregUser');?></strong></div>';
+					return '<div class="create"><strong style="color:red;"><?=$this->lang->line('unregUser');?></strong></div>';
 				},
 				option: function(item, escape) {
 					console.log(item);
@@ -1168,10 +1173,15 @@
 			ranges: {
 				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
 				'<?php echo $this->lang->line('tomorrow');?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 				'<?php echo $this->lang->line('next_7_day');?>': [moment().add(1, 'days'), moment().add(7, 'days')],
 				'<?php echo $this->lang->line('next_30_day');?>': [moment().add(1, 'days'), moment().add(30, 'days')],
 				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
-				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')],
+				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			}
 		},cb);
 		
@@ -1188,7 +1198,7 @@
 		
 		$('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
-		   if($SearchTerm.length > 3){
+		   if($SearchTerm.length > 2){
 		   $.ajax({
 					url: "<?php echo site_url(); ?>/index/searchDoctor/",
 					type: "POST",
@@ -1221,6 +1231,21 @@
 		$(".DoctorID").val(DID);
 		$("#suggesstion-box").hide();
 		}
+		
+		$('body').delegate('.selected-docotr','click',function(){
+		
+			//if(!value.length) return;
+			
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
+					$("#docAvailability").html(data);
+				});
+				if(isEdit){
+					$("#appoitment_date").attr('disabled',true);
+				}else{
+					$("#appoitment_date").attr('disabled',false);
+				}
+		
+		});
 		$("#menualrefresh1").click(function(){			
 			loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
 		});

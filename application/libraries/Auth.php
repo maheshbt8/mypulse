@@ -802,6 +802,24 @@ class Auth {
 		return false;
 		}
     }
+	
+	public function GetDoctorDepartmentIDByID($DoctorID = NULL){
+	
+		if($DoctorID){
+		
+		$Result = $this->db->query("SELECT `department_id` FROM `hms_doctors` WHERE `id`='".$DoctorID."'")->row();
+		if($Result){
+		return $Result->department_id;
+		}else{
+		
+		return false;
+		}
+		
+		}else{
+		return false;
+		}
+	
+	}
 
 }
 

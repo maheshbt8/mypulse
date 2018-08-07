@@ -123,10 +123,10 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label>Search Doctor Name</label>
-									<input type="text" placeholder="Enter Doctor Name" name="DoctorName" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+									<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
                                     <div id="suggesstion-box"></div>
 								</div>
-								<div class="form-group col-md-6 ">
+								<div class="form-group col-md-6  hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id" class=" form-control allowalphanumeric" >
 					                </select>
@@ -143,7 +143,7 @@ $this->load->view("template/left.php");
                                     <select id="department_id" name="department_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-6 hide">
 									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
 									<select name="doctor_id" id="doctor_id" class=" form-control allowalphanumeric" >
 									</select>
@@ -163,7 +163,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
-									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat allowalphanumeric" id="appoitment_sloat">
+									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat" id="appoitment_sloat">
 									</select>
 									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
 								</div>
@@ -325,7 +325,7 @@ $this->load->view("template/footer.php");
 					required: true
 				},
 				department_id:{
-					required: true
+					//required: true
 				},
 				doctor_id:{
 					required: true
@@ -363,7 +363,7 @@ $this->load->view("template/footer.php");
 					required: "<?php echo $this->lang->line('validation')['selectHospital'];?>"
 				},
 				department_id:{
-					required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+					//required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
 				},
 				appoitment_sloat:{
 					required: "<?php echo $this->lang->line('validation')['requiredAppoitmentSloat']; ?>"
@@ -405,12 +405,12 @@ $this->load->view("template/footer.php");
 			$("#selected_bid").val(tbid);
 			$selectize_doctor_id[0].selectize.disable();
 			$selectize_doctor_id[0].selectize.clear();
-			$selectize_department_id[0].selectize.disable();
+			/*$selectize_department_id[0].selectize.disable();
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
 			$selectize_hospital_id[0].selectize.enable();
-			$selectize_hospital_id[0].selectize.clear();
+			$selectize_hospital_id[0].selectize.clear();*/
 			$selectize_user_id[0].selectize.enable();
 			$selectize_user_id[0].selectize.clear();
 			$("#appoitment_date").attr('disabled',true);
@@ -531,7 +531,7 @@ $this->load->view("template/footer.php");
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
 			console.log("Gettig Time SLot for : "+d);
-			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#DoctorID").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");
 				$("#noApptTimeSloat").hide();
@@ -1088,7 +1088,7 @@ $this->load->view("template/footer.php");
 		
 		$('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
-		   if($SearchTerm.length > 3){
+		   if($SearchTerm.length > 2){
 		   $.ajax({
 					url: "<?php echo site_url(); ?>/index/searchDoctor/",
 					type: "POST",
@@ -1121,6 +1121,22 @@ $this->load->view("template/footer.php");
 		$(".DoctorID").val(DID);
 		$("#suggesstion-box").hide();
 		}
+		
+		$('body').delegate('.selected-docotr','click',function(){
+		
+			//if(!value.length) return;
+			
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
+					$("#docAvailability").html(data);
+				});
+				if(isEdit){
+					$("#appoitment_date").attr('disabled',true);
+				}else{
+					$("#appoitment_date").attr('disabled',false);
+				}
+		
+		});
+		
 	});
 
 </script>

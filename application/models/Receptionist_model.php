@@ -387,7 +387,12 @@ public function updaterecepdoctors($id) {
 			                         $this->db->where('user_id',$recuser_id);
 			$RemovePreviousDoctors = $this->db->delete('hms_receptionist');
             //$rec['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
-            $rec['created_at'] = date("Y-m-d H:i:s");
+            if($data['department_id']=='all'){
+			$rec['IsForAllDoctors'] = 1;
+			}else{
+				$rec['IsForAllDoctors'] = 0;
+				}
+			$rec['created_at'] = date("Y-m-d H:i:s");
 			$rec['modified_at'] = date("Y-m-d H:i:s");
                 $doctorsid = $this->input->post('doc_id') ? $this->input->post('doc_id') : 0;
 				if($doctorsid){

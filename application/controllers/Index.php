@@ -662,12 +662,12 @@ public function searchDoctor() {
 			if($result){
 			echo "<ul class='searchlist'>";
 			foreach($result as $Row){
-				echo "<li class='selected-docotr' rel='$Row->FullName' rel1='$Row->id'>$Row->FullName</li>";
+				echo "<li class='selected-docotr' rel='$Row->FullName' rel1='$Row->id'>".$Row->FullName.'('.$Row->SpecializationName.')'."</li>";
 				}
 				echo "</ul>";
 			}else{
-				return false;
-				//echo "<ul class='searchlist'><li class='selected-docotr'>No Doctor Found</li></ul>";
+				//return false;
+				echo "<ul class='selected-docotr'><li class='selected-docotr'>No Doctor Found</li></ul>";
 				}
         }
     }
@@ -712,7 +712,7 @@ public function searchDepartmentDoctor() {
             $result = $this->users_model->getdoctorsByDepartmentID($this->input->get("dept_id"),$this->input->get("branch_id"));
 			if($result){
 			echo "<select name='doc_id[]' class='DoctorID  allowalphanumeric'  multiple='multiple'>
-			      <option value=''>Please Select</option>";
+			      ";
 			foreach($result as $Row){
 			echo "<option value='$Row->id'>$Row->FullName</option>";
 			}
@@ -726,15 +726,20 @@ public function searchDepartmentDoctor() {
 	
 public function getRecDoctors(){
        $data['ReceptionistID'] = $ReceptionistID = $this->input->get('ID');
-	   $data['RecpUserID']= $RecpUserID = $this->db->query('SELECT `user_id` FROM `hms_receptionist` WHERE `id`='.$ReceptionistID.'')->row();
+	   $data['RecpUserID']= $RecpUserID = $this->db->query('SELECT `user_id`,IsForAllDoctors FROM `hms_receptionist` WHERE `id`='.$ReceptionistID.'')->row();
 	   $data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
-	   $data['Result'] = $this->db->query("SELECT rec.`id`,rec.`user_id`,rec.`doc_id`,dep.`id` AS deptid,brc.`id` AS branchid FROM `hms_receptionist` AS rec
+	   $data['Result'] = $this->db->query("SELECT rec.`id`,rec.`user_id`,rec.`doc_id`,rec.`IsForAllDoctors`,dep.`id` AS deptid,brc.`id` AS branchid FROM `hms_receptionist` AS rec
 INNER JOIN `hms_doctors` AS doc ON doc.`id`=rec.doc_id
 INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id`
 INNER JOIN `hms_branches` AS brc ON brc.`id`= dep.`branch_id`
 WHERE rec.`user_id`='$RecpUserID->user_id' GROUP BY doc.id")->result();
        $data['Departments'] = $this->db->query("SELECT dept.`id` AS deptid,dept.department_name FROM `hms_departments` AS dept WHERE dept.`branch_id`='". $data['Result'][0]->branchid."'  ")->result();
-	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($data['Departments'][0]->deptid); 
+	   if($RecpUserID->IsForAllDoctors=='1'){
+	   $DeptID="all";
+	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($DeptID,$data['Result'][0]->branchid);
+	   }else{
+	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($data['Departments'][0]->deptid);
+	   } 
 	 /*if($Result){
 	    $response = array('Status'=>1,'data'=>$Result);
 	    }else{
