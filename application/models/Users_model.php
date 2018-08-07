@@ -1095,15 +1095,23 @@ public function searchDoctor($q = NULL){
 		$ocusearch = count($search);
 		if($ocusearch > '1'){
 		
-$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_hospitals` AS hos ON hos.`id` = doc.`user_id` WHERE users.`first_name` LIKE '%".$search[0]."%' OR users.`MiddleName` LIKE '%".$search[1]."%' OR users.`last_name` LIKE '%".$search[1]."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
+$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName,spec.`SpecializationName` FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_departments` AS dept ON dept.`id` = doc.`department_id` 
+INNER JOIN `hms_branches` AS bran ON bran.`id`=dept.`branch_id` INNER JOIN `hms_hospitals` AS hos ON hos.`id`=bran.`hospital_id` INNER JOIN `hms_doctors_specialization`  AS docspec ON docspec.`doc_id`= doc.`id` INNER JOIN `hms_mstr_specializations`  AS spec ON spec.`SpecializationID`= docspec.`SpecializationFKID` WHERE users.`first_name` LIKE '%".$search[0]."%' OR users.`MiddleName` LIKE '%".$search[1]."%' OR users.`last_name` LIKE '%".$search[1]."%' OR spec.`SpecializationName` LIKE '%".$search[1]."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
 		}else{
 			
-			$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_hospitals` AS hos ON hos.`id` = doc.`user_id` WHERE users.`first_name` LIKE '%".$search[0]."%' OR users.`MiddleName` LIKE '%".$search[0]."%' OR users.`last_name` LIKE '%".$search[0]."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
+			$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName,spec.`SpecializationName` FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_departments` AS dept ON dept.`id` = doc.`department_id` INNER JOIN `hms_branches` AS bran ON bran.`id`=dept.`branch_id` INNER JOIN `hms_hospitals` AS hos ON hos.`id`=bran.`hospital_id` INNER JOIN `hms_doctors_specialization`  AS docspec ON docspec.`doc_id`= doc.`id` INNER JOIN `hms_mstr_specializations`  AS spec ON spec.`SpecializationID`= docspec.`SpecializationFKID` WHERE users.`first_name` LIKE '%".$search[0]."%' OR users.`MiddleName` LIKE '%".$search[0]."%' OR users.`last_name` LIKE '%".$search[0]."%' OR spec.`SpecializationName` LIKE '%".$search[0]."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
 			}
+			
+			
 		if($Result->num_rows() > 0){
 		    return $Result->result();
 		}else{
-		  return false;
+			$Result = $this->db->query("SELECT doc.`id`,CONCAT_WS(' ',users.`first_name`,users.`MiddleName`,users.`last_name`) AS FullName,spec.`SpecializationName` FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS users ON users.`id`=doc.user_id INNER JOIN `hms_departments` AS dept ON dept.`id` = doc.`department_id` INNER JOIN `hms_branches` AS bran ON bran.`id`=dept.`branch_id` INNER JOIN `hms_hospitals` AS hos ON hos.`id`=bran.`hospital_id` INNER JOIN `hms_doctors_specialization`  AS docspec ON docspec.`doc_id`= doc.`id` INNER JOIN `hms_mstr_specializations`  AS spec ON spec.`SpecializationID`= docspec.`SpecializationFKID` WHERE spec.`SpecializationName` LIKE '%".$q."%' AND users.isDeleted='0' AND users.isActive='1' AND doc.isDeleted='0' AND doc.isActive='1' AND hos.id = '".$this->session->userdata('hospital_id')."' AND users.role='3' GROUP BY doc.`user_id` ");
+		  if($Result->num_rows() > 0){
+		    return $Result->result();
+		}else{
+			return false;
+			}
 		}	
 	}
 	
@@ -1117,10 +1125,18 @@ public function DepartmentsByBranchID($BranchID = NULL){
 	   }
     }				
   	
-public function getdoctorsByDepartmentID($DeptID = NULL){
-
-    $Result =  $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id` WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`department_id`='$DeptID' GROUP BY doc.user_id ")->result();
-    if($Result){
+public function getdoctorsByDepartmentID($DeptID = NULL,$BRID = NULL){
+	if($DeptID=="all"){
+	$Result = $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc
+								INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id`
+								INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id` 
+								INNER JOIN `hms_branches` AS br ON br.`id`=dep.`branch_id`
+								WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`isActive`='1' AND doc.`isDeleted`='0' AND br.`id`='$BRID' GROUP BY doc.user_id ")->result();
+	}else{
+    $Result =  $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc INNER JOIN `hms_users` AS usr ON usr.`id`=doc.`user_id` WHERE usr.`isActive`='1' AND usr.`isDeleted`='0' AND doc.`isActive`='1' AND doc.`isDeleted`='0' AND doc.`department_id`='$DeptID' GROUP BY doc.user_id ")->result();
+    }
+	
+	if($Result){
 		return $Result;	  
 	   }else{
 	    return false; 

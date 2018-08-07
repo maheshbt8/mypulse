@@ -26,48 +26,53 @@ $this->load->view("template/left.php");
 							<header><?php echo $this->lang->line('appoitments');?></header>
 							<div class="custome_card_header">
 								<!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
+								
 								<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-								<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
+								
+								<!--<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
 								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-								<?php $this->load->view('template/exbtn');?>
+								<?php $this->load->view('template/exbtn');?>-->
 							</div>
 	                    </div>
 	                    <div class="card-body ">
 							<div class="col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                                     <input id="sel_date" class="dates form-control" /> 
                                 </div>
-								<div class="form-group col-md-1">
+								<div class="form-group col-md-2 hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id1" class=" form-control " style="width: 75%">
+                                    <select id="hospital_id1" class=" form-control " >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
-                                    <select id="doctor_id1" class=" form-control " style="width: 75%">
+                                    <select id="doctor_id1" class=" form-control " >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
-								<div class="form-group col-md-2">
+								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['status'];?></label>
-                                    <select id="status" class=" form-control" style="width: 100%">
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
-										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
-										<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
-										<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
+                                    <select id="status" class=" form-control" >
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<!--<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>-->
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
+                                		
 					                </select>
                                 </div>
-								<div class="col-md-12">
+								<?php /*?><div class="col-md-12">
 									<div class="checkbox checkbox-icon-black pull-right">
 										<input type="checkbox" id="showClosed">
 										<label for="showClosed">
 											<?php echo $this->lang->line('labels')['ShowClosedAppt'];?>
 										</label>
 									</div>
-								</div>
+								</div><?php */?>
                             </div>
 							<div class="col-md-12">
 								
@@ -118,10 +123,10 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label>Search Doctor Name</label>
-									<input type="text" placeholder="Enter Doctor Name" name="DoctorName" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+									<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
                                     <div id="suggesstion-box"></div>
 								</div>
-								<div class="form-group col-md-6 ">
+								<div class="form-group col-md-6  hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id" class=" form-control allowalphanumeric" >
 					                </select>
@@ -138,7 +143,7 @@ $this->load->view("template/left.php");
                                     <select id="department_id" name="department_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
-								<div class="form-group col-md-6">
+								<div class="form-group col-md-6 hide">
 									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
 									<select name="doctor_id" id="doctor_id" class=" form-control allowalphanumeric" >
 									</select>
@@ -158,7 +163,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
-									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat allowalphanumeric" id="appoitment_sloat">
+									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat" id="appoitment_sloat">
 									</select>
 									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
 								</div>
@@ -242,7 +247,7 @@ $this->load->view("template/footer.php");
 		
 	$(document).ready(function(){
 	
-		var _sd = "";
+		var _sd = ""; 
 		var _ed = "";
 		
 		var hid = null;
@@ -320,7 +325,7 @@ $this->load->view("template/footer.php");
 					required: true
 				},
 				department_id:{
-					required: true
+					//required: true
 				},
 				doctor_id:{
 					required: true
@@ -358,7 +363,7 @@ $this->load->view("template/footer.php");
 					required: "<?php echo $this->lang->line('validation')['selectHospital'];?>"
 				},
 				department_id:{
-					required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+					//required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
 				},
 				appoitment_sloat:{
 					required: "<?php echo $this->lang->line('validation')['requiredAppoitmentSloat']; ?>"
@@ -400,12 +405,12 @@ $this->load->view("template/footer.php");
 			$("#selected_bid").val(tbid);
 			$selectize_doctor_id[0].selectize.disable();
 			$selectize_doctor_id[0].selectize.clear();
-			$selectize_department_id[0].selectize.disable();
+			/*$selectize_department_id[0].selectize.disable();
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
 			$selectize_hospital_id[0].selectize.enable();
-			$selectize_hospital_id[0].selectize.clear();
+			$selectize_hospital_id[0].selectize.clear();*/
 			$selectize_user_id[0].selectize.enable();
 			$selectize_user_id[0].selectize.clear();
 			$("#appoitment_date").attr('disabled',true);
@@ -526,7 +531,7 @@ $this->load->view("template/footer.php");
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
 			console.log("Gettig Time SLot for : "+d);
-			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#DoctorID").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");
 				$("#noApptTimeSloat").hide();
@@ -1048,7 +1053,8 @@ $this->load->view("template/footer.php");
 			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		}
 		
-		var start = moment().subtract(29, 'days');
+		//var start = moment().subtract(29, 'days');
+		var start = moment().subtract(0, 'days');
 		var end = moment();
 		
 		$('#sel_date').daterangepicker({
@@ -1061,11 +1067,11 @@ $this->load->view("template/footer.php");
 			},  
 			ranges: {
 				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
-				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
-				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('tomorrow');?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+				'<?php echo $this->lang->line('next_7_day');?>': [moment().add(1, 'days'), moment().add(7, 'days')],
+				'<?php echo $this->lang->line('next_30_day');?>': [moment().add(1, 'days'), moment().add(30, 'days')],
 				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
-				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
 			}
 		},cb);
 		
@@ -1082,7 +1088,7 @@ $this->load->view("template/footer.php");
 		
 		$('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
-		   if($SearchTerm.length > 3){
+		   if($SearchTerm.length > 2){
 		   $.ajax({
 					url: "<?php echo site_url(); ?>/index/searchDoctor/",
 					type: "POST",
@@ -1115,6 +1121,22 @@ $this->load->view("template/footer.php");
 		$(".DoctorID").val(DID);
 		$("#suggesstion-box").hide();
 		}
+		
+		$('body').delegate('.selected-docotr','click',function(){
+		
+			//if(!value.length) return;
+			
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
+					$("#docAvailability").html(data);
+				});
+				if(isEdit){
+					$("#appoitment_date").attr('disabled',true);
+				}else{
+					$("#appoitment_date").attr('disabled',false);
+				}
+		
+		});
+		
 	});
 
 </script>

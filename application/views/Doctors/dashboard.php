@@ -195,9 +195,9 @@
 							<header><?php echo $this->lang->line('upcomingappoitments');?></header>
 							<div class="custome_card_header" style="">
 								<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-								<?php /*?><a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
-								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
-								<?php $this->load->view('template/exbtn');?><?php */?>
+								<?php /*?><a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a><?php */?>
+								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
+								<?php $this->load->view('template/exbtn');?>
 							</div>
 	                    </div>
 	                    <div class="card-body ">
@@ -215,21 +215,23 @@
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['status'];?></label>
                                     <select id="status" class=" form-control" style="width: 100%">
-										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
-										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
-										<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
-										<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<!--<option value="0"><?php //echo  $this->lang->line('labels')['pending']; ?></option>-->
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<!--<option value="2"><?php //echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
 					                </select>
                                 </div>
-								<div class="col-md-12">
+								<!--<div class="col-md-12">
 									<div class="checkbox checkbox-icon-black pull-right">
 										<input type="checkbox" id="showClosed">
 										<label for="showClosed">
 											<?php echo $this->lang->line('labels')['ShowClosedAppt'];?>
 										</label>
 									</div>
-								</div>
+								</div>-->
                             </div>
 							<div class="col-md-12">
 								<div class="">
@@ -1295,12 +1297,12 @@
 					text: 'Please select checkbox.'
 					});
 			}else{
-				var txt = "<?=$this->lang->line('headings')['deleteMessage']?>";
+				var txt = "<?=$this->lang->line('labels')['delSureAppt'];?>";
 				var msg = $(this).data('msg');
 				if(msg!=undefined)
 					txt = msg;
 				swal({
-					title: '<?=$this->lang->line('headings')['areYouSure']?>',
+					title: 'Are you sure?',
 					text: txt,
 					type: 'warning',
 					showCancelButton: true,
@@ -1308,11 +1310,11 @@
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes'
 				}).then(function () {
-					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
+					$.post(BASEURL+"/"+at+"/cancel",{ id : selected },function(data){
 						if(data==1){
 							// for(var i=0; i<selected.length; i++){
 							// 	var temp = selected[i];
-							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
+							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
 							// }
 							toastr.success('selected item(s) cancled.');
 							if(dt != undefined){
@@ -1707,10 +1709,15 @@
 			ranges: {
 				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
 				'<?php echo $this->lang->line('tomorrow');?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+				'<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 				'<?php echo $this->lang->line('next_7_day');?>': [moment().add(1, 'days'), moment().add(7, 'days')],
 				'<?php echo $this->lang->line('next_30_day');?>': [moment().add(1, 'days'), moment().add(30, 'days')],
 				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
-				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')],
+				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
 			}
 		},cb);
 		

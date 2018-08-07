@@ -440,8 +440,12 @@ class Appoitments_model extends CI_Model {
             $data['user_id'] = $this->auth->getUserid();
         }else{
             $data['user_id'] = intval($data['user_id']);
+			$docid = $data['doctor_id'];
+			$GetDocDepartmentID = $this->db->query("SELECT department_id FROM hms_doctors WHERE id=$docid ")->row();
+			$DepartmentID = $GetDocDepartmentID->department_id;
+			$data['department_id'] = $DepartmentID;
         }
-        if ($this->db->insert($this->tblname, $data)) {
+		if ($this->db->insert($this->tblname, $data)) {
             $id = $this->db->insert_id();
 			$this->logger->log("New appointment created", Logger::Appointment, $id);
 

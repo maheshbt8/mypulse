@@ -79,7 +79,9 @@ $this->load->view("template/left.php");
                                 }
                                 ?>
                                 <li style="<?php echo $showHA;?>" role="presentation"><a href="#tab4" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['hospitalAssociation'];?></a></li>
+								<?php if($this->auth->isHospitalAdmin()){ ?>
 								<li style="<?php echo $showHA;?>" role="presentation"><a href="#tab_HA" aria-controls="ha" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
+								<?php } ?>
 								
                                 <li style="<?php echo $showDoc;?>" role="presentation"><a href="#tab_doc" aria-controls="doc" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>
                                 <li style="<?php echo $showNur;?>" role="presentation"><a href="#tab_nur" aria-controls="nur" role="tab" data-toggle="tab"><?php echo $this->lang->line('labels')['other'];?></a></li>

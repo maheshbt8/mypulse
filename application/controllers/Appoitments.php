@@ -231,9 +231,15 @@ class Appoitments extends CI_Controller {
                 $did = null;
             if($st === "all"){    
                 $st = null;
+				$all_status = array(0,1,2,4);
+            }
+			
+			if($st === "all_inc_closed"){    
+                $st = null;
+				$all_status = array(0,1,2,3,4);
             }
             
-            $all_status = array(0,1,2,4);
+            
             $status = array();
             if($st !== null){
                 $status[] = $st;
@@ -330,10 +336,16 @@ class Appoitments extends CI_Controller {
             if($hid === "all")
                 $hid = null;
             
-            if($st === "all")    
+            if($st === "all"){    
                 $st = null;
+				$all_status = array(0,1,2,4);
+            }
+			
+			if($st === "all_inc_closed"){    
+                $st = null;
+				$all_status = array(0,1,2,3,4);
+            }
 
-            $all_status = array(0,1,2,4);
             $status = array();
             if($st !== null){
                 $status[] = $st;
