@@ -31,7 +31,7 @@
                             <input type="hidden" name="eidt_gf_id" value="<?php echo $doc_id;?>" />
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label><?php echo $this->lang->line('labels')['noAppInterval'];?></label>
+                                    <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
                                     <input style="width:50px" value="<?php echo $no_appt_handle;?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['noAppInterval'];?>" name="no_appt_handle" id="no_appt_handle" />
                                 </div>
                                 <div class="form-group">
