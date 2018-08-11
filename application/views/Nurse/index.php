@@ -292,12 +292,12 @@ $this->load->view("template/left.php");
 												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
 											</div>
 										</div>
-										<div class="col-md-12">
+										<?php /*?><div class="col-md-12">
 											<div class="form-group col-md-6">
 												<label><?php echo $this->lang->line('labels')['specilizations'];?></label>
 												<input class="form-control textinputfields" type="text" placeholder="<?php echo $this->lang->line('labels')['specilizations'];?>" name="specialization" id="specialization" />
 											</div>
-										</div>
+										</div><?php */?>
 
 									</div>
 								</div>
@@ -713,11 +713,12 @@ $('.branch_id').on('change',function(){
 $(document).on('change','.DepartmentID',function(){
 
    $departmentid = $(this).val();
+   $branchid = $(".branch_id").val();
    //$(".department_id").attr("disabled",false);
    $.ajax({
 				url: "<?php echo site_url(); ?>index/searchDepartmentDoctor/",
 				type: "GET",
-				data: {"dept_id":$departmentid},
+				data: {"dept_id":$departmentid,"branch_id":$branchid},
 				success: function(results) {
 				$(".doctors-list").html(results);
 					
@@ -727,7 +728,7 @@ $(document).on('change','.DepartmentID',function(){
 				}
 			})
 
-	}); 
+});  
 					
 
 $('#nurse').on('click', '.GetDoctorsByNurseID', function(e){

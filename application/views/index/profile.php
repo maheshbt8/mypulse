@@ -330,13 +330,13 @@ $this->load->view("template/left.php");
                                         
 										<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['hospital'];?></label>
-											<input value="<?php echo isset($data['hospital_name']) ? $data['hospital_name'] : "";?>" class="textinputfields " type="text"  />
+											<input value="<?php echo isset($data['hospital_name']) ? $data['hospital_name'] : "";?>" class="textinputfields hospital_name " type="text"  />
 											
                                         </div>
 										<?php if(!$this->auth->isHospitalAdmin()){ ?>
 										<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['branch'];?></label>
-                                            <input value="<?php echo isset($data['branch_name']) ? $data['branch_name'] : "";?>" class="textinputfields " type="text" />
+                                            <input value="<?php echo isset($data['branch_name']) ? $data['branch_name'] : "";?>" class="textinputfields BranchName " type="text" />
 											
                                         </div>
                                         
@@ -349,17 +349,20 @@ $this->load->view("template/left.php");
 										<?php if(!$this->auth->isMedicalLab() && !$this->auth->isMedicalStore()){?>
 										<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['department'];?></label>
-                                            <input value="<?php echo isset($data['department_name']) ? $data['department_name'] : "";?>" class="allowalphanumeric " type="text" />
-											
+                                            <?php if($this->auth->isDoctor()){ ?>
+											<input value="<?php echo isset($data['department_name']) ? $data['department_name'] : "";?>" class="allowalphanumeric DepartmentName " type="text" />
+											<?php }else{ ?>
+											<input value="<?php if($data['IsForAllDoctors']=='1'){echo "All Departments";}else{ echo isset($data['department_name']) ? $data['department_name'] : "";}?>" class="allowalphanumeric DepartmentName " type="text" />
+											<?php } ?>
                                         </div>
 										
-										<?php if($this->auth->isReceptinest()){ ?>
+										<?php /*if($this->auth->isReceptinest()){ ?>
 										<div class="form-group col-md-6">
                                             <label><?php echo $this->lang->line('labels')['doctor'];?></label>
                                             <input value="<?php echo isset($data['doctor_name']) ? $data['doctor_name'] : "";?>" class="textinputfields " type="text" />
 											
                                         </div>
-										<?php } ?>
+										<?php } */?>
                                         <?php  } } ?>
                                         
                                         
@@ -797,6 +800,10 @@ $this->load->view("template/footer.php");
             //$("#passwordhint").show();
             $("#useremail").prop("disabled",true);
             $("#mobile").prop("disabled",true);
+			$(".hospital_name").prop("disabled",true);
+			$(".BranchName").prop("disabled",true);
+			$(".DepartmentName").prop("disabled",true);
+			
         }
 
         disableFields();
