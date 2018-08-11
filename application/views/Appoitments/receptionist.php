@@ -122,8 +122,14 @@ $this->load->view("template/left.php");
 									</select>
 								</div>
 								<div class="form-group col-md-6">
-									<label>Search Doctor Name</label>
-									<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+									<label>Selct Doctor</label>
+									<select name="" class="DoctorName form-control allowalphanumeric" >
+										<option value="" >Please Select</option>
+										<?php foreach($Doctors as $Docs){ ?>
+										<option value="<?php echo $Docs->id; ?>"><?php echo $Docs->FullName; ?></option>
+										<?php } ?>
+									</select>
+									<!--<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />-->                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
                                     <div id="suggesstion-box"></div>
 								</div>
 								<div class="form-group col-md-6  hide">
@@ -378,8 +384,9 @@ $this->load->view("template/footer.php");
 
         $(".appt_submit").click(function(){
             var appst = $("#appoitment_sloat").val();
+			var DocID = $(".DoctorName").val();
 
-            if(validator.form() && appst != null && appst != undefined) {
+            if(validator.form() && appst != null && appst != undefined && DocID !=null && DocID != undefined) {
                 $("#form").submit();
             }
         });
@@ -1086,7 +1093,19 @@ $this->load->view("template/footer.php");
 		$("#sel_date").val("");	
 		loadTable("all","all");	
 		
-		$('.DoctorName').on('keyup', function(){
+		$('.DoctorName').on('change',function(){
+		$(".DoctorID").val($(this).val());
+		$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).val()},function(data){
+					$("#docAvailability").html(data);
+				});
+				if(isEdit){
+					$("#appoitment_date").attr('disabled',true);
+				}else{
+					$("#appoitment_date").attr('disabled',false);
+				}
+		});
+		
+		<?php /*?>$('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
 		   if($SearchTerm.length > 2){
 		   $.ajax({
@@ -1097,10 +1116,6 @@ $this->load->view("template/footer.php");
 						callback();
 					},
 					success: function(res) {
-						//res = $.parseJSON(res);
-						/*$.each($.parseJSON(res), function(k, v) {
-   						 //alert(k['id'] + ' is ' + v['id']);
-						});*/
 						if(res){
 						$("#suggesstion-box").show();
 			$("#suggesstion-box").html(res);
@@ -1135,7 +1150,7 @@ $this->load->view("template/footer.php");
 					$("#appoitment_date").attr('disabled',false);
 				}
 		
-		});
+		});<?php */?>
 		
 	});
 

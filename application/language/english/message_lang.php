@@ -116,6 +116,7 @@ $lang['enterValidEmail'] = "Enter valid email";
 $lang['enterValidAadhaar'] = "Enter valid aadhaar number";
 $lang['otp_verification_incomplete'] = 'OPT verification timed out. Please register again with valid mobile number';
 $lang['set_password'] = 'Set Password';
+$lang['SearchForUsers'] = 'Search by Hospital name, Doctor name or Specialisation ';
 $lang['roles'] = array(
     -1 => '',
     1 => 'Super Admin',

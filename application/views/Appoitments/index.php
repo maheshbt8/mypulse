@@ -69,7 +69,14 @@ $this->load->view("template/left.php");
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
-				  			<div class="col-md-12">
+                        	<div class="col-md-12">
+                            	<div class="form-group col-md-6">
+									<label><?php echo $this->lang->line('validation')['selectDoctor'];?></label>
+									<input type="text" placeholder="<?php echo $this->lang->line('SearchForUsers');?> " name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+                                    <div id="suggesstion-box"></div>
+								</div>
+                            </div>
+				  			<div class="col-md-12 hide">
 								<!--<div class="form-group col-md-6">
 									<label>User</label>
 									<select name="user_id" id="user_id" class=" form-control" style="width: 100%">
@@ -88,7 +95,7 @@ $this->load->view("template/left.php");
 					                </select>
                                 </div>
 							</div>
-							<div class="col-md-12">
+							<div class="col-md-12 hide">
 								<div class="form-group col-md-6">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                                     <select id="department_id" name="department_id" class=" form-control allowalphanumeric">
@@ -130,7 +137,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3" readonly="readonly"></textarea>
 								</div>
 							</div>				  		
 						</div>
@@ -508,7 +515,7 @@ $this->load->view("template/footer.php");
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
 			console.log("Gettig Time SLot for : "+d);
-			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#DoctorID").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");
 				$("#noApptTimeSloat").hide();
@@ -795,6 +802,53 @@ $this->load->view("template/footer.php");
 		
 		$("#sel_date").val("");	
 		loadTable("all","");
+		
+		$('.DoctorName').on('keyup', function(){
+		   $SearchTerm = $(this).val();
+		   if($SearchTerm.length > 2){
+		   $.ajax({
+					url: "<?php echo site_url(); ?>/index/searchDoctor/",
+					type: "POST",
+					data: {"q":$SearchTerm},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						//res = $.parseJSON(res);
+						/*$.each($.parseJSON(res), function(k, v) {
+   						 //alert(k['id'] + ' is ' + v['id']);
+						});*/
+						if(res){
+						$("#suggesstion-box").show();
+			$("#suggesstion-box").html(res);
+			$(".DoctorName").css("background","#FFF");
+						}else{
+							$(".DoctorID").val('');
+							}
+					}
+				});
+		   }
+		});
+		$('body').delegate('.selected-docotr','click',function(){
+			//alert($(this).attr('rel'));
+			selectDoctor($(this).attr('rel'),$(this).attr('rel1'));
+			});
+		function selectDoctor(DName,DID) {
+		$(".DoctorName").val(DName);
+		$(".DoctorID").val(DID);
+		$("#suggesstion-box").hide();
+		}
+		
+		$('body').delegate('.selected-docotr','click',function(){
+		
+			//if(!value.length) return;
+			
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
+					$("#docAvailability").html(data);
+				});
+				$("#appoitment_date").attr('disabled',false);
+				
+		});
 
 	});
 
