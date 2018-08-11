@@ -72,7 +72,7 @@ $this->load->view("template/left.php");
                         	<div class="col-md-12">
                             	<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('validation')['selectDoctor'];?></label>
-									<input type="text" placeholder="<?php echo $this->lang->line('SearchForUsers');?>" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+									<input type="text" placeholder="<?php echo $this->lang->line('SearchForUsers');?> " name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
                                     <div id="suggesstion-box"></div>
 								</div>
                             </div>

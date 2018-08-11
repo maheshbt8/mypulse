@@ -663,7 +663,7 @@ public function searchDoctor() {
 			if($result){
 			echo "<ul class='searchlist'>";
 			foreach($result as $Row){
-				echo "<li class='selected-docotr' rel='$Row->FullName' rel1='$Row->id'>".$Row->FullName.'('.$Row->name.', '.$Row->SpecializationName.')'."</li>";
+				echo "<li class='selected-docotr' rel='$Row->FullName' rel1='$Row->id'>".$Row->FullName.'( '.$Row->name.', '.$Row->SpecializationName.' )'."</li>";
 				}
 				echo "</ul>";
 			}else{
