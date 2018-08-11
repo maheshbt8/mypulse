@@ -752,7 +752,14 @@ class Appoitments_model extends CI_Model {
         
         //Get Available TimeSloats
         $availableTimeSloats = array();
+		$CurrentTIme = date('H:i');
+		$CurrentDay = date('d');
+		$SelectedDay = date('d', strtotime($date));
+		
         foreach($timeSloats as $slot){
+		$slotstarttime = date('H:i',strtotime($slot['start']));
+		//print_r($slotstarttime);//exit;
+		if(($SelectedDay == $CurrentDay ) && ($slotstarttime > $CurrentTIme)){
             $st = strtotime($slot['start']);
             $et = strtotime($slot['end']);
             $mins = $et - $st;
@@ -785,6 +792,42 @@ class Appoitments_model extends CI_Model {
                     $availableTimeSloats[] = $slot;
                 }
             }
+		  }elseif($SelectedDay > $CurrentDay ){
+		  
+            $st = strtotime($slot['start']);
+            $et = strtotime($slot['end']);
+            $mins = $et - $st;
+            $mins = floor($mins/60);
+
+            $tot_appt = floor($mins/$apptInterval);
+
+            $this->db->where('doctor_id',$doc_id);
+            $this->db->where('appoitment_date',$date);
+            $this->db->where('appoitment_time_start',date('H:i:s',$st));
+            $this->db->where('appoitment_time_end',date('H:i:s',$et));
+            $this->db->where('status',0);
+            $this->db->where('isDeleted',0);
+
+            $appt = $this->db->get($this->tblname);
+            $appt = $appt->result_array();
+            if(count($appt) < $tot_appt){
+                $slot['remaining'] = $tot_appt - count($appt);
+                $hasSlot = false;
+                foreach($availableTimeSloats as $temp){
+                    $_s = $temp['s'];
+                    $_e = $temp['e'];
+                    if( ($slot['s'] <= $_s && $slot['e'] >= $_s) ||
+                        ($slot['e'] <= $_e && $slot['e'] >= $_e) 
+                    ){
+                        $hasSlot = true;
+                    }
+                }
+                if(!$hasSlot){
+                    $availableTimeSloats[] = $slot;
+                }
+            }
+		  
+		  }
         }
         return $availableTimeSloats;
     }

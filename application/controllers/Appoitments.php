@@ -23,6 +23,7 @@ class Appoitments extends CI_Controller {
             $this->load->view('Appoitments/index', $data);
         }
         else if($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())){
+		    $data['Doctors'] = $this->users_model->GetActiveDoctors($this->auth->getUserid());
             $this->load->view('Appoitments/receptionist', $data);
         }
         else if($this->auth->isLoggedIn() && $this->auth->isDoctor()){

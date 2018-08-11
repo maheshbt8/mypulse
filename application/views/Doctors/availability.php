@@ -73,7 +73,7 @@
                                     <label><?php echo $this->lang->line('labels')['repeat_interval'];?></label>
                                     <select class="form-control " name="repeat_interval" id="repeat_interval" >
                                         <option value="0"><?php echo $this->lang->line('labels')['weekly'];?></option>
-                                        <option value="1"><?php echo $this->lang->line('labels')['monthly'];?></option>
+                                        <!--<option value="1"><?php echo $this->lang->line('labels')['monthly'];?></option>-->
                                         <option value="2"><?php echo $this->lang->line('labels')['custom'];?></option>
                                     </select>
                                 </div>
@@ -104,11 +104,11 @@
                         <div class="row" >
                             <div class="form-group col-md-6" style="">
                                 <label id="stlbl"><?php echo $this->lang->line('labels')['date'];?></label>
-                                <input type="text" class="form-control date-picker" name="date" id="date" />
+                                <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
                             </div>
                             <div class="form-group col-md-6" id="endDiv">
                                 <label><?php echo $this->lang->line('labels')['end_date'];?></label>
-                                <input type="text" class="form-control date-picker" name="end_on" id="end_on" />
+                                <input type="text" class="form-control date-picker-nopast" name="end_on" id="end_on" />
                             </div>
                         </div>
                         <div class="row">
@@ -327,7 +327,7 @@
                 $(".repeat_on").rules("remove","required");
             }else if(val == 2){
                 $("#stlbl").html('<?php echo $this->lang->line('labels')['date'];?>');
-                $("#endDiv").hide();
+                //$("#endDiv").hide();
                 $(".repeat_on").rules("remove","required");
                 $("#end_on").rules('remove','required');
             }

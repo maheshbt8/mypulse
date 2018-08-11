@@ -228,8 +228,14 @@
                                 </select>
                             </div>
 							<div class="form-group col-md-6">
-									<label>Search Doctor Name</label>
-									<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+									<label>Select Doctor</label>
+									<select name="" class="DoctorName form-control allowalphanumeric" >
+										<option value="" >Please Select</option>
+										<?php foreach($Doctors as $Docs){ ?>
+										<option value="<?php echo $Docs->id; ?>"><?php echo $Docs->FullName; ?></option>
+										<?php } ?>
+									</select>
+									<!--<input type="text" placeholder="Enter Doctor Name" name="" class="DoctorName form-control allowalphanumeric" value=""  />-->                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
                                     <div id="suggesstion-box"></div>
 								</div>
                             <div class="form-group col-md-6 hide">
@@ -483,8 +489,9 @@
 
         $(".appt_submit").click(function(){
             var appst = $("#appoitment_sloat").val();
+			var DocID = $(".DoctorName").val();
 
-            if(validator.form() && appst != null && appst != undefined) {
+            if(validator.form() && appst != null && appst != undefined && DocID !=null && DocID != undefined) {
                 $("#form").submit();
             }
         });
@@ -1196,47 +1203,9 @@
 		$("#sel_date").val("");	
 		loadTable("all","all");	
 		
-		$('.DoctorName').on('keyup', function(){
-		   $SearchTerm = $(this).val();
-		   if($SearchTerm.length > 2){
-		   $.ajax({
-					url: "<?php echo site_url(); ?>/index/searchDoctor/",
-					type: "POST",
-					data: {"q":$SearchTerm},
-					error: function() {
-						callback();
-					},
-					success: function(res) {
-						//res = $.parseJSON(res);
-						/*$.each($.parseJSON(res), function(k, v) {
-   						 //alert(k['id'] + ' is ' + v['id']);
-						});*/
-						if(res){
-						$("#suggesstion-box").show();
-			$("#suggesstion-box").html(res);
-			$(".DoctorName").css("background","#FFF");
-						}else{
-							$(".DoctorID").val('');
-							}
-					}
-				});
-		   }
-		});
-		$('body').delegate('.selected-docotr','click',function(){
-			//alert($(this).attr('rel'));
-			selectDoctor($(this).attr('rel'),$(this).attr('rel1'));
-			});
-		function selectDoctor(DName,DID) {
-		$(".DoctorName").val(DName);
-		$(".DoctorID").val(DID);
-		$("#suggesstion-box").hide();
-		}
-		
-		$('body').delegate('.selected-docotr','click',function(){
-		
-			//if(!value.length) return;
-			
-				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
+		$('.DoctorName').on('change',function(){
+		$(".DoctorID").val($(this).val());
+		$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).val()},function(data){
 					$("#docAvailability").html(data);
 				});
 				if(isEdit){
@@ -1244,8 +1213,8 @@
 				}else{
 					$("#appoitment_date").attr('disabled',false);
 				}
-		
 		});
+		
 		$("#menualrefresh1").click(function(){			
 			loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
 		});
