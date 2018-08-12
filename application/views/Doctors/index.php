@@ -264,10 +264,10 @@ $this->load->view("template/left.php");
 												<input class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['experience'];?>" name="experience" id="experience" />
 											</div>
 										</div>
-										<div class="col-md-12">
+										<div class="col-md-6">
 											<div class="form-group">
 												<label><?php echo $this->lang->line('labels')['specilizations'];?></label>
-												<select name="specialization[]" class="form-control allowalphanumeric specialization" id="specialization" multiple="multiple">
+												<select name="specialization[]" class=" allowalphanumeric specialization" id="specialization" multiple="multiple">
 												<option value="">Please Select</option>
 												<?php foreach($Specializations as $Row){ ?>
 												<option value="<?php echo $Row->SpecializationID; ?>"><?php echo $Row->SpecializationName; ?></option>

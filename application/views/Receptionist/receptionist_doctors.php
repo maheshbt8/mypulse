@@ -39,12 +39,12 @@ $doctorslinkingstatus = $recdoc->IsForAllDoctors;
 												<div class="ddepartment-list">
 												<select name="department_id"  class="DepartmentID form-control allowalphanumeric department_id" style="width: 77%">
 												<?php if($doctorslinkingstatus=='1'){ ?>
-												<option value="all" selected="selected">Frontdesk / All Departments</option>
+												<option value="all" selected="selected">All Departments</option>
 												<?php foreach($Departments as $Dep){ ?>
                                                 <option value="<?php echo $Dep->deptid; ?>" ><?php echo $Dep->department_name; ?></option>
                                                 <?php } ?>
 												<?php }else{ ?>
-												<option value="all" selected="selected">Frontdesk / All Departments</option>
+												<option value="all" selected="selected">All Departments</option>
                                                 <?php foreach($Departments as $Dep){ ?>
                                                 <option value="<?php echo $Dep->deptid; ?>" <?php if($Result[0]->deptid == $Dep->deptid){echo "selected='selected'";} ?>><?php echo $Dep->department_name; ?></option>
                                                 <?php } } ?>

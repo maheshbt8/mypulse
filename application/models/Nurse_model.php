@@ -382,13 +382,19 @@ public function updateNurseDoctors($id) {
 			                         $this->db->where('user_id',$nurseuser_id);
 			$RemovePreviousDoctors = $this->db->delete('hms_nurse');
             //$nurse['doc_id'] = isset($data['doc_id']) ? $data['doc_id'] : 0;
+			if($data['department_id']=='all'){
+			$nurse['IsForAllDoctors'] = 1;
+			}else{
+				$nurse['IsForAllDoctors'] = 0;
+				}
             $nurse['created_at'] = date("Y-m-d H:i:s");
 			$nurse['modified_at'] = date("Y-m-d H:i:s");
-			$nurse['department_id'] = $data['department_id'];
+			//$nurse['department_id'] = $data['department_id'];
                 $doctorsid = $this->input->post('doc_id') ? $this->input->post('doc_id') : 0;
 				if($doctorsid){
             foreach ($doctorsid as $did) {
 			    $nurse['doc_id'] = $did;
+				$nurse['department_id'] = $this->auth->GetDoctorDepartmentIDByID($nurse['doc_id']);
 			    $this->db->insert($this->tblname, $nurse);
 				$id = $this->db->insert_id();
                 $this->logger->log("Nurse Doctor Updated", Logger::Nurse, $id);

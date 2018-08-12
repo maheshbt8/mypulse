@@ -5,7 +5,7 @@ $nurdocids[] = $nurdoc->doc_id;
 
 ?>
 <?php }
-//print_r (implode(',',$nurdocids));
+$doctorslinkingstatus = $nurdoc->IsForAllDoctors;
 ?>
 
 				<form action="<?php echo base_url(); ?>nurse/updateNurseDoctors" method="post" id="form" autocomplete="off">
@@ -24,7 +24,7 @@ $nurdocids[] = $nurdoc->doc_id;
 										    
 											<div class="form-group col-md-6  " >
 												<label><?php echo $this->lang->line('labels')['selectBranch'];?>*</label>
-												<select name="branch_id" class="branch_id form-control allowalphanumeric" style="width: 77%" >
+												<select name="branch_id" class="BranchID form-control allowalphanumeric" style="width: 77%" >
 												<option value="">Please Select</option>
 												<?php 
 												foreach($Branches as $br){
@@ -38,10 +38,16 @@ $nurdocids[] = $nurdoc->doc_id;
 												<label><?php echo $this->lang->line('labels')['selectDepartment'];?>*</label>
 												<div class="ddepartment-list">
 												<select name="department_id"  class="DepartmentID form-control allowalphanumeric department_id" style="width: 77%">
-												<option value="">Please Select</option>
+												<?php if($doctorslinkingstatus=='1'){ ?>
+												<option value="all" selected="selected">All Departments</option>
+												<?php foreach($Departments as $Dep){ ?>
+                                                <option value="<?php echo $Dep->deptid; ?>" ><?php echo $Dep->department_name; ?></option>
+                                                <?php } ?>
+												<?php }else{ ?>
+												<option value="all" selected="selected">All Departments</option>
                                                 <?php foreach($Departments as $Dep){ ?>
                                                 <option value="<?php echo $Dep->deptid; ?>" <?php if($Result[0]->deptid == $Dep->deptid){echo "selected='selected'";} ?>><?php echo $Dep->department_name; ?></option>
-                                                <?php } ?>
+                                                <?php } } ?>
                                                 </select>
 												</div>
 											</div>
@@ -148,6 +154,25 @@ $('.branch_id').on('change',function(){
 			})
 			
   });
+
+$(document).on('change','.DepartmentID',function(){
+   $departmentid = $(this).val();
+   //$branchid = (".branch_id").val();
+   $branchid = $('.BranchID').find(":selected").attr('value');
+   $.ajax({
+				url: "<?php echo site_url(); ?>index/searchDepartmentDoctor/",
+				type: "GET",
+				data: {"dept_id":$departmentid,"branch_id":$branchid},
+				success: function(results) {
+				$(".doctors-list").html(results);
+					
+				},
+				error: function() {
+					callback();
+				}
+			})
+
+});  
   /*$('.action-update-btn').on('click', function(){
 	     $BranchID = $('.branch_id').val();
 		 alert($BranchID);

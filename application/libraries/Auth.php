@@ -807,7 +807,7 @@ class Auth {
 	
 		if($DoctorID){
 		
-		$Result = $this->db->query("SELECT `department_id` FROM `hms_doctors` WHERE `id`='".$DoctorID."'")->row();
+		$Result = $this->CI->db->query("SELECT `department_id` FROM `hms_doctors` WHERE `id`='".$DoctorID."'")->row();
 		if($Result){
 		return $Result->department_id;
 		}else{

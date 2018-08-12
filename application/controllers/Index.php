@@ -699,7 +699,7 @@ public function searchDepartment() {
 			//print_r($result);exit;
             echo "<select name='department_id' class='DepartmentID allowalphanumeric form-control'>
 			      <option value=''>Please Select</option>
-				  <option value='all'>Frontdesk / All Departments</option>";
+				  <option value='all'>All Departments</option>";
 			foreach($result as $Row){
 			echo "<option value='$Row->id'>$Row->department_name</option>";
 			}
@@ -754,15 +754,20 @@ WHERE rec.`user_id`='$RecpUserID->user_id' GROUP BY doc.id")->result();
 public function getNurseDoctors(){
        error_reporting(0);
        $data['NurseID'] = $NurseID = $this->input->get('ID');
-	   $data['NurseUserID']= $NurseUserID = $this->db->query('SELECT `user_id` FROM `hms_nurse` WHERE `id`='.$NurseID.'')->row();
+	   $data['NurseUserID']= $NurseUserID = $this->db->query('SELECT `user_id`,IsForAllDoctors FROM `hms_nurse` WHERE `id`='.$NurseID.'')->row();
 	   $data['Branches'] = $this->branches_model->getHospitalBranches($this->auth->getHospitalId());
-	   $data['Result'] = $this->db->query("SELECT nur.`id`,nur.`user_id`,nur.`doc_id`,dep.`id` AS deptid,brc.`id` AS branchid FROM `hms_nurse` AS nur
+	   $data['Result'] = $this->db->query("SELECT nur.`id`,nur.`user_id`,nur.`doc_id`,dep.`id` AS deptid,brc.`id` AS branchid,nur.`IsForAllDoctors` FROM `hms_nurse` AS nur
 INNER JOIN `hms_doctors` AS doc ON doc.`id`=nur.doc_id
 INNER JOIN `hms_departments` AS dep ON dep.`id`=doc.`department_id`
 INNER JOIN `hms_branches` AS brc ON brc.`id`= dep.`branch_id`
 WHERE nur.`user_id`='$NurseUserID->user_id' GROUP BY doc.id")->result();
        $data['Departments'] = $this->db->query("SELECT dept.`id` AS deptid,dept.department_name FROM `hms_departments` AS dept WHERE dept.`branch_id`='". $data['Result'][0]->branchid."'  ")->result();
-	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($data['Departments'][0]->deptid); 
+	   if($NurseUserID->IsForAllDoctors=='1'){
+	   $DeptID="all";
+	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($DeptID,$data['Result'][0]->branchid);
+	   }else{
+	   $data['Doctors'] = $this->users_model->getdoctorsByDepartmentID($data['Departments'][0]->deptid);
+	   }  
 	 /*if($Result){
 	    $response = array('Status'=>1,'data'=>$Result);
 	    }else{

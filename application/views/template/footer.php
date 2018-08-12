@@ -262,7 +262,8 @@
                 todayHighlight: true,
                 format: 'dd-mm-yyyy',
                 orientation: "top auto",
-                autoclose: true
+                autoclose: true,
+				endDate: "+0d"
             });
 
             $('.date-picker-nopast').datepicker({
@@ -274,7 +275,8 @@
             });
 
             $('.timepicker').datetimepicker({
-                format:'hh:mm A'
+                stepping: 30,
+				format:'hh:mm A'
             });
 
             $(".date-time-picker").datetimepicker({
