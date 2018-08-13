@@ -206,7 +206,7 @@
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                                     <input id="sel_date" class=" form-control" /> 
                                 </div>
-								<div class="form-group col-md-4">
+								<div class="form-group col-md-4 hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                                     <select id="hospital_id1" class=" form-control" style="width: 100%">
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>

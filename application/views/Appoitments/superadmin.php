@@ -1,3 +1,9 @@
+<style>
+#country-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;/*overflow: scroll; height:150px;*/}
+#country-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#country-list li:hover{background:#ece3d2;cursor: pointer;}
+#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+</style>
 <?php
 /**
  * @author Yogesh Patel
@@ -14,39 +20,49 @@ $this->load->view("template/left.php");
 		<div id="main-wrapper">
 	        <div class="row">
 	            <div class="col-md-12">
-	                <div class="card">
+	                <div class="card ">
 	                    
-	                    <div class="card-head clearfix">
+	                    <div class="card-head">
 							<header><?php echo $this->lang->line('appoitments');?></header>
-							<div class="custome_card_header" style="">
+							<div class="custome_card_header">
+								<!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['addNew'];?></a>-->
+								
 								<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
-								<!--<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>-->
-								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['cancel'];?></a>
-								<?php $this->load->view('template/exbtn');?>
+								
+								<!--<a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a>
+								<a class="btn btn-danger m-b-sm multiCancelBtn" data-msg="<?=$this->lang->line('msg_want_to_reject_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['reject'];?></a>
+								<?php $this->load->view('template/exbtn');?>-->
 							</div>
 	                    </div>
 	                    <div class="card-body ">
 							<div class="col-md-12">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-2">
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
-                                    <input id="sel_date" class=" form-control" /> 
+                                    <input id="sel_date" class="dates form-control" /> 
                                 </div>
-								<div class="form-group col-md-4 hide">
+								<div class="form-group col-md-2 hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id1" class=" form-control" style="width: 100%">
+                                    <select id="hospital_id1" class=" form-control " >
+										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
+					                </select>
+                                </div>
+								<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
+                                    <select id="doctor_id1" class=" form-control " >
 										<option value="all"><?php echo $this->lang->line('labels')['all'];?></option>
 					                </select>
                                 </div>
 								<div class="form-group col-md-4">
                                     <label><?php echo $this->lang->line('labels')['status'];?></label>
-                                    <select id="status" class=" form-control" style="width: 100%">
+                                    <select id="status" class=" form-control" >
 										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
-										<!--<option value="0"><?php //echo  $this->lang->line('labels')['pending']; ?></option>-->
+										<!--<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>-->
                                 		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
 										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
-										<!--<option value="2"><?php //echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>-->
 										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
+                                		
 					                </select>
                                 </div>
 								<?php /*?><div class="col-md-12">
@@ -59,25 +75,26 @@ $this->load->view("template/left.php");
 								</div><?php */?>
                             </div>
 							<div class="col-md-12">
-								<div class="">
-									<table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" >
-										<thead>
+								
+								<table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle" >
+									<thead>
 											<tr>
-												<th style="width:10px"></th>
-												<th><?php echo $this->lang->line('tableHeaders')['appoitment_no'];?></th>
-												<th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
-												<th><?php echo $this->lang->line('tableHeaders')['reason'];?></th>
-												<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
-												<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
-												<th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
-												<th width="20px">#</th>
-											</tr>
-										</thead>
-										
-										<tbody>
-										</tbody>
-									</table>  
-								</div>
+											<th style="width:10px"></th>
+											<th><?php echo $this->lang->line('tableHeaders')['number_short'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['patient'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['hospital_branch_department'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['doctor'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['appoitment_date'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['appoitment_sloat'];?></th>
+											<th><?php echo $this->lang->line('tableHeaders')['status']; ?></th>
+											<th width="20px">#</th>
+										</tr>
+									</thead>
+									
+									<tbody>
+									</tbody>
+								</table>  
+								
 							</div>	
 	                    </div>
 	                </div>
@@ -85,8 +102,6 @@ $this->load->view("template/left.php");
 	        </div>
 	        <input type="hidden" id="cur_del">
 	    </div><!-- Main Wrapper -->
-
-		
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
@@ -102,57 +117,65 @@ $this->load->view("template/left.php");
 				  		<div class="row">
 				  			<div class="col-md-12">
 								<div class="form-group col-md-6">
-									<label>User</label>
-									<select name="user_id" id="user_id" class="form-control" style="width: 100%;">
+									<label><?php echo $this->lang->line('labels')['user'];?></label>
+									<select name="user_id" id="user_id" class=" form-control allowalphanumeric" >
 									</select>
 								</div>
-								<input type="hidden" name="doctor_id" id="doctor_id" value="<?php echo $this->auth->getDoctorId();?>" />
 								<div class="form-group col-md-6">
-									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
-									<br>
-									<span id="docAvailability"></span>
+									<label><?php echo $this->lang->line('validation')['selectDoctor'];?></label>
+									<input type="text" placeholder="<?php echo $this->lang->line('SearchForUsers');?>" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+                                    <div id="suggesstion-box"></div>
 								</div>
-								<div class="form-group col-md-6 hide">
+								<div class="form-group col-md-6  hide">
                                     <label><?php echo $this->lang->line('labels')['selectHospital'];?></label>
-                                    <select id="hospital_id" class=" form-control" style="width: 100%">
+                                    <select id="hospital_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
 							</div>
 							<div class="col-md-12">
 								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectBranch'];?></label>
-                                    <select id="branch_id" class=" form-control" style="width: 100%">
+                                    <select id="branch_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
 								<div class="form-group col-md-6 hide">
                                     <label><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
-                                    <select id="department_id" name="department_id" class=" form-control" style="width: 100%">
+                                    <select id="department_id" name="department_id" class=" form-control allowalphanumeric" >
 					                </select>
                                 </div>
-								
+								<div class="form-group col-md-6 hide">
+									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
+									<select name="doctor_id" id="doctor_id" class=" form-control allowalphanumeric" >
+									</select>
+								</div>
 							</div>
-								
+							<div class="col-md-12">
+								<div class="form-group col-md-12">
+									<label><?php echo $this->lang->line('labels')['doctorAvailability'];?></label>
+									<br>
+									<span id="docAvailability"></span>
+								</div>
+							</div>
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_date'];?></label>
-									<input class="form-control allowalphanumeric  date-picker-nopast" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
+									<input class="form-control date-picker-nopast allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_date'];?>" name="appoitment_date" id="appoitment_date" />
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_sloat'];?></label>
 									<select class="form-control allowalphanumeric" type="text" name="appoitment_sloat" id="appoitment_sloat">
 									</select>
-									<br>
 									<span id="noApptTimeSloat" style='color:#BC4442;display:none'><?php echo $this->lang->line('labels')['noApptTimeSloat'];?></span>
 								</div>
 							</div>
-							<div class="col-md-12">
+							<div class="col-md-12">	
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
-									<textarea class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
+									<textarea class="form-control allowalphanumeric" type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3" disabled="disabled"></textarea>
 								</div>
 							</div>				  		
 						</div>
@@ -186,25 +209,26 @@ $this->load->view("template/left.php");
 				<div class="modal-content" style="box-shadow: 0px 0px 50px 0px rgba(0,0,0,30.67)">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"><?=$this->lang->line('unregUser');?></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"><?=$this->lang->line('unregUser');?></h4></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
+				  			
 							<div class="form-group col-md-12">
-								<label><?=$this->lang->line('labels')['fname']?>*</label>
+								<label><?=$this->lang->line('labels')['fname']?></label>
 								<input name="first_name" id="first_name" class="form-control"  placeholder="First Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label><?=$this->lang->line('labels')['lname']?>*</label>
+								<label><?=$this->lang->line('labels')['lname']?></label>
 								<input name="last_name" id="last_name" class="form-control"  placeholder="Last Name"/>
 							</div><br>
 							<div class="form-group col-md-12">
-								<label><?=$this->lang->line('labels')['mobile']?>*</label>
+								<label><?=$this->lang->line('labels')['mobile']?></label>
 								<input name="mobile" id="mobile" class="form-control"  placeholder="Mobile"/>
 							</div><br>
 							<div class="form-group col-md-12">
 								<label><?=$this->lang->line('labels')['user_email']?></label>
-								<input name="useremail" id="useremail" class="form-control"  placeholder="User Email"/>
+								<input name="useremail" id="useremail" class="form-control"  placeholder="User emailid"/>
 							</div>
 						</div>
 					</div>
@@ -222,9 +246,8 @@ $this->load->view("template/footer.php");
 <script type="text/javascript">
 		
 	$(document).ready(function(){
-		$(".js-example-basic-multiple").select2();
-
-		var _sd = "";
+	
+		var _sd = ""; 
 		var _ed = "";
 		
 		var hid = null;
@@ -244,12 +267,12 @@ $this->load->view("template/footer.php");
 			}
 		?>
 
-
 		var t_bid = null;
 		var t_did = null;
 		var t_oid = null;
 		var cur_v = null;
 		var isEdit = false;
+
 		var validatorCreate = $("#createUseerform").validate({
 			ignore: [],
 			rules: {
@@ -260,7 +283,7 @@ $this->load->view("template/footer.php");
 					required: true
 				},
 				useremail:{
-					//required:true,
+					required:true,
 					email:true,
 					remote: "<?php echo site_url();?>/users/checkemail"
 				},
@@ -278,7 +301,7 @@ $this->load->view("template/footer.php");
 					required: "<?php echo $this->lang->line('validation')['requiredLname'];?>"
 				},
 				useremail:{
-					//required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
+					required: "<?php echo $this->lang->line('validation')['requiredEmail'];?>",
 					email: "<?php echo $this->lang->line('validation')['invalidEmail'];?>",
 					remote:"<?php echo $this->lang->line('validation')['takenEmail'];?>"
 				},
@@ -302,6 +325,9 @@ $this->load->view("template/footer.php");
 					required: true
 				},
 				department_id:{
+					//required: true
+				},
+				doctor_id:{
 					required: true
 				},
 				appoitment_date:{
@@ -313,7 +339,7 @@ $this->load->view("template/footer.php");
 				branch_id: {
 					required : true
 				},
-				appoitment_sloat:{
+				appoitment_sloat: {
 					required : true
 				}
 			},
@@ -321,11 +347,11 @@ $this->load->view("template/footer.php");
 				user_id:{
 					required:  "<?php echo $this->lang->line('validation')['selectPatient'];?>"
 				},
+				doctor_id:{
+					required:  "<?php echo $this->lang->line('validation')['selectDoctor'];?>"
+				},
 				appoitment_date:{
 					required:  "<?php echo $this->lang->line('validation')['requiredAppoitmentDate'];?>"
-				},
-				appoitment_sloat:{
-					required: "<?php echo $this->lang->line('validation')['requiredAppoitmentSloat']; ?>"
 				},
 				reason:{
 					required:  "<?php echo $this->lang->line('validation')['requiredReason'];?>"
@@ -337,7 +363,10 @@ $this->load->view("template/footer.php");
 					required: "<?php echo $this->lang->line('validation')['selectHospital'];?>"
 				},
 				department_id:{
-					required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+					//required: "<?php echo $this->lang->line('validation')['selectDepartment'];?>"
+				},
+				appoitment_sloat:{
+					required: "<?php echo $this->lang->line('validation')['requiredAppoitmentSloat']; ?>"
 				}
 				
 			},
@@ -347,25 +376,22 @@ $this->load->view("template/footer.php");
 		});
 
 
-		$(".appt_submit").click(function(){
-			var appst = $("#appoitment_sloat").val();
+        $(".appt_submit").click(function(){
+            var appst = $("#appoitment_sloat").val();
+			var DocID = $(".DoctorName").val();
 
-			if(validator.form() && appst != null && appst != undefined) {
-				$("#form").submit();
-			}
-		});
+            if(validator.form() && appst != null && appst != undefined && DocID !=null && DocID != undefined) {
+                $("#form").submit();
+            }
+        });
 
 
-		$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$("#doctor_id").val()},function(data){
-			$("#docAvailability").html(data);
-		});
-		$("#appoitment_date").attr('disabled',false);
-	
-		$("[data-toggle=tooltip]").tooltip();
+
+        $("[data-toggle=tooltip]").tooltip();
 
 		$("#bookNew").click(function(){
 			resetForm(validator);
-			
+			$("#docAvailability").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
 			$("#action-add-btn").parent().show();
@@ -375,51 +401,29 @@ $this->load->view("template/footer.php");
 			$("#edit").modal("show");
 			var thid = $("#hospital_id1").val();
 			$("#selected_hid").val(thid);
-			
+			isEdit = false;
 			var tbid = $("#branch_id1").val();
 			$("#selected_bid").val(tbid);
-			isEdit = false;
-			$selectize_department_id[0].selectize.disable();
+			$selectize_doctor_id[0].selectize.disable();
+			$selectize_doctor_id[0].selectize.clear();
+			/*$selectize_department_id[0].selectize.disable();
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
 			$selectize_hospital_id[0].selectize.enable();
-			$selectize_hospital_id[0].selectize.clear();
+			$selectize_hospital_id[0].selectize.clear();*/
 			$selectize_user_id[0].selectize.enable();
 			$selectize_user_id[0].selectize.clear();
-			//$("#appoitment_date").attr('disabled',true);
+			$("#appoitment_date").attr('disabled',true);
 			$("#appoitment_sloat").attr('disabled',true);
 			$("#appoitment_sloat").html('');
 			$("#reason").attr('disabled',false);
 		});
 
-		$(".addbtn").click(function(){
-			resetForm(validator);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
-			$("#action-update-btn").parent().hide();
-			$("#action-add-btn").parent().show();
-			$("#form")[0].reset();
-			$("#form input").attr("disabled",false);
-			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/add");
-			$("#edit").modal("show");
-			var thid = $("#hospital_id1").val();
-			$("#selected_hid").val(thid);
-			
-			var tbid = $("#branch_id1").val();
-			$("#selected_bid").val(tbid);
-			$selectize_department_id[0].selectize.disable();
-			$selectize_department_id[0].selectize.clear();
-			$selectize_branch_id[0].selectize.disable();
-			$selectize_branch_id[0].selectize.clear();
-			$selectize_hospital_id[0].selectize.clear();
-			$("#appoitment_date").attr('disabled',true);
-			$("#appoitment_sloat").attr('disabled',true);
-		});
-
 		$("#appoitments").on("click",".editbtn",function(){
 			resetForm(validator);
 			var id = $(this).attr("data-id");
-			
+			$("#docAvailability").html("");
 			$("#eidt_gf_id").val(id);
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
@@ -439,7 +443,7 @@ $this->load->view("template/footer.php");
 				tempselectize_user_id.addOption([{"id":data.user_id,"text":data.user_name}]);
 				tempselectize_user_id.refreshItems();
 				tempselectize_user_id.setValue(data.user_id);
-				isEdit = true;
+
 				t_bid = data.branch_id;
 				t_did = data.department_id;
 				t_oid = data.doctor_id;
@@ -448,22 +452,24 @@ $this->load->view("template/footer.php");
 				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
 				tempselectize_hospital_id.refreshItems();
 				tempselectize_hospital_id.setValue(data.hospital_id);
-
+				cur_v = data.timesloat;
+				
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				$("#reason").val(data.reason);
 				$("#appoitment_date").val(data.appoitment_date);
 				$("#appoitment_date").trigger("change");
-				$("#reason").val(data.reason);
 				
 				$("#remarks").val(data.remarks);
 			
 				$("#appoitment_date").attr("disabled", true);
-				$("#appoitment_sloat").attr("disabled", true);
 				$("#reason").attr("disabled", true);
+				$("#appoitment_sloat").attr("disabled", true);
+				isEdit = true;
+				
 				$selectize_hospital_id[0].selectize.disable();
 				$selectize_user_id[0].selectize.disable();
 				
-
 			});
 		}
 
@@ -525,7 +531,8 @@ $this->load->view("template/footer.php");
 
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
-			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#doctor_id").val()},function(data){
+			console.log("Gettig Time SLot for : "+d);
+			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#DoctorID").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");
 				$("#noApptTimeSloat").hide();
@@ -533,10 +540,11 @@ $this->load->view("template/footer.php");
 					$("#noApptTimeSloat").show();
 				}else{
 					if(isEdit){
-						$("#appoitment_date").attr("disabled", true);
+						$("#appoitment_sloat").attr('disabled',true);	
 					}else{
 						$("#appoitment_sloat").attr('disabled',false);
 					}
+					
 					for(var i=0; i<data.length; i++){
 						var item = data[i];
 						var v = item.start+'-'+item.end;
@@ -582,14 +590,12 @@ $this->load->view("template/footer.php");
 				}).then(function () {
 					$.post(BASEURL+"/"+at+"/approve",{ id : selected },function(data){
 						if(data==1){
-							// for(var i=0; i<selected.length; i++){
-							// 	var temp = selected[i];
-                            //     $($("#apprlink_"+id).parents('td').siblings()[6]).html('<span class="label label-primary"><?php echo $this->lang->line("labels")["approved"]?></span>');
-							// }
-							toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+							
 							if(dt != undefined){
 								dt.ajax.reload();
 							}
+							toastr.success("<?php echo $this->lang->line('headings')['approvedSuccess'];?>");
+							
 						}else{
 							toastr.error('Please try again.');
 						}
@@ -613,12 +619,12 @@ $this->load->view("template/footer.php");
 					text: 'Please select checkbox.'
 					});
 			}else{
-				var txt = "<?=$this->lang->line('labels')['delSureAppt'];?>";
+				var txt = "<?=$this->lang->line('headings')['deleteMessage']?>";
 				var msg = $(this).data('msg');
 				if(msg!=undefined)
 					txt = msg;
 				swal({
-					title: 'Are you sure?',
+					title: '<?=$this->lang->line('headings')['areYouSure']?>',
 					text: txt,
 					type: 'warning',
 					showCancelButton: true,
@@ -626,11 +632,11 @@ $this->load->view("template/footer.php");
 					cancelButtonColor: '#d33',
 					confirmButtonText: 'Yes'
 				}).then(function () {
-					$.post(BASEURL+"/"+at+"/cancel",{ id : selected },function(data){
+					$.post(BASEURL+"/"+at+"/reject",{ id : selected },function(data){
 						if(data==1){
 							// for(var i=0; i<selected.length; i++){
 							// 	var temp = selected[i];
-							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+							// 	$($("#dellink_"+temp).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
 							// }
 							toastr.success('selected item(s) cancled.');
 							if(dt != undefined){
@@ -644,43 +650,7 @@ $this->load->view("template/footer.php");
 				
 			}
 		});
-
-		/*$("#user_id").select2({
-			ajax: {
-				url: "<?php echo site_url(); ?>/users/searchPatient/",
-				dataType: 'json',
-				delay: 250,
-				data: function (params) {
-					return {
-						q: params.term,
-					};
-				},
-				processResults: function (data, params) {
-					return {
-						results: data.items,
-						pagination: {
-							more: false
-						}
-					};
-				},
-				cache: true
-			},
-			escapeMarkup: function (markup) { return markup; }, // let our custom formatter work
-			minimumInputLength: 1,
-			templateResult: formatRepo, // omitted for brevity, see the source of this page
-			templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
-		});*/
-
-		function formatRepo (repo) {
-			if (repo.loading) return repo.text;
-			var markup = "<div><span class='title'>" +repo.text+"</span></div>"
-			return markup;
-		}
-
-		function formatRepoSelection (user) {
-			return user.text;
-		}
-
+		
 		var userCreateCallBack = null;
 
 		$("#createUser").on('hide.bs.modal',function(e){
@@ -711,18 +681,18 @@ $this->load->view("template/footer.php");
 			labelField: "text",
 			searchField: "text",
 			loadThrottle: 500,
-			placeholder: "Enter User Email or Mobile number",
+			placeholder: "Enter User Email or Mobile number ",
 			preload:true,
 			create: function(input,callback){
 				userCreateCallBack = callback;
 				resetForm(validatorCreate);
 				$("#createUser").modal();
 				$("#createUseerform").trigger('reset');
-				//$("#useremail").val(input);
+				///$("#useremail").val(input);
 			},
 			render: {
 				option_create: function(data, escape) {
-					return '<div class="create"><strong style="color:red;"><?=$this->lang->line('unregUser');?></strong></div>';
+					return '<div class="create"><strong><?=$this->lang->line('unregUser');?></strong></div>';
 				},
 				option: function(item, escape) {
 					console.log(item);
@@ -759,10 +729,10 @@ $this->load->view("template/footer.php");
 			tempsselectize.refreshItems();
 			tempsselectize.setValue(id);
 		}
-		
+
 		var xhr;
 
-		/*var $selectize_doctor_id = $("#doctor_id").selectize({
+		var $selectize_doctor_id = $("#doctor_id").selectize({
 			valueField: "id",
 			labelField: "text",
 			searchField: "text",
@@ -770,15 +740,31 @@ $this->load->view("template/footer.php");
 			create: false,
 			render: {
 				option: function(item, escape) {
-					return "<div><span class='title'>" +
+					var dis = "";
+					if(item.description != undefined)
+						dis = item.description;
+					return "<div><span class='title' style='font-size:14px'><b>" +
 							escape(item.text)+
-						"</span>" +   
+						"</b></span><br><span style='font-size:12px;'><i>"+
+						escape(dis)+
+						"</i></span>" +   
 					"</div>";
 				}
+			},
+			onChange: function(value){
+				if(!value.length) return;
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:value},function(data){
+					$("#docAvailability").html(data);
+				});
+				if(isEdit){
+					$("#appoitment_date").attr('disabled',true);
+				}else{
+					$("#appoitment_date").attr('disabled',false);
+				}
 			}
-		});*/
+		});
 
-		var $selectize_department_id = $("#department_id").selectize({
+		<?php /*?>var $selectize_department_id = $("#department_id").selectize({
 			valueField: "id",
 			labelField: "text",
 			searchField: "text",
@@ -794,11 +780,38 @@ $this->load->view("template/footer.php");
 			},
 			onChange: function(value){
 				if(!value.length) return;
-				if(isEdit){
-					$("#appoitment_date").prop("disabled", true);
-				}else{
-					$("#appoitment_date").prop("disabled", false);
-				}
+
+				$selectize_doctor_id[0].selectize.disable();
+				$selectize_doctor_id[0].selectize.clearOptions();
+				$selectize_doctor_id[0].selectize.load(function(callback) {
+					xhr && xhr.abort();
+					xhr = $.ajax({
+						url: "<?php echo site_url(); ?>/doctors/search/",
+						type: "GET",
+						data: { "department_id":value,"f":""},
+						success: function(results) {
+							
+							var res = $.parseJSON(results);
+							callback(res);
+							if(t_oid != null){
+								selectFirst($selectize_doctor_id,t_oid,t_oid);
+								t_oid = null;
+							}else{
+								$selectize_doctor_id[0].selectize.enable();
+								if(res.length > 0){
+									selectFirst($selectize_doctor_id,res[0].id,res[0].text);
+								}
+							}
+
+							if(isEdit){
+								$selectize_doctor_id[0].selectize.disable();
+							}
+						},
+						error: function() {
+							callback();
+						}
+					})
+				}); 
 			}
 		});
 
@@ -884,6 +897,7 @@ $this->load->view("template/footer.php");
 								selectFirst($selectize_hospital_id,res[0].id,res[0].text);	
 							}, 2000);
 						}
+						
 					}
 				});
 			},
@@ -912,7 +926,7 @@ $this->load->view("template/footer.php");
 								}
 							}
 							if(isEdit){
-								$selectize_department_id[0].selectize.disable();
+								$selectize_branch_id[0].selectize.disable();
 							}
 						},
 						error: function() {
@@ -921,13 +935,43 @@ $this->load->view("template/footer.php");
 					})
 				});                 
 			}
-		});
+		});<?php */?>
 
-		
-		$("#sel_date").change(function(){
-			var date = $("#sel_date").val();
-			loadTable($("#hospital_id1").val());
-		});
+			
+		var $selectize_doctor_id1 = $("#doctor_id1").selectize({
+			valueField: "id",
+			labelField: "text",
+			searchField: "text",
+			preload:true,
+			create: false,
+			render: {
+				option: function(item, escape) {
+					var dis = "";
+					if(item.description != undefined)
+						dis = item.description;
+					return "<div><span class='title' style='font-size:14px'>" +
+							escape(item.text)+
+						"</span></div>";
+				}
+			},
+			load: function(query, callback) {
+				$.ajax({
+					url: "<?php echo site_url(); ?>/doctors/search/",
+					type: "GET",
+					data: {"q":query,"f":""},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						callback($.parseJSON(res));
+					}
+				});
+			},
+			onChange: function(value){
+				if(!value.length) return;
+				loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+			}
+		});	
 
 		var $selectize_hospital_id1 = $("#hospital_id1").selectize({
 			valueField: "id",
@@ -959,48 +1003,59 @@ $this->load->view("template/footer.php");
 			},
 			onChange: function(value) {
 				if (!value.length) return;
-				loadTable($("#hospital_id1").val());
+				loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 			}
 		});
 
-		$("#status").change(function(){
-			loadTable($("#hospital_id1").val());
+		$("#sel_date").change(function(){
+			var date = $("#sel_date").val();
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		});
-			
+
+		$("#status").change(function(){
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+		});
+
 		$("#showClosed").change(function(){
-			loadTable($("#hospital_id1").val());
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		});
 
 		var dt;
-		function loadTable(hid){	
+		function loadTable(hid,did){	
+			//console.log($("#sel_date").data('daterangepicker'));
+			//var sd = $('#sel_date').data('daterangepicker').startDate.format("YYYY-MM-DD");
+			//var ed = $('#sel_date').data('daterangepicker').endDate.format("YYYY-MM-DD");
+			
 			var st = $("#status").val();
 			var showClosed = 0;
 			if($("#showClosed").is(":checked")){
 				showClosed = 1;
 			}
 			$("#appoitments").dataTable().fnDestroy();
-				dt = $("#appoitments").DataTable({
-					"processing": true,
-					"serverSide": true,
-					"ajax": "<?php echo site_url(); ?>/appoitments/getDTDocpappoitments?hid="+hid+"&sd="+_sd+"&ed="+_ed+"&st="+st+"&sc="+showClosed
+			dt = $("#appoitments").DataTable({
+				"processing": true,
+				"serverSide": true,
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTRespappoitments?hid="+hid+"&did="+did+"&sd="+_sd+"&ed="+_ed+"&st="+st+"&sc="+showClosed
 			});
 
 			<?php $this->load->view('template/exdt');?>
-
+			
 			$(".dataTables_filter").attr("style","display: flex;float: right");
 			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
 			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
 		}
+		
 		
 		function cb(start, end) {
 			//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
 			//window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
 			_sd = start.format('YYYY-MM-D');
 			_ed = end.format('YYYY-MM-D');
-			loadTable($("#hospital_id1").val());
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		}
 		
-		var start = moment().subtract(29, 'days');
+		//var start = moment().subtract(29, 'days');
+		var start = moment().subtract(0, 'days');
 		var end = moment();
 		
 		$('#sel_date').daterangepicker({
@@ -1031,12 +1086,60 @@ $this->load->view("template/footer.php");
 			$('#sel_date').val('');
 			_sd = "";
 			_ed = "";
-			loadTable($("#hospital_id1").val());
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
 		});
 		
 		$("#sel_date").val("");	
-		loadTable("all");
-
+		loadTable("all","all");	
+		
+		
+		$('.DoctorName').on('keyup', function(){
+		   $SearchTerm = $(this).val();
+		   if($SearchTerm.length > 2){
+		   $.ajax({
+					url: "<?php echo site_url(); ?>/index/searchDoctor/",
+					type: "POST",
+					data: {"q":$SearchTerm},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						if(res){
+						$("#suggesstion-box").show();
+			$("#suggesstion-box").html(res);
+			$(".DoctorName").css("background","#FFF");
+						}else{
+							$(".DoctorID").val('');
+							}
+					}
+				});
+		   }
+		});
+		$('body').delegate('.selected-docotr','click',function(){
+			//alert($(this).attr('rel'));
+			selectDoctor($(this).attr('rel'),$(this).attr('rel1'));
+			});
+		function selectDoctor(DName,DID) {
+		$(".DoctorName").val(DName);
+		$(".DoctorID").val(DID);
+		$("#suggesstion-box").hide();
+		}
+		
+		$('body').delegate('.selected-docotr','click',function(){
+		
+			//if(!value.length) return;
+			
+				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
+					$("#docAvailability").html(data);
+				});
+				if(isEdit){
+					$("#appoitment_date").attr('disabled',true);
+				}else{
+					$("#appoitment_date").attr('disabled',false);
+				}
+		
+		});
+		
 	});
 
 </script>

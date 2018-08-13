@@ -263,6 +263,7 @@
                 $("#customDiv").hide();
                 $("#form").append("<input type='hidden' name='edit_ri' id='edit_ri' value='"+data.repeat_interval+"' />");
                 if(data.repeat_interval == 2){
+					$('#end_on').datepicker("setDate", data.end_date );
                     $("#customDiv").show();
                 }else if(data.repeat_interval == 1){
                     $("#day_of_month").val(data.day);
@@ -326,7 +327,7 @@
                 $("#monthDayDiv").show();
                 $(".repeat_on").rules("remove","required");
             }else if(val == 2){
-                $("#stlbl").html('<?php echo $this->lang->line('labels')['date'];?>');
+                $("#stlbl").html('<?php echo $this->lang->line('labels')['start_date'];?>');
                 //$("#endDiv").hide();
                 $(".repeat_on").rules("remove","required");
                 $("#end_on").rules('remove','required');
