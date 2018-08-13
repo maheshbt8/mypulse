@@ -657,7 +657,7 @@ class Doctors_model extends CI_Model {
                 $data['user_id'] = $docid;//$this->getDoctorIdFromUserId($this->auth->getUserid());
                 $data['repeat_interval'] = $_POST['repeat_interval'];
                 $data['start_date'] = date("Y-m-d",strtotime($_POST['date']));
-                $data['end_date'] = date("Y-m-d",strtotime($_POST['date']));
+                $data['end_date'] = date("Y-m-d",strtotime($_POST['end_on']));
                 $data['start_time'] = date("H:i", strtotime($_POST['start_time']));
                 $data['end_time'] = date("H:i", strtotime($_POST['end_time']));
                 if(isset($_POST['eidt_gf_id']) && $_POST['eidt_gf_id'] != 0){

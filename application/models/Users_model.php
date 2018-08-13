@@ -1173,6 +1173,19 @@ public function GetActiveDoctors($ID = NULL){
 			}else{
 			return false;
 			}					   
+		}elseif($this->auth->isSuperAdmin()){
+		$Result = $this->db->query("SELECT doc.`id`,doc.`user_id`,CONCAT_WS(' ',usr.`first_name`,usr.`MiddleName`,usr.`last_name`) AS FullName FROM `hms_doctors` AS doc
+								  	INNER JOIN hms_users AS usr ON usr.id = doc.user_id
+									INNER JOIN `hms_departments` AS dep ON dep.`id` = doc.`department_id`
+									INNER JOIN `hms_branches` AS brn ON brn.`id` = dep.`branch_id`
+									INNER JOIN `hms_hospitals` AS hos ON hos.`id` = brn.`hospital_id`
+									WHERE doc.`isActive`='1' AND doc.`isDeleted`='0'
+								   ")->result();
+			if($Result){
+			return $Result;
+			}else{
+			return false;
+			}					   
 		}else{
 		return false;
 		}

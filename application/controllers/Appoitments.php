@@ -21,8 +21,11 @@ class Appoitments extends CI_Controller {
         if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
 		    $data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());    
             $this->load->view('Appoitments/index', $data);
+        }else if ($this->auth->isLoggedIn() && $this->auth->isSuperAdmin() ) {
+		    $data['states'] = $this->dashboard_model->getPatientStates($this->auth->getUserid());    
+            $this->load->view('Appoitments/superadmin', $data);
         }
-        else if($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())){
+        else if($this->auth->isLoggedIn() && ($this->auth->isReceptinest()  || $this->auth->isHospitalAdmin())){
 		    $data['Doctors'] = $this->users_model->GetActiveDoctors($this->auth->getUserid());
             $this->load->view('Appoitments/receptionist', $data);
         }
