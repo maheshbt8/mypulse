@@ -375,6 +375,42 @@ class Patients extends CI_Controller {
 
         }
     }
+	
+public function doctors(){
+		$data["page_title"] =  $this->lang->line('doctors');
+        $data["breadcrumb"] = array(site_url() =>  $this->lang->line('home'), null =>  $this->lang->line('doctors'));
+		$data["Specializations"] = $this->auth->AllSpecializations();
+		if ($this->auth->isLoggedIn() && $this->auth->isPatient()) {
+            $this->load->view('Patient/doctors', $data);
+        }
+	}
+	
+public function getDTdoctors() {
+        if ($this->auth->isLoggedIn()) {
+                        
+            $hospital_id = $this->input->get('hid',null,null);
+            $show  = $this->input->get('s',null,false);
+            $cond = array("hms_doctors.isDeleted=0","hms_doctors.isActive=1","hms_hospitals.isActive=1");
+            
+                $this->datatables
+                   // ->showCheckbox(true)
+                    ->from('hms_doctors')
+                    ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_doctors.isActive=1 then "'.$this->lang->line('active').'" when hms_doctors.isActive=0 then "'.$this->lang->line('inactive').'" end as status, hms_doctors.id as edit_action_id', false)
+                    ->join('hms_users','hms_doctors.user_id = hms_users.id','inner')
+                    ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
+                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+                    ->join('hms_hospitals','hms_branches.hospital_id = hms_hospitals.id','left');
+					/*->add_column('edit', '<span class="equalDivParent"><a style="margin-right:5px" href="'.site_url().'doctors/availability/$1"  class=""  data-toggle="tooltip" title="Availability"><i class="glyphicon glyphicon-calendar"></i></button> <a href="#" id="dellink_$1" class="delbtn"  data-toggle="modal" data-target=".bs-example-modal-sm" data-id="$1" data-toggle="tooltip" title="Delete"><i class="glyphicon glyphicon-remove"></i></button></span>', 'edit_action_id')
+					->edit_column('docname', '<a href="#" data-id="$1" class="editbtn" data-toggle="modal" data-target="#edit" data-toggle="tooltip" title="Edit">$2</a>','edit_action_id, docname')
+					->unset_column('edit_action_id')*/
+            //Set condition to new library
+            foreach($cond as $con){
+                $this->datatables->where($con);
+            }
+            //Call new library for output
+            echo $this->datatables->generate('json');
+        }
+    }		
 
 }
 ?>

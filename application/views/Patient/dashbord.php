@@ -128,8 +128,12 @@
 												<td><?=$ra['dpname'];?></td>
 												<td><?=$ra['dname'];?></td>
                                                 <td><?=date('d-M-Y',strtotime($ra['recommend_appointment_date']));?></td>
-												<td><button class="btn btn-info bookAppointment"  data-id="<?php echo $ra['id'];?>" data-toggle="modal" data-target="#edit">Book Appointment</button></td>
-												<!--<a class="btn btn-success m-b-sm addbtn" data-toggle="tooltip"   href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>-->
+												<td>
+												<a  title="Cancel" data-id='<?=$ra['id'];?>' class='delbtn' style="color:red"><i class="glyphicon glyphicon-remove"></i></a> &nbsp;
+												<button class="btn btn-info bookAppointment"  data-id="<?php echo $ra['id'];?>" data-toggle="modal" data-target="#edit">Book Appointment</button>
+												
+												</td>
+												
                                                 <!--<td><a href='#' data-url='doctors/previewprescription/<?=$mr['id'];?>' data-id='<?=$mr['id'];?>' class='previewtem'><i class="fa fa-file"></i></a></td>-->
                                             </tr>
                                             <?php
@@ -1130,6 +1134,30 @@
 				$selectize_hospital_id[0].selectize.disable();
 			});
 		}
+		
+		var dt;
+	$(".delbtn").on("click",function(){
+			var id = $(this).attr("data-id");
+			var curdel = $(this);
+			var s = swalDeleteConfig;
+			s.text = '<?=$this->lang->line('labels')['delSureAppt'];?>';
+			var msg = $(this).data('msg');
+			if(msg!=undefined)
+				s.text = msg;
+			swal(s).then(function () {
+				$.post("<?php echo site_url(); ?>/appoitments/cancelrecommendapptmt",{id:id},function(data){
+					if(data==1){
+						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+						toastr.success("<?php echo $this->lang->line('headings')['cancelSuccess'];?>");
+						if(dt != undefined){
+							dt.ajax.reload();
+						}
+					}else{
+						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
+					}
+				});
+			});
+		});	
 		
 		
     });

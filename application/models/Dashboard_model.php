@@ -122,7 +122,7 @@ class Dashboard_model extends CI_Model {
         $res['profile'] = $user;
         $res['profile']['country_name'] = $this->auth->getCountryName($user['country']);
 
-		$recommend_appointment = $this->db->query("Select * from hms_recommend_appointments where status=0 and user_id=".$user_id)->result_array();
+		$recommend_appointment = $this->db->query("Select * from hms_recommend_appointments where status=0 and isDeleted=0 and user_id=".$user_id)->result_array();
 		for($i=0; $i<count($recommend_appointment); $i++){
 			$row = $recommend_appointment[$i];
 			$dep = $this->departments_model->getdepartmentsById($row['department_id']);
