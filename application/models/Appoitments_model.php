@@ -679,6 +679,7 @@ class Appoitments_model extends CI_Model {
 
     //For Patient
     function getTimeSloats($doc_id=0,$date){
+		date_default_timezone_set('Asia/Kolkata');
         $this->db->where('user_id',$doc_id);
         $this->db->where('isDeleted',0);
         $availability = $this->db->get('hms_availability');
@@ -758,7 +759,7 @@ class Appoitments_model extends CI_Model {
 		
         foreach($timeSloats as $slot){
 		$slotstarttime = date('H:i',strtotime($slot['start']));
-		//print_r($slotstarttime);//exit;
+		//print_r($CurrentTIme);exit;
 		if(($SelectedDay == $CurrentDay ) && ($slotstarttime > $CurrentTIme)){
             $st = strtotime($slot['start']);
             $et = strtotime($slot['end']);
@@ -848,5 +849,14 @@ class Appoitments_model extends CI_Model {
             $ids[] = $ap['user_id'];
         }
         return $ids;
+    }
+	
+	public function cancelrecommendapptmt($id) {
+        $this->db->where("id", $id);
+        $d["isDeleted"] = 1;
+        if ($this->db->update('hms_recommend_appointments', $d)) {
+            $this->logger->log("Recommended Appointment deleted", Logger::Appointment, $id);
+            return true;
+        } else return false;
     }
 }

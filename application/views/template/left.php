@@ -190,7 +190,7 @@
                                     </a>
                                 </li>
 								<li id="li4" class="nav-item">
-								<a href="javascript:void(0);" class="nav-link"><i class="menu-icon fa  fa-stethoscope "></i><span class="title"><?php echo $menu['main_dectors'];?> </span>
+								<a href="<?php echo site_url();?>patients/doctors" class="nav-link"><i class="menu-icon fa  fa-stethoscope "></i><span class="title"><?php echo $menu['main_dectors'];?> </span>
 								</a>
 								</li>
 								<li class="nav-item" id="li52">

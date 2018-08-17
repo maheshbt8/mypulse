@@ -422,6 +422,7 @@ $lang['labels'] = array(
     'alternateNumber' => 'Alternate Mobile Number',
     'male' => 'Male',
     'female' => 'Female',
+	'othergender' => 'Other',
     'other' => 'Professional Info',
     'fname' => 'First Name',
 	'mname' => 'Middle Name',

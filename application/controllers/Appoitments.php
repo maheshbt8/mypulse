@@ -486,5 +486,13 @@ class Appoitments extends CI_Controller {
             
         }    
     }
+	
+public function cancelrecommendapptmt() {
+      
+        if ($this->auth->isLoggedIn()) {
+            $id = $this->input->post('id');
+            echo $this->appoitments_model->cancelrecommendapptmt($id);
+        }
+    }	
 
 }
