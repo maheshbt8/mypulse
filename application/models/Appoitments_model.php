@@ -438,6 +438,10 @@ class Appoitments_model extends CI_Model {
         $data['appoitment_time_end'] = date('H:i',strtotime($tsloat[1]));
         if($this->auth->isPatient()){
             $data['user_id'] = $this->auth->getUserid();
+			$docid = $data['doctor_id'];
+			$GetDocDepartmentID = $this->db->query("SELECT department_id FROM hms_doctors WHERE id=$docid ")->row();
+			$DepartmentID = $GetDocDepartmentID->department_id;
+			$data['department_id'] = $DepartmentID;
         }else{
             $data['user_id'] = intval($data['user_id']);
 			$docid = $data['doctor_id'];
