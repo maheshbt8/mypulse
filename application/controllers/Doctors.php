@@ -349,7 +349,9 @@ class Doctors extends CI_Controller {
                     ->select('hms_doctors.id as mainid, CONCAT(hms_users.first_name," ",hms_users.last_name) as docname, hms_branches.branch_name as bname, hms_departments.department_name as dname', false)
                     ->join('hms_users','hms_doctors.user_id = hms_users.id','left')
                     ->join('hms_departments','hms_doctors.department_id = hms_departments.id','left')
-                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left');
+                    ->join('hms_branches','hms_departments.branch_id = hms_branches.id','left')
+					->join('hms_nurse','hms_nurse.doc_id = hms_doctors.id')
+					->where('hms_nurse.user_id',$this->auth->getUserId());
 
             }else if($show && $this->auth->isSuperAdmin()){
                 $this->datatables

@@ -200,7 +200,7 @@ $this->load->view("template/left.php");
 												<select class="form-control wid75 textinputfields " name="gender" id="gender" />
 													<option value="M"><?php echo $this->lang->line('labels')['male'];?></option>
 													<option value="F"><?php echo $this->lang->line('labels')['female'];?></option>
-													<option value="O"><?php echo $this->lang->line('labels')['other'];?></option>
+													<option value="O"><?php echo $this->lang->line('labels')['othergender'];?></option>
 												</select>
 											</div>
 											<div class="form-group col-md-6">

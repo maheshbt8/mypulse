@@ -136,7 +136,7 @@ $this->load->view("template/left.php");
                                                 <option  value=""></option>
                                                 <option <?php if($profile['gender']=="M") { echo "selected";}?>  value="M"><?php echo $this->lang->line('labels')['male'];?></option>
                                                 <option <?php if($profile['gender']=="F") { echo "selected";}?> value="F"><?php echo $this->lang->line('labels')['female'];?></option>
-                                                <option <?php if($profile['gender']=="O") { echo "selected";}?> value="O"><?php echo $this->lang->line('labels')['other'];?></option>
+                                                <option <?php if($profile['gender']=="O") { echo "selected";}?> value="O"><?php echo $this->lang->line('labels')['othergender'];?></option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
