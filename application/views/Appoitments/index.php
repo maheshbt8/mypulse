@@ -166,7 +166,7 @@ $this->load->view("template/left.php");
 		</div>
 		
 		<!--Recommed Next Appointment List -->
-        <?php if(count($states['recommend_appointment']) > 0) { ?>
+        
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
@@ -190,6 +190,7 @@ $this->load->view("template/left.php");
                                     </tr>
                                 </thead>
                                 <tbody>
+								<?php if(count($states['recommend_appointment']) > 0) { ?>
                                     <?php
                                         $cnt = 1;
                                         foreach($states['recommend_appointment'] as $ra){
@@ -208,7 +209,9 @@ $this->load->view("template/left.php");
                                             $cnt++;
                                         }
                                     ?>
-                                   
+									<?php }else{ ?>
+                                   <tr><th></th><td>No data available in table</td></tr>
+								   <?php } ?>
                                    
                                </tbody>
                             </table>
@@ -217,7 +220,7 @@ $this->load->view("template/left.php");
                 </div>
             </div>
         </div>
-        <?php } ?>
+        
 		
 <?php
 $this->load->view("template/footer.php");
