@@ -318,7 +318,9 @@ $this->load->view("template/footer.php");
 
 		$(".addbtn").click(function(){
 			resetForm(validator);
+			$("#suggesstion-box").hide();
 			$("#docAvailability").html("");
+			$("#appoitment_sloat").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
 			$("#action-add-btn").parent().show();
@@ -388,6 +390,8 @@ $this->load->view("template/footer.php");
 				
 				
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
+				$("#DoctorID").val(data.doctor_id);
+				$(".DoctorName").val(data.doctor_name);
 				$("#reason").val(data.reason);
 				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#appoitment_date").val(data.appoitment_date);
@@ -828,9 +832,12 @@ $this->load->view("template/footer.php");
 			$(".DoctorName").css("background","#FFF");
 						}else{
 							$(".DoctorID").val('');
+							$("#suggesstion-box").hide();
 							}
 					}
 				});
+		   }else{
+		   $("#suggesstion-box").hide();
 		   }
 		});
 		$('body').delegate('.selected-docotr','click',function(){
