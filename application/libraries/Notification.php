@@ -8,10 +8,13 @@ class Notification
     }
 //$this->notification->saveNotification(1,"text");
     public function saveNotification($uid=0,$msg,$action=null){
+		date_default_timezone_set('Asia/Kolkata');
         $notification['created_by'] = $this->CI->auth->getUserid();
         $notification['user_id'] = $uid;
         $notification['text'] = $msg;
         $notification['action'] = $action;
+		$notification['created_date'] = date('Y-m-d H:i:s');
+		
         $this->CI->load->model('notification_model');
         $this->CI->notification_model->saveNotification($notification);
     }
