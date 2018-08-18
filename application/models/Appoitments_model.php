@@ -422,6 +422,7 @@ class Appoitments_model extends CI_Model {
         $data = $_POST;
         //echo "<pre>";
         //var_dump($data);exit;
+		date_default_timezone_set('Asia/Kolkata');
         
         if(isset($_POST['recommend_id'])){
             $recommend_id = $_POST['recommend_id'];
@@ -508,7 +509,8 @@ class Appoitments_model extends CI_Model {
 
     function update($id) {
 
-        $data = $_POST;
+        date_default_timezone_set('Asia/Kolkata');
+		$data = $_POST;
 
         unset($data["eidt_gf_id"]);
         if (isset($data["appoitment_date"])) $data["appoitment_date"] = date("Y-m-d H:i:s", strtotime($data["appoitment_date"]));
