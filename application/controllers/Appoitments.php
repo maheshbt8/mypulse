@@ -183,7 +183,7 @@ class Appoitments extends CI_Controller {
             $up = isset($_GET['up']) ? $_GET['up'] : false;
             if($up){
                 $cond[] = "hms_appoitments.appoitment_date >= '".date("Y-m-d")."'";
-                $cond[] = "hms_appoitments.status = 0";
+                $cond[] = "hms_appoitments.status = 1";
             }else if($sdate != null && $edate != null){
                 $cond[] = "hms_appoitments.appoitment_date between '$sdate' and '$edate'";
             }   
@@ -493,6 +493,38 @@ public function cancelrecommendapptmt() {
             $id = $this->input->post('id');
             echo $this->appoitments_model->cancelrecommendapptmt($id);
         }
-    }	
+    }
+	
+public function checkAppointmentCancelTime(){
+		$AppointmentID = $this->input->post('q');
+		date_default_timezone_get("Asia/Kolkata");
+		$GetAppointmentDetails = $this->db->query("SELECT `appoitment_date`,`appoitment_time_start` FROM `hms_appoitments` WHERE `id`='".$AppointmentID."'")->row();
+		$GetcurrentDay = date('Y-m-d');
+		$getcurrenttime = date('H:i:s', time());
+		$AppointmentTime = $GetAppointmentDetails->appoitment_time_start;
+		$AppointmentDateTIme = ($GetAppointmentDetails->appoitment_date.' '.$AppointmentTime);
+		if($this->auth->isPatient()){
+		$canellationtime = date('Y-m-d H:i:s',strtotime('-2 hour',strtotime($AppointmentDateTIme)));
+		
+		}else{
+		$canellationtime = date('Y-m-d H:i:s',strtotime('-2 hour',strtotime($AppointmentDateTIme)));
+		
+		}
+		if($canellationtime > date('Y-m-d H:i:s') ){
+		echo 1;
+		}else{
+		echo 0;
+		}
+
+}
+
+public function GetAppointmentHistory(){
+		$AppointmentID = $this->input->post('appointmentid');
+		$data['GetapptHistory'] = $this->db->query("SELECT apt.`id`,apt.`user_id`,apt.`doctor_id`,apt.`appoitment_date`,apt.`appoitment_time_start`,
+activity.`description`,activity.`item_type`,activity.`user_id` AS CreatedBy,activity.`created_at`,activity.`user_name` FROM `hms_appoitments` AS apt 
+INNER JOIN `hms_activitylog` AS activity ON activity.`item_id`= apt.`id` WHERE apt.id='".$AppointmentID."' AND activity.`item_type`='Appointment' ")->result();
+		echo $this->load->view('Appoitments/appointment_history',$data,TRUE);
+
+	}		
 
 }

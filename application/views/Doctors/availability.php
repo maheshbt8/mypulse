@@ -32,7 +32,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
-                                    <input style="width:50px" value="<?php echo $no_appt_handle;?>" class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['noAppInterval'];?>" name="no_appt_handle" id="no_appt_handle" />
+                                    <input style="width:50px" value="<?php echo $no_appt_handle;?>" class="form-control " type="text" name="no_appt_handle" id="no_appt_handle" />
                                 </div>
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['availabilityText'];?></label>
@@ -104,11 +104,11 @@
                         <div class="row" >
                             <div class="form-group col-md-6" style="">
                                 <label id="stlbl"><?php echo $this->lang->line('labels')['date'];?></label>
-                                <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
+                                <input type="text" class="form-control date-picker" name="date" id="date" />
                             </div>
                             <div class="form-group col-md-6" id="endDiv">
                                 <label><?php echo $this->lang->line('labels')['end_date'];?></label>
-                                <input type="text" class="form-control date-picker-nopast" name="end_on" id="end_on" />
+                                <input type="text" class="form-control date-picker" name="end_on" id="end_on" />
                             </div>
                         </div>
                         <div class="row">

@@ -59,7 +59,7 @@ $this->load->view("template/left.php");
 
 	    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<form action="<?php echo site_url(); ?>/appoitments/update" method="post" id="form">
+				<form action="<?php echo site_url(); ?>/appoitments/update" method="post" id="form" autocomplete="off">
 				<input type="hidden" name="eidt_gf_id" id="eidt_gf_id">
 				
 				<div class="modal-content">
@@ -137,7 +137,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3" readonly="readonly"></textarea>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3" readonly="readonly"></textarea><button type="button" class="btn btn-info btn-sm viewappthistory" data-toggle="modal" data-target="#appthistory">View Appointment History</button>
 								</div>
 							</div>				  		
 						</div>
@@ -166,8 +166,8 @@ $this->load->view("template/left.php");
 		</div>
 		
 		<!--Recommed Next Appointment List -->
-        <?php if(count($states['recommend_appointment']) > 0) { ?>
-        <div class="row">
+        
+        <?php /*?><div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-head">
@@ -190,6 +190,7 @@ $this->load->view("template/left.php");
                                     </tr>
                                 </thead>
                                 <tbody>
+								<?php if(count($states['recommend_appointment']) > 0) { ?>
                                     <?php
                                         $cnt = 1;
                                         foreach($states['recommend_appointment'] as $ra){
@@ -208,7 +209,9 @@ $this->load->view("template/left.php");
                                             $cnt++;
                                         }
                                     ?>
-                                   
+									<?php }else{ ?>
+                                   <tr><th></th><td>No data available in table</td></tr>
+								   <?php } ?>
                                    
                                </tbody>
                             </table>
@@ -216,8 +219,35 @@ $this->load->view("template/left.php");
                     </div>
                 </div>
             </div>
-        </div>
-        <?php } ?>
+        </div><?php */?>
+        
+
+<div class="modal fade appointthistory" tabindex="-1" role="dialog" aria-labelledby="appointthistory" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				
+			<!-- /.modal-content --> 
+			</div>
+		<!-- /.modal-dialog --> 
+		</div>
+        <div id="appthistory" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Appointment History</h4>
+      </div>
+      <div class="modal-body">
+        
+      		 <div id="load"></div>
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>
 		
 <?php
 $this->load->view("template/footer.php");
@@ -353,6 +383,7 @@ $this->load->view("template/footer.php");
 		$("#appoitments").on("click",".editbtn",function(){
 			resetForm(validator);
 			$("#docAvailability").html("");
+			$("#suggesstion-box").hide();
 			var id = $(this).attr("data-id");
 			$("#eidt_gf_id").val(id);
 			loadData(id);
@@ -378,6 +409,7 @@ $this->load->view("template/footer.php");
 				tempselectize_user_id.refreshItems();
 				tempselectize_user_id.setValue(data.user_id);*/
 
+				$
 				t_bid = data.branch_id;
 				t_did = data.department_id;
 				t_oid = data.doctor_id;
@@ -418,7 +450,18 @@ $this->load->view("template/footer.php");
 		
 		 $("#appoitments").on("click",".delbtn",function(){
 			var id = $(this).attr("data-id");
-			var curdel = $(this);
+			$.ajax({
+				url: "<?php echo site_url(); ?>/appoitments/checkAppointmentCancelTime/",
+					type: "POST",
+					data: {"q":id},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						if(res==0){
+						toastr.error("<?php echo $this->lang->line('headings')['canceltimeexceed'];?>");
+						}else{
+							var curdel = $(this);
 			var s = swalDeleteConfig;
 			s.text = '<?=$this->lang->line('labels')['delSureAppt'];?>';
 			var msg = $(this).data('msg');
@@ -437,6 +480,10 @@ $this->load->view("template/footer.php");
 					}
 				});
 			});
+						}
+					}
+			});
+			
 		});
 
 		$(document).on('click','.multiCancelBtn',function(){
@@ -860,6 +907,48 @@ $this->load->view("template/footer.php");
 				$("#appoitment_date").attr('disabled',false);
 				
 		});
+		
+		/*$('.viewappthistory').on('click',function(){
+		
+			$appointmentid = $('#eidt_gf_id').val();
+			$.ajax({
+					url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
+					type: "POST",
+					data: {"appointmentid":$appointmentid},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						
+					}
+				});
+		});*/
+		
+	$('.viewappthistory').on('click', function(e){
+		
+	 $appointmentid = $('#eidt_gf_id').val();
+	 
+	 e.preventDefault();
+	 
+		$.ajax({
+				type: "POST",
+				url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
+				data: {"appointmentid":$appointmentid},
+				success:function(result){
+					if(result != 0){
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);	
+						
+					} else {
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);
+						
+					}
+				}
+			});
+	});		
 
 	});
 

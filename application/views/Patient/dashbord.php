@@ -94,7 +94,7 @@
     </div>
 
 		<!--Recommed Next Appointment List -->
-        <?php if(count($states['recommend_appointment']) > 0) { ?>
+       
         <div class="row">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
@@ -118,6 +118,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+								<?php if(count($states['recommend_appointment']) > 0) { ?>
                                     <?php
                                         $cnt = 1;
                                         foreach($states['recommend_appointment'] as $ra){
@@ -140,6 +141,9 @@
                                             $cnt++;
                                         }
                                     ?>
+									<?php }else{ ?>
+                                   <tr><th></th><td>No data available in table</td></tr>
+								   <?php } ?>
                                    
                                    
                                </tbody>
@@ -149,7 +153,7 @@
                 </div>
             </div>
         </div>
-        <?php } ?>
+       
 	
         <!--OutStanding Prescription Orders -->
         <?php if(count($states['orders']) > 0) { ?>
