@@ -469,6 +469,7 @@ class Doctors_model extends CI_Model {
     }
 
     public function addAvailability($docid=0){
+	//print_r($_POST);exit;
         $data = array();
         $isOnlyOne = false;
 
@@ -583,7 +584,13 @@ class Doctors_model extends CI_Model {
                         }
                     }
                     else{
-                        $this->db->insert('hms_availability',$data);
+						for($i=0; $i<count($_POST['repeat_on']); $i++){
+						$data['user_id'] = $docid;//$this->getDoctorIdFromUserId($this->auth->getUserid());
+                    	$data['repeat_interval'] = $_POST['repeat_interval'];
+                    	$data['day'] = $_POST['repeat_on'][$i];
+                    	$data['end_date'] = date("Y-m-d",strtotime($_POST['end_on']));
+                    	$data['start_date'] = date("Y-m-d",strtotime($_POST['date']));
+						$this->db->insert('hms_availability',$data);
 						$id = $this->db->insert_id();
 						$this->logger->log("Doctor availability inserted", Logger::Availability, $id);
 						
@@ -604,7 +611,7 @@ class Doctors_model extends CI_Model {
                             $this->notification->saveNotification($doctor['user_id'], "Your new availability is added");
                         }
                     }   
-                //}
+                }
             }else if($_POST['repeat_interval'] == 1){
                 //Monthly
                 $data['user_id'] = $docid;//$this->getDoctorIdFromUserId($this->auth->getUserid());
