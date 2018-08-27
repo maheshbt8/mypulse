@@ -178,6 +178,15 @@ class Doctors extends CI_Controller {
             echo json_encode($av);
         }
     }
+	
+	public function getAvailabledaysByID(){
+		if($this->auth->isLoggedIn()){
+            $id = $_GET['id'];
+            $avd = $this->doctors_model->getAvailabledaysByID($id);
+		}
+		echo json_encode($avd);
+	
+	}
 
     public function getAvailabilityText(){
         if($this->auth->isLoggedIn()){
