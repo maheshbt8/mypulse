@@ -812,7 +812,7 @@ class Appoitments_model extends CI_Model {
             $this->db->where('appoitment_date',$date);
             $this->db->where('appoitment_time_start',date('H:i:s',$st));
             $this->db->where('appoitment_time_end',date('H:i:s',$et));
-            $this->db->where('status',0);
+            $this->db->where('status',1);
             $this->db->where('isDeleted',0);
 
             $appt = $this->db->get($this->tblname);

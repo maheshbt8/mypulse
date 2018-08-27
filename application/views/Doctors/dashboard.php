@@ -192,7 +192,7 @@
 	                <div class="card">
 	                    
 	                    <div class="card-head clearfix">
-							<header><?php echo $this->lang->line('upcomingappoitments');?></header>
+							<header><?php echo $this->lang->line('todaysappoitments');?></header>
 							<div class="custome_card_header" style="">
 								<a class="btn btn-success m-b-sm" id="bookNew" data-toggle="tooltip" href="javascript:void(0);" data-toggle="modal" data-target="#edit" style=""><?php echo $this->lang->line('buttons')['bookAppoitment'];?></a>
 								<?php /*?><a class="btn btn-info m-b-sm multiApprBtn" data-msg="<?=$this->lang->line('msg_want_to_approve_appts');?>" data-at="appoitments"  href="javascript:void(0);"  style="margin-left:10px"><?php echo $this->lang->line('buttons')['approve'];?></a><?php */?>
@@ -1164,16 +1164,28 @@
 		
 		 $("#appoitments").on("click",".delbtn",function(){
 			var id = $(this).attr("data-id");
-			var curdel = $(this);
+			$.ajax({
+				url: "<?php echo site_url(); ?>/appoitments/checkAppointmentCancelTime/",
+					type: "POST",
+					data: {"q":id},
+					error: function() {
+						callback();
+					},
+					success: function(res) {
+						if(res==0){
+						toastr.error("<?php echo $this->lang->line('headings')['canceltimeexceed'];?>");
+						}else{
+							var curdel = $(this);
 			var s = swalDeleteConfig;
+			s.text = '<?=$this->lang->line('labels')['delSureAppt'];?>';
 			var msg = $(this).data('msg');
 			if(msg!=undefined)
 				s.text = msg;
 			swal(s).then(function () {
-				$.post("<?php echo site_url(); ?>/appoitments/reject",{id:id},function(data){
+				$.post("<?php echo site_url(); ?>/appoitments/cancel",{id:id},function(data){
 					if(data==1){
-						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-danger"><?php echo $this->lang->line("labels")["rejected"]?></span>');
-						toastr.success("<?php echo $this->lang->line('headings')['rejectSuccess'];?>");
+						$($("#dellink_"+id).parents('td').siblings()[6]).html('<span class="label label-warning"><?php echo $this->lang->line("labels")["canceled"]?></span>');
+						toastr.success("<?php echo $this->lang->line('headings')['cancelSuccess'];?>");
 						if(dt != undefined){
 							dt.ajax.reload();
 						}
@@ -1181,6 +1193,9 @@
 						toastr.error("<?php echo $this->lang->line('headings')['tryAgain'];?>");
 					}
 				});
+			});
+						}
+					}
 			});
 		});
 

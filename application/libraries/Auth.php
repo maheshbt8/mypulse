@@ -434,23 +434,23 @@ class Auth {
             case 1:
                 if($this->isSuperAdmin() || $this->isHospitalAdmin() || $this->isReceptinest()){
                     if(!$this->isPast($date)){
-                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";             
+                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";             
                     }else{
                         $html .= "-";
                     }
                 }
                 if($this->isDoctor()){
                     if(!$this->isPast($date)){
-                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_reject_appt')."' title=\"Reject\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
+                        $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";
                     }
                     $html .=  "<a href='#' data-id='$id' class='editbtn' data-toggle='modal' data-target='#edit' data-toggle='tooltip' title='Edit' style='margin-left:10px'><i class='fa fa-pencil'></i></a>";
                 }
                 if($this->isPatient()){
-                    if(!$this->isPast($date)){
+                    //if(!$this->isPast($date)){
                         $html .= "<a href=\"#\" id=\"dellink_".$id."\" class=\"delbtn\"  data-toggle=\"modal\" data-target=\".bs-example-modal-sm\" data-id=\"$id\" data-toggle=\"tooltip\" data-msg='".$this->CI->lang->line('msg_want_to_cancel_appt')."' title=\"Cancel\" style='color:red'><i class=\"glyphicon glyphicon-remove\"></i></button>";   
-                    }else{
-                        $html .= "-";
-                    }
+                    //}else{
+                      //  $html .= "-";
+                    //}
                 }
                 break;
             case 2:
@@ -810,6 +810,23 @@ class Auth {
 		$Result = $this->CI->db->query("SELECT `department_id` FROM `hms_doctors` WHERE `id`='".$DoctorID."'")->row();
 		if($Result){
 		return $Result->department_id;
+		}else{
+		
+		return false;
+		}
+		
+		}else{
+		return false;
+		}
+	
+	}
+	
+	public function GetuserNameByID($UserID = NULL){
+	
+		if($UserID){
+		$Result = $this->CI->db->query("SELECT CONCAT_WS(' ',first_name,MiddleName,last_name) AS FullName FROM `hms_users` WHERE `id`='".$UserID."'")->row();
+		if($Result){
+		return $Result->FullName;
 		}else{
 		
 		return false;
