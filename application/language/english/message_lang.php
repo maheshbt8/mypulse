@@ -507,6 +507,7 @@ $lang['labels'] = array(
     'availabilityTextPlace' => 'E.g. Available on every Monday to Friday.',
     'doctorAvailability' => 'Doctor Availability',
     'updateOrDeleteOnlyOne' => 'Update/Delete only current day availability',
+	'updateOrDeleteAll' => 'Update/Delete all',
     'date' => 'Date',
     'status' => 'Status',
     'reason' => 'Reason',
@@ -573,6 +574,7 @@ $lang['headings'] = array(
     'approvedSuccess' => 'Approved Successfully',
     'addNewAvailability' => 'Add new availability',
     'editAvailability' => 'Edit availability',
+	'AvailabilityFor' => 'Availability For',
 );
 //End Heading
 

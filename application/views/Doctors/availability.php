@@ -18,6 +18,11 @@
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('labels')['otherSettings'];?></h3>
                             </div>
                             <div class="custome_col4">
+							<?php  $DoctorUserID = $this->auth->GetUserIDByDoctorID($doc_id); 
+							       if(!$this->auth->isDoctor()){
+								   echo $this->auth->GetuserNameByID($DoctorUserID);
+								   } 
+							?>
                                 <div class="panel_button_top_right">
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
@@ -29,7 +34,7 @@
                     <div class="panel-body" id="profileBody">
                         <form action="<?php echo site_url(); ?>/doctors/othersetting" method="post" id="form1" enctype="multipart/form-data">
                             <input type="hidden" name="eidt_gf_id" value="<?php echo $doc_id;?>" />
-                            <div class="col-md-12">
+							<div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
                                     <input style="width:50px" value="<?php echo $no_appt_handle;?>" class="form-control " type="text" name="no_appt_handle" id="no_appt_handle" />
@@ -104,11 +109,11 @@
                         <div class="row" >
                             <div class="form-group col-md-6" style="">
                                 <label id="stlbl"><?php echo $this->lang->line('labels')['date'];?></label>
-                                <input type="text" class="form-control date-picker" name="date" id="date" />
+                                <input type="text" class="form-control date-picker-nopast" name="date" id="date" />
                             </div>
                             <div class="form-group col-md-6" id="endDiv">
                                 <label><?php echo $this->lang->line('labels')['end_date'];?></label>
-                                <input type="text" class="form-control date-picker" name="end_on" id="end_on" />
+                                <input type="text" class="form-control date-picker-nopast" name="end_on" id="end_on" />
                             </div>
                         </div>
                         <div class="row">
@@ -119,6 +124,11 @@
                             <div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['end_time'];?></label>
                                 <input type="text" class="form-control timepicker" name="end_time" id="end_time" />
+                            </div>
+                        </div>
+						<div class="row" id="ExistedDaysDiv" style="display:none">
+                            <div class="col-md-12">
+                                <label><input type="checkbox" name="existDays" id="existDays" value="yes" > <?php echo $this->lang->line('labels')['updateOrDeleteAll'];?> </label>
                             </div>
                         </div>
                         <div class="row" id="onlyOneDiv" style="display:none">
@@ -220,6 +230,9 @@
             $("#onlyOneDiv").hide();
             $("#onlyOne").attr('checked',false);
             $("#onlyOne").parent().removeClass('checked');
+			$("#ExistedDaysDiv").hide();
+			$("#existDays").attr('checked',false);
+            $("#existDays").parent().removeClass('checked');
             $("#action-add-btn").parent().show();
             $("#form")[0].reset();
             $("#form input").attr("disabled",false);
@@ -238,27 +251,55 @@
                 $("#chk_"+i).parent().removeClass('checked');
             }
             $("#eidt_gf_id").val(id);
-            $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editAvailability'];?>");
+            $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['AvailabilityFor'];?>" + " (" + today + ")");
             $("#action-update-btn").parent().show();
             $("#action-del-btn").parent().show();
             $("#action-add-btn").parent().hide();
-            $("#onlyOneDiv").show();
+            //$("#onlyOneDiv").show();
             $("#onlyOne").attr('checked', true);
             $("#onlyOne").parent().addClass('checked');
+			$("#ExistedDaysDiv").show();
+            $("#existDays").parent().addClass('checked');
             $("#form")[0].reset();
             $("#form input").attr("disabled",false);
             $("#repeat_interval").attr("disabled",true);
+			$("#weeklyDayDiv input").attr("disabled", true);
+			$("#date").attr("readonly", true);
+			$("#end_on").attr("readonly", true);
             $("#form").attr("action","<?php echo site_url(); ?>/doctors/availability/<?php echo $doc_id;?>");
             $("#edit").modal("show");
             $("#form").append("<input type='hidden' name='today' value='"+today+"' id='today' />");
             //$("#repeat_interval").trigger('change');
             loadData(id);
+			loadexistdays(id);
         }
+		
+		function loadexistdays(id){
+				$.ajax({
+				url: "<?php echo site_url(); ?>/doctors/getAvailabledaysByID",
+				type: "GET",
+				dataType:"json",
+				data: {"id":id},
+				success: function(res) {
+					//alert(res.DocIDs);
+					if(res.status=='1'){
+					
+					$.each(res.AVDS.split(','), function(index, element){
+					   $("#chk_"+element).attr('checked',true);
+					   $("#chk_"+element).parent().addClass('checked');
+					   //$('.specialization').find('option[value="'+ element +'"]').prop('selected', true);
+						
+					});
+					}
+				}
+				});
+				
+		}
 
         function loadData(id){
             $.get("<?php echo site_url(); ?>/doctors/getAvailabilityById",{ id: id },function(data){
 			    var data = JSON.parse(data);
-                $("#weeklyDayDiv").hide();
+				$("#weeklyDayDiv").hide();
                 $("#monthDayDiv").hide();
                 $("#customDiv").hide();
                 $("#form").append("<input type='hidden' name='edit_ri' id='edit_ri' value='"+data.repeat_interval+"' />");
@@ -271,8 +312,8 @@
                     $('#end_on').datepicker("setDate", data.end_date );
                 }else if(data.repeat_interval == 0){
                     $('#end_on').datepicker("setDate", data.end_date );
-                    $("#chk_"+data.day).attr('checked',true);
-                    $("#chk_"+data.day).parent().addClass('checked');
+                    //$("#chk_"+data.day).attr('checked',true);
+                    //$("#chk_"+data.day).parent().addClass('checked');
                     $("#weeklyDayDiv").show();
                 }
                 $("#start_time").val(data.start_time);
@@ -282,13 +323,25 @@
                 $("#repeat_interval").trigger('change');
             });
         }
+		
+		$(document).on('change', "#existDays", function () {
+			if($("#existDays").prop('checked') == true){
+				$("#onlyOne").prop("checked", false);
+				$("#onlyOne").parent().removeClass('checked');
+			}else{
+			$("#onlyOne").prop("checked", true);
+			$("#onlyOne").parent().addClass('checked');
+			}
+    		
+    		//$(this).prop("checked", true);
+  		});
 
         $("#action-del-btn").click(function(){
             $("#edit").modal("hide");
             var id = $("#eidt_gf_id").val();
             var isOne = $("#onlyOne").is(":checked");
             var today = $("#today").val();
-            var s = swalDeleteConfig;
+			var s = swalDeleteConfig;
             s.text = '<?=$this->lang->line('msg_want_del_availability');?>';
             swal(s).then(function () {
                 $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id,isOne:isOne,today:today},function(data){
