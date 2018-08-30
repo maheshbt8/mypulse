@@ -574,6 +574,7 @@ $lang['headings'] = array(
     'approvedSuccess' => 'Approved Successfully',
     'addNewAvailability' => 'Add new availability',
     'editAvailability' => 'Edit availability',
+	'AvailabilityFor' => 'Availability For',
 );
 //End Heading
 

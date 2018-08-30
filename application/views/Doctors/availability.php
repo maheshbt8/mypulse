@@ -128,7 +128,7 @@
                         </div>
 						<div class="row" id="ExistedDaysDiv" style="display:none">
                             <div class="col-md-12">
-                                <label><input type="checkbox" name="existDays" id="existDays" value="yes" ><?php echo $this->lang->line('labels')['updateOrDeleteAll'];?></label>
+                                <label><input type="checkbox" name="existDays" id="existDays" value="yes" > <?php echo $this->lang->line('labels')['updateOrDeleteAll'];?> </label>
                             </div>
                         </div>
                         <div class="row" id="onlyOneDiv" style="display:none">
@@ -251,7 +251,7 @@
                 $("#chk_"+i).parent().removeClass('checked');
             }
             $("#eidt_gf_id").val(id);
-            $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editAvailability'];?>" + " (" + today + ")");
+            $("#Edit-Heading").html("<?php echo $this->lang->line('headings')['AvailabilityFor'];?>" + " (" + today + ")");
             $("#action-update-btn").parent().show();
             $("#action-del-btn").parent().show();
             $("#action-add-btn").parent().hide();
