@@ -138,13 +138,13 @@ class Doctors extends CI_Controller {
     public function deleteavalibality(){
         if ($this->auth->isLoggedIn() && ($this->auth->isReceptinest() || $this->auth->isDoctor() || $this->auth->isSuperAdmin() || $this->auth->isHospitalAdmin())) {
             $id = $this->input->post('id');
-            $isOne = $this->input->post('isOne',null,false);
+			$isOne = $this->input->post('isOne',null,false);
             
             if($isOne=="true"){
                 //Add Delete Entry;
                 echo $this->doctors_model->deleteavalibalityForOne($id);
             }else{
-                echo $this->doctors_model->deleteavalibality($id);
+			    echo $this->doctors_model->deleteavalibality($id);
             }
         }
     }

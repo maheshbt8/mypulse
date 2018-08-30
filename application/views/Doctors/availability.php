@@ -18,6 +18,11 @@
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('labels')['otherSettings'];?></h3>
                             </div>
                             <div class="custome_col4">
+							<?php  $DoctorUserID = $this->auth->GetUserIDByDoctorID($doc_id); 
+							       if(!$this->auth->isDoctor()){
+								   echo $this->auth->GetuserNameByID($DoctorUserID);
+								   } 
+							?>
                                 <div class="panel_button_top_right">
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
@@ -29,7 +34,7 @@
                     <div class="panel-body" id="profileBody">
                         <form action="<?php echo site_url(); ?>/doctors/othersetting" method="post" id="form1" enctype="multipart/form-data">
                             <input type="hidden" name="eidt_gf_id" value="<?php echo $doc_id;?>" />
-                            <div class="col-md-12">
+							<div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
                                     <input style="width:50px" value="<?php echo $no_appt_handle;?>" class="form-control " type="text" name="no_appt_handle" id="no_appt_handle" />
@@ -336,7 +341,7 @@
             var id = $("#eidt_gf_id").val();
             var isOne = $("#onlyOne").is(":checked");
             var today = $("#today").val();
-            var s = swalDeleteConfig;
+			var s = swalDeleteConfig;
             s.text = '<?=$this->lang->line('msg_want_del_availability');?>';
             swal(s).then(function () {
                 $.post("<?php echo site_url(); ?>/doctors/deleteavalibality",{id:id,isOne:isOne,today:today},function(data){

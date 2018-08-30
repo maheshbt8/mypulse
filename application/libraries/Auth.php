@@ -837,6 +837,23 @@ class Auth {
 		}
 	
 	}
+	
+	public function GetUserIDByDoctorID($DoctorID = NULL){
+	
+		if($DoctorID){
+		$Result = $this->CI->db->query("SELECT `user_id` FROM `hms_doctors` WHERE `id`='".$DoctorID."'")->row();
+		if($Result){
+		return $Result->user_id;
+		}else{
+		
+		return false;
+		}
+		
+		}else{
+		return false;
+		}
+	
+	}
 
 }
 

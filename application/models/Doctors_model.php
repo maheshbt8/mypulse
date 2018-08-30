@@ -325,22 +325,22 @@ class Doctors_model extends CI_Model {
     }
 
     function deleteavalibality($id){
-        if(is_array($id)){
-            $this->db->where_in('id',$id);
-        }else{
-            $this->db->where("id", $id);
-        }
-        $d["isDeleted"] = 1;
-        if ($this->db->update("hms_availability", $d)) {
-			if(is_array($id)){
-				foreach($id as $i){
-					$this->logger->log("Doctor availability soft deleted", Logger::Availability, $i);
-				}
+        if($id){
+            $GetSelectedAvailability = $this->db->query("SELECT `user_id`,`start_date`,end_date,start_time,end_time FROM `hms_availability` WHERE `id` = '".$id."'")->row();
+			$this->db->query("DELETE FROM `hms_availability` WHERE `user_id`='".$GetSelectedAvailability->user_id."' 
+												 AND `start_date`='".$GetSelectedAvailability->start_date."' AND `end_date`='".$GetSelectedAvailability->end_date."' 
+												 AND `start_time`='".$GetSelectedAvailability->start_time."' AND `end_time`='".$GetSelectedAvailability->end_time."'");
+			$DeleteAvailability = $this->db->affected_rows();
+			if($DeleteAvailability){
+				$this->logger->log("Doctor availability deleted", Logger::Availability, $id);
+				return true;
 			}else{
-				$this->logger->log("Doctor availability soft deleted", Logger::Availability, $id);
-			}
-            return true;
-        } else return false;
+			return false;
+			}									 
+        	
+		}else{
+		 return false;
+		 }
     }
 
     function deleteavalibalityForOne($id){
@@ -352,6 +352,7 @@ class Doctors_model extends CI_Model {
         $date = isset($_POST['today']) ? date("Y-m-d",strtotime($_POST['today'])) : false;
         if($date){
             $new['start_date'] = $date;
+			$new['end_date'] = $date;
             return $this->db->insert('hms_availability',$new);
 			$this->logger->log("Doctor availability updated,", Logger::Availability, $id);
         }
@@ -732,10 +733,11 @@ class Doctors_model extends CI_Model {
 		
 
         $red = $this->db->get('hms_availability');*/
-		$red = $this->db->query("SELECT * FROM `hms_availability` WHERE `user_id` = '2' AND `isDeleted` =0 AND (`start_date` >= '".$start_date."' OR `end_date` >= '".$start_date."')");
+		/*$red = $this->db->query("SELECT * FROM `hms_availability` WHERE `user_id` = '".$doc_id."' AND `isDeleted` =0 AND (`start_date` >= '".$start_date."' OR `end_date` >= '".$start_date."')");*/
+		$red = $this->db->query("SELECT * FROM `hms_availability` WHERE `user_id` = '".$doc_id."' AND `isDeleted` =0");
 
         //echo "<pre>";
-        //var_dump($this->db->last_query());exit;
+        //print_r($this->db->last_query());exit;
 
         $red = $red->result_array();
         $data = array();
