@@ -859,7 +859,8 @@ class Doctors_model extends CI_Model {
         $this->db->where('id',$id);
         $this->db->where('isDeleted',0);
         $av = $this->db->get('hms_availability')->row();
-		$avd = $this->db->query("SELECT `day` FROM `hms_availability` WHERE `start_date`='".$av->start_date."' AND `end_date`='".$av->end_date."'")->result();
+		$avd = $this->db->query("SELECT `day` FROM `hms_availability` WHERE user_id='".$av->user_id."' AND `start_date`='".$av->start_date."' AND `end_date`='".$av->end_date."' 
+								 AND `start_time`='".$av->start_time."' AND `end_time`='".$av->end_time."' ")->result();
 		$availabledays = array();
 		foreach($avd as $Row){
 		$availabledays[] = $Row->day;
