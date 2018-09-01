@@ -1,4 +1,6 @@
-<table>
+
+
+test<table>
 												<tr>
 												<th><?php echo $this->lang->line('DateTime'); ?></th>
 												<th><?php echo $this->lang->line('labels')['role']; ?></th>
