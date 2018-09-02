@@ -271,7 +271,7 @@
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4><h4 class="apptidentifier" style="position:absolute;top:9px;left:195px;"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -1108,7 +1108,7 @@
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
 			$("#form input").attr("disabled",false);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
 			$("#action-update-btn").parent().show();
 
@@ -1140,6 +1140,7 @@
 				$("#reason").val(data.reason);
 				
 				$("#remarks").val(data.remarks);
+				$(".apptidentifier").html(data.appoitment_number);
 			
 				$("#appoitment_date").attr("disabled", true);
 				$("#appoitment_sloat").attr("disabled", true);

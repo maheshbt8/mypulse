@@ -372,7 +372,8 @@
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea><br />
+									<a href="javascript:void(0);" class="viewappthistory" data-toggle="modal" data-target="#appthistory"><?php echo $this->lang->line('labels')['ViewAppointmentHisoty'];?></a>
 								</div>
 							</div>				  		
 						</div>
@@ -400,6 +401,34 @@
 			</div>
 		<!-- /.modal-dialog --> 
 		</div>
+		
+<div class="modal fade appointthistory" tabindex="-1" role="dialog" aria-labelledby="appointthistory" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				
+			<!-- /.modal-content --> 
+			</div>
+		<!-- /.modal-dialog --> 
+		</div>
+<div id="appthistory" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><?php echo $this->lang->line('labels')['AppointmentHisoty'];?></h4>
+      </div>
+      <div class="modal-body">
+        
+      		 <div id="load"></div>
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+		
 
 <?php
     $this->load->view('template/footer.php');
@@ -1071,7 +1100,7 @@
 			loadDataAppt(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
 			$("#form input").attr("disabled",false);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
 			$("#action-update-btn").parent().show();
 			<?php if($this->auth->isPatient()){
@@ -1109,6 +1138,7 @@
 				$("#appoitment_date").trigger("change");
 
 				$("#remarks").val(data.remarks);
+				$(".apptidentifier").html(data.appoitment_number);
 			
 				$("#appoitment_date").prop("disabled", true);
 				$("#reason").prop("disabled", false);
@@ -1163,6 +1193,31 @@
 			});
 		});	
 		
+$('.viewappthistory').on('click', function(e){
+		
+	 $appointmentid = $('#eidt_gf_id').val();
+	 
+	 e.preventDefault();
+	 
+		$.ajax({
+				type: "POST",
+				url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
+				data: {"appointmentid":$appointmentid},
+				success:function(result){
+					if(result != 0){
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);	
+						
+					} else {
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);
+						
+					}
+				}
+			});
+	});		
 		
     });
 </script>
