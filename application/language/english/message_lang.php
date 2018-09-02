@@ -117,7 +117,8 @@ $lang['enterValidAadhaar'] = "Enter valid aadhaar number";
 $lang['otp_verification_incomplete'] = 'OPT verification timed out. Please register again with valid mobile number';
 $lang['set_password'] = 'Set Password';
 $lang['SearchForUsers'] = 'Search by Hospital name, Doctor name or Specialisation ';
-$lang['DateTime'] = 'Date Time';
+$lang['DateTime'] = 'Date/Time';
+$lang['Role_User'] = 'Role/User';
 $lang['roles'] = array(
     -1 => '',
     1 => 'Super Admin',
@@ -481,6 +482,8 @@ $lang['labels'] = array(
     'appoitment_date' => 'Appointment Date',//(Raj: Correct the label too)
     'appoitment_reason' => 'Reason for Appointment',//(Raj: Correct the label too)
     'remark' => 'Remark',
+	'ViewAppointmentHisoty' => 'View Appointment History',
+	'AppointmentHisoty' => 'Appointment History',
     'repeat_interval' => 'Repeat Interval',
     'repeat_on' => 'Repeat On',
     'start_time' => 'Start Time',
@@ -574,7 +577,8 @@ $lang['headings'] = array(
     'approvedSuccess' => 'Approved Successfully',
     'addNewAvailability' => 'Add new availability',
     'editAvailability' => 'Edit availability',
-	'AvailabilityFor' => 'Availability For',
+	'AvailabilityFor' => 'Availability ',
+	'EditappointmentHeading' => 'Appointment Details -  ',
 );
 //End Heading
 

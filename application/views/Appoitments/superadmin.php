@@ -111,7 +111,7 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4><h4 class="apptidentifier" style="position:absolute;top:9px;left:195px;"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -428,7 +428,7 @@ $this->load->view("template/footer.php");
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
 			$("#form input").attr("disabled",false);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
 			$("#action-update-btn").parent().show();
 
@@ -448,10 +448,10 @@ $this->load->view("template/footer.php");
 				t_did = data.department_id;
 				t_oid = data.doctor_id;
 
-				var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+				/*var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
 				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
 				tempselectize_hospital_id.refreshItems();
-				tempselectize_hospital_id.setValue(data.hospital_id);
+				tempselectize_hospital_id.setValue(data.hospital_id);*/
 				cur_v = data.timesloat;
 				
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
@@ -461,6 +461,7 @@ $this->load->view("template/footer.php");
 				$("#appoitment_date").trigger("change");
 				
 				$("#remarks").val(data.remarks);
+				$(".apptidentifier").html(data.appoitment_number);
 			
 				$("#appoitment_date").attr("disabled", true);
 				$("#reason").attr("disabled", true);
