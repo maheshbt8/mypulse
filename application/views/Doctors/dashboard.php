@@ -1052,6 +1052,7 @@
 			
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
+			$(".apptidentifier").hide();
 			$("#action-add-btn").parent().show();
 			$("#form")[0].reset();
 			$("#form input").attr("disabled",false);
@@ -1110,6 +1111,7 @@
 			$("#form input").attr("disabled",false);
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
+			$(".apptidentifier").show();
 			$("#action-update-btn").parent().show();
 
 			$("#selected_hid").val($("#hospital_id1").val());
