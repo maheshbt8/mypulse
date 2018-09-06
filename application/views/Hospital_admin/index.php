@@ -308,6 +308,9 @@ $this->load->view("template/left.php");
 			        	mobile:{
 			        		required:true,
 							phoneUS:true
+			        	},
+						hospital_id:{
+			        		required:true,
 			        	}
 			        },
 			        messages: {
@@ -328,6 +331,9 @@ $this->load->view("template/left.php");
 			        	mobile:{
 			        		required:"<?php echo $this->lang->line('validation')['requriedPhone'];?>",
 							phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>"
+			        	},
+						hospital_id:{
+			        		required:"<?php echo $this->lang->line('validation')['selectHospital'];?>",
 			        	}
 			        },
 					invalidHandler: validationInvalidHandler,

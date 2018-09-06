@@ -377,6 +377,12 @@ $this->load->view("template/left.php");
 			        	},
 			        	city:{
 			        		required:true
+			        	},
+						description: {
+			        		required : true
+			        	},
+						md_name: {
+			        		required : true
 			        	}
 			        },
 			        messages: {
@@ -406,6 +412,12 @@ $this->load->view("template/left.php");
 			        	},
 			        	city:{
 			        		required:"<?php echo $this->lang->line('validation')['selectCity'];?>"
+			        	},
+						description:{
+			        		required:"<?php echo $this->lang->line('validation')['requiredDescription'];?>"
+			        	},
+						md_name:{
+			        		required:"<?php echo $this->lang->line('validation')['requiredOwnerMDName'];?>"
 			        	}
 			        },
 					invalidHandler: validationInvalidHandler,
@@ -484,6 +496,8 @@ $this->load->view("template/left.php");
 						console.log(data);
 						$("#isActive").val(data.isActive);
 						$("#name").val(data.name);
+						$("#description").val(data.description);
+						$("#md_name").val(data.md_name);
 						$("#Edit-Heading").html(data.name+" <?php echo $this->lang->line('headings')['info'];?>");
 						$("#address").val(data.address);
 						$("#logo").val(data.logo);
