@@ -374,11 +374,11 @@
 							<div class="col-md-12">
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['appoitment_reason'];?></label>
-									<textarea class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
+									<textarea class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['appoitment_reason'];?>" name="reason" id="reason" rows="3"></textarea>
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea><br />
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3"></textarea><br />
 									<a href="javascript:void(0);" class="viewappthistory" data-toggle="modal" data-target="#appthistory"><?php echo $this->lang->line('labels')['ViewAppointmentHisoty'];?></a>
 								</div>
 							</div>				  		
@@ -1085,6 +1085,7 @@
 			
 			resetForm(validator);
 			$("#docAvailability").html("");
+			$(".viewappthistory").hide();
 			var id = $(this).attr("data-id");
 			loadData(id);
 			$("#form input").attr("disabled",false);
@@ -1106,9 +1107,11 @@
 			$(".viewappthistory").hide();
 			$("#docAvailability").html("");
 			$("#appoitment_sloat").html("");
-			$(".DoctorName").val();
-			$(".DoctorID").val();
-			$("#appoitment_date").val();
+			$(".DoctorName").val("");
+			$(".DoctorID").val("");
+			$("#appoitment_date").val("");
+			$("#remarks").val("");
+			$("#reason").val("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$(".apptidentifier").hide();
 			$("#action-update-btn").parent().hide();
