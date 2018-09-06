@@ -463,6 +463,10 @@
         });
 
         function toggleEditButton(){
+		if($("#no_appt_handle").val() <=0){
+		toastr.error("<?php echo $this->lang->line('headings')['nopatientscanhandle'];?>");
+		return false;
+		}
             var eb = $("#editBtn");
             if($(eb).data('isEdit') == "1"){
                 isEdit = false;

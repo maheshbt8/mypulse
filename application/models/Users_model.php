@@ -873,7 +873,7 @@ $json = json_decode(file_get_contents("https://smsapi.engineeringtgr.com/send/?M
 	
 	public function CheckVerifyMobileNumber($emailid){
 		
-		$verifyuser = $this->db->query("SELECT * FROM `hms_users` WHERE `useremail`  = '$emailid'")->row();
+		$verifyuser = $this->db->query("SELECT * FROM `hms_users` WHERE `useremail` = '$emailid'")->row();
 		
 		
 		if($verifyuser->isActive == 1 && ($verifyuser->EmailVerified==1 || $verifyuser->MobileVerified==1)){

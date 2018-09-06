@@ -349,9 +349,11 @@ $this->load->view("template/footer.php");
 
 		$(".addbtn").click(function(){
 			resetForm(validator);
+			$(".DoctorName").attr('readonly', false);
 			$("#suggesstion-box").hide();
 			$(".apptidentifier").hide();
 			$(".viewappthistory").hide();
+			$("#noApptTimeSloat").hide();
 			$("#docAvailability").html("");
 			$("#appoitment_sloat").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
@@ -389,6 +391,7 @@ $this->load->view("template/footer.php");
 			$("#suggesstion-box").hide();
 			$(".apptidentifier").show();
 			$(".viewappthistory").show();
+			$(".DoctorName").attr('readonly',true);
 			var id = $(this).attr("data-id");
 			$("#eidt_gf_id").val(id);
 			loadData(id);
@@ -426,13 +429,14 @@ $this->load->view("template/footer.php");
 				cur_v = data.timesloat;
 				
 				
-				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
+				$("#appoitment_sloat").html('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#DoctorID").val(data.doctor_id);
 				$(".DoctorName").val(data.doctor_name);
 				$("#reason").val(data.reason);
 				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#appoitment_date").val(data.appoitment_date);
 				$("#appoitment_date").trigger("change");
+				$("#appoitment_sloat").trigger("change");
 
 				$("#remarks").val(data.remarks);
 				$(".apptidentifier").html(data.appoitment_number);
@@ -913,22 +917,6 @@ $this->load->view("template/footer.php");
 				$("#appoitment_date").attr('disabled',false);
 				
 		});
-		
-		/*$('.viewappthistory').on('click',function(){
-		
-			$appointmentid = $('#eidt_gf_id').val();
-			$.ajax({
-					url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
-					type: "POST",
-					data: {"appointmentid":$appointmentid},
-					error: function() {
-						callback();
-					},
-					success: function(res) {
-						
-					}
-				});
-		});*/
 		
 	$('.viewappthistory').on('click', function(e){
 		
