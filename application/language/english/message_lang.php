@@ -118,7 +118,7 @@ $lang['otp_verification_incomplete'] = 'OPT verification timed out. Please regis
 $lang['set_password'] = 'Set Password';
 $lang['SearchForUsers'] = 'Search by Hospital name, Doctor name or Specialisation ';
 $lang['DateTime'] = 'Date/Time';
-$lang['Role_User'] = 'Role/User';
+$lang['Role_User'] = 'Role:Username';
 $lang['roles'] = array(
     -1 => '',
     1 => 'Super Admin',
@@ -579,6 +579,7 @@ $lang['headings'] = array(
     'editAvailability' => 'Edit availability',
 	'AvailabilityFor' => 'Availability ',
 	'EditappointmentHeading' => 'Appointment Details -  ',
+	'nopatientscanhandle' => 'Number should be greater than zero',
 );
 //End Heading
 

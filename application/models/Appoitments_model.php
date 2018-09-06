@@ -424,7 +424,7 @@ class Appoitments_model extends CI_Model {
         //print_r($data);exit;
 		date_default_timezone_set('Asia/Kolkata');
         
-        if(isset($_POST['recommend_id'])){
+        if(isset($_POST['recommend_id']) && $_POST['recommend_id'] !=''){
             $recommend_id = $_POST['recommend_id'];
             $sql=$this->db->query("update hms_recommend_appointments set status=1 where id=".$_POST['recommend_id']);
         }
@@ -538,37 +538,51 @@ class Appoitments_model extends CI_Model {
             $data['appoitment_time_start'] = date('H:i',strtotime($tsloat[0]));
             $data['appoitment_time_end'] = date('H:i',strtotime($tsloat[1]));
         }
-        $this->db->where("id", $id);
-        if ($this->db->update($this->tblname, $data)) {
-            $this->logger->log("Appointment updated", Logger::Appointment, $id);
-			
-			if($id){
+		
+		if (isset($data["appoitment_date"]) && $tsloat){
 				$this->db->where('id',$id);
 				$apptdata = $this->db->get('hms_appoitments')->row();
-				if(($apptdata->appoitment_date == date("Y-m-d H:i:s", strtotime($data["appoitment_date"]))) && ($apptdata->appoitment_time_start == date('H:i',strtotime($tsloat[0])))){
+				
+				 $aptmntdate = date("Y-m-d", strtotime($data["appoitment_date"]));
+				 $aptmntstart = date('H:i:s',strtotime($tsloat[0]));
+				 $aptmntend = date('H:i:s',strtotime($tsloat[1]));
+				 if(($apptdata->appoitment_date == $aptmntdate) && ($apptdata->appoitment_time_start == $aptmntstart)){
 					$Message = "Appointment Updated ";
 				}else{
 					$Message = "Appointment rescheduled to  ";
 				}
+			}else{
+				 $aptmntdate = '';
+				 $aptmntstart = '';
+				 $aptmntend =  '';
+				 }
+				 
+        $this->db->where("id", $id);
+        if ($this->db->update($this->tblname, $data)) {
+            $this->logger->log("Appointment updated", Logger::Appointment, $id);
+			
 				if (isset($data["reason"])){ 
 				$data["reason"] = $data['reason'];
 				}else{
 				$data['reason'] = "";
 				}
+				
 				$HistoryData = array("AppointmentFKID"=>$id,
 									 "Action"=>"Updated",
 									 "Message"=>$Message,
-									 "AppointmentDate"=>date("Y-m-d H:i:s", strtotime($data["appoitment_date"])),
-									 "AppointmentTimeStart"=>date('H:i',strtotime($tsloat[0])),
-									 "AppointmentTimeEnd"=>date('H:i',strtotime($tsloat[1])),
+									 "AppointmentDate"=>$aptmntdate,
+									 "AppointmentTimeStart"=>$aptmntstart,
+									 "AppointmentTimeEnd"=>$aptmntend,
 									 "Remark"=>$data['remarks'],
 									 "Reason"=>$data['reason'],
+									 "CreatedBy"=>$this->session->userdata('user_id'),
+									 "CreatedDate"=>date('Y-m-d H:i:s'),
 									 "ModifiedBy"=>$this->session->userdata('user_id'),
 									 "ModifiedDate"=>date('Y-m-d H:i:s'),
 									 );
 									 
 					$HID = $this->db->insert('hms_appointment_history',$HistoryData);
-				}
+				
             //get appt using $id;
             if(!$this->auth->isPatient()) {
                 //find appoitment data

@@ -520,9 +520,7 @@ public function checkAppointmentCancelTime(){
 
 public function GetAppointmentHistory(){
 		$AppointmentID = $this->input->post('appointmentid');
-		$data['GetapptHistory'] = $this->db->query("SELECT apt.`id`,apt.`user_id`,apt.`doctor_id`,apt.`appoitment_date`,apt.`appoitment_time_start`,apt.`reason`,apt.`remarks`,
-activity.`description`,activity.`item_type`,activity.`user_id` AS CreatedBy,activity.`created_at`,activity.`user_name` FROM `hms_appoitments` AS apt 
-INNER JOIN `hms_activitylog` AS activity ON activity.`user_id`= apt.`user_id` WHERE apt.id='".$AppointmentID."' AND activity.`item_type`='Appointment' ")->result();
+		$data['GetapptHistory'] = $this->db->query("SELECT *FROM hms_appointment_history WHERE AppointmentFKID = '".$AppointmentID."' ORDER BY HistoryID ASC ")->result();
 		echo $this->load->view('Appoitments/appointment_history',$data,TRUE);
 
 	}		
