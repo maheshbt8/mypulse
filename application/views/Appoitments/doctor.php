@@ -96,7 +96,7 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4><h4 class="apptidentifier" style="position:absolute;top:9px;left:195px;"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -152,7 +152,8 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea><br />
+									<a href="javascript:void(0);" class="viewappthistory" data-toggle="modal" data-target="#appthistory"><?php echo $this->lang->line('labels')['ViewAppointmentHisoty'];?></a>
 								</div>
 							</div>				  		
 						</div>
@@ -215,6 +216,34 @@ $this->load->view("template/left.php");
 				</div>
 			</div>
 		</div>
+		
+<div class="modal fade appointthistory" tabindex="-1" role="dialog" aria-labelledby="appointthistory" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				
+			<!-- /.modal-content --> 
+			</div>
+		<!-- /.modal-dialog --> 
+		</div>
+<div id="appthistory" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><?php echo $this->lang->line('labels')['AppointmentHisoty'];?></h4>
+      </div>
+      <div class="modal-body">
+        
+      		 <div id="load"></div>
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+		
 		
 <?php
 $this->load->view("template/footer.php");
@@ -368,6 +397,7 @@ $this->load->view("template/footer.php");
 			
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
+			$(".apptidentifier").hide();
 			$("#action-add-btn").parent().show();
 			$("#form")[0].reset();
 			$("#form input").attr("disabled",false);
@@ -424,8 +454,9 @@ $this->load->view("template/footer.php");
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
 			$("#form input").attr("disabled",false);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
+			$(".apptidentifier").show();
 			$("#action-update-btn").parent().show();
 
 			$("#selected_hid").val($("#hospital_id1").val());
@@ -456,6 +487,7 @@ $this->load->view("template/footer.php");
 				$("#reason").val(data.reason);
 				
 				$("#remarks").val(data.remarks);
+				$(".apptidentifier").html(data.appoitment_number);
 			
 				$("#appoitment_date").attr("disabled", true);
 				$("#appoitment_sloat").attr("disabled", true);
@@ -1051,6 +1083,32 @@ $this->load->view("template/footer.php");
 		
 		$("#sel_date").val("");	
 		loadTable("all");
+		
+	$('.viewappthistory').on('click', function(e){
+		
+	 $appointmentid = $('#eidt_gf_id').val();
+	 
+	 e.preventDefault();
+	 
+		$.ajax({
+				type: "POST",
+				url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
+				data: {"appointmentid":$appointmentid},
+				success:function(result){
+					if(result != 0){
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);	
+						
+					} else {
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);
+						
+					}
+				}
+			});
+	});		
 
 	});
 

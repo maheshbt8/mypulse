@@ -854,6 +854,17 @@ class Auth {
 		}
 	
 	}
+	
+	public function GetUserRoleByUserID($UserID = NULL){
+	
+		if($UserID){
+		$Result = $this->CI->db->query("SELECT `role` FROM `hms_users` WHERE `id`='".$UserID."'")->row();
+		return $Result->role;
+		}else{
+		return false;
+		}
+	
+	}
 
 }
 
