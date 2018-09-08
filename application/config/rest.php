@@ -151,7 +151,7 @@ $config['rest_ip_whitelist'] = '';
 |	'default'
 |
 */
-$config['rest_database_group'] = '';
+$config['rest_database_group'] = 'default';
 
 /*
 |--------------------------------------------------------------------------
