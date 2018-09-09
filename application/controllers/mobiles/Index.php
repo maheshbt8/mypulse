@@ -4,7 +4,7 @@ require APPPATH.'libraries/REST_Controller.php';
 class Index extends REST_Controller {
     protected $client_request = NULL;
 	function __construct(){
-		//error_reporting(0);
+		error_reporting(E_ALL);
 		header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
@@ -24,9 +24,9 @@ class Index extends REST_Controller {
 	
 	public function sendOTPtoRegisteredMobile_post(){
 	
-		$user_input = $this->client_request;
+		//$user_input = $this->client_request;
 		
-		$UserMobile = $user_input->MobileNumber;
+		$UserMobile = $this->post('mobilenumber');
 		$checkmob = $this->index_model->checkMobileExist($UserMobile);
 		if(!empty($checkmob)){
 			$response = array('Status' => 0,
@@ -34,8 +34,10 @@ class Index extends REST_Controller {
 						  	  );
 		}else{
 		$otpid = $this->index_model->sendRegisterOTPtoMobile($UserMobile);
+		$otpnumber = $this->db->query("SELECT OTPNumber FROM hms_users_otp WHERE OTPID = '".$otpid."'")->row();
 			$response = array('Status' => 1, 
-							  'OTPID'=>$otpid,		
+							  'OTPID'=>$otpid,
+							  'OTPNumber'=>$otpnumber->OTPNumber,		
 							  'Message' => $this->lang->line('register_otp_msg').' '.$UserMobile.' '.$this->lang->line('register_otp_msg1')
 							  );
 		}
@@ -44,12 +46,12 @@ class Index extends REST_Controller {
 	
 	}
 	
-	public function VerifyOTPNumber_post(){
-		$user_input = $this->client_request;
+	public function verifyOTPNumber_post(){
+		//$user_input = $this->client_request;
 		
-		$otpnumber = $user_input->OTPNumber;
-		$otpid = $user_input->OTPID;
-		
+		//$otpnumber = $user_input->OTPNumber;
+		$otpid = $this->post('otpid');
+		$otpnumber = $this->post('otpnumber');
 		$response = $this->index_model->VerifyNewOTPNumber($otpnumber,$otpid);
 		
 		$this->response($response);
@@ -58,9 +60,8 @@ class Index extends REST_Controller {
 		
 	public function checkMobileExist_post(){
 		
-		$user_input = $this->client_request;
 		
-		$Mobile = $user_input->MobileNumber;
+		$UserMobile = $this->post('mobilenumber');
 		
 		$response = $this->index_model->checkMobileExist($Mobile);
 		
@@ -71,7 +72,7 @@ class Index extends REST_Controller {
   public function checkEmailExist_post(){
 		$user_input = $this->client_request;
 		
-		$EmailID = $user_input->EmailID;
+		$UserMobile = $this->post('emailid');
 		
 		$response = $this->index_model->checkEmailExist($EmailID);
 		
@@ -79,14 +80,14 @@ class Index extends REST_Controller {
 		
 	}
 	
-public function doReg_post(){
+public function doRegistration_post(){
 		$user_input = $this->client_request;
 		
 		
-        $name = explode(" ",$user_input->FullName);
-		$EmailID = $user_input->EmailID;
-		$MobileNumber = $user_input->MobileNumber;
-		$password = md5($user_input->Password);
+        $name = explode(" ",$this->post('fullname'));
+		$EmailID = $this->post('emailid');
+		$MobileNumber = $this->post('mobilenumber');
+		$password = md5($this->post('password'));
 		$first_name = $name[0];
 		if(isset($name[1])){
 			$last_name = $name[1];
@@ -148,7 +149,75 @@ public function doReg_post(){
 		$this->response($response);
 		}
             
+public function cancelRegistration_post(){
 	
+		$otpid = $this->post('otpid');
+		$response = $this->index_model->cancelRegOTP($otpid);
+		
+		$this->response($response);
+		
+	}
+	
+public function userlogin_post(){
+		
+		$emailormobile = $this->post('emailormobile');
+		$password = md5($this->post('password'));
+		
+		$logindata = $this->index_model->getlogindata($emailormobile,$password);
+		if($logindata){
+			//$data['infos']= array( sprintf($this->lang->line('msg_welcome'),$this->auth->getUsername()));
+			$response = array("Status"=>1,
+							  "logindata"=>$logindata
+							  );
+		}else{
+			$response = array("Status"=>0,
+							  "Message"=>$this->lang->line('usr_acc_invalid_credential'),
+							  );
+			
+		}
+		
+		$this->response($response);
+
+	}
+	
+public function forgotPassword_post(){
+		
+		$mobilenumber = $this->post('mobilenumber');
+		$checkmobile = $this->index_model->checkMobileExist($mobilenumber);
+		if($checkmobile){
+			$otpid = $this->index_model->sendRegisterOTPtoMobile($mobilenumber);
+			$otpnumber = $this->db->query("SELECT OTPNumber FROM hms_users_otp WHERE OTPID = '".$otpid."'")->row();
+			$response = array('Status' => 1, 
+							  'OTPID'=>$otpid,
+							  'OTPNumber'=>$otpnumber->OTPNumber,		
+							  'Message' => $this->lang->line('register_otp_msg').' '.$UserMobile.' '.$this->lang->line('register_otp_msg1')
+							  );
+		}else{
+			 $response = array('Status' => 0,
+						  	  "Message" => $this->lang->line('msg_mobile_notexist')
+						  	  );
+		}
+		
+		$this->response($response);
+
+	}
+	
+public function resetPassword_post(){
+		$mobilenumber = $this->post('mobilenumber');
+		$password = md5($this->post('password'));
+		$setpassword = $this->index_model->resetPassword($mobilenumber,$password);
+		if($setpassword){
+			$response = array("Status"=>1,"Message"=>$this->lang->line('msg_password_change'));
+		}else{
+		
+			$response = array("Status"=>0,"Message"=>'Something went wrong');
+		}
+		
+		$this->response($response);
+		
+	}		
+	
+			
 				
 }
 

@@ -15,7 +15,7 @@
 | Full server path to this file is required.
 |
 */
-$config['PermissionFile'] = APPPATH.'../FashionDev.pem';
+$config['PermissionFile'] = APPPATH.'../apns-dev.pem';
 
 
 /*

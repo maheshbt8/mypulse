@@ -1231,7 +1231,7 @@
 			var id = $(this).attr("data-id");
 			var curdel = $(this);
 			var s = swalDeleteConfig;
-			s.text = '<?=$this->lang->line('labels')['delSureAppt'];?>';
+			s.text = '<?=$this->lang->line('labels')['delRecmndAppt'];?>';
 			var msg = $(this).data('msg');
 			if(msg!=undefined)
 				s.text = msg;
@@ -1306,6 +1306,7 @@ $('.viewappthistory').on('click', function(e){
 	 $appointmentid = $('#eidt_gf_id').val();
 	 
 	 e.preventDefault();
+	 $("#appthistory").modal({backdrop: "static"});
 	 
 		$.ajax({
 				type: "POST",
