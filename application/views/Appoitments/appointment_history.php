@@ -29,8 +29,8 @@ $RoleName = 'MyPulse User';
 <td><?php echo date('H:i:s A', strtotime($Row->CreatedDate)); ?></td>
 <td><?php echo $RoleName; ?></td>
 <td><?php echo $this->auth->GetuserNameByID($Row->CreatedBy); ?></td>
+<td><?php  echo $Row->Action; ?></td>
 <td><?php  echo $Row->Message.' '.$Row->AppointmentDate.' '.$Row->AppointmentTimeStart.'-'.$Row->AppointmentTimeEnd; ?></td>
-<td><?php if($Row->Reason){echo $Row->Reason;}else{echo $Row->Remark;} ?></td>
 
 </tr>
 <?php } ?>

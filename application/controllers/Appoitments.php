@@ -164,6 +164,7 @@ class Appoitments extends CI_Controller {
 
     public function getDTappoitments() {
         if ($this->auth->isLoggedIn()) {
+			$st = isset($_GET['st']) ? $_GET['st']!="" ? $_GET['st'] : null : null;
             $hid = isset($_GET['hid']) ? $_GET['hid']!="" ? intval($_GET['hid']) : null : null;
             $bid = isset($_GET['bid']) ? $_GET['bid']!="" ? intval($_GET['bid']) : null : null;
             $sdate = isset($_GET['sd']) ? $_GET['sd'] != "" ? date("Y-m-d",strtotime($_GET['sd'])) : null : null;
@@ -171,6 +172,25 @@ class Appoitments extends CI_Controller {
 			
             if($hid == "all")
                 $hid = null;
+			if($st === "all"){    
+                $st = null;
+				$all_status = array(0,1,2,4);
+            }
+			
+			if($st === "all_inc_closed"){    
+                $st = null;
+				$all_status = array(0,1,2,3,4);
+            }
+            
+            
+            $status = array();
+            if($st !== null){
+                $status[] = $st;
+            }else{
+                $status = $all_status;
+            }
+
+            	
 
             $show  = $this->input->get('s',null,false);
             $cond = array("hms_appoitments.isDeleted=0");
@@ -186,6 +206,11 @@ class Appoitments extends CI_Controller {
                 $cond[] = "hms_appoitments.status = 1";
             }else if($sdate != null && $edate != null){
                 $cond[] = "hms_appoitments.appoitment_date between '$sdate' and '$edate'";
+            }
+			if(count($status) > 0){
+                $cond[] = "hms_appoitments.status in (".implode(",",$status).")";
+            }else{
+                $cond[] = "hms_appoitments.status in (".implode(",",$all_status).")";
             }   
 
             //New Library

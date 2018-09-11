@@ -1306,7 +1306,7 @@ $('.viewappthistory').on('click', function(e){
 	 $appointmentid = $('#eidt_gf_id').val();
 	 
 	 e.preventDefault();
-	 $("#appthistory").modal({backdrop: "static"});
+	 //$("#appthistory").modal({backdrop: "static"});
 	 
 		$.ajax({
 				type: "POST",
