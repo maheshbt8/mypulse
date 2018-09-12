@@ -286,7 +286,8 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label><?php echo $this->lang->line('labels')['remark'];?></label>
-                                <textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea>
+                                <textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['remark'];?>" name="remarks" id="remarks" rows="3"></textarea><br />
+									<a href="javascript:void(0);" class="viewappthistory" data-toggle="modal" data-target="#appthistory"><?php echo $this->lang->line('labels')['ViewAppointmentHisoty'];?></a>
                             </div>
                         </div>				  		
                     </div>
@@ -350,6 +351,34 @@
             </div>
         </div>
     </div>
+	
+<div class="modal fade appointthistory" tabindex="-1" role="dialog" aria-labelledby="appointthistory" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				
+			<!-- /.modal-content --> 
+			</div>
+		<!-- /.modal-dialog --> 
+		</div>
+<div id="appthistory" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><?php echo $this->lang->line('labels')['AppointmentHisoty'];?></h4>
+      </div>
+      <div class="modal-body">
+        
+      		 <div id="load"></div>
+        
+      </div>
+      
+    </div>
+
+  </div>
+</div>
+	
             
 <?php
     $this->load->view('template/footer.php');
@@ -503,6 +532,8 @@
 		$(".bookNew").click(function(){
 			resetForm(validator);
 			$("#docAvailability").html("");
+			$('.DoctorName').attr("disabled", false);
+			$(".viewappthistory").hide();
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
 			$(".apptidentifier").hide();
@@ -536,6 +567,7 @@
 			resetForm(validator);
 			var id = $(this).attr("data-id");
 			$("#docAvailability").html("");
+			$(".viewappthistory").show();
 			$("#eidt_gf_id").val(id);
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
@@ -569,15 +601,17 @@
 				
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#DoctorID").val(data.doctor_id);
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				$('.DoctorName').val(data.doctor_id).trigger('change');
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#reason").val(data.reason);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
+				//$("#appoitment_date").trigger("change");
 				
 				$("#remarks").val(data.remarks);
 				
 				$(".apptidentifier").html(data.appoitment_number);
 			
+				$('.DoctorName').attr("disabled", true);
 				$("#appoitment_date").attr("disabled", true);
 				$("#reason").attr("disabled", true);
 				$("#appoitment_sloat").attr("disabled", true);
@@ -1233,6 +1267,33 @@
 		$("#menualrefresh1").click(function(){			
 			loadTable($("#sel_date").val(),$("#hospital_id1").val(),$("#doctor_id1").val());
 		});
+		
+$('.viewappthistory').on('click', function(e){
+		
+	 $appointmentid = $('#eidt_gf_id').val();
+	 
+	 e.preventDefault();
+	 
+		$.ajax({
+				type: "POST",
+				url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
+				data: {"appointmentid":$appointmentid},
+				success:function(result){
+					if(result != 0){
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);	
+						
+					} else {
+						
+						$("#load").html(result);
+						$("#load").prop('disabled', false);
+						
+					}
+				}
+			});
+	});	
+		
 	});
 
 </script>

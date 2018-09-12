@@ -30,6 +30,19 @@ $this->load->view("template/left.php");
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                                     <input id="sel_date" class=" form-control" /> 
 								</div>
+								<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['status'];?></label>
+                                    <select id="status" class=" form-control" >
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
+										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<?php /*?><!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>--><?php */?>
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
+                                		
+					                </select>
+                                </div>
 							</div>	
 							<table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 								<thead>
@@ -433,10 +446,10 @@ $this->load->view("template/footer.php");
 				$("#DoctorID").val(data.doctor_id);
 				$(".DoctorName").val(data.doctor_name);
 				$("#reason").val(data.reason);
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
-				$("#appoitment_sloat").trigger("change");
+				//$("#appoitment_date").trigger("change");
+				//$("#appoitment_sloat").trigger("change");
 
 				$("#remarks").val(data.remarks);
 				$(".apptidentifier").html(data.appoitment_number);
@@ -805,10 +818,11 @@ $this->load->view("template/footer.php");
 			} );
 
 			$("#appoitments").dataTable().fnDestroy();
+			var st = $("#status").val();
 			dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid+"&st="+st
 			});
 
 			<?php $this->load->view('template/exdt');?>
@@ -867,6 +881,9 @@ $this->load->view("template/footer.php");
 		
 		$("#sel_date").val("");	
 		loadTable("all","");
+		$("#status").change(function(){
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+		});
 		
 		$('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
