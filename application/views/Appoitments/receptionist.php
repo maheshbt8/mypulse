@@ -427,6 +427,7 @@ $this->load->view("template/footer.php");
 		$("#bookNew").click(function(){
 			resetForm(validator);
 			$("#docAvailability").html("");
+			$('.DoctorName').attr("disabled", false);
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
 			$(".apptidentifier").hide();
@@ -492,18 +493,18 @@ $this->load->view("template/footer.php");
 				cur_v = data.timesloat;
 				
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#reason").val(data.reason);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
 				$('.DoctorName').val(data.doctor_id).trigger('change');
 				
 				$("#remarks").val(data.remarks);
 				$(".apptidentifier").html(data.appoitment_number);
-			
-				//$("#appoitment_date").attr("disabled", true);
+				
+				$('.DoctorName').attr("disabled", true);
+				$("#appoitment_date").attr("disabled", true);
 				$("#reason").attr("disabled", true);
-				//$("#appoitment_sloat").attr("disabled", true);
+				$("#appoitment_sloat").attr("disabled", true);
 				isEdit = true;
 				
 				//$selectize_hospital_id[0].selectize.disable();
@@ -585,7 +586,8 @@ $this->load->view("template/footer.php");
 
 		$("#appoitment_date").change(function(){
 			var d = $("#appoitment_date").val();
-			console.log("Gettig Time SLot for : "+d);
+			//console.log("Gettig Time SLot for : "+d);
+			$("#appoitment_sloat").attr("disabled", false);
 			$.post("<?php echo site_url(); ?>/appoitments/getNewSloat",{date:d,did:$("#DoctorID").val()},function(data){
 				data = JSON.parse(data);
 				$("#appoitment_sloat").html("");

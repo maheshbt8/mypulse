@@ -34,11 +34,11 @@ $this->load->view("template/left.php");
                                     <label><?php echo $this->lang->line('labels')['status'];?></label>
                                     <select id="status" class=" form-control" >
 										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
-										<!--<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>-->
+										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
                                 		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
 										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
 										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
-										<!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<?php /*?><!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>--><?php */?>
 										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
                                 		
 					                </select>
@@ -446,10 +446,10 @@ $this->load->view("template/footer.php");
 				$("#DoctorID").val(data.doctor_id);
 				$(".DoctorName").val(data.doctor_name);
 				$("#reason").val(data.reason);
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
-				$("#appoitment_sloat").trigger("change");
+				//$("#appoitment_date").trigger("change");
+				//$("#appoitment_sloat").trigger("change");
 
 				$("#remarks").val(data.remarks);
 				$(".apptidentifier").html(data.appoitment_number);

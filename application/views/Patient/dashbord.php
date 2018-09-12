@@ -72,6 +72,25 @@
                 </div>
                     
                 <div class="card-body">
+					<div class="col-md-12">
+                                <div class="form-group col-md-3">
+                                    <label><?php echo $this->lang->line('labels')['select_date'];?></label>
+                                    <input id="sel_date" class=" form-control" /> 
+								</div>
+								<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['status'];?></label>
+                                    <select id="status" class=" form-control" >
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
+										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>-->
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
+                                		
+					                </select>
+                                </div>
+							</div>
                     <table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
                         <thead>
                             <tr>
@@ -443,14 +462,15 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
-
+	  var _sd = "<?php echo date('Y-m-d'); ?>"; 
+	  var _ed = "<?php echo date('Y-m-d'); ?>";
+	  var st = $("#status").val();		  
         $("#appoitments").DataTable({
             "processing": true,
             "serverSide": true,
-            "ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?up=1"
+            "ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&st="+st
         });
-        $(".dataTables_filter").hide();
-
+       
         var validator = $("#form").validate({
             ignore: [],
             rules: {
@@ -1189,10 +1209,10 @@
 				$("#DoctorID").val(data.doctor_id);
 				$(".DoctorName").val(data.doctor_name);
 				$("#reason").val(data.reason);
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
-				$("#appoitment_sloat").trigger("change");
+				//$("#appoitment_date").trigger("change");
+				//$("#appoitment_sloat").trigger("change");
 
 				$("#remarks").val(data.remarks);
 				$(".apptidentifier").html(data.appoitment_number);
@@ -1249,7 +1269,73 @@
 				});
 			});
 		});	
+
+function cb(start, end) {
+			//console.log(start.format('MM D, YYYY') + ' - ' + end.format('MM D, YYYY'));
+			//window.location.href = '<?php echo site_url();?>appoitments/report?sd='+start.format('YYYY-MM-D')+"&ed="+end.format('YYYY-MM-D');
+			_sd = start.format('YYYY-MM-D');
+			_ed = end.format('YYYY-MM-D');
+			loadTable($("#hospital_id1").val(),$("#branch_id1").val());
+		}
+
+var start = moment().subtract(0, 'days');
+		var end = moment();		
+$('#sel_date').daterangepicker({
+			startDate: start,
+			endDate: end,
+			locale: { 
+				applyLabel : '<?php echo $this->lang->line('apply');?>',
+				cancelLabel: '<?php echo $this->lang->line('clear');?>',
+				"customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+			},  
+			ranges: {
+				'<?php echo $this->lang->line('today');?>': [moment(), moment()],
+				'<?php echo $this->lang->line('tomorrow');?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+				'<?php echo $this->lang->line('next_7_day');?>': [moment().add(1, 'days'), moment().add(7, 'days')],
+				'<?php echo $this->lang->line('next_30_day');?>': [moment().add(1, 'days'), moment().add(30, 'days')],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('next_month');?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')],
+				'<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+				'<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+				'<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+				'<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			}
+		},cb);		
 		
+function loadTable(hid,bid){	
+
+			jQuery.fn.DataTable.Api.register( 'buttons.exportData()', function ( options ) {
+				if ( this.context.length ) {
+					var jsonResult = $.ajax({
+						url: "<?php echo site_url(); ?>/appoitments/getDTappoitments?ex=1&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid,
+						success: function (result) {
+							//Do nothing
+						},
+						async: false
+					});
+					var data = jQuery.parseJSON(jsonResult.responseText).data;
+					return {body: data, header: $("#appoitments thead tr th").map(function() { return this.innerHTML; }).get()};
+				}
+			} );
+
+			$("#appoitments").dataTable().fnDestroy();
+			var st = $("#status").val();
+			dt = $("#appoitments").DataTable({
+				"processing": true,
+				"serverSide": true,
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid+"&st="+st
+			});
+
+			<?php $this->load->view('template/exdt');?>
+
+			$(".dataTables_filter").attr("style","display: flex;float: right");
+			//$(".dataTables_filter").append("<a class=\"btn btn-success m-b-sm addbtn\" data-toggle=\"tooltip\" title=\"Add\"  href=\"javascript:void(0);\" data-title=\"Add\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Add New</a>");
+			//$(".dataTables_filter").append("<a class=\"btn btn-danger m-b-sm multiDeleteBtn\" data-at=\"charges\" data-toggle=\"tooltip\" title=\"Delete\"  href=\"javascript:void(0);\" data-title=\"Delete\" data-toggle=\"modal\" data-target=\"#edit\" style=\"margin-left:10px\">Delete</a>");
+		}
+$("#status").change(function(){
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+		});		
+
 $('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
 		   if($SearchTerm.length > 2){
