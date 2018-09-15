@@ -9,6 +9,11 @@
       echo '<input type="hidden" id="left_active_menu" value="4" />';  
     }?>
     <div id="main-wrapper">
+		<h4 style="position:absolute;top:4px;left:288px;"><?php  $DoctorUserID = $this->auth->GetUserIDByDoctorID($doc_id); 
+							       if(!$this->auth->isDoctor()){
+								   echo $this->auth->GetuserNameByID($DoctorUserID);
+								   } 
+							?></h4>
         <div class="col-md-12">
             <div class="col-md-6">
                 <div class="panel panel-white">
@@ -18,11 +23,7 @@
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('labels')['otherSettings'];?></h3>
                             </div>
                             <div class="custome_col4">
-							<?php  $DoctorUserID = $this->auth->GetUserIDByDoctorID($doc_id); 
-							       if(!$this->auth->isDoctor()){
-								   echo $this->auth->GetuserNameByID($DoctorUserID);
-								   } 
-							?>
+							
                                 <div class="panel_button_top_right">
                                     <a class="btn btn-primary m-b-sm " id="editBtn" data-toggle="tooltip" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['edit'];?></a>
                                     <a class="btn btn-default m-b-sm " id="cancelBtn" data-toggle="tooltip" style="display:none" href="javascript:void(0);" ><?php echo $this->lang->line('buttons')['cancel'];?></a>
@@ -462,6 +463,10 @@
         });
 
         function toggleEditButton(){
+		if($("#no_appt_handle").val() <=0){
+		toastr.error("<?php echo $this->lang->line('headings')['nopatientscanhandle'];?>");
+		return false;
+		}
             var eb = $("#editBtn");
             if($(eb).data('isEdit') == "1"){
                 isEdit = false;

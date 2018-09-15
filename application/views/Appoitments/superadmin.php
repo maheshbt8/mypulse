@@ -111,7 +111,7 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4><h4 class="apptidentifier" style="position:absolute;top:9px;left:195px;"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -123,7 +123,7 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('validation')['selectDoctor'];?></label>
-									<input type="text" placeholder="<?php echo $this->lang->line('SearchForUsers');?>" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
+									<input type="text" placeholder="<?php echo $this->lang->line('SearchForUsers');?>" name="" class="DoctorName form-control allowalphanumeric" value=""  />                             <input type="hidden" name="doctor_id" name="doctor_id" id="DoctorID" class="DoctorID" value=""  />
                                     <div id="suggesstion-box"></div>
 								</div>
 								<div class="form-group col-md-6  hide">
@@ -145,7 +145,7 @@ $this->load->view("template/left.php");
                                 </div>
 								<div class="form-group col-md-6 hide">
 									<label><?php echo $this->lang->line('labels')['selectDoctor'];?></label>
-									<select name="doctor_id" id="doctor_id" class=" form-control allowalphanumeric" >
+									<select id="doctor_idsss" class=" form-control allowalphanumeric" >
 									</select>
 								</div>
 							</div>
@@ -391,7 +391,15 @@ $this->load->view("template/footer.php");
 
 		$("#bookNew").click(function(){
 			resetForm(validator);
+			$(".DoctorName").attr('readonly', false);
+			$("#suggesstion-box").hide();
+			$(".DoctorName").val("");
+			$(".DoctorID").val("");
 			$("#docAvailability").html("");
+			$(".apptidentifier").hide();
+			$(".viewappthistory").hide();
+			$("#noApptTimeSloat").hide();
+			$("#appoitment_sloat").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
 			$("#action-update-btn").parent().hide();
 			$("#action-add-btn").parent().show();
@@ -404,9 +412,9 @@ $this->load->view("template/footer.php");
 			isEdit = false;
 			var tbid = $("#branch_id1").val();
 			$("#selected_bid").val(tbid);
-			$selectize_doctor_id[0].selectize.disable();
+			/*$selectize_doctor_id[0].selectize.disable();
 			$selectize_doctor_id[0].selectize.clear();
-			/*$selectize_department_id[0].selectize.disable();
+			$selectize_department_id[0].selectize.disable();
 			$selectize_department_id[0].selectize.clear();
 			$selectize_branch_id[0].selectize.disable();
 			$selectize_branch_id[0].selectize.clear();
@@ -423,12 +431,15 @@ $this->load->view("template/footer.php");
 		$("#appoitments").on("click",".editbtn",function(){
 			resetForm(validator);
 			var id = $(this).attr("data-id");
+			$("#suggesstion-box").hide();
 			$("#docAvailability").html("");
+			$(".apptidentifier").show();
 			$("#eidt_gf_id").val(id);
+			$(".DoctorName").attr('readonly',true);
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
 			$("#form input").attr("disabled",false);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
 			$("#action-update-btn").parent().show();
 
@@ -448,26 +459,29 @@ $this->load->view("template/footer.php");
 				t_did = data.department_id;
 				t_oid = data.doctor_id;
 
-				var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
+				/*var tempselectize_hospital_id = $selectize_hospital_id[0].selectize;
 				tempselectize_hospital_id.addOption([{"id":data.hospital_id,"text":data.hospital_id}]);
 				tempselectize_hospital_id.refreshItems();
-				tempselectize_hospital_id.setValue(data.hospital_id);
+				tempselectize_hospital_id.setValue(data.hospital_id);*/
 				cur_v = data.timesloat;
 				
 				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#reason").val(data.reason);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
+				//$("#appoitment_date").trigger("change");
+				$("#DoctorID").val(data.doctor_id);
+				$(".DoctorName").val(data.doctor_name);
 				
 				$("#remarks").val(data.remarks);
+				$(".apptidentifier").html(data.appoitment_number);
 			
 				$("#appoitment_date").attr("disabled", true);
 				$("#reason").attr("disabled", true);
 				$("#appoitment_sloat").attr("disabled", true);
 				isEdit = true;
 				
-				$selectize_hospital_id[0].selectize.disable();
+				//$selectize_hospital_id[0].selectize.disable();
 				$selectize_user_id[0].selectize.disable();
 				
 			});
@@ -1147,12 +1161,8 @@ $this->load->view("template/footer.php");
 				$.get("<?php echo site_url(); ?>/doctors/getAvailabilityText",{id:$(this).attr('rel1')},function(data){
 					$("#docAvailability").html(data);
 				});
-				if(isEdit){
-					$("#appoitment_date").attr('disabled',true);
-				}else{
-					$("#appoitment_date").attr('disabled',false);
-				}
-		
+				$("#appoitment_date").attr('disabled',false);
+				
 		});
 		
 	});

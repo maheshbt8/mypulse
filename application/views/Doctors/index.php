@@ -349,6 +349,15 @@ $this->load->view("template/footer.php");
 			        	mobile:{
 			        		required:true,
 							phoneUS:true
+			        	},
+						hospital_id:{
+			        		required:true,
+			        	},
+						branch_id:{
+			        		required:true,
+			        	},
+						department_id:{
+			        		required:true,
 			        	}
 			        },
 			        messages: {
@@ -372,7 +381,17 @@ $this->load->view("template/footer.php");
 			        	mobile:{
 			        		required:"<?php echo $this->lang->line('validation')['requriedPhone'];?>",
 							phoneUS: "<?php echo $this->lang->line('validation')['invalidPhone'];?>"
+			        	},
+						hospital_id:{
+			        		required:"<?php echo $this->lang->line('labels')['selectHospital'];?>",
+			        	},
+						branch_id:{
+			        		required:"<?php echo $this->lang->line('labels')['selectBranch'];?>",
+			        	},
+						department_id:{
+			        		required:"<?php echo $this->lang->line('labels')['selectDepartment'];?>",
 			        	}
+						
 			        },
 					invalidHandler: validationInvalidHandler,
 					errorPlacement: validationErrorPlacement

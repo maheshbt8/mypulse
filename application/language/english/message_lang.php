@@ -2,6 +2,7 @@
 
 $lang["profile_email_verify"] = "A verification link has been sent to your registered email address. Please verify email.";
 $lang["register_otp_msg"] = "An OTP has been sent to your mobile";
+$lang["valid_otp_id"] = "Please send valid OTP ID";
 $lang['staff_mobile_verified'] = "Mobile Verified Successfully";
 $lang["register_otp_msg1"] = "Please submit OTP to continue.";
 $lang["msg_success"] = "Operation Completed Successfully";
@@ -117,7 +118,8 @@ $lang['enterValidAadhaar'] = "Enter valid aadhaar number";
 $lang['otp_verification_incomplete'] = 'OPT verification timed out. Please register again with valid mobile number';
 $lang['set_password'] = 'Set Password';
 $lang['SearchForUsers'] = 'Search by Hospital name, Doctor name or Specialisation ';
-$lang['DateTime'] = 'Date Time';
+$lang['DateTime'] = 'Date/Time';
+$lang['Role_User'] = 'Role:Username';
 $lang['roles'] = array(
     -1 => '',
     1 => 'Super Admin',
@@ -150,6 +152,7 @@ $lang["msg_welcome"] = "Welcome %s";
 $lang["msg_profile_udpated"] = "Profile updated successfully...!!!";
 $lang["msg_email_exist"] = "This email id is already registered with us.";
 $lang["msg_mobile_exist"] = "This mobile number is already registered with us.";
+$lang["msg_mobile_notexist"] = "This mobile number is not registered with us.";
 $lang["msg_aadharnumber_exist"] = "This Aaadhaar number is already registered with us.";//(Raj: Correct aadhaar in label)
 $lang["msg_check_email"] = "A verification email for password reset has been sent to your email. Please check your email.";
 $lang["msg_email_send_error"] = "Unable to send you EMail. Please try again after sometime.";
@@ -222,6 +225,7 @@ $lang['usr_acc_verify'] = "Please verify your account.";
 $lang['usr_acc_invalid_credential'] = "Please Enter Valid Login Details !!!";
 //$lang['usr_acc_invalid_credential'] = "Please Enter Valid Username and Password !!!";
 $lang['reg_completed'] = "Registration completed successfully...!!!";
+$lang['reg_cancelled'] = "Registration cancelled successfully...!!!";
 
 $lang['msg_patient_ml_saved'] = "Your report request sent to medical lab";
 
@@ -481,6 +485,8 @@ $lang['labels'] = array(
     'appoitment_date' => 'Appointment Date',//(Raj: Correct the label too)
     'appoitment_reason' => 'Reason for Appointment',//(Raj: Correct the label too)
     'remark' => 'Remark',
+	'ViewAppointmentHisoty' => 'View Appointment History',
+	'AppointmentHisoty' => 'Appointment History',
     'repeat_interval' => 'Repeat Interval',
     'repeat_on' => 'Repeat On',
     'start_time' => 'Start Time',
@@ -521,6 +527,7 @@ $lang['labels'] = array(
     'medicalLabOutStanding' => 'Outstanding Lab Tests',
     'medicalStoreOutStanding' => 'Outstanding Orders for Medicines',
     'delSureAppt' => 'Do you really want to cancel the appointment?',
+	'delRecmndAppt' => 'Do you really want to delete the recommended appointment?',
     'ShowClosedAppt' => 'Show Closed Appointments',
     'patientRecordRemark' => 'Remark to be updated by Hospital',
     'aboutMedLabPlaceholder' => 'About your medical lab.',
@@ -574,7 +581,9 @@ $lang['headings'] = array(
     'approvedSuccess' => 'Approved Successfully',
     'addNewAvailability' => 'Add new availability',
     'editAvailability' => 'Edit availability',
-	'AvailabilityFor' => 'Availability For',
+	'AvailabilityFor' => 'Availability ',
+	'EditappointmentHeading' => 'Appointment Details -  ',
+	'nopatientscanhandle' => 'Number should be greater than zero',
 );
 //End Heading
 
@@ -608,6 +617,8 @@ $lang['validation'] = array(
     'invalidCharge' => "Enter valid charge",
     'requiredWard' => 'Enter ward name',
     'requiredHName' => 'Enter hospital name',
+	'requiredDescription' => 'Enter Description',
+	'requiredOwnerMDName' => 'Enter Owner/MD Name',
     'requiredFname' => 'Enter first name',
     'requiredLname' => 'Enter last name',
     'patientreason' => 'Write Reason About Inpatient',//(Raj: What this message about?)

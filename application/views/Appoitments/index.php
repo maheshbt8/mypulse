@@ -30,6 +30,19 @@ $this->load->view("template/left.php");
                                     <label><?php echo $this->lang->line('labels')['select_date'];?></label>
                                     <input id="sel_date" class=" form-control" /> 
 								</div>
+								<div class="form-group col-md-4">
+                                    <label><?php echo $this->lang->line('labels')['status'];?></label>
+                                    <select id="status" class=" form-control" >
+										<option value="all"><?php echo $this->lang->line('labels')['all_except_closed'];?></option>
+										<option value="0"><?php echo  $this->lang->line('labels')['pending']; ?></option>
+                                		<option value="1"><?php echo  $this->lang->line('labels')['approved']; ?></option>
+										<option value="4"><?php echo  $this->lang->line('labels')['canceled']; ?></option>
+										<option value="3"><?php echo  $this->lang->line('labels')['closed']; ?></option>
+										<?php /*?><!--<option value="2"><?php echo  $this->lang->line('labels')['rejected']; ?></option>--><?php */?>
+										<option value="all_inc_closed"><?php echo  $this->lang->line('labels')['all_include_closed']; ?></option>
+                                		
+					                </select>
+                                </div>
 							</div>	
 							<table id="appoitments" class="table table-striped table-bordered table-hover table-checkable order-column valign-middle">
 								<thead>
@@ -65,7 +78,7 @@ $this->load->view("template/left.php");
 				<div class="modal-content">
 				  	<div class="modal-header">
 					  	<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4>
+					  	<h4 class="modal-title custom_align" id="Edit-Heading"></h4><h4 class="apptidentifier" style="position:absolute;top:9px;left:195px;"></h4>
 					</div>
 				  	<div class="modal-body">
 				  		<div class="row">
@@ -137,7 +150,8 @@ $this->load->view("template/left.php");
 								</div>
 								<div class="form-group col-md-6">
 									<label><?php echo $this->lang->line('labels')['remark'];?></label>
-									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3" readonly="readonly"></textarea><button type="button" class="btn btn-info btn-sm viewappthistory" data-toggle="modal" data-target="#appthistory">View Appointment History</button>
+									<textarea  class="form-control allowalphanumeric " type="text" placeholder="<?php echo $this->lang->line('labels')['patientRemarkPlace'];?>" name="remarks" id="remarks" rows="3" readonly="readonly"></textarea><br />
+									<a href="javascript:void(0);" class="viewappthistory" data-toggle="modal" data-target="#appthistory"><?php echo $this->lang->line('labels')['ViewAppointmentHisoty'];?></a>
 								</div>
 							</div>				  		
 						</div>
@@ -229,14 +243,14 @@ $this->load->view("template/left.php");
 			</div>
 		<!-- /.modal-dialog --> 
 		</div>
-        <div id="appthistory" class="modal fade" role="dialog">
+<div id="appthistory" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content modal-lg">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Appointment History</h4>
+        <h4 class="modal-title"><?php echo $this->lang->line('labels')['AppointmentHisoty'];?></h4>
       </div>
       <div class="modal-body">
         
@@ -348,7 +362,11 @@ $this->load->view("template/footer.php");
 
 		$(".addbtn").click(function(){
 			resetForm(validator);
+			$(".DoctorName").attr('readonly', false);
 			$("#suggesstion-box").hide();
+			$(".apptidentifier").hide();
+			$(".viewappthistory").hide();
+			$("#noApptTimeSloat").hide();
 			$("#docAvailability").html("");
 			$("#appoitment_sloat").html("");
 			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['addNewAppoitment'];?>");
@@ -384,12 +402,15 @@ $this->load->view("template/footer.php");
 			resetForm(validator);
 			$("#docAvailability").html("");
 			$("#suggesstion-box").hide();
+			$(".apptidentifier").show();
+			$(".viewappthistory").show();
+			$(".DoctorName").attr('readonly',true);
 			var id = $(this).attr("data-id");
 			$("#eidt_gf_id").val(id);
 			loadData(id);
 			$("#form").attr("action","<?php echo site_url(); ?>/appoitments/update");
 			$("#form input").attr("disabled",false);
-			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['editData'];?>");
+			$("#Edit-Heading").html("<?php echo $this->lang->line('headings')['EditappointmentHeading'];?>");
 			$("#action-add-btn").parent().hide();
 			$("#action-update-btn").parent().show();
 			<?php if($this->auth->isPatient()){
@@ -421,15 +442,17 @@ $this->load->view("template/footer.php");
 				cur_v = data.timesloat;
 				
 				
-				$("#appoitment_sloat").append('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
+				$("#appoitment_sloat").html('<option selected value="'+data.timesloat_val+'">'+data.timesloat_txt+'</option>');
 				$("#DoctorID").val(data.doctor_id);
 				$(".DoctorName").val(data.doctor_name);
 				$("#reason").val(data.reason);
-				$("#appoitment_date").datepicker("setDate",data.appoitment_date);
+				//$("#appoitment_date").datepicker("setDate",data.appoitment_date);
 				$("#appoitment_date").val(data.appoitment_date);
-				$("#appoitment_date").trigger("change");
+				//$("#appoitment_date").trigger("change");
+				//$("#appoitment_sloat").trigger("change");
 
 				$("#remarks").val(data.remarks);
+				$(".apptidentifier").html(data.appoitment_number);
 			
 				$("#appoitment_date").prop("disabled", true);
 				$("#reason").prop("disabled", false);
@@ -795,10 +818,11 @@ $this->load->view("template/footer.php");
 			} );
 
 			$("#appoitments").dataTable().fnDestroy();
+			var st = $("#status").val();
 			dt = $("#appoitments").DataTable({
 				"processing": true,
 				"serverSide": true,
-				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid
+				"ajax": "<?php echo site_url(); ?>/appoitments/getDTappoitments?&sd="+_sd+"&ed="+_ed+"&hid="+hid+"&bid="+bid+"&st="+st
 			});
 
 			<?php $this->load->view('template/exdt');?>
@@ -857,6 +881,9 @@ $this->load->view("template/footer.php");
 		
 		$("#sel_date").val("");	
 		loadTable("all","");
+		$("#status").change(function(){
+			loadTable($("#hospital_id1").val(),$("#doctor_id1").val());
+		});
 		
 		$('.DoctorName').on('keyup', function(){
 		   $SearchTerm = $(this).val();
@@ -907,22 +934,6 @@ $this->load->view("template/footer.php");
 				$("#appoitment_date").attr('disabled',false);
 				
 		});
-		
-		/*$('.viewappthistory').on('click',function(){
-		
-			$appointmentid = $('#eidt_gf_id').val();
-			$.ajax({
-					url: "<?php echo site_url(); ?>/appoitments/GetAppointmentHistory/",
-					type: "POST",
-					data: {"appointmentid":$appointmentid},
-					error: function() {
-						callback();
-					},
-					success: function(res) {
-						
-					}
-				});
-		});*/
 		
 	$('.viewappthistory').on('click', function(e){
 		

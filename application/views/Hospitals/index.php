@@ -150,7 +150,7 @@ $this->load->view("template/left.php");
 							  			<div class="col-md-12">
 							  				<div class="col-md-6 form-group" id="haDiv">
 							  					<label><?php echo $this->lang->line('labels')['selectHospitalAdmin'];?></label>
-												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['selectHospitalAdmin'];?>" id="ha_name" disabled/>
+												<input class="form-control" type="text" placeholder="<?php echo $this->lang->line('labels')['selectHospitalAdmin'];?>" id="ha_name" />
 							  				</div>
 							  				
 							  			</div>            
@@ -377,6 +377,12 @@ $this->load->view("template/left.php");
 			        	},
 			        	city:{
 			        		required:true
+			        	},
+						description: {
+			        		required : true
+			        	},
+						md_name: {
+			        		required : true
 			        	}
 			        },
 			        messages: {
@@ -406,6 +412,12 @@ $this->load->view("template/left.php");
 			        	},
 			        	city:{
 			        		required:"<?php echo $this->lang->line('validation')['selectCity'];?>"
+			        	},
+						description:{
+			        		required:"<?php echo $this->lang->line('validation')['requiredDescription'];?>"
+			        	},
+						md_name:{
+			        		required:"<?php echo $this->lang->line('validation')['requiredOwnerMDName'];?>"
 			        	}
 			        },
 					invalidHandler: validationInvalidHandler,
@@ -470,20 +482,22 @@ $this->load->view("template/left.php");
 			    	$("#action-add-btn").parent().hide();
 			    	$("#action-update-btn").parent().show();
 					$('#tabs a[href="#tab1"]').click();
-					$("#ha_name").attr("disabled",true);
+					//$("#ha_name").attr("disabled",true);
 					$("#haDiv").show();
 			    });
 
 			    function loadData(id,isEdit){
 					$(".showTab").show();
 					$(".addTabl").show();
-					$("#ha_name").val("");
+					//$("#ha_name").val("");
 			    	$.post("<?php echo site_url(); ?>/hospitals/gethospitals",{ id: id },function(data){
 						
 			    		var data = JSON.parse(data);
-						console.log(data);
 						$("#isActive").val(data.isActive);
 						$("#name").val(data.name);
+						$("#description").val(data.description);
+						$("#md_name").val(data.md_name);
+						$("#md_contact_number").val(data.md_contact_number);
 						$("#Edit-Heading").html(data.name+" <?php echo $this->lang->line('headings')['info'];?>");
 						$("#address").val(data.address);
 						$("#logo").val(data.logo);
