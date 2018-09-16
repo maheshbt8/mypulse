@@ -49,26 +49,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['(?i)hospitals']                 = 'hospitals';
-$route['(?i)appoitments']               = 'appoitments';
-$route['(?i)beds']                      = 'beds';
-$route['(?i)Branches']                  = 'Branches';
-$route['(?i)Charges']                   = 'Charges';
-$route['(?i)Departments']               = 'Departments';
-$route['(?i)Doctors']                   = 'Doctors';
-$route['(?i)Healthinsuranceprovider']   = 'Healthinsuranceprovider';
-$route['(?i)Hospital_admin']            = 'Hospital_admin';
-$route['(?i)Index']                     = 'Index';
-$route['(?i)Inpatient']                 = 'Inpatient';
-$route['(?i)License']                   = 'License';
-$route['(?i)Medical_lab']               = 'Medical_lab';
-$route['(?i)Medical_store']             = 'Medical_store';
-$route['(?i)Nurse']                     = 'Nurse';
-$route['(?i)Patients']                  = 'Patients';
-$route['(?i)Receptionist']              = 'Receptionist';
-$route['(?i)Users']                     = 'Users';
-$route['(?i)Wards']                     = 'Wards';
-$route['(:any)']                        = 'index/index/$1';
-$route['default_controller']            = 'index';
-$route['404_override']                  = '';
-$route['translate_uri_dashes']          = FALSE;
+$route['default_controller'] = 'login';
+$route['404_override'] = 'error/page_missing';
+$route['translate_uri_dashes'] = FALSE;
