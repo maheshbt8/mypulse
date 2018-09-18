@@ -6,11 +6,11 @@
 		<ul class="nav nav-tabs bordered">
 			<li class="active">
             	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
-				<?php echo get_phrase('citys_list'); ?>
+				<?php echo $this->lang->line('labels')['citys_list'];?>
                     	</a></li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
-				<?php echo get_phrase('add_city'); ?>
+				<?php echo $this->lang->line('labels')['add_city'];?>
                     	</a></li>
 		</ul>
     	<!--CONTROL TABS END-->
@@ -23,11 +23,11 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
                 	<thead>
                 		<tr>
-                    		<th><div><?php echo get_phrase('country_name'); ?></div></th>
-                    		<th><div><?php echo get_phrase('state_name'); ?></div></th>
-                    		<th><div><?php echo get_phrase('district_name'); ?></div></th>
-                    		<th><div><?php echo get_phrase('city_name'); ?></div></th>
-                    	    <th><div><?php echo get_phrase('options'); ?></div></th>
+                    		<th><div><?php echo $this->lang->line('labels')['selectCountry'];?></div></th>
+                    		<th><div><?php echo $this->lang->line('labels')['selectState'];?></div></th>
+                    		<th><div><?php echo $this->lang->line('labels')['selectDistrict'];?></div></th>
+                    		<th><div><?php echo $this->lang->line('labels')['selectCity'];?></div></th>
+                    	    <th><div><?php echo $this->lang->line('labels')['options'];?></div></th>
 						</tr>
 					</thead>
                     <tbody>
@@ -38,23 +38,8 @@
                             <td><?php echo $this->db->where('district_id',$row['district_id'])->get('district')->row()->name;?></td>
 							<td><?php echo $row['name'];?></td>   
 							<td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-
-                                    
-                                    <!-- EDITING LINK -->
-                                    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_city/<?php echo $row['city_id'];?>');">
-                                            <i class="entypo-pencil"></i>
-                                                <?php echo 'Edit';?>
-                                            </a>
-                                                    </li>
-                                 
-                                </ul>
-                            </div>
+                                 <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_city/<?php echo $row['city_id'];?>');" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                           
         					</td>
                         </tr>
                         <?php endforeach;?>
@@ -69,11 +54,11 @@
                 <div class="box-content">
                 	<?php echo form_open(base_url() . 'index.php?superadmin/city/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
                 	<div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country_name'); ?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
 
                         <div class="col-sm-5">
-                            <select name="country_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  onchange="return get_state(this.value)">
-                                <option value=""><?php echo get_phrase('select_country'); ?></option>
+                            <select name="country_id" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_state(this.value)">
+                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
                                 <?php 
                                 $country = $this->db->get('country')->result_array();
                                 foreach($country as $row){?>
@@ -85,36 +70,36 @@
                         </div>
                     </div>
                     <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state_name'); ?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label> 
 
                         <div class="col-sm-5">
-                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="select_state"   value=""  onchange="return get_district(this.value)">
-                                <option value=""><?php echo get_phrase('select_country_first'); ?></option>
+                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" id="select_state"   value=""  onchange="return get_district(this.value)">
+                                <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
                               
                             </select>
                         </div>
                     </div>
                      <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district_name'); ?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label> 
 
                         <div class="col-sm-5">
-                            <select name="district_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="select_district"   value="" >
-                                <option value=""><?php echo get_phrase('select_state_first'); ?></option>
+                            <select name="district_id" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" id="select_district"   value="" >
+                                <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
                               
                             </select>
                         </div>
                     </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label"><?php echo get_phrase('district_name');?></label>
+                                <label class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" name="name"
-                                        data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                        data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>"/>
                                 </div>
                             </div>
                             
                         <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-info"><?php echo get_phrase('add_district');?></button>
+                                  <button type="submit" class="btn btn-info"><?php echo $this->lang->line('buttons')['submit'];?></button>
                               </div>
 							</div>
                     </form>                

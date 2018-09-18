@@ -1,7 +1,6 @@
 <?php $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctor')->row();
 $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row();
-$availability_slat=$this->db->where('doctor_id',$doctor_id)->get('availability_slat')->result_array();
-
+$availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
 ?>
 <hr />
 <div class="row">
@@ -24,8 +23,8 @@ $availability_slat=$this->db->where('doctor_id',$doctor_id)->get('availability_s
                     <div class="panel-heading clearfix">
                         <div class="">
                             <div class="custome_col8">
-                                <h3 class="panel-title panel_heading_custome">Other Settings</h3>
-                               <button onclick="" class="btn btn-primary pull-right">save</button>
+                                <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('availability'); ?></h3>
+                               <button onclick="" class="btn btn-primary pull-right"><?php echo $this->lang->line('buttons')['save'];?></button>
                                
                             </div>
                             
@@ -38,12 +37,12 @@ $availability_slat=$this->db->where('doctor_id',$doctor_id)->get('availability_s
 							<input type="hidden" name="doctor_id" class="DoctorID" value="<?php echo $doctor->doctor_id;?>">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Number of patients that can be handled in 30 Minutes</label>
+                                    <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
                                     <input style="width:50px" value="<?php echo $availability->no_appt_handle;?>" class="form-control" type="text" name="no_appt_handle" id="no_appt_handle" >
                                 </div>
                                 <div class="form-group">
-                                    <label>Availability message(For Patients)</label>
-                                    <textarea class="form-control " placeholder="E.g. Available on every Monday to Friday." name="message" id="availability_text"><?php echo $availability->message;?></textarea>
+                                    <label><?php echo $this->lang->line('labels')['availabilityText'];?></label>
+                                    <textarea class="form-control " placeholder="<?php echo $this->lang->line('labels')['availabilityTextPlace'];?>" name="message" id="availability_text"><?php echo $availability->message;?></textarea>
                                 </div>
                             </div>    
                         
@@ -62,14 +61,13 @@ $availability_slat=$this->db->where('doctor_id',$doctor_id)->get('availability_s
                     <div class="panel-heading">
                         <div class="panel-title">
                             <i class="fa fa-calendar"></i>
-                            <?php echo get_phrase('doctor_availability_schedule'); ?>
+                            <?php echo $this->lang->line('labels')['doctor_availability_schedule'];?>
                             
                         </div>
                     </div>
                     <div class="panel-body" style="padding:0px;">
                         <div class="calendar-env">
-                            <div class="calendar-body"><a href="<?php echo base_url();?>index.php?superadmin/doctor_new_availability/<?php echo $doctor->doctor_id;?>"><button class="btn btn-primary pull-right">
-        Add New</button></a>
+                            <div class="calendar-body"><a href="<?php echo base_url();?>index.php?superadmin/doctor_new_availability/<?php echo $doctor->doctor_id;?>"><button class="btn btn-primary pull-right"><?php echo $this->lang->line('buttons')['addNew'];?></button></a>
        
                                 <div id="notice_calendar"></div>
                             </div>
@@ -107,33 +105,17 @@ $availability_slat=$this->db->where('doctor_id',$doctor_id)->get('availability_s
 					events: [
 						<?php
 					
-						foreach($availability_slat as $row):
-					    
-$start    = new DateTime($row['start_date']);
-$end      = (new DateTime($row['end_date']))->modify('+1 day');
-$interval = new DateInterval('P1D');
-$period   = new DatePeriod($start, $interval, $end);
-$day=explode(',',$row['repeat_on']);
-$days=array(0=>'Sun',1=>'Mon',2=>'Tue',3=>'Wed',4=>'Thu',5=>'Fri',6=>'Sat');
-foreach ($period as $dt) {
-  for($i=0;$i<count($day);$i++){
-     for($j=0;$j<count($days);$j++){
-     if(($dt->format("D")==$days[$j]) && ($day[$i] == $j)){
+						foreach($availability_slat as $row):    
     
-    
-
 						?>
 						{
 						    url:"<?php echo base_url();?>index.php?superadmin/edit_doctor_new_availability/<?php echo $doctor_id.'/'.$row['id'];?>",
 						    title: "<?php echo $row['start_time'].'-'.$row['end_time'];?>",
-							start: new Date(<?php echo date('Y',strtotime($dt->format("m/d/Y")));?>, <?php echo date('m',strtotime($dt->format("m/d/Y")))-1;?>, <?php echo date('d',strtotime($dt->format("m/d/Y")));?>),
+							start: new Date(<?php echo date('Y',strtotime($row['date']));?>, <?php echo date('m',strtotime($row['date']))-1;?>, <?php echo date('d',strtotime($row['date']));?>),
 					
 						},
 						<?php
-}}
-    }
-   
-    }
+
 						endforeach
 						?>
 

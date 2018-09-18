@@ -6,11 +6,11 @@
 		<ul class="nav nav-tabs bordered">
 			<li class="active">
             	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
-				<?php echo get_phrase('countrys_list'); ?>
+				<?php echo $this->lang->line('labels')['countries_list'];?>
                     	</a></li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
-				<?php echo get_phrase('add_country'); ?>
+				<?php echo $this->lang->line('labels')['add_country'];?>
                     	</a></li>
 		</ul>
     	<!--CONTROL TABS END-->
@@ -23,8 +23,8 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
                 	<thead>
                 		<tr>
-                    		<th><div><?php echo get_phrase('country_name'); ?></div></th>
-                    	    <th><div><?php echo get_phrase('options'); ?></div></th>
+                    		<th><div><?php echo $this->lang->line('labels')['selectCountry'];?></div></th>
+                    	    <th><div><?php echo $this->lang->line('labels')['options'];?></div></th>
 						</tr>
 					</thead>
                     <tbody>
@@ -63,16 +63,16 @@
                 <div class="box-content">
                 	<?php echo form_open(base_url() . 'index.php?superadmin/country/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label"><?php echo get_phrase('country_name');?></label>
+                                <label class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" name="name"
-                                        data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                        data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>"/>
                                 </div>
                             </div>
                             
                         <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-info"><?php echo get_phrase('add_country');?></button>
+                                  <button type="submit" class="btn btn-info"><?php echo $this->lang->line('buttons')['submit'];?></button>
                               </div>
 							</div>
                     </form>                

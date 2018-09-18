@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V12</title>
+	<?php
+        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
+        $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
+        ?>  
+	<title><?php echo $this->lang->line('labels')['sign_up'];?> | <?php echo $system_title; ?></title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -36,39 +40,42 @@
 					<span class="login100-form-title p-t-20 p-b-45">
 				  
 					</span>
-
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "Username is required">
-						<input class="input100" type="text" name="username" placeholder="Username">
+					   <?php if($this->session->flashdata('login_error')!=''){?>
+		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->lang->line('reg_completed'); ?></div>
+		<?php }?>
+					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredFname'];?>">
+						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
-						<div class="wrap-input100 validate-input m-b-10" data-validate = "Mobile number is required">
-						<input class="input100" type="text" name="mobile" placeholder="Mobile number">
+						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requriedPhone'];?>">
+						<input class="input100" type="text" name="mobile" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>*">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 					
-						<div class="wrap-input100 validate-input m-b-10" data-validate = "Email is required">
-						<input class="input100" type="email" name="email" placeholder="Email">
+						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?>">
+						<input class="input100" type="email" name="email" placeholder="<?php echo $this->lang->line('labels')['email'];?>*">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder="Password">
+					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredPassword'];?>">
+						<input class="input100" type="password" name="pass" placeholder="<?php echo $this->lang->line('labels')['password'];?>*">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
 						</span>
 					</div>
-						<div class="wrap-input100 validate-input m-b-10" data-validate = "Password is required">
-						<input class="input100" type="password" name="pass" placeholder=" Re-enter Password">
+						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredConfirmPassword'];?>">
+						<input class="input100" type="password" name="pass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
@@ -76,17 +83,14 @@
 					</div>
 
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn">
-							Register
-						</button>
+						<button class="login100-form-btn"><?php echo $this->lang->line('buttons')['submit'];?></button>
 					</div>
 
 					<div class="text-center w-full p-t-25 p-b-230">
 					
 						 
 						 <br>
-							<a class="txt1" href="<?php echo base_url();?>index.php?login" ><h5 style="color:white;">
-						Already a member?&nbsp;&nbsp;Login here!</h5>
+							<a class="txt1" href="<?php echo base_url();?>index.php?login" ><h5 style="color:white;"><?php echo $this->lang->line('labels')['already_have_an_account'];?></h5>
 							<i class="fa fa-long-arrow-right"></i>						
 						</a>
 					</div>

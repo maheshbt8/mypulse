@@ -842,37 +842,110 @@ class Crud_model extends CI_Model {
     }
           function update_doctor_new_availability_info($doctor_id)
     {
-        $data['doctor_id'] 		= $doctor_id;
-        $data['start_date'] 		= $this->input->post('start_on');
-        $data['end_date'] 		= $this->input->post('end_on');
-        $data['start_time'] 		= $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
-        $data['end_time'] 		= $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
-        $data['repeat_interval'] 		= $this->input->post('repeat_interval');
-        if($this->input->post('repeat_interval') == 0){
-        $data['repeat_on'] 		= implode(',',$this->input->post('repeat_on'));
+
+       
+                   /*echo $this->input->post('start_on');die; */
+                       
+$start    = new DateTime($this->input->post('start_on'));
+$end      = (new DateTime($this->input->post('end_on')))->modify('+1 day');
+$interval = new DateInterval('P1D');
+$period   = new DatePeriod($start, $interval, $end);
+if($this->input->post('repeat_interval') == 0){
+        $day=$this->input->post('repeat_on');
+        $data['repeat_on']      = implode(',',$this->input->post('repeat_on'));
         }elseif($this->input->post('repeat_interval') == 1){
-        $data['repeat_on'] 		= '0,1,2,3,4,5,6';
+        $dat= array('0','1','2','3','4','5','6');
+        $data['repeat_on']      = '0,1,2,3,4,5,6';
         }
-            return $this->db->insert('availability_slat',$data);
-        
+
+$days=array(0=>'Sun',1=>'Mon',2=>'Tue',3=>'Wed',4=>'Thu',5=>'Fri',6=>'Sat');
+$shuffel=rand(1000,9999);
+foreach ($period as $dt) {
+
+    $data['unik']=$shuffel;
+$data['date']=$dt->format("m/d/Y");
+$data['doctor_id']      = $doctor_id;
+$data['start_date']         = $this->input->post('start_on');
+$data['end_date']       = $this->input->post('end_on');
+$data['start_time']         = $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
+$data['end_time']       = $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
+$data['repeat_interval']        = $this->input->post('repeat_interval');
+$data['status']=2;
+for($i=0;$i<count($day);$i++){
+for($j=0;$j<count($days);$j++){
+    if($dt->format("D")==$days[$j] && $day[$i]==$j){
+        $data['status']=1;
+    }
+    }
+    }
+
+   $que=$this->db->insert('availability_slat',$data);
+    }
+
+        return $que;
     }
           function update_doc_availability_info($id)
     {
        
+        if($this->input->post('existDays')!='' && $this->input->post('existDays')=='yes'){
+          
+  $this->db->where('unik',$this->input->post('unik'))->delete('availability_slat');
+$start    = new DateTime($this->input->post('start_on'));
+$end      = (new DateTime($this->input->post('end_on')))->modify('+1 day');
+$interval = new DateInterval('P1D');
+$period   = new DatePeriod($start, $interval, $end);
+if($this->input->post('repeat_interval') == 0){
+        $day=$this->input->post('repeat_on');
+        $data['repeat_on']      = implode(',',$this->input->post('repeat_on'));
+        }elseif($this->input->post('repeat_interval') == 1){
+        $day= array('0','1','2','3','4','5','6');
+        $data['repeat_on']      = '0,1,2,3,4,5,6';
+        }
+
+$days=array(0=>'Sun',1=>'Mon',2=>'Tue',3=>'Wed',4=>'Thu',5=>'Fri',6=>'Sat');
+$shuffel=rand(1000,9999);
+foreach ($period as $dt) {
+
+$data['unik']=$shuffel; 
+$data['date']=$dt->format("m/d/Y");
+$data['doctor_id']      = $this->input->post('doctor_id');
+$data['start_date']         = $this->input->post('start_on');
+$data['end_date']       = $this->input->post('end_on');
+$data['start_time']         = $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
+$data['end_time']       = $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
+$data['repeat_interval']        = $this->input->post('repeat_interval');
+$data['status']=2;
+for($i=0;$i<count($day);$i++){
+for($j=0;$j<count($days);$j++){
+    if($dt->format("D")==$days[$j] && $day[$i]==$j){
+        $data['status']=1;
+    }
+    }
+    }
+$que=$this->db->insert('availability_slat',$data);
+   /*$que=$this->db->where('unik',$this->input->post('unik'))->update('availability_slat',$data);*/
+
+    }
+    return $que;
+        }else{
+      /* 
         $data['start_date'] 		= $this->input->post('start_on');
-        $data['end_date'] 		= $this->input->post('end_on');
+        $data['end_date'] 		= $this->input->post('end_on');*/
         $data['start_time'] 		= $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
         $data['end_time'] 		= $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
-        $data['repeat_interval'] 		= $this->input->post('repeat_interval');
+       /* $data['repeat_interval'] 		= $this->input->post('repeat_interval');
         if($this->input->post('repeat_interval') == 0){
         $data['repeat_on'] 		= implode(',',$this->input->post('repeat_on'));
         }elseif($this->input->post('repeat_interval') == 1){
         $data['repeat_on'] 		= '0,1,2,3,4,5,6';
-        }
+        }*/
             return $this->db->where('id',$id)->update('availability_slat',$data);
+        }
         
     }
-    
+    function delete_doc_availability_info($id){
+        return $this->db->where('id',$id)->delete('availability_slat');
+    }
     function save_rmp_info()
     {
         $data['name']       = $this->input->post('name');
@@ -962,7 +1035,6 @@ class Crud_model extends CI_Model {
         $data['mobile']    = $this->input->post('mobile');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
-        
         $data['hospital']    = $this->input->post('hospital');
        // $data['status']    = $this->input->post('status');
         $data['branch']    = $this->input->post('branch');
@@ -974,7 +1046,7 @@ class Crud_model extends CI_Model {
           $data['gender']    = $this->input->post('gender');
             $data['dob']    = $this->input->post('dob');
              $data['in_address']    = $this->input->post('in_address');
-          $data['profession']    = $this->input->post('profession');
+         
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
              
@@ -1122,9 +1194,10 @@ class Crud_model extends CI_Model {
     {
         return $this->db->get('patient')->result_array();
     }
-    function select_patient_info($patient)
+    function select_patient_info()
     {
-        return $this->db->where('patient_type','inpatient')->get('patient')->result_array();
+        
+        return $this->db->get('patient')->result_array();
     
     }
 function select_patient_information($patient_id="")

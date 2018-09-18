@@ -3,6 +3,9 @@
 $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $slat_id))->result_array();
 
     foreach($single_doctor_info as $row){
+        
+        $day=date('D',strtotime($row['date']));
+       // echo $row['date']->format("m/d/Y");
       $check=explode(',',$row['repeat_on']);
       $start_time=explode(':',$row['start_time']);
       $start_ampm=explode(' ',$start_time[1]);
@@ -14,20 +17,16 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
     <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
-
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <h3><?php echo get_phrase('edit_availability'); ?></h3>
-                </div>
-            </div>
   
             <div class="panel-body">
 
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/edit_doctor_new_availability/update_availability/<?php echo $row['doctor_id'];?>/<?php echo $slat_id;?>" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
+                    <div class="form-group" id='SelectInterval'>
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('repeat_interval'); ?></label>
 
                         <div class="col-sm-8">
+                            <input type="hidden" name="unik" value="<?=$row['unik']?>" id="">
+                            <input type="hidden" name="doctor_id" value="<?=$row['doctor_id']?>" id="">
                             <input type="hidden" value="<?=$row['repeat_interval']?>" id="repeat_interval">
                             <select name="repeat_interval" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return show_repete(this.value)">
                                 
@@ -52,7 +51,7 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                     </div>
                     
                   
-                            <div class="form-group">
+                            <div class="form-group" id="Dates">
                                 <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('start_date'); ?></label>
                                <div class="col-md-3">
                                 <input type="text" class="form-control datepicker" name="start_on" id="start_on" value="<?php echo $row['start_date']?>">
@@ -78,9 +77,8 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                     <div class="col-md-4">
                         <select name="time_start_min" id= "starting_minute" class="form-control selectboxit">
                             <option value=""><?php echo 'Minutes';?></option>
-                            <?php for($i = 0; $i <= 11 ; $i++):?>
-                                <option value="<?php echo $i * 5;?>" <?php if($start_ampm[0]==($i*5)){echo 'selected';}?>><?php echo $i * 5;?></option>
-                            <?php endfor;?>
+                            <option value="00" <?php if($start_ampm[0]==00){echo 'selected';}?>>00</option>
+                            <option value="30" <?php if($start_ampm[0]==30){echo 'selected';}?>>30</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -105,9 +103,8 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                     <div class="col-md-4">
                         <select name="time_end_min" id= "ending_minute" class="form-control selectboxit">
                             <option value=""><?php echo 'Minutes';?></option>  
-                            <?php for($i = 0; $i <= 11 ; $i++):?>
-                                <option value="<?php echo $i * 5;?>" <?php if($end_ampm[0]==($i*5)){echo 'selected';}?>><?php echo $i * 5;?></option>
-                            <?php endfor;?>
+                           <option value="00" <?php if($end_ampm[0]==00){echo 'selected';}?>>00</option>
+                            <option value="30" <?php if($end_ampm[0]==30){echo 'selected';}?>>30</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -118,10 +115,17 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                     </div>
                 </div>
             </div>
-                      
+            <div class="form-group">
+                <label class="col-sm-3 checked"><input type="checkbox" name="existDays" id="existDays" value="yes" onchange="return upall()">Update/Delete all</label>
+            </div>      
 
                     <div class="col-sm-3 control-label col-sm-offset-2">
                         <input type="submit" class="btn btn-success" value="Submit">
+                       
+                    </div>
+                    <div class="col-sm-3 control-label ">
+                        
+                        <button type="button" class="btn btn-danger" oncheck="confirm_modal('<?php echo base_url();?>index.php?superadmin/edit_doctor_new_availability/delete/<?php echo $row['doctor_id'];?>/<?php echo $row['id'];?>');" >Delete</button>
                     </div>
                 </form>
 
@@ -135,14 +139,31 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
 
 <script type="text/javascript">
 $(document).ready(function(){
-    var id=$("#repeat_interval").val();
+    $("#SelectInterval").hide();
+    $("#weeklyDayDiv").hide();
+    $("#Dates").hide();
+    /*var id=$("#repeat_interval").val();
      if(id == 1){
         $("#weeklyDayDiv").hide();
         }
         if(id == 0){
         $("#weeklyDayDiv").show();
-        }
+        }*/
 });
+function upall() {
+    var checkBox = document.getElementById("existDays");
+    
+    if (checkBox.checked == true){
+        $("#SelectInterval").show();
+        $("#weeklyDayDiv").show();
+        $("#Dates").show();
+    } else {
+      $("#SelectInterval").hide();
+    $("#weeklyDayDiv").hide();
+    $("#Dates").hide();
+    }
+}
+
     function show_repete(id) {
         if(id == 1){
         $("#weeklyDayDiv").hide();
