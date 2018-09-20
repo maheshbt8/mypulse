@@ -76,7 +76,7 @@ class Login extends CI_Controller {
 
     //Validating login from ajax request
     function validate_login() {
-     
+     print_r($_POST);
       $email = $this->input->post('email');
       $password = $this->input->post('password');
       $credential = array('email' => $email, 'password' => sha1($password));
