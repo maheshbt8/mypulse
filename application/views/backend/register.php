@@ -32,7 +32,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');">
 			<div class="wrap-login100 p-t-190 p-b-30">
-				<form class="login100-form validate-form">
+				<form class="login100-form validate-form" action="<?php echo base_url();?>index.php?login/register" method="post">
 					<div class="login100-form-avatar">  
 						<img src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR">
 					</div>
@@ -40,27 +40,36 @@
 					<span class="login100-form-title p-t-20 p-b-45">
 				  
 					</span>
-					   <?php if($this->session->flashdata('login_error')!=''){?>
+						   <?php if($this->session->flashdata('msg_registration_complete')!=''){?>
+		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('msg_registration_complete'); ?></div>
+		<?php }
+					  if($this->session->flashdata('email_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->lang->line('reg_completed'); ?></div>
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('email_error'); ?></div>
+		<?php }
+		 if($this->session->flashdata('cpass_error')!=''){?>
+		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('cpass_error'); ?></div>
 		<?php }?>
 					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredFname'];?>">
-						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*">
+						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*" value="<?php echo set_value('username'); ?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requriedPhone'];?>">
-						<input class="input100" type="text" name="mobile" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>*">
+						<input class="input100" type="text" name="mobile" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>*" value="<?php echo set_value('mobile'); ?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 					
-						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?>">
-						<input class="input100" type="email" name="email" placeholder="<?php echo $this->lang->line('labels')['email'];?>*">
+						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?><?php if($this->session->flashdata('email_error')!=''){echo "Duplicate";}?>">
+						<input class="input100" type="email" name="email" placeholder="<?php echo $this->lang->line('labels')['email'];?>*" value="<?php echo set_value('email'); ?>">
+						
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
@@ -68,14 +77,14 @@
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredPassword'];?>">
-						<input class="input100" type="password" name="pass" placeholder="<?php echo $this->lang->line('labels')['password'];?>*">
+						<input class="input100" type="password" name="pass" placeholder="<?php echo $this->lang->line('labels')['password'];?>*" value="<?php echo set_value('pass'); ?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredConfirmPassword'];?>">
-						<input class="input100" type="password" name="pass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*">
+						<input class="input100" type="password" name="cpass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*" value="<?php echo set_value('cpass'); ?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>

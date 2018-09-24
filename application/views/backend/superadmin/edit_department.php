@@ -7,21 +7,15 @@ foreach ($single_department_info as $row) {
 
             <div class="panel panel-primary" data-collapsed="0">
 
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        <h3><?php echo get_phrase('edit_department'); ?></h3>
-                    </div>
-                </div>
-
                 <div class="panel-body">
 
                     <form role="form" class="form-horizontal form-groups-bordered" action="<?php echo base_url(); ?>index.php?superadmin/department/update/<?php echo $row['department_id']; ?>" method="post" enctype="multipart/form-data">
    	<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('hospital');?></label>
+						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                         
-						<div class="col-sm-8">
-							<select name="hospital" class="form-control selectboxit">
-                              <option value=""><?php echo ucfirst('select_hospital');?></option>
+						<div class="col-sm-5">
+							<select name="hospital" class="form-control selectbox" id="hospital" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>">
+                              <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
                               <?php
                               	$sections = $this->db->get_where('hospitals' , array('status' => 1))->result_array();
                             
@@ -38,11 +32,11 @@ foreach ($single_department_info as $row) {
 					</div>
 					
 						<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('branch');?></label>
+						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                         
-						<div class="col-sm-8">
-							<select name="branch" class="form-control selectboxit">
-                              <option value=""><?php echo ucfirst('select_branch');?></option>
+						<div class="col-sm-5">
+							<select name="branch" class="form-control selectbox" id="branch" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>">
+                              <option value=""><?php echo $this->lang->line('labels')['select_hospital_first'];?></option>
                               <?php
                               	$sections1 = $this->db->get('branch')->result_array();
                             
@@ -59,15 +53,15 @@ foreach ($single_department_info as $row) {
 					</div>
 					
 						<div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('name'); ?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
 
-                        <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>">
+                        <div class="col-sm-5">
+                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['name']?>">
                         </div>
                        </div>
 
                         <div class="form-group">
-                            <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('description'); ?></label>
+                            <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['description'];?></label>
 
                             <div class="col-sm-9">
                                 <textarea name="description" class="form-control"
@@ -76,7 +70,7 @@ foreach ($single_department_info as $row) {
                         </div>
 
                         <div class="col-sm-3 control-label col-sm-offset-2">
-                            <input type="submit" class="btn btn-success" value="Update">
+                            <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
                         </div>
                     </form>
 

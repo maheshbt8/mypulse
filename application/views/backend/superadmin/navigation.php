@@ -131,19 +131,19 @@
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_users') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>index.php?superadmin/patient">
+            <a href="<?php echo base_url(); ?>index.php?superadmin/users">
                 <i class="fa fa-user-md"></i>
                 <span><?php echo $menu['mypulseusers'];?></span>
             </a>
         </li>
-        <li class="<?php if ($page_name == 'manage_users') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>index.php?superadmin/patient">
+        <li class="#">
+            <a href="">
                 <i class="fa fa-user-md"></i>
                 <span><?php echo $menu['main_inpatient'];?></span>
             </a>
         </li>
-        <li class="<?php if ($page_name == 'manage_users') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>index.php?superadmin/patient">
+        <li class="">
+            <a href="#">
                 <i class="fa fa-user-md"></i>
                 <span><?php echo $menu['appoitments'];?></span>
             </a>

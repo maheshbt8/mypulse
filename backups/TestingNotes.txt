@@ -1,0 +1,77 @@
+hms_activitylog table user_id column defualt value set null.
+insert empty row in hms_healthrecords.
+User profile Role selection add select option on top.
+In superadmin module	->put option for active hospital. - D
+			->validation in add hospital - D
+			->hospitals, wards, nurses, receptionist, Medical Store, Medica Lab, License category->qery in page refresh after multiple delete opration - D
+			->Doctor should not login as doctor if it's inactive. - D
+			->Doctor Availability Schedule does not work properly
+			->Can't change alternet number in all module. - D
+			->By default login as patient if user has already selected a role and not yet approved by authority. -D 
+			->Also get required info at the time of selection of role. ( E.g. enter store/lab name if user role is med lab or store )-D
+			->Query in appointment popup model->timeslote. - D
+			->Query in multiple operation on appt.(logic) -D
+			->healthinsuranceprovider->query in multiple delete.(delete button does't work) -D
+			->Export query-> SuperAdmin->Does Not work any Where in superAdmin (Only For Old Tbl Library export not working, need to put export mechanisom there)
+			->query in sending msges
+			->Show inactive hospital in filter and other dropdown menu - D
+			->Ward->in update ->query in select option for hospital and branch - D
+			->beds->update->in update pop-up model-> query in select option for wards. and other - D
+			->HospitalAdmin->does't work multiple delete button -D
+			->add pop-up->status does't work - D
+			->receptionist->if we update any one then changes apply to all records of receptionists. - D
+			--->Patient menu->add or update alternet number. - D
+			->add option in patient menu for active patients. Also set Column Index in Patient Load table. -D
+			->medicalstore menu, medical lab->query in adhar number(adharnumber can't get in pop-up so if we update data and display error)
+
+
+HospitalAdmn Module	->Query in Branch Count(It count isDeleted = 1 so Count value would be wrong) -D
+		   	->Wards, nurse, Receptionist, MedicalStore, MedicalLab->query in page refresh after multiple delete opration -D
+			->Query in appointment popup model->timeslote -D
+			->Ward->in update ->query in select option for branch -D
+			->beds->update->in update pop-up model-> query in select option for wards. and other -D
+			->Doctor Availability Schedule does not work properly
+			->Export query->Does Not work any Where in HospitalAdmin -D
+			->MedicalStore, MedicalLab->Adharnumber can't add or update and Professional Info can't add or update or view data. -D
+			->MedicalLab->Professional Info can't add or update or view data.-D
+
+Doctor Module		->Query in Load Appointment Data -D
+			->Add In-patient->after Bed selected, In bed select option Occupide Bed_id wil display.  -D
+			->at 1st time add in-patient at that time msg display like "Patient already admitted". -D
+			->in case in-patient histroy updated and bed change without discharged then previous bed status would not change and updated bed status(isAvailable=1)....So in these case both bed status like isAvailable=1.-D
+			->Today's Appointment->Action column(edit button Does't work properly) -D 
+			->Export Appointment->Excel Sheet not in proper formate -D
+			->In-patient menu->only load that data which status like admitted or not-admitted but now all records are loaded. -D
+			->Query in appointment popup model->timeslote	-D			
+
+Receptionist		
+			->Query in appointment popup model->timeslote -D
+			->Export Appointment->Excel Sheet not in proper formate -D
+			->Dashboard	->Today's Apoointments->Query in Edit Pop-up on AptNo  -D
+			->Appointments->refresh problem after any opration -D
+			->Today's Apoointments->Filters does't work -D
+			->Export button query(Today's apt and appt both export button are in today's apt) also formate not proper.  -D
+					
+Nurse			 
+			->Beds menu->query in load bed data -D
+			->Export Appointment->Excel Sheet not in proper formate -D
+
+Patient		->Export Appointment->Excel Sheet not in proper formate -D
+			->Dashboard->Upcoming Apoointments->Query in Edit Pop-up on AptNo  -D
+
+MedicalStore
+			->order status problem(status should must be change after upload receipt)
+
+MedicalLab
+			->MedicalLab incharge->profile->hospital Association not load
+			->order status problem(status should must be change after upload report)
+			
+
+Note for dublicate entry----> error like dublicate entry for email or any other.....then if we go back then that entry sould be save...
+
+			
+
+
+
+SELECT hms_nurse.id1 as mainid, CONCAT(hms_users.first_name, " ", hms_users.last_name) as nursename, hms_hospitals.name as hname, hms_branches.branch_name as bname, hms_departments.department_name as dname, case when hms_nurse.isActive=1 THEN "Active" when hms_nurse.isActive=0 THEN "Inactive" end as status, hms_nurse.id as action_nurse_id FROM `hms_nurse` LEFT JOIN `hms_users` ON `hms_nurse`.`user_id` = `hms_users`.`id` LEFT JOIN `hms_departments` ON `hms_nurse`.`department_id` = `hms_departments`.`id` LEFT JOIN `hms_branches` ON `hms_departments`.`branch_id` = `hms_branches`.`id` LEFT JOIN `hms_hospitals` ON `hms_branches`.`hospital_id` = `hms_hospitals`.`id` WHERE `hms_nurse`.`isDeleted` =0 AND `hms_nurse`.`department_id` in (1,2) ORDER BY `status` ASC LIMIT 10
+

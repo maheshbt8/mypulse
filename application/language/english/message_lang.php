@@ -68,6 +68,7 @@ $lang['orders'] = "Orders";
 $lang['Outstanding_order'] = "Outstanding Orders";
 $lang['Complete_order'] = "Complete Orders";
 $lang['medOrderPlaced'] = "Your order placed.";
+
 $lang['verification_complete'] = 'Email id verified successfully';
 $lang['mobile_verification_complete'] = 'User Account Registered Successfully. Please Login To Continue.';
 $lang['msg_unable_to_verify'] = 'Unable to verify your email id.';

@@ -492,9 +492,9 @@ class Crud_model extends CI_Model {
         $data['mobile']    = $this->input->post('mobile');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
-       
+       $data['password']=sha1('stores');
         $data['hospital']    = $this->input->post('hospital');
-       // $data['status']    = $this->input->post('status');
+        $data['status']    = $this->input->post('status');
         $data['branch']    = $this->input->post('branch');
         $data['fname']    = $this->input->post('fname');
         $data['lname']    = $this->input->post('lname');
@@ -503,12 +503,10 @@ class Crud_model extends CI_Model {
           $data['gender']    = $this->input->post('gender');
             $data['dob']    = $this->input->post('dob');
              $data['in_address']    = $this->input->post('in_address');
-          $data['profession']    = $this->input->post('profession');
+         
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
-             
-            // print_r($data);
-            // die;
+            
         
        $in=$this->db->insert('medical_stores',$data); 
        if($in)
@@ -596,12 +594,12 @@ class Crud_model extends CI_Model {
          function save_hospitaladmins_info()
     {
         $data['name'] 		= $this->input->post('fname');
-          $data['mname'] 		= $this->input->post('mname');
-            $data['lname'] 		= $this->input->post('lname');
+        $data['mname'] 		= $this->input->post('mname');
+        $data['lname'] 		= $this->input->post('lname');
         $data['description']    = $this->input->post('description');
         $data['email']    = $this->input->post('email');   
         $data['mobile']    = $this->input->post('mobile');
-       $data['password']=sha1('admin');
+        $data['password']=sha1('hospitaladmin');
         $data['hospital_id']    = $this->input->post('hospital');
         $data['status']    = $this->input->post('status');
         $data['gender']    = $this->input->post('gender');
@@ -609,8 +607,8 @@ class Crud_model extends CI_Model {
         $data['aadhar']    = $this->input->post('aadhar');
         $data['address']    = $this->input->post('address');  
         $data['qualification']    = $this->input->post('qualification');
-          $data['profession']    = $this->input->post('profession');
-            $data['experience']    = $this->input->post('experience');
+        $data['profession']    = $this->input->post('profession');
+        $data['experience']    = $this->input->post('experience');
              
           
        $in=$this->db->insert('admin',$data);
@@ -813,7 +811,7 @@ class Crud_model extends CI_Model {
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
         
-        $this->db->insert('doctor',$data);
+        $this->db->insert('doctors',$data);
         
         $doctor_id  =   $this->db->insert_id();
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
@@ -821,7 +819,7 @@ class Crud_model extends CI_Model {
     
     function select_doctor_info()
     {
-        return $this->db->get('doctor')->result_array();
+        return $this->db->get('doctors')->result_array();
     }
     
        function update_doctor_availability_info($doctor_id)
@@ -946,6 +944,9 @@ $que=$this->db->insert('availability_slat',$data);
     function delete_doc_availability_info($id){
         return $this->db->where('id',$id)->delete('availability_slat');
     }
+    function delete_all_doc_availability_info($id){
+        return $this->db->where('unik',$this->db->where('id',$id)->get('availability_slat')->row()->unik)->delete('availability_slat');
+    }
     function save_rmp_info()
     {
         $data['name']       = $this->input->post('name');
@@ -1011,7 +1012,7 @@ $que=$this->db->insert('availability_slat',$data);
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
         $this->db->where('doctor_id',$doctor_id);
-        $this->db->update('doctor',$data);
+        $this->db->update('doctors',$data);
         
         move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
     }
@@ -1019,7 +1020,7 @@ $que=$this->db->insert('availability_slat',$data);
     function delete_doctor_info($doctor_id)
     {
         $this->db->where('doctor_id',$doctor_id);
-        $this->db->delete('doctor');
+        $this->db->delete('doctors');
     }
     
      function delete_store_info($patient_id)
@@ -1528,7 +1529,7 @@ function select_patient_information($patient_id="")
     
     function save_receptionist_info()
     {
-        
+       
         $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
