@@ -21,7 +21,7 @@
             </li>
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/hospital_admins/create" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_admins/" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            

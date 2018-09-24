@@ -21,7 +21,7 @@
 			</li>
 		</ul>
     	<!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/nurse/create" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_nurse/" method="post" enctype="multipart/form-data">
              
 		<div class="tab-content">
 		   
@@ -44,42 +44,42 @@
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['fname'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="fname" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+                            <input type="text" name="fname" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('fname'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['mname'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="mname" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+                            <input type="text" name="mname" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mname'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['lneme'];?></label>
+                        <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['lname'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="field-3"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+                            <input type="text" name="lname" class="form-control" id="field-3"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('lname'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['description'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="field-4" value="">
+                            <input type="text" name="description" class="form-control" id="field-4" value="<?php echo set_value('description'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['email'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="field-5"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+                            <input type="email" name="email" class="form-control" id="field-5"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('email'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['phone_number'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="mobile" class="form-control" id="field-6"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">  
+                            <input type="text" name="mobile" class="form-control" id="field-6"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mobile'); ?>">  
                         </div>
                     </div>
                  
@@ -87,7 +87,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['selectHospital'];?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_branch(this.value)">
+                            <select name="hospital" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
                                 <option value=""> <?php echo $this->lang->line('labels')['select_hospital'];?></option>
                                 <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
@@ -102,7 +102,7 @@
                   <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['selectBranch'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="branch" class="form-control" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_department(this.value)">
+		                        <select name="branch" class="form-control" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
 		                            <option value=""> <?php echo $this->lang->line('labels')['select_hospital_first'];?></option>
 
 			                    </select>
@@ -111,7 +111,7 @@
                     <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['selectDepartment'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="department" class="form-control" id="select_department"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_doctor(this.value)">
+		                        <select name="department" class="form-control" id="select_department"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('department'); ?>"  onchange="return get_doctor(this.value)">
 		                            <option value=""> <?php echo $this->lang->line('labels')['select_branch_first'];?></option>
 
 			                    </select>
@@ -123,7 +123,7 @@
 					  <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['selectDoctor'];?></label>
 		                    <div class="col-sm-8">
-		                        <select multiple name="doctor[]" class="form-control" id="select_doctor"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+		                        <select multiple name="doctor[]" class="form-control" id="select_doctor"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('doctor[]'); ?>">
 		                            <option value=""><?php echo $this->lang->line('labels')['select_department_first'];?></option>
 
 			                    </select>
@@ -135,7 +135,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo $this->lang->line('labels')['status'];?></label>
 
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
                                 <option value=""> <?php echo $this->lang->line('labels')['select_status'];?></option>
                                 <option value="1"> <?php echo $this->lang->line('labels')['active'];?></option>
                                 <option value="2"> <?php echo $this->lang->line('labels')['inactive'];?></option>
@@ -174,7 +174,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
 
                         <div class="col-sm-8">
-                            <select name="gender" class="form-control" value="">
+                            <select name="gender" class="form-control" value="<?php echo set_value('gender'); ?>">
                                 <option value=""><?php echo $this->lang->line('labels')['select_gender'];?></option>
                                 <option value="male"><?php echo $this->lang->line('labels')['male'];?></option>
                                 <option value="female"><?php echo $this->lang->line('labels')['female'];?></option>
@@ -185,21 +185,21 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control datepicker" id="field-7" value="" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" autocomplete="off">
+                            <input type="text" name="dob" class="form-control datepicker" id="field-7" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="aadhar" class="form-control" id="field-8" value="">
+                            <input type="text" name="aadhar" class="form-control" id="field-8" value="<?php echo set_value('aadhar'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="field-9" value="">
+                            <input type="text" name="address" class="form-control" id="field-9" value="<?php echo set_value('address'); ?>">
                         </div>
                     </div>
                     
@@ -209,7 +209,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control" value=""  onchange="return get_state(this.value)">
+                            <select name="country" class="form-control" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
                                 <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
                                 <?php 
                                 $admins = $this->db->get_where('country')->result_array();
@@ -226,7 +226,7 @@
                        <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="state" class="form-control" id="select_state" value=""  onchange="return get_district(this.value)">
+		                        <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
 		                            <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
 
 			                    </select>   
@@ -237,7 +237,7 @@
 					   <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="district" class="form-control" id="select_district" value=""  onchange="return get_city(this.value)">
+		                        <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
 		                            <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
 
 			                    </select>
@@ -247,7 +247,7 @@
 					<div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="city" class="form-control" id="select_city" value=""  >
+		                        <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
 		                            <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
 
 			                    </select>
@@ -270,7 +270,7 @@
 									<span class="btn btn-white btn-file">
 										<span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
 										<span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
-										<input type="file" name="userfile" accept="image/*">
+										<input type="file" name="userfile" accept="image/*" value="<?php echo set_value('userfile'); ?>">
 									</span>
 									<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
 								</div>
@@ -302,7 +302,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['qualification'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="qualification" class="form-control" id="field-10" value="">
+                            <input type="text" name="qualification" class="form-control" id="field-10" value="<?php echo set_value('qualification'); ?>">
                         </div>
                     </div>
                    
@@ -310,7 +310,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['experience'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="experience" class="form-control" id="field-11" value="">
+                            <input type="text" name="experience" class="form-control" id="field-11" value="<?php echo set_value('experience'); ?>">
                         </div>
                     </div>
                    
@@ -320,9 +320,7 @@
                     </div>    
                     </div>
                   
-                          
-			</div  
-			</div></div></div>
+                     </div></div></div>
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
@@ -340,21 +338,6 @@
 
 
 
-<!-----  DATA TABLE EXPORT CONFIGURATIONS ---->                      
-<script type="text/javascript">
-
-	jQuery(document).ready(function($)
-	{
-		
-
-		var datatable = $("#table_export").dataTable();
-		
-		$(".dataTables_wrapper select").select2({
-			minimumResultsForSearch: -1
-		});
-	});
-		
-</script>
 
 <script type="text/javascript">
 

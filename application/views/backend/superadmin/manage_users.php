@@ -1,4 +1,4 @@
-<a href="<?php echo base_url();?>index.php?superadmin/add_patient/"><button onclick="#" 
+<a href="<?php echo base_url();?>index.php?superadmin/add_user/"><button onclick="#" 
     class="btn btn-primary pull-right">
         <?php echo get_phrase(' Add my pulse users'); ?>
 </button></a>
@@ -79,7 +79,7 @@
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="<?php echo base_url();?>index.php?superadmin/patient/delete/<?php echo $row['patient_id']?>" 
+                                <a href="<?php echo base_url();?>index.php?superadmin/user/delete/<?php echo $row['patient_id']?>" 
                                     onclick="return checkDelete();">
                                         <i class="entypo-cancel"></i>
                                         <?php echo get_phrase('delete'); ?>

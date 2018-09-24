@@ -9,11 +9,11 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
         <?php echo form_open(base_url() . 'index.php?superadmin/district/update/'.$row['district_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 	<div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country_name'); ?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
 
                         <div class="col-sm-5">
                             <select name="country_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  onchange="return get_state(this.value)">
-                                <option value=""><?php echo get_phrase('select_country'); ?></option>
+                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
                                 <?php 
                                 $country = $this->db->get('country')->result_array();
                                 foreach($country as $row1){?>
@@ -25,11 +25,11 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
                         </div>
                     </div>
                       <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state_name'); ?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label> 
 
                         <div class="col-sm-5">
                             <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="select_state"   value=""  onchange="return get_branch(this.value)">
-                                <option value=""><?php echo get_phrase('select_country_first'); ?></option>
+                                <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
                                 <?php 
                                 $state = $this->db->where('country_id',$row['country_id'])->get('state')->result_array();
                                 foreach($state as $row2){?>
@@ -41,7 +41,7 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
                     </div>
                           
                 <div class="form-group">
-                    <label class="col-sm-3 control-label"><?php echo ucfirst('district_name');?></label>
+                    <label class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
                     <div class="col-sm-5">
                         <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
                             data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>" required/>
@@ -51,7 +51,7 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
             </div>
             <div class="form-group">
               <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo ucfirst('edit_district');?></button>
+                  <button type="submit" class="btn btn-info"><?php echo $this->lang->line('buttons')['submit'];?></button>
               </div>
             </div>
         </form>

@@ -9,9 +9,11 @@
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('name'); ?></th>
-            <th><?php echo get_phrase('address'); ?></th>
+            <th><?php echo get_phrase('license_status'); ?></th>
+            <th><?php echo get_phrase('branches'); ?></th>
+            <!-- <th><?php echo get_phrase('address'); ?></th>
             <th><?php echo get_phrase('email'); ?></th>
-            <th><?php echo get_phrase('phone'); ?></th>
+            <th><?php echo get_phrase('phone'); ?></th> -->
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
     </thead>
@@ -20,13 +22,16 @@
         <?php  $i=1;foreach ($hospital_info as $row) {?>   
             <tr>
                 <td><?php echo $i?></td>
-                <td><?php echo $row['name'] ?></td>
-                <td><?php echo $row['address'] ?></td>
+                <td><a href="<?php echo base_url();?>index.php?superadmin/get_hospital_history/<?php echo $row['hospital_id'];?>"><?php echo $row['name'] ?></a></td>
+                <td><?php echo $this->db->where('license_id',$row['license'])->get('license')->row()->license_code .' - ';if($row['license_status']==1){echo 'Active';}elseif($row['license_status']==2){echo 'Inactive';}  ?></td>
+                <!-- <td><?php echo $row['address'] ?></td>
                 <td><?php echo $row['email'] ?></td>
-                <td><?php echo $row['phone_number'] ?></td>
+                <td><?php echo $row['phone_number'] ?></td> -->
+                 <td>
+            <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_branch/<?php echo $row['hospital_id'] ?>" title="Branches"><i class="glyphicon glyphicon-eye-open"></i></a>     
+                </td>
                 <td>
             <a href="<?php echo base_url(); ?>index.php?superadmin/edit_hospital/<?php echo $row['hospital_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_branch/<?php echo $row['hospital_id'] ?>" title="Branches"><i class="glyphicon glyphicon-eye-open"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/hospital/delete/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 
                 

@@ -49,7 +49,7 @@ class Login extends CI_Controller {
 
         $this->load->view('backend/login');
     }
-
+/*
     //Ajax login function 
     function ajax_login() {
 
@@ -72,7 +72,7 @@ class Login extends CI_Controller {
 
         //Replying ajax request with validation response
         echo json_encode($response);
-    }
+    }*/
 
     //Validating login from ajax request
     function validate_login() {
@@ -93,7 +93,7 @@ class Login extends CI_Controller {
            	$this->session->set_userdata('login_type', 'superadmin');
             redirect(base_url() . 'index.php?superadmin/dashboard', 'refresh');
         }
-        
+        /*
         $query = $this->db->get_where('admin', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
@@ -173,7 +173,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'receptionist');
             redirect(base_url() . 'index.php?doctor/dashboard', 'refresh');
-        }
+        }*/
 
         $this->session->set_flashdata('login_error', 'Invalid_login');
          redirect(base_url() . 'index.php?login', 'refresh');
@@ -207,8 +207,76 @@ class Login extends CI_Controller {
     
     function register()
     {
+        if($this->input->post()){
+            $email = $this->input->post('email');
+            $password=$this->input->post('password');
+           $validation = email_validation($email);
+           
+            if ($validation == 1) {
+                if($this->input->post('pass') == $this->input->post('cpass')){
+        $data['name']       = $this->input->post('username');
+        $data['email']      = $this->input->post('email');
+        $data['password']       = sha1($this->input->post('pass'));
+        $data['phone']          = $this->input->post('mobile');
+        $data['status']   = 2;
         
+        $insert=$this->db->insert('patient',$data);
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 15);
+            $pid='MYP_'.$lid.$uid;
+            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid));
+            
+        }
+                $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));
+                $this->email_model->account_opening_email($this->lang->line('roles')[6], $data['email']);
+            }else{
+                 $this->session->set_flashdata('cpass_error', $this->lang->line('validation')['passwordNotMatch']);
+            }} else {
+
+                $this->session->set_flashdata('email_error', $this->lang->line('msg_email_exist') );
+            }
+        }
         $this->load->view('backend/register');
+    }
+    function user_register(){
+            $email = $this->input->post('email');
+            $password=$this->input->post('password');
+           $validation = email_validation($email);
+           
+            if ($validation == 1) {
+                if($this->input->post('pass') == $this->input->post('cpass')){
+        $data['name']       = $this->input->post('fname');
+        $data['email']      = $this->input->post('email');
+        $data['password']       = sha1($this->input->post('pass'));
+        $data['phone']          = $this->input->post('mobile');
+        $data['status']   = $this->input->post('status');
+        
+        $insert=$this->db->insert('patient',$data);
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 15);
+            $pid='MYP_'.$lid.$uid;
+            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid));
+            
+        }
+                $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));
+            }else{
+                 $this->session->set_flashdata('cpass_error', $this->lang->line('validation')['passwordNotMatch']);
+            }} else {
+
+                $this->session->set_flashdata('email_error', $this->lang->line('msg_email_exist') );
+            }
+        $this->load->view('backend/register');
+        
     }
 
     function logout() {

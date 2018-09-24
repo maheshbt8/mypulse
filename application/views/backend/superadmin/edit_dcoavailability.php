@@ -124,8 +124,9 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                        
                     </div>
                     <div class="col-sm-3 control-label ">
-                        
-                        <button type="button" class="btn btn-danger" oncheck="confirm_modal('<?php echo base_url();?>index.php?superadmin/edit_doctor_new_availability/delete/<?php echo $row['doctor_id'];?>/<?php echo $row['id'];?>');" >Delete</button>
+                       
+                        <button type="button" class="btn btn-danger" id="delete" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/edit_doctor_new_availability/delete/<?php echo $row['doctor_id'];?>/<?php echo $row['id'];?>');" >Delete</button>
+                        <button type="button" class="btn btn-danger" id="delete_all" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/edit_doctor_new_availability/delete_all/<?php echo $row['doctor_id'];?>/<?php echo $row['id'];?>');" >Delete</button>
                     </div>
                 </form>
 
@@ -142,6 +143,7 @@ $(document).ready(function(){
     $("#SelectInterval").hide();
     $("#weeklyDayDiv").hide();
     $("#Dates").hide();
+    $("#delete_all").hide();
     /*var id=$("#repeat_interval").val();
      if(id == 1){
         $("#weeklyDayDiv").hide();
@@ -157,10 +159,14 @@ function upall() {
         $("#SelectInterval").show();
         $("#weeklyDayDiv").show();
         $("#Dates").show();
+        $("#delete_all").show();
+        $("#delete").hide();
     } else {
       $("#SelectInterval").hide();
     $("#weeklyDayDiv").hide();
     $("#Dates").hide();
+    $("#delete_all").hide();
+    $("#delete").show();
     }
 }
 

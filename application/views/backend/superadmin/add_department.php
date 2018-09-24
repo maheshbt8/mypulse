@@ -10,7 +10,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectHospital'];?></label>
 
                         <div class="col-sm-5">
-                            <select name="hospital" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_branch(this.value)">
+                            <select name="hospital" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_branch(this.value)">
                                 <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
                                <?php 
                                $hospital_info=$this->db->where('status','1')->get('hospitals')->result_array();
@@ -24,7 +24,7 @@
                     <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectBranch'];?></label>
 		                    <div class="col-sm-5">
-		                        <select name="branch" class="form-control" id="select_branch"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+		                        <select name="branch" class="form-control" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
 		                            <option value=""><?php echo $this->lang->line('labels')['select_hospital_first'];?></option>
                                      <?php 
                                $hospital_info=$this->db->get('branch')->result_array();
@@ -38,7 +38,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
 
                         <div class="col-sm-5">
-                            <input type="text" name="name" class="form-control" id="field-1" >
+                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
                         </div>
                     </div>
 
