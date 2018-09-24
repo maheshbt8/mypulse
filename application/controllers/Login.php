@@ -83,13 +83,14 @@ class Login extends CI_Controller {
      
         // Checking login credential for admin
         
-        $query = $this->db->get_where('superadmin', $credential);
+        $query = $this->db->get_where('superadmin', $credential);//print($query->num_rows());exit;
         if ($query->num_rows() > 0) {
             $row = $query->row();
+
             $this->session->set_userdata('superadmin_login', '1');
             $this->session->set_userdata('login_user_id', $row->superadmin_id);
             $this->session->set_userdata('name', $row->name);
-            $this->session->set_userdata('login_type', 'superadmin');
+           	$this->session->set_userdata('login_type', 'superadmin');
             redirect(base_url() . 'index.php?superadmin/dashboard', 'refresh');
         }
         

@@ -5,7 +5,7 @@
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
         $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
         ?>  
-<title><?php echo get_phrase('login'); ?> | <?php echo $system_title; ?></title>
+<title><?php echo $this->lang->line('labels')['login'];?> | <?php echo $system_title; ?></title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -47,19 +47,18 @@
 					</span>
                     <?php if($this->session->flashdata('login_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-		    Please Enter Valid Login Details !!!		</div>
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->lang->line('usr_acc_invalid_credential'); ?></div>
 		<?php }?>
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "Email is required">
-						<input class="input100" type="text" name="email" placeholder="Email" autocomplete="off">
+					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?>">
+						<input class="input100" type="text" name="email" placeholder="<?php echo $this->lang->line('login_mobile_email'); ?>" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "Password is required">
-						<input class="input100" type="password" name="password" placeholder="Password">
+					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredPassword'];?>">
+						<input class="input100" type="password" name="password" placeholder="<?php echo $this->lang->line('login_mobile_password'); ?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
@@ -67,17 +66,17 @@
 					</div>
 
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn">Login</button>
+						<button class="login100-form-btn"><?php echo $this->lang->line('buttons')['login'];?></button>
 					</div>
  
 					<div class="text-center w-full p-t-25 p-b-230">
 						<a href="#" class="txt1">
-							Forgot Username / Password?
+							<?php echo $this->lang->line('forgot_your_password');?>
 						</a>
 						 
 						 <br>
 							<a class="txt1" href="<?php echo base_url(); ?>index.php?login/register" ><h5 style="color:white;">
-							Create new User</h5>
+							<?php echo $this->lang->line('do_not_have_account');?></h5>
 							<i class="fa fa-long-arrow-right"></i>						
 						</a>
 					</div>

@@ -6,8 +6,8 @@
             <div class="tile-stats tile-white-gray">
                 <div class="icon"><i class="fa fa-h-square"></i></div>
                 <div class="num" data-start="0" data-end="<?php echo $this->db->count_all('hospitals'); ?>"
-                     data-duration="1500" data-delay="0">0 &pound;</div>
-                <h3><?php echo get_phrase('hospitals') ?></h3>
+                     data-duration="1500" data-delay="0">0 </div>
+                <h3><?php echo $this->lang->line('hospitals');?></h3>
             </div>
         </a>
     </div>
@@ -16,8 +16,8 @@
             <div class="tile-stats tile-white tile-white-primary">
                 <div class="icon"><i class="fa fa-user-md"></i></div>
                 <div class="num" data-start="0" data-end="<?php echo $this->db->count_all('doctor'); ?>"
-                     data-duration="1500" data-delay="0">0 &pound;</div>
-                <h3><?php echo get_phrase('doctors') ?></h3>
+                     data-duration="1500" data-delay="0">0 </div>
+                <h3><?php echo $this->lang->line('doctors');?></h3>
             </div>
         </a>
     </div>
@@ -27,8 +27,8 @@
             <div class="tile-stats tile-white-red">
                 <div class="icon"><i class="fa fa-user"></i></div>
                 <div class="num" data-start="0" data-end="<?php echo $this->db->count_all('patient'); ?>" 
-                     data-duration="1500" data-delay="0">0 &pound;</div>
-                <h3><?php echo get_phrase('mypulse_users') ?></h3>
+                     data-duration="1500" data-delay="0">0 </div>
+                <h3><?php echo $this->lang->line('mypulse_users');?></h3>
             </div>
         </a>
     </div>
@@ -38,8 +38,8 @@
             <div class="tile-stats tile-white-aqua">
                 <div class="icon"><i class="fa fa-plus-square"></i></div>
                 <div class="num" data-start="0" data-end="10" 
-                     data-duration="1500" data-delay="0">0 &pound;</div>
-                <h3><?php echo get_phrase('appooitments') ?></h3>
+                     data-duration="1500" data-delay="0">0 </div>
+                <h3><?php echo $this->lang->line('appointments');?></h3>
             </div>
         </a>
     </div>

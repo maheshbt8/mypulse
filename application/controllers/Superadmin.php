@@ -27,11 +27,11 @@ class Superadmin extends CI_Controller {
     /*     * *ADMIN DASHBOARD** */
 
     function dashboard() {
-        
-        if ($this->session->userdata('superadmin_login') != 1) {
+        //echo $this->session->userdata('superadmin_login');exit;
+        /*if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
-        }
+        }*/
         $page_data['page_name'] = 'dashboard';
         $page_data['page_title'] = get_phrase('superadmin_dashboard');
         $this->load->view('backend/index', $page_data);
@@ -529,7 +529,7 @@ class Superadmin extends CI_Controller {
     
      function edit_branch($id)
     {
-       $data['id']=$id;
+       $data['branch_id']=$id;
         
          $data['page_name'] = 'edit_branch';
         $data['page_title'] = get_phrase('edit_branch');
@@ -788,6 +788,12 @@ class Superadmin extends CI_Controller {
                 $this->session->set_flashdata('message', get_phrase('doctor_availability_updated_successfuly'));
             redirect(base_url() . 'index.php?superadmin/doctor_availability/'.$id);
         }
+        if ($task == "delete") {
+            
+                $this->crud_model->delete_doc_availability_info($id1);
+                $this->session->set_flashdata('message', get_phrase('doctor_availability_deleted_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/doctor_availability/'.$id);
+        }
         $data['slat_id']=$id;
         $data['page_name'] = 'edit_dcoavailability';
         $data['page_title'] = get_phrase('edit_availability');
@@ -843,7 +849,7 @@ class Superadmin extends CI_Controller {
              redirect(base_url() . 'index.php?superadmin/patient');
         }
         $patient='inpatient';
-        $data['patient_info'] = $this->crud_model->select_patient_info($patient);
+        $data['patient_info'] = $this->crud_model->select_patient_info();
         $data['page_name'] = 'manage_patient';
         $data['page_title'] = get_phrase('mypulse_users');
         $this->load->view('backend/index', $data);

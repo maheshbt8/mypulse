@@ -91,8 +91,7 @@
 */
 
 class Paypal {
-    
-   var $last_error;                 // holds the last error encountered
+     var $last_error;                 // holds the last error encountered
    
    var $ipn_log;                    // bool: log IPN results to text file?
    
@@ -101,13 +100,14 @@ class Paypal {
    var $ipn_data = array();         // array contains the POST values for IPN
    
    var $fields = array();           // array holds the fields to submit to paypal
+  
 
    
    function Paypal() {
        
       // initialization constructor.  Called when class is created.
       
-      $this->paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+      $this->paypal_url = '';//https://www.sandbox.paypal.com/cgi-bin/webscr
       //$this->paypal_url = 'https://www.paypal.com/cgi-bin/webscr';
       
       $this->last_error = '';
