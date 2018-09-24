@@ -1,316 +1,315 @@
+<style>
+  .exam_chart {
+    width       : 100%;
+    height      : 265px;
+    font-size   : 11px;
+  }
+</style>
+
 <?php
-$single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
+ $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
 
-foreach ($single_hospital_info as $row) {
+foreach ($single_hospital_info as $row) :
+  
+        
 ?>
- 
-<div class="row">
-    <div class="col-md-12">
+<div class="profile-env">
     
-        <!------CONTROL TABS START------>   
-        <ul class="nav nav-tabs bordered"> 
-            <li class="active">
-                <a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
-                    <?php echo $this->lang->line('labels')['general_info'];?>  
-                </a>  
-            </li>
-            <li>
-                <a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-                    <?php echo $this->lang->line('labels')['licenseInfo'];?>
+    <div class="col-md-12">
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab1" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-home"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('basic_info'); ?></span>
                 </a>
             </li>
-             <li>
-                <a href="#branches" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-                    <?php echo $this->lang->line('labels')['licenseInfo'];?>
+             <li class="">
+                <a href="#tab2" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-user"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('license_info'); ?></span>
                 </a>
             </li>
-              
+           <li class="">
+                <a href="#tab3" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-mail"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('branches'); ?></span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#tab4" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-mail"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('departments'); ?></span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#tab5" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-mail"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('wards'); ?></span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#tab6" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-mail"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('beds'); ?></span>
+                </a>
+            </li> 
         </ul>
-        <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/hospital/update/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
-             
+
         <div class="tab-content">
-           
-        <br/>
-            <!----TABLE LISTING STARTS-->
-            <div class="tab-pane box active" id="list">
-                
-                <div class="row">
-    <div class="col-md-12">
+            <div class="tab-pane active" id="tab1">
+        <?php
+        if($row['hospital_status']==1){$hospital_status='Active';}else{$hospital_status='Inactive';}
+          $basic_info_titles = ['name','description', 'address',  'email', 'phone number', 'country', 'state', 'district', 'city', 'owner/MD_name','owner/MD_phone_number','status'];
+          $basic_info_values = [$row['name'],$row['description'],$row['address'], $row['email'], $row['phone_number'],$this->db->get_where('country', array('country_id' => $row['country']))->row()->name,$this->db->get_where('state', array('state_id' => $row['state']))->row()->name,$this->db->get_where('district', array('district_id' => $row['district']))->row()->name,$this->db->get_where('city', array('city_id' => $row['city']))->row()->name,$row['md_name'],$row['md_contact_number'],$hospital_status];
+        ?>
+        <table class="table table-bordered" style="margin-top: 20px;">
+          <tbody>
+          <?php for ($i=0; $i < count($basic_info_titles) ; $i++) { ?>
+            <tr>
+              <td width="30%">
+                <strong><?php echo get_phrase($basic_info_titles[$i]); ?></strong>
+              </td>
+              <td><?php echo $basic_info_values[$i]; ?></td>
+            </tr>
+          <?php } ?>
+          </tbody>
+        </table>
+            </div>
+             <div class="tab-pane" id="tab2">
+        <?php
+          if($row['llicense_status']==1){$llicense_status='Active';}else{$llicense_status='Inactive';}
+          $license_info_titles = ['license','license_status', 'from_date',  'to_date'];
+          $license_info_values = [$this->db->get_where('license', array('license_id' => $row['license']))->row()->name,$llicense_status,$row['from_date'],$row['till_date']];
+        ?>
+        <table class="table table-bordered" style="margin-top: 20px;">
+          <tbody>
+          <?php for ($i=0; $i < count($license_info_titles) ; $i++) { ?>
+            <tr>
+              <td width="30%">
+                <strong><?php echo get_phrase($license_info_titles[$i]); ?></strong>
+              </td>
+              <td><?php echo $license_info_values[$i]; ?></td>
+            </tr>
+          <?php } ?>
+          </tbody>
+        </table>
+            </div>
+            <div class="tab-pane" id="tab3">
+<!-- 
+        <a href="<?php echo base_url(); ?>index.php?superadmin/add_branch/<?php echo $row['hospital_id'];?>"><button onclick="" 
+    class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_branch'); ?>
+</button></a>
+ -->
+<div style="clear:both;"></div>
 
-        <div class="panel panel-primary" data-collapsed="0">
+<table class="table table-bordered table-striped datatable" id="table-2">  
+    <thead>
+        <tr>
+            <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('name'); ?></th>
+           <!--  <th><?php echo get_phrase('hospital'); ?></th>
+            <th><?php echo get_phrase('address'); ?></th> -->
+            <th><?php echo get_phrase('email'); ?></th>
+            <th><?php echo get_phrase('phone'); ?></th>
+            <th><?php echo get_phrase('departments'); ?></th>
+            <th><?php echo get_phrase('options'); ?></th>
+        </tr>
+    </thead>
 
+    <tbody>
+        <?php  
+        $branch_info=$this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
+        $i=1;foreach ($branch_info as $row) {
             
-            <div class="panel-body">
-    
-                
-                    <div class="row">
-                        <div class="col-sm-6">
-                      <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
+            ?>
+        
+            <tr>
+                <td><?php echo $i?></td>
+                <td><?php echo $row['name'] ?></td>
+               <!--  <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
+                <td><?php echo $row['address'] ?></td>   -->
+                <td><?php echo $row['email'] ?></td>
+                <td><?php echo $row['phone'] ?></td>
+                <td>
+            <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_departments/<?php echo $row['branch_id'] ?>" title="Departments"><i class="glyphicon glyphicon-eye-open"></i></a>
+                </td>
+                <td>
+            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                </td>
+            </tr>
+        <?php $i++;} ?>
+    </tbody>
+</table>
+            </div>
+            <div class="tab-pane" id="tab4">
 
-                        <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['name']; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['description'];?></label>
+       <!-- <a href="<?php echo base_url(); ?>index.php?superadmin/add_department/<?= $branch_id?>"><button  
+    class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_department'); ?>
+</button></a> -->
+<div style="clear:both;"></div>
 
-                        <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="field-10" value="<?php echo $row['description']; ?>">
-                        </div>
-                    </div>
-                   <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
+<table class="table table-bordered table-striped datatable" id="table-2">
+    <thead>
+        <tr>
+            <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('name'); ?></th>
+            <th><?php echo get_phrase('hospital_name'); ?></th>
+            <th><?php echo get_phrase('branch_name'); ?></th>
+            <th><?php echo get_phrase('wards'); ?></th>
+            <th><?php echo get_phrase('options'); ?></th>
+        </tr>
+    </thead>
 
-                        <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['address']; ?>">
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
+    <tbody>
+        <?php
+        $department_info=$this->db->where('hospital_id',$row['hospital_id'])->get('department')->result_array();
+         $i=1;foreach ($department_info as $row) { ?>   
+            <tr>  
+                <td><?php echo $i;?></td>
+                <td><?php echo $row['name'] ?></td>
+                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
+                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                <td>
+              <a href="<?php echo base_url(); ?>index.php?superadmin/edit_department/<?php echo $row['department_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+           
+                </td>
+            </tr>
+        <?php $i++;} ?>
+    </tbody>
+</table>
+            </div>
+            <div class="tab-pane" id="tab5">
 
-                        <div class="col-sm-8">
-                            <input type="text" name="email" class="form-control" id="field-3"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['email']; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['phone_number'];?></label>
+<!--  <a href="<?php echo base_url(); ?>index.php?superadmin/add_ward/<?= $department_id;?>"><button  
+    class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_ward'); ?>
+</button></a> -->
+<div style="clear:both;"></div>
+<table class="table table-bordered table-striped datatable" id="table-2">
+    <thead>
+        <tr>
+            <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('name'); ?></th>
+            <th><?php echo get_phrase('hospital_name'); ?></th>
+            <th><?php echo get_phrase('branch_name'); ?></th>
+            <th><?php echo get_phrase('department_name'); ?></th>
+            <th><?php echo get_phrase('beds'); ?></th>
+            <th><?php echo get_phrase('options'); ?></th>
+        </tr>
+    </thead>
 
-                        <div class="col-sm-8">
-                            <input type="text" name="phone_number" class="form-control" id="field-4"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['phone_number']; ?>">
-                        </div>
-                    </div>
-                    
-                     <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="country" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_state(this.value)">
-                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
-                                <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div> 
-                    
-                    
-                       <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
-                            <div class="col-sm-8">
-                                <select name="state" class="form-control" id="select_state"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_district(this.value)">
-                                    <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
-                                    <?php 
-                                $admins = $this->db->get_where('state')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                                </select>   
-                            </div>
-                    </div>
-                    
-                    
-                       <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-                            <div class="col-sm-8">
-                                <select name="district" class="form-control" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)">
-                                    <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
-                                    <?php 
-                                $admins = $this->db->get_where('district')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                                </select>
-                            </div>   
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
-                            <div class="col-sm-8">
-                                <select name="city" class="form-control" id="select_city"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  >
-                                    <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
-                                    <?php 
-                                $admins = $this->db->get_where('city')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                <?php } ?>
-                                </select>
-                            </div>
-                    </div>
-                   
-                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['ownerName'];?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="md_name" class="form-control" id="field-8"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['md_name']; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['ownerNumber'];?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="md_phone" class="form-control" id="field-9"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['md_contact_number']; ?>">
-                        </div>
-                    </div>
-                <div class="form-group"> 
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
-
-                        <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
-                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
-                                <option value="1" <?php if($row['status']==1){echo 'selected';}?>><?php echo $this->lang->line('labels')['active'];?></option>
-                                <option value="2" <?php if($row['status']==2){echo 'selected';}?>><?php echo $this->lang->line('labels')['inactive'];?></option>
-                            </select>
-                        </div>
-                    </div>
-                  
-                   
-                </div>
-                    </div>
-                   
+    <tbody>
+        
+        <?php 
+        $ward_info=$this->db->where('hospital_id',$row['hospital_id'])->get('ward')->result_array();
+        $i=1;foreach ($ward_info as $row) { ?>   
+            <tr>  
+                <td><?php echo $i;?></td>
+                <td><?php echo $row['name'] ?></td>
+                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
+                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
+                <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                <td>
+             <a href="<?php echo base_url(); ?>index.php?superadmin/edit_ward/<?php echo $row['ward_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                 
+                </td>
+            </tr>
+        <?php $i++;} ?>
+    </tbody>
+</table>
 
             </div>
+            <div class="tab-pane" id="tab6">
+                <!-- <a href="<?php echo base_url();?>index.php?superadmin/add_bed/<?= $ward_id;?>"><button onclick="" 
+    class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_bed'); ?>
+</button></a> -->
+<div style="clear:both;"></div>
 
+<table class="table table-bordered table-striped datatable" id="table-2">
+    <thead>
+        <tr>
+            <th><?php echo get_phrase('Sl_no');?></th>
+            <th><?php echo get_phrase('name'); ?></th>
+            <th><?php echo get_phrase('hospital_name'); ?></th>
+            <th><?php echo get_phrase('branch_name'); ?></th>
+            <th><?php echo get_phrase('department_name'); ?></th>
+            <th><?php echo get_phrase('ward_name'); ?></th>
+            
+            <th><?php echo get_phrase('options'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php
+        $bed_info=$this->db->where('hospital_id',$row['hospital_id'])->get('bed')->result_array(); 
+        $i=1;
+        foreach ($bed_info as $row) { ?>   
+            <tr>
+             
+                <td><?php echo $i;?></td>
+                <td><?php echo $row['name'] ?></td>
+                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
+                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
+                <td><?php echo $this->db->where('branch_id',$row['department_id'])->get('department')->row()->name; ?></td>
+                <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
+                
+                <td>
+            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_bed/<?php echo $row['bed_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                </td>
+            </tr>
+       <?php $i++; } ?>
+    </tbody>
+</table>
+
+            </div>
+        
         </div>
 
-    </div>
+  </div>     
 </div>
-                
-              
-            </div>
-            <!----TABLE LISTING ENDS--->
-            
-            
-            <!----CREATION FORM STARTS---->
-            <div class="tab-pane box" id="add" style="padding: 5px">
-                    <div class="row">
-    <div class="col-md-6">
+<?php endforeach; ?>
+<!-- <script type="text/javascript">
+    jQuery(window).load(function ()
+    {
+        var $ = jQuery;
 
-        <div class="panel panel-primary" data-collapsed="0">
-
-
-            <div class="panel-body">
-                
-                         
-                    <div class="row">
-                        <div class="col-sm-12">
-                
-                         <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('license'); ?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="license" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
-                                <option value=""><?php echo get_phrase('select_lisense'); ?></option>
-                                <?php 
-                                $license = $this->db->get_where('license')->result_array();
-                                foreach($license as $row1){?>
-                                <option value="<?php echo $row1['license_id'] ?>"<?php if($row['license']== $row1['license_id'] ){ echo 'selected';} ?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div> 
-                   <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('license status'); ?></label>
-
-                        <div class="col-sm-8">
-                            <select name="license_status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
-                                <option value=""><?php echo get_phrase('select_status'); ?></option>
-                                <option value="1" <?php if($row['status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
-                                <option value="2" <?php if($row['status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    
-                            
-                             <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['from_date'];?></label>
-
-                        <div class="col-sm-8">
-                            <input type="date" name="from_date" class="form-control" id="field-5"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo  $row['from_date'] ?>">
-                        </div>
-                    </div>
-                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['to_date'];?></label>
-
-                        <div class="col-sm-8">
-                            <input type="date" name="till_date" class="form-control" id="field-5"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['till_date']?>">
-                        </div>
-                    </div>
-                   
-                </div>
-                    </div>
-                  
-            </div>
-            </div></div></div></div>
-            <!----CREATION FORM ENDS-->
-
-                
-                    </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
-                    </div> 
-                   
-   </form>
-            
-          
-            <!----CREATION FORM ENDS-->
-        
-    </div>
-</div>
-
-
-<?php } ?>
-
-
-
-
-<script type="text/javascript">
-
-	
-	function get_state(country_id) {
-    
-    	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
-            success: function(response)
-            {
-                jQuery('#select_state').html(response);
-            } 
+        $("#table-2").dataTable({
+            "sPaginationType": "bootstrap",
+            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'<'export-data'T>f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
         });
 
-    }
-    
-    function get_city(state_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + state_id ,
-            success: function(response)
-            {
-                jQuery('#select_city').html(response);
-            }
-        });   
-
-    }
-    
-     function get_district(city_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + city_id ,
-            success: function(response)
-            {
-                jQuery('#select_district').html(response);
-            }
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
         });
 
-    }
+        // Highlighted rows
+        $("#table-2 tbody input[type=checkbox]").each(function (i, el)
+        {
+            var $this = $(el),
+                    $p = $this.closest('tr');
 
-</script>
+            $(el).on('change', function ()
+            {
+                var is_checked = $this.is(':checked');
+
+                $p[is_checked ? 'addClass' : 'removeClass']('highlight');
+            });
+        });
+
+        // Replace Checboxes
+        $(".pagination a").click(function (ev)
+        {
+            replaceCheckboxes();
+        });
+    });
+</script> -->

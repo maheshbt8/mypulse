@@ -11,18 +11,18 @@ foreach ($single_hospital_info as $row) {
         <ul class="nav nav-tabs bordered"> 
             <li class="active">
                 <a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
-                    <?php echo $this->lang->line('labels')['general_info'];?>  
+                   <?php echo get_phrase('basic_info'); ?>  
                 </a>  
             </li>
             <li>
                 <a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-                    <?php echo $this->lang->line('labels')['licenseInfo'];?>
+                    <?php echo get_phrase('license_info'); ?>
                 </a>
             </li>
               
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/hospital/update/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/edit_hospital/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            
@@ -42,38 +42,42 @@ foreach ($single_hospital_info as $row) {
                     <div class="row">
                         <div class="col-sm-6">
                       <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['name']; ?>">
+                            <input type="text" name="name" class="form-control" id="name" value="<?php echo $row['name']; ?>">
+                            <span style="color: red"><?php echo form_error('name'); ?></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['description'];?></label>
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('description');?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="field-10" value="<?php echo $row['description']; ?>">
+                            <input type="text" name="description" class="form-control" id="description" value="<?php echo $row['description']; ?>">
                         </div>
                     </div>
                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('address'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['address']; ?>">
+                            <input type="text" name="address" class="form-control" id="address" value="<?php echo $row['address']; ?>">
+                            <span style="color: red"><?php echo form_error('address'); ?></span>
                         </div>
                     </div>
                      <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="email" class="form-control" id="field-3"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['email']; ?>">
+                            <input type="text" name="email" class="form-control" id="email" value="<?php echo $row['email']; ?>">
+                            <span style="color: red"><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['phone_number'];?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="phone_number" class="form-control" id="field-4"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['phone_number']; ?>">
+                            <input type="text" name="phone_number" class="form-control" id="phone_number" value="<?php echo $row['phone_number']; ?>">
+                            <span style="color: red"><?php echo form_error('phone_number'); ?></span>
                         </div>
                     </div>
                     

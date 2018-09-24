@@ -181,14 +181,24 @@
         </li>
 
         <!-- SETTINGS -->
-        <li class="<?php if ($page_name == 'system_settings' || $page_name == 'manage_language' ||
+   <!--      <li class="<?php if ($page_name == 'system_settings' || $page_name == 'manage_language' ||
                             $page_name == 'sms_settings') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>
                 <span><?php echo $menu['main_settings'];?></span>
             </a>
             <ul>
-                <li class="<?php if ($page_name == 'system_settings') echo 'active'; ?> ">
+               
+            </ul>
+        </li> -->
+             <!-- SETTINGS -->
+        <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider') echo 'opened active';?> ">
+            <a href="#">
+                <i class="fa fa-wrench"></i>
+                <span><?php echo $menu['main_general_settings'];?></span>
+            </a>
+            <ul>
+                 <li class="<?php if ($page_name == 'system_settings') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/system_settings">
                         <span><i class="fa fa-h-square"></i> <?php echo $menu['system_settings'];?></span>
                     </a>
@@ -203,18 +213,9 @@
                         <span><i class="entypo-paper-plane"></i> <?php echo $menu['sms_settings'];?></span>
                     </a>
                 </li>-->
-            </ul>
-        </li>
-             <!-- SETTINGS -->
-        <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider') echo 'opened active';?> ">
-            <a href="#">
-                <i class="fa fa-wrench"></i>
-                <span><?php echo $menu['main_general_settings'];?></span>
-            </a>
-            <ul>
                 <li class="<?php if ($page_name == 'country') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/country">
-                        <span><i  class="entypo-paper-plane"></i><?php echo $menu['main_country'];?></span>
+                        <span><i  class="entypo-paper-plane"></i><?php echo get_phrase('countries'); ?></span>
                     </a>
                 </li>
                <li class="<?php if ($page_name == 'state') echo 'active'; ?> ">
@@ -242,6 +243,7 @@
                         <span><i class="entypo-paper-plane"></i> <?php echo $menu['main_healthinsuranceprovider'];?></span>
                     </a>
                 </li>
+
             </ul>
         </li>
 

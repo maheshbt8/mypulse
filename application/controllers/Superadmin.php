@@ -95,7 +95,16 @@ class Superadmin extends CI_Controller {
         //$page_data['language_phrases'] = $this->db->get('language')->result_array();
         $this->load->view('backend/index', $page_data);
     }
+   /* function languages()
+    {
 
+       extract($_POST);
+       $data['lang'] = $this->session->userdata('language');
+       $this->session->set_userdata('language', $dlang);
+       $redirect_url = base_url().$current;
+       redirect($redirect_url); 
+    
+    }*/
     /*     * ***SITE/SYSTEM SETTINGS******** */
 
     function system_settings($param1 = '', $param2 = '', $param3 = '') {
@@ -390,20 +399,56 @@ class Superadmin extends CI_Controller {
     }
     /*HOSPITAL*/
     
-    public function add_hospital() {   
-        if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-           $data['page_name'] = 'add_hospital';
+    public function add_hospital() {  
+
+    if ($this->input->post()) {
+        $config = array(
+        array('field' => 'name','label' => 'Name','rules' => 'required'),
+        array('field' => 'address','label' => 'Address','rules' => 'required'),
+        array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required'),
+        array('field' => 'country','label' => 'Country','rules' => 'required'),
+        array('field' => 'state','label' => 'State','rules' => 'required'),
+        array('field' => 'district','label' => 'District','rules' => 'required'),
+        array('field' => 'city','label' => 'City','rules' => 'required'),
+        array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
+        array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required|valid_email'),
+        );
+        $this->form_validation->set_rules($config);
+         if ($this->form_validation->run() == TRUE)
+                {
+                        $this->crud_model->save_hospital_info();
+            $this->session->set_flashdata('message', get_phrase('hospital_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/hospital');
+                }
+        } 
+        $data['page_name'] = 'add_hospital';
         $data['page_title'] = get_phrase('add_hospital');
         $this->load->view('backend/index', $data);
         }
          public function edit_hospital($hospital_id) {
-             if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
+            if($this->input->post()){
+
+        $config = array(
+        array('field' => 'name','label' => 'Name','rules' => 'required'),
+        array('field' => 'address','label' => 'Address','rules' => 'required'),
+        array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required'),
+        array('field' => 'country','label' => 'Country','rules' => 'required'),
+        array('field' => 'state','label' => 'State','rules' => 'required'),
+        array('field' => 'district','label' => 'District','rules' => 'required'),
+        array('field' => 'city','label' => 'City','rules' => 'required'),
+        array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
+        array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required|valid_email'),
+        );
+        $this->form_validation->set_rules($config);
+         if ($this->form_validation->run() == TRUE)
+                {   
+            $this->crud_model->update_hospital_info($hospital_id);
+            $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/hospital');
+                }
+         }
          $data['hospital_id'] = $hospital_id;
         $data['page_name'] = 'edit_hospital';
         $data['page_title'] = get_phrase('edit_hospital');
@@ -416,17 +461,17 @@ class Superadmin extends CI_Controller {
             redirect(base_url(), 'refresh');
         }
         
-        if ($task == "create") {
+        /*if ($task == "create") {
             $this->crud_model->save_hospital_info();
             $this->session->set_flashdata('message', get_phrase('hospital_info_saved_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital');
-        }
+        }*/
        
-        if ($task == "update") {
+        /*if ($task == "update") {
             $this->crud_model->update_hospital_info($hospital_id);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital');
-        }
+        }*/
 
         if ($task == "delete") {
             $this->crud_model->delete_hospital_info($hospital_id);
@@ -436,7 +481,7 @@ class Superadmin extends CI_Controller {
 
         $data['hospital_info'] = $this->crud_model->select_hospital_info();
         $data['page_name'] = 'manage_hospital';
-        $data['page_title'] = get_phrase('hospital');
+        $data['page_title'] = get_phrase('hospitals');
         $this->load->view('backend/index', $data);  
     }
     /*HOSPITAL ADMINS*/
@@ -472,12 +517,12 @@ class Superadmin extends CI_Controller {
         }
     function hospital_admins($task = "", $admin_id = "") {
         
-        if ($this->session->userdata('superadmin_login') != 1) {
+       /* if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
         }
         
-        /*if ($task == "create") {
+        if ($task == "create") {
             
            $email = $this->input->post('email');
            
@@ -519,7 +564,7 @@ class Superadmin extends CI_Controller {
         $data['admin_info'] = $this->crud_model->select_hospitaladmins_info();
         
         $data['page_name'] = 'manage_admins';
-        $data['page_title'] = get_phrase('admins');
+        $data['page_title'] = get_phrase('hospital_admins');
         $this->load->view('backend/index', $data);
     }
     
@@ -713,12 +758,12 @@ class Superadmin extends CI_Controller {
         
     }
     function doctor($task = "", $doctor_id = "") {
-        if ($this->session->userdata('superadmin_login') != 1) {
+        /* if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
         }
 
-       /* if ($task == "create") {
+       if ($task == "create") {
                $email = $this->input->post('email');
            
            $validation = email_validation($email);
@@ -756,7 +801,7 @@ class Superadmin extends CI_Controller {
         }
         $data['doctor_info'] = $this->crud_model->select_doctor_info();
         $data['page_name'] = 'manage_doctor';
-        $data['page_title'] = get_phrase('doctor');
+        $data['page_title'] = get_phrase('doctors');
         $this->load->view('backend/index', $data);
     }
     
@@ -863,13 +908,12 @@ class Superadmin extends CI_Controller {
         }
         if ($task == "dj_report") {
              $this->crud_model->select_prescription_info_by_patient($patient_id);
-            // $this->load->view('backend/index', $data);
              redirect(base_url() . 'index.php?superadmin/patient');
         }
         $patient='inpatient';
         $data['patient_info'] = $this->crud_model->select_patient_info();
         $data['page_name'] = 'manage_users';
-        $data['page_title'] = get_phrase('mypulse_users');
+        $data['page_title'] = get_phrase('myPulse_users');
         $this->load->view('backend/index', $data);
     }
     
@@ -1111,12 +1155,12 @@ class Superadmin extends CI_Controller {
     }
     
     function nurse($task = "", $nurse_id = "") {
-        if ($this->session->userdata('superadmin_login') != 1) {
+        /*if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
         }
 
-        /*if ($task == "create") {
+        if ($task == "create") {
             $email = $this->input->post('email');
            
            $validation = email_validation($email);
@@ -1143,7 +1187,7 @@ class Superadmin extends CI_Controller {
 
         $data['nurse_info'] = $this->crud_model->select_nurse_info();
         $data['page_name'] = 'manage_nurse';
-        $data['page_title'] = get_phrase('nurse');
+        $data['page_title'] = get_phrase('nurses');
         $this->load->view('backend/index', $data);
     }
 
@@ -1176,12 +1220,12 @@ class Superadmin extends CI_Controller {
         
     }
     function receptionist($task = "", $receptionist_id = "") {
-        if ($this->session->userdata('superadmin_login') != 1) {
+        /*if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
         }
 
-        /*if ($task == "create") {
+        if ($task == "create") {
             $email = $_POST['email'];
             $receptionist = $this->db->get_where('receptionist', array('email' => $email))->row()->name;
             if ($receptionist == null) {
@@ -1206,7 +1250,7 @@ class Superadmin extends CI_Controller {
 
         $data['receptionist_info'] = $this->crud_model->select_receptionist_info();
         $data['page_name'] = 'manage_receptionist';
-        $data['page_title'] = get_phrase('receptionist');
+        $data['page_title'] = get_phrase('receptionists');
         $this->load->view('backend/index', $data);
     }
 

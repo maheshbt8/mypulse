@@ -10,7 +10,7 @@
     <thead>  
         <tr>   
             <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('admin'); ?></th> 
+            <th><?php echo get_phrase('name'); ?></th> 
             <th><?php echo get_phrase('hospital'); ?></th>
             <th><?php echo get_phrase('email'); ?></th>
              <th><?php echo get_phrase('phone'); ?></th>

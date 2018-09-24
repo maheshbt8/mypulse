@@ -5044,12 +5044,12 @@ canvas + .knob {
 .validate-has-error + span.validate-has-error,
 .validate-has-error > span.validate-has-error,
 .input-group + .validate-has-error {
-  color: #cc2424;
+  color: #ff0000;
   display: inline-block;
   margin-top: 5px;
 }
 .validate-has-error .validate-has-error {
-  color: #cc2424;
+  color: #ff0000;
   display: inline-block;
   margin-top: 5px;
 }
@@ -5057,7 +5057,7 @@ canvas + .knob {
   margin-left: 10px;
 }
 .validate-has-error .form-control {
-  border-color: #cc2424;
+  border-color: #ff0000;
 }
 .file-input-wrapper.inline {
   display: inline-block;

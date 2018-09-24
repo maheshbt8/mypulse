@@ -439,8 +439,13 @@ class Crud_model extends CI_Model {
         $data['city']    = $this->input->post('city');
         $data['md_name']    = $this->input->post('md_name');   
         $data['md_contact_number']    = $this->input->post('md_phone');
-        $data['status']    = $this->input->post('status');
-         $data['license']    = $this->input->post('license');
+        /*
+        if($this->input->post('status') != null){*/
+                  $data['status']       = $this->input->post('status');
+           /*}else{
+            $data['status']    = 2;
+        }*/
+        $data['license']    = $this->input->post('license');
         $data['license_status']    = $this->input->post('license_status');   
         $data['from_date']    = $this->input->post('from_date');
         $data['till_date']    = $this->input->post('till_date');
@@ -611,7 +616,7 @@ class Crud_model extends CI_Model {
         $data['experience']    = $this->input->post('experience');
              
           
-       $in=$this->db->insert('admin',$data);
+       $in=$this->db->insert('hospitaladmins',$data);
        if($in)
        {
            $id=$this->db->insert_id();
@@ -622,7 +627,7 @@ class Crud_model extends CI_Model {
     
     function select_hospitaladmins_info()
     {
-        return $this->db->get('admin')->result_array();
+        return $this->db->get('hospitaladmins')->result_array();
     }
     
    
@@ -645,7 +650,7 @@ class Crud_model extends CI_Model {
              $data['experience']    = $this->input->post('experience');
         
         $this->db->where('admin_id',$admin_id);
-        $query= $this->db->update('admin',$data);
+        $query= $this->db->update('hospitaladmins',$data);
        if($query)
        {
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/admin_image/'. $admin_id.  '.jpg');
@@ -656,8 +661,8 @@ class Crud_model extends CI_Model {
     function delete_hospitaladmins_info($admin_id)
     {
         
-        $this->db->where('id',$admin_id);
-        $this->db->delete('hospital_admin');
+        $this->db->where('admin_id',$admin_id);
+        $this->db->delete('hospitaladmins');
     }
     
          function save_branch_info()

@@ -10,10 +10,11 @@
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('name'); ?></th>
-            <th><?php echo get_phrase('hospital'); ?></th>
-            <th><?php echo get_phrase('address'); ?></th>
+           <!--  <th><?php echo get_phrase('hospital'); ?></th>
+            <th><?php echo get_phrase('address'); ?></th> -->
             <th><?php echo get_phrase('email'); ?></th>
             <th><?php echo get_phrase('phone'); ?></th>
+            <th><?php echo get_phrase('departments'); ?></th>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
     </thead>
@@ -24,13 +25,15 @@
             <tr>
                 <td><?php echo $i?></td>
                 <td><?php echo $row['name'] ?></td>
-                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $row['address'] ?></td>  
+               <!--  <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
+                <td><?php echo $row['address'] ?></td>   -->
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
                 <td>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
             <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_departments/<?php echo $row['branch_id'] ?>" title="Departments"><i class="glyphicon glyphicon-eye-open"></i></a>
+                </td>
+                <td>
+            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
             </tr>

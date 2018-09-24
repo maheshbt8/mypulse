@@ -19,7 +19,7 @@ if ( ! function_exists('email_validation'))
 	function email_validation($email){
 		$ci=& get_instance();
 		$num_rows = 0;
-		$user_array = array('superadmin','admin', 'doctor', 'nurse', 'patient', 'accountant', 'pharmacist','laboratorist','receptionist');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist');
 		$size = sizeof($user_array);
 
 		for($i = 0; $i < $size; $i++){
@@ -60,8 +60,28 @@ if ( ! function_exists('email_validation_for_edit')){
 	}
 }
 
+
+if ( ! function_exists('mobile_validation'))
+{
+	function mobile_validation($mobile){
+		$ci=& get_instance();
+		$num_rows = 0;
+		$user_array = array('superadmin','admin', 'doctor', 'nurse', 'patient', 'accountant', 'pharmacist','laboratorist','receptionist');
+		$size = sizeof($user_array);
+
+		for($i = 0; $i < $size; $i++){
+			$ci->db->where('phone_number', $email);
+			$num_rows = $ci->db->get($user_array[$i])->num_rows();
+			if($num_rows > 0){
+				return 0;
+			}
+		}
+		return 1;
+	}
+}
+
 // Section duplication on create
-if ( ! function_exists('duplication_of_section_on_create')){
+/*if ( ! function_exists('duplication_of_section_on_create')){
 	function duplication_of_section_on_create($class_id, $section_name){
 		$ci=& get_instance();
 		$num_rows = 0;
@@ -78,9 +98,9 @@ if ( ! function_exists('duplication_of_section_on_create')){
 			return 0;
 		}
 	}
-}
+}*/
 // section duplication on edit
-if ( ! function_exists('duplication_of_section_on_edit')){
+/*if ( ! function_exists('duplication_of_section_on_edit')){
 	function duplication_of_section_on_edit($section_id, $class_id, $section_name){
 		$ci=& get_instance();
 		$num_rows = 0;
@@ -98,10 +118,10 @@ if ( ! function_exists('duplication_of_section_on_edit')){
 			return 0;
 		}
 	}
-}
+}*/
 
 // class routine duplication on create
-if ( ! function_exists('duplication_of_class_routine_on_create')){
+/*if ( ! function_exists('duplication_of_class_routine_on_create')){
 	function duplication_of_class_routine_on_create($data){
 		$ci=& get_instance();
 		$num_rows = 0;
@@ -114,10 +134,10 @@ if ( ! function_exists('duplication_of_class_routine_on_create')){
 			return 0;
 		}
 	}
-}
+}*/
 
 // class routine duplication on edit
-if ( ! function_exists('duplication_of_class_routine_on_edit')){
+/*if ( ! function_exists('duplication_of_class_routine_on_edit')){
 	function duplication_of_class_routine_on_edit($data, $class_routine_id){
 		$ci=& get_instance();
 		$num_rows = 0;
@@ -131,10 +151,10 @@ if ( ! function_exists('duplication_of_class_routine_on_edit')){
 			return 0;
 		}
 	}
-}
+}*/
 
 //student id duplication on insert
-if ( ! function_exists('code_validation_insert')){
+/*if ( ! function_exists('code_validation_insert')){
     function code_validation_insert($student_code){
         $ci=& get_instance();
         $num_rows = 0;
@@ -147,11 +167,11 @@ if ( ! function_exists('code_validation_insert')){
             return false;
         }
     }
-}
+}*/
 
 //student id duplication in update
 
-if ( ! function_exists('code_validation_update')){
+/*if ( ! function_exists('code_validation_update')){
     function code_validation_update($student_code,$student_id){
         $ci=& get_instance();
         $num_rows = 0;
@@ -166,7 +186,7 @@ if ( ! function_exists('code_validation_update')){
         }
 
     }
-}
+}*/
 
 
 

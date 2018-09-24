@@ -13,7 +13,7 @@
             <th><?php echo get_phrase('hospital_name'); ?></th>
             <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('department_name'); ?></th>
-            <th><?php echo get_phrase('description'); ?></th>
+            <th><?php echo get_phrase('beds'); ?></th>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
     </thead>
@@ -27,10 +27,9 @@
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
-                <td><?php echo $row['description'] ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                 <td>
              <a href="<?php echo base_url(); ?>index.php?superadmin/edit_ward/<?php echo $row['ward_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                  
                 </td>

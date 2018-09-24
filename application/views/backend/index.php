@@ -9,12 +9,13 @@ $account_type   = $this->session->userdata('login_type');
     <head>
 
         <title><?php echo $page_title; ?> - <?php echo $system_title; ?></title>
-
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Grepthor Software Solutions" />
         <meta name="author" content="Grepthor" />
+
 
 
 
