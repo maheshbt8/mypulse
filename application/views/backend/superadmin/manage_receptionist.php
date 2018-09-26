@@ -7,6 +7,7 @@
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
             <th><?php echo get_phrase('image');?></th>
             <th><?php echo get_phrase('name');?></th>
             <th><?php echo get_phrase('email');?></th>
@@ -19,6 +20,7 @@
     <tbody>
         <?php foreach ($receptionist_info as $row) { ?>   
             <tr>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['doctor_id'] ?>" onchange="return upall()"></td>
                 <td><img src="<?php echo $this->crud_model->get_image_url('receptionist' , $row['receptionist_id']);?>" class="img-circle" width="40px" height="40px"></td>
                 <td><?php echo $row['name']?></td>
                 <td><?php echo $row['email']?></td>

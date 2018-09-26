@@ -1413,10 +1413,29 @@ function select_patient_information($patient_id="")
     
     function update_nurse_info($nurse_id)
     {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
+        
+        $data['name']       = $this->input->post('fname');
+        $data['mname']      = $this->input->post('mname');
+        $data['lname']      = $this->input->post('lname');
+        $data['description']        = $this->input->post('description');
+        $data['email']      = $this->input->post('email');
+        $data['password']       = sha1('nurse');
+        $data['address']    = $this->input->post('address');
+        $data['phone']          = $this->input->post('mobile');
+        $data['hospital_id']    = $this->input->post('hospital');
+        $data['branch_id']  = $this->input->post('branch');
+        $data['department_id']  = $this->input->post('department');
+        $data['doctor_id']  = implode(',',$this->input->post('doctor'));
+        $data['status']     = $this->input->post('status');
+        $data['gender']     = $this->input->post('gender');
+        $data['dob']    = $this->input->post('dob');
+        $data['aadhar']     = $this->input->post('aadhar');
+        $data['qualification']  = $this->input->post('qualification');
+        $data['experience']     = $this->input->post('experience');
+        $data['country']    = $this->input->post('country');
+        $data['state']    = $this->input->post('state');
+        $data['district']    = $this->input->post('district');  
+        $data['city']    = $this->input->post('city');
         
         $this->db->where('nurse_id',$nurse_id);
         $this->db->update('nurse',$data);
@@ -1578,10 +1597,24 @@ function select_patient_information($patient_id="")
     
     function update_receptionist_info($receptionist_id)
     {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
+        
+        $data['name']       = $this->input->post('fname');
+        $data['mname']      = $this->input->post('mname');
+        $data['lname']      = $this->input->post('lname');
+        $data['description']        = $this->input->post('description');
+        $data['email']      = $this->input->post('email');
+        $data['password']       = sha1('receptionist');
+        $data['address']    = $this->input->post('address');
+        $data['phone']          = $this->input->post('mobile');
+        $data['hospital_id']    = $this->input->post('hospital');
+        $data['branch_id']  = $this->input->post('branch');
+        $data['department_id']  = $this->input->post('department');
+        $data['status']     = $this->input->post('status');
+        $data['gender']     = $this->input->post('gender');
+        $data['dob']    = $this->input->post('dob');
+        $data['aadhar']     = $this->input->post('aadhar');
+        $data['qualification']  = $this->input->post('qualification');
+        $data['experience']     = $this->input->post('experience');
         
         $this->db->where('receptionist_id',$receptionist_id);
         $this->db->update('receptionist',$data);

@@ -1,5 +1,5 @@
 <?php 
-$department_info = $this->db->get('department')->result_array();
+/*$department_info = $this->db->get('department')->result_array();*/
 $single_doctor_info = $this->db->get_where('doctors', array('doctor_id' => $doctor_id))->result_array();
 foreach ($single_doctor_info as $row) {
     
