@@ -2757,7 +2757,7 @@ input[type="button"].btn-block {
   top: 0;
   left: 0;
   bottom: 0;
-  background: #303641;
+  background: #0099DD;
   color: #aaabae;
   z-index: 1;
   -webkit-box-sizing: border-box;
@@ -2838,7 +2838,7 @@ input[type="button"].btn-block {
   position: relative;
   margin: 0;
   font-size: 12px;
-  border-bottom: 1px solid rgba(69, 74, 84, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
 }
 .page-container .sidebar-menu #main-menu li#search {
   background: #262b34;
@@ -2901,7 +2901,7 @@ input[type="button"].btn-block {
   position: relative;
   display: block;
   padding: 15px 20px;
-  color: #aaabae;
+  color: #fff;
   font-size:15px;
   z-index: 2;
   -moz-transition: color 250ms ease-in-out, background-color 250ms ease-in-out;
@@ -2934,7 +2934,7 @@ input[type="button"].btn-block {
   top: -1px;
 }
 .page-container .sidebar-menu #main-menu li.active > a {
-  background-color: #2b303a;
+  background-color: #0e7eaf;
   color: #ffffff;
 }
 .page-container .sidebar-menu #main-menu li.has-sub > a:before {
@@ -2978,7 +2978,7 @@ input[type="button"].btn-block {
   border-bottom: 1px solid rgba(69, 74, 84, 0.4);
 }
 .page-container .sidebar-menu #main-menu li ul > li > a {
-  background-color: #2b303a;
+  background-color: #0e7eaf;
   padding-left: 40px;
 }
 .page-container .sidebar-menu #main-menu li ul > li > a:hover {
@@ -3230,7 +3230,7 @@ input[type="button"].btn-block {
   position: relative;
   float: left;
   width: 100%;
-  padding: 20px;
+  padding: 6px 16px;
   z-index: 2;
   background: #ffffff;
   -webkit-box-sizing: border-box;

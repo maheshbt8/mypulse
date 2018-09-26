@@ -1,8 +1,8 @@
-<?php $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctor')->row();
+<?php $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctors')->row();
 $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row();
 $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
 ?>
-<hr />
+
 <div class="row">
     <div class="col-md-3">
 			<center>
@@ -12,13 +12,13 @@ $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$
         <br>
         <h3><?php echo $doctor->name;?></h3>
         <br>
-        <span></span>
-        <p><?php echo $doctor->description;?></p>
+        <span>
+        <?php echo $doctor->description;?></span>
       </center>
 		</div>
    
     <div class="col-md-8">
-        <form action="<?php echo base_url()?>index.php?superadmin/doctor_availability/update/<?php echo $doctor->doctor_id;?>" method="post" id="form1" enctype="multipart/form-data">
+        <form action="<?php echo base_url()?>index.php?superadmin/doctor_availability/update/<?php echo $doctor->doctor_id;?>" method="post" class="form-horizontal form-groups-bordered validate" id="form1" enctype="multipart/form-data">
                 <div class="panel panel-white">
                     <div class="panel-heading clearfix">
                         <div class="">
@@ -38,7 +38,7 @@ $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
-                                    <input style="width:50px" value="<?php echo $availability->no_appt_handle;?>" class="form-control" type="text" name="no_appt_handle" id="no_appt_handle" >
+                                    <input style="width:80px" value="<?php echo $availability->no_appt_handle;?>" class="form-control" type="number" name="no_appt_handle" id="no_appt_handle" minlength="1" maxlength="1">
                                 </div>
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['availabilityText'];?></label>

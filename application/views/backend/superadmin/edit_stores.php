@@ -73,7 +73,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase(' Phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="mobile" class="form-control" id="field-9"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo $this->db->get_where('medical_stores',array('store_id'=>$id))->row()->mobile ?>">  
+                            <input type="text" name="phone_number" class="form-control" id="field-9"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo $this->db->get_where('medical_stores',array('store_id'=>$id))->row()->phone ?>">  
                         </div>
                     </div>
                     <div class="form-group">

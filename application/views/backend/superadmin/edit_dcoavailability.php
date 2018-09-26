@@ -120,7 +120,7 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
             </div>      
 
                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="Submit">
+                        <input type="submit" class="btn btn-success" value="Update">
                        
                     </div>
                     <div class="col-sm-3 control-label ">

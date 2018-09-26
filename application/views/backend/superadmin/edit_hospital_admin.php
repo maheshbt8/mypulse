@@ -1,6 +1,6 @@
 <?php
 $country_info=$this->db->get('country')->result_array();
-$single_admin_info = $this->db->get_where('admin', array('admin_id' => $admin_id))->result_array();
+$single_admin_info = $this->db->get_where('hospitaladmins', array('admin_id' => $admin_id))->result_array();
 foreach ($single_admin_info as $row) {
   
 ?>  

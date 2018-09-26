@@ -3,7 +3,7 @@
 <div class="row">
       <div class="col-sm-3">
         <a href="<?php echo base_url(); ?>index.php?superadmin/hospital">
-            <div class="tile-stats tile-white-gray">
+            <div class="tile-stats tile-white-gray  tile-white-primary">
                 <div class="icon"><i class="fa fa-h-square"></i></div>
                 <div class="num" data-start="0" data-end="<?php echo $this->db->count_all('hospitals'); ?>"
                      data-duration="1500" data-delay="0">0 </div>

@@ -38,7 +38,15 @@ class Superadmin extends CI_Controller {
     }
 
     /*     * ***LANGUAGE SETTINGS******** */
-
+    function languages()
+    {
+        $data['lang'] = $this->session->userdata('language');
+       extract($_POST);
+       $this->session->set_userdata('language', $dlang);
+       $redirect_url = base_url().$current;
+       redirect($redirect_url); 
+    
+    }
     function manage_language($param1 = '', $param2 = '', $param3 = '') {
         
 
@@ -413,6 +421,7 @@ class Superadmin extends CI_Controller {
         array('field' => 'city','label' => 'City','rules' => 'required'),
         array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
         array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required|valid_email'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
          if ($this->form_validation->run() == TRUE)
@@ -428,22 +437,23 @@ class Superadmin extends CI_Controller {
         }
          public function edit_hospital($hospital_id) {
             if($this->input->post()){
-
+               
         $config = array(
         array('field' => 'name','label' => 'Name','rules' => 'required'),
         array('field' => 'address','label' => 'Address','rules' => 'required'),
         array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
-        array('field' => 'email','label' => 'Email','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
         array('field' => 'country','label' => 'Country','rules' => 'required'),
         array('field' => 'state','label' => 'State','rules' => 'required'),
         array('field' => 'district','label' => 'District','rules' => 'required'),
         array('field' => 'city','label' => 'City','rules' => 'required'),
         array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
-        array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required|valid_email'),
+        array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
-         if ($this->form_validation->run() == TRUE)
-                {   
+
+         if ($this->form_validation->run() == TRUE){ 
             $this->crud_model->update_hospital_info($hospital_id);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital');
@@ -456,10 +466,10 @@ class Superadmin extends CI_Controller {
         $this->load->view('backend/index', $data);
         }
     function hospital($task = "", $hospital_id = "") {
-        if ($this->session->userdata('superadmin_login') != 1) {
+       /* if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
-        }
+        }*/
         
         /*if ($task == "create") {
             $this->crud_model->save_hospital_info();
@@ -478,29 +488,51 @@ class Superadmin extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('hospital_info_deleted_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital');
         }
-
+        if ($task == "delete_multiple") {
+            print_r($_POST);die;
+           $this->crud_model->delete_multiple_hospital_info();
+            $this->session->set_flashdata('message', get_phrase('hospitals_info_deleted_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/hospital');
+        }
         $data['hospital_info'] = $this->crud_model->select_hospital_info();
         $data['page_name'] = 'manage_hospital';
         $data['page_title'] = get_phrase('hospitals');
         $this->load->view('backend/index', $data);  
     }
     /*HOSPITAL ADMINS*/
-    function add_admins()
+    function add_hospital_admins()
     {
-        if($this->input->post())
+    if($this->input->post())
         {
+        $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
            $email = $this->input->post('email');
-           
            $validation = email_validation($email);
-           
             if ($validation == 1) {
-                $this->crud_model->save_hospitaladmins_info();
-                $this->session->set_flashdata('message', get_phrase('admin_info_saved_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/hospital_admins');
-            } else {
+           $phone_number = $this->input->post('phone_number');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+            $this->crud_model->save_hospitaladmins_info();
+            $this->session->set_flashdata('message', get_phrase('hospital_admin_info_added_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/hospital_admins');
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
             }
         }
+    }
         $page_data['page_name'] = 'add_hospital_admin';
         $page_data['page_title'] = get_phrase('add_hospital_admins');
         $page_data['admins'] = $this->db->get_where('hospitals',array('status'=>1))->result_array();

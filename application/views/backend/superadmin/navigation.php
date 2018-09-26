@@ -51,20 +51,20 @@
         <!-- DASHBOARD -->
         <li class="<?php if ($page_name == 'dashboard') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/dashboard">
-                <i class="fa fa-desktop"></i>
-                <span><?php echo $menu['main_dashboard'];?></span>
+                <i class="glyphicon glyphicon-home"></i>
+                <span><?php echo get_phrase('dashboard'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_hospital') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/hospital">
-                <i class="fa fa-sitemap"></i>
-                <span><?php echo $menu['main_hospitals'];?></span>
+                <i class="fa  fa-hospital-o "></i>
+                <span><?php echo get_phrase('hospitals'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_admins') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/hospital_admins">
-                <i class="fa fa-sitemap"></i>
-                <span><?php echo $menu['main_hospital_admin'];?></span>
+                <i class="fa fa-users"></i>
+                <span><?php echo get_phrase('hospital_admins'); ?></span>
             </a>
         </li>
        <!-- 
@@ -100,52 +100,52 @@
         <li class="<?php if ($page_name == 'manage_doctor') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>index.php?superadmin/doctor">
                 <i class="fa fa-user-md"></i>
-                <span><?php echo $menu['main_dectors'];?></span>
+                <span><?php echo get_phrase('doctors'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_nurse') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/nurse">
-                <i class="fa fa-plus-square"></i>
-                <span><?php echo $menu['main_nurses'];?></span>
+                <i class="fa fa-user"></i>
+                <span><?php echo get_phrase('nurses'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_receptionist') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/receptionist">
-                <i class="fa fa-plus-square"></i>
-                <span><?php echo $menu['main_receptionists'];?></span>
+                <i class="fa fa-user"></i>
+                <span><?php echo get_phrase('receptionists'); ?></span>
             </a>
         </li>
       
         
          <li class="<?php if ($page_name == 'manage_stores') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>index.php?superadmin/medical_stores">
-                <i class="fa fa-user-md"></i>
-                <span><?php echo $menu['main_medical_stores'];?></span>
+                <i class="menu-icon fa fa-medkit "></i>
+                <span><?php echo get_phrase('medical_stores'); ?></span>
             </a>
         </li>
         
         <li class="<?php if ($page_name == 'manage_labs') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>index.php?superadmin/medical_labs">
-                <i class="fa fa-user-md"></i>
-                <span><?php echo $menu['main_medical_labs'];?></span>
+                <i class="menu-icon fa  fa-plus-square "></i>
+                <span><?php echo get_phrase('medical_labs'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_users') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>index.php?superadmin/users">
-                <i class="fa fa-user-md"></i>
-                <span><?php echo $menu['mypulseusers'];?></span>
+                <i class="fa fa-users"></i>
+                <span><?php echo get_phrase('myPulse_users'); ?></span>
             </a>
         </li>
         <li class="#">
             <a href="">
-                <i class="fa fa-user-md"></i>
-                <span><?php echo $menu['main_inpatient'];?></span>
+                <i class="menu-icon fa fa-eye "></i>
+                <span><?php echo get_phrase('inpatients'); ?></span>
             </a>
         </li>
         <li class="">
             <a href="#">
-                <i class="fa fa-user-md"></i>
-                <span><?php echo $menu['appoitments'];?></span>
+                <i class="menu-icon glyphicon glyphicon-list-alt"></i>
+                <span><?php echo get_phrase('appointments'); ?></span>
             </a>
         </li>
         
@@ -176,7 +176,7 @@
         <li class="<?php if ($page_name == 'manage_notice') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/notice">
                 <i class="entypo-doc-text-inv"></i>
-                <span><?php echo $menu['noticeboard'];?></span>
+                <span><?php echo get_phrase('noticeboard'); ?></span>
             </a>
         </li>
 
@@ -195,12 +195,12 @@
         <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>
-                <span><?php echo $menu['main_general_settings'];?></span>
+                <span><?php echo get_phrase('general_settings'); ?></span>
             </a>
             <ul>
                  <li class="<?php if ($page_name == 'system_settings') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/system_settings">
-                        <span><i class="fa fa-h-square"></i> <?php echo $menu['system_settings'];?></span>
+                        <span><i class="fa fa-h-square"></i> <?php echo get_phrase('system_settings'); ?></span>
                     </a>
                 </li>
                <!-- <li class="<?php if ($page_name == 'manage_language') echo 'active'; ?> ">
@@ -220,27 +220,27 @@
                 </li>
                <li class="<?php if ($page_name == 'state') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/state">
-                        <span><i  class="entypo-paper-plane"></i> <?php echo $menu['main_state'];?></span>  
+                        <span><i  class="entypo-paper-plane"></i> <?php echo get_phrase('stats'); ?></span>  
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'district') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/district">
-                        <span><i class="entypo-paper-plane"></i> <?php echo $menu['main_district'];?></span>
+                        <span><i class="entypo-paper-plane"></i> <?php echo get_phrase('districts'); ?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'city') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/city">
-                        <span><i class="entypo-paper-plane"></i> <?php echo $menu['main_city'];?></span>
+                        <span><i class="entypo-paper-plane"></i> <?php echo get_phrase('cities'); ?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'license') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/license">
-                        <span><i class="entypo-paper-plane"></i> <?php echo $menu['main_license_category'];?></span>
+                        <span><i class="entypo-paper-plane"></i> <?php echo get_phrase('license_categories'); ?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'health_insurance_provider') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/health_insurance_provider">
-                        <span><i class="entypo-paper-plane"></i> <?php echo $menu['main_healthinsuranceprovider'];?></span>
+                        <span><i class="entypo-paper-plane"></i> <?php echo get_phrase('health_insurance_providers'); ?></span>
                     </a>
                 </li>
 
@@ -248,12 +248,12 @@
         </li>
 
         <!-- ACCOUNT -->
-        <li class="<?php if ($page_name == 'manage_profile') echo 'active'; ?> ">
+     <!--    <li class="<?php if ($page_name == 'manage_profile') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/profile">
                 <i class="entypo-lock"></i>
                 <span><?php echo $menu['main_account'];?></span>
             </a>
-        </li>
+        </li> -->
 
 
 

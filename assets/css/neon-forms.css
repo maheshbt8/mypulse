@@ -19,8 +19,9 @@
     width: 100%;    
     overflow-x: auto;
     overflow-y: hidden;
-    border: 1px solid #e7ecf1;
-    margin: 10px 0!important;">
+    border: 1px solid #747171;
+    margin: 0px 0!important;
+    padding: 10px;
 
 }
 
@@ -1656,7 +1657,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, "Noto Sans", sans-serif, Arial, sans-serif;
   font-size: 13px;
   line-height: 1.42857143;
-  color: #949494;
+  color: #746f6f;
   background-color: #ffffff;
 }
 input,
@@ -1712,7 +1713,7 @@ hr {
   margin-top: 17px;
   margin-bottom: 17px;
   border: 0;
-  border-top: 1px solid #eeeeee;
+  border-top: 5px solid #e7e7e7;
 }
 .sr-only {
   position: absolute;
@@ -2152,7 +2153,7 @@ th {
   padding: 5px;
 }
 .table-bordered {
-  border: 1px solid #ebebeb;
+  border: 1px solid #747171;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
@@ -2160,7 +2161,7 @@ th {
 .table-bordered > thead > tr > td,
 .table-bordered > tbody > tr > td,
 .table-bordered > tfoot > tr > td {
-  border: 1px solid #ebebeb;
+  border: 1px solid #747171;
 }
 .table-bordered > thead > tr > th,
 .table-bordered > thead > tr > td {
@@ -2758,7 +2759,7 @@ select[multiple].input-lg {
   padding: 6px 12px;
   font-size: 12px;
   line-height: 1.42857143;
-  border-radius: 3px;
+  border-radius: 20px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -2932,7 +2933,7 @@ fieldset[disabled] .btn-default.active {
 }
 .btn-primary {
   color: #ffffff;
-  background-color: #303641;
+  background-color: #1982bc;
   border-color: #303641;
 }
 .btn-primary:hover,
@@ -2941,7 +2942,7 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #ffffff;
-  background-color: #1f232a;
+  background-color: #297ca3;
   border-color: #16191e;
 }
 .btn-primary:active,
@@ -4883,7 +4884,7 @@ input[type="button"].btn-block {
   border-radius: 3px 3px 0 0;
 }
 .page-body .select2-container .select2-choice {
-  border-color: #ebebeb !important;
+  border-color: #747171 !important;
   background: #fff;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;

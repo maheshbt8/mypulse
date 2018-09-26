@@ -9,8 +9,8 @@ $account_type   = $this->session->userdata('login_type');
     <head>
 
         <title><?php echo $page_title; ?> - <?php echo $system_title; ?></title>
-<!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
-        <meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!-- <meta charset="utf-8"> -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Grepthor Software Solutions" />
@@ -19,7 +19,16 @@ $account_type   = $this->session->userdata('login_type');
 
 
 
-        <?php include 'includes_top.php'; ?>
+
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <?php include 'includes_top.php'; ?> 
 
     </head>
     <body class="page-body" >
@@ -28,8 +37,8 @@ $account_type   = $this->session->userdata('login_type');
             <div class="main-content">
 
                 <?php include 'header.php'; ?>
-
-                <h3 style="margin:20px 0px; color:#818da1; font-weight:200;">
+ <div id="google_translate_element"></div> 
+                <h3 style="margin:20px 0px; color:#000; font-weight:200;">
                     <i class="entypo-right-circled"></i> 
                     <?php echo $page_title; ?>
                 </h3>

@@ -62,7 +62,7 @@ foreach ($single_hospital_info as $row) :
           $basic_info_titles = ['name','description', 'address',  'email', 'phone number', 'country', 'state', 'district', 'city', 'owner/MD_name','owner/MD_phone_number','status'];
           $basic_info_values = [$row['name'],$row['description'],$row['address'], $row['email'], $row['phone_number'],$this->db->get_where('country', array('country_id' => $row['country']))->row()->name,$this->db->get_where('state', array('state_id' => $row['state']))->row()->name,$this->db->get_where('district', array('district_id' => $row['district']))->row()->name,$this->db->get_where('city', array('city_id' => $row['city']))->row()->name,$row['md_name'],$row['md_contact_number'],$hospital_status];
         ?>
-        <table class="table table-bordered" style="margin-top: 20px;">
+        <table class="table table-bordered table-hover" style="margin-top: 20px;">
           <tbody>
           <?php for ($i=0; $i < count($basic_info_titles) ; $i++) { ?>
             <tr>
@@ -81,7 +81,7 @@ foreach ($single_hospital_info as $row) :
           $license_info_titles = ['license','license_status', 'from_date',  'to_date'];
           $license_info_values = [$this->db->get_where('license', array('license_id' => $row['license']))->row()->name,$llicense_status,$row['from_date'],$row['till_date']];
         ?>
-        <table class="table table-bordered" style="margin-top: 20px;">
+        <table class="table table-bordered table-hover" style="margin-top: 20px;">
           <tbody>
           <?php for ($i=0; $i < count($license_info_titles) ; $i++) { ?>
             <tr>

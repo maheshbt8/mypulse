@@ -1,13 +1,18 @@
-<a href="<?php echo base_url(); ?>index.php?superadmin/add_hospital/"><button onclick="" 
+<form action="<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/" method="post">
+<a href="#"><button type="button" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/');" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button></a>
+<a href="<?php echo base_url(); ?>index.php?superadmin/add_hospital/"><button type="button" onclick="" 
     class="btn btn-primary pull-right">
         <?php echo get_phrase('add_hospital'); ?>
 </button></a>
 <div style="clear:both;"></div>
 <br>
-<table class="table table-bordered table-striped datatable" id="table-2">
+<table class="table table-bordered table-hover datatable" id="table-2">
     <thead>
         <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
+            <th></th>
             <th><?php echo get_phrase('name'); ?></th>
             <th><?php echo get_phrase('license_status'); ?></th>
             <th><?php echo get_phrase('branches'); ?></th>
@@ -21,7 +26,7 @@
     <tbody>
         <?php  $i=1;foreach ($hospital_info as $row) {?>   
             <tr>
-                <td><?php echo $i?></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['hospital_id'] ?>" onchange="return upall()"></td>
                 <td><a href="<?php echo base_url();?>index.php?superadmin/get_hospital_history/<?php echo $row['hospital_id'];?>"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('license_id',$row['license'])->get('license')->row()->license_code .' - ';if($row['license_status']==1){echo 'Active';}elseif($row['license_status']==2){echo 'Inactive';}  ?></td>
                 <!-- <td><?php echo $row['address'] ?></td>
@@ -40,7 +45,7 @@
         <?php $i++;} ?>
     </tbody>
 </table>
-
+</form>
 <script type="text/javascript">
     jQuery(window).load(function ()
     {

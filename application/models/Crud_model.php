@@ -487,14 +487,21 @@ class Crud_model extends CI_Model {
         $this->db->delete('hospitals');
     }
     
-   
+    function delete_multiple_hospital_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('hospital_id',$check[$i]);
+            $this->db->delete('hospitals');
+        }
+    }
     
       function save_medicalstores_info()
     {
           $data['name'] 		= $this->input->post('name');
           $data['description'] 		= $this->input->post('description');
             $data['address'] 		= $this->input->post('address');
-        $data['mobile']    = $this->input->post('mobile');
+        $data['phone']    = $this->input->post('phone_number');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
        $data['password']=sha1('stores');
@@ -513,7 +520,7 @@ class Crud_model extends CI_Model {
              $data['qualification']    = $this->input->post('qualification');
             
         
-       $in=$this->db->insert('medical_stores',$data); 
+       $in=$this->db->insert('medicalstores',$data); 
        if($in)
        {
            $id=$this->db->insert_id();
@@ -528,7 +535,7 @@ class Crud_model extends CI_Model {
           $data['name'] 		= $this->input->post('name');
           $data['description'] 		= $this->input->post('description');
             $data['address'] 		= $this->input->post('address');
-        $data['mobile']    = $this->input->post('mobile');
+        $data['phone']    = $this->input->post('phone_number');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
        
@@ -550,7 +557,7 @@ class Crud_model extends CI_Model {
             // die;
         
            $this->db->where('store_id',$patient_id);
-        $query= $this->db->update('medical_stores',$data);
+        $query= $this->db->update('medicalstores',$data);
        if($query)
        {
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_stores/'. $patient_id.  '.jpg');
@@ -564,7 +571,7 @@ class Crud_model extends CI_Model {
           $data['name'] 		= $this->input->post('name');
           $data['description'] 		= $this->input->post('description');
             $data['address'] 		= $this->input->post('address');
-        $data['mobile']    = $this->input->post('mobile');
+        $data['phone']    = $this->input->post('phone_number');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
        
@@ -586,10 +593,10 @@ class Crud_model extends CI_Model {
             // die;
         
            $this->db->where('lab_id',$patient_id);
-        $query= $this->db->update('medical_labs',$data);
+        $query= $this->db->update('medicallabs',$data);
        if($query)
        {
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_stores/'. $patient_id.  '.jpg');
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_labs/'. $patient_id.  '.jpg');
            
        }
     }
@@ -603,7 +610,7 @@ class Crud_model extends CI_Model {
         $data['lname'] 		= $this->input->post('lname');
         $data['description']    = $this->input->post('description');
         $data['email']    = $this->input->post('email');   
-        $data['mobile']    = $this->input->post('mobile');
+        $data['phone']    = $this->input->post('phone_number');
         $data['password']=sha1('hospitaladmin');
         $data['hospital_id']    = $this->input->post('hospital');
         $data['status']    = $this->input->post('status');
@@ -686,7 +693,7 @@ class Crud_model extends CI_Model {
     }
      function select_store_info()
     {
-        return $this->db->get('medical_stores')->result_array();
+        return $this->db->get('medicalstores')->result_array();
     }
    
     function update_branch_info($branch_id)
@@ -1031,14 +1038,14 @@ $que=$this->db->insert('availability_slat',$data);
      function delete_store_info($patient_id)
     {
         $this->db->where('store_id',$patient_id);
-        $this->db->delete('medical_stores');
+        $this->db->delete('medicalstores');
     }
      function save_medicallabs_info()
     {
           $data['name'] 		= $this->input->post('name');
           $data['description'] 		= $this->input->post('description');
             $data['address'] 		= $this->input->post('address');
-        $data['mobile']    = $this->input->post('mobile');
+        $data['phone']    = $this->input->post('phone_number');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
         $data['hospital']    = $this->input->post('hospital');
@@ -1059,7 +1066,7 @@ $que=$this->db->insert('availability_slat',$data);
             // print_r($data);
             // die;
         
-       $in=$this->db->insert('medical_labs',$data); 
+       $in=$this->db->insert('medicallabs',$data); 
        if($in)
        {
            $id=$this->db->insert_id();
@@ -1072,7 +1079,7 @@ $que=$this->db->insert('availability_slat',$data);
      function delete_lab_info($patient_id)
     {
         $this->db->where('lab_id',$patient_id);
-        $this->db->delete('medical_labs');
+        $this->db->delete('medicallabs');
     }
     
     function save_patient_info()
@@ -1193,7 +1200,7 @@ $que=$this->db->insert('availability_slat',$data);
     
      function select_lab_info()
     {
-        return $this->db->get('medical_labs')->result_array();
+        return $this->db->get('medicallabs')->result_array();
     }
     
     function select_checkup_infon()

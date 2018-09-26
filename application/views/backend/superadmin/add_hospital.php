@@ -71,7 +71,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="phone_number" class="form-control" id="phone_number" value="<?php echo set_value('phone_number'); ?>">
+                            <input type="number" name="phone_number" class="form-control" id="phone_number" value="<?php echo set_value('phone_number'); ?>" minlength="10" maxlength="10">
                             <span ><?php echo form_error('phone_number'); ?></span>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('owner/MD_phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="md_phone" class="form-control" id="md_phone" value="<?php echo set_value('md_phone'); ?>">
+                            <input type="number" name="md_phone" class="form-control" id="md_phone" value="<?php echo set_value('md_phone'); ?>"  minlength="10" maxlength="10">
                             <span ><?php echo form_error('md_phone'); ?></span>
                         </div>
                     </div>

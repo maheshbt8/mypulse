@@ -19,7 +19,7 @@ if ( ! function_exists('email_validation'))
 	function email_validation($email){
 		$ci=& get_instance();
 		$num_rows = 0;
-		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 
 		for($i = 0; $i < $size; $i++){
@@ -37,7 +37,7 @@ if ( ! function_exists('email_validation_for_edit')){
 	function email_validation_for_edit($email, $id, $type){
 		$num_rows = 0;
 		$ci=& get_instance();
-		$user_array = array('superadmin','admin', 'doctor', 'nurse', 'patient', 'accountant', 'pharmacist','laboratorist','receptionist');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 		for($i = 0; $i < $size; $i++){
 			if($type == $user_array[$i]){
@@ -66,11 +66,11 @@ if ( ! function_exists('mobile_validation'))
 	function mobile_validation($mobile){
 		$ci=& get_instance();
 		$num_rows = 0;
-		$user_array = array('superadmin','admin', 'doctor', 'nurse', 'patient', 'accountant', 'pharmacist','laboratorist','receptionist');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 
 		for($i = 0; $i < $size; $i++){
-			$ci->db->where('phone_number', $email);
+			$ci->db->where('phone', $mobile);
 			$num_rows = $ci->db->get($user_array[$i])->num_rows();
 			if($num_rows > 0){
 				return 0;

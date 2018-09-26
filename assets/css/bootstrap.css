@@ -817,6 +817,7 @@ pre code {
   clear: both;
 }
 .row {
+  background-color: #fff;
   margin-left: -15px;
   margin-right: -15px;
 }
@@ -1165,6 +1166,7 @@ pre code {
     float: left;
   }
   .col-md-12 {
+    background-color: #fff;
     width: 100%;
   }
   .col-md-11 {
@@ -7218,7 +7220,7 @@ lesshat-selector {
   background-clip: padding-box;
 }
 .panel-primary {
-  border-color: #ebebeb;
+  border-color: #747171;
   -webkit-border-radius: 3px;
   -webkit-background-clip: padding-box;
   -moz-border-radius: 3px;
