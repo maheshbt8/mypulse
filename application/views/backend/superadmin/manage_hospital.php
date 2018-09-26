@@ -12,7 +12,7 @@
 <table class="table table-bordered table-hover datatable" id="table-2">
     <thead>
         <tr>
-            <th></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
             <th><?php echo get_phrase('name'); ?></th>
             <th><?php echo get_phrase('license_status'); ?></th>
             <th><?php echo get_phrase('branches'); ?></th>

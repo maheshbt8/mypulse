@@ -13,7 +13,8 @@
 <table class="table table-bordered table-striped datatable" id="table-2" >
     <thead>  
         <tr>   
-            <th></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
+            <th><?php echo get_phrase('image'); ?></th>
             <th><?php echo get_phrase('name'); ?></th> 
             <th><?php echo get_phrase('hospital'); ?></th>
             <th><?php echo get_phrase('email'); ?></th>
@@ -28,7 +29,11 @@
        
         ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['hospital_id'] ?>" onchange="return upall()"></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['admin_id'] ?>" onchange="return upall()"></td>
+                
+                <td><img src="<?php echo $this->crud_model->get_image_url('hospitaladmin' , $row['admin_id']);?>" 
+                         class="img-circle" width="40px" height="40px">
+                </td>
                 <td><?php echo $row['name'] ?></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->name; ?></td>
                 <td><?php echo $row['email'] ?></td>

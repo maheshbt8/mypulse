@@ -9,14 +9,16 @@ class Email_model extends CI_Model {
         parent::__construct();
     }
 
-    function account_opening_email($account_type = '', $email = '',$pwd='') {
+    function account_opening_email($account_type = '',$id_type = '', $email = '') {
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-
+        $query = $this->db->get_where($account_type, array('email' => $email));
+        $id = $query->row()->doctor_id;
         $email_msg = "Welcome to " . $system_name . "<br />";
         $email_msg .= "Your account type : " . $account_type . "<br />";
-        $email_msg .= "Your login password : " . $pwd . "<br />";
-        $email_msg .= "Login Here : " . base_url() . "<br/>";
+        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://localhost/mypulse/curd_model/email_verify/$account_type/$id\"> YES </a></button> <br />";
+        //$email_msg .= "Login Here : " . base_url() . "<br/>";
 
+        /*echo $email_msg;die;*/
         $email_sub = "Account opening email";
         $email_to = $email;
 
@@ -26,7 +28,7 @@ class Email_model extends CI_Model {
     function password_reset_email($account_type = '', $email = '') {
         $query = $this->db->get_where($account_type, array('email' => $email));
         if ($query->num_rows() > 0) {
-            $password = $query->row()->password;
+            $id = $query->row()->$account_type.'_id';
             $email_msg = "Your account type is : " . $account_type . "<br />";
             $email_msg .= "Your password is : " . $password . "<br />";
 

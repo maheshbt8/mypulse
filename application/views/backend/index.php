@@ -19,7 +19,7 @@ $account_type   = $this->session->userdata('login_type');
 
 
 
-
+<!-- 
 
 <script type="text/javascript">
 function googleTranslateElementInit() {
@@ -27,7 +27,7 @@ function googleTranslateElementInit() {
 }
 </script>
 
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>-->
         <?php include 'includes_top.php'; ?> 
 
     </head>
@@ -37,7 +37,7 @@ function googleTranslateElementInit() {
             <div class="main-content">
 
                 <?php include 'header.php'; ?>
- <div id="google_translate_element"></div> 
+<!-- <div id="google_translate_element"></div> -->
                 <h3 style="margin:20px 0px; color:#000; font-weight:200;">
                     <i class="entypo-right-circled"></i> 
                     <?php echo $page_title; ?>

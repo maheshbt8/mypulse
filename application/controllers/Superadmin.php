@@ -524,6 +524,7 @@ class Superadmin extends CI_Controller {
            if($phone == 1){
             $this->crud_model->save_hospitaladmins_info();
             $this->session->set_flashdata('message', get_phrase('hospital_admin_info_added_successfuly'));
+            $this->email_model->account_opening_email('hospitaladmins','admin', $email);
             redirect(base_url() . 'index.php?superadmin/hospital_admins');
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
@@ -760,20 +761,39 @@ class Superadmin extends CI_Controller {
        function add_doctor()
     {
         if($this->input->post()){
-             
-        $email = $this->input->post('email');
-        $pwd='doctor';
-        $validation = email_validation($email);
+        $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation($phone_number);
            
-        if ($validation == 1) {
-            $this->crud_model->save_doctor_info();
+           if($phone == 1){
+           $this->crud_model->save_doctor_info();
             $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
-            $this->email_model->account_opening_email($this->lang->line('roles')[3], $email,$pwd);
+            $this->email_model->account_opening_email('doctors','doctor', $email,$pwd);
             redirect(base_url() . 'index.php?superadmin/doctor');
         }else{
-            $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
         }
+    }
+
         $data['page_name'] = 'add_doctor';
         $data['page_title'] = get_phrase('add_doctor');
         $this->load->view('backend/index', $data);
@@ -782,6 +802,56 @@ class Superadmin extends CI_Controller {
     }
     function edit_doctor($id)
     {
+        if($this->input->post()){
+            $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation_for_edit($email, $id, 'doctors','doctor');
+          // echo $validation;die;
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation_for_edit($phone_number,$id,'doctors','doctor');
+           
+           if($phone == 1){
+           $this->crud_model->update_doctor_info($id);
+               $this->session->set_flashdata('message', get_phrase('doctor_info_updated_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/doctor');
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        }
+     /*      if ($task == "update") {
+                $email  = $this->input->post('email');
+
+            $validation = email_validation_for_edit($email, $doctor_id, 'doctor');
+            if($validation == 1)
+            {
+               $this->crud_model->update_doctor_info($doctor_id);
+               $this->session->set_flashdata('message', get_phrase('doctor_info_updated_successfuly'));
+            }
+            else
+            {
+                $this->session->set_flashdata('error_message' , 'duplicate_email');
+            }
+               
+            
+                redirect(base_url() . 'index.php?superadmin/doctor');
+        }*/
         $data['doctor_id']=$id;
         $data['page_name'] = 'edit_doctor';
         $data['page_title'] = get_phrase('edit_doctor');
@@ -809,7 +879,7 @@ class Superadmin extends CI_Controller {
             redirect(base_url() . 'index.php?superadmin/doctor');
         }*/
 
-        if ($task == "update") {
+     /*   if ($task == "update") {
                 $email  = $this->input->post('email');
 
             $validation = email_validation_for_edit($email, $doctor_id, 'doctor');
@@ -825,7 +895,7 @@ class Superadmin extends CI_Controller {
                
             
                 redirect(base_url() . 'index.php?superadmin/doctor');
-        }
+        }*/
 
         if ($task == "delete") {
             $this->crud_model->delete_doctor_info($doctor_id);
@@ -961,7 +1031,7 @@ class Superadmin extends CI_Controller {
             if ($validation == 1) {
                 $this->crud_model->save_medicalstores_info();
         $this->session->set_flashdata('message', get_phrase('medical_stores_info_saved_successfuly'));
-                $this->email_model->account_opening_email($this->lang->line('roles')[7], $email,$pwd);
+                $this->email_model->account_opening_email('medicalstores','store', $email,$pwd);
                 redirect(base_url() . 'index.php?superadmin/medical_stores');
             } else {
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
@@ -996,7 +1066,7 @@ class Superadmin extends CI_Controller {
             if ($validation == 1) {
                  $this->crud_model->save_medicallabs_info();
                 $this->session->set_flashdata('message', get_phrase('medical_lab_info_saved_successfuly'));
-                $this->email_model->account_opening_email($this->lang->line('roles')[8], $email,$pwd);
+                $this->email_model->account_opening_email('medicallabs','lab', $email,$pwd);
                 redirect(base_url() . 'index.php?superadmin/medical_labs');
             } else {
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
@@ -1020,7 +1090,7 @@ class Superadmin extends CI_Controller {
             if ($validation == 1) {
                 $this->crud_model->save_nurse_info();
                 $this->session->set_flashdata('message', get_phrase('nurse_info_saved_successfuly'));
-                $this->email_model->account_opening_email($this->lang->line('roles')[4], $email,$pwd);
+                $this->email_model->account_opening_email('nurse','nurse', $email,$pwd);
                 redirect(base_url() . 'index.php?superadmin/nurse');
             } else {
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
@@ -1237,7 +1307,7 @@ class Superadmin extends CI_Controller {
             if ($validation == 1) {
                  $this->crud_model->save_receptionist_info();
                 $this->session->set_flashdata('message', get_phrase('receptionist_info_saved_successfuly'));
-                $this->email_model->account_opening_email($this->lang->line('roles')[5], $email,$pwd);
+                $this->email_model->account_opening_email('receptionist','receptionist', $email,$pwd);
                 redirect(base_url() . 'index.php?superadmin/receptionist');
             } else {
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));

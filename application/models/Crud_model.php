@@ -24,7 +24,13 @@ class Crud_model extends CI_Model {
     }
 
 
-
+    function email_verify($task="",$id="")
+    {
+        if($task == 'doctors'){
+            $this->db->where('doctor_id',$id)->update('doctors',array('is_email' =>1));
+            echo $this->last_query();die;
+        }
+    }
     // Create a new invoice.
     function create_invoice() 
     {
@@ -628,7 +634,7 @@ class Crud_model extends CI_Model {
        {
            $id=$this->db->insert_id();
            
-           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/admin_image/'. $id.  '.jpg');
+           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $id.  '.jpg');
        }
     }
     
@@ -660,7 +666,7 @@ class Crud_model extends CI_Model {
         $query= $this->db->update('hospitaladmins',$data);
        if($query)
        {
-            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/admin_image/'. $admin_id.  '.jpg');
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $admin_id.  '.jpg');
            
        }
     }
@@ -1000,13 +1006,12 @@ $que=$this->db->insert('availability_slat',$data);
     
     function update_doctor_info($doctor_id)
     {
-       
+                   
          $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
         $data['description'] 		= $this->input->post('description');
         $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1('doctor');
         $data['address'] 	= $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['hospital_id'] 	= $this->input->post('hospital');

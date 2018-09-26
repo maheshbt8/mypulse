@@ -1,3 +1,7 @@
+<a href="#"><button type="button" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/');" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button></a>
 <a href="<?php echo base_url();?>index.php?superadmin/add_doctor"><button  
     class="btn btn-primary pull-right">
         <?php echo get_phrase('add_doctor'); ?>
@@ -7,6 +11,7 @@
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
             <th><?php echo get_phrase('image');?></th>
             <th><?php echo get_phrase('name');?></th>
             <th><?php echo get_phrase('email');?></th>
@@ -22,6 +27,7 @@
     <tbody>
         <?php foreach ($doctor_info as $row) { ?>   
             <tr>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['doctor_id'] ?>" onchange="return upall()"></td>
                 <td>
                     <img src="<?php echo $this->crud_model->get_image_url('doctor' , $row['doctor_id']);?>" 
                          class="img-circle" width="40px" height="40px">

@@ -34,16 +34,18 @@ if ( ! function_exists('email_validation'))
 }
 
 if ( ! function_exists('email_validation_for_edit')){
-	function email_validation_for_edit($email, $id, $type){
+	function email_validation_for_edit($email, $id, $type,$type_id){
+
 		$num_rows = 0;
 		$ci=& get_instance();
 		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 		for($i = 0; $i < $size; $i++){
 			if($type == $user_array[$i]){
-				$ci->db->where_not_in($user_array[$i].'_id', $id);
+				$ci->db->where_not_in($type_id.'_id', $id);
 				$ci->db->where('email', $email);
 				$num_rows = $ci->db->get($user_array[$i])->num_rows();
+				
 				if($num_rows > 0){
 					return 0;
 				}
@@ -79,7 +81,34 @@ if ( ! function_exists('mobile_validation'))
 		return 1;
 	}
 }
+if ( ! function_exists('mobile_validation_for_edit')){
+	function mobile_validation_for_edit($mobile, $id, $type,$type_id){
+		$num_rows = 0;
+		$ci=& get_instance();
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
+		$size = sizeof($user_array);
 
+		for($i = 0; $i < $size; $i++){
+			if($type == $user_array[$i]){
+				$ci->db->where_not_in($type_id.'_id', $id);
+				$ci->db->where('phone', $mobile);
+				$num_rows = $ci->db->get($user_array[$i])->num_rows();
+
+				if($num_rows > 0){
+					return 0;
+				}
+			}
+			else{
+				$ci->db->where('phone', $mobile);
+				$num_rows = $ci->db->get($user_array[$i])->num_rows();
+				if($num_rows > 0){
+					return 0;
+				}
+			}
+		}
+		return 1;
+	}
+}
 // Section duplication on create
 /*if ( ! function_exists('duplication_of_section_on_create')){
 	function duplication_of_section_on_create($class_id, $section_name){
