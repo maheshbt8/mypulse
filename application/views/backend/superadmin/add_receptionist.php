@@ -79,7 +79,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-6">
-                            <input type="text" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mobile'); ?>">  
+                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mobile'); ?>"   minlength="10" maxlength="10">  
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>

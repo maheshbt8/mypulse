@@ -53,7 +53,7 @@
 
         $("#table-2").dataTable({
             "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'<'export-data'T>f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
+            "sDom": "<'row'<'col-md-3 col-sm-12 col-xs-12 col-left'l><'col-md-6 col-sm-12 col-xs-12  col-left'<'export-data'T>r>t<'col-md-3 col-sm-12 col-xs-12  col-right'f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
         });
 
         $(".dataTables_wrapper select").select2({

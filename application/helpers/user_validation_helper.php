@@ -19,7 +19,7 @@ if ( ! function_exists('email_validation'))
 	function email_validation($email){
 		$ci=& get_instance();
 		$num_rows = 0;
-		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'users','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 
 		for($i = 0; $i < $size; $i++){
@@ -38,7 +38,7 @@ if ( ! function_exists('email_validation_for_edit')){
 
 		$num_rows = 0;
 		$ci=& get_instance();
-		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'users','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 		for($i = 0; $i < $size; $i++){
 			if($type == $user_array[$i]){
@@ -68,7 +68,7 @@ if ( ! function_exists('mobile_validation'))
 	function mobile_validation($mobile){
 		$ci=& get_instance();
 		$num_rows = 0;
-		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'users','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 
 		for($i = 0; $i < $size; $i++){
@@ -85,7 +85,7 @@ if ( ! function_exists('mobile_validation_for_edit')){
 	function mobile_validation_for_edit($mobile, $id, $type,$type_id){
 		$num_rows = 0;
 		$ci=& get_instance();
-		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'patient','receptionist','medicalstores','medicallabs');
+		$user_array = array('superadmin','hospitaladmins', 'doctors', 'nurse', 'users','receptionist','medicalstores','medicallabs');
 		$size = sizeof($user_array);
 
 		for($i = 0; $i < $size; $i++){

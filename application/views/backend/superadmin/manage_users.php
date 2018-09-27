@@ -7,18 +7,11 @@
 <table class="table table-bordered table-striped datatable" id="table-2">    
     <thead>
         <tr>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
             <th><?php echo get_phrase('image');?></th>
             <th><?php echo get_phrase('unique id');?></th>
             <th><?php echo get_phrase('name');?></th>
             <th><?php echo get_phrase('email');?></th>
-             <th><?php echo get_phrase('city');?></th>   
-            <th><?php echo get_phrase('address');?></th>
-            <th><?php echo get_phrase('phone');?></th>
-            <th><?php echo get_phrase('sex');?></th>
-            <th><?php echo get_phrase('birth_date');?></th>
-            <th><?php echo get_phrase('age');?></th>
-            <!--<th><?php echo get_phrase('intime');?></th>
-            <th><?php echo get_phrase('blood_group');?></th>-->
             <th><?php echo get_phrase('options');?></th>
         </tr>
     </thead>
@@ -26,21 +19,13 @@
     <tbody>
         <?php foreach ($patient_info as $row) { ?>   
             <tr>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['doctor_id'] ?>" onchange="return upall()"></td>
                 <td><img src="<?php echo $this->crud_model->get_image_url('patient' , $row['patient_id']);?>" class="img-circle" width="40px" height="40px"></td>
                  <td><?php echo $row['unique_id']?></td>
                 <td><?php echo $row['name']?></td>
                 <td><?php echo $row['email']?></td>
-                <td><?php echo $row['city']?></td>
-                <td><?php echo $row['address']?></td>
-                <td><?php echo $row['phone']?></td>
-                <td><?php echo $row['sex']?></td>
-                <td><?php echo date('d/m/Y', $row['birth_date']); ?></td>
-                <td><?php echo $row['age']?></td>
-                <!--<td><?php echo date("d M, Y -  H:i", $row['in_time']); ?></td>
-                <td><?php echo $row['blood_group']?></td>-->
-               
                 <td>
-                    <div class="btn-group">
+                   <!--  <div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
                             Action <span class="caret"></span>
                         </button>
@@ -59,7 +44,7 @@
                             </li>
                             <li>
                                 <a onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/diagnosis_report/<?php echo $row['patient_id']; ?>');">
-                               <!-- <a href="<?php echo base_url();?>index.php?modal/popup/diagnosis_report/<?php echo $row['patient_id']; ?>">-->
+                               <!-- <a href="<?php echo base_url();?>index.php?modal/popup/diagnosis_report/<?php echo $row['patient_id']; ?>">
                                     <i class="fa fa-medkit"></i>
                                     <?php echo get_phrase('diagnosis report'); ?>
                                 </a>
@@ -86,7 +71,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
+                     <a href="<?php echo base_url();?>index.php?superadmin/edit_user/<?php echo $row['user_id']?>" onclick="#" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                    <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/users/delete/<?php echo $row['user_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> 
                 </td>
             </tr>
         <?php } ?>

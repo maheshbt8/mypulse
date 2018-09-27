@@ -6166,11 +6166,32 @@ textarea.dataTables_wrapper .dataTables_filter > label input {
 .dataTables_wrapper .dataTables_paginate.dataTables_paginate .pagination {
   margin: 0;
 }
-.dataTables_wrapper .export-data {
+@media (max-width: 992px) {
+   .dataTables_wrapper .export-data {
   position: absolute;
   right: 250px;
   top: 13px;
 }
+}
+@media screen and (max-width: 600px) {
+  div.export-data {
+    display: none;
+  }
+}
+/*@media (min-width: 768px) {
+.dataTables_wrapper .export-data {
+  position: absolute;
+  right: 0px;
+  top: 13px;
+}
+}*/
+/*@media (min-width: 768px) {
+  .dataTables_wrapper .export-data {
+  position: absolute;
+  right: 250px;
+  top: 13px;
+}
+}*/
 .page-body .datatable.table tbody td,
 .page-body .datatable.table tbody th {
   vertical-align: middle;

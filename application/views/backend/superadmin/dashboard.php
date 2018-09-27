@@ -26,7 +26,7 @@
         <a href="<?php echo base_url(); ?>index.php?superadmin/patient">
             <div class="tile-stats tile-white-red">
                 <div class="icon"><i class="fa fa-user"></i></div>
-                <div class="num" data-start="0" data-end="<?php echo $this->db->count_all('patient'); ?>" 
+                <div class="num" data-start="0" data-end="<?php echo $this->db->count_all('users'); ?>" 
                      data-duration="1500" data-delay="0">0 </div>
                 <h3><?php echo $this->lang->line('mypulse_users');?></h3>
             </div>

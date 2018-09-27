@@ -220,7 +220,7 @@
                 </li>
                <li class="<?php if ($page_name == 'state') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/state">
-                        <span><i  class="entypo-paper-plane"></i> <?php echo get_phrase('stats'); ?></span>  
+                        <span><i  class="entypo-paper-plane"></i> <?php echo get_phrase('states'); ?></span>  
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'district') echo 'active'; ?> ">

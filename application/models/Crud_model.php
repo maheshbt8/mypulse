@@ -555,7 +555,7 @@ class Crud_model extends CI_Model {
           $data['gender']    = $this->input->post('gender');
             $data['dob']    = $this->input->post('dob');
              $data['in_address']    = $this->input->post('in_address');
-          $data['profession']    = $this->input->post('profession');
+          
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
              
@@ -572,7 +572,7 @@ class Crud_model extends CI_Model {
     }
     
     
-      function update_medicallabs_info($patient_id)
+      function update_medicallabs_info($id)
     {
           $data['name'] 		= $this->input->post('name');
           $data['description'] 		= $this->input->post('description');
@@ -582,7 +582,7 @@ class Crud_model extends CI_Model {
         $data['owner_mobile']    = $this->input->post('owner_mobile');
        
         $data['hospital']    = $this->input->post('hospital');
-       // $data['status']    = $this->input->post('status');
+       $data['status']    = $this->input->post('status');
         $data['branch']    = $this->input->post('branch');
         $data['fname']    = $this->input->post('fname');
         $data['lname']    = $this->input->post('lname');
@@ -591,14 +591,14 @@ class Crud_model extends CI_Model {
           $data['gender']    = $this->input->post('gender');
             $data['dob']    = $this->input->post('dob');
              $data['in_address']    = $this->input->post('in_address');
-          $data['profession']    = $this->input->post('profession');
+         /* $data['profession']    = $this->input->post('profession');*/
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
              
             // print_r($data);
             // die;
         
-           $this->db->where('lab_id',$patient_id);
+           $this->db->where('lab_id',$id);
         $query= $this->db->update('medicallabs',$data);
        if($query)
        {
@@ -1054,7 +1054,7 @@ $que=$this->db->insert('availability_slat',$data);
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
         $data['hospital']    = $this->input->post('hospital');
-       // $data['status']    = $this->input->post('status');
+        $data['status']    = $this->input->post('status');
         $data['branch']    = $this->input->post('branch');
         $data['fname']    = $this->input->post('fname');
         $data['lname']    = $this->input->post('lname');
@@ -1087,14 +1087,17 @@ $que=$this->db->insert('availability_slat',$data);
         $this->db->delete('medicallabs');
     }
     
-    function save_patient_info()
+    function save_user_info()
     {
-       
         $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
         $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1($this->input->post('password'));
+        $data['password']       = sha1('user');
+        $data['description']       = $this->input->post('description');
+        $data['country']   = $this->input->post('country');
+        $data['state']   = $this->input->post('state');
+        $data['district']   = $this->input->post('district');
         $data['city'] 	= $this->input->post('city');
         $data['address'] 	= $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
@@ -1115,7 +1118,7 @@ $que=$this->db->insert('availability_slat',$data);
          $data['past_medical_history'] 	= $this->input->post('past_medical_history');
           $data['status'] 	= $this->input->post('status');
         
-        $insert=$this->db->insert('patient',$data);
+        $insert=$this->db->insert('users',$data);
         if($insert)
         {
             
@@ -1128,7 +1131,7 @@ $que=$this->db->insert('availability_slat',$data);
             
         }
         $patient_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/patient_image/" . $patient_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
      function save_outpatient_info()
     {
@@ -1158,7 +1161,7 @@ $que=$this->db->insert('availability_slat',$data);
             
         }
         $patient_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/patient_image/" . $patient_id . '.jpg');
+        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
       function save_patientex_info()
     {
@@ -1210,17 +1213,17 @@ $que=$this->db->insert('availability_slat',$data);
     
     function select_checkup_infon()
     {
-        return $this->db->get('patient')->result_array();
+        return $this->db->get('users')->result_array();
     }
-    function select_patient_info()
+    function select_user_info()
     {
         
-        return $this->db->get('patient')->result_array();
+        return $this->db->get('users')->result_array();
     
     }
-function select_patient_information($patient_id="")
+function select_user_information($patient_id="")
     {
-       return $this->db->get_where('patient', array('patient_id' => $patient_id))->result_array();
+       return $this->db->get_where('users', array('user_id' => $patient_id))->result_array();
     }
 
     /*function select_patient_inf($patient_id)
@@ -1266,24 +1269,41 @@ function select_patient_information($patient_id="")
         return $this->db->get_where('patient', array('patient_id' => $patient_id))->result_array();
     }
             
-    function update_patient_info($patient_id)
+    function update_user_info($user_id)
     {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['city'] 	= $this->input->post('city');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        $data['sex']            = $this->input->post('sex');
-        $data['birth_date']     = strtotime($this->input->post('birth_date'));
+         $data['name']      = $this->input->post('fname');
+        $data['mname']      = $this->input->post('mname');
+        $data['lname']      = $this->input->post('lname');
+        $data['email']      = $this->input->post('email');
+        $data['password']       = sha1('user');
+        $data['description']       = $this->input->post('description');
+        $data['country']   = $this->input->post('country');
+        $data['state']   = $this->input->post('state');
+        $data['district']   = $this->input->post('district');
+        $data['city']   = $this->input->post('city');
+        $data['address']    = $this->input->post('address');
+        $data['phone']          = $this->input->post('mobile');
+        $data['sex']            = $this->input->post('gender');
+        $data['birth_date']     = strtotime($this->input->post('dob'));
         $data['age']            = $this->input->post('age');
-         $data['in_time']            = $this->input->post('in_time');
-        $data['patient_type']            = $this->input->post('patient_type');
-        $data['blood_group'] 	= $this->input->post('blood_group');
+        /*$data['in_time']          = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );*/
+        /*$data['patient_type']            = $this->input->post('patient_type');*/
+        $data['blood_group']    = $this->input->post('blood_group');
+        $data['aadhar']     = $this->input->post('aadhar');
+        $data['height']     = $this->input->post('height');
+        $data['weight']     = $this->input->post('weight');
+        $data['blood_pressure']     = $this->input->post('blood_pressure');
+        $data['sugar_level']    = $this->input->post('sugar_level');
+        $data['health_insurance_provider']  = $this->input->post('health_insurance_provider');
+        $data['health_insurance_id']    = $this->input->post('health_insurance_id');
+        $data['family_history']     = $this->input->post('family_history');
+         $data['past_medical_history']  = $this->input->post('past_medical_history');
+          $data['status']   = $this->input->post('status');
         
-        $this->db->where('patient_id',$patient_id);
-        $this->db->update('patient',$data);
+        $this->db->where('user_id',$user_id);
+        $this->db->update('users',$data);
         
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/patient_image/" . $patient_id . '.jpg');
+        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
     function update_outpatient_info($patient_id)
     {
@@ -1302,7 +1322,7 @@ function select_patient_information($patient_id="")
         $this->db->where('patient_id',$patient_id);
         $this->db->update('patient',$data);
         
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/patient_image/" . $patient_id . '.jpg');
+        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
     
       function update_patientex_info($id)
@@ -1351,10 +1371,10 @@ function select_patient_information($patient_id="")
         $this->db->where('id',$id);
         $this->db->delete('checkups');
     }
-    function delete_patient_info($patient_id)
+    function delete_user_info($user_id)
     {
-        $this->db->where('patient_id',$patient_id);
-        $this->db->delete('patient');
+        $this->db->where('user_id',$user_id);
+        $this->db->delete('users');
     }
     function delete_outpatient_info($patient_id)
     {
