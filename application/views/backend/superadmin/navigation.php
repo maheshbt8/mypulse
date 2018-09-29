@@ -27,7 +27,7 @@
 
         <div class="sui-normal">
             <a href="#" class="user-link">
-                <img src="<?php echo $this->crud_model->get_image_url($this->session->userdata('login_type'), $this->session->userdata('login_user_id'));?>" alt="" class="img-circle" style="height:44px;">
+                <img src="<?php echo $this->crud_model->get_image_url($this->session->userdata('login_type'), $this->session->userdata('login_user_id'));?>" alt="" class="img-circle" style="height:64px;">
 
                 <!--<span><?php echo get_phrase('welcome'); ?>,</span>-->
                 <strong><?php
@@ -143,7 +143,7 @@
             </a>
         </li>
         <li class="">
-            <a href="#">
+            <a href="<?php echo base_url(); ?>index.php?superadmin/add_appointment">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>
                 <span><?php echo get_phrase('appointments'); ?></span>
             </a>
@@ -246,7 +246,12 @@
 
             </ul>
         </li>
-
+        <li class="#">
+            <a href="<?php echo base_url(); ?>index.php?superadmin/db_backup">
+                <i class="database"></i>
+                <span>DB Backup</span>
+            </a>
+        </li>
         <!-- ACCOUNT -->
      <!--    <li class="<?php if ($page_name == 'manage_profile') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?superadmin/profile">

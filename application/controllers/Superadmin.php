@@ -29,9 +29,22 @@ class Superadmin extends CI_Controller {
     }
 
     /*     * *ADMIN DASHBOARD** */
+    function db_backup(){
+               // Load the DB utility class
+$this->load->dbutil();
 
+// Backup your entire database and assign it to a variable
+$backup = $this->dbutil->backup();
+
+// Load the file helper and write the file to your server
+$this->load->helper('file');
+write_file('/path/to/mybackup.gz', $backup);
+
+// Load the download helper and send the file to your desktop
+$this->load->helper('download');
+force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
+    }
     function dashboard() {
-       
         $page_data['page_name'] = 'dashboard';
         $page_data['page_title'] = get_phrase('superadmin_dashboard');
         $this->load->view('backend/index', $page_data);
@@ -259,6 +272,10 @@ class Superadmin extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('license_info_saved_successfuly'));
             redirect(base_url() . 'index.php?superadmin/license');
         }
+        if ($task == "delete") {
+            $this->crud_model->delete_license($param2);
+            redirect(base_url() . 'index.php?superadmin/license');
+        }
         $page_data['page_name'] = 'license';
         $page_data['page_title'] = get_phrase('license');
         $page_data['license'] = $this->db->get('license')->result_array();
@@ -268,6 +285,10 @@ class Superadmin extends CI_Controller {
         if ($param1 == "create") {
             $this->crud_model->save_health_insurance_provider_info();
             $this->session->set_flashdata('message', get_phrase('health_insurance_provider_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/health_insurance_provider');
+        }
+        if ($task == "delete") {
+            $this->crud_model->delete_health_insurance_provider($param2);
             redirect(base_url() . 'index.php?superadmin/health_insurance_provider');
         }
         $page_data['page_name'] = 'health_insurance_provider';
@@ -500,7 +521,6 @@ class Superadmin extends CI_Controller {
             redirect(base_url() . 'index.php?superadmin/hospital');
         }
         if ($task == "delete_multiple") {
-            print_r($_POST);die;
            $this->crud_model->delete_multiple_hospital_info();
             $this->session->set_flashdata('message', get_phrase('hospitals_info_deleted_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital');
@@ -552,7 +572,37 @@ class Superadmin extends CI_Controller {
         
     }
        public function edit_hospital_admins($id) {
-        
+        if($this->input->post())
+        {
+        $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = $validation = email_validation_for_edit($email, $id,'hospitaladmins', 'admin');
+            if ($validation == 1) {
+           $phone_number = $this->input->post('phone_number');
+           $phone = $validation = email_validation_for_edit($phone_number, $id, 'hospitaladmins','admin');
+           
+           if($phone == 1){
+           $this->crud_model->update_hospitaladmins_info($id);
+            $this->session->set_flashdata('message', get_phrase('hospita_admin_info_updated_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/hospital_admins');
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+    }
         $data['admin_id'] = $id;
         $data['page_name'] = 'edit_hospital_admin';
         $data['page_title'] = get_phrase('edit_hospital_admins');
@@ -580,7 +630,7 @@ class Superadmin extends CI_Controller {
             }
            
             redirect(base_url() . 'index.php?superadmin/hospital_admins');
-        }*/
+        }
    
         if ($task == "update") {
             $email  = $this->input->post('email');
@@ -588,7 +638,7 @@ class Superadmin extends CI_Controller {
             $validation = email_validation_for_edit($email, $admin_id, 'admin');
             if($validation == 1)
 			{
-              $this->crud_model->update_hospitaladmins_info($admin_id);
+            $this->crud_model->update_hospitaladmins_info($admin_id);
             $this->session->set_flashdata('message', get_phrase('admin_info_updated_successfuly'));
             }
             else
@@ -598,13 +648,17 @@ class Superadmin extends CI_Controller {
             
             redirect(base_url() . 'index.php?superadmin/hospital_admins');
         }
-
+*/
         if ($task == "delete") {
             $this->crud_model->delete_hospitaladmins_info($admin_id);
             $this->session->set_flashdata('message', get_phrase('admin_info_deleted_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital_admins');
         }
-
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_hospital_admins_info();
+            $this->session->set_flashdata('message', get_phrase('hospitaladmins_info_deleted_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/hospital_admins');
+        }
         $data['admin_info'] = $this->crud_model->select_hospitaladmins_info();
         
         $data['page_name'] = 'manage_admins';
@@ -1092,7 +1146,48 @@ class Superadmin extends CI_Controller {
         $data['page_title'] = get_phrase('myPulse_users');
         $this->load->view('backend/index', $data);
     }
-    
+      function add_appointment()
+    {
+       /* if($this->input->post()){
+        $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+           $this->crud_model->save_doctor_info();
+            $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
+            $this->email_model->account_opening_email('doctors','doctor', $email);
+            redirect(base_url() . 'index.php?superadmin/doctor');
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+    }*/
+
+        $data['page_name'] = 'add_appointment';
+        $data['page_title'] = get_phrase('add_doctor');
+        $this->load->view('backend/index', $data);
+        
+        
+    }
     
     function add_stores()
     {

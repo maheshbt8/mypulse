@@ -30,12 +30,53 @@
 
 <?php echo form_close(); ?>
 <?php translate("Welcome to codeigniter",$lang);?> -->
-<div class="row">
-    <div class="col-md-12 col-sm-12 clearfix" style="text-align:center;">
-        <span style="font-weight:200; margin:0px;font-size: 30px;"><?php if($this->session->userdata('login_type') == 'superadmin'){echo $system_name;}else{echo $this->db->where('hospital_id',$this->db->where('admin_id',$this->session->userdata('login_user_id'))->get('admin')->row()->hospital_id)->get('hospitals')->row()->name;} ?></span>
-   
 
+
+
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout, Display: false}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script> 
+<div class="row">
+    <!-- Use CSS to replace link text with flag icons -->
+<!-- <ul class="translation-links">
+  <li><a href="#" class="spanish" data-lang="Spanish">Spanish</a></li>
+  <li><a href="#" class="german" data-lang="German">German</a></li>
+</ul> -->
+
+<!-- Code provided by Google -->
+<!-- <div id="google_translate_element"></div>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false}, 'google_translate_element');
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script> -->
+
+<!-- Flag click handler -->
+<!-- <script type="text/javascript">
+    $('.translation-links a').click(function() {
+      var lang = $(this).data('lang');
+      var $frame = $('.goog-te-menu-frame:first');
+      if (!$frame.size()) {
+        alert("Error: Could not find Google translate frame.");
+        return false;
+      }
+      $frame.contents().find('.goog-te-menu2-item span.text:contains('+lang+')').get(0).click();
+      return false;
+    });
+</script> -->
+   
+    <div class="col-md-12 col-sm-12 clearfix" style="text-align:center;">
+
+        <span style="font-weight:200; margin:0px;font-size: 30px;"><?php if($this->session->userdata('login_type') == 'superadmin'){echo $system_name;}else{echo $this->db->where('hospital_id',$this->db->where('admin_id',$this->session->userdata('login_user_id'))->get('hospitaladmins')->row()->hospital_id)->get('hospitals')->row()->name;} ?></span>
+   
         <ul class="list-inline links-list pull-right">
+         <li class="dropdown language-selector"> <div id="google_translate_element"></div> </li> 
              <li class="dropdown language-selector">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true" aria-expanded="false">
                             <i class="glyphicon glyphicon-bell"></i>

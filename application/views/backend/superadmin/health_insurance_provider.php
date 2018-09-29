@@ -1,4 +1,3 @@
-<hr />
 <div class="row">
 	<div class="col-md-12">
     
@@ -28,27 +27,12 @@
 						</tr>
 					</thead>
                     <tbody>
-                    	<?php $count = 1;foreach($health_insurance_provider as $row):?>
+                    	<?php $count = 1;foreach($health_insurance_provider as $row):
+                        ?>
                         <tr>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-
-                                    <!-- EDITING LINK -->
-                                    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_country/<?php echo $row['health_insurance_provider_id'];?>');">
-                                            <i class="entypo-pencil"></i>
-                                                <?php echo 'Edit';?>
-                                            </a>
-                                                    </li>
-
-                                    
-                                </ul>
-                            </div>
+                          <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/health_insurance_provider/delete/<?php echo $row['health_insurance_provider_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
         					</td>
                         </tr>
                         <?php endforeach;?>

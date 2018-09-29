@@ -121,7 +121,7 @@
                             </div>
                     </div>
                    
-                       <div class="form-group">
+                       <!-- <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
 
                         <div class="col-sm-8">
@@ -132,7 +132,7 @@
                                 <option value="2"<?php if($row['status']==2){echo "selected";}?>><?php echo $this->lang->line('labels')['inactive'];?></option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                    </div>
                 
                     </div>

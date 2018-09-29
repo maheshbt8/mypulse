@@ -11,12 +11,9 @@
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="toggle(this);"></th>
             <th><?php echo get_phrase('image');?></th>
             <th><?php echo get_phrase('name');?></th>
-            <th><?php echo get_phrase('email');?></th>
-            <th><?php echo get_phrase('address');?></th>
-            <th><?php echo get_phrase('phone');?></th>
             <th><?php echo get_phrase('hospital');?></th>
             <th><?php echo get_phrase('branch');?></th>
             <th><?php echo get_phrase('department');?></th>
@@ -27,15 +24,13 @@
     <tbody>
         <?php foreach ($doctor_info as $row) { ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['doctor_id'] ?>" onchange="return upall()"></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['doctor_id'] ?>"></td>
                 <td>
                     <img src="<?php echo $this->crud_model->get_image_url('doctor' , $row['doctor_id']);?>" 
                          class="img-circle" width="40px" height="40px">
                 </td>
                 <td><?php echo $row['name']?></td>
-                <td><?php echo $row['email']?></td>
-                <td><?php echo $row['address']?></td>
-                <td><?php echo $row['phone']?></td>
+                
                  <td>
                     <?php $name = $this->db->get_where('hospitals' , array('hospital_id' => $row['hospital_id'] ))->row()->name;
                         echo $name;?>
@@ -94,4 +89,13 @@
             replaceCheckboxes();
         });
     });
+</script>
+<script type="text/javascript">
+    function toggle(source) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
+    }
+}
 </script>

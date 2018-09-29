@@ -28,7 +28,7 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label> 
 
                         <div class="col-sm-5">
-                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="select_state"   value=""  onchange="return get_branch(this.value)">
+                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="state"   value=""  onchange="return get_branch(this.value)">
                                 <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
                                 <?php 
                                 $state = $this->db->where('country_id',$row['country_id'])->get('state')->result_array();
@@ -70,8 +70,8 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
             url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
             success: function(response)
             {
-                alert(response);
-                jQuery('#select_state').html(response);
+               
+                jQuery('#state').html(response);
             }
         });
 

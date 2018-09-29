@@ -7,7 +7,7 @@
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
-            <th><?php echo get_phrase('Sl_no');?></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
             <th><?php echo get_phrase('name'); ?></th>
             <th><?php echo get_phrase('hospital_name'); ?></th>
             <th><?php echo get_phrase('branch_name'); ?></th>
@@ -24,7 +24,7 @@
         foreach ($bed_info as $row) { ?>   
             <tr>
              
-                <td><?php echo $i;?></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['bed_id'] ?>"></td>
                 <td><?php echo $row['name'] ?></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
@@ -74,4 +74,13 @@
             replaceCheckboxes();
         });
     });
+</script>
+<script type="text/javascript">
+    function toggle(source) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
+    }
+}
 </script>

@@ -148,7 +148,7 @@
                             <input type="text" name="dob" class="form-control datepicker" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" value="<?php echo set_value('dob'); ?>" autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" hidden="">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
 
                         <div class="col-sm-8">

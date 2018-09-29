@@ -1,18 +1,19 @@
 <form action="<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/" method="post">
-<a href="#"><button type="button" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/');" 
+<button type="button" onClick="confSubmit(this.form);" 
     class="btn btn-danger pull-right">
         <?php echo get_phrase('delete'); ?>
-</button></a>
+</button>
+<!-- onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/');" -->
 <a href="<?php echo base_url(); ?>index.php?superadmin/add_hospital/"><button type="button" onclick="" 
     class="btn btn-primary pull-right">
         <?php echo get_phrase('add_hospital'); ?>
 </button></a>
 <div style="clear:both;"></div>
 <br>
-<table class="table table-bordered table-hover datatable" id="table-2">
+<table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
             <th><?php echo get_phrase('name'); ?></th>
             <th><?php echo get_phrase('license_status'); ?></th>
             <th><?php echo get_phrase('branches'); ?></th>
@@ -26,7 +27,7 @@
     <tbody>
         <?php  $i=1;foreach ($hospital_info as $row) {?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['hospital_id'] ?>" onchange="return upall()"></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['hospital_id'] ?>"></td>
                 <td><a href="<?php echo base_url();?>index.php?superadmin/get_hospital_history/<?php echo $row['hospital_id'];?>"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('license_id',$row['license'])->get('license')->row()->license_code .' - ';if($row['license_status']==1){echo 'Active';}elseif($row['license_status']==2){echo 'Inactive';}  ?></td>
                 <!-- <td><?php echo $row['address'] ?></td>
@@ -46,6 +47,7 @@
     </tbody>
 </table>
 </form>
+<!-- <'row'<'col-md-3 col-sm-12 col-xs-12 col-left'l><'col-md-6 col-sm-12 col-xs-12  col-left'<'export-data'T>r>t<'col-md-3 col-sm-12 col-xs-12  col-right'f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>> -->
 <script type="text/javascript">
     jQuery(window).load(function ()
     {
@@ -53,7 +55,7 @@
 
         $("#table-2").dataTable({
             "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-md-3 col-sm-12 col-xs-12 col-left'l><'col-md-6 col-sm-12 col-xs-12  col-left'<'export-data'T>r>t<'col-md-3 col-sm-12 col-xs-12  col-right'f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
+            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'<'export-data'T>f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
         });
 
         $(".dataTables_wrapper select").select2({
@@ -80,4 +82,20 @@
             replaceCheckboxes();
         });
     });
+</script>
+<script type="text/javascript">
+    function toggle(source) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
+    }
+}
+
+
+function confSubmit(form) {
+if (confirm("Are you sure you want to Delete All?")) {
+form.submit();
+}
+}
 </script>

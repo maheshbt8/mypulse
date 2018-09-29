@@ -3,6 +3,7 @@ $system_name    = $this->db->get_where('settings', array('type' => 'system_name'
 $system_title   = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
 $text_align     = $this->db->get_where('settings', array('type' => 'text_align'))->row()->description;
 $account_type   = $this->session->userdata('login_type');
+
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="<?php if ($text_align == 'right-to-left') echo 'rtl'; ?>">
@@ -18,16 +19,6 @@ $account_type   = $this->session->userdata('login_type');
 
 
 
-
-<!-- 
-
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-}
-</script>
-
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>-->
         <?php include 'includes_top.php'; ?> 
 
     </head>
@@ -37,7 +28,7 @@ function googleTranslateElementInit() {
             <div class="main-content">
 
                 <?php include 'header.php'; ?>
-<!-- <div id="google_translate_element"></div> -->
+
                 <h3 style="margin:20px 0px; color:#000; font-weight:200;">
                     <i class="entypo-right-circled"></i> 
                     <?php echo $page_title; ?>

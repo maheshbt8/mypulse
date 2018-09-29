@@ -1,5 +1,4 @@
 <?php 
-/*$department_info = $this->db->get('department')->result_array();*/
 $single_nurse_info = $this->db->get_where('nurse', array('nurse_id' => $nurse_id))->result_array();
 foreach ($single_nurse_info as $row) {
     
@@ -146,10 +145,7 @@ foreach ($single_nurse_info as $row) {
                                 </select>
                                  <span ><?php echo form_error('department'); ?></span>
                             </div>
-                    </div>  
-                    
-                    
-                    <?php print_r(explode(',',$row['doctor_id']));?>
+                    </div> 
                       <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
@@ -162,8 +158,12 @@ foreach ($single_nurse_info as $row) {
                                     $admins = $this->db->where('department_id',$row['department_id'])->get('doctors')->result_array();
                                 }
 
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['department_id'] ?>" <?php if($row1['department_id']==$row['department_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                foreach($admins as $row1){
+                                    $doc=explode(',',$row['doctor_id']);
+                                    
+                                        
+                                    ?>
+                                <option value="<?php echo $row1['doctor_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['doctor_id']){echo 'selected';}}?>><?php echo $row1['name']; ?></option>
                                 
                                 <?php } ?>
                                 </select>
@@ -229,7 +229,7 @@ foreach ($single_nurse_info as $row) {
                             <input type="text" name="dob" class="form-control datepicker" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" hidden="">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('aadhar_number'); ?></label>
 
                         <div class="col-sm-8">

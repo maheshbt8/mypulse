@@ -34,23 +34,8 @@
                             <td><?php echo $row['license_code'];?></td>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-
-                                    <!-- EDITING LINK -->
-                                    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_country/<?php echo $row['license_id'];?>');">
-                                            <i class="entypo-pencil"></i>
-                                                <?php echo 'Edit';?>
-                                            </a>
-                                                    </li>
-
-                                    
-                                </ul>
-                            </div>
+                             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/license/delete/<?php echo $row['license_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
+                             </a>
         					</td>
                         </tr>
                         <?php endforeach;?>

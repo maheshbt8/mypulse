@@ -51,6 +51,7 @@
 		jQuery('#modal-4').modal('show', {backdrop: 'static'});
 		document.getElementById('delete_link').setAttribute('href' , delete_url);
 	}
+   
 	</script>
     
     <!-- (Normal Modal)-->

@@ -36,23 +36,7 @@
                             <td><?php echo $this->db->where('state_id',$row['state_id'])->get('state')->row()->name;?></td>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-
-                                    
-                                    <!-- EDITING LINK -->
-                                    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_district/<?php echo $row['district_id'];?>');">
-                                            <i class="entypo-pencil"></i>
-                                                <?php echo 'Edit';?>
-                                            </a>
-                                                    </li>
-                                 
-                                </ul>
-                            </div>
+                                 <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_district/<?php echo $row['district_id'];?>');" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
         					</td>
                         </tr>
                         <?php endforeach;?>

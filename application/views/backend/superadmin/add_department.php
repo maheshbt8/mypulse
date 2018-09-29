@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['description'];?></label>
 
-                        <div class="col-sm-9">
+                        <div class="col-sm-5">
                             <textarea name="description" class="form-control" id="field-ta"></textarea>
                         </div>
                     </div>

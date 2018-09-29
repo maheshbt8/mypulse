@@ -414,6 +414,11 @@ class Crud_model extends CI_Model {
         
         $this->db->insert('license',$data);
     }
+    function delete_license($license_id)
+    {
+        $this->db->where('license_id',$license_id);
+        $this->db->delete('license');
+    }
     function update_license_info($license_id)
     {
         $data['name'] 		= $this->input->post('name');
@@ -424,12 +429,14 @@ class Crud_model extends CI_Model {
     }
       function save_health_insurance_provider_info()
     {
-        $data['name'] 		= $this->input->post('name');
-       
-        
+        $data['name'] 		= $this->input->post('name'); 
         $this->db->insert('health_insurance_provider',$data);
     }
-    
+    function delete_health_insurance_provider($health_insurance_provider_id)
+    {
+        $this->db->where('health_insurance_provider_id',$health_insurance_provider_id);
+        $this->db->delete('health_insurance_provider');
+    }
     /***************HOSPITALS*****************/
     
          function save_hospital_info()
@@ -510,7 +517,7 @@ class Crud_model extends CI_Model {
         $data['phone']    = $this->input->post('phone_number');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
-       $data['password']=sha1('stores');
+       $data['password']=sha1('mypulse');
         $data['hospital']    = $this->input->post('hospital');
         $data['status']    = $this->input->post('status');
         $data['branch']    = $this->input->post('branch');
@@ -617,7 +624,7 @@ class Crud_model extends CI_Model {
         $data['description']    = $this->input->post('description');
         $data['email']    = $this->input->post('email');   
         $data['phone']    = $this->input->post('phone_number');
-        $data['password']=sha1('hospitaladmin');
+        $data['password']=sha1('mypulse');
         $data['hospital_id']    = $this->input->post('hospital');
         $data['status']    = $this->input->post('status');
         $data['gender']    = $this->input->post('gender');
@@ -676,6 +683,14 @@ class Crud_model extends CI_Model {
         
         $this->db->where('admin_id',$admin_id);
         $this->db->delete('hospitaladmins');
+    }
+    function delete_multiple_hospital_admins_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('admin_id',$check[$i]);
+            $this->db->delete('hospitaladmins');
+        }
     }
     
          function save_branch_info()
@@ -811,7 +826,7 @@ class Crud_model extends CI_Model {
         $data['lname'] 		= $this->input->post('lname');
         $data['description'] 		= $this->input->post('description');
         $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1('doctor');
+        $data['password']       = sha1('mypulse');
         $data['address'] 	= $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['hospital_id'] 	= $this->input->post('hospital');
@@ -1067,7 +1082,7 @@ $que=$this->db->insert('availability_slat',$data);
          
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
-             
+             $data['password']=sha1('mypulse');
             // print_r($data);
             // die;
         
@@ -1093,7 +1108,7 @@ $que=$this->db->insert('availability_slat',$data);
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
         $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1('user');
+        $data['password']       = sha1('mypulse');
         $data['description']       = $this->input->post('description');
         $data['country']   = $this->input->post('country');
         $data['state']   = $this->input->post('state');
@@ -1275,7 +1290,6 @@ function select_user_information($patient_id="")
         $data['mname']      = $this->input->post('mname');
         $data['lname']      = $this->input->post('lname');
         $data['email']      = $this->input->post('email');
-        $data['password']       = sha1('user');
         $data['description']       = $this->input->post('description');
         $data['country']   = $this->input->post('country');
         $data['state']   = $this->input->post('state');
@@ -1402,7 +1416,7 @@ function select_user_information($patient_id="")
         $data['lname'] 		= $this->input->post('lname');
         $data['description'] 		= $this->input->post('description');
         $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1('nurse');
+        $data['password']       = sha1('mypulse');
         $data['address'] 	= $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['hospital_id'] 	= $this->input->post('hospital');
@@ -1439,7 +1453,6 @@ function select_user_information($patient_id="")
         $data['lname']      = $this->input->post('lname');
         $data['description']        = $this->input->post('description');
         $data['email']      = $this->input->post('email');
-        $data['password']       = sha1('nurse');
         $data['address']    = $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['hospital_id']    = $this->input->post('hospital');
@@ -1591,7 +1604,7 @@ function select_user_information($patient_id="")
         $data['lname'] 		= $this->input->post('lname');
         $data['description'] 		= $this->input->post('description');
         $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1('receptionist');
+        $data['password']       = sha1('mypulse');
         $data['address'] 	= $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['hospital_id'] 	= $this->input->post('hospital');
@@ -1623,7 +1636,7 @@ function select_user_information($patient_id="")
         $data['lname']      = $this->input->post('lname');
         $data['description']        = $this->input->post('description');
         $data['email']      = $this->input->post('email');
-        $data['password']       = sha1('receptionist');
+        $data['doctor_id']  = implode(',',$this->input->post('doctor'));
         $data['address']    = $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['hospital_id']    = $this->input->post('hospital');
