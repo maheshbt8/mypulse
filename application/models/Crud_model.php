@@ -658,13 +658,17 @@ class Crud_model extends CI_Model {
              $data['lname'] 		= $this->input->post('lname');
              $data['description']    = $this->input->post('description');
              $data['email']    = $this->input->post('email');   
-             $data['mobile']    = $this->input->post('mobile');
+             $data['phone']    = $this->input->post('mobile');
              $data['hospital_id']    = $this->input->post('hospital');
              $data['status']    = $this->input->post('status');
              $data['gender']    = $this->input->post('gender');
              $data['dob']    = $this->input->post('dob');
              $data['aadhar']    = $this->input->post('aadhar');  
-             $data['address']    = $this->input->post('address');  
+             $data['address']    = $this->input->post('address');
+             $data['country']    = $this->input->post('country');
+             $data['state']    = $this->input->post('state');
+             $data['district']    = $this->input->post('district');
+             $data['city']    = $this->input->post('city');  
              $data['qualification']    = $this->input->post('qualification');
              $data['profession']    = $this->input->post('profession');
              $data['experience']    = $this->input->post('experience');
@@ -739,6 +743,14 @@ class Crud_model extends CI_Model {
         $this->db->where('branch_id',$branch_id);
         $this->db->delete('branch');
     }
+    function delete_multiple_branch_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('branch_id',$check[$i]);
+            $this->db->delete('branch');
+        }
+    }
     function save_department_info()
     {
         $data['hospital_id']=$this->input->post('hospital');
@@ -769,6 +781,14 @@ class Crud_model extends CI_Model {
     {
         $this->db->where('department_id',$department_id);
         $this->db->delete('department');
+    }
+    function delete_multiple_department_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('department_id',$check[$i]);
+            $this->db->delete('department');
+        }
     }
      function save_ward_info()
     {
@@ -802,6 +822,14 @@ class Crud_model extends CI_Model {
     {
         $this->db->where('ward_id',$ward_id);
         $this->db->delete('ward');
+    }
+    function delete_multiple_ward_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('ward_id',$check[$i]);
+            $this->db->delete('ward');
+        }
     }
        function save_expense_info()
     {
@@ -1054,11 +1082,26 @@ $que=$this->db->insert('availability_slat',$data);
         $this->db->where('doctor_id',$doctor_id);
         $this->db->delete('doctors');
     }
-    
+    function delete_multiple_doctor_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('doctor_id',$check[$i]);
+            $this->db->delete('doctors');
+        }
+    }
      function delete_store_info($patient_id)
     {
         $this->db->where('store_id',$patient_id);
         $this->db->delete('medicalstores');
+    }
+     function delete_multiple_store_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('store_id',$check[$i]);
+            $this->db->delete('medicalstores');
+        }
     }
      function save_medicallabs_info()
     {
@@ -1101,7 +1144,14 @@ $que=$this->db->insert('availability_slat',$data);
         $this->db->where('lab_id',$patient_id);
         $this->db->delete('medicallabs');
     }
-    
+    function delete_multiple_lab_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('lab_id',$check[$i]);
+            $this->db->delete('medicallabs');
+        }
+    }
     function save_user_info()
     {
         $data['name'] 		= $this->input->post('fname');
@@ -1117,7 +1167,7 @@ $que=$this->db->insert('availability_slat',$data);
         $data['address'] 	= $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['sex']            = $this->input->post('gender');
-        $data['birth_date']     = strtotime($this->input->post('dob'));
+        $data['dob']     = $this->input->post('dob');
         $data['age']            = $this->input->post('age');
         /*$data['in_time']          = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );*/
         /*$data['patient_type']            = $this->input->post('patient_type');*/
@@ -1138,11 +1188,11 @@ $que=$this->db->insert('availability_slat',$data);
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567";
+            $a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 15);
-             $pid='MYP_'.$lid.$uid;
-            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid));
+            $uid=substr($sid, 16);
+            $pid='MYP_'.date('y').$uid;
+            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
             
         }
         $patient_id  =   $this->db->insert_id();
@@ -1194,19 +1244,7 @@ $que=$this->db->insert('availability_slat',$data);
         
        
     }
- /*   function save_beds_info()
-    {
-       
-         $data['ward'] 		= $this->input->post('ward');
-        $data['no_of_beds'] = $this->input->post('no_of_beds');
-        $data['price']       = $this->input->post('price');
-       
-       
-        
-        $this->db->insert('beds',$data);
-        
-       
-    }*/
+
     function save_checkup_info()
     {
         $data['tests'] 		= $this->input->post('tests');
@@ -1298,7 +1336,7 @@ function select_user_information($patient_id="")
         $data['address']    = $this->input->post('address');
         $data['phone']          = $this->input->post('mobile');
         $data['sex']            = $this->input->post('gender');
-        $data['birth_date']     = strtotime($this->input->post('dob'));
+        $data['dob']     = $this->input->post('dob');
         $data['age']            = $this->input->post('age');
         /*$data['in_time']          = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );*/
         /*$data['patient_type']            = $this->input->post('patient_type');*/
@@ -1354,20 +1392,7 @@ function select_user_information($patient_id="")
         $this->db->update('patient_expenses',$data);
         
     }
-    
-     function update_beds_info($id)
-    {
-       
-        $data['ward'] 		= $this->input->post('ward');
-        $data['no_of_beds'] 	= $this->input->post('no_of_beds');
-        $data['price']          = $this->input->post('price');
-        
-       
-        $this->db->where('id',$id);
-        $this->db->update('beds',$data);
-        
-    }
-    
+ 
      function update_checkup_info($id)
     {
         $data['tests'] 		= $this->input->post('tests');
@@ -1390,6 +1415,14 @@ function select_user_information($patient_id="")
         $this->db->where('user_id',$user_id);
         $this->db->delete('users');
     }
+    function delete_multiple_user_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('user_id',$check[$i]);
+            $this->db->delete('users');
+        }
+    }
     function delete_outpatient_info($patient_id)
     {
         $this->db->where('patient_id',$patient_id);
@@ -1402,12 +1435,7 @@ function select_user_information($patient_id="")
         $this->db->delete('patient_expenses');
     }
     
-    function delete_beds_info($id)
-    {
-        $this->db->where('id',$id);
-        $this->db->delete('beds');
-    }
-    
+   
     function save_nurse_info()
     {
      
@@ -1481,7 +1509,14 @@ function select_user_information($patient_id="")
         $this->db->where('nurse_id',$nurse_id);
         $this->db->delete('nurse');
     }
-    
+    function delete_multiple_nurse_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('nurse_id',$check[$i]);
+            $this->db->delete('nurse');
+        }
+    }
     function save_pharmacist_info()
     {
         $data['name'] 		= $this->input->post('name');
@@ -1660,6 +1695,14 @@ function select_user_information($patient_id="")
         $this->db->where('receptionist_id',$receptionist_id);
         $this->db->delete('receptionist');
     }
+     function delete_multiple_receptionist_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('receptionist_id',$check[$i]);
+            $this->db->delete('receptionist');
+        }
+    }
      function save_tests_allotment_info()
     {
         
@@ -1820,7 +1863,14 @@ function select_user_information($patient_id="")
         $this->db->where('bed_id',$bed_id);
         $this->db->delete('bed');
     }
-    
+     function delete_multiple_bed_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('bed_id',$check[$i]);
+            $this->db->delete('bed');
+        }
+    }
     function save_blood_donor_info()
     {
         $data['name']                       = $this->input->post('name');

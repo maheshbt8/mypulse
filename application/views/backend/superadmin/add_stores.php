@@ -30,14 +30,14 @@
             <div class="tab-pane box active" id="list">
 				
 				<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
     
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('name'); ?></label>
 
@@ -73,6 +73,22 @@
                             <span ><?php echo form_error('phone_number'); ?></span>
                         </div>
                     </div>
+                   
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
+
+                        <div class="col-sm-8">
+                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
+                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
+                                <option value="1" selected=""><?php echo $this->lang->line('labels')['active'];?></option>
+                                <option value="2"><?php echo $this->lang->line('labels')['inactive'];?></option>
+                            </select>
+                            <span ><?php echo form_error('status'); ?></span>
+                        </div>
+                    </div>
+                   
+                </div>
+                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('owner/MD_name'); ?></label>
 
@@ -125,18 +141,7 @@
                                 <span ><?php echo form_error('branch'); ?></span>
                             </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
-
-                        <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
-                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
-                                <option value="1" selected=""><?php echo $this->lang->line('labels')['active'];?></option>
-                                <option value="2"><?php echo $this->lang->line('labels')['inactive'];?></option>
-                            </select>
-                            <span ><?php echo form_error('status'); ?></span>
-                        </div>
-                    </div>
+                 
                    
                 </div>
                     </div>
@@ -155,7 +160,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
              <div class="panel-body">
@@ -204,7 +209,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="date" name="dob" class="form-control" id="dob" value="<?php echo set_value('dob'); ?>">
+                            <input type="text" name="dob" class="form-control" autocomplete="off" id="dob" value="<?php echo set_value('dob'); ?>">
                         </div>
                     </div>
                     
@@ -282,7 +287,8 @@
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
         </div>
    </form>

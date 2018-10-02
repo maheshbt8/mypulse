@@ -1,19 +1,26 @@
-<a href="<?php echo base_url();?>index.php?superadmin/add_receptionist/"><button onclick="" 
-    class="btn btn-primary pull-right">
+ <?php 
+$this->session->set_userdata('last_page', current_url());
+?>
+<form action="<?php echo base_url()?>index.php?superadmin/receptionist/delete_multiple/" method="post">
+<button type="button" onClick="confSubmit(this.form);" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_receptionist/'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_receptionist'); ?>
-</button></a>
+</button>
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
-            <th><?php echo get_phrase('image');?></th>
-            <th><?php echo get_phrase('name');?></th>
+            <th><?php echo get_phrase('receptionist_name');?></th>
             <th><?php echo get_phrase('hospital');?></th>
             <th><?php echo get_phrase('branch');?></th>
             <th><?php echo get_phrase('department');?></th>  
             <th><?php echo get_phrase('doctor');?></th>
+            <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options');?></th>
         </tr>
     </thead>
@@ -22,8 +29,7 @@
         <?php $i=1;foreach ($receptionist_info as $row) { ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['receptionist_id'] ?>"></td>
-                <td><img src="<?php echo $this->crud_model->get_image_url('receptionist' , $row['receptionist_id']);?>" class="img-circle" width="40px" height="40px"></td>
-                <td><?php echo $row['name']?></td>
+               <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_receptionist/<?php echo $row['receptionist_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                <td>
                     <?php $name = $this->db->get_where('hospitals' , array('hospital_id' => $row['hospital_id'] ))->row()->name;
                         echo $name;?>
@@ -37,8 +43,14 @@
                         echo $name;?>
                 </td>
                 <td><a href="#">View Doctors</a></td>
+                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
+                 }
+                 else if(
+                 $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                     
+                 </td>
                 <td>
-                    <a href="<?php echo base_url();?>index.php?superadmin/edit_receptionist/<?php echo $row['receptionist_id']?>" onclick="#" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                   
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/receptionist/delete/<?php echo $row['receptionist_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                   
                 </td>
@@ -46,7 +58,7 @@
         <?php } ?>
     </tbody>
 </table>
-
+</form>
 <script type="text/javascript">
     jQuery(window).load(function ()
     {
@@ -89,5 +101,11 @@
         if (checkboxes[i] != source)
             checkboxes[i].checked = source.checked;
     }
+}
+
+function confSubmit(form) {
+if (confirm("Are you sure you want to Delete ?")) {
+form.submit();
+}
 }
 </script>

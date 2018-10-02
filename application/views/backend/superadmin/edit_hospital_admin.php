@@ -162,7 +162,7 @@ foreach ($single_admin_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="date" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>">
+                            <input type="text" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>">
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -177,10 +177,72 @@ foreach ($single_admin_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('address'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="address"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['address']?>">
+                            <input type="text" name="address" class="form-control" id="address"value="<?=$row['address']?>">
                         </div>
                     </div>
-                   
+                  
+                   <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="country" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_state(this.value)">
+                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
+                                <?php 
+                                $admins = $this->db->get_where('country')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> 
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
+                            <div class="col-sm-8">
+                                <select name="state" class="form-control" id="select_state"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_district(this.value)">
+                                    <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('state')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                </select>   
+                            </div>
+                    </div>
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
+                            <div class="col-sm-8">
+                                <select name="district" class="form-control" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)">
+                                    <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('district')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                </select>
+                            </div>   
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
+                            <div class="col-sm-8">
+                                <select name="city" class="form-control" id="select_city"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  >
+                                    <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('city')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <?php } ?>
+                                </select>
+                            </div>
+                    </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
 
@@ -243,9 +305,6 @@ foreach ($single_admin_info as $row) {
                             <input type="text" name="experience" class="form-control" id="experience"   value="<?=$row['experience']?>">
                         </div>
                     </div>
-                   
-                     
-                   
                 </div>
                     </div>    
                     </div>
@@ -256,9 +315,10 @@ foreach ($single_admin_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
-                    </div>
+                   
    </form>
             
            
@@ -267,43 +327,3 @@ foreach ($single_admin_info as $row) {
     </div>
 </div>
 <?php }?>
-<!-- <script type="text/javascript">
-
-    
-    function get_state(country_id) {
-    
-        $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
-            success: function(response)
-            {
-                jQuery('#state').html(response);
-            }
-        });
-
-    }
-    
-    function get_city(state_id) {
-
-        $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + state_id ,
-            success: function(response)
-            {
-                jQuery('#city').html(response);
-            }
-        });   
-
-    }
-    
-     function get_district(city_id) {
-
-        $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + city_id ,
-            success: function(response)
-            {
-                jQuery('#district').html(response);
-            }
-        });
-
-    }
-
-</script> -->

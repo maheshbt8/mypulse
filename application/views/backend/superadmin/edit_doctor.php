@@ -36,7 +36,7 @@ foreach ($single_doctor_info as $row) {
             <div class="tab-pane box active" id="list">
                 
                 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -84,7 +84,26 @@ foreach ($single_doctor_info as $row) {
                             <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>">
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
+                    </div>  
+                </div>
                     </div>
+                   
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-6">
+
+        <div class="panel panel-primary" data-collapsed="0">
+
+
+            <div class="panel-body">
+
+                
+                    <div class="row">
+                        <div class="col-sm-12">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
@@ -175,7 +194,7 @@ foreach ($single_doctor_info as $row) {
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
      <div class="panel-body">
@@ -198,7 +217,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('date_of_birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="date" name="dob" class="form-control" id="dob" placeholder="<?php echo get_phrase('date_of_birth'); ?>"> value="<?php echo $row['dob']; ?>">
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off" value="<?php echo $row['dob']; ?>">
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -282,7 +301,7 @@ foreach ($single_doctor_info as $row) {
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url(); ?>uploads/doctor_image/<?php echo $row['doctor_id']; ?>.jpg" alt="...">
+                                    <img src="<?php echo $this->crud_model->get_image_url('doctor' , $row['doctor_id']);?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
@@ -309,7 +328,7 @@ foreach ($single_doctor_info as $row) {
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
@@ -351,7 +370,8 @@ foreach ($single_doctor_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>

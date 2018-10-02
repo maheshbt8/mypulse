@@ -71,9 +71,24 @@
 
                         <div class="col-sm-8">
                             <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('phone_number'); ?>" minlength="10" maxlength="10">  
-                            <span ><?php echo form_error('name'); ?></span>
+                            <span ><?php echo form_error('phone_number'); ?></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
+
+                        <div class="col-sm-8">
+                            <select name="status" class="form-control" id="status" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
+                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
+                                <option value="1" selected=""><?php echo $this->lang->line('labels')['active'];?></option>
+                                <option value="2"><?php echo $this->lang->line('labels')['inactive'];?></option>
+                            </select>
+                            <span ><?php echo form_error('status'); ?></span>
+                        </div>
+                    </div>
+                   
+                </div>
+                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['ownerName'];?></label>
 
@@ -125,22 +140,6 @@
                                 <span ><?php echo form_error('branch'); ?></span>
                             </div>
                     </div>
-                     
-                    
-                 
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
-
-                        <div class="col-sm-8">
-                            <select name="status" class="form-control" id="status" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
-                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
-                                <option value="1" selected=""><?php echo $this->lang->line('labels')['active'];?></option>
-                                <option value="2"><?php echo $this->lang->line('labels')['inactive'];?></option>
-                            </select>
-                            <span ><?php echo form_error('status'); ?></span>
-                        </div>
-                    </div>
-                   
                 </div>
                     </div>
                
@@ -159,7 +158,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -216,7 +215,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" id="dob" class="form-control datepicker" id="field-2" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo $this->lang->line('buttons')['dob'];?>" autocomplete="off">
+                            <input type="text" name="dob" id="dob" class="form-control" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo $this->lang->line('buttons')['dob'];?>" autocomplete="off">
                         </div>
                     </div>
                     
@@ -260,7 +259,7 @@
 		
 			<div class="tab-pane box" id="pro" style="padding: 5px">
                	<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
@@ -297,7 +296,8 @@
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>

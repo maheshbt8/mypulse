@@ -174,7 +174,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
      <div class="panel-body">
@@ -302,7 +302,7 @@
 		
 			<div class="tab-pane box" id="pro" style="padding: 5px">
                	<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
@@ -337,7 +337,8 @@
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>
@@ -369,7 +370,7 @@
     function get_department(branch_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_department/' + branch_id ,
+            url: '<?php echo base_url();?>index.php?superadmin/get_department_all/' + branch_id ,
             success: function(response)
             {
                 jQuery('#select_department').html(response);
@@ -379,6 +380,7 @@
     }
     
       function get_doctor(department_id) {
+       
 
 if(department_id == 'all'){
     var branch_id=$('#select_branch').val();

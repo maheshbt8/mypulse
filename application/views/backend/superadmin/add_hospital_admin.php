@@ -30,7 +30,7 @@
             <div class="tab-pane box active" id="list">
                 
                 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -38,12 +38,12 @@
     
                 
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="fname" class="form-control" id="fname" value="<?php echo set_value('fname'); ?>">
+                            <input type="text" name="fname" class="form-control" id="fname" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('fname'); ?>" >
                             <span ><?php echo form_error('fname'); ?></span>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('last_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="lname" value="<?php echo set_value('lname'); ?>">
+                            <input type="text" name="lname" class="form-control" id="lname" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('lname'); ?>">
                             <span ><?php echo form_error('lname'); ?></span>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description" value="<?php echo set_value('description'); ?>">
+                            <input type="text" name="description" class="form-control" id="description" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('description'); ?>">
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email" value="<?php echo set_value('email'); ?>">
+                            <input type="email" name="email" class="form-control" id="email" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('email'); ?>">
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" class="form-control" id="phone_number" value="<?php echo set_value('phone_number'); ?>" minlength="10" maxlength="10">
+                            <input type="number" name="phone_number" class="form-control" id="phone_number" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('phone_number'); ?>" minlength="10" maxlength="10">
                             <span ><?php echo form_error('phone_number'); ?></span>  
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control" id="hospital" value="<?php echo set_value('hospital'); ?>">
+                            <select name="hospital" class="form-control" id="hospital" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('hospital'); ?>">
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
@@ -111,7 +111,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('status'); ?></label>
 
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" id="status" value="<?php echo set_value('status'); ?>">
+                            <select name="status" class="form-control" id="status" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('status'); ?>">
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1" selected=""><?php echo get_phrase('active'); ?></option>
                                 <option value="2"><?php echo get_phrase('inactive'); ?></option>
@@ -303,7 +303,8 @@
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>

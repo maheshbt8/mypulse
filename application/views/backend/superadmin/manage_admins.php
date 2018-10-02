@@ -1,11 +1,14 @@
+<?php 
+$this->session->set_userdata('last_page', current_url());
+?>
 <form action="<?php echo base_url()?>index.php?superadmin/hospital_admins/delete_multiple/" method="post">
-<a href="#"><button type="submit" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/');" 
-    class="btn btn-danger pull-right" >
+<button type="button" onClick="confSubmit(this.form);" 
+    class="btn btn-danger pull-right">
         <?php echo get_phrase('delete'); ?>
-</button></a>
-<a href='<?php echo base_url(); ?>index.php?superadmin/add_hospital_admins'><button class="btn btn-primary pull-right" type="button"><?php echo get_phrase('add_hospital_admin'); ?>
-</button></a>
-
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>index.php?superadmin/add_hospital_admins'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_hospital_admin'); ?>
+</button>
 <div style="clear:both;"></div>
 <br>
 
@@ -13,8 +16,7 @@
     <thead>  
         <tr>   
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
-            <th><?php echo get_phrase('image'); ?></th>
-            <th><?php echo get_phrase('name'); ?></th> 
+            <th><?php echo get_phrase('hospital_admin_name'); ?></th> 
             <th><?php echo get_phrase('hospital'); ?></th>
             
              <th><?php echo get_phrase('status'); ?></th> 
@@ -28,18 +30,14 @@
         ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['admin_id'] ?>"></td>
-                <td><img src="<?php echo $this->crud_model->get_image_url('hospitaladmin' , $row['admin_id']);?>" 
-                         class="img-circle" width="40px" height="40px">
-                </td>
-                <td><?php echo $row['name'] ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_hospital_admins/<?php echo $row['admin_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->name; ?></td>
                
-                 <td><?php if($row['status'] == 1){echo "active";  
+                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
                  }
                  else if(
-                 $row['status == 0']){ echo "inactive";}?></td>
+                 $row['status'] == 0){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
                 <td>
-                <a href="<?php echo base_url(); ?>index.php?superadmin/edit_hospital_admins/<?php echo $row['admin_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
                 <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/hospital_admins/delete/<?php echo $row['admin_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 
                 

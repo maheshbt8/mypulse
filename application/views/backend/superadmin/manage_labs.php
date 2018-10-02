@@ -1,14 +1,17 @@
-<a href="<?php echo base_url();?>index.php?superadmin/add_labs"
-    class="btn btn-primary pull-right">
+<?php 
+$this->session->set_userdata('last_page', current_url());
+?>
+<form action="<?php echo base_url()?>index.php?superadmin/medical_labs/delete_multiple/" method="post">
+<button type="button" onClick="confSubmit(this.form);" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_labs'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_medical_labs'); ?>
-</button></a>
+</button>
+
 <div style="clear:both;"></div>
 <br>
-<div style="width: 100%;  
-    overflow-x: auto;
-    overflow-y: hidden;
-    border: 1px solid #e7ecf1;
-    margin: 10px 0!important;">
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>  
         <tr>
@@ -27,7 +30,7 @@
         <?php $i=1;foreach ($lab_info as $row) { ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td>
-                <td><?php echo $row['name'] ?></td>
+                 <td><a href="<?php echo base_url();?>index.php?superadmin/edit_labs/<?php echo $row['lab_id']?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['owner_name'] ?></td>
                 <td><?php echo $row['owner_mobile'] ?></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
@@ -37,14 +40,14 @@
                  else if(
                  $row['status'] == 0){ echo "inactive";}?></td>  -->
                <td>
-             <a href="<?php echo base_url();?>index.php?superadmin/edit_labs/<?php echo $row['lab_id']?>" onclick="#" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                    <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/medical_labs/delete/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> 
+              <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/medical_labs/delete/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> 
                 </td>
             </tr>
         <?php } ?>
     </tbody>
 </table>
-</div>
+
+</form>
 
 <script type="text/javascript">
     jQuery(window).load(function ()
@@ -88,5 +91,11 @@
         if (checkboxes[i] != source)
             checkboxes[i].checked = source.checked;
     }
+}
+
+function confSubmit(form) {
+if (confirm("Are you sure you want to Delete ?")) {
+form.submit();
+}
 }
 </script>

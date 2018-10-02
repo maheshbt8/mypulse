@@ -72,33 +72,4 @@
             </div>
         </div>
     </div>
-   <!-- 
-    <script type="text/javascript">
-	function confirm_modal(delete_url , post_refresh_url)
-	{
-		jQuery('#modal-4').modal('show', {backdrop: 'static'});
-		document.getElementById('delete_link').setAttribute('href' , delete_url);
-	}
-	</script>
-    
-    
-    <div class="modal fade" id="modal_delete">
-        <div class="modal-dialog">
-            <div class="modal-content" style="margin-top:100px;">
-                
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" style="text-align:center;">Are you sure to delete this information ?</h4>
-                </div>
-                
-                
-                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
-                	<span id="preloader-delete"></span>
-                    </br>
-                	  <button type="button" class="btn btn-danger" id="delete_link" onClick=""><?php echo get_phrase('delete');?></button>
-                    <button type="button" class="btn btn-info" data-dismiss="modal" id="delete_cancel_link"><?php echo get_phrase('cancel');?></button>
-                    
-                </div>
-            </div>
-        </div>
-    </div>-->
+   

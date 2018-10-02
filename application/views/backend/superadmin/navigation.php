@@ -191,7 +191,27 @@
                
             </ul>
         </li> -->
+
+         <li class="">
+            <a href="#">
+                <i class="glyphicon glyphicon-stats"></i>
+                <span><?php echo get_phrase('reports'); ?></span>
+            </a>
+            <ul>
+                 <li class="#">
+                    <a href="#">
+                        <span><?php echo get_phrase('patient_report'); ?></span>
+                    </a>
+                </li>
+                <li class="#">
+                    <a href="#">
+                        <span><?php echo get_phrase('appointment_report'); ?></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
              <!-- SETTINGS -->
+
         <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>

@@ -40,7 +40,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="name" value="<?php echo set_value('name'); ?>">
+                            <input type="text" name="name" class="form-control" id="name" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('name'); ?>" value="<?php echo set_value('name'); ?>">
                             <span ><?php echo form_error('name'); ?></span>
                         </div>
                     </div>
@@ -48,14 +48,14 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description" value="<?php echo set_value('description'); ?>">
+                            <input type="text" name="description" class="form-control" id="description"data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('description'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('address'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
+                            <input type="text" name="address" class="form-control" id="address" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('address'); ?>">
                             <span ><?php echo form_error('address'); ?></span>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email" value="<?php echo set_value('email'); ?>">
+                            <input type="email" name="email" class="form-control" id="email" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('email'); ?>">
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" class="form-control" id="phone_number" value="<?php echo set_value('phone_number'); ?>" minlength="10" maxlength="10">
+                            <input type="number" name="phone_number" class="form-control" id="phone_number" value="<?php echo set_value('phone_number'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" minlength="10" maxlength="10">
                             <span ><?php echo form_error('phone_number'); ?></span>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('status'); ?></label>
 
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" id="status" value="<?php echo set_value('status'); ?>">
+                            <select name="status" class="form-control" id="status" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('status'); ?>">
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1" selected=""><?php echo get_phrase('active'); ?></option>
                                 <option value="2"><?php echo get_phrase('inactive'); ?></option>
@@ -94,7 +94,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('owner/MD_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="md_name" class="form-control" id="md_name" value="<?php echo set_value('md_name'); ?>">
+                            <input type="text" name="md_name" class="form-control" id="md_name" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('md_name'); ?>">
                             <span ><?php echo form_error('md_name'); ?></span>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('owner/MD_phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="md_phone" class="form-control" id="md_phone" value="<?php echo set_value('md_phone'); ?>"  minlength="10" maxlength="10">
+                            <input type="number" name="md_phone" class="form-control" id="md_phone"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('md_phone'); ?>"  minlength="10" maxlength="10">
                             <span ><?php echo form_error('md_phone'); ?></span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control" id="country" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
+                            <select name="country" class="form-control" id="country" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('country')->result_array();
@@ -129,7 +129,7 @@
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
                             <div class="col-sm-8">
-                                <select name="state" class="form-control" id="state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
+                                <select name="state" class="form-control" id="state" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
                                     <option value=""><?php echo get_phrase('select_country_first'); ?></option>
 
                                 </select> 
@@ -141,7 +141,7 @@
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
                             <div class="col-sm-8">
-                                <select name="district" class="form-control" id="district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
+                                <select name="district" class="form-control" id="district" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
                                     <option value=""><?php echo get_phrase('select_state_first'); ?></option>
 
                                 </select>
@@ -152,7 +152,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
                             <div class="col-sm-8">
-                                <select name="city" class="form-control" id="city" value="<?php echo set_value('city'); ?>"  >
+                                <select name="city" class="form-control" id="city" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('city'); ?>"  >
                                     <option value=""><?php echo get_phrase('select_district_first'); ?></option>
 
                                 </select>
@@ -241,7 +241,8 @@
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                    
    </form>
@@ -261,10 +262,10 @@
         });
 
     }
-    function get_district(city_id) {
+    function get_district(state_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + city_id ,
+            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + state_id ,
             success: function(response)
             {
                 jQuery('#district').html(response);
@@ -272,10 +273,10 @@
         });
 
     }
-    function get_city(state_id) {
+    function get_city(district_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + state_id ,
+            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + district_id ,
             success: function(response)
             {
                 jQuery('#city').html(response);

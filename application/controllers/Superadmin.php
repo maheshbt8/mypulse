@@ -164,15 +164,15 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     
     /*     * ****MANAGE OWN PROFILE AND CHANGE PASSWORD** */
 
-    function profile($param1 = '', $param2 = '', $param3 = '') {
+    function manage_profile($param1 = '', $param2 = '', $param3 = '') {
       
 
         if ($param1 == 'update_profile_info') {
             $data['name'] = $this->input->post('name');
             $data['email'] = $this->input->post('email');
 
-            $this->db->where('admin_id', $this->session->userdata('login_user_id'));
-            $this->db->update('admin', $data);
+            $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
+            $this->db->update('superadmin', $data);
 
             $this->session->set_flashdata('message', get_phrase('profile_info_updated_successfuly'));
             redirect(base_url() . 'index.php?superadmin/manage_profile');
@@ -182,12 +182,12 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
             $new_password = sha1($this->input->post('new_password'));
             $confirm_new_password = sha1($this->input->post('confirm_new_password'));
 
-            $current_password_db = $this->db->get_where('admin', array('admin_id' =>
+            $current_password_db = $this->db->get_where('superadmin', array('superadmin_id' =>
                         $this->session->userdata('login_user_id')))->row()->password;
 
             if ($current_password_db == $current_password_input && $new_password == $confirm_new_password) {
-                $this->db->where('admin_id', $this->session->userdata('login_user_id'));
-                $this->db->update('admin', array('password' => $new_password));
+                $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
+                $this->db->update('superadmin', array('password' => $new_password));
 
                 $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
                 redirect(base_url() . 'index.php?superadmin/manage_profile');
@@ -198,7 +198,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         }
         $page_data['page_name'] = 'manage_profile';
         $page_data['page_title'] = get_phrase('manage_profile');
-        $page_data['edit_data'] = $this->db->get_where('admin', array('admin_id' => $this->session->userdata('login_user_id')))->result_array();
+        $page_data['edit_data'] = $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
         $this->load->view('backend/index', $page_data);
     }
     
@@ -261,6 +261,12 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
             $this->session->set_flashdata('message', get_phrase('city_info_saved_successfuly'));
             redirect(base_url() . 'index.php?superadmin/city');
         }
+         if ($param1 == "update") {
+            
+            $this->crud_model->update_city_info($param2);
+            $this->session->set_flashdata('message', get_phrase('city_info_updated_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/city');
+        }
         $page_data['page_name'] = 'city';
         $page_data['page_title'] = get_phrase('city');
         $page_data['country'] = $this->db->get('city')->result_array();
@@ -308,10 +314,10 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     }
     
     
-     function get_city($state_id)
+     function get_city($district_id)
     {
         $state = $this->db->get_where('city' , array(
-            'state_id' => $state_id))->result_array();
+            'district_id' => $district_id))->result_array();
         echo '<option value=""> Select city </option>';
         foreach ($state as $row2) {
             echo '<option value="' . $row2['city_id'] . '">' . $row2['name'] . '</option>';
@@ -343,13 +349,23 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     
     
      /*GET DEPARTMENT*/
-    function get_department($branch_id)
+      function get_department_all($branch_id)
     {
         $department = $this->db->get_where('department' , array(
             'branch_id' => $branch_id
         ))->result_array();
         echo '<option value=""> Select Department </option>';
         echo '<option value="all"> All Department </option>';
+        foreach ($department as $row) {
+            echo '<option value="' . $row['department_id'] . '">' . $row['name'] . '</option>';
+        }
+    }
+    function get_department($branch_id)
+    {
+        $department = $this->db->get_where('department' , array(
+            'branch_id' => $branch_id
+        ))->result_array();
+        echo '<option value=""> Select Department </option>';
         foreach ($department as $row) {
             echo '<option value="' . $row['department_id'] . '">' . $row['name'] . '</option>';
         }
@@ -365,7 +381,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         }
     }
     
-     function get_doctor($department_id,$department_id1)   
+     function get_doctor($department_id='',$department_id1 = '')   
     {
         if($department_id == 'all'){
             $doctor = $this->db->get_where('doctors' , array(
@@ -393,7 +409,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         $data['branch_info'] = $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();*/
         $data['hospital_id']=$hospital_id;
         $data['page_name'] = 'hospital_history';
-        $data['page_title'] = get_phrase('hospital_history');
+        $data['page_title'] = get_phrase('hospital_details');
         $this->load->view('backend/index', $data);
     }
     public function get_hospital_branch($hospital_id='') {   
@@ -446,13 +462,13 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         array('field' => 'name','label' => 'Name','rules' => 'required'),
         array('field' => 'address','label' => 'Address','rules' => 'required'),
         array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
-        array('field' => 'email','label' => 'Email','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
         array('field' => 'country','label' => 'Country','rules' => 'required'),
         array('field' => 'state','label' => 'State','rules' => 'required'),
         array('field' => 'district','label' => 'District','rules' => 'required'),
         array('field' => 'city','label' => 'City','rules' => 'required'),
         array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
-        array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required|valid_email'),
+        array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required'),
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
@@ -610,45 +626,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         $this->load->view('backend/index', $data);
         }
     function hospital_admins($task = "", $admin_id = "") {
-        
-       /* if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-        
-        if ($task == "create") {
-            
-           $email = $this->input->post('email');
-           
-           $validation = email_validation($email);
-           
-            if ($validation == 1) {
-                $this->crud_model->save_hospitaladmins_info();
-                $this->session->set_flashdata('message', get_phrase('admin_info_saved_successfuly'));
-            } else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-           
-            redirect(base_url() . 'index.php?superadmin/hospital_admins');
-        }
-   
-        if ($task == "update") {
-            $email  = $this->input->post('email');
-
-            $validation = email_validation_for_edit($email, $admin_id, 'admin');
-            if($validation == 1)
-			{
-            $this->crud_model->update_hospitaladmins_info($admin_id);
-            $this->session->set_flashdata('message', get_phrase('admin_info_updated_successfuly'));
-            }
-            else
-			{
-                $this->session->set_flashdata('error_message' , 'duplicate_email');
-            }
-            
-            redirect(base_url() . 'index.php?superadmin/hospital_admins');
-        }
-*/
+    
         if ($task == "delete") {
             $this->crud_model->delete_hospitaladmins_info($admin_id);
             $this->session->set_flashdata('message', get_phrase('admin_info_deleted_successfuly'));
@@ -691,18 +669,13 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
   
     
     function branch($task = "", $branch_id = "") {
-        
-        if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-       
         if ($task == "create") {
             $hospital=$this->input->post('hospital');
             $this->crud_model->save_branch_info();
             $this->session->set_flashdata('message', get_phrase('branch_info_saved_successfuly'));
             redirect(base_url() . 'index.php?superadmin/get_hospital_branch/'.$hospital);
         }
+
         if ($task == "edit") {
         $data['branch_id'] = $branch_id;
         $data['page_name'] = 'edit_branch';
@@ -718,9 +691,13 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
 
         if ($task == "delete") {
             $this->crud_model->delete_branch_info($branch_id);
-            redirect(base_url() . 'index.php?superadmin/branch');
+            redirect($this->session->userdata('last_page'));
         }
-
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_branch_info();
+            $this->session->set_flashdata('message', get_phrase('branch_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['branch_info'] = $this->crud_model->select_branch_info();
         $data['page_name'] = 'manage_branch';
         $data['page_title'] = get_phrase('branch');
@@ -728,7 +705,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     }
     function add_department($branch_id='')
     {
-     $data['branch_id'] = $branch_id;
+    $data['branch_id'] = $branch_id;
     $data['page_name'] = 'add_department';
     $data['page_title'] = get_phrase('add_department');
     $this->load->view('backend/index', $data);
@@ -747,29 +724,29 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         
     }
     function department($task = "", $department_id = "") {
-        if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-
+        
         if ($task == "create") {
             $branch=$this->input->post('branch');
             $this->crud_model->save_department_info();
             $this->session->set_flashdata('message', get_phrase('department_info_saved_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/get_hospital_department/'.$branch);
+            redirect(base_url() . 'index.php?superadmin/get_hospital_departments/'.$branch);
         }
 
         if ($task == "update") {
             $this->crud_model->update_department_info($department_id);
             $this->session->set_flashdata('message', get_phrase('department_info_updated_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/department');
+            redirect($this->session->userdata('last_page'));
         }
 
         if ($task == "delete") {
             $this->crud_model->delete_department_info($department_id);
-            redirect(base_url() . 'index.php?superadmin/department');
+            redirect($this->session->userdata('last_page'));
         }
-
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_department_info();
+            $this->session->set_flashdata('message', get_phrase('department_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['department_info'] = $this->crud_model->select_department_info();
         $data['page_name'] = 'manage_department';
         $data['page_title'] = get_phrase('department');
@@ -809,14 +786,18 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         if ($task == "update") {
             $this->crud_model->update_ward_info($ward_id);
             $this->session->set_flashdata('message', get_phrase('ward_info_updated_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/ward');
+            redirect($this->session->userdata('last_page'));
         }
 
         if ($task == "delete") {
             $this->crud_model->delete_ward_info($ward_id);
-            redirect(base_url() . 'index.php?superadmin/ward');
+            redirect($this->session->userdata('last_page'));
         }
-
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_ward_info();
+            $this->session->set_flashdata('message', get_phrase('ward_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['ward_info'] = $this->crud_model->select_ward_info();
         $data['page_name'] = 'manage_ward';
         $data['page_title'] = get_phrase('ward');
@@ -900,23 +881,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
             }
         }
         }
-     /*      if ($task == "update") {
-                $email  = $this->input->post('email');
-
-            $validation = email_validation_for_edit($email, $doctor_id, 'doctor');
-            if($validation == 1)
-            {
-               $this->crud_model->update_doctor_info($doctor_id);
-               $this->session->set_flashdata('message', get_phrase('doctor_info_updated_successfuly'));
-            }
-            else
-            {
-                $this->session->set_flashdata('error_message' , 'duplicate_email');
-            }
-               
-            
-                redirect(base_url() . 'index.php?superadmin/doctor');
-        }*/
+     
         $data['doctor_id']=$id;
         $data['page_name'] = 'edit_doctor';
         $data['page_title'] = get_phrase('edit_doctor');
@@ -925,46 +890,15 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         
     }
     function doctor($task = "", $doctor_id = "") {
-        /* if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-
-       if ($task == "create") {
-               $email = $this->input->post('email');
-           
-           $validation = email_validation($email);
-           
-            if ($validation == 1) {
-                $this->crud_model->save_doctor_info();
-                $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
-            } else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-            redirect(base_url() . 'index.php?superadmin/doctor');
-        }*/
-
-     /*   if ($task == "update") {
-                $email  = $this->input->post('email');
-
-            $validation = email_validation_for_edit($email, $doctor_id, 'doctor');
-            if($validation == 1)
-			{
-               $this->crud_model->update_doctor_info($doctor_id);
-               $this->session->set_flashdata('message', get_phrase('doctor_info_updated_successfuly'));
-            }
-            else
-			{
-                $this->session->set_flashdata('error_message' , 'duplicate_email');
-            }
-               
-            
-                redirect(base_url() . 'index.php?superadmin/doctor');
-        }*/
-
+       
         if ($task == "delete") {
             $this->crud_model->delete_doctor_info($doctor_id);
-            redirect(base_url() . 'index.php?superadmin/doctor');
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_doctor_info();
+            $this->session->set_flashdata('message', get_phrase('doctor_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
         }
         $data['doctor_info'] = $this->crud_model->select_doctor_info();
         $data['page_name'] = 'manage_doctor';
@@ -1059,7 +993,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
            $this->crud_model->save_user_info();
             $this->session->set_flashdata('message', get_phrase('user_info_saved_successfuly'));
             $this->email_model->account_opening_email('users','user', $email);
-            redirect(base_url() . 'index.php?superadmin/users');
+            redirect($this->session->userdata('last_page'));
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
@@ -1092,7 +1026,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
            if($phone == 1){
             $this->crud_model->update_user_info($user_id);
                 $this->session->set_flashdata('message', get_phrase('user_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/users');
+                redirect($this->session->userdata('last_page'));
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
@@ -1109,32 +1043,17 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
 
     function users($task = "", $patient_id = "") {
         
-        /*if ($task == "create") {
-                 $email = $this->input->post('email');
-           
-           $validation = email_validation($email);
-           
-            if ($validation == 1) {
-                $this->crud_model->save_patient_info();
-                $this->session->set_flashdata('message', get_phrase('inpatient_info_saved_successfuly'));
-            } else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-   
-            redirect(base_url() . 'index.php?superadmin/patient');
-        }*/
-            
-
-       /* if ($task == "update") {
-                $this->crud_model->update_patient_info($patient_id);
-                $this->session->set_flashdata('message', get_phrase('inpatient_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/patient');
-        }*/
-
+      
         if ($task == "delete") {
 
             $this->crud_model->delete_user_info($patient_id);
-            redirect(base_url() . 'index.php?superadmin/users');
+            $this->session->set_flashdata('message', get_phrase('user_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_user_info();
+            $this->session->set_flashdata('message', get_phrase('user_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
         }
         if ($task == "dj_report") {
              $this->crud_model->select_prescription_info_by_patient($patient_id);
@@ -1148,7 +1067,8 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     }
       function add_appointment()
     {
-       /* if($this->input->post()){
+        if($this->input->post()){
+            print_r($_POST);die;
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
         array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
@@ -1180,7 +1100,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
             }
         }
-    }*/
+    }
 
         $data['page_name'] = 'add_appointment';
         $data['page_title'] = get_phrase('add_doctor');
@@ -1191,7 +1111,6 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     
     function add_stores()
     {
-        
         if($this->input->post()){
         $config = array(
         array('field' => 'name','label' => 'First Name','rules' => 'required'),
@@ -1233,15 +1152,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         
     }
     
-   /*  function add_()
-    {
-       // $data['hos_info'] = $this->crud_model->select_hos_info($patient);
-        // $data['branch_info'] = $this->crud_model->select_branch_info($patient);
-        $data['page_name'] = 'add_stores';
-        $data['page_title'] = get_phrase('Add medical store');
-        $this->load->view('backend/index', $data);
-        
-    }*/
+  
      function add_labs()
     {
      
@@ -1321,20 +1232,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
             }
         }
-         /*   $email = $this->input->post('email');
-            $pwd="nurse";
-           $validation = email_validation($email);
-           
-            if ($validation == 1) {
-                $this->crud_model->save_nurse_info();
-                $this->session->set_flashdata('message', get_phrase('nurse_info_saved_successfuly'));
-                $this->email_model->account_opening_email('nurse','nurse', $email,$pwd);
-                redirect(base_url() . 'index.php?superadmin/nurse');
-            } else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }*/
-            
-       
+        
        }
         $data['page_name'] = 'add_nurse';
         $data['page_title'] = get_phrase('Add nurse');
@@ -1471,20 +1369,16 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     
      function medical_labs($task = "", $patient_id = "") {
        
-
-        /*
-        if ($task == "update") {
-                $this->crud_model->update_medicallabs_info($patient_id);
-                $this->session->set_flashdata('message', get_phrase('medical_lab__info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/medical_labs');
-        }*/
-
         if ($task == "delete") {
             $this->crud_model->delete_lab_info($patient_id);
             redirect(base_url() . 'index.php?superadmin/medical_labs');
         }
        
-      
+      if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_lab_info();
+            $this->session->set_flashdata('message', get_phrase('medical_labs_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['lab_info'] = $this->crud_model->select_lab_info($patient);
         $data['page_name'] = 'manage_labs';
         $data['page_title'] = get_phrase('Medical labs');
@@ -1500,27 +1394,15 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
             redirect(base_url(), 'refresh');
         }
 
-        /*if ($task == "create") {
-            
-           
-                $this->crud_model->save_medicalstores_info();
-                $this->session->set_flashdata('message', get_phrase('medical_stores_info_saved_successfuly'));
-           
-            redirect(base_url() . 'index.php?superadmin/medical_stores');
-        }*/
-            
-
-        /*if ($task == "update") {
-                $this->crud_model->update_medicalstores_info($patient_id);
-                $this->session->set_flashdata('message', get_phrase('medical_store__info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/medical_stores');
-        }*/
-
         if ($task == "delete") {
             $this->crud_model->delete_store_info($patient_id);
-            redirect(base_url() . 'index.php?superadmin/medical_stores');
+            redirect($this->session->userdata('last_page'));
         }
-       
+       if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_store_info();
+            $this->session->set_flashdata('message', get_phrase('medical_stores_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
       
         $data['store_info'] = $this->crud_model->select_store_info($patient);
         $data['page_name'] = 'manage_stores';
@@ -1561,14 +1443,20 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
             
 
         if ($task == "update") {
-                $this->crud_model->update_beds_info($id);
-                $this->session->set_flashdata('message', get_phrase('beds_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/bed');
+                $this->crud_model->update_bed_info($id);
+                $this->session->set_flashdata('message', get_phrase('bed_info_updated_successfuly'));
+                redirect($this->session->userdata('last_page'));
         }
 
         if ($task == "delete") {
-            $this->crud_model->delete_beds_info($id);
-            redirect(base_url() . 'index.php?superadmin/bed');
+            $this->crud_model->delete_bed_info($id);
+            $this->session->set_flashdata('message', get_phrase('bed_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_bed_info();
+            $this->session->set_flashdata('message', get_phrase('bed_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
         }
 
         $data['bed_info'] = $this->crud_model->select_beds_info();
@@ -1578,34 +1466,14 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     }
     
     function nurse($task = "", $nurse_id = "") {
-        /*if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-
-        if ($task == "create") {
-            $email = $this->input->post('email');
-           
-           $validation = email_validation($email);
-           
-            if ($validation == 1) {
-                $this->crud_model->save_nurse_info();
-                $this->session->set_flashdata('message', get_phrase('nurse_info_saved_successfuly'));
-            } else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-            redirect(base_url() . 'index.php?superadmin/nurse');
-        }
-
-        if ($task == "update") {
-                $this->crud_model->update_nurse_info($nurse_id);
-                $this->session->set_flashdata('message', get_phrase('nurse_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/nurse');
-        }
-*/
         if ($task == "delete") {
             $this->crud_model->delete_nurse_info($nurse_id);
-            redirect(base_url() . 'index.php?superadmin/nurse');
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_nurse_info();
+            $this->session->set_flashdata('message', get_phrase('nurse_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
         }
 
         $data['nurse_info'] = $this->crud_model->select_nurse_info();
@@ -1644,7 +1512,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
              $this->crud_model->save_receptionist_info();
                 $this->session->set_flashdata('message', get_phrase('receptionist_info_saved_successfuly'));
                 $this->email_model->account_opening_email('receptionist','receptionist', $email);
-                redirect(base_url() . 'index.php?superadmin/nurse');
+                redirect($this->session->userdata('last_page'));
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
@@ -1686,7 +1554,7 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
            if($phone == 1){
             $this->crud_model->update_receptionist_info($id);
             $this->session->set_flashdata('message', get_phrase('receptionist_info_updated_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/receptionist');
+            redirect($this->session->userdata('last_page'));
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
@@ -1703,34 +1571,16 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
         
     }
     function receptionist($task = "", $receptionist_id = "") {
-        /*if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        }
-
-        if ($task == "create") {
-            $email = $_POST['email'];
-            $receptionist = $this->db->get_where('receptionist', array('email' => $email))->row()->name;
-            if ($receptionist == null) {
-                $this->crud_model->save_receptionist_info();
-                $this->session->set_flashdata('message', get_phrase('receptionist_info_saved_successfuly'));
-            } else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-            redirect(base_url() . 'index.php?superadmin/receptionist');
-        }
-
-        if ($task == "update") {
-                $this->crud_model->update_receptionist_info($receptionist_id);
-                $this->session->set_flashdata('message', get_phrase('receptionist_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/receptionist');
-        }*/
-
+        
         if ($task == "delete") {
             $this->crud_model->delete_receptionist_info($receptionist_id);
-            redirect(base_url() . 'index.php?superadmin/receptionist');
+            redirect($this->session->userdata('last_page'));
         }
-
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_receptionist_info();
+            $this->session->set_flashdata('message', get_phrase('receptionist_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['receptionist_info'] = $this->crud_model->select_receptionist_info();
         $data['page_name'] = 'manage_receptionist';
         $data['page_title'] = get_phrase('receptionists');

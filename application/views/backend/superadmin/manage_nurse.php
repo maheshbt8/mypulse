@@ -1,28 +1,35 @@
- <a href="<?php echo base_url();?>index.php?superadmin/add_nurse"><button   class="btn btn-primary pull-right">
- <?php echo get_phrase('add_nurse'); ?>
-</button></a>
+ <?php 
+
+?>
+<form action="<?php echo base_url()?>index.php?superadmin/nurse/delete_multiple/" method="post">
+<button type="button" onClick="confSubmit(this.form);" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_nurse'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_nurse'); ?>
+</button>
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onchange="return upall()"></th>
-            <th><?php echo get_phrase('image');?></th>
-            <th><?php echo get_phrase('name');?></th> 
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
+            <th><?php echo get_phrase('nurse_name');?></th> 
              <th><?php echo get_phrase('hospital');?></th>
             <th><?php echo get_phrase('branch');?></th>
             <th><?php echo get_phrase('department');?></th>  
             <th><?php echo get_phrase('doctor');?></th>
+            <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options');?></th>
         </tr> 
     </thead>
 
     <tbody>
-        <?php foreach ($nurse_info as $row) { ?>   
+        <?php $i=1;foreach ($nurse_info as $row) { ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['doctor_id'] ?>" onchange="return upall()"></td>
-                <td><img src="<?php echo $this->crud_model->get_image_url('nurse' , $row['nurse_id']);?>" class="img-circle" width="40px" height="40px"></td>
-                <td><?php echo $row['name']?></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>"></td>
+                 <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_nurse/<?php echo $row['nurse_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td>
                     <?php $name = $this->db->get_where('hospitals' , array('hospital_id' => $row['hospital_id'] ))->row()->name;
                         echo $name;?>
@@ -32,30 +39,24 @@
                         echo $name;?>
                 </td>
                 <td>
-                    <?php $name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;
+                    <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
                         echo $name;?>
                 </td>
                 <td><a href="#">View Doctors</a></td>
+                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
+                 }
+                 else if(
+                 $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                     
+                 </td>
                 <td>
-                 
-                    <a href="<?php echo base_url(); ?>index.php?superadmin/edit_nurse/<?php echo $row['nurse_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/nurse/delete/<?php echo $row['nurse_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                   <!-- <a  onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_nurse/<?php echo $row['nurse_id']?>');" 
-                        class="btn btn-default btn-sm btn-icon icon-left">
-                            <i class="entypo-pencil"></i>
-                            Edit
-                    </a>
-                    <a href="<?php echo base_url();?>index.php?superadmin/nurse/delete/<?php echo $row['nurse_id']?>" 
-                        class="btn btn-danger btn-sm btn-icon icon-left" onclick="return checkDelete();">
-                            <i class="entypo-cancel"></i>
-                            Delete
-                    </a>-->
                 </td>
             </tr>
         <?php } ?>
     </tbody>
 </table>
-
+</form>
 <script type="text/javascript">   
     jQuery(window).load(function ()
     {
@@ -90,4 +91,19 @@
             replaceCheckboxes();
         });
     });
+</script>
+<script type="text/javascript">
+    function toggle(source) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
+    }
+}
+
+function confSubmit(form) {
+if (confirm("Are you sure you want to Delete ?")) {
+form.submit();
+}
+}
 </script>

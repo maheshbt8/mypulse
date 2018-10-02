@@ -4,8 +4,7 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
 
     foreach($single_doctor_info as $row){
         
-        $day=date('D',strtotime($row['date']));
-       // echo $row['date']->format("m/d/Y");
+      $day=date('D',strtotime($row['date']));
       $check=explode(',',$row['repeat_on']);
       $start_time=explode(':',$row['start_time']);
       $start_ampm=explode(' ',$start_time[1]);

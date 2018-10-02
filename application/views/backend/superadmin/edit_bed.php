@@ -4,7 +4,7 @@ $single_bed_info = $this->db->get_where('bed', array('bed_id' => $bed_id))->resu
 foreach ($single_bed_info as $row) {
 ?>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
 
             <div class="panel panel-primary" data-collapsed="0">
 
@@ -90,8 +90,9 @@ foreach ($single_bed_info as $row) {
                        </div>
 
 
-                        <div class="col-sm-3 control-label col-sm-offset-2">
-                            <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <div class="col-sm-6 control-label col-sm-offset-2">
+                            <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>
                     </form>
 

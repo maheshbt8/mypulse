@@ -6,7 +6,7 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
         <?php foreach($edit_data as $row):?>
-        <?php echo form_open(base_url() . 'index.php?superadmin/district/update/'.$row['district_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+        <?php echo form_open(base_url() . 'index.php?superadmin/city/update/'.$row['city_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 	<div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
@@ -28,7 +28,7 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label> 
 
                         <div class="col-sm-5">
-                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="state"   value=""  onchange="return get_branch(this.value)">
+                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="state"   value=""  onchange="return get_district(this.value)">
                                 <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
                                 <?php 
                                 $state = $this->db->where('country_id',$row['country_id'])->get('state')->result_array();
@@ -40,11 +40,11 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
                         </div>
                     </div>
                     <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label> 
 
                         <div class="col-sm-5">
-                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="state"   value=""  onchange="return get_branch(this.value)">
-                                <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
+                            <select name="district_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="district"   value=""  onchange="">
+                                <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
                                 <?php 
                                 $state = $this->db->where('state_id',$row['state_id'])->get('district')->result_array();
                                 foreach($state as $row2){?>
@@ -97,7 +97,7 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
             url: '<?php echo base_url();?>index.php?superadmin/get_district/' + state_id ,
             success: function(response)
             {
-                jQuery('#select_district').html(response);
+                jQuery('#district').html(response);
             }
         });
 

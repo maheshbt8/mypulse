@@ -1,7 +1,14 @@
-<a href="<?php echo base_url(); ?>index.php?superadmin/add_branch/<?php echo $hospital_id;?>"><button onclick="" 
-    class="btn btn-primary pull-right">
+<?php 
+$this->session->set_userdata('last_page', current_url());
+?>
+<form action="<?php echo base_url()?>index.php?superadmin/branch/delete_multiple/" method="post">
+<button type="button" onClick="confSubmit(this.form);" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>index.php?superadmin/add_branch/<?php echo $hospital_id;?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_branch'); ?>
-</button></a>
+</button>
 
 <div style="clear:both;"></div>
 <br>
@@ -9,7 +16,7 @@
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
-            <th><?php echo get_phrase('name'); ?></th>
+            <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('email'); ?></th>
             <th><?php echo get_phrase('phone'); ?></th>
             <th><?php echo get_phrase('departments'); ?></th>
@@ -22,21 +29,20 @@
         
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['branch_id'] ?>"></td>
-                <td><?php echo $row['name'] ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
                 <td>
             <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_departments/<?php echo $row['branch_id'] ?>" title="Departments"><i class="glyphicon glyphicon-eye-open"></i></a>
                 </td>
                 <td>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
             </tr>
         <?php $i++;} ?>
     </tbody>
 </table>
-
+</form>
 <script type="text/javascript">
     jQuery(window).load(function ()
     {
@@ -79,5 +85,11 @@
         if (checkboxes[i] != source)
             checkboxes[i].checked = source.checked;
     }
+}
+
+function confSubmit(form) {
+if (confirm("Are you sure you want to Delete ?")) {
+form.submit();
+}
 }
 </script>

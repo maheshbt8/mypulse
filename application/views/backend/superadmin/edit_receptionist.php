@@ -147,8 +147,6 @@ foreach ($single_receptionist_info as $row) {
                             </div>
                     </div>  
                     
-                    
-                    <?php print_r(explode(',',$row['doctor_id']));?>
                       <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
@@ -171,7 +169,7 @@ foreach ($single_receptionist_info as $row) {
                                 <span ><?php echo form_error('doctor'); ?></span>
                             </div>
                     </div>
-
+                    
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('status'); ?></label>
 
@@ -367,7 +365,8 @@ foreach ($single_receptionist_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>

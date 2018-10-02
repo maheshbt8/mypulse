@@ -40,6 +40,9 @@ a:focus {
 img {
   vertical-align: middle;
 }
+a.hiper{
+  color:blue;
+}
 .img-responsive {
   display: block;
   max-width: 100%;
@@ -2735,7 +2738,7 @@ input[type="button"].btn-block {
   right: 0;
   top: 0;
   bottom: 0;
-  padding-left: 280px;
+  padding-left: 261px;
   width: 100%;
 }
 .page-container:before,
@@ -3230,7 +3233,7 @@ input[type="button"].btn-block {
   position: relative;
   float: left;
   width: 100%;
-  padding: 6px 0px;
+  padding: 6px 15px;
   z-index: 2;
   background: #ffffff;
   -webkit-box-sizing: border-box;

@@ -9,7 +9,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['repeat_interval'];?></label>
 
-                        <div class="col-sm-8">
+                        <div class="col-sm-3">
                             <select name="repeat_interval" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return show_repete(this.value)">
                                 
                                 <option value="0"><?php echo $this->lang->line('labels')['weekly'];?></option>
@@ -35,12 +35,12 @@
                             <div class="form-group">
                                 <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['start_date'];?></label>
                                <div class="col-md-3">
-                                <input type="text" class="form-control datepicker" name="start_on" placeholder="<?php echo $this->lang->line('labels')['select_start_date'];?>" id="start_on" autocomplete="off">
+                                <input type="text" class="form-control" name="start_on" placeholder="<?php echo $this->lang->line('labels')['select_start_date'];?>" id="start_on" autocomplete="off">
                                 </div>
                                 
                                 <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['end_date'];?></label>
                                <div class="col-md-3">
-                                <input type="text" class="form-control datepicker" name="end_on" placeholder="<?php echo $this->lang->line('labels')['select_end_date'];?>" id="end_on" autocomplete="off">
+                                <input type="text" class="form-control" name="end_on" placeholder="<?php echo $this->lang->line('labels')['select_end_date'];?>" id="end_on" autocomplete="off">
                                 </div>
                             </div>
                        
@@ -50,7 +50,7 @@
                     <div class="col-md-4">
                         <select name="time_start" id= "starting_hour" class="form-control selectbox">
                             <option value=""><?php echo $this->lang->line('labels')['hours'];?></option>
-                            <?php for($i = 0; $i <= 12 ; $i++):?>
+                            <?php for($i = 1; $i <= 12 ; $i++):?>
                                 <option value="<?php echo $i;?>"><?php echo $i;?></option>
                             <?php endfor;?>
                         </select>
@@ -79,7 +79,7 @@
                     <div class="col-md-4">
                         <select name="time_end" id= "ending_hour" class="form-control selectbox">
                             <option value=""><?php echo $this->lang->line('labels')['hours'];?></option>
-                            <?php for($i = 0; $i <= 12 ; $i++):?>
+                            <?php for($i = 1; $i <= 12 ; $i++):?>
                                 <option value="<?php echo $i;?>"><?php echo $i;?></option>
                             <?php endfor;?>
                         </select>
@@ -105,7 +105,8 @@
                       
 
                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page1'); ?>'">
                     </div>
                 </form>
 
@@ -127,5 +128,23 @@
         }
     }
 
+
+</script>
+<script type="text/javascript">
+                    $(document).ready(function(){
+                    var date = new Date();
+                    date.setDate(date.getDate());
+
+                    $('#start_on').datepicker({ 
+                    startDate: date
+
+                    });
+
+                    $('#end_on').datepicker({ 
+                    startDate: date
+
+                    });
+
+                    } );                  
 
 </script>

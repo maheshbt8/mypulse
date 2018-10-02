@@ -3,7 +3,7 @@ $single_department_info = $this->db->get_where('department', array('department_i
 foreach ($single_department_info as $row) {
 ?>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
 
             <div class="panel panel-primary" data-collapsed="0">
 
@@ -13,7 +13,7 @@ foreach ($single_department_info as $row) {
    	<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                         
-						<div class="col-sm-5">
+						<div class="col-sm-8">
 							<select name="hospital" class="form-control selectbox" id="hospital" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>">
                               <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
                               <?php
@@ -34,7 +34,7 @@ foreach ($single_department_info as $row) {
 						<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                         
-						<div class="col-sm-5">
+						<div class="col-sm-8">
 							<select name="branch" class="form-control selectbox" id="branch" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>">
                               <option value=""><?php echo $this->lang->line('labels')['select_hospital_first'];?></option>
                               <?php
@@ -55,7 +55,7 @@ foreach ($single_department_info as $row) {
 						<div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
 
-                        <div class="col-sm-5">
+                        <div class="col-sm-8">
                             <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['name']?>">
                         </div>
                        </div>
@@ -63,14 +63,15 @@ foreach ($single_department_info as $row) {
                         <div class="form-group">
                             <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['description'];?></label>
 
-                            <div class="col-sm-9">
+                            <div class="col-sm-8">
                                 <textarea name="description" class="form-control"
                                     id="field-ta"><?php echo $row['description']; ?></textarea>
                             </div>
                         </div>
 
-                        <div class="col-sm-3 control-label col-sm-offset-2">
-                            <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <div class="col-sm-6 control-label col-sm-offset-2">
+                            <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>
                     </form>
 

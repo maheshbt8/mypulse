@@ -257,7 +257,7 @@ foreach ($single_hospital_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <input type="submit" class="btn btn-success" value="Update">
                     </div> 
                    
    </form>

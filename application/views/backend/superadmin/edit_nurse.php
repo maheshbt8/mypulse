@@ -366,7 +366,8 @@ foreach ($single_nurse_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>
@@ -395,7 +396,7 @@ foreach ($single_nurse_info as $row) {
 
     }
     
-    function get_department(branch_id) {
+    function get_department_all(branch_id) {
 
         $.ajax({
             url: '<?php echo base_url();?>index.php?superadmin/get_department/' + branch_id ,

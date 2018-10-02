@@ -1,19 +1,23 @@
 <?php $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctors')->row();
 $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row();
 $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
+ 
+$this->session->set_userdata('last_page1', current_url());
 ?>
 
 <div class="row">
     <div class="col-md-3">
 			<center>
         <a href="#">
-  				<img src="<?php echo base_url()?>uploads/doctor_image/<?php echo $doctor->doctor_id.'.jpg';?>" class="img-circle" style="width: 60%;">
+  				<img src="<?php echo $this->crud_model->get_image_url('doctor' , $doctor->doctor_id);?>" class="img-circle" style="width: 60%;">
   			</a>
         <br>
-        <h3><?php echo $doctor->name;?></h3>
+        <h3><?php echo 'Dr.'.$doctor->name;?></h3>
         <br>
         <span>
-        <?php echo $doctor->description;?></span>
+        <b style="font-size: 15px;"><?php echo $this->db->where('hospital_id',$doctor->hospital_id)->get('hospitals')->row()->name.' / '.$this->db->where('branch_id',$doctor->branch_id)->get('branch')->row()->name.' / '.$this->db->where('department_id',$doctor->department_id)->get('department')->row()->name;?></b></span>
+        <span>
+        <?php echo $doctor->specializations;?></span>
       </center>
 		</div>
    
@@ -24,7 +28,9 @@ $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$
                         <div class="">
                             <div class="custome_col8">
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('availability'); ?></h3>
+                                <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">&nbsp;&nbsp;
                                <button onclick="" class="btn btn-primary pull-right"><?php echo $this->lang->line('buttons')['save'];?></button>
+                        
                                
                             </div>
                             
@@ -67,8 +73,8 @@ $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$
                     </div>
                     <div class="panel-body" style="padding:0px;">
                         <div class="calendar-env">
-                            <div class="calendar-body"><a href="<?php echo base_url();?>index.php?superadmin/doctor_new_availability/<?php echo $doctor->doctor_id;?>"><button class="btn btn-primary pull-right"><?php echo $this->lang->line('buttons')['addNew'];?></button></a>
-       
+                            <div class="calendar-body"><button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/doctor_new_availability/<?php echo $doctor->doctor_id;?>'"><?php echo $this->lang->line('buttons')['addNew'];?></button>
+
                                 <div id="notice_calendar"></div>
                             </div>
                         </div>

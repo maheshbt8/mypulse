@@ -5,6 +5,7 @@ $text_align     = $this->db->get_where('settings', array('type' => 'text_align')
 $account_type   = $this->session->userdata('login_type');
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="<?php if ($text_align == 'right-to-left') echo 'rtl'; ?>">
     <head>

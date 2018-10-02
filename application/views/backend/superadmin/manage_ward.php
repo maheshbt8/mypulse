@@ -1,7 +1,15 @@
-<a href="<?php echo base_url(); ?>index.php?superadmin/add_ward/<?= $department_id;?>"><button  
-    class="btn btn-primary pull-right">
+<?php 
+$this->session->set_userdata('last_page', current_url());
+?>
+<form action="<?php echo base_url()?>index.php?superadmin/ward/delete_multiple/" method="post">
+<button type="button" onClick="confSubmit(this.form);" 
+    class="btn btn-danger pull-right">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>index.php?superadmin/add_ward/<?= $department_id;?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_ward'); ?>
-</button></a>
+</button>
+
 <div style="clear:both;"></div>
 
 <br>
@@ -23,13 +31,13 @@
         <?php $i=1;foreach ($ward_info as $row) { ?>   
             <tr>  
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['ward_id'] ?>"></td>
-                <td><?php echo $row['name'] ?></td>
+                 <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_ward/<?php echo $row['ward_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                 <td>
-             <a href="<?php echo base_url(); ?>index.php?superadmin/edit_ward/<?php echo $row['ward_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+            
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                  
                 </td>
@@ -37,7 +45,7 @@
         <?php $i++;} ?>
     </tbody>
 </table>
-
+</form>
 <script type="text/javascript">
     jQuery(window).load(function ()
     {
@@ -80,5 +88,10 @@
         if (checkboxes[i] != source)
             checkboxes[i].checked = source.checked;
     }
+}
+function confSubmit(form) {
+if (confirm("Are you sure you want to Delete ?")) {
+form.submit();
+}
 }
 </script>

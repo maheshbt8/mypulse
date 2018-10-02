@@ -58,5 +58,18 @@
 <?php if ($this->session->flashdata('message') != ""){ ?>
     <script>
         toastr.info('<?php echo $this->session->flashdata('message');?>');
-    </script>>
+    </script>
 <?php } ?> 
+<script type="text/javascript">
+                    $(document).ready(function(){
+                    var date = new Date();
+                    date.setDate(date.getDate());
+
+                    $('#dob').datepicker({ 
+                    endDate: date
+
+                    });
+
+                    } );                  
+
+</script>
