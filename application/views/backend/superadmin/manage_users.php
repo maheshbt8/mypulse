@@ -15,8 +15,8 @@ $this->session->set_userdata('last_page', current_url());
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
-            <th><?php echo get_phrase('unique id');?></th>
-            <th><?php echo get_phrase('name');?></th>
+            <th><?php echo get_phrase('user_id');?></th>
+            <th><?php echo get_phrase('user_name');?></th>
             <th><?php echo get_phrase('email');?></th>
             <th><?php echo get_phrase('status');?></th>
             <th><?php echo get_phrase('options');?></th>

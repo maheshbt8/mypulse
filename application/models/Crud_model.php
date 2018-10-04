@@ -848,7 +848,6 @@ class Crud_model extends CI_Model {
     
     function save_doctor_info()
     {
-       
         $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
@@ -872,8 +871,19 @@ class Crud_model extends CI_Model {
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
         
-        $this->db->insert('doctors',$data);
+        $insert=$this->db->insert('doctors',$data);
         
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 17);
+            $pid='MYPD_'.$uid;
+            $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid));
+            
+        }
         $doctor_id  =   $this->db->insert_id();
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
     }
@@ -926,8 +936,8 @@ $data['date']=$dt->format("m/d/Y");
 $data['doctor_id']      = $doctor_id;
 $data['start_date']         = $this->input->post('start_on');
 $data['end_date']       = $this->input->post('end_on');
-$data['start_time']         = $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
-$data['end_time']       = $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
+$data['start_time']         = date("H:i", strtotime($this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm')));
+$data['end_time']       = date("H:i", strtotime($this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm')));
 $data['repeat_interval']        = $this->input->post('repeat_interval');
 $data['status']=2;
 for($i=0;$i<count($day);$i++){
@@ -970,8 +980,8 @@ $data['date']=$dt->format("m/d/Y");
 $data['doctor_id']      = $this->input->post('doctor_id');
 $data['start_date']         = $this->input->post('start_on');
 $data['end_date']       = $this->input->post('end_on');
-$data['start_time']         = $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
-$data['end_time']       = $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
+$data['start_time']         = date("H:i", strtotime($this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm')));
+$data['end_time']       = date("H:i", strtotime($this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm')));
 $data['repeat_interval']        = $this->input->post('repeat_interval');
 $data['status']=2;
 for($i=0;$i<count($day);$i++){
@@ -981,6 +991,7 @@ for($j=0;$j<count($days);$j++){
     }
     }
     }
+
 $que=$this->db->insert('availability_slat',$data);
    /*$que=$this->db->where('unik',$this->input->post('unik'))->update('availability_slat',$data);*/
 
@@ -990,8 +1001,8 @@ $que=$this->db->insert('availability_slat',$data);
       /* 
         $data['start_date'] 		= $this->input->post('start_on');
         $data['end_date'] 		= $this->input->post('end_on');*/
-        $data['start_time'] 		= $this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm');
-        $data['end_time'] 		= $this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm') ;
+        $data['start_time'] 		= date("H:i", strtotime($this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm')));
+        $data['end_time'] 		= date("H:i", strtotime($this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm')));
        /* $data['repeat_interval'] 		= $this->input->post('repeat_interval');
         if($this->input->post('repeat_interval') == 0){
         $data['repeat_on'] 		= implode(',',$this->input->post('repeat_on'));
@@ -1074,7 +1085,7 @@ $que=$this->db->insert('availability_slat',$data);
         $this->db->where('doctor_id',$doctor_id);
         $this->db->update('doctors',$data);
         
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
     }
     
     function delete_doctor_info($doctor_id)
@@ -1501,7 +1512,7 @@ function select_user_information($patient_id="")
         $this->db->where('nurse_id',$nurse_id);
         $this->db->update('nurse',$data);
         
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/nurse_image/" . $nurse_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/nurse_image/" . $nurse_id . '.jpg');
     }
     
     function delete_nurse_info($nurse_id)
@@ -1566,7 +1577,7 @@ function select_user_information($patient_id="")
         $this->db->insert('laboratorist',$data);
         
         $laboratorist_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/laboratorist_image/" . $laboratorist_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/laboratorist_image/" . $laboratorist_id . '.jpg');
     }
     
     function select_laboratorist_info()
@@ -1977,7 +1988,34 @@ function select_user_information($patient_id="")
     
     function save_appointment_info()
     {
-        $data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
+        $time=explode('-',$this->input->post('available_slot'));
+        $department_id=$this->db->where('doctor_id',$this->input->post('doctor_id'))->get('doctors')->row()->department_id;
+        $data['user_id']       = $this->input->post('user_id');
+        $data['doctor_id']       = $this->input->post('doctor_id');
+        $data['appointment_date']= $this->input->post('appointment_date');
+        $data['department_id']       = $department_id;
+        $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
+        $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
+        $data['reason']       = $this->input->post('reason');
+        if($this->input->post('remarks')){
+        $data['remarks']       = $this->input->post('remarks');
+    }
+        $data['status']       = 2;
+       
+         $insert=$this->db->insert('appointments',$data);
+        if($insert)
+        {
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 16);
+            $pid='MP_'.date('y').$uid;
+            
+            $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid));
+            
+        }
+       
+        /*$data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
         $data['status']     = 'approved';
         $data['patient_id'] = $this->input->post('patient_id');
         
@@ -2002,7 +2040,7 @@ function select_user_information($patient_id="")
                                 array('patient_id' => $data['patient_id']))->row()->phone;
             
             $this->sms_model->send_sms($message, $receiver_phone);
-        }
+        }*/
     }
     
     function save_requested_appointment_info()
@@ -2031,8 +2069,11 @@ function select_user_information($patient_id="")
         $patient_id = $this->session->userdata('login_user_id');
         return $this->db->get_where('appointment', array('patient_id' => $patient_id, 'status' => 'approved'))->result_array();
     }
-    
-    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
+        function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
+    {
+        return $this->db->get('appointments')->result_array();
+    }
+/*    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
         $response = array();
         if($doctor_id == 'all') {
@@ -2053,7 +2094,7 @@ function select_user_information($patient_id="")
             }
         }
         return $response;
-    }
+    }*/
     
     function select_pending_appointment_info_by_patient_id()
     {
@@ -2150,9 +2191,16 @@ function select_user_information($patient_id="")
     function delete_appointment_info($appointment_id)
     {
         $this->db->where('appointment_id',$appointment_id);
-        $this->db->delete('appointment');
+        $this->db->delete('appointments');
     }
-    
+     function delete_multiple_appointment_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+            $this->db->where('appointment_id',$check[$i]);
+            $this->db->delete('appointments');
+        }
+    }
     function save_prescription_info()
     {
         $data['timestamp']      = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );

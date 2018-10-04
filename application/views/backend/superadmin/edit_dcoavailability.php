@@ -6,10 +6,13 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
         
       $day=date('D',strtotime($row['date']));
       $check=explode(',',$row['repeat_on']);
-      $start_time=explode(':',$row['start_time']);
+      $start=date("h:i a", strtotime($row['start_time']));
+      $end=date("h:i a", strtotime($row['end_time']));
+      $start_time=explode(':',$start);
       $start_ampm=explode(' ',$start_time[1]);
-      $end_time=explode(':',$row['end_time']);
+      $end_time=explode(':',$end);
       $end_ampm=explode(' ',$end_time[1]);
+      
       
 ?>
 <div class="row">
@@ -68,7 +71,7 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                     <div class="col-md-4">
                         <select name="time_start" id= "starting_hour" class="form-control selectboxit">
                             <option value=""><?php echo 'Hour';?></option>
-                            <?php for($i = 0; $i <= 12 ; $i++):?>
+                            <?php for($i = 1; $i <= 12 ; $i++):?>
                                 <option value="<?php echo $i;?>" <?php if($start_time[0]==$i){echo 'selected';}?>><?php echo $i;?></option>
                             <?php endfor;?>
                         </select>
@@ -94,7 +97,7 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
                     <div class="col-md-4">
                         <select name="time_end" id= "ending_hour" class="form-control selectboxit">
                             <option value=""><?php echo 'Hour';?></option>
-                            <?php for($i = 0; $i <= 12 ; $i++):?>
+                            <?php for($i = 1; $i <= 12 ; $i++):?>
                                 <option value="<?php echo $i;?>" <?php if($end_time[0]==$i){echo 'selected';}?>><?php echo $i;?></option>
                             <?php endfor;?>
                         </select>
@@ -120,12 +123,9 @@ $single_doctor_info = $this->db->get_where('availability_slat', array('id' => $s
 
                     <div class="col-sm-3 control-label col-sm-offset-2">
                         <input type="submit" class="btn btn-success" value="Update">
-                       
-                    </div>
-                    <div class="col-sm-3 control-label ">
-                       
                         <button type="button" class="btn btn-danger" id="delete" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/edit_doctor_new_availability/delete/<?php echo $row['doctor_id'];?>/<?php echo $row['id'];?>');" >Delete</button>
                         <button type="button" class="btn btn-danger" id="delete_all" onclick="confirm_modal('<?php echo base_url()?>index.php?superadmin/edit_doctor_new_availability/delete_all/<?php echo $row['doctor_id'];?>/<?php echo $row['id'];?>');" >Delete</button>
+                         <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>
                 </form>
 

@@ -41,7 +41,7 @@ img {
   vertical-align: middle;
 }
 a.hiper{
-  color:blue;
+  color:#337ab7;
 }
 .img-responsive {
   display: block;
@@ -6204,6 +6204,7 @@ textarea.dataTables_wrapper .dataTables_filter > label input {
 .page-body .datatable.table tbody td,
 .page-body .datatable.table tbody th {
   vertical-align: middle;
+  color: #5d5d5d;
 }
 table .replace-inputs input {
   display: block;

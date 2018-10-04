@@ -116,7 +116,7 @@ $this->session->set_userdata('last_page1', current_url());
 						?>
 						{
 						    url:"<?php echo base_url();?>index.php?superadmin/edit_doctor_new_availability/<?php echo $doctor_id.'/'.$row['id'];?>",
-						    title: "<?php echo $row['start_time'].'-'.$row['end_time'];?>",
+						    title: "<?php echo date("h:i a", strtotime($row['start_time'])).'-'.date("h:i a", strtotime($row['end_time']));?>",
 							start: new Date(<?php echo date('Y',strtotime($row['date']));?>, <?php echo date('m',strtotime($row['date']))-1;?>, <?php echo date('d',strtotime($row['date']));?>),
 					
 						},

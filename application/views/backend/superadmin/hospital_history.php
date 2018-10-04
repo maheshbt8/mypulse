@@ -62,14 +62,7 @@ $country_info=$this->db->get('country')->result_array();
 $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
 foreach ($single_hospital_info as $row) {
 ?>
-           <!--  <div class="tab-pane active" id="tab1">
-   
-            </div>
-             <div class="tab-pane" id="tab2">
-        
-            </div> -->
-            
-             
+      
        
             <div class="tab-pane box active" id="tab1">
                 
@@ -221,7 +214,11 @@ foreach ($single_hospital_info as $row) {
                                 <span ><?php echo form_error('city'); ?></span>
                             </div>
                     </div>
+
               </div>
+              <div class="col-sm-3 control-label col-sm-offset-3">
+                        <input type="submit" class="btn btn-success" value="Update">
+                    </div>
                     </div>
                    
 
@@ -230,9 +227,7 @@ foreach ($single_hospital_info as $row) {
         </div>
 
     </div>
-    <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="Update">
-                    </div>
+    
 </div>
 </div>
             <div class="tab-pane box" id="tab2" style="padding: 5px">
@@ -294,13 +289,14 @@ foreach ($single_hospital_info as $row) {
                     </div>
                    
                 </div>
+                  <div class="col-sm-3 control-label col-sm-offset-3">
+                        <input type="submit" class="btn btn-success" value="Update">
+                    </div>
                     </div>
                   
             </div>
             </div>
-            <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="Update">
-                    </div>
+          
         </div>
 
     </div>
@@ -315,8 +311,6 @@ foreach ($single_hospital_info as $row) {
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('name'); ?></th>
-           <!--  <th><?php echo get_phrase('hospital'); ?></th>
-            <th><?php echo get_phrase('address'); ?></th> -->
             <th><?php echo get_phrase('email'); ?></th>
             <th><?php echo get_phrase('phone'); ?></th>
             <th><?php echo get_phrase('departments'); ?></th>
@@ -333,16 +327,13 @@ foreach ($single_hospital_info as $row) {
         
             <tr>
                 <td><?php echo $i?></td>
-                <td><?php echo $row['name'] ?></td>
-               <!--  <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $row['address'] ?></td>   -->
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
                 <td>
             <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_departments/<?php echo $row['branch_id'] ?>" title="Departments"><i class="glyphicon glyphicon-eye-open"></i></a>
                 </td>
                 <td>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_branch/<?php echo $row['branch_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
             </tr>
@@ -376,13 +367,11 @@ foreach ($single_hospital_info as $row) {
          $i=1;foreach ($department_info as $row) { ?>   
             <tr>  
                 <td><?php echo $i;?></td>
-                <td><?php echo $row['name'] ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_department/<?php echo $row['department_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                 <td>
-              <a href="<?php echo base_url(); ?>index.php?superadmin/edit_department/<?php echo $row['department_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
            
                 </td>
@@ -418,13 +407,12 @@ foreach ($single_hospital_info as $row) {
         $i=1;foreach ($ward_info as $row) { ?>   
             <tr>  
                 <td><?php echo $i;?></td>
-                <td><?php echo $row['name'] ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_ward/<?php echo $row['ward_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><a href="<?php echo base_url(); ?>index.php?superadmin/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                 <td>
-             <a href="<?php echo base_url(); ?>index.php?superadmin/edit_ward/<?php echo $row['ward_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                  
                 </td>
@@ -435,10 +423,6 @@ foreach ($single_hospital_info as $row) {
 
             </div>
             <div class="tab-pane" id="tab6">
-                <!-- <a href="<?php echo base_url();?>index.php?superadmin/add_bed/<?= $ward_id;?>"><button onclick="" 
-    class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_bed'); ?>
-</button></a> -->
 <div style="clear:both;"></div>
 
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -463,14 +447,13 @@ foreach ($single_hospital_info as $row) {
             <tr>
              
                 <td><?php echo $i;?></td>
-                <td><?php echo $row['name'] ?></td>
+                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
                 
                 <td>
-            <a href="<?php echo base_url(); ?>index.php?superadmin/edit_bed/<?php echo $row['bed_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
             </tr>

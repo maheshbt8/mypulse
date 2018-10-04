@@ -46,15 +46,29 @@ class Email_model extends CI_Model {
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {
 
         $config = array();
-        $config['useragent'] = "CodeIgniter";
-        $config['mailpath'] = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
-        $config['protocol'] = "smtp";
-        $config['smtp_host'] = "localhost";
-        $config['smtp_port'] = "25";
-        $config['mailtype'] = 'html';
-        $config['charset'] = 'utf-8';
-        $config['newline'] = "\r\n";
-        $config['wordwrap'] = TRUE;
+        
+        /*$config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'bh-67.webhostbox.net';
+        $config['smtp_timeout'] = '20';
+        $config['smtp_user'] = 'info@btmahesh.online';
+        $config['smtp_pass'] = 'info@123';
+        $config['smtp_port'] = 25;
+        $config['mailtype']  = 'html';
+        
+        $config['charset']   = 'iso-8859-1';*/
+        /*$mail = new PHPMailer();
+        $mail->IsSMTP();*/
+        $config['SMTPAuth'] = TRUE;
+        $config['protocol'] = 'smtp';
+        $config['smtp_host'] = 'ssl://smtp.gmail.com';
+        $config['smtp_timeout'] = '20';
+        $config['smtp_user'] = 'maheshbt8@gmail.com';/*raisingravi518@gmail.com*/
+        $config['smtp_pass'] = 'm@hesh@dsp';/*ravikumar@518*/
+        $config['smtp_port'] = 465;
+        $config['mailtype']  = 'html';
+        $config['wordwrap']  = TRUE;
+        
+        $config['charset']   = 'iso-8859-1';
 
         $this->load->library('email');
 
@@ -75,6 +89,7 @@ class Email_model extends CI_Model {
         $this->email->send();
 
         //echo $this->email->print_debugger();
+        
     }
 
 }

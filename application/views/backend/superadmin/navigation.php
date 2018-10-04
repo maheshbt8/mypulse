@@ -143,7 +143,7 @@
             </a>
         </li>
         <li class="">
-            <a href="<?php echo base_url(); ?>index.php?superadmin/add_appointment">
+            <a href="<?php echo base_url(); ?>index.php?superadmin/appointment">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>
                 <span><?php echo get_phrase('appointments'); ?></span>
             </a>

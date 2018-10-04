@@ -402,6 +402,52 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
     }
     }
     
+    function get_doctor_data($unique_id)
+    {
+        $doctor_data = $this->db->get_where('doctors' , array(
+            'unique_id' => $unique_id))->row_array();
+        $doctor_id=$doctor_data['doctor_id'];
+        $doctor_unique_id=$doctor_data['unique_id'];
+        $doctor_message=$this->db->where('doctor_id',$doctor_id)->get('availability')->row()->message;
+        echo '<input type="text" value="'.$doctor_message.'" class="form-control" name="doctor_message" id="doctor_message" disabled="">';
+        echo '<input type="hidden" value="'.$doctor_id.'" class="form-control" name="doctor_id" id="doctor_id">';
+        echo '<input type="hidden" value="'.$doctor_unique_id.'" class="form-control" name="doctor_unique_id" id="doctor_unique_id">';
+        
+    }
+     public function get_dco_date($doctor_id)
+    {
+     
+    $date_val=$_POST['date_val'];
+    
+        $doctor_availability= $this->db->get_where('availability_slat' , array(
+            'doctor_id' => $doctor_id,'date'=>$date_val,'status'=>1));
+        $doctor_ava=$doctor_availability->result_array();
+         $appointments=$this->db->get_where('appointments' , array('doctor_id' => $doctor_id,'appointment_date'=>$date_val))->num_rows();
+         if($doctor_availability->num_rows()>0){
+            echo '<option value=""> Select Slot </option>';
+        foreach ($doctor_ava as $row) {
+            $sdate=$row['start_time'];
+            $edate=$row['end_time'];
+            $count=((((strtotime($edate)-strtotime($sdate))/60)/60)*2);
+            $start_time1=strtotime($sdate);
+            for($i=1;$i<=$count;$i++){
+                $start_time2=strtotime("+30 minutes", $start_time1);
+                $appointments=$this->db->get_where('appointments' , array('doctor_id' => $doctor_id,'appointment_date'=>$date_val,'appointment_time_start'=>date('H:i',$start_time1),'appointment_time_end'=>date('H:i',$start_time2)))->num_rows();
+        $no_appt_handle=$this->db->get_where('availability' , array('doctor_id' => $doctor_id))->row()->no_appt_handle;
+         if($appointments >= $no_appt_handle){
+           /* echo '<option value="'.date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'" disabled>' . date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'</option>';*/
+        }else{
+            echo '<option value="'.date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'" >' . date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'</option>';
+        }
+            
+            $start_time1=$start_time2;
+        }
+
+        }
+        }else{
+        echo '<option value=""> No Slot Available In This Date </option>';
+    }
+    }
     
     /**********SINGLE DATA GET WITH ID*************/
     public function get_hospital_history($hospital_id){
@@ -829,8 +875,12 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
            if($phone == 1){
            $this->crud_model->save_doctor_info();
             $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
-            $this->email_model->account_opening_email('doctors','doctor', $email);
+            $e=$this->email_model->account_opening_email('doctors','doctor', $email);
+            if($e){
             redirect(base_url() . 'index.php?superadmin/doctor');
+        }else{
+            echo "Nooo";
+        }
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
@@ -1068,45 +1118,34 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
       function add_appointment()
     {
         if($this->input->post()){
-            print_r($_POST);die;
-        $config = array(
-        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
-        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
-         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
-        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
-        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
-        array('field' => 'department','label' => 'Department','rules' => 'required'),
-        array('field' => 'status','label' => 'Status','rules' => 'required'),
-        );
-        $this->form_validation->set_rules($config);
-            if ($this->form_validation->run() == TRUE){
-           $email = $this->input->post('email');
-           $validation = email_validation($email);
-            if ($validation == 1) {
-           $phone_number = $this->input->post('mobile');
-           $phone = mobile_validation($phone_number);
-           
-           if($phone == 1){
-           $this->crud_model->save_doctor_info();
-            $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
-            $this->email_model->account_opening_email('doctors','doctor', $email);
-            redirect(base_url() . 'index.php?superadmin/doctor');
-        }else{
-            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
-        }
-            }else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-        }
+    $this->crud_model->save_appointment_info();
+    $this->session->set_flashdata('message', get_phrase('appointment_info_saved_successfuly'));
+    redirect($this->session->userdata('last_page'));
     }
 
         $data['page_name'] = 'add_appointment';
-        $data['page_title'] = get_phrase('add_doctor');
+        $data['page_title'] = get_phrase('book_Appointment');
         $this->load->view('backend/index', $data);
+    }
+    function appointment($task = "", $appointment_id = "") {
         
-        
+      
+        if ($task == "delete") {
+
+            $this->crud_model->delete_appointment_info($appointment_id);
+            $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_appointment_info();
+            $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+       
+        $data['appointment_info'] = $this->crud_model->select_appointment_info();
+        $data['page_name'] = 'manage_appointment';
+        $data['page_title'] = get_phrase('manage_appointments');
+        $this->load->view('backend/index', $data);
     }
     
     function add_stores()
