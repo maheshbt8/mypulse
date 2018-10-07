@@ -3774,6 +3774,7 @@ fieldset[disabled] .btn-white.active {
   border-radius: 2px;
 }
 .btn-warning {
+  font-size: 12px;
   color: #ffffff;
   background-color: #fad839;
   border-color: #fad839;

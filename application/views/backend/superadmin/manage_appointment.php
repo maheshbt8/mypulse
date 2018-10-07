@@ -27,7 +27,15 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
-        <?php $i=1;foreach ($appointment_info as $row) { ?>   
+        <?php $i=1;foreach ($appointment_info as $row) { 
+
+            if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
+            {
+                $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
+                $this->db->where($array)->update('appointments',array('status'=>'4'));
+                
+            }
+            ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
                  <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
@@ -49,7 +57,7 @@ $this->session->set_userdata('last_page', current_url());
                  }
                  elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
                  elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
-                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Colsed</button>";}
+                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
                  ?>
                      
                  </td>

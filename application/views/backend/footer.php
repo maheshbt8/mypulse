@@ -1,10 +1,10 @@
-<style>
+ <style>
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.navbar {
+.navbar-footer {
   overflow: hidden;
   background-color: #333;
   position: fixed;
@@ -12,7 +12,7 @@ body {
   width: 100%;
 }
 
-.navbar a {
+.navbar-footer a {
 
   float: left;
   display: block;
@@ -28,8 +28,22 @@ body {
   margin-bottom: 0px;
 }
 </style>
-<!-- Footer -->
- <footer class="main navbar">
+<!--
+ <footer class="main navbar navbar-footer">
  	 
 	<a href="" target="_blank">Copyrights &copy; 2018 JagruMs Technologies</a> 
-</footer>  
+</footer>   -->
+<nav class="navbar navbar-inverse navbar-footer navbar-fixed-bottom">
+  <div class="container-fluid">
+    
+    <ul class="nav navbar-nav">
+      <li class="footer-list"><a class="navbar-brand" href="#"><b>&copy; 2018 JagruMs Technologies - All Rights Received</b></a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="footer-list"><a class="navbar-brand" href="#"><i>Terms & Conditions</i></a></li>
+      <li class="footer-list"><a class="navbar-brand" href="#"><i>Privacy & Policy</i></a></li>
+    
+    </ul>
+   
+  </div>
+</nav>

@@ -5788,7 +5788,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
-  background-color: #f0f0f1;
+  /*background-color: #f0f0f1;*/
   color: #555555;
 }
 .navbar-default .navbar-nav > .open > a .caret,
