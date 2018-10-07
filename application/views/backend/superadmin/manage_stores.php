@@ -16,6 +16,7 @@ $this->session->set_userdata('last_page', current_url());
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
+            <th><?php echo get_phrase('store_id');?></th>
             <th><?php echo get_phrase('name');?></th>   
             <th><?php echo get_phrase('owner name');?></th>
             <th><?php echo get_phrase('owner phone number');?></th>
@@ -30,6 +31,7 @@ $this->session->set_userdata('last_page', current_url());
         <?php $i=1;foreach ($store_info as $row) { ?>   
             <tr>
                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['store_id'] ?>"></td>
+               <td><?php echo $row['unique_id'];?></td>
                 <td><a href="<?php echo base_url();?>index.php?superadmin/edit_stores/<?php echo $row['store_id']?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['owner_name'] ?></td>
                 <td><?php echo $row['owner_mobile'] ?></td>

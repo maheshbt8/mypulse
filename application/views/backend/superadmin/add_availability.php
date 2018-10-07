@@ -44,7 +44,7 @@ $this->session->set_userdata('last_page1', current_url());
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['noAppInterval'];?>30 Minutes</label>
-                                    <input style="width:80px" value="<?php echo $availability->no_appt_handle;?>" class="form-control" type="number" name="no_appt_handle" id="no_appt_handle" minlength="1" maxlength="1">
+                                    <input style="width:80px" value="<?php echo $availability->no_appt_handle;?>" class="form-control" type="number" name="no_appt_handle" id="no_appt_handle" min="1" max="10">
                                 </div>
                                 <div class="form-group">
                                     <label><?php echo $this->lang->line('labels')['availabilityText'];?></label>

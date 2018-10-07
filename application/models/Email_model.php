@@ -15,7 +15,7 @@ class Email_model extends CI_Model {
         $id = $query->row()->doctor_id;
         $email_msg = "Welcome to " . $system_name . "<br />";
         $email_msg .= "Your account type : " . $account_type . "<br />";
-        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://localhost/mypulse/curd_model/email_verify/$account_type/$id\"> YES </a></button> <br />";
+        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com/index.php?login/email_verification/$account_type/$id\"> YES </a></button> <br />";
         //$email_msg .= "Login Here : " . base_url() . "<br/>";
 
         /*echo $email_msg;die;*/
@@ -44,51 +44,77 @@ class Email_model extends CI_Model {
     /*     * *custom email sender*** */
 
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {
-
-        $config = array();
-        
-        /*$config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'bh-67.webhostbox.net';
+    /*$config = array();
+        $config['useragent']    = "CodeIgniter";
+        $config['mailpath']     = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
+        $config['protocol']     = "smtp";
+        $config['smtp_host']    = "localhost";
+        $config['smtp_port']    = "25";
+        $config['mailtype']     = 'html';
+        $config['charset']      = 'utf-8';
+        $config['newline']      = "\r\n";
+        $config['wordwrap']     = TRUE;
         $config['smtp_timeout'] = '20';
-        $config['smtp_user'] = 'info@btmahesh.online';
-        $config['smtp_pass'] = 'info@123';
-        $config['smtp_port'] = 25;
-        $config['mailtype']  = 'html';
+        $config['smtp_user'] = 'maheshbt8@gmail.com';
+        $config['smtp_pass'] = 'm@hesh@dsp';*/
+      /*$config = array();
+        $config['useragent']    = "CodeIgniter";
+        $config['mailpath']     = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
+        $config['protocol']     = "smtp";
+        $config['smtp_host']    = "localhost";
+        $config['smtp_user'] = 'info@integritysoftsolutions.com';
+        $config['smtp_pass'] = '*&K2VR)aNo]@';
+        $config['smtp_port']    = "25";
+        $config['mailtype']     = 'html';
+        $config['charset']      = 'utf-8';
+        $config['newline']      = "\r\n";
+        $config['wordwrap']     = TRUE;*/
+        $config = array();
+        $config['useragent']    = "CodeIgniter";
+        /*$config['mailpath']     = "ssl://smtp.gmail.com";*/ // or "/usr/sbin/sendmail"
+        $config['protocol']     = "smtp";
+        $config['smtp_host']    = "ssl://smtp.gmail.com";
+        $config['smtp_user'] = 'raisingravi518@gmail.com';
+        $config['smtp_pass'] = 'ravikumar@518';
+        $config['smtp_port']    = 465;
+        $config['mailtype']     = 'html';
+        $config['charset']      = 'utf-8';
+        $config['newline']      = "\r\n";
+        $config['wordwrap']     = TRUE;
         
-        $config['charset']   = 'iso-8859-1';*/
         /*$mail = new PHPMailer();
-        $mail->IsSMTP();*/
-        $config['SMTPAuth'] = TRUE;
+        $mail->IsSMTP();
+        /*$config['SMTPAuth'] = TRUE;
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'ssl://smtp.gmail.com';
         $config['smtp_timeout'] = '20';
-        $config['smtp_user'] = 'maheshbt8@gmail.com';/*raisingravi518@gmail.com*/
-        $config['smtp_pass'] = 'm@hesh@dsp';/*ravikumar@518*/
+        $config['smtp_user'] = 'maheshbt8@gmail.com';//raisingravi518@gmail.com
+        $config['smtp_pass'] = 'm@hesh@dsp';//ravikumar@518
         $config['smtp_port'] = 465;
         $config['mailtype']  = 'html';
         $config['wordwrap']  = TRUE;
         
-        $config['charset']   = 'iso-8859-1';
+        $config['charset']   = 'iso-8859-1';*/
 
         $this->load->library('email');
 
         $this->email->initialize($config);
 
-        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-        if ($from == NULL)
-            $from = $this->db->get_where('settings', array('type' => 'system_email'))->row()->description;
+        $system_name = 'MyPulse'/*$this->db->get_where('settings', array('type' => 'system_name'))->row()->description*/;
+        /*if ($from == NULL)*/
+            $from = 'hospitalsystem160@gmail.com'/*$this->db->get_where('settings', array('type' => 'system_email'))->row()->description*/;
 
         $this->email->from($from, $system_name);
         $this->email->from($from, $system_name);
         $this->email->to($to);
         $this->email->subject($sub);
 
-        $msg = $msg . "<br /><br /><br /><br /><br /><br /><br /><hr /><center><a href=\"http://codecanyon.net/item/ekattor-school-management-system-pro/6087521?ref=joyontaroy\">&copy; 2013 Ekattor School Management System Pro</a></center>";
+        $msg = $msg . "<br /><br /><br /><br /><br /><br /><br /><hr /><center><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com\">&copy; 2018 JagruMs Technologies </a></center>";
         $this->email->message($msg);
 
         $this->email->send();
 
-        //echo $this->email->print_debugger();
+        /*echo $this->email->print_debugger();die;*/
         
     }
 

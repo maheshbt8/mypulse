@@ -1,11 +1,11 @@
 
-<script type="text/javascript">
+ <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout, Display: false}, 'google_translate_element');
 }
 </script>
 
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>  
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>   
 <div class="row">
    
     <div class="col-md-12 col-sm-12 clearfix" style="text-align:center;">
@@ -13,7 +13,9 @@ function googleTranslateElementInit() {
         <span style="font-weight:200; margin:0px;font-size: 30px;"><?php if($this->session->userdata('login_type') == 'superadmin'){echo $system_name;}else{echo $this->db->where('hospital_id',$this->db->where('admin_id',$this->session->userdata('login_user_id'))->get('hospitaladmins')->row()->hospital_id)->get('hospitals')->row()->name;} ?></span>
    
         <ul class="list-inline links-list pull-right">
-         <li class="dropdown language-selector"> <div id="google_translate_element"></div> </li> 
+         <li class="dropdown language-selector"> <div id="google_translate_element">
+             
+         </div></li> 
              <li class="dropdown language-selector">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true" aria-expanded="false">
                             <i class="glyphicon glyphicon-bell"></i>

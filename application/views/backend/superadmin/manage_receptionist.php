@@ -15,6 +15,7 @@ $this->session->set_userdata('last_page', current_url());
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
+            <th><?php echo get_phrase('receptionist_id');?></th>
             <th><?php echo get_phrase('receptionist_name');?></th>
             <th><?php echo get_phrase('hospital');?></th>
             <th><?php echo get_phrase('branch');?></th>
@@ -29,6 +30,7 @@ $this->session->set_userdata('last_page', current_url());
         <?php $i=1;foreach ($receptionist_info as $row) { ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['receptionist_id'] ?>"></td>
+                <td><?php echo $row['unique_id'];?></td>
                <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_receptionist/<?php echo $row['receptionist_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                <td>
                     <?php $name = $this->db->get_where('hospitals' , array('hospital_id' => $row['hospital_id'] ))->row()->name;

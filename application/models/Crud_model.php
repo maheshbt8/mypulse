@@ -24,11 +24,98 @@ class Crud_model extends CI_Model {
     }
 
 
-    function email_verify($task="",$id="")
+    function email_verification($task="",$id="")
     {
+        if($task == 'hospitaladmins'){
+            $is_email=$this->db->get_where('hospitaladmins', array('admin_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('admin_id',$id)->update('hospitaladmins',array('is_email' =>1));
+            if($yes){
+            redirect(base_url() . 'index.php?login/set_password/hospitaladmins/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        
+        }
         if($task == 'doctors'){
-            $this->db->where('doctor_id',$id)->update('doctors',array('is_email' =>1));
-            echo $this->last_query();die;
+
+            $is_email=$this->db->get_where('doctors', array('doctor_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('doctor_id',$id)->update('doctors',array('is_email' =>1));
+               if($yes){
+            redirect(base_url() . 'index.php?login/set_password/doctors/'.$id);
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        }
+        if($task == 'nurse'){
+           $is_email=$this->db->get_where('nurse', array('nurse_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('nurse_id',$id)->update('nurse',array('is_email' =>1));
+               if($yes){
+            redirect(base_url() . 'index.php?login/set_password/nurse/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        
+        }
+        if($task == 'receptionist'){
+           $is_email=$this->db->get_where('receptionist', array('receptionist_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('receptionist_id',$id)->update('receptionist',array('is_email' =>1));
+               if($yes){
+            redirect(base_url() . 'index.php?login/set_password/receptionist/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        
+        }
+        if($task == 'medicalstores'){
+           $is_email=$this->db->get_where('medicalstores', array('store_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('store_id',$id)->update('medicalstores',array('is_email' =>1));
+               if($yes){
+            redirect(base_url() . 'index.php?login/set_password/medicalstores/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        
+        }
+        if($task == 'medicallabs'){
+           $is_email=$this->db->get_where('medicallabs', array('lab_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('lab_id',$id)->update('medicallabs',array('is_email' =>1));
+               if($yes){
+            redirect(base_url() . 'index.php?login/set_password/medicallabs/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        
+        }
+        if($task == 'users'){
+           $is_email=$this->db->get_where('users', array('user_id' => $id))->row()->is_email;
+            if($is_email==2){
+            $yes=$this->db->where('user_id',$id)->update('users',array('is_email' =>1));
+               if($yes){
+            redirect(base_url() . 'index.php?login/set_password/users/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        
         }
     }
     // Create a new invoice.
@@ -463,7 +550,19 @@ class Crud_model extends CI_Model {
         $data['from_date']    = $this->input->post('from_date');
         $data['till_date']    = $this->input->post('till_date');
         
-        $this->db->insert('hospitals',$data);
+        $insert=$this->db->insert('hospitals',$data);
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);
+            $pid='MPH'.date('y').'_'.$uid;
+            $this->db->where('hospital_id',$lid)->update('hospitals',array('unique_id'=>$pid));
+            
+        }
+
     }
     function select_hospital_info()
     {
@@ -533,13 +632,22 @@ class Crud_model extends CI_Model {
              $data['qualification']    = $this->input->post('qualification');
             
         
-       $in=$this->db->insert('medicalstores',$data); 
-       if($in)
-       {
+       $insert=$this->db->insert('medicalstores',$data); 
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);
+            $pid='MPL'.date('y').'_'.$uid;
+            $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid));
+            
+        }
            $id=$this->db->insert_id();
            
            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_stores/'. $id.  '.jpg');
-       }
+       
     }
     
     
@@ -637,12 +745,21 @@ class Crud_model extends CI_Model {
              
           
        $in=$this->db->insert('hospitaladmins',$data);
-       if($in)
-       {
+       if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);
+            $pid='MPHA'.date('y').'_'.$uid;
+            $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid));
+            
+        }
            $id=$this->db->insert_id();
            
            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $id.  '.jpg');
-       }
+       
     }
     
     function select_hospitaladmins_info()
@@ -879,8 +996,8 @@ class Crud_model extends CI_Model {
             $lid=$this->db->insert_id();
             $a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 17);
-            $pid='MYPD_'.$uid;
+            $uid=substr($sid, 14);
+            $pid='MPD'.date('y').'_'.$uid;
             $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid));
             
         }
@@ -1140,13 +1257,22 @@ $que=$this->db->insert('availability_slat',$data);
             // print_r($data);
             // die;
         
-       $in=$this->db->insert('medicallabs',$data); 
-       if($in)
-       {
+       $insert=$this->db->insert('medicallabs',$data); 
+       if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);
+            $pid='MPL'.date('y').'_'.$uid;
+            $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid));
+            
+        }
            $id=$this->db->insert_id();
            
            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_labs/'. $id.  '.jpg');
-       }
+       
     }
     
     
@@ -1201,8 +1327,8 @@ $que=$this->db->insert('availability_slat',$data);
             $lid=$this->db->insert_id();
             $a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 16);
-            $pid='MYP_'.date('y').$uid;
+            $uid=substr($sid, 14);
+            $pid='MPU'.date('y').'_'.$uid;
             $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
             
         }
@@ -1473,8 +1599,18 @@ function select_user_information($patient_id="")
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
         
-        $this->db->insert('nurse',$data);
-        
+       $insert= $this->db->insert('nurse',$data);
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);
+            $pid='MPN'.date('y').'_'.$uid;
+            $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid));
+            
+        }
         $nurse_id  =   $this->db->insert_id();
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/nurse_image/" . $nurse_id . '.jpg');
     }
@@ -1663,8 +1799,18 @@ function select_user_information($patient_id="")
         $data['qualification'] 	= $this->input->post('qualification');
         $data['experience'] 	= $this->input->post('experience');
         
-        $this->db->insert('receptionist',$data);
-        
+        $insert=$this->db->insert('receptionist',$data);
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);
+            $pid='MPR'.date('y').'_'.$uid;
+            $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid));
+            
+        }
         $receptionist_id  =   $this->db->insert_id();
         move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
     }

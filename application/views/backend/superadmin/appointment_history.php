@@ -1,16 +1,8 @@
 <?php 
-$this->session->set_userdata('last_page', current_url());
+$appointment_info = $this->db->get_where('appointments', array('appointment_id' => $param2))->result_array();
+
+    /*print_r($row);*/
 ?>
-<form action="<?php echo base_url()?>index.php?superadmin/appointment/delete_multiple/" method="post">
-<button type="button" onClick="confSubmit(this.form);" 
-    class="btn btn-danger pull-right">
-        <?php echo get_phrase('delete'); ?>
-</button>
-<button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_appointment'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_appointment'); ?>
-</button>
-<div style="clear:both;"></div>
-<br>
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
@@ -60,54 +52,3 @@ $this->session->set_userdata('last_page', current_url());
         <?php } ?>
     </tbody>
 </table>
-</form>
-<script type="text/javascript">   
-    jQuery(window).load(function ()
-    {
-        var $ = jQuery;
-
-        $("#table-2").dataTable({
-            "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'<'export-data'T>f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
-        });
-
-        $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-        });
-
-        // Highlighted rows
-        $("#table-2 tbody input[type=checkbox]").each(function (i, el)
-        {
-            var $this = $(el),
-                    $p = $this.closest('tr');
-
-            $(el).on('change', function ()
-            {
-                var is_checked = $this.is(':checked');
-
-                $p[is_checked ? 'addClass' : 'removeClass']('highlight');
-            });
-        });
-
-        // Replace Checboxes
-        $(".pagination a").click(function (ev)
-        {
-            replaceCheckboxes();
-        });
-    });
-</script>
-<script type="text/javascript">
-    function toggle(source) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i] != source)
-            checkboxes[i].checked = source.checked;
-    }
-}
-
-function confSubmit(form) {
-if (confirm("Are you sure you want to Delete ?")) {
-form.submit();
-}
-}
-</script>

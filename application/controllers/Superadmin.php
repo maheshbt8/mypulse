@@ -42,7 +42,7 @@ write_file('/path/to/mybackup.gz', $backup);
 
 // Load the download helper and send the file to your desktop
 $this->load->helper('download');
-force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
+force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
     function dashboard() {
         $page_data['page_name'] = 'dashboard';
@@ -875,12 +875,10 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
            if($phone == 1){
            $this->crud_model->save_doctor_info();
             $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
-            $e=$this->email_model->account_opening_email('doctors','doctor', $email);
-            if($e){
+            $this->email_model->account_opening_email('doctors','doctor', $email);
+            
             redirect(base_url() . 'index.php?superadmin/doctor');
-        }else{
-            echo "Nooo";
-        }
+        
         }else{
             $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
         }
@@ -1093,7 +1091,25 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
 
     function users($task = "", $patient_id = "") {
         
-      
+         if($task == "unuser"){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation($phone_number);
+           if($phone == 1){
+           $this->crud_model->save_user_info();
+            $this->session->set_flashdata('message', get_phrase('user_info_saved_successfuly'));
+            $this->email_model->account_opening_email('users','user', $email);
+            redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        
+    }
         if ($task == "delete") {
 
             $this->crud_model->delete_user_info($patient_id);
@@ -1125,6 +1141,19 @@ force_download('MyPulse-DB'.date('Ymd').'.gz', $backup);
 
         $data['page_name'] = 'add_appointment';
         $data['page_title'] = get_phrase('book_Appointment');
+        $this->load->view('backend/index', $data);
+    }
+    function edit_appointment($appointment_id = "")
+    {
+        if($this->input->post()){
+            print_r($_POST);die;
+    $this->crud_model->update_appointment_info();
+    $this->session->set_flashdata('message', get_phrase('appointment_info_updated_successfuly'));
+    redirect($this->session->userdata('last_page'));
+    }
+        $data['appointment_id']=$appointment_id;
+        $data['page_name'] = 'edit_appointment';
+        $data['page_title'] = get_phrase('edit_Appointment');
         $this->load->view('backend/index', $data);
     }
     function appointment($task = "", $appointment_id = "") {

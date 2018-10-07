@@ -13,13 +13,14 @@ body {
 }
 
 .navbar a {
+
   float: left;
   display: block;
   color: #f2f2f2;
   text-align: center;
   padding: 0px 16px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 13px;
 }
 
 .main {
@@ -30,6 +31,5 @@ body {
 <!-- Footer -->
  <footer class="main navbar">
  	 
-	<a href="" 
-    	target="_blank">Copyrights &copy; 2018 JagruMs Technologies</a> 
+	<a href="" target="_blank">Copyrights &copy; 2018 JagruMs Technologies</a> 
 </footer>  

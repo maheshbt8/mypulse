@@ -1,8 +1,110 @@
-
+<style>
+    .modal-backdrop.in{
+        z-index: auto;
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
     
-       
+       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">UNREGISTERED USER</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">UNREGISTERED USER</h4>
+        </div>
+        <div class="modal-body">
+          
+<div class="row">
+    <div class="col-md-12">
+        <!------CONTROL TABS END------>
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_user/" method="post" enctype="multipart/form-data">
+             
+        <div class="tab-content">
+           
+        <br>
+            <!----TABLE LISTING STARTS-->
+            <div class="tab-pane box active" id="list">
+                
+                <div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+
+                
+                    <div class="row">
+                        <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="fname" class="form-control" id="fname" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('fname'); ?>">
+                            <span ><?php echo form_error('fname'); ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['lname'];?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="lname" class="form-control" id="lname"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('lname'); ?>">
+                            <span ><?php echo form_error('lname'); ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
+
+                        <div class="col-sm-8">
+                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('email'); ?>" >
+                            <span ><?php echo form_error('email'); ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['phone_number'];?></label>
+
+                        <div class="col-sm-8">
+                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mobile'); ?>" minlength="10" maxlength="10">
+                            <span ><?php echo form_error('mobile'); ?></span>  
+                        </div>
+                    </div>
+                   
+                </div>
+                    </div>
+                </div>
+
+        </div>
+
+    </div>
+</div>
+                
+              
+            </div>
+            <!----TABLE LISTING ENDS--->
+
+           
+                     <div class="col-sm-3 control-label col-sm-offset-2">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                    </div> 
+        </div>
+        </form>
+    </div>
+</div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_appointment/" method="post" enctype="multipart/form-data">
              

@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -76,7 +75,7 @@ class Login extends CI_Controller {
      
       $email = $this->input->post('email');
       $password = $this->input->post('password');
-      $credential = array('email' => $email, 'password' => sha1($password),'status'=>'1');
+      $credential = array('email' => $email, 'password' => sha1($password),'status'=>'1','is_email'=>'1');
      
         // Checking login credential for admin
         
@@ -207,22 +206,28 @@ class Login extends CI_Controller {
         $data['email']      = $this->input->post('email');
         $data['password']       = sha1($this->input->post('pass'));
         $data['phone']          = $this->input->post('mobile');
-        $data['status']   = 2;
+        $data['status']   = 1;
         
         $insert=$this->db->insert('patient',$data);
         if($insert)
         {
-            
             $lid=$this->db->insert_id();
-            $a="12345678901234567";
+            $a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 15);
-            $pid='MYP_'.$lid.$uid;
-            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid));
-            
+            $uid=substr($sid, 14);
+            $pid='MPU'.date('y').'_'.$uid;
+            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
         }
                 $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));
                 $this->email_model->account_opening_email($this->lang->line('roles')[6], $data['email']);
+            $user_name   =   $data['name'];
+            $num="12345678901234567890";
+            $shu=str_shuffle($num);
+            $otp=substr($shu, 14);
+            $this->session->set_flashdata('otp',$otp);
+            $message        =  'Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $otp ;
+            $receiver_phone =   $data['phone'];
+            $this->sms_model->send_sms($message, $receiver_phone);
             }else{
                  $this->session->set_flashdata('cpass_error', $this->lang->line('validation')['passwordNotMatch']);
             }} else {
@@ -266,6 +271,106 @@ class Login extends CI_Controller {
             }
         $this->load->view('backend/register');
         
+    }
+     function email_verification($task="",$id="")
+    {
+        $this->crud_model->email_verification($task,$id);
+    }
+     function set_password($task="",$id="")
+    {
+        if($this->input->post()){
+        /*if($this->input->post('pass') == $this->input->post('cpass')){*/
+            $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
+$this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
+            
+            if ($this->form_validation->run() == TRUE){
+        if($task == 'hospitaladmins'){
+             
+            $is_email=$this->db->get_where('hospitaladmins', array('admin_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('admin_id',$id)->update('hospitaladmins',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+   
+        
+        }
+        if($task == 'doctors'){
+      
+            $is_email=$this->db->get_where('doctors', array('doctor_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('doctor_id',$id)->update('doctors',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+    
+        }
+        if($task == 'nurse'){
+         
+            $is_email=$this->db->get_where('nurse', array('nurse_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('nurse_id',$id)->update('nurse',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+    
+        }
+        if($task == 'receptionist'){
+           
+            $is_email=$this->db->get_where('receptionist', array('receptionist_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('receptionist_id',$id)->update('receptionist',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+  
+        
+        }
+        if($task == 'medicalstores'){
+        
+            $is_email=$this->db->get_where('medicalstores', array('store_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('store_id',$id)->update('medicalstores',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+   
+        }
+        if($task == 'medicallabs'){
+        
+            $is_email=$this->db->get_where('medicallabs', array('lab_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('lab_id',$id)->update('medicallabs',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+    
+        }
+        if($task == 'users'){
+          
+            $is_email=$this->db->get_where('users', array('user_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('user_id',$id)->update('users',array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }
+    
+        } 
+    }
+    /*}else{
+                 $this->session->set_flashdata('cpass_error', 'Password Not Matched');
+            }*/
+    }
+        $data['account']=$task;
+        $data['id']=$id;
+        $this->load->view('backend/set_password',$data);
     }
 
     function logout() {

@@ -6723,8 +6723,9 @@ textareatable .replace-inputs input {
   vertical-align: bottom;
 }
 .tile-stats .icon i:before {
+  font-size: 70px;
   margin: 0;
-  padding: 0;
+  padding: 8px;
   line-height: 0;
 }
 .tile-stats .num,
@@ -6741,7 +6742,7 @@ textareatable .replace-inputs input {
   font-weight: bold;
 }
 .tile-stats h3 {
-  font-size: 18px;
+  font-size: 25px;
   margin-top: 5px;
 }
 .tile-stats p {
@@ -6907,7 +6908,7 @@ textareatable .replace-inputs input {
   border: 1px solid #ebebeb;
 }   
 .tile-stats.tile-white:hover {
-  background: #f2f2f2;
+  background: #e91e63;
 }
 .tile-stats.tile-white .icon {
   color: #f2f2f2;
@@ -6918,7 +6919,7 @@ textareatable .replace-inputs input {
   color: #ffffff;
 }
 .tile-stats.tile-white:hover {
-  background-color: #b4afaf;
+  background-color: #e91e63;
 }
 .tile-stats.tile-white-red {
   background: #E67D21;
@@ -6936,7 +6937,7 @@ textareatable .replace-inputs input {
   color: #ffffff;
 }
 .tile-stats.tile-white-red:hover {
-  background-color: #fafafa;
+  background-color: #E67D21;
 }
 .tile-stats.tile-white-green {
   background: #ffffff;
@@ -6979,7 +6980,7 @@ textareatable .replace-inputs input {
   border: 1px solid #ebebeb;
 }
 .tile-stats.tile-white-aqua:hover {
-  background: #f2f2f2;
+  background: #26a55f;
 }
 .tile-stats.tile-white-aqua .icon {
   color: #f2f2f2;
@@ -6990,7 +6991,7 @@ textareatable .replace-inputs input {
   color: #ffffff;
 }
 .tile-stats.tile-white-aqua:hover {
-  background-color: #fafafa;
+  background-color: #26a55f;
 }
 .tile-stats.tile-white-cyan {
   background: #aa03ff;
@@ -7036,7 +7037,7 @@ textareatable .replace-inputs input {
   background: #f2f2f2;
 }
 .tile-stats.tile-white-pink .icon {
-  color: #f2f2f2;
+  color: #ffffff;
 }
 .tile-stats.tile-white-pink .num,
 .tile-stats.tile-white-pink h3,
@@ -7051,7 +7052,7 @@ textareatable .replace-inputs input {
   border: 1px solid #ebebeb;
 }
 .tile-stats.tile-white-orange:hover {
-  background: #f2f2f2;
+  background: #ffffff;
 }
 .tile-stats.tile-white-orange .icon {
   color: #f2f2f2;
@@ -7080,14 +7081,14 @@ textareatable .replace-inputs input {
   color: #6c541e;
 }
 .tile-stats.tile-white-brown:hover {
-  background-color: #fafafa;
+  background-color: #ffffff;
 }
 .tile-stats.tile-white-plum {
   background: #ffffff;
   border: 1px solid #ebebeb;
 }
 .tile-stats.tile-white-plum:hover {
-  background: #f2f2f2;
+  background: #fafafa;
 }
 .tile-stats.tile-white-plum .icon {
   color: #f2f2f2;
@@ -7105,7 +7106,7 @@ textareatable .replace-inputs input {
   border: 1px solid #ebebeb;
 }
 .tile-stats.tile-white-gray:hover {
-  background: #f2f2f2;
+  background: #a979d1;
 }
 .tile-stats.tile-white-gray .icon {
   color: #f2f2f2;
@@ -7116,7 +7117,7 @@ textareatable .replace-inputs input {
   color: #ffffff;
 }
 .tile-stats.tile-white-gray:hover {
-  background-color: #fafafa;
+  background-color: #a979d1;
 }
 .tile-title {
   position: relative;
