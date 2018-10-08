@@ -216,7 +216,7 @@ foreach ($single_hospital_info as $row) {
                     </div>
 
               </div>
-              <div class="col-sm-3 control-label col-sm-offset-3">
+              <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="Update">
                     </div>
                     </div>
@@ -289,7 +289,7 @@ foreach ($single_hospital_info as $row) {
                     </div>
                    
                 </div>
-                  <div class="col-sm-3 control-label col-sm-offset-3">
+                  <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="Update">
                     </div>
                     </div>

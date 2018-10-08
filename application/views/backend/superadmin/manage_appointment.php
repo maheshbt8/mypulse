@@ -3,7 +3,7 @@ $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/appointment/delete_multiple/" method="post">
 <button type="button" onClick="confSubmit(this.form);" 
-    class="btn btn-danger pull-right">
+    class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_appointment'" class="btn btn-primary pull-right">
@@ -18,8 +18,8 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('appointment_no');?></th> 
             <th><?php echo get_phrase('user');?></th>
             <th><?php echo get_phrase('doctor');?></th>
-            <th><?php echo get_phrase('department');?></th>  
-            <th><?php echo get_phrase('time');?></th>
+            <th><?php echo get_phrase('Hospital-Branch-Department');?></th>  
+            <th><?php echo get_phrase('time_slot');?></th>
             <th><?php echo get_phrase('date');?></th>
             <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options');?></th>
@@ -48,8 +48,11 @@ $this->session->set_userdata('last_page', current_url());
                         echo $name;?></a>
                 </td>
                 <td>
-                    <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
-                        echo $name;?>
+                    <?php 
+                    $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
+                        echo $hospital->name.' - '.$branch->name.' - '.$name;?>
                 </td>
                 <td><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
                 <td><?php echo date("M d/Y",strtotime($row['appointment_date']));?></td>

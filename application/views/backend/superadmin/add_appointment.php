@@ -5,7 +5,42 @@
 </style>
 <div class="row">
     <div class="col-md-12">
-    
+    <div class="col-sm-4">
+                  <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="hospital" class="form-control" value="<?php echo set_value('hospital'); ?>" onchange="return get_hospital_doctors(this.value)">
+                                <option value=""><?php echo get_phrase('select_hospital'); ?></option>
+                                <?php 
+                                $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['hospital_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                           
+                        </div>
+                    </div>
+    </div>
+    <div class="col-sm-5">
+                  <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('specializations'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="hospital" class="form-control" onchange="return get_specializations_doctors(this.value)">
+                                <option value=""><?php echo get_phrase('select_specialization'); ?></option>
+                                <?php 
+                                $admins = $this->db->get_where('specializations')->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['specializations_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+    </div>
        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">UNREGISTERED USER</button>
 
   <!-- Modal -->
@@ -20,17 +55,10 @@
         </div>
         <div class="modal-body">
           
-<div class="row">
-    <div class="col-md-12">
-        <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_user/" method="post" enctype="multipart/form-data">
+
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/unuser/" method="post" enctype="multipart/form-data">
              
-        <div class="tab-content">
-           
-        <br>
-            <!----TABLE LISTING STARTS-->
-            <div class="tab-pane box active" id="list">
-                
+        
                 <div class="row">
     <div class="col-md-12">
 
@@ -38,14 +66,14 @@
          <div class="panel-body">
 
                 
-                    <div class="row">
-                        <div class="col-sm-12">
+                <div class="row">
+                <div class="col-sm-12">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
 
                         <div class="col-sm-8">
                             <input type="text" name="fname" class="form-control" id="fname" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('fname'); ?>">
-                            <span ><?php echo form_error('fname'); ?></span>
+                           
                         </div>
                     </div>
                     <div class="form-group">
@@ -53,28 +81,30 @@
 
                         <div class="col-sm-8">
                             <input type="text" name="lname" class="form-control" id="lname"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('lname'); ?>">
-                            <span ><?php echo form_error('lname'); ?></span>
+                          
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('email'); ?>" >
-                            <span ><?php echo form_error('email'); ?></span>
+                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('email'); ?>"  onchange="return get_email(this.value)">
+                            <span id="email_error"></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['phone_number'];?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Mobile Number');?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mobile'); ?>" minlength="10" maxlength="10">
-                            <span ><?php echo form_error('mobile'); ?></span>  
+                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mobile'); ?>" minlength="10" maxlength="10" onchange="return get_phone(this.value)">
+                             <span id="phone_error"></span>
                         </div>
                     </div>
-                   
                 </div>
-                    </div>
+                <div class="col-sm-3 control-label col-sm-offset-2">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                </div>
+                </div>
                 </div>
 
         </div>
@@ -83,28 +113,19 @@
 </div>
                 
               
-            </div>
-            <!----TABLE LISTING ENDS--->
-
-           
-                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
-                    </div> 
-        </div>
+         
         </form>
-    </div>
-</div>
+   
 
 
 
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+      
       </div>
       
     </div>
   </div>
+
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_appointment/" method="post" enctype="multipart/form-data">
              
@@ -153,8 +174,13 @@
         <?php 
         $users=$this->db->get('doctors')->result_array();
         foreach ($users as $row) {
+            $spee=explode(',',$row['specializations']);
+            $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
          ?>
-<option value="<?php echo $row['unique_id'];?>"><?php echo 'Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.' , '.$row['specializations'].')';?></option>
+<option value="<?php echo $row['unique_id'];?>"><?php echo 'Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.' , '.$spe.')';?></option>
 <?php }?>
 
   </datalist>
@@ -222,13 +248,9 @@
     </div>
 </div>
             </div>
-           
-         
-
-                
                     </div>
                      
-                    <div class="col-sm-3 control-label col-sm-offset-5 ">
+                    <div class="col-sm-3 control-label col-sm-offset-9 ">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>  
@@ -238,7 +260,31 @@
 </div>
 
 <script type="text/javascript">
-    
+     function get_email(email_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>index.php?superadmin/get_email/' ,
+            data : {email : email_value},
+            success: function(response)
+            {
+                jQuery('#email_error').html(response);        
+            } 
+        });
+   
+    }
+     function get_phone(phone_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>index.php?superadmin/get_phone/' ,
+            data : {phone : phone_value},
+            success: function(response)
+            {
+                jQuery('#phone_error').html(response);        
+            } 
+        });
+   
+    }
+   
    function get_doctor_ava(unique_id) {
      $.ajax({
             url: '<?php echo base_url();?>index.php?superadmin/get_doctor_data/' + unique_id ,
@@ -278,4 +324,31 @@
    
     }  
           
+</script>
+<script type="text/javascript">
+
+    function get_hospital_doctors(hospital_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_hospital_doctors/' + hospital_id ,
+            success: function(response)
+            {
+
+                jQuery('#doctors').html(response);
+            }
+        });
+
+    }
+    function get_specializations_doctors(id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_specializations_doctors/' + id ,
+            success: function(response)
+            {
+               
+            jQuery('#doctors').html(response);
+            }
+        });
+
+    }
 </script>

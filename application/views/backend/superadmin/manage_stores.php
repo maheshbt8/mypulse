@@ -3,7 +3,7 @@ $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/medical_stores/delete_multiple/" method="post">
 <button type="button" onClick="confSubmit(this.form);" 
-    class="btn btn-danger pull-right">
+    class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_stores'" class="btn btn-primary pull-right">

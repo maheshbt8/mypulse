@@ -44,7 +44,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first_name'); ?></label>
 
                         <div class="col-sm-8">
-                        <input type="text" name="fname" class="form-control" id="fname" value="<?php echo set_value('fname'); ?>">
+                        <input type="text" name="fname" class="form-control" id="fname" value="<?php echo set_value('fname'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
                             <span ><?php echo form_error('fname'); ?></span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('last_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="field-3" value="<?php echo set_value('lname'); ?>">
+                            <input type="text" name="lname" class="form-control" id="field-3" value="<?php echo set_value('lname'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
                               <span ><?php echo form_error('lname'); ?></span>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="field-4" value="<?php echo set_value('description'); ?>">
+                            <input type="text" name="description" class="form-control" id="description" value="<?php echo set_value('description'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                         <label for="field-1" class="col-sm-3 control-label">  <?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="field-5" value="<?php echo set_value('email'); ?>">
+                            <input type="email" name="email" class="form-control" id="email" value="<?php echo set_value('email'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
                              <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="field-6" value="<?php echo set_value('mobile'); ?>"   minlength="10" maxlength="10">  
+                            <input type="number" name="mobile" class="form-control" id="mobile" value="<?php echo set_value('mobile'); ?>" minlength="10" maxlength="10" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">  
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
+                            <select name="hospital" class="form-control" value="<?php echo set_value('hospital'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" onchange="return get_branch(this.value)">
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
@@ -111,7 +111,7 @@
                   <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
-                                <select name="branch" class="form-control" id="select_branch"   value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
+                                <select name="branch" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="select_branch"   value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
                                     <option value=""><?php echo get_phrase('select_hospital_first'); ?></option>
 
                                 </select>
@@ -121,7 +121,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('department'); ?></label>
                             <div class="col-sm-8">
-                                <select name="department" class="form-control" id="select_department" value="<?php echo set_value('department'); ?>"  onchange="return get_doctor(this.value)">
+                                <select name="department" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="select_department" value="<?php echo set_value('department'); ?>"  onchange="return get_doctor(this.value)">
                                     <option value=""> <?php echo get_phrase('select_branch_first'); ?></option>
 
                                 </select>
@@ -134,7 +134,7 @@
                       <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
-                                <select multiple name="doctor[]" class="form-control" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>">
+                                <select multiple name="doctor[]" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>">
                                     <option value=""><?php echo get_phrase('select_department_first'); ?></option>
 
                                 </select>
@@ -146,7 +146,7 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('status'); ?></label>
 
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" id="status" value="<?php echo set_value('status'); ?>">
+                            <select name="status" class="form-control" id="status" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('status'); ?>">
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1" selected> <?php echo get_phrase('active'); ?></option>
                                 <option value="2"> <?php echo get_phrase('inactive'); ?></option>

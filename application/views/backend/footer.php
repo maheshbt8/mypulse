@@ -24,7 +24,6 @@ body {
 }
 
 .main {
- 
   margin-bottom: 0px;
 }
 </style>
@@ -37,11 +36,11 @@ body {
   <div class="container-fluid">
     
     <ul class="nav navbar-nav">
-      <li class="footer-list"><a class="navbar-brand" href="#"><b>&copy; 2018 JagruMs Technologies - All Rights Received</b></a></li>
+      <li class="footer-list"><a class="navbar-brand"><i>&copy; 2018 JagruMs Technologies - All Rights Received</i></a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li class="footer-list"><a class="navbar-brand" href="#"><i>Terms & Conditions</i></a></li>
-      <li class="footer-list"><a class="navbar-brand" href="#"><i>Privacy & Policy</i></a></li>
+      <li class="footer-list"><a class="navbar-brand"><i>Terms & Conditions</i></a></li>
+      <li class="footer-list"><a class="navbar-brand"><i>Privacy & Policy</i></a></li>
     
     </ul>
    

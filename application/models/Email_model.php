@@ -12,7 +12,8 @@ class Email_model extends CI_Model {
     function account_opening_email($account_type = '',$id_type = '', $email = '') {
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
         $query = $this->db->get_where($account_type, array('email' => $email));
-        $id = $query->row()->doctor_id;
+        $type=$id_type.'_id';
+        $id = $query->row()->$type;
         $email_msg = "Welcome to " . $system_name . "<br />";
         $email_msg .= "Your account type : " . $account_type . "<br />";
         $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com/index.php?login/email_verification/$account_type/$id\"> YES </a></button> <br />";

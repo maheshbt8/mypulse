@@ -304,6 +304,22 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $this->load->view('backend/index', $page_data);
     }
     /******GET STATES****/
+    function get_email()
+    {
+        $email=$_POST['email'];
+        $validation = email_validation($email);
+        if($validation == 0){
+        echo '<span style="color:red"> This Email Already Existed </span>';    
+        }
+    }
+     function get_phone()
+    {
+        $phone=$_POST['phone'];
+        $validation = mobile_validation($phone);
+        if($validation == 0){
+        echo '<span style="color:red"> This Phone Number Already Existed </span>';    
+        }
+    }
     function get_state($country_id)
     {
         $state = $this->db->get_where('state' , array(
@@ -381,7 +397,36 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
             echo '<option value="' . $row['ward_id'] . '">' . $row['name'] . '</option>';
         }
     }
-    
+     function get_hospital_doctors($hospital_id='')   
+    {
+
+        $users=$this->db->where('hospital_id',$hospital_id)->get('doctors')->result_array();
+        foreach ($users as $row) {
+            $spee=explode(',',$row['specializations']);
+            $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
+echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
+ }
+    }
+    function get_specializations_doctors($id='')   
+    {
+        $users=$this->db->get('doctors')->result_array();
+        foreach ($users as $row) {
+            $spee=explode(',',$row['specializations']);
+            for($j=0;$j<count($spee);$j++) {
+                if($id == $spee[$j])
+                {
+            $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
+echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
+ } 
+}
+}
+    }
      function get_doctor($department_id='',$department_id1 = '')   
     {
         if($department_id == 'all'){
@@ -874,6 +919,7 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
            $phone = mobile_validation($phone_number);
            
            if($phone == 1){
+
            $this->crud_model->save_doctor_info();
             $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
             $this->email_model->account_opening_email('doctors','doctor', $email);
@@ -1091,26 +1137,6 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
 
     function users($task = "", $patient_id = "") {
-        
-         if($task == "unuser"){
-           $email = $this->input->post('email');
-           $validation = email_validation($email);
-            if ($validation == 1) {
-           $phone_number = $this->input->post('mobile');
-           $phone = mobile_validation($phone_number);
-           if($phone == 1){
-           $this->crud_model->save_user_info();
-            $this->session->set_flashdata('message', get_phrase('user_info_saved_successfuly'));
-            $this->email_model->account_opening_email('users','user', $email);
-            redirect($this->session->userdata('last_page'));
-        }else{
-            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
-        }
-            }else {
-                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
-            }
-        
-    }
         if ($task == "delete") {
 
             $this->crud_model->delete_user_info($patient_id);
@@ -1132,8 +1158,16 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $data['page_title'] = get_phrase('myPulse_users');
         $this->load->view('backend/index', $data);
     }
+       function unuser(){
+           
+           $this->crud_model->save_unuser_info();
+            $this->session->set_flashdata('message', get_phrase('unregistered_user_info_saved_successfuly'));
+           /* $this->email_model->account_opening_email('users','user', $email);*/
+            redirect(base_url() . 'index.php?superadmin/add_appointment');
+    }
       function add_appointment()
     {
+
         if($this->input->post()){
     $this->crud_model->save_appointment_info();
     $this->session->set_flashdata('message', get_phrase('appointment_info_saved_successfuly'));

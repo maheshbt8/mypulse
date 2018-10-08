@@ -30,7 +30,7 @@
             <div class="tab-pane box active" id="list">
                 
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -39,7 +39,7 @@
 
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('first_name'); ?></label>
 
@@ -83,24 +83,8 @@
 
                    
                 </div>
-                    </div>
                    
-
-            </div>
-
-        </div>
-
-    </div>
-    <div class="col-md-6">
-
-        <div class="panel panel-primary" data-collapsed="0">
-
-
-            <div class="panel-body">
-
-                
-                    <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                        
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('phone_number'); ?></label>
@@ -182,14 +166,14 @@
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
      <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('gender'); ?></label>
 
@@ -225,7 +209,29 @@
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profile_picture'); ?></label>
+
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="http://placehold.it/200x200" alt="...">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new"><?php echo get_phrase('select_picture'); ?></span>
+                                        <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile" value="<?php echo set_value('userfile'); ?>">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                    
+                </div>
+                <div class="col-sm-6">
                             <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
@@ -275,58 +281,34 @@
                             </div>
                     </div>
                    
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profile_picture'); ?></label>
-
-                        <div class="col-sm-5">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="http://placehold.it/200x200" alt="...">
-                                </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-                                <div>
-                                    <span class="btn btn-white btn-file">
-                                        <span class="fileinput-new"><?php echo get_phrase('select_picture'); ?></span>
-                                        <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
-                                        <input type="file" name="userfile" accept="image/*" id="userfile" value="<?php echo set_value('userfile'); ?>">
-                                    </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                    
                 </div>
                     </div>
                     
                             
             </div>
-            </div></div></div></div>
+            </div>
+        </div>
+    </div>
+</div>
             <!----CREATION FORM ENDS-->
     
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                   <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
 
                         <div class="col-sm-8">
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo set_value('qualification'); ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="specializations" class="form-control" id="specializations" value="<?php echo set_value('specializations'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -340,13 +322,31 @@
                      
                    
                 </div>
+                <div class="col-md-6"> 
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
+                            <div class="col-sm-8">
+                                <select multiple name="specializations[]" class="form-control" id="specializations" value="<?php echo set_value('specializations[]'); ?>">
+                                    <option value=""><?php echo get_phrase('select_specializations'); ?></option>
+                                    <?php 
+                                    $specializations=$this->db->get('specializations')->result();
+                                    foreach ($specializations as $spe) {
+                                    ?>
+                    <option value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></option>
+                <?php }?>
+                                </select>
+                                
+                            </div>
+                    </div>
+                    
+                </div>
                     </div>    
                     </div>
                   
                      </div></div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 

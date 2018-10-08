@@ -28,8 +28,8 @@ $this->session->set_userdata('last_page1', current_url());
                         <div class="">
                             <div class="custome_col8">
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('availability'); ?></h3>
-                                <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">&nbsp;&nbsp;
-                               <button onclick="" class="btn btn-primary pull-right"><?php echo $this->lang->line('buttons')['save'];?></button>
+                                <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;">&nbsp;&nbsp;
+                               <input type="submit" onclick="" class="btn btn-primary pull-right" value="Save">
                         
                                
                             </div>

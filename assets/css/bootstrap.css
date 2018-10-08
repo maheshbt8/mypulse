@@ -4455,7 +4455,7 @@ input[type="button"].btn-block {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #7d8086;
+  color: #272727;
   margin: 0 3px;
   white-space: nowrap;
   -webkit-border-radius: 3px;
@@ -5171,7 +5171,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #eeeeee;
+  /*background-color: #eeeeee;*/
   border-color: #373e4a;
 }
 .nav .open > a .caret,
@@ -5703,7 +5703,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-nav > li > .dropdown-menu {
-  margin-top: 0;
+  margin-top: 5px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }

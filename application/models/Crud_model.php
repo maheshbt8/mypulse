@@ -555,10 +555,11 @@ class Crud_model extends CI_Model {
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPH'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPH'.date('y').'_'.$num;
             $this->db->where('hospital_id',$lid)->update('hospitals',array('unique_id'=>$pid));
             
         }
@@ -637,10 +638,11 @@ class Crud_model extends CI_Model {
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+           /* $a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPL'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPL'.date('y').'_'.$num;
             $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid));
             
         }
@@ -744,15 +746,16 @@ class Crud_model extends CI_Model {
         $data['experience']    = $this->input->post('experience');
              
           
-       $in=$this->db->insert('hospitaladmins',$data);
+       $insert=$this->db->insert('hospitaladmins',$data);
        if($insert)
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPHA'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPHA'.date('y').'_'.$num;
             $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid));
             
         }
@@ -981,7 +984,9 @@ class Crud_model extends CI_Model {
         $data['dob'] 	= $this->input->post('dob');
         $data['aadhar'] 	= $this->input->post('aadhar');
         $data['qualification'] 	= $this->input->post('qualification');
-         $data['specializations'] 	= $this->input->post('specializations');
+        if($this->input->post('specializations')!=''){
+         $data['specializations'] 	= implode(',',$this->input->post('specializations'));
+     }
           $data['experience'] 	= $this->input->post('experience');
           $data['country']    = $this->input->post('country');
         $data['state']    = $this->input->post('state');
@@ -994,10 +999,11 @@ class Crud_model extends CI_Model {
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPD'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPD'.date('y').'_'.$num;
             $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid));
             
         }
@@ -1193,7 +1199,9 @@ $que=$this->db->insert('availability_slat',$data);
         $data['dob'] 	= $this->input->post('dob');
         $data['aadhar'] 	= $this->input->post('aadhar');
         $data['qualification'] 	= $this->input->post('qualification');
-         $data['specializations'] 	= $this->input->post('specializations');
+        if($this->input->post('specializations')!=''){
+         $data['specializations'] 	= implode(',', $this->input->post('specializations'));
+     }
           $data['experience'] 	= $this->input->post('experience');
           $data['country']    = $this->input->post('country');
         $data['state']    = $this->input->post('state');
@@ -1262,10 +1270,11 @@ $que=$this->db->insert('availability_slat',$data);
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPL'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPL'.date('y').'_'.$num;
             $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid));
             
         }
@@ -1288,6 +1297,31 @@ $que=$this->db->insert('availability_slat',$data);
             $this->db->where('lab_id',$check[$i]);
             $this->db->delete('medicallabs');
         }
+    }
+    function save_unuser_info()
+    {
+        $data['name']       = $this->input->post('fname');
+        $data['lname']      = $this->input->post('lname');
+        $data['email']      = $this->input->post('email');
+        $data['password']       = sha1('mypulse');
+        $data['phone']          = $this->input->post('mobile');
+        $data['reg_status']   = 2;
+        
+        $insert=$this->db->insert('users',$data);
+        if($insert)
+        {
+            
+            $lid=$this->db->insert_id();
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
+            $sid=str_shuffle($a);
+            $uid=substr($sid, 14);*/
+            $pid='MPU'.date('y').'_'.$num;
+            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+            
+        }
+        $patient_id  =   $this->db->insert_id();
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
     function save_user_info()
     {
@@ -1325,10 +1359,11 @@ $que=$this->db->insert('availability_slat',$data);
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPU'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPU'.date('y').'_'.$num;
             $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
             
         }
@@ -1604,10 +1639,11 @@ function select_user_information($patient_id="")
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPN'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPN'.date('y').'_'.$num;
             $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid));
             
         }
@@ -1804,10 +1840,11 @@ function select_user_information($patient_id="")
         {
             
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPR'.date('y').'_'.$uid;
+            $uid=substr($sid, 14);*/
+            $pid='MPR'.date('y').'_'.$num;
             $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid));
             
         }
@@ -2147,15 +2184,18 @@ function select_user_information($patient_id="")
         $data['remarks']       = $this->input->post('remarks');
     }
         $data['status']       = 2;
+        $data['created_type']       = $this->session->userdata('login_type');
+        $data['created_by']       = $this->session->userdata('name');
        
          $insert=$this->db->insert('appointments',$data);
         if($insert)
         {
             $lid=$this->db->insert_id();
-            $a="12345678901234567890";
+            $num=100000+$lid;
+            /*$a="12345678901234567890";
             $sid=str_shuffle($a);
-            $uid=substr($sid, 16);
-            $pid='MP_'.date('y').$uid;
+            $uid=substr($sid, 16);*/
+            $pid='MPA_'.date('y').$num;
             
             $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid));
             

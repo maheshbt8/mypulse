@@ -23,25 +23,25 @@ body {
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav navbar-right"  style="font-size: 15px;">
-      <li id="google_translate_element"></li>
+      <!-- <li id="google_translate_element"></li>  -->
      <!--  <li>
-        <select name="hospital" class="form-control" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
-            <option value="">select</option>
-            <option value="">telugu</option>
+        <select name="hospital" class="form-control language" value="<?php echo set_value('hospital'); ?>" id="selected">
+            <option value="" >select</option>
+            <option value="telugu" class="english notranslate" data-lang="English"selected>telugu</option>
         </select>
-      </li> -->
-      <li class="dropdown language-menu">
+      </li>  -->
+      <!--  <li class="dropdown language-menu">
         <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="background-color: none !important;">
       <span id="selected" class="notranslate">Chose Language</span><span class="caret"></span></a>
          <ul class="dropdown-menu language">
-    <li><a href="#" class="english notranslate" data-lang="English">English</a></li>
+          <?php $language=$this->db->get('languages')->result_array();
+          foreach ($language as $row ) {
+          ?>
+    <li><a href="#" class="<?= $row['name'];?> notranslate" data-lang="<?= ucfirst($row['name']);?>"><?= ucfirst($row['name']);?></a></li>
     <li class="divider"></li>
-    <li><a href="#" class="hindi notranslate" data-lang="Hindi">Hindi</a></li>
-    <li class="divider"></li>
-    <li><a href="#" class="telugu notranslate" data-lang="Telugu">Telugu</a></li>
-    <li class="divider"></li>
+  <?php } ?>
   </ul>
-      </li>
+      </li> --> 
    
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-bell"></i>
@@ -99,9 +99,21 @@ body {
 </nav>  
 
  <script>
-   $('.language a').click(function(){
+  $('.language a').click(function(){
     $('#selected').text($(this).text());
   });
+
+/*  function get_language(language) {
+    
+      $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
+            success: function(response)
+            {
+                jQuery('#select_state').html(response);
+            }
+        });
+
+    }*/
  </script>
  <script type="text/javascript">
 function googleTranslateElementInit() {

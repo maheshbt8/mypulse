@@ -119,9 +119,6 @@
                             <span ><?php echo form_error('status'); ?></span>
                         </div>
                     </div>
-
-
-                   
                 </div>
                     </div>
             </div>
@@ -129,6 +126,7 @@
         </div>
 
     </div>
+
 </div>
                 
               

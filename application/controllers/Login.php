@@ -249,7 +249,7 @@ class Login extends CI_Controller {
         $data['email']      = $this->input->post('email');
         $data['password']       = sha1($this->input->post('pass'));
         $data['phone']          = $this->input->post('mobile');
-        $data['status']   = $this->input->post('status');
+        $data['status']   = 1;
         
         $insert=$this->db->insert('patient',$data);
         if($insert)

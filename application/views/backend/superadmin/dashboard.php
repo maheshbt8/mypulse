@@ -1,6 +1,6 @@
 
-
 <div class="row">
+
       <div class="col-sm-3">
         <a href="<?php echo base_url(); ?>index.php?superadmin/hospital">
             <div class="tile-stats tile-white-gray  tile-white-primary">
