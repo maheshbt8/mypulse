@@ -204,6 +204,28 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
     
     /*******************GENERAL SETTINGS*********************/
+    function specialization($param1 = '', $param2 = '', $param3 = '') {
+        if ($param1 == "create") {
+            
+            $this->crud_model->save_specialization_info();
+            $this->session->set_flashdata('message', get_phrase('specialization_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/specialization');
+        }
+        if ($param1 == "delete") {
+            $this->crud_model->delete_specialization($param2);
+            redirect(base_url() . 'index.php?superadmin/specialization');
+        }
+        if ($param1 == "update") {
+            
+            $this->crud_model->update_country_info($param2);
+            $this->session->set_flashdata('message', get_phrase('country_info_updated_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/country');
+        }
+        $page_data['page_name'] = 'specializations';
+        $page_data['page_title'] = get_phrase('Specializations');
+        $page_data['country'] = $this->db->get('specializations')->result_array();
+        $this->load->view('backend/index', $page_data);
+    }
     function country($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == "create") {
             
@@ -397,7 +419,16 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
             echo '<option value="' . $row['ward_id'] . '">' . $row['name'] . '</option>';
         }
     }
-     function get_hospital_doctors($hospital_id='')   
+     function get_user_data()   
+    {
+    $user_value=$_POST['user'];
+        /*$where="email=".$user_value or "phone=".$user_value;*/
+        $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";
+        $users=$this->db->where($where)->get('users')->row_array();
+        echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="'.$users['name'].' '.$users['lname'].'" onchange="return get_user_data(this.value)">';
+        echo '<input type="hidden" name="user_id" value="'.$users['user_id'].'">';
+    }
+    function get_hospital_doctors($hospital_id='')   
     {
 
         $users=$this->db->where('hospital_id',$hospital_id)->get('doctors')->result_array();
@@ -415,6 +446,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $users=$this->db->get('doctors')->result_array();
         foreach ($users as $row) {
             $spee=explode(',',$row['specializations']);
+            if($id != 0){
             for($j=0;$j<count($spee);$j++) {
                 if($id == $spee[$j])
                 {
@@ -424,6 +456,39 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
             }
 echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
  } 
+}
+}
+if($id == 0){
+    $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
+echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
+}
+}
+    }
+    function get_city_doctors($id='')   
+    {
+        $users=$this->db->get('doctors')->result_array();
+        foreach ($users as $row) {
+            $spee=explode(',',$row['specializations']);
+            if($id != 0){
+            $city=$this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->city;
+                if($id == $city)
+                {
+            $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
+echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
+ } 
+}
+if($id == 0){
+    $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
+echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
 }
 }
     }
@@ -455,7 +520,8 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $doctor_id=$doctor_data['doctor_id'];
         $doctor_unique_id=$doctor_data['unique_id'];
         $doctor_message=$this->db->where('doctor_id',$doctor_id)->get('availability')->row()->message;
-        echo '<input type="text" value="'.$doctor_message.'" class="form-control" name="doctor_message" id="doctor_message" disabled="">';
+        echo $doctor_message;
+        /*echo '<input type="text" value="'.$doctor_message.'" class="form-control" name="doctor_message" id="doctor_message" disabled="">';*/
         echo '<input type="hidden" value="'.$doctor_id.'" class="form-control" name="doctor_id" id="doctor_id">';
         echo '<input type="hidden" value="'.$doctor_unique_id.'" class="form-control" name="doctor_unique_id" id="doctor_unique_id">';
         
@@ -1169,9 +1235,16 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     {
 
         if($this->input->post()){
+            $user= $this->input->post('user_id');
+            $appointment_date=$this->input->post('appointment_date');
+            $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
+      if($count < 3){  
     $this->crud_model->save_appointment_info();
     $this->session->set_flashdata('message', get_phrase('appointment_info_saved_successfuly'));
     redirect($this->session->userdata('last_page'));
+    }else{
+       $this->session->set_flashdata('appointment_date_error',"You Can not Book More Than 2 Appointments Per Day");
+    }
     }
 
         $data['page_name'] = 'add_appointment';
@@ -1181,7 +1254,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     function edit_appointment($appointment_id = "")
     {
         if($this->input->post()){
-            print_r($_POST);die;
+           
     $this->crud_model->update_appointment_info();
     $this->session->set_flashdata('message', get_phrase('appointment_info_updated_successfuly'));
     redirect($this->session->userdata('last_page'));

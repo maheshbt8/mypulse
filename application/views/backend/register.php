@@ -60,7 +60,7 @@
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requriedPhone'];?>">
-						<input class="input100" type="text" name="mobile" placeholder="<?php echo $this->lang->line('labels')['phoneNumber'];?>*" value="<?php echo set_value('mobile'); ?>">
+						<input class="input100" type="text" name="mobile" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('mobile'); ?>">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>

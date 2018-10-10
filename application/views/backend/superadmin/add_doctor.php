@@ -16,7 +16,7 @@
             </li>
                 <li>
                 <a href="#pro" data-toggle="tab"><i class="entypo-plus-circled"></i>
-                     <?php echo get_phrase('profession_info'); ?>
+                     <?php echo get_phrase('professional_info'); ?>
                 </a>
             </li>
         </ul>
@@ -318,6 +318,13 @@
                             <input type="text" name="experience" class="form-control" id="experience" value="<?php echo set_value('experience'); ?>">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('registration_number'); ?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="registration" class="form-control" id="registration" value="<?php echo set_value('registration'); ?>">
+                        </div>
+                    </div>
                    
                      
                    
@@ -325,16 +332,17 @@
                 <div class="col-md-6"> 
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
-                            <div class="col-sm-8">
-                                <select multiple name="specializations[]" class="form-control" id="specializations" value="<?php echo set_value('specializations[]'); ?>">
-                                    <option value=""><?php echo get_phrase('select_specializations'); ?></option>
+                             <div class="col-sm-8"> 
+                               <!--  <select multiple name="specializations[]" class="form-control" id="specializations" value="<?php echo set_value('specializations[]'); ?>">
+                                    <option value=""><?php echo get_phrase('select_specializations'); ?></option> -->
                                     <?php 
                                     $specializations=$this->db->get('specializations')->result();
                                     foreach ($specializations as $spe) {
                                     ?>
-                    <option value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></option>
+                    <input type="checkbox" name="specializations[]" class="" id="specializations" value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?><br/>
+                   <!--  <option value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></option> -->
                 <?php }?>
-                                </select>
+                                <!-- </select> -->
                                 
                             </div>
                     </div>

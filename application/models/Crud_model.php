@@ -424,6 +424,17 @@ class Crud_model extends CI_Model {
     }
     
     /************GENERAL SETTINGS***********/
+    function delete_specialization($specialization)
+    {
+        $this->db->where('specializations_id',$specialization);
+        $this->db->delete('specializations');
+    }
+     function save_specialization_info()
+    {
+        $data['name']       = $this->input->post('name');
+        
+        $this->db->insert('specializations',$data);
+    }
       function save_country_info()
     {
         $data['name'] 		= $this->input->post('name');
@@ -988,6 +999,7 @@ class Crud_model extends CI_Model {
          $data['specializations'] 	= implode(',',$this->input->post('specializations'));
      }
           $data['experience'] 	= $this->input->post('experience');
+          $data['registration']   = $this->input->post('registration');
           $data['country']    = $this->input->post('country');
         $data['state']    = $this->input->post('state');
         $data['district']    = $this->input->post('district');  
@@ -1203,6 +1215,7 @@ $que=$this->db->insert('availability_slat',$data);
          $data['specializations'] 	= implode(',', $this->input->post('specializations'));
      }
           $data['experience'] 	= $this->input->post('experience');
+          $data['registration']   = $this->input->post('registration');
           $data['country']    = $this->input->post('country');
         $data['state']    = $this->input->post('state');
         $data['district']    = $this->input->post('district');  
@@ -2183,7 +2196,7 @@ function select_user_information($patient_id="")
         if($this->input->post('remarks')){
         $data['remarks']       = $this->input->post('remarks');
     }
-        $data['status']       = 2;
+        /*$data['status']       = 2;*/
         $data['created_type']       = $this->session->userdata('login_type');
         $data['created_by']       = $this->session->userdata('name');
        
@@ -2195,9 +2208,9 @@ function select_user_information($patient_id="")
             /*$a="12345678901234567890";
             $sid=str_shuffle($a);
             $uid=substr($sid, 16);*/
-            $pid='MPA_'.date('y').$num;
+            $pid='MPA'.date('y').'_'.$num;
             
-            $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid));
+            $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid,'status'=>2));
             
         }
        
@@ -2257,7 +2270,7 @@ function select_user_information($patient_id="")
     }
         function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
-        return $this->db->get('appointments')->result_array();
+        return $this->db->order_by('modified_at','DESC')->get('appointments')->result_array();
     }
 /*    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {

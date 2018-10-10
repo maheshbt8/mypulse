@@ -5,7 +5,26 @@
 </style>
 <div class="row">
     <div class="col-md-12">
-    <div class="col-sm-4">
+        <div class="col-sm-4">
+                  <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('city'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="hospital" class="form-control" value="<?php echo set_value('city'); ?>" onchange="return get_city_doctors(this.value)">
+                                <option value="0"><?php echo get_phrase('ALL'); ?></option>
+                                <?php 
+                                $admins = $this->db->get('city')->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['city_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                           
+                        </div>
+                    </div>
+    </div>
+    <!-- <div class="col-sm-4">
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
 
@@ -23,14 +42,14 @@
                            
                         </div>
                     </div>
-    </div>
+    </div> -->
     <div class="col-sm-5">
                   <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('specializations'); ?></label> 
+                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('specialization'); ?></label> 
 
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control" onchange="return get_specializations_doctors(this.value)">
-                                <option value=""><?php echo get_phrase('select_specialization'); ?></option>
+                                <option value="0"><?php echo get_phrase('ALL'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('specializations')->result_array();
                                 foreach($admins as $row){?>
@@ -145,7 +164,7 @@
     
                 
                     <div class="row">
-                        <div class="col-sm-6">
+                      <!--   <div class="col-sm-6">
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
 
@@ -157,9 +176,19 @@
         $users=$this->db->get('users')->result_array();
         foreach ($users as $row) {
          ?>
-    <option value="<?php echo $row['name'].' '.$row['lname'];?>"><?php echo $row['unique_id'].'('.$row['email'].')('.$row['phone'].')';?><input type="hidden" name="user_id" value="<?php echo $row['user_id'];?>"></option>
+    <option value="<?php echo $row['name'].' '.$row['lname'];?>" label="<?php echo $row['unique_id'].'('.$row['email'].')('.$row['phone'].')';?>"><input type="hidden" name="user_id" value="<?php echo $row['user_id'];?>"></option>
 <?php }?>
   </datalist>
+                        </div>
+                    </div>
+                </div> -->
+                  <div class="col-sm-6">
+                              <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
+
+                        <div class="col-sm-8" id="user_data">
+                            <input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('user'); ?>" onchange="return get_user_data(this.value)">
+                            
                         </div>
                     </div>
                 </div>
@@ -191,7 +220,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor_availability'); ?></label>
                             <div class="col-sm-8" id="doc_ava">
-                                <input type="text" name="doctor_availability" id="doctor_availability" placeholder="Please Select Doctor First" class="form-control" disabled="" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >  
+                                <!-- <input type="text" name="doctor_availability" id="doctor_availability" placeholder="Please Select Doctor First" class="form-control" disabled="" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" > -->  
                             </div>
                     </div>
                 </div>
@@ -201,6 +230,7 @@
 
                         <div class="col-sm-8">
                             <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo set_value('Appointment Date'); ?>" disabled="true" onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
+                            <span style="color:red;"><?php if($this->session->flashdata('appointment_date_error') != ''){echo $this->session->flashdata('appointment_date_error');}?></span>
                         </div>
                     </div>
                    
@@ -248,7 +278,7 @@
     </div>
 </div>
             </div>
-                    </div>
+                    
                      
                     <div class="col-sm-3 control-label col-sm-offset-9 ">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
@@ -256,6 +286,7 @@
                     </div>  
                    
    </form>
+   
     </div>
 </div>
 
@@ -327,7 +358,7 @@
 </script>
 <script type="text/javascript">
 
-    function get_hospital_doctors(hospital_id) {
+    /*function get_hospital_doctors(hospital_id) {
     
         $.ajax({
             url: '<?php echo base_url();?>index.php?superadmin/get_hospital_doctors/' + hospital_id ,
@@ -338,6 +369,20 @@
             }
         });
 
+    }*/
+    function get_user_data(user_value) {
+        
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>index.php?superadmin/get_user_data/' ,
+            data : {user : user_value},
+            success: function(response)
+            {
+                
+                jQuery('#user_data').html(response);        
+            } 
+        });
+   
     }
     function get_specializations_doctors(id) {
     
@@ -345,7 +390,17 @@
             url: '<?php echo base_url();?>index.php?superadmin/get_specializations_doctors/' + id ,
             success: function(response)
             {
-               
+            jQuery('#doctors').html(response);
+            }
+        });
+
+    }
+    function get_city_doctors(id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_city_doctors/' + id ,
+            success: function(response)
+            {
             jQuery('#doctors').html(response);
             }
         });

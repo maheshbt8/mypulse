@@ -1,48 +1,15 @@
- <style>
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0px;
+   width: 100%;
+   background-color: #333;
+   color: white;
+   text-align: center;
 }
 
-.navbar-footer {
-  overflow: hidden;
-  background-color: #333;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-}
-
-.navbar-footer a {
-
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 0px 16px;
-  text-decoration: none;
-  font-size: 13px;
-}
-
-.main {
-  margin-bottom: 0px;
-}
 </style>
-<!--
- <footer class="main navbar navbar-footer">
- 	 
-	<a href="" target="_blank">Copyrights &copy; 2018 JagruMs Technologies</a> 
-</footer>   -->
-<nav class="navbar navbar-inverse navbar-footer navbar-fixed-bottom">
-  <div class="container-fluid">
-    
-    <ul class="nav navbar-nav">
-      <li class="footer-list"><a class="navbar-brand"><i>&copy; 2018 JagruMs Technologies - All Rights Received</i></a></li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li class="footer-list"><a class="navbar-brand"><i>Terms & Conditions</i></a></li>
-      <li class="footer-list"><a class="navbar-brand"><i>Privacy & Policy</i></a></li>
-    
-    </ul>
-   
-  </div>
-</nav>
+<div class="footer">
+  <p style="color: #fff;margin-bottom: 5px;"><span>&copy; 2018 JagruMs Technologies - All Rights Received</span> <span class="footer-span" style="float: right; margin-left:25px; margin-right: 25px;">Terms & Conditions</span>&nbsp;<span class="footer-span" style="float: right;margin-left:25px; margin-right: 25px;"> Privacy & Policy</span></p>
+</div>

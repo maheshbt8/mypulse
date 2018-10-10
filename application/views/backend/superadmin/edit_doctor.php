@@ -336,6 +336,13 @@ foreach ($single_doctor_info as $row) {
                             <input type="text" name="experience" class="form-control" id="experience" value="<?php echo $row['experience']; ?>">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('registration_number'); ?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="registration" class="form-control" id="registration" value="<?php echo $row['registration']; ?>">
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <!-- <div class="form-group">
@@ -348,17 +355,18 @@ foreach ($single_doctor_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
                             <div class="col-sm-8">
-                                <select multiple name="specializations[]" class="form-control" id="select_doctor" value="<?php echo set_value('specializations[]'); ?>">
-                                    <option value=""><?php echo get_phrase('select_specializations'); ?></option>
+                                <!-- <select multiple name="specializations[]" class="form-control" id="select_doctor" value="<?php echo set_value('specializations[]'); ?>">
+                                    <option value=""><?php echo get_phrase('select_specializations'); ?></option> -->
                                       <?php 
                                     $admins = $this->db->get('specializations')->result_array();
                                 foreach($admins as $row1){
                                     $doc=explode(',',$row['specializations']);
                                     ?>
-                                <option value="<?php echo $row1['specializations_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['specializations_id']){echo 'selected';}}?>><?php echo $row1['name']; ?></option>
+                            <input type="checkbox" name="specializations[]" class="" id="specializations" value="<?php echo $row1['specializations_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['specializations_id']){echo 'checked';}}?>><?php echo $row1['name']; ?><br/>
+                                <!-- <option value="<?php echo $row1['specializations_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['specializations_id']){echo 'selected';}}?>><?php echo $row1['name']; ?></option> -->
                                 
                                 <?php } ?>
-                                </select>
+                                <!-- </select> -->
                                 <span ><?php echo form_error('doctor'); ?></span>
                             </div>
                     </div>

@@ -116,11 +116,7 @@ foreach ($single_appointment_info as $row) {
                     </div>
                 </div>
                 <div class="col-sm-6">
-                <!-- <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/appointment_history/<?php echo $row['appointment_id'];?>');" class="hiper">View Appointment History</a> -->
-
 <div class="container">
-  <!-- <h2>Modal Example</h2> -->
-  <!-- Trigger the modal with a button -->
   <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View Appointment History</button>
 
   <!-- Modal -->
@@ -128,7 +124,7 @@ foreach ($single_appointment_info as $row) {
     <div class="modal-dialog">
     
       <!-- Modal content-->
-      <div class="modal-content" style="background-color:#fbfafa;">
+      <div class="modal-content" style="background-color:#fbfafa; width:160%">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Appointment Details</h4>
@@ -138,40 +134,27 @@ foreach ($single_appointment_info as $row) {
     <div id="invoice_print">
         <table width="100%" border="1">
             <tr>
-    <td align="center"><h5><?php echo ucfirst('appointment_id'); ?> </h5></td><td align="center">
-                    <h5><?php echo $row['appointment_number'];?></h5></td>
+    <td align="center"><h5><?php echo ucfirst('appointment_id'); ?> </h5></td>
+    <td align="center"><h5><?php echo ucfirst('creation_date'); ?> </h5></td>
+    <td align="center"><h5><?php echo ucfirst('creation_time'); ?> </h5></td>
+    <td align="center"><h5><?php echo ucfirst('Role'); ?> </h5></td>
+    <td align="center"><h5><?php echo ucfirst('Name'); ?> </h5></td>
+    <td align="center"><h5><?php echo ucfirst('action'); ?> </h5></td>
+    <td align="center"><h5><?php echo ucfirst('message'); ?> </h5></td>
             </tr>
             <tr>
-    <td align="center"><h5><?php echo ucfirst('creation_date'); ?> </h5></td><td align="center">
-                    <h5><?php echo date('d M,Y', strtotime($row['modified_at']));?></h5></td>
+    <td align="center"><h5><?php echo $row['appointment_number'];?></h5></td>
+    <td align="center"><h5><?php echo date('d M,Y', strtotime($row['modified_at']));?></h5></td>
+    <td align="center"><h5><?php echo date('h:m A', strtotime($row['modified_at']));?></h5></td>
+    <td align="center"><h5><?php echo $row['created_type'];?></h5></td>
+    <td align="center"><h5><?php echo $row['created_by'];?></h5></td>
+    <td align="center"><h5><?php echo 'Created';?></h5></td>
+    <td align="center"><h5><?php echo 'Appointment Created for '.date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));?></h5></td>
             </tr>
-            <tr>
-    <td align="center"><h5><?php echo ucfirst('creation_time'); ?> </h5></td><td align="center">
-                    <h5><?php echo date('h : m A', strtotime($row['modified_at']));?></h5></td>
-            </tr>
-            <tr>
-    <td align="center"><h5><?php echo ucfirst('Role'); ?> </h5></td><td align="center">
-                    <h5><?php echo $row['created_type'];?></h5></td>
-            </tr>
-            <tr>
-    <td align="center"><h5><?php echo ucfirst('Name'); ?> </h5></td><td align="center">
-                    <h5><?php echo $row['created_by'];?></h5></td>
-            </tr>
-            <tr>
-    <td align="center"><h5><?php echo ucfirst('action'); ?> </h5></td><td align="center">
-                    <h5><?php echo 'Created';?></h5></td>
-            </tr>
-            <tr>
-    <td align="center"><h5><?php echo ucfirst('message'); ?> </h5></td><td align="center">
-                    <h5><?php echo 'Appointment Created for '.date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h : m A', strtotime($row['appointment_time_start'])).' - '.date('h : m A', strtotime($row['appointment_time_end']));?></h5></td>
-            </tr>
-            </tr>
+          
         </table>
         
     </div>
-
-
-
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -192,13 +175,14 @@ foreach ($single_appointment_info as $row) {
 
     </div>
 </div>
-            </div>
+            
                     </div>   
                     <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
-                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                        <!-- <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp; -->
+                        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>  
    </form>
+   
     </div>
 </div>
 <?php } ?>

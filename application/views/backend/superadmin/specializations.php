@@ -6,11 +6,11 @@
 		<ul class="nav nav-tabs bordered">
 			<li class="active">
             	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
-				<?php echo $this->lang->line('labels')['countries_list'];?>
+				<?php echo 'Specializations';?>
                     	</a></li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
-				<?php echo $this->lang->line('labels')['add_country'];?>
+				<?php echo 'Add Specialization';?>
                     	</a></li>
 		</ul>
     	<!--CONTROL TABS END-->
@@ -23,8 +23,8 @@
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
                 	<thead>
                 		<tr>
-                    		<th><div><?php echo $this->lang->line('labels')['selectCountry'];?></div></th>
-                    	    <th><div><?php echo $this->lang->line('labels')['options'];?></div></th>
+                    		<th><div><?php echo 'Specialization';?></div></th>
+                    	    <th><div><?php echo 'Options';?></div></th>
 						</tr>
 					</thead>
                     <tbody>
@@ -32,18 +32,8 @@
                         <tr>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                        <!-- <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_country/<?php echo $row['country_id'];?>');" title="Edit"><i class="entypo-pencil"></i></a> -->
-                          <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_country/<?php echo $row['country_id'];?>');">
-                                            <i class="entypo-pencil"></i>
-                                                <?php echo 'Edit';?>
-                                            </a>
-                                    </li>  
-                                </ul>
+                            <div class="btn-group">
+                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/specialization/delete/<?php echo $row['specializations_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                             </div>
         					</td>
                         </tr>
@@ -57,9 +47,9 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                	<?php echo form_open(base_url() . 'index.php?superadmin/country/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+                	<?php echo form_open(base_url() . 'index.php?superadmin/specialization/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label>
+                                <label class="col-sm-3 control-label"><?php echo 'Specialization';?></label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" name="name"
                                         data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>"/>

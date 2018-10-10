@@ -2102,7 +2102,7 @@ th {
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
   padding: 13px;
-  font-size:16px;
+  font-size:14px;
   line-height: 1.42857143;
   vertical-align: top;
   border-top: 1px solid #ebebeb;
@@ -3774,10 +3774,11 @@ fieldset[disabled] .btn-white.active {
   border-radius: 2px;
 }
 .btn-warning {
+  width: 70px;
   font-size: 12px;
   color: #ffffff;
-  background-color: #fad839;
-  border-color: #fad839;
+  background-color: #8a8080;
+  border-color: #b3b3b3;
 }
 .btn-warning:hover,
 .btn-warning:focus,
@@ -3785,8 +3786,8 @@ fieldset[disabled] .btn-white.active {
 .btn-warning.active,
 .open .dropdown-toggle.btn-warning {
   color: #ffffff;
-  background-color: #f9d011;
-  border-color: #f0c706;
+  background-color: #8a8080;
+  border-color: #b3b3b3;
 }
 .btn-warning:active,
 .btn-warning.active,
@@ -4033,8 +4034,8 @@ fieldset[disabled] .btn-danger.active {
 .open .dropdown-toggle.btn-success,
 .open .dropdown-toggle.btn-green {
   color: #ffffff;
-  background-color: #007d3d;
-  border-color: #006933;
+  background-color: #00a651;
+  border-color: #00a651;
 }
 .btn-success:active,
 .btn-green:active,

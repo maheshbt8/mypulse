@@ -86,7 +86,7 @@ foreach ($single_ward_info as $row) {
                             </div>
                         </div>
 
-                        <div class="col-sm-6 control-label col-sm-offset-2">
+                        <div class="col-sm-6 control-label col-sm-offset-6">
                             <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>

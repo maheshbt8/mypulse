@@ -19,8 +19,8 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('user');?></th>
             <th><?php echo get_phrase('doctor');?></th>
             <th><?php echo get_phrase('Hospital-Branch-Department');?></th>  
-            <th><?php echo get_phrase('time_slot');?></th>
-            <th><?php echo get_phrase('date');?></th>
+            <th><?php echo get_phrase('city');?></th> 
+            <th><?php echo get_phrase('date & time');?></th>
             <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options');?></th>
         </tr> 
@@ -40,12 +40,16 @@ $this->session->set_userdata('last_page', current_url());
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
                  <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
                 <td>
-                   <a href="<?php echo base_url();?>index.php?superadmin/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
-                        echo $name;?></a>
+                   <!-- <a href="<?php echo base_url();?>index.php?superadmin/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
+                        echo $name;?></a> -->
+             <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
+                        echo $name;?>
                 </td>
                  <td>
-                    <a href="<?php echo base_url(); ?>index.php?superadmin/edit_doctor/<?php echo $row['doctor_id'] ?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->unique_id;
-                        echo $name;?></a>
+                    <!-- <a href="<?php echo base_url(); ?>index.php?superadmin/edit_doctor/<?php echo $row['doctor_id'] ?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->unique_id;
+                        echo $name;?></a> -->
+                <?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
+                        echo $name;?>
                 </td>
                 <td>
                     <?php 
@@ -54,8 +58,8 @@ $this->session->set_userdata('last_page', current_url());
                     if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
                         echo $hospital->name.' - '.$branch->name.' - '.$name;?>
                 </td>
-                <td><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
-                <td><?php echo date("M d/Y",strtotime($row['appointment_date']));?></td>
+                 <td><?php echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;?></td> 
+                <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
                  elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}

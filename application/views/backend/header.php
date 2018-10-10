@@ -11,7 +11,7 @@ body {
     }
 </style> 
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default ">
   <div class="container-fluid">
     <div class="navbar-header">
        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -23,7 +23,7 @@ body {
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav navbar-right"  style="font-size: 15px;">
-      <!-- <li id="google_translate_element"></li>  -->
+       <li id="google_translate_element"></li>  
      <!--  <li>
         <select name="hospital" class="form-control language" value="<?php echo set_value('hospital'); ?>" id="selected">
             <option value="" >select</option>

@@ -4,7 +4,7 @@
         <!-- logo -->
         <div class="logo" style="">
             <a href="<?php echo base_url(); ?>">
-                <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:44px;"/>
+                <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: -15px;"/>
             </a>
         </div>  
     
@@ -29,7 +29,7 @@
            
                 <img src="<?php echo $this->crud_model->get_image_url($this->session->userdata('login_type'), $this->session->userdata('login_user_id'));?>" alt="" class="img-circle" style="height:64px;">
 
-                <!--<span><?php echo get_phrase('welcome'); ?>,</span>-->
+                <span><?php echo get_phrase('super_admin'); ?></span>
                 <strong><?php
                     echo $this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('login_type') . '_id' =>
                         $this->session->userdata('login_user_id')))->row()->name;
@@ -248,6 +248,11 @@
                 <li class="<?php if ($page_name == 'city') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/city">
                         <span><i class="entypo-paper-plane"></i> <?php echo get_phrase('cities'); ?></span>
+                    </a>
+                </li>
+                <li class="<?php if ($page_name == 'specializations') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>index.php?superadmin/specialization">
+                        <span><i  class="entypo-paper-plane"></i><?php echo get_phrase('specializations'); ?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'license') echo 'active'; ?> ">

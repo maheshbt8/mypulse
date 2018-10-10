@@ -2759,11 +2759,11 @@ input[type="button"].btn-block {
 }
 .page-container .sidebar-menu {
   position: absolute;
-  width: 261px;
+  width: 240px;
   top: 0;
   left: 0;
   bottom: 0;
-  background: #0099DD;
+  background: #1b97ce;
   color: #aaabae;
   z-index: 1;
   -webkit-box-sizing: border-box;
@@ -2818,6 +2818,7 @@ input[type="button"].btn-block {
   line-height: 1;
   font-size: 20px;
   font-weight: 300;
+  margin-top: -10px;
   padding: 5px 2px;
   -webkit-border-radius: 3px;
   -webkit-background-clip: padding-box;
@@ -2838,7 +2839,7 @@ input[type="button"].btn-block {
   list-style: none;
   margin: 0;
   padding: 0;
-  margin-bottom: 51px;
+  margin-bottom: 22px;
 }
 .page-container .sidebar-menu #main-menu li {
   position: relative;
@@ -2906,7 +2907,7 @@ input[type="button"].btn-block {
 .page-container .sidebar-menu #main-menu li a {
   position: relative;
   display: block;
-  padding: 15px 20px;
+  padding: 10px 20px;
   color: #fff;
   font-size:15px;
   z-index: 2;
@@ -3236,7 +3237,7 @@ input[type="button"].btn-block {
   position: relative;
   float: left;
   width: 100%;
-  padding: 6px 15px;
+  padding: 6px 15px 0px 0px;
   z-index: 2;
   background: #ffffff;
   -webkit-box-sizing: border-box;
@@ -6694,7 +6695,7 @@ textareatable .replace-inputs input {
   position: relative;
   display: block;
   background: #303641;
-  padding: 20px;
+  padding: 10px 100px 10px 20px;
   margin-bottom: 10px;
   overflow: hidden;
   -webkit-border-radius: 5px;
@@ -6714,7 +6715,7 @@ textareatable .replace-inputs input {
 .tile-stats .icon {
   color: rgba(0, 0, 0, 0.1);
   position: absolute;
-  right: 5px;
+/*  right: 5px;*/
   bottom: 5px;
   z-index: 1;
 }
@@ -6726,9 +6727,9 @@ textareatable .replace-inputs input {
   vertical-align: bottom;
 }
 .tile-stats .icon i:before {
-  font-size: 70px;
+  font-size: 30px;
   margin: 0;
-  padding: 8px;
+  padding: 6px;
   line-height: 0;
 }
 .tile-stats .num,
@@ -6745,8 +6746,8 @@ textareatable .replace-inputs input {
   font-weight: bold;
 }
 .tile-stats h3 {
-  font-size: 25px;
-  margin-top: 5px;
+  font-size: 16px;
+  margin-top: 65px;
 }
 .tile-stats p {
   font-size: 11px;
@@ -6979,11 +6980,11 @@ textareatable .replace-inputs input {
   background-color: #fafafa;
 }
 .tile-stats.tile-white-aqua {
-  background: #26a55f;
+  background: #2196F3;
   border: 1px solid #ebebeb;
 }
 .tile-stats.tile-white-aqua:hover {
-  background: #26a55f;
+  background: #2196F3;
 }
 .tile-stats.tile-white-aqua .icon {
   color: #f2f2f2;
@@ -6994,7 +6995,7 @@ textareatable .replace-inputs input {
   color: #ffffff;
 }
 .tile-stats.tile-white-aqua:hover {
-  background-color: #26a55f;
+  background-color: #2196F3;
 }
 .tile-stats.tile-white-cyan {
   background: #aa03ff;
