@@ -23,7 +23,7 @@ body {
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav navbar-right"  style="font-size: 15px;">
-       <li id="google_translate_element"></li>  
+      <!--  <li id="google_translate_element"></li>   -->
      <!--  <li>
         <select name="hospital" class="form-control language" value="<?php echo set_value('hospital'); ?>" id="selected">
             <option value="" >select</option>
@@ -99,10 +99,10 @@ body {
 </nav>  
 
  <script>
-  $('.language a').click(function(){
+/*  $('.language a').click(function(){
     $('#selected').text($(this).text());
   });
-
+*/
 /*  function get_language(language) {
     
       $.ajax({
@@ -115,12 +115,12 @@ body {
 
     }*/
  </script>
- <script type="text/javascript">
+ <!-- <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'am,ar,bn,de,el,en,fr,hi,ml,mr,ta,te,ur', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false, multilanguagePage: true}, 'google_translate_element');
 }
 </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<!-- Flag click handler -->
+
 <script type="text/javascript">
     $('.language a').click(function() {
       var lang = $(this).data('lang');
@@ -132,4 +132,4 @@ function googleTranslateElementInit() {
       $frame.contents().find('.goog-te-menu2-item span.text:contains('+lang+')').get(0).click();
       return false;
     });
-</script>
+</script> -->

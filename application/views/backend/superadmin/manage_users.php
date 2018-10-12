@@ -33,7 +33,11 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
                  }
                  else if(
-                 $row['status'] == 0){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td> 
+                 $row['status'] == 0){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                     <?php if($row['reg_status'] == 1){echo "<span class='text-success'>Registered</span>";   
+                 }
+                 elseif($row['reg_status'] == 2){ echo "<span class='text-danger'>Unregistered</span>";}?>
+                 </td> 
                 <td>
                    <!--  <div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">

@@ -1847,7 +1847,7 @@ function select_user_information($patient_id="")
         $data['aadhar'] 	= $this->input->post('aadhar');
         $data['qualification'] 	= $this->input->post('qualification');
         $data['experience'] 	= $this->input->post('experience');
-        
+        $data['doctor_id']  = implode(',',$this->input->post('doctor'));
         $insert=$this->db->insert('receptionist',$data);
         if($insert)
         {
@@ -1858,7 +1858,7 @@ function select_user_information($patient_id="")
             $sid=str_shuffle($a);
             $uid=substr($sid, 14);*/
             $pid='MPR'.date('y').'_'.$num;
-            $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid));
+            $this->db->where('receptionist_id',$lid)->update('receptionist',array('unique_id'=>$pid));
             
         }
         $receptionist_id  =   $this->db->insert_id();
@@ -1872,7 +1872,6 @@ function select_user_information($patient_id="")
     
     function update_receptionist_info($receptionist_id)
     {
-        
         $data['name']       = $this->input->post('fname');
         $data['mname']      = $this->input->post('mname');
         $data['lname']      = $this->input->post('lname');
@@ -1890,10 +1889,9 @@ function select_user_information($patient_id="")
         $data['aadhar']     = $this->input->post('aadhar');
         $data['qualification']  = $this->input->post('qualification');
         $data['experience']     = $this->input->post('experience');
-        
+        $data['doctor_id']  = implode(',',$this->input->post('doctor'));
         $this->db->where('receptionist_id',$receptionist_id);
         $this->db->update('receptionist',$data);
-        
         move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
     }
     
@@ -2211,7 +2209,17 @@ function select_user_information($patient_id="")
             $pid='MPA'.date('y').'_'.$num;
             
             $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid,'status'=>2));
-            
+            $history['appointment_id']=$lid;
+            $history['appointment_date']=$data['appointment_date'];
+            $history['appointment_time_start']=$data['appointment_time_start'];
+            $history['appointment_time_end']=$data['appointment_time_end'];
+            $history['created_type']=$data['created_type'];
+            $history['created_by']=$data['created_by'];
+            $history_ins=$this->db->insert('appointment_history',$history);
+            if($history_ins){
+                $last_id=$this->db->insert_id();
+                $this->db->where('appointment_history_id',$last_id)->update('appointment_history',array('action'=>1));
+            }
         }
        
         /*$data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );

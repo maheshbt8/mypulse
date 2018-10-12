@@ -29,29 +29,18 @@
 						</tr>
 					</thead>
                     <tbody>
-                    	<?php $count = 1;foreach($country as $row):?>
+                    	<?php $count = 1;foreach($country as $row):
+                        /*print_r($row);
+                        echo $row['name'];*/
+                        ?>
                         <tr>
                             <td><?php echo $this->db->where('country_id',$row['country_id'])->get('country')->row()->name;?></td>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-
-                                    <!-- STUDENTS IN THE DORM -->
-                                 
-                                    <!-- EDITING LINK -->
-                                    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_state/<?php echo $row['state_id'];?>');">
+                                <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_state/<?php echo $row['state_id'];?>');" title="Edit">
                                             <i class="entypo-pencil"></i>
-                                                <?php echo 'Edit';?>
+                                               
                                             </a>
-                                                    </li>
-                                   
-                                </ul>
-                            </div>
         					</td>
                         </tr>
                         <?php endforeach;?>

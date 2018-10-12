@@ -5,25 +5,7 @@
 </style>
 <div class="row">
     <div class="col-md-12">
-        <div class="col-sm-4">
-                  <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('city'); ?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="hospital" class="form-control" value="<?php echo set_value('city'); ?>" onchange="return get_city_doctors(this.value)">
-                                <option value="0"><?php echo get_phrase('ALL'); ?></option>
-                                <?php 
-                                $admins = $this->db->get('city')->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['city_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                           
-                        </div>
-                    </div>
-    </div>
+        
     <!-- <div class="col-sm-4">
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
@@ -57,6 +39,25 @@
                                 
                                 <?php } ?>
                             </select>
+                        </div>
+                    </div>
+    </div>
+    <div class="col-sm-4">
+                  <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('location'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="hospital" class="form-control" value="<?php echo set_value('location'); ?>" onchange="return get_city_doctors(this.value)">
+                                <option value="0"><?php echo get_phrase('ALL'); ?></option>
+                                <?php 
+                                $admins = $this->db->get('city')->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['city_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                           
                         </div>
                     </div>
     </div>
@@ -216,14 +217,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor_availability'); ?></label>
-                            <div class="col-sm-8" id="doc_ava">
-                                <!-- <input type="text" name="doctor_availability" id="doctor_availability" placeholder="Please Select Doctor First" class="form-control" disabled="" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" > -->  
-                            </div>
-                    </div>
-                </div>
+                
                 <div class="col-sm-6">
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
@@ -252,7 +246,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Reason for Appointment'); ?></label>
-                            <div class="col-sm-8" id="doc_ava">
+                            <div class="col-sm-8" id="reason">
                                 <input type="text" name="reason" placeholder="Reason for Appointment" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('reason');?>" >
                             </div>
                     </div>
@@ -260,13 +254,23 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remark'); ?></label>
-                            <div class="col-sm-8" id="doc_ava">
+                            <div class="col-sm-8" id="remark">
                                 <input type="text" name="remark" placeholder="Remark to be updated by Hospital(Optional)" class="form-control" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('remark');?>">
                             </div>
                     </div>
                 </div>
-            </div>
                 
+            </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('doctor_availability'); ?></label>
+                            <div class="col-sm-10" id="doc_ava">
+                                <!-- <input type="text" name="doctor_availability" id="doctor_availability" placeholder="Please Select Doctor First" class="form-control" disabled="" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" > -->  
+                            </div>
+                    </div>
+                </div>
+                </div>
                 
                     </div>
                    
@@ -294,7 +298,7 @@
      function get_email(email_value) {
      $.ajax({
             type : "POST",
-            url: '<?php echo base_url();?>index.php?superadmin/get_email/' ,
+            url: '<?php echo base_url();?>index.php?ajax/get_email/' ,
             data : {email : email_value},
             success: function(response)
             {
@@ -306,7 +310,7 @@
      function get_phone(phone_value) {
      $.ajax({
             type : "POST",
-            url: '<?php echo base_url();?>index.php?superadmin/get_phone/' ,
+            url: '<?php echo base_url();?>index.php?ajax/get_phone/' ,
             data : {phone : phone_value},
             success: function(response)
             {
@@ -315,7 +319,7 @@
         });
    
     }
-   
+ 
    function get_doctor_ava(unique_id) {
      $.ajax({
             url: '<?php echo base_url();?>index.php?superadmin/get_doctor_data/' + unique_id ,

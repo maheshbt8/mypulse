@@ -48,7 +48,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('middle_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="mname" class="form-control" id="mname"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('mname'); ?>">
+                            <input type="text" name="mname" class="form-control" id="mname" value="<?php echo set_value('mname'); ?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -170,14 +170,14 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('gender'); ?></label>
 
@@ -210,61 +210,6 @@
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
                         </div>
                     </div>
-                    
-                    
-                    
-                            <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="country" class="form-control" id="country" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
-                                <option value=""><?php echo get_phrase('select_country'); ?></option>
-                                <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div> 
-                    
-                    
-                       <div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
-		                    <div class="col-sm-8">
-		                        <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
-		                            <option value=""><?php echo get_phrase('select_country_first'); ?></option>
-
-			                    </select>   
-			                </div>  
-					</div>
-					
-					
-					   <div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
-		                    <div class="col-sm-8">
-		                        <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
-		                            <option value=""><?php echo get_phrase('select_state_first'); ?></option>
-
-			                    </select>
-			                </div>
-					</div>
-					
-					<div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
-		                    <div class="col-sm-8">
-		                        <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
-		                            <option value=""><?php echo get_phrase('select_district_first'); ?></option>
-
-			                    </select>
-			                </div>
-					</div>
-                   
-                    
-                    
-                   
 					<div class="form-group">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profile_picture'); ?></label>
 
@@ -287,6 +232,56 @@
 					</div>
                    
                 </div>
+                <div class="col-sm-6">
+                    <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="country" class="form-control" id="country" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
+                                <option value=""><?php echo get_phrase('select_country'); ?></option>
+                                <?php 
+                                $admins = $this->db->get_where('country')->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> 
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
+                                    <option value=""><?php echo get_phrase('select_country_first'); ?></option>
+
+                                </select>   
+                            </div>  
+                    </div>
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
+                                    <option value=""><?php echo get_phrase('select_state_first'); ?></option>
+
+                                </select>
+                            </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
+                                    <option value=""><?php echo get_phrase('select_district_first'); ?></option>
+
+                                </select>
+                            </div>
+                    </div>
+                </div>
                     </div>
 			</div>
 			</div></div></div></div>
@@ -295,14 +290,14 @@
 		
 			<div class="tab-pane box" id="pro" style="padding: 5px">
                	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
              <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                  
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
@@ -311,7 +306,8 @@
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo set_value('qualification'); ?>">
                         </div>
                     </div>
-                   
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('experience'); ?></label>
 
@@ -319,9 +315,6 @@
                             <input type="text" name="experience" class="form-control" id="experience" value="<?php echo set_value('experience'); ?>">
                         </div>
                     </div>
-                   
-				     
-                   
                 </div>
                     </div>    
                     </div>
@@ -331,7 +324,7 @@
 			</div></div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 

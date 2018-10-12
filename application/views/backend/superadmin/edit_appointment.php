@@ -1,7 +1,10 @@
 <style>
-    .modal-backdrop.in{
+   /* .modal-backdrop.in{
         z-index: auto;
-    }
+    }*/
+    .modal-content {
+    width: 155%;
+}
 </style>
 <?php 
 $single_appointment_info = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->result_array();
@@ -111,19 +114,21 @@ foreach ($single_appointment_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remark'); ?></label>
                             <div class="col-sm-8" id="doc_ava">
-                                <input type="text" name="remark" placeholder="Remark to be updated by Hospital(Optional)" class="form-control" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('remark');?>">
+                                <input type="text" name="remark" placeholder="Remark to be updated by Hospital(Optional)" class="form-control" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['remark']; ?>">
                             </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
-<div class="container">
-  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View Appointment History</button>
-
-  <!-- Modal -->
+<!-- <div class="container">
+  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View Appointment History</button> -->
+<a href="#" class="hiper"onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/appointment_history/<?php echo $row['appointment_id'];?>');">
+                                           View Appointment History
+                                            </a>
+<!-- 
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
-      <!-- Modal content-->
+     
       <div class="modal-content" style="background-color:#fbfafa; width:160%">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -162,9 +167,9 @@ foreach ($single_appointment_info as $row) {
       </div>
       
     </div>
-  </div>
+  </div> -->
   
-</div>
+<!-- </div> -->
                   <!-- Trigger the modal with a button -->
             </div>
             </div>

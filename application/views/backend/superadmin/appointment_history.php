@@ -1,52 +1,45 @@
 <?php 
-$appointment_info = $this->db->get_where('appointments', array('appointment_id' => $param2))->result_array();
+$appointment_info = $this->db->get_where('appointment_history', array('appointment_id' => $param2))->result_array();
 
     /*print_r($row);*/
 ?>
+<center><b>Appointment Id : <?php echo $this->db->where('appointment_id',$param2)->get('appointments')->row()->appointment_number;?></b></center>
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
-            <th><?php echo get_phrase('appointment_no');?></th> 
-            <th><?php echo get_phrase('user');?></th>
-            <th><?php echo get_phrase('doctor');?></th>
-            <th><?php echo get_phrase('department');?></th>  
-            <th><?php echo get_phrase('time');?></th>
-            <th><?php echo get_phrase('date');?></th>
-            <th><?php echo get_phrase('status'); ?></th>
-            <th><?php echo get_phrase('options');?></th>
+            <th><?php echo get_phrase('creation_date');?></th> 
+            <th><?php echo get_phrase('creation_time');?></th>
+            <th><?php echo get_phrase('Role');?></th>
+            <th><?php echo get_phrase('Name');?></th>  
+            <th><?php echo get_phrase('action');?></th>
+            <th><?php echo get_phrase('message');?></th>
         </tr> 
     </thead>
 
     <tbody>
         <?php $i=1;foreach ($appointment_info as $row) { ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
-                 <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
-                <td>
-                   <a href="<?php echo base_url();?>index.php?superadmin/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
-                        echo $name;?></a>
-                </td>
-                 <td>
-                    <a href="<?php echo base_url(); ?>index.php?superadmin/edit_doctor/<?php echo $row['doctor_id'] ?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->unique_id;
-                        echo $name;?></a>
-                </td>
-                <td>
-                    <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
-                        echo $name;?>
-                </td>
-                <td><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
-                <td><?php echo date("M d/Y",strtotime($row['appointment_date']));?></td>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
-                 }
-                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
-                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
-                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Colsed</button>";}
-                 ?>
-                     
-                 </td>
-                <td>
-                    <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                 <td><?php echo date('d M,Y', strtotime($row['created_time']));?></td>
+                <td><?php echo date('h:m A', strtotime($row['created_time']));?></td>
+                 <td><?php echo $row['created_type'];?></td>
+                <td><?php echo $row['created_by'];?></td>
+                <td><?php 
+                if($row['action'] == 1){echo "Created";}
+                elseif($row['action'] == 2){ echo "Pending";}
+                elseif($row['action'] == 3){ echo "Confirmed";}
+                elseif($row['action'] == 4){ echo "Updated";}
+                elseif($row['action'] == 5){ echo "Rescheduled";}
+                elseif($row['action'] == 6){ echo "Cancelled";}
+                elseif($row['action'] == 7){ echo "Colsed";}
+                 ?></td>
+                <td><?php if($row['action'] == 1){echo 'Appointment Created for '.date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));}
+                elseif($row['action'] == 2){ echo "This Appointment Was Pending";}
+                elseif($row['action'] == 3){ echo "This Appointment Was Confirmed";}
+                elseif($row['action'] == 4){ echo "Appointment Updated for".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));}
+                elseif($row['action'] == 5){ echo "Appointment Rescheduled for".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));}
+                elseif($row['action'] == 6){ echo "This Appointment Was Cancelled";}
+                elseif($row['action'] == 7){ echo "This Appointment Was Closed";}
+                ?>
                 </td>
             </tr>
         <?php } ?>

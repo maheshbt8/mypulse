@@ -34,14 +34,14 @@ foreach ($single_user_info as $row) {
             <div class="tab-pane box active" id="list">
                 
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
 
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
 
@@ -74,6 +74,9 @@ foreach ($single_user_info as $row) {
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
+                   
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
 
@@ -123,7 +126,7 @@ foreach ($single_user_info as $row) {
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -131,7 +134,7 @@ foreach ($single_user_info as $row) {
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
@@ -165,6 +168,29 @@ foreach ($single_user_info as $row) {
                             <input type="text" name="address" class="form-control" id="address" value="<?=$row['address']?>">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
+
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="<?php echo base_url(); ?>uploads/user_image/<?php echo $row['user_id']; ?>.jpg" alt="..." value="">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
+                                        <span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile" >
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
@@ -226,77 +252,6 @@ foreach ($single_user_info as $row) {
                                 </select>
                             </div>
                     </div>
-                         <!--    <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="country" class="form-control" id="country" value=""  onchange="return get_state(this.value)">
-                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
-                                <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div> 
-                    
-                    
-                       <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
-                            <div class="col-sm-8">
-                                <select name="state" class="form-control" id="select_state" value=""  onchange="return get_district(this.value)">
-                                    <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
-
-                                </select>   
-                            </div>
-                    </div>
-                    
-                    
-                       <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-                            <div class="col-sm-8">
-                                <select name="city" class="form-control" id="select_district" value=""  onchange="return get_city(this.value)">
-                                    <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
-
-                                </select>
-                            </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
-                            <div class="col-sm-8">
-                                <select name="city" class="form-control" id="select_city" value=""  >
-                                    <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
-
-                                </select>
-                            </div>
-                    </div>
-                    -->
-                   
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
-
-                        <div class="col-sm-5">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url(); ?>uploads/user_image/<?php echo $row['user_id']; ?>.jpg" alt="..." value="">
-                                </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-                                <div>
-                                    <span class="btn btn-white btn-file">
-                                        <span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
-                                        <span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
-                                        <input type="file" name="userfile" accept="image/*" id="userfile" >
-                                    </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                   
                 </div>
                     </div>
                    
@@ -308,12 +263,12 @@ foreach ($single_user_info as $row) {
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
                 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                   <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['bloodGroup'];?></label>
 
@@ -360,6 +315,8 @@ foreach ($single_user_info as $row) {
                             <input type="text" name="blood_pressure" class="form-control" id="blood_pressure" value="<?=$row['blood_pressure']?>">
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['sugarLevel'];?></label>
 
@@ -405,7 +362,7 @@ foreach ($single_user_info as $row) {
             </div>  
             </div></div>
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 

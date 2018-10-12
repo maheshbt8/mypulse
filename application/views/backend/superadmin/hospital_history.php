@@ -155,7 +155,7 @@ foreach ($single_hospital_info as $row) {
                             <select name="country" class="form-control" id="country" onchange="return get_state(this.value)">
                                 <option value=""><span ><?php echo get_phrase('select_country'); ?></span></option>
                                 <?php 
-                                $admins = $this->db->get_where('country')->result_array();
+                                $admins = $this->db->get('country')->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -168,14 +168,14 @@ foreach ($single_hospital_info as $row) {
                     
                     
                        <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('select_state'); ?></label>
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
                             <div class="col-sm-8">
                                 <select name="state" class="form-control" id="state" onchange="return get_district(this.value)">
                                     <option value=""><span ><?php echo get_phrase('select_country_first'); ?></span></option>
                                     <?php 
-                                $admins = $this->db->get_where('state')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                $state = $this->db->where('country_id',$row['country'])->get('state')->result_array();
+                                foreach($state as $row2){?>
+                                <option value="<?php echo $row2['state_id'] ?>" <?php if($row2['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row2['name'] ?></option>
                                 
                                 <?php } ?>
                                 </select>   
@@ -190,9 +190,9 @@ foreach ($single_hospital_info as $row) {
                                 <select name="district" class="form-control" id="district" onchange="return get_city(this.value)">
                                     <option value=""><span ><?php echo form_error('select_state_first'); ?></span></option>
                                     <?php 
-                                $admins = $this->db->get_where('district')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                $district = $this->db->where('state_id',$row['state'])->get('district')->result_array();
+                                foreach($district as $row3){?>
+                                <option value="<?php echo $row3['district_id'] ?>" <?php if($row3['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row3['name'] ?></option>
                                 
                                 <?php } ?>
                                 </select>
@@ -206,9 +206,10 @@ foreach ($single_hospital_info as $row) {
                                 <select name="city" class="form-control" id="city">
                                     <option value=""><span ><?php echo form_error('select_district_first'); ?></span></option>
                                     <?php 
-                                $admins = $this->db->get_where('city')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                $admins = $this->db->where('district_id',$row['district'])->get('city')->result_array();
+                                foreach($admins as $row4){
+                                    ?>
+                                <option value="<?php echo $row4['city_id'] ?>" <?php if($row4['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row4['name'] ?></option>
                                 <?php } ?>
                                 </select>
                                 <span ><?php echo form_error('city'); ?></span>

@@ -167,7 +167,7 @@
             </ul>
         </li>-->
 
-
+<!-- 
 
        
         <li class="<?php if ($page_name == 'manage_notice') echo 'active'; ?> ">
@@ -175,7 +175,7 @@
                 <i class="entypo-doc-text-inv"></i>
                 <span><?php echo get_phrase('noticeboard'); ?></span>
             </a>
-        </li>
+        </li> -->
 
         <!-- SETTINGS -->
    <!--      <li class="<?php if ($page_name == 'system_settings' || $page_name == 'manage_language' ||
@@ -209,7 +209,7 @@
         </li>
              <!-- SETTINGS -->
 
-        <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider') echo 'opened active';?> ">
+        <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider' || $page_name == 'specializations') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>
                 <span><?php echo get_phrase('general_settings'); ?></span>

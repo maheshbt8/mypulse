@@ -203,6 +203,31 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $this->load->view('backend/index', $page_data);
     }
     
+    function manage_password($param1 = '', $param2 = '', $param3 = '') {
+        if ($param1 == 'change_password') {
+            $current_password_input = sha1($this->input->post('password'));
+            $new_password = sha1($this->input->post('new_password'));
+            $confirm_new_password = sha1($this->input->post('confirm_new_password'));
+
+            $current_password_db = $this->db->get_where('superadmin', array('superadmin_id' =>
+                        $this->session->userdata('login_user_id')))->row()->password;
+
+            if ($current_password_db == $current_password_input && $new_password == $confirm_new_password) {
+                $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
+                $this->db->update('superadmin', array('password' => $new_password));
+
+                $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
+                redirect(base_url() . 'index.php?superadmin/manage_profile');
+            } else {
+                $this->session->set_flashdata('message', get_phrase('password_update_failed'));
+                redirect(base_url() . 'index.php?superadmin/manage_profile');
+            }
+        }
+        $page_data['page_name'] = 'manage_password';
+        $page_data['page_title'] = get_phrase('manage_password');
+        $page_data['edit_data'] = $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
+        $this->load->view('backend/index', $page_data);
+    }
     /*******************GENERAL SETTINGS*********************/
     function specialization($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == "create") {
@@ -326,7 +351,7 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $this->load->view('backend/index', $page_data);
     }
     /******GET STATES****/
-    function get_email()
+    /*function get_email()
     {
         $email=$_POST['email'];
         $validation = email_validation($email);
@@ -341,7 +366,7 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         if($validation == 0){
         echo '<span style="color:red"> This Phone Number Already Existed </span>';    
         }
-    }
+    }*/
     function get_state($country_id)
     {
         $state = $this->db->get_where('state' , array(
@@ -497,8 +522,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         if($department_id == 'all'){
             $doctor = $this->db->get_where('doctors' , array(
             'branch_id' => $department_id1,'status'=>1
-        ))->result_array();
-        echo '<option value=""> Select Doctor </option>';  
+        ))->result_array();  
         foreach ($doctor as $row) {
             echo '<option value="' . $row['doctor_id'] . '">' . $row['name'] . '</option>';
         }
@@ -506,7 +530,6 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $doctor = $this->db->get_where('doctors' , array(
             'department_id' => $department_id,'status'=>1
         ))->result_array();
-        echo '<option value=""> Select Doctor </option>';  
         foreach ($doctor as $row) {
             echo '<option value="' . $row['doctor_id'] . '">' . $row['name'] . '</option>';
         }
@@ -520,7 +543,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $doctor_id=$doctor_data['doctor_id'];
         $doctor_unique_id=$doctor_data['unique_id'];
         $doctor_message=$this->db->where('doctor_id',$doctor_id)->get('availability')->row()->message;
-        echo $doctor_message;
+        echo '<label>'.$doctor_message.'</label>';
         /*echo '<input type="text" value="'.$doctor_message.'" class="form-control" name="doctor_message" id="doctor_message" disabled="">';*/
         echo '<input type="hidden" value="'.$doctor_id.'" class="form-control" name="doctor_id" id="doctor_id">';
         echo '<input type="hidden" value="'.$doctor_unique_id.'" class="form-control" name="doctor_unique_id" id="doctor_unique_id">';
@@ -1238,7 +1261,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
             $user= $this->input->post('user_id');
             $appointment_date=$this->input->post('appointment_date');
             $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
-      if($count < 3){  
+      if($count < 2 ){  
     $this->crud_model->save_appointment_info();
     $this->session->set_flashdata('message', get_phrase('appointment_info_saved_successfuly'));
     redirect($this->session->userdata('last_page'));
@@ -1728,6 +1751,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
            $phone_number = $this->input->post('mobile');
            $phone = mobile_validation_for_edit($phone_number,$id,'receptionist','receptionist');
            if($phone == 1){
+
             $this->crud_model->update_receptionist_info($id);
             $this->session->set_flashdata('message', get_phrase('receptionist_info_updated_successfuly'));
             redirect($this->session->userdata('last_page'));

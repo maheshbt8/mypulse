@@ -167,14 +167,14 @@ foreach ($single_labs_info as $row) {
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
           <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                 
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first name'); ?></label>
@@ -228,8 +228,8 @@ foreach ($single_labs_info as $row) {
                             <input type="text" name="in_address" class="form-control" id="in_address" value="<?=$row['in_address']?>">
                         </div>
                     </div>
-                    
-                   
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
 
@@ -264,15 +264,14 @@ foreach ($single_labs_info as $row) {
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
-                 
+                        <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
 
@@ -280,13 +279,8 @@ foreach ($single_labs_info as $row) {
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?=$row['qualification']?>">
                         </div>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profession'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="profession" class="form-control" id="profession"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['profession']?>">
-                        </div>
-                    </div> -->
+                </div>
+                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('experience'); ?></label>
 
@@ -294,25 +288,14 @@ foreach ($single_labs_info as $row) {
                             <input type="text" name="experience" class="form-control" id="experience" value="<?=$row['experience']?>">
                         </div>
                     </div>
-                   
-                     
-                   
                 </div>
                     </div>    
                     </div>
-                   
-                  
-                        
-        
-                    
-  
-            
-        
     </div>
 </div>
 </div>
 </div>
- <div class="col-sm-3 control-label col-sm-offset-2">
+ <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>   

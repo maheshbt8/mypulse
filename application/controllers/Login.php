@@ -198,18 +198,33 @@ class Login extends CI_Controller {
     {
         if($this->input->post()){
             $email = $this->input->post('email');
-            $password=$this->input->post('password');
            $validation = email_validation($email);
            
             if ($validation == 1) {
+                $phone = $this->input->post('mobile');
+           $validation_phone = mobile_validation($phone);
+           if($validation_phone == 1){
                 if($this->input->post('pass') == $this->input->post('cpass')){
+
         $data['name']       = $this->input->post('username');
         $data['email']      = $this->input->post('email');
         $data['password']       = sha1($this->input->post('pass'));
         $data['phone']          = $this->input->post('mobile');
         $data['status']   = 1;
-        
-        $insert=$this->db->insert('patient',$data);
+
+            $user_name   =   $data['name'];
+            if($this->session->flashdata('otp') == ''){
+            $num="12345678901234567890";
+            $shu=str_shuffle($num);
+            $otp=substr($shu, 14);
+            $this->session->set_flashdata('otp',$otp);
+        }
+            $this->session->set_flashdata('otp_message','OTP Send To :'.$data['phone'].'('.$this->session->flashdata('otp').')');
+            $message        =  'Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->flashdata('otp') ;
+            $receiver_phone =   $data['phone'];
+            /*$this->sms_model->send_sms($message, $receiver_phone);*/
+        if($this->input->post('otp')==$this->session->flashdata('otp')){
+        $insert=$this->db->insert('users',$data);
         if($insert)
         {
             $lid=$this->db->insert_id();
@@ -218,22 +233,28 @@ class Login extends CI_Controller {
             $uid=substr($sid, 14);
             $pid='MPU'.date('y').'_'.$uid;
             $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+        /*
+        $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));*/
+        redirect(base_url() , 'refresh');
+        $this->email_model->account_opening_email('users','user', $data['email']);
         }
-                $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));
-                $this->email_model->account_opening_email($this->lang->line('roles')[6], $data['email']);
-            $user_name   =   $data['name'];
+        }
+            /*$user_name   =   $data['name'];
             $num="12345678901234567890";
             $shu=str_shuffle($num);
             $otp=substr($shu, 14);
             $this->session->set_flashdata('otp',$otp);
             $message        =  'Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $otp ;
             $receiver_phone =   $data['phone'];
-            $this->sms_model->send_sms($message, $receiver_phone);
+            $this->sms_model->send_sms($message, $receiver_phone);*/
             }else{
                  $this->session->set_flashdata('cpass_error', $this->lang->line('validation')['passwordNotMatch']);
-            }} else {
-
-                $this->session->set_flashdata('email_error', $this->lang->line('msg_email_exist') );
+            }
+            }else {
+                 $this->session->set_flashdata('email_error', 'Mobile Number Already Existed' );
+        }
+        }else {
+        $this->session->set_flashdata('email_error', $this->lang->line('msg_email_exist') );
             }
         }
         $this->load->view('backend/register');

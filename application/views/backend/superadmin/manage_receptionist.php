@@ -41,8 +41,9 @@ $this->session->set_userdata('last_page', current_url());
                         echo $name;?>
                 </td>
                 <td>
-                    <?php $name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;
+                    <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
                         echo $name;?>
+                    
                 </td>
                 <td><a href="#">View Doctors</a></td>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   

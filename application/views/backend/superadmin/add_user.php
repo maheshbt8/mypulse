@@ -31,14 +31,14 @@
             <div class="tab-pane box active" id="list">
 				
 				<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
 
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
 
@@ -71,6 +71,8 @@
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
 
@@ -120,7 +122,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -128,7 +130,7 @@
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
@@ -162,56 +164,6 @@
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
                         </div>
                     </div>
-                            <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="country" class="form-control" id="country" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
-                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
-                                <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div> 
-                    
-                    
-                       <div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
-		                    <div class="col-sm-8">
-		                        <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
-		                            <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
-
-			                    </select>   
-			                </div>
-					</div>
-					
-					
-					   <div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
-		                    <div class="col-sm-8">
-		                        <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
-		                            <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
-
-			                    </select>
-			                </div>
-					</div>
-					
-					<div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
-		                    <div class="col-sm-8">
-		                        <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
-		                            <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
-
-			                    </select>
-			                </div>
-					</div>
-                   
-                   
 					<div class="form-group">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
 
@@ -234,6 +186,54 @@
 					</div>
                    
                 </div>
+                <div class="col-sm-6">
+                            <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="country" class="form-control" id="country" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
+                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
+                                <?php 
+                                $admins = $this->db->get_where('country')->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> 
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
+                            <div class="col-sm-8">
+                                <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
+                                    <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
+
+                                </select>   
+                            </div>
+                    </div>
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
+                            <div class="col-sm-8">
+                                <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
+                                    <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
+
+                                </select>
+                            </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
+                            <div class="col-sm-8">
+                                <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
+                                    <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
+
+                                </select>
+                            </div>
+                    </div>
+                </div>
                     </div>
                    
                             
@@ -244,12 +244,12 @@
 		
 			<div class="tab-pane box" id="pro" style="padding: 5px">
                	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
                 <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                   <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['bloodGroup'];?></label>
 
@@ -296,6 +296,8 @@
                             <input type="text" name="blood_pressure" class="form-control" id="blood_pressure" value="<?php echo set_value('blood_pressure'); ?>">
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['sugarLevel'];?></label>
 
@@ -331,7 +333,7 @@
                             <input type="text" name="past_medical_history" class="form-control" id="past_medical_history" value="<?php echo set_value('past_medical_history'); ?>">
                         </div>
                     </div>
-				     
+                     
                    
                 </div>
                     </div>    
@@ -341,7 +343,7 @@
 			</div>  
 			</div></div>
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 

@@ -17,7 +17,15 @@ $this->session->set_userdata('last_page1', current_url());
         <span>
         <b style="font-size: 15px;"><?php echo $this->db->where('hospital_id',$doctor->hospital_id)->get('hospitals')->row()->name.' / '.$this->db->where('branch_id',$doctor->branch_id)->get('branch')->row()->name.' / '.$this->db->where('department_id',$doctor->department_id)->get('department')->row()->name;?></b></span>
         <span>
-        <?php echo $doctor->specializations;?></span>
+        <?php $spe=explode(',', $doctor->specializations);
+            $specializations='';
+            for($i=0;$i<count($spe);$i++){
+                $specializations=$this->db->where('specializations_id',$spe[$i])->get('specializations')->row()->name.', '.$specializations;
+            }
+            echo $specializations;
+        ?>
+            
+        </span>
       </center>
 		</div>
    

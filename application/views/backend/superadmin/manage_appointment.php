@@ -33,7 +33,7 @@ $this->session->set_userdata('last_page', current_url());
             {
                 $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
                 $this->db->where($array)->update('appointments',array('status'=>'4'));
-                
+                $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7));
             }
             ?>   
             <tr>

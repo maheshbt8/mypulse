@@ -158,7 +158,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -166,7 +166,7 @@
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                 
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
@@ -226,28 +226,28 @@
                             <input type="text" name="in_address" id="in_address" class="form-control" id="field-5" value="<?php echo set_value('in_address'); ?>">
                         </div>
                     </div>
-                    
-                   
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
 
-						<div class="col-sm-5">
-							<div class="fileinput fileinput-new" data-provides="fileinput">
-								<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-									<img src="http://placehold.it/200x200" alt="...">
-								</div>
-								<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-								<div>
-									<span class="btn btn-white btn-file">
-										<span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
-										<span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
-										<input type="file" name="userfile" accept="image/*" id="userfile" value="<?php echo set_value('userfile'); ?>">
-									</span>
-									<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
-								</div>
-							</div>
-						</div>
-					</div>
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="http://placehold.it/200x200" alt="...">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
+                                        <span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile" value="<?php echo set_value('userfile'); ?>">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                    
                 </div>
                     </div>
@@ -259,14 +259,14 @@
 		
 			<div class="tab-pane box" id="pro" style="padding: 5px">
                	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                  
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['qualification'];?></label>
@@ -275,7 +275,8 @@
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo set_value('qualification'); ?>">
                         </div>
                     </div>
-                    
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['experience'];?></label>
 
@@ -283,9 +284,6 @@
                             <input type="text" name="experience" class="form-control" id="experience" value="<?php echo set_value('experience'); ?>">
                         </div>
                     </div>
-                   
-				     
-                   
                 </div>
                     </div>    
                     </div>
@@ -295,7 +293,7 @@
 			</div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 

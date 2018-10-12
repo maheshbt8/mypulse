@@ -44,6 +44,10 @@
 		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('msg_registration_complete'); ?></div>
 		<?php }
+		if($this->session->flashdata('otp_message')!=''){?>
+		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('otp_message'); ?></div>
+		<?php }
 					  if($this->session->flashdata('email_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('email_error'); ?></div>
@@ -52,15 +56,29 @@
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('cpass_error'); ?></div>
 		<?php }?>
+		<span id="email_error"></span><span id="phone_error"></span>
+		<?php
+		if($this->session->flashdata('otp')!=''){
+			?>
+			<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredFname'];?>">
+						<input class="input100" type="text" name="otp" placeholder="<?php echo 'OTP';?>*" value="<?php echo set_value('otp'); ?>" autocomplete="off">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user"></i>
+						</span>
+					</div>
+			<?php
+		}
+		?>
 					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredFname'];?>">
-						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*" value="<?php echo set_value('username'); ?>">
+						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*" value="<?php echo set_value('username'); ?>" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requriedPhone'];?>">
-						<input class="input100" type="text" name="mobile" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('mobile'); ?>">
+						<input class="input100" type="text" name="mobile" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('mobile'); ?>" onchange="return get_phone(this.value)" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
@@ -68,7 +86,7 @@
 					</div>
 					
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?><?php if($this->session->flashdata('email_error')!=''){echo "Duplicate";}?>">
-						<input class="input100" type="email" name="email" placeholder="<?php echo $this->lang->line('labels')['email'];?>*" value="<?php echo set_value('email'); ?>">
+						<input class="input100" type="email" name="email" placeholder="<?php echo $this->lang->line('labels')['email'];?>*" value="<?php echo set_value('email'); ?>" onchange="return get_email(this.value)" autocomplete="off">
 						
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
@@ -84,7 +102,7 @@
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredConfirmPassword'];?>">
-						<input class="input100" type="password" name="cpass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*" value="<?php echo set_value('cpass'); ?>">
+						<input class="input100" type="password" name="cpass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*" value="<?php echo set_value('cpass'); ?>" >
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
@@ -122,6 +140,31 @@
 	<script src="<?php echo base_url();?>assets/assets1/vendor/select2/select2.min.js"></script>
 <!--===============================================================================================-->
 	<script src="<?php echo base_url();?>assets/assets1/js/main.js"></script>
-
+<script type="text/javascript">
+     function get_email(email_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>index.php?ajax/get_email/' ,
+            data : {email : email_value},
+            success: function(response)
+            {
+                jQuery('#email_error').html(response);        
+            } 
+        });
+   
+    }
+     function get_phone(phone_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>index.php?ajax/get_phone/' ,
+            data : {phone : phone_value},
+            success: function(response)
+            {
+                jQuery('#phone_error').html(response);        
+            } 
+        });
+   
+    }
+</script>
 </body>
 </html>

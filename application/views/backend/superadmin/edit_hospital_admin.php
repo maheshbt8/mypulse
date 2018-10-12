@@ -35,7 +35,7 @@ foreach ($single_admin_info as $row) {
             <div class="tab-pane box active" id="list">
                 
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -43,7 +43,7 @@ foreach ($single_admin_info as $row) {
     
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
             <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first_name'); ?></label>
 
@@ -75,12 +75,14 @@ foreach ($single_admin_info as $row) {
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['email']?>">
-                            <span ><?php echo form_error('fname'); ?></span>
+                            <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -138,7 +140,7 @@ foreach ($single_admin_info as $row) {
             
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -146,7 +148,7 @@ foreach ($single_admin_info as $row) {
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                 <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('gender'); ?></label>
 
@@ -180,7 +182,29 @@ foreach ($single_admin_info as $row) {
                             <input type="text" name="address" class="form-control" id="address"value="<?=$row['address']?>">
                         </div>
                     </div>
-                  
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
+
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="<?php echo base_url('uploads/hospitaladmin_image/').$row['admin_id'].'.jpg'?>" alt="...">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new">Select image</span>
+                                        <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-sm-6">
                    <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
 
@@ -243,27 +267,6 @@ foreach ($single_admin_info as $row) {
                                 </select>
                             </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
-
-                        <div class="col-sm-5">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url('uploads/hospitaladmin_image/').$row['admin_id'].'.jpg'?>" alt="...">
-                                </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-                                <div>
-                                    <span class="btn btn-white btn-file">
-                                        <span class="fileinput-new">Select image</span>
-                                        <span class="fileinput-exists">Change</span>
-                                        <input type="file" name="userfile" accept="image/*" id="userfile">
-                                    </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                   
                 </div>
                     </div>
                
@@ -274,7 +277,7 @@ foreach ($single_admin_info as $row) {
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -282,7 +285,7 @@ foreach ($single_admin_info as $row) {
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                  
                  <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
@@ -298,6 +301,8 @@ foreach ($single_admin_info as $row) {
                             <input type="text" name="profession" class="form-control" id="profession" value="<?=$row['profession']?>">
                         </div>
                     </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('experience'); ?></label>
 
@@ -314,7 +319,7 @@ foreach ($single_admin_info as $row) {
             </div></div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
