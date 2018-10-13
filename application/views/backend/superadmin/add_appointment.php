@@ -162,9 +162,12 @@
 
             
             <div class="panel-body">
-    
-                
                     <div class="row">
+                        <div class="col-sm-12">
+                    <div class="form-group" id="doc_ava">
+                       
+                    </div>
+                    </div>
                       <!--   <div class="col-sm-6">
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
@@ -210,7 +213,7 @@
              $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
             }
          ?>
-<option value="<?php echo $row['unique_id'];?>"><?php echo 'Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.' , '.$spe.')';?></option>
+<option value="<?php echo $row['unique_id'].'/ Dr. '.ucfirst($row['name']);?>"><?php echo '('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.' / '.$spe.')';?></option>
 <?php }?>
 
   </datalist>
@@ -261,16 +264,7 @@
                 </div>
                 
             </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('doctor_availability'); ?></label>
-                            <div class="col-sm-10" id="doc_ava">
-                                <!-- <input type="text" name="doctor_availability" id="doctor_availability" placeholder="Please Select Doctor First" class="form-control" disabled="" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" > -->  
-                            </div>
-                    </div>
-                </div>
-                </div>
+                
                 
                     </div>
                    

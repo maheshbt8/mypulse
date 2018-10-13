@@ -51,82 +51,6 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $this->load->view('backend/index', $page_data);
     }
 
-    /*     * ***LANGUAGE SETTINGS******** */
-    function languages()
-    {
-        $data['lang'] = $this->session->userdata('language');
-       extract($_POST);
-       $this->session->set_userdata('language', $dlang);
-       $redirect_url = base_url().$current;
-       redirect($redirect_url); 
-    
-    }
-    function manage_language($param1 = '', $param2 = '', $param3 = '') {
-        
-
-        if ($param1 == 'edit_phrase') {
-            $page_data['edit_profile'] = $param2;
-        }
-        if ($param1 == 'update_phrase') {
-            $language = $param2;
-            $total_phrase = $this->input->post('total_phrase');
-            for ($i = 1; $i < $total_phrase; $i++) {
-                //$data[$language]	=	$this->input->post('phrase').$i;
-                $this->db->where('phrase_id', $i);
-                $this->db->update('language', array($language => $this->input->post('phrase' . $i)));
-            }
-            redirect(base_url() . 'index.php?superadmin/manage_language/edit_phrase/' . $language, 'refresh');
-        }
-        if ($param1 == 'do_update') {
-            $language = $this->input->post('language');
-            $data[$language] = $this->input->post('phrase');
-            $this->db->where('phrase_id', $param2);
-            $this->db->update('language', $data);
-            $this->session->set_flashdata('message', get_phrase('settings_updated'));
-            redirect(base_url() . 'index.php?superadmin/manage_language/', 'refresh');
-        }
-        if ($param1 == 'add_phrase') {
-            $data['phrase'] = $this->input->post('phrase');
-            $this->db->insert('language', $data);
-            $this->session->set_flashdata('message', get_phrase('settings_updated'));
-            redirect(base_url() . 'index.php?superadmin/manage_language/', 'refresh');
-        }
-        if ($param1 == 'add_language') {
-            $language = $this->input->post('language');
-            $this->load->dbforge();
-            $fields = array(
-                $language => array(
-                    'type' => 'LONGTEXT'
-                )
-            );
-            $this->dbforge->add_column('language', $fields);
-
-            $this->session->set_flashdata('message', get_phrase('settings_updated'));
-            redirect(base_url() . 'index.php?superadmin/manage_language/', 'refresh');
-        }
-        if ($param1 == 'delete_language') {
-            $language = $param2;
-            $this->load->dbforge();
-            $this->dbforge->drop_column('language', $language);
-            $this->session->set_flashdata('message', get_phrase('settings_updated'));
-
-            redirect(base_url() . 'index.php?superadmin/manage_language/', 'refresh');
-        }
-        $page_data['page_name'] = 'manage_language';
-        $page_data['page_title'] = get_phrase('manage_language');
-        //$page_data['language_phrases'] = $this->db->get('language')->result_array();
-        $this->load->view('backend/index', $page_data);
-    }
-   /* function languages()
-    {
-
-       extract($_POST);
-       $data['lang'] = $this->session->userdata('language');
-       $this->session->set_userdata('language', $dlang);
-       $redirect_url = base_url().$current;
-       redirect($redirect_url); 
-    
-    }*/
     /*     * ***SITE/SYSTEM SETTINGS******** */
 
     function system_settings($param1 = '', $param2 = '', $param3 = '') {
@@ -228,6 +152,22 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $page_data['edit_data'] = $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
         $this->load->view('backend/index', $page_data);
     }
+    /******************* Languages *********************/
+    function language($param1 = '', $param2 = '', $param3 = '') {
+        if ($param1 == "create") {
+            $this->crud_model->save_language_info();
+            $this->session->set_flashdata('message', get_phrase('language_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/language');
+        }
+        if ($param1 == "delete") {
+            $this->crud_model->delete_language($param2);
+            redirect(base_url() . 'index.php?superadmin/language');
+        }
+        $page_data['page_name'] = 'language';
+        $page_data['page_title'] = get_phrase('Languages');
+        $page_data['country'] = $this->db->get('language')->result_array();
+        $this->load->view('backend/index', $page_data);
+    }
     /*******************GENERAL SETTINGS*********************/
     function specialization($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == "create") {
@@ -239,12 +179,6 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         if ($param1 == "delete") {
             $this->crud_model->delete_specialization($param2);
             redirect(base_url() . 'index.php?superadmin/specialization');
-        }
-        if ($param1 == "update") {
-            
-            $this->crud_model->update_country_info($param2);
-            $this->session->set_flashdata('message', get_phrase('country_info_updated_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/country');
         }
         $page_data['page_name'] = 'specializations';
         $page_data['page_title'] = get_phrase('Specializations');
@@ -324,6 +258,11 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         if ($param1 == "create") {
             $this->crud_model->save_license_info();
             $this->session->set_flashdata('message', get_phrase('license_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/license');
+        }
+        if ($param1 == "update") {
+            $this->crud_model->update_license_info($param2);
+            $this->session->set_flashdata('message', get_phrase('license_info_updated_successfuly'));
             redirect(base_url() . 'index.php?superadmin/license');
         }
         if ($task == "delete") {
@@ -408,10 +347,6 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
             echo '<option value="' . $row['branch_id'] . '">' . $row['name'] . '</option>';
         }
     }
-    
-    
-    
-    
      /*GET DEPARTMENT*/
       function get_department_all($branch_id)
     {
@@ -447,11 +382,15 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
      function get_user_data()   
     {
     $user_value=$_POST['user'];
-        /*$where="email=".$user_value or "phone=".$user_value;*/
         $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";
-        $users=$this->db->where($where)->get('users')->row_array();
+        $qry=$this->db->where($where)->get('users');
+        $users=$qry->row_array();
+        if($qry->num_rows()>0){
         echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="'.$users['name'].' '.$users['lname'].'" onchange="return get_user_data(this.value)">';
         echo '<input type="hidden" name="user_id" value="'.$users['user_id'].'">';
+        }else{
+            echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="No User Available" onchange="return get_user_data(this.value)">';
+        }
     }
     function get_hospital_doctors($hospital_id='')   
     {
@@ -543,7 +482,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $doctor_id=$doctor_data['doctor_id'];
         $doctor_unique_id=$doctor_data['unique_id'];
         $doctor_message=$this->db->where('doctor_id',$doctor_id)->get('availability')->row()->message;
-        echo '<label>'.$doctor_message.'</label>';
+        echo '<b><label for="field-ta" class="col-sm-2 control-label">'.get_phrase('doctor_availability').'</label></b><div class="col-sm-10"><label class="control-label">'.$doctor_message.'</label></div>';
         /*echo '<input type="text" value="'.$doctor_message.'" class="form-control" name="doctor_message" id="doctor_message" disabled="">';*/
         echo '<input type="hidden" value="'.$doctor_id.'" class="form-control" name="doctor_id" id="doctor_id">';
         echo '<input type="hidden" value="'.$doctor_unique_id.'" class="form-control" name="doctor_unique_id" id="doctor_unique_id">';
@@ -583,7 +522,12 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         echo '<option value=""> No Slot Available In This Date </option>';
     }
     }
-    
+    public function resend_email_verification($task='',$type_id='',$id='')
+    {
+    $this->db->where('unique_id',$id)->update($task,array('modified_at'=>date('Y-m-d H:i:s')));
+    $this->email_model->account_reverification_email($task,$type_id, $id);
+        redirect($this->session->userdata('last_page'));
+    }
     /**********SINGLE DATA GET WITH ID*************/
     public function get_hospital_history($hospital_id){
        /* $data['branch_info'] = $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
@@ -718,6 +662,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
             redirect(base_url() . 'index.php?superadmin/hospital');
         }
         if ($task == "delete_multiple") {
+            print_r($_POST);die;
            $this->crud_model->delete_multiple_hospital_info();
             $this->session->set_flashdata('message', get_phrase('hospitals_info_deleted_successfuly'));
             redirect(base_url() . 'index.php?superadmin/hospital');
@@ -1012,7 +957,6 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
            $this->crud_model->save_doctor_info();
             $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
             $this->email_model->account_opening_email('doctors','doctor', $email);
-            
             redirect(base_url() . 'index.php?superadmin/doctor');
         
         }else{
@@ -1241,7 +1185,6 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
              $this->crud_model->select_prescription_info_by_patient($patient_id);
              redirect(base_url() . 'index.php?superadmin/patient');
         }
-        $patient='inpatient';
         $data['patient_info'] = $this->crud_model->select_user_info();
         $data['page_name'] = 'manage_users';
         $data['page_title'] = get_phrase('myPulse_users');
@@ -1253,6 +1196,12 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
             $this->session->set_flashdata('message', get_phrase('unregistered_user_info_saved_successfuly'));
            /* $this->email_model->account_opening_email('users','user', $email);*/
             redirect(base_url() . 'index.php?superadmin/add_appointment');
+    }
+    function inpatient($task = "", $patient_id = "") {
+        $data['patient_info'] = $this->crud_model->select_inpatient_info();
+        $data['page_name'] = 'manage_inpatient';
+        $data['page_title'] = get_phrase('inpatients');
+        $this->load->view('backend/index', $data);
     }
       function add_appointment()
     {

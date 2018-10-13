@@ -81,7 +81,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>">
+                            <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>" readonly>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>  
@@ -91,7 +91,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="mobile" value="<?=$row['phone']?>" minlength="10" maxlength="10">  
+                            <input type="number" name="mobile" class="form-control" id="mobile" value="<?=$row['phone']?>" minlength="10" maxlength="10"readonly>  
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>

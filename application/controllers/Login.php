@@ -75,7 +75,8 @@ class Login extends CI_Controller {
     function validate_login() {
      
       $email = $this->input->post('email');
-      $password = $this->input->post('password');
+      $password = $this->input->post('password');/*
+      $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";*/
       $credential = array('email' => $email, 'password' => sha1($password),'status'=>'1','is_email'=>'1');
      
         // Checking login credential for admin
@@ -298,10 +299,32 @@ class Login extends CI_Controller {
     {
         $this->crud_model->email_verification($task,$id);
     }
-     function set_password($task="",$id="")
+    function set_password($task="",$id="")
     {
         if($this->input->post()){
-        /*if($this->input->post('pass') == $this->input->post('cpass')){*/
+            $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
+$this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
+            if ($this->form_validation->run() == TRUE){
+        /*if($task == 'hospitaladmins'){*/
+            $is_email=$this->db->get_where($task, array('unique_id' => $id))->row()->is_email;
+            if($is_email==1){
+            $yes=$this->db->where('unique_id',$id)->update($task,array('password' =>sha1($this->input->post('pass'))));
+            if($yes){
+            redirect(base_url() , 'refresh');
+        }
+        }else{
+            echo "Email Not Verified";
+        }
+       /* }*/
+    }
+    }
+        $data['account']=$task;
+        $data['id']=$id;
+        $this->load->view('backend/set_password',$data);
+    }
+     /*function set_password($task="",$id="")
+    {
+        if($this->input->post()){
             $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
 $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
             
@@ -386,14 +409,11 @@ $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|ma
     
         } 
     }
-    /*}else{
-                 $this->session->set_flashdata('cpass_error', 'Password Not Matched');
-            }*/
     }
         $data['account']=$task;
         $data['id']=$id;
         $this->load->view('backend/set_password',$data);
-    }
+    }*/
 
     function logout() {
         $this->session->sess_destroy();

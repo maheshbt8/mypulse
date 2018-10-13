@@ -81,7 +81,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['email'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['email']?>">
+                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['email']?>" readonly>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -89,7 +89,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['phone_number'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['phone']?>" minlength="10" maxlength="10">
+                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['phone']?>" minlength="10" maxlength="10" readonly>
                             <span ><?php echo form_error('mobile'); ?></span>  
                         </div>
                     </div>

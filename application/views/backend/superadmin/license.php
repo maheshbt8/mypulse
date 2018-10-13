@@ -25,6 +25,7 @@
                 		<tr>
                     		<th><div><?php echo get_phrase('license_code'); ?></div></th>
                     		<th><div><?php echo get_phrase('license_name'); ?></div></th>
+                            <th><div><?php echo get_phrase('description'); ?></div></th>
                     	    <th><div><?php echo get_phrase('options'); ?></div></th>
 						</tr>
 					</thead>
@@ -33,9 +34,14 @@
                         <tr>
                             <td><?php echo $row['license_code'];?></td>
 							<td><?php echo $row['name'];?></td>
+                            <td><?php echo $row['description'];?></td>
 							<td>
+                            <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_license/<?php echo $row['license_id'];?>');" title="Edit">
+                                            <i class="entypo-pencil"></i>     
+                                            </a>
                              <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/license/delete/<?php echo $row['license_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
                              </a>
+
         					</td>
                         </tr>
                         <?php endforeach;?>
@@ -52,8 +58,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('license_code');?></label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="license_code"
-                                        data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                    <input type="text" class="form-control" name="license_code" data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -61,6 +66,12 @@
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" name="name"
                                         data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo get_phrase('description');?></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="description" data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
                                 </div>
                             </div>
                             

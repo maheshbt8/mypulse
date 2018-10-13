@@ -2,47 +2,39 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/medical_labs/delete_multiple/" method="post">
-<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
-        <?php echo get_phrase('delete'); ?>
-</button>
-<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
-        <?php echo get_phrase('delete'); ?>
-</button>
-<button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_labs'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_medical_labs'); ?>
-</button>
-
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>  
-        <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
-            <th><?php echo get_phrase('lab_id');?></th>
-            <th><?php echo get_phrase('name');?></th>   
-            <th><?php echo get_phrase('owner name');?></th>
-            <th><?php echo get_phrase('owner phone number');?></th>
-            <th><?php echo get_phrase('hospital');?></th> 
-             <th><?php echo get_phrase('branch');?></th>
-            <!-- <th><?php echo get_phrase('status');?></th> -->
-            <th><?php echo get_phrase('options');?></th>
+        <tr><!-- 
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th> -->
+            <th><?php echo get_phrase('sl_no');?></th>
+            <th><?php echo get_phrase('patient');?></th>
+            <th><?php echo get_phrase('hospital');?></th>   
+            <th><?php echo get_phrase('doctor');?></th>
+            <th><?php echo get_phrase('date');?></th>
+            <th><?php echo get_phrase('reason');?></th> 
+            <th><?php echo get_phrase('bed');?></th>
+            <th><?php echo get_phrase('status');?></th>
+            <th><?php echo get_phrase('action');?></th>
         </tr>
     </thead>
 
     <tbody>
         <?php $i=1;foreach ($lab_info as $row) { ?>   
-            <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td>
+            <tr><!-- 
+                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td> -->
+                <td><?= $i;?></td>
                 <td><?php echo $row['unique_id'];?></td>
                  <td><a href="<?php echo base_url();?>index.php?superadmin/edit_labs/<?php echo $row['lab_id']?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['owner_name'] ?></td>
                 <td><?php echo $row['owner_mobile'] ?></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
                 <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
-                <!-- <td><?php if($row['status'] == 1){echo "active";   
+                 <td><?php if($row['status'] == 1){echo "active";   
                  }
                  else if(
-                 $row['status'] == 0){ echo "inactive";}?></td>  -->
+                 $row['status'] == 0){ echo "inactive";}?></td> 
                <td>
               <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/medical_labs/delete/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> 
                <?php if($row['is_email'] == '2'){?>
@@ -91,20 +83,6 @@ $this->session->set_userdata('last_page', current_url());
     });
 </script>
 <script type="text/javascript">
-    $(document).ready(function(){
-
-        $("#delete").hide();
-         $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                $("#delete").show();
-                $("#delete1").hide();
-            }
-            else if($(this).prop("checked") == false){
-               $("#delete").hide();
-               $("#delete1").show();
-            }
-        });
-    });
     function toggle(source) {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     for (var i = 0; i < checkboxes.length; i++) {

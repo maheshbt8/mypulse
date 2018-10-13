@@ -34,5 +34,11 @@ class Ajax extends CI_Controller {
         echo '<span style="color:red"> This Phone Number Already Existed </span>';    
         }
     }
+    function get_lang($lang_id)
+    {
+        $this->session->set_userdata('website_language_google',$lang_id);
+        
+        echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);
+    }
 }
 ?>

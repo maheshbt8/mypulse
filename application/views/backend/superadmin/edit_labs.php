@@ -69,7 +69,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10"> 
+                            <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10" readonly> 
                             <span ><?php echo form_error('phone_number'); ?></span> 
                         </div>
                     </div>
@@ -109,7 +109,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>"value="<?=$row['email']?>">
+                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>"value="<?=$row['email']?>" readonly>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>

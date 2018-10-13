@@ -2,8 +2,10 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/medical_stores/delete_multiple/" method="post">
-<button type="button" onClick="confSubmit(this.form);" 
-    class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_stores'" class="btn btn-primary pull-right">
@@ -39,7 +41,8 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
                <td>
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/medical_stores/delete/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                
+                    <?php if($row['is_email'] == '2'){?>
+                <a href="<?php echo base_url(); ?>index.php?superadmin/resend_email_verification/medicalstores/store/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 
                 </td>
             </tr>
@@ -83,6 +86,20 @@ $this->session->set_userdata('last_page', current_url());
     });
 </script>
 <script type="text/javascript">
+       $(document).ready(function(){
+
+        $("#delete").hide();
+         $('input[type="checkbox"]').click(function(){
+            if($(this).prop("checked") == true){
+                $("#delete").show();
+                $("#delete1").hide();
+            }
+            else if($(this).prop("checked") == false){
+               $("#delete").hide();
+               $("#delete1").show();
+            }
+        });
+    });
     function toggle(source) {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     for (var i = 0; i < checkboxes.length; i++) {
@@ -91,9 +108,4 @@ $this->session->set_userdata('last_page', current_url());
     }
 }
 
-function confSubmit(form) {
-if (confirm("Are you sure you want to Delete ?")) {
-form.submit();
-}
-}
 </script>

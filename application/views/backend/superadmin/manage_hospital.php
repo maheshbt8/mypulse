@@ -1,9 +1,12 @@
+
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/hospital/delete_multiple/" method="post">
-<button type="button" onClick="confSubmit(this.form);" 
-    class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>index.php?superadmin/add_hospital/'" class="btn btn-primary pull-right">
@@ -48,7 +51,21 @@ $this->session->set_userdata('last_page', current_url());
     </tbody>
 </table>
 </form>
-
+<!-- <div class="modal fade" id="alldelete">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top:100px;">
+                
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" style="text-align:center;">Are you sure to delete this information ?</h4>
+                </div>
+                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+                    <a href="#" class="btn btn-danger" id="delete_link_all"><?php echo 'Delete';?></a>
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><?php echo 'Cancel';?></button>
+                </div>
+            </div>
+        </div>
+</div> -->
 <script type="text/javascript">
     jQuery(window).load(function ()
     {
@@ -85,18 +102,25 @@ $this->session->set_userdata('last_page', current_url());
     });
 </script>
 <script type="text/javascript">
+    $(document).ready(function(){
+        $("#delete").hide();
+        
+         $('input[type="checkbox"]').click(function(){
+            if($(this).prop("checked") == true){
+                $("#delete").show();
+                $("#delete1").hide();
+            }
+            else if($(this).prop("checked") == false){
+               $("#delete").hide();
+               $("#delete1").show();
+            }
+        });
+    });
     function toggle(source) {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i] != source)
             checkboxes[i].checked = source.checked;
     }
-}
-
-
-function confSubmit(form) {
-if (confirm("Are you sure you want to Delete ?")) {
-form.submit();
-}
 }
 </script>

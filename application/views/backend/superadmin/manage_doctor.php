@@ -2,8 +2,10 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/doctor/delete_multiple/" method="post">
-<button type="button" onClick="confSubmit(this.form);" 
-    class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('delete'); ?>
+</button>
+<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/add_doctor'" class="btn btn-primary pull-right">
@@ -50,10 +52,10 @@ $this->session->set_userdata('last_page', current_url());
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
                 
                <td>
-                <!-- <a href="<?php echo base_url(); ?>index.php?superadmin/edit_doctor/<?php echo $row['doctor_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a> -->
                 <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>index.php?superadmin/doctor/delete/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 <a href="<?php echo base_url(); ?>index.php?superadmin/doctor_availability/<?php echo $row['doctor_id'] ?>" title="Availability"><i class="glyphicon glyphicon-calendar"></i></a>
-                 
+                 <?php if($row['is_email'] == '2'){?>
+                <a href="<?php echo base_url(); ?>index.php?superadmin/resend_email_verification/doctors/doctor/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 </td>
             </tr>
         <?php } ?>
@@ -96,6 +98,20 @@ $this->session->set_userdata('last_page', current_url());
     });
 </script>
 <script type="text/javascript">
+         $(document).ready(function(){
+
+        $("#delete").hide();
+         $('input[type="checkbox"]').click(function(){
+            if($(this).prop("checked") == true){
+                $("#delete").show();
+                $("#delete1").hide();
+            }
+            else if($(this).prop("checked") == false){
+               $("#delete").hide();
+               $("#delete1").show();
+            }
+        });
+    });
     function toggle(source) {
     var checkboxes = document.querySelectorAll('input[type="checkbox"]');
     for (var i = 0; i < checkboxes.length; i++) {
@@ -103,9 +119,5 @@ $this->session->set_userdata('last_page', current_url());
             checkboxes[i].checked = source.checked;
     }
 }
-function confSubmit(form) {
-if (confirm("Are you sure you want to Delete ?")) {
-form.submit();
-}
-}
+
 </script>

@@ -52,15 +52,6 @@
                                value="<?php echo $this->db->get_where('settings', array('type' => 'paypal_email'))->row()->description; ?>">
                     </div>
                 </div> -->
-
-                <!-- <div class="form-group">
-                    <label  class="col-sm-3 control-label"><?php echo get_phrase('currency'); ?></label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="currency" 
-                               value="<?php echo $this->db->get_where('settings', array('type' => 'currency'))->row()->description; ?>">
-                    </div>
-                </div> -->
-
                 <div class="form-group">
                     <label  class="col-sm-3 control-label"><?php echo get_phrase('system_email'); ?></label>
                     <div class="col-sm-5">
@@ -68,48 +59,6 @@
                                value="<?php echo $this->db->get_where('settings', array('type' => 'system_email'))->row()->description; ?>">
                     </div>
                 </div>
-
-
-                <!-- <div class="form-group">
-                    <label  class="col-sm-3 control-label"><?php echo get_phrase('Add GST'); ?></label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="gst" 
-                               value="<?php echo $this->db->get_where('settings', array('type' => 'GST'))->row()->description; ?>">
-                    </div>
-                </div> -->
-
-                <div class="form-group">
-                    <label  class="col-sm-3 control-label"><?php echo get_phrase('language'); ?></label>
-                    <div class="col-sm-5">
-                        <select name="language" class="form-control selectbox">
-                            <?php
-                            $fields = $this->db->list_fields('language');
-                            foreach ($fields as $field) {
-                                if ($field == 'phrase_id' || $field == 'phrase')
-                                    continue;
-
-                                $current_default_language = $this->db->get_where('settings', array('type' => 'language'))->row()->description;
-                                ?>
-                                <option value="<?php echo $field; ?>"
-                                        <?php if ($current_default_language == $field) echo 'selected'; ?>> <?php echo $field; ?> </option>
-                                        <?php
-                                    }
-                                    ?>
-                        </select>
-                    </div>
-                </div>
-
-             <!--    <div class="form-group">
-                    <label  class="col-sm-3 control-label"><?php echo get_phrase('text_align'); ?></label>
-                    <div class="col-sm-5">
-                        <select name="text_align" class="selectboxit">
-                            <?php $text_align = $this->db->get_where('settings', array('type' => 'text_align'))->row()->description; ?>
-                            <option value="left-to-right" <?php if ($text_align == 'left-to-right') echo 'selected'; ?>> left-to-right (LTR)</option>
-                            <option value="right-to-left" <?php if ($text_align == 'right-to-left') echo 'selected'; ?>> right-to-left (RTL)</option>
-                        </select>
-                    </div>
-                </div> -->
-
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-5">
                         <button type="submit" class="btn btn-info"><?php echo get_phrase('save'); ?></button>

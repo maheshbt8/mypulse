@@ -13,14 +13,29 @@ class Email_model extends CI_Model {
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
         $query = $this->db->get_where($account_type, array('email' => $email));
         $type=$id_type.'_id';
-        $id = $query->row()->$type;
+        $id = $query->row()->unique_id;//$type
         $email_msg = "Welcome to " . $system_name . "<br />";
-        $email_msg .= "Your account type : " . $account_type . "<br />";
+        $email_msg .= "Dear User <br/> Your ID is : " . $id . "<br />";
         $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com/index.php?login/email_verification/$account_type/$id\"> YES </a></button> <br />";
         //$email_msg .= "Login Here : " . base_url() . "<br/>";
 
         /*echo $email_msg;die;*/
-        $email_sub = "Account opening email";
+        $email_sub = "Account Opening Email";
+        $email_to = $email;
+
+        $this->do_email($email_msg, $email_sub, $email_to);
+    }
+    function account_reverification_email($account_type = '',$id_type = '', $unique_id = '') {
+        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
+        $email = $this->db->get_where($account_type, array('unique_id' => $unique_id))->row()->email;
+        $id = $unique_id;
+        $email_msg = "Welcome to " . $system_name . "<br />";
+        $email_msg .= "Dear User <br/> Your ID is : " . $id . "<br />";
+        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com/index.php?login/email_verification/$account_type/$id\"> YES </a></button> <br />";
+        //$email_msg .= "Login Here : " . base_url() . "<br/>";
+
+        /*echo $email_msg;die;*/
+        $email_sub = "Account Reverification Email";
         $email_to = $email;
 
         $this->do_email($email_msg, $email_sub, $email_to);
@@ -45,60 +60,19 @@ class Email_model extends CI_Model {
     /*     * *custom email sender*** */
 
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {
-    /*$config = array();
-        $config['useragent']    = "CodeIgniter";
-        $config['mailpath']     = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
-        $config['protocol']     = "smtp";
-        $config['smtp_host']    = "localhost";
-        $config['smtp_port']    = "25";
-        $config['mailtype']     = 'html';
-        $config['charset']      = 'utf-8';
-        $config['newline']      = "\r\n";
-        $config['wordwrap']     = TRUE;
-        $config['smtp_timeout'] = '20';
-        $config['smtp_user'] = 'maheshbt8@gmail.com';
-        $config['smtp_pass'] = 'm@hesh@dsp';*/
-      /*$config = array();
-        $config['useragent']    = "CodeIgniter";
-        $config['mailpath']     = "/usr/bin/sendmail"; // or "/usr/sbin/sendmail"
-        $config['protocol']     = "smtp";
-        $config['smtp_host']    = "localhost";
-        $config['smtp_user'] = 'info@integritysoftsolutions.com';
-        $config['smtp_pass'] = '*&K2VR)aNo]@';
-        $config['smtp_port']    = "25";
-        $config['mailtype']     = 'html';
-        $config['charset']      = 'utf-8';
-        $config['newline']      = "\r\n";
-        $config['wordwrap']     = TRUE;*/
         $config = array();
         $config['useragent']    = "CodeIgniter";
         /*$config['mailpath']     = "ssl://smtp.gmail.com";*/ // or "/usr/sbin/sendmail"
         $config['protocol']     = "smtp";
         $config['smtp_host']    = "ssl://smtp.gmail.com";
-        $config['smtp_user'] = 'raisingravi518@gmail.com';
-        $config['smtp_pass'] = 'ravikumar@518';
+        $config['smtp_user'] = 'mypulsecare@gmail.com';//raisingravi518@gmail.com
+        $config['smtp_pass'] = 'Mypulse123';//ravikumar@518
         $config['smtp_port']    = 465;
         $config['mailtype']     = 'html';
         $config['charset']      = 'utf-8';
         $config['newline']      = "\r\n";
         $config['wordwrap']     = TRUE;
-        
-        /*$mail = new PHPMailer();
-        $mail->IsSMTP();
-        /*$config['SMTPAuth'] = TRUE;
-        $config['protocol'] = 'smtp';
-        $config['smtp_host'] = 'ssl://smtp.gmail.com';
-        $config['smtp_timeout'] = '20';
-        $config['smtp_user'] = 'maheshbt8@gmail.com';//raisingravi518@gmail.com
-        $config['smtp_pass'] = 'm@hesh@dsp';//ravikumar@518
-        $config['smtp_port'] = 465;
-        $config['mailtype']  = 'html';
-        $config['wordwrap']  = TRUE;
-        
-        $config['charset']   = 'iso-8859-1';*/
-
         $this->load->library('email');
-
         $this->email->initialize($config);
 
         $system_name = 'MyPulse'/*$this->db->get_where('settings', array('type' => 'system_name'))->row()->description*/;

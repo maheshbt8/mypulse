@@ -10,7 +10,7 @@
             <div class="tile-stats tile-white-gray  tile-white-primary">
                 <div class="icon"><i class="fa fa-hospital-o"></i></div>
                 <div class="num pull-right" data-start="0" data-end="<?php echo $this->db->count_all('hospitals'); ?>" data-duration="1500" data-delay="0">0</div>
-                <h3 style="padding-left: 90px;"><?php echo 'Hospitals';?></h3>
+                <h3 style="padding-left: 65px;"><?php echo 'Hospitals';?></h3>
             </div>
         </a>
     </div>
@@ -20,7 +20,7 @@
                 <div class="icon"><i class="fa fa-user-md"></i></div>
                 <div class="num pull-right" data-start="0" data-end="<?php echo $this->db->count_all('doctors'); ?>"
                      data-duration="1500" data-delay="0">0 </div>
-                <h3 style="padding-left: 90px;"><?php echo 'Doctors';?> </h3>
+                <h3 style="padding-left: 65px;"><?php echo 'Doctors';?> </h3>
             </div>
         </a>
     </div>
@@ -31,7 +31,7 @@
                 <div class="icon"><i class="fa fa-users"></i></div>
                 <div class="num pull-right" data-start="0" data-end="<?php echo $this->db->count_all('users'); ?>" 
                      data-duration="1500" data-delay="0">0 </div>
-                <h3 style="padding-left: 90px;"><?php echo 'Users';?></h3>
+                <h3 style="padding-left: 65px;"><?php echo 'Users';?></h3>
             </div>
         </a>
     </div>
@@ -42,7 +42,7 @@
                <div class="icon"><i class="fa fa-envelope"></i></div>
                 <div class="num pull-right" data-start="0" data-end="<?php echo $this->db->count_all('appointments'); ?>" 
                      data-duration="1500" data-delay="0">0 </div>
-                <h3 style="padding-left: 90px;"><?php echo $this->lang->line('appointments');?> </h3>
+                <h3 style="padding-left: 65px;"><?php echo $this->lang->line('appointments');?> </h3>
             </div>
         </a>
     </div>

@@ -7,6 +7,7 @@ class Crud_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
+        date_default_timezone_set('Asia/Kolkata');
     }
 
     function clear_cache() {
@@ -22,13 +23,49 @@ class Crud_model extends CI_Model {
             return $row[$field];
         //return	$this->db->get_where($type,array($type.'_id'=>$type_id))->row()->$field;	
     }
-
-
+function email_verification($task="",$id="")
+    {
+    $is_email=$this->db->get_where($task, array('unique_id' => $id))->row();
+    $created_at=$is_email->created_at;
+    $past_time = strtotime($modified_at);
+    $current_time = time();
+    $difference = $current_time - $past_time;
+    $difference_minute =  $difference/60;
+    
+    if(intval($difference_minute)<30){
+            if($is_email->is_email==2){
+            $yes=$this->db->where('unique_id',$id)->update($task,array('is_email' =>1));
+        if($task != 'users')
+        {
+        if($yes){
+        redirect(base_url() . 'index.php?login/set_password/'.$task.'/'.$id, 'refresh');
+        }
+        }else{
+            echo "YOUR Email Verified Successfully"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        }else{
+            echo "YOU Already Verified Your Email"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+        }else{
+            echo "Your Link Was Expired"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
+    }
+/*
     function email_verification($task="",$id="")
     {
         if($task == 'hospitaladmins'){
-            $is_email=$this->db->get_where('hospitaladmins', array('admin_id' => $id))->row()->is_email;
-            if($is_email==2){
+    
+    $is_email=$this->db->get_where('hospitaladmins', array('admin_id' => $id))->row();
+    $past_time = strtotime($is_email->created_at);
+    $current_time = time();
+    $difference = $current_time - $past_time;
+    $difference_minute =  $difference/60;
+    
+    if(intval($difference_minute)<30){
+            if($is_email->is_email==2){
             $yes=$this->db->where('admin_id',$id)->update('hospitaladmins',array('is_email' =>1));
             if($yes){
             redirect(base_url() . 'index.php?login/set_password/hospitaladmins/'.$id, 'refresh');
@@ -37,12 +74,15 @@ class Crud_model extends CI_Model {
             echo "YOU Already Verified Your Email"."<br/>";
             echo "<a href='".base_url()."'>Go To Home</a>";
         }
-        
+        }else{
+            echo "Your Link Was Expired"."<br/>";
+            echo "<a href='".base_url()."'>Go To Home</a>";
+        }
         }
         if($task == 'doctors'){
 
             $is_email=$this->db->get_where('doctors', array('doctor_id' => $id))->row()->is_email;
-            if($is_email==2){
+            if($is_email->is_email==2){
             $yes=$this->db->where('doctor_id',$id)->update('doctors',array('is_email' =>1));
                if($yes){
             redirect(base_url() . 'index.php?login/set_password/doctors/'.$id);
@@ -54,7 +94,7 @@ class Crud_model extends CI_Model {
         }
         if($task == 'nurse'){
            $is_email=$this->db->get_where('nurse', array('nurse_id' => $id))->row()->is_email;
-            if($is_email==2){
+            if($is_email->is_email==2){
             $yes=$this->db->where('nurse_id',$id)->update('nurse',array('is_email' =>1));
                if($yes){
             redirect(base_url() . 'index.php?login/set_password/nurse/'.$id, 'refresh');
@@ -67,7 +107,7 @@ class Crud_model extends CI_Model {
         }
         if($task == 'receptionist'){
            $is_email=$this->db->get_where('receptionist', array('receptionist_id' => $id))->row()->is_email;
-            if($is_email==2){
+            if($is_email->is_email==2){
             $yes=$this->db->where('receptionist_id',$id)->update('receptionist',array('is_email' =>1));
                if($yes){
             redirect(base_url() . 'index.php?login/set_password/receptionist/'.$id, 'refresh');
@@ -80,7 +120,7 @@ class Crud_model extends CI_Model {
         }
         if($task == 'medicalstores'){
            $is_email=$this->db->get_where('medicalstores', array('store_id' => $id))->row()->is_email;
-            if($is_email==2){
+            if($is_email->is_email==2){
             $yes=$this->db->where('store_id',$id)->update('medicalstores',array('is_email' =>1));
                if($yes){
             redirect(base_url() . 'index.php?login/set_password/medicalstores/'.$id, 'refresh');
@@ -93,7 +133,7 @@ class Crud_model extends CI_Model {
         }
         if($task == 'medicallabs'){
            $is_email=$this->db->get_where('medicallabs', array('lab_id' => $id))->row()->is_email;
-            if($is_email==2){
+            if($is_email->is_email==2){
             $yes=$this->db->where('lab_id',$id)->update('medicallabs',array('is_email' =>1));
                if($yes){
             redirect(base_url() . 'index.php?login/set_password/medicallabs/'.$id, 'refresh');
@@ -106,7 +146,7 @@ class Crud_model extends CI_Model {
         }
         if($task == 'users'){
            $is_email=$this->db->get_where('users', array('user_id' => $id))->row()->is_email;
-            if($is_email==2){
+            if($is_email->is_email==2){
             $yes=$this->db->where('user_id',$id)->update('users',array('is_email' =>1));
                if($yes){
             redirect(base_url() . 'index.php?login/set_password/users/'.$id, 'refresh');
@@ -117,7 +157,7 @@ class Crud_model extends CI_Model {
         }
         
         }
-    }
+    }*/
     // Create a new invoice.
     function create_invoice() 
     {
@@ -435,6 +475,18 @@ class Crud_model extends CI_Model {
         
         $this->db->insert('specializations',$data);
     }
+   
+     function save_language_info()
+    {
+        $data['name']       = $this->input->post('name');
+        
+        $this->db->insert('language',$data);
+    }
+     function delete_language($language)
+    {
+        $this->db->where('language_id',$language);
+        $this->db->delete('language');
+    }
       function save_country_info()
     {
         $data['name'] 		= $this->input->post('name');
@@ -508,6 +560,7 @@ class Crud_model extends CI_Model {
     function save_license_info()
     {
         $data['name'] 		= $this->input->post('name');
+        $data['description']       = $this->input->post('description');
         $data['license_code'] 		= $this->input->post('license_code');
         
         $this->db->insert('license',$data);
@@ -520,6 +573,7 @@ class Crud_model extends CI_Model {
     function update_license_info($license_id)
     {
         $data['name'] 		= $this->input->post('name');
+        $data['description']       = $this->input->post('description');
         $data['license_code'] 		= $this->input->post('license_code');
         
         $this->db->where('license_id',$license_id);
@@ -556,6 +610,7 @@ class Crud_model extends CI_Model {
            /*}else{
             $data['status']    = 2;
         }*/
+
         $data['license']    = $this->input->post('license');
         $data['license_status']    = $this->input->post('license_status');   
         $data['from_date']    = $this->input->post('from_date');
@@ -642,7 +697,8 @@ class Crud_model extends CI_Model {
          
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
-            
+            $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
         
        $insert=$this->db->insert('medicalstores',$data); 
         if($insert)
@@ -650,11 +706,8 @@ class Crud_model extends CI_Model {
             
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-           /* $a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
-            $pid='MPL'.date('y').'_'.$num;
-            $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid));
+            $pid='MPS'.date('y').'_'.$num;
+            $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
            $id=$this->db->insert_id();
@@ -686,7 +739,7 @@ class Crud_model extends CI_Model {
           
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
-             
+             $data['modified_at']=date('Y-m-d H:i:s');
             // print_r($data);
             // die;
         
@@ -722,7 +775,7 @@ class Crud_model extends CI_Model {
          /* $data['profession']    = $this->input->post('profession');*/
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
-             
+             $data['modified_at']=date('Y-m-d H:i:s');
             // print_r($data);
             // die;
         
@@ -755,7 +808,8 @@ class Crud_model extends CI_Model {
         $data['qualification']    = $this->input->post('qualification');
         $data['profession']    = $this->input->post('profession');
         $data['experience']    = $this->input->post('experience');
-             
+        $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
           
        $insert=$this->db->insert('hospitaladmins',$data);
        if($insert)
@@ -763,11 +817,8 @@ class Crud_model extends CI_Model {
             
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPHA'.date('y').'_'.$num;
-            $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid));
+            $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
            $id=$this->db->insert_id();
@@ -803,7 +854,7 @@ class Crud_model extends CI_Model {
              $data['qualification']    = $this->input->post('qualification');
              $data['profession']    = $this->input->post('profession');
              $data['experience']    = $this->input->post('experience');
-        
+             $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('admin_id',$admin_id);
         $query= $this->db->update('hospitaladmins',$data);
        if($query)
@@ -1004,7 +1055,8 @@ class Crud_model extends CI_Model {
         $data['state']    = $this->input->post('state');
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
-        
+        $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('doctors',$data);
         
         if($insert)
@@ -1016,7 +1068,7 @@ class Crud_model extends CI_Model {
             $sid=str_shuffle($a);
             $uid=substr($sid, 14);*/
             $pid='MPD'.date('y').'_'.$num;
-            $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid));
+            $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
         $doctor_id  =   $this->db->insert_id();
@@ -1220,6 +1272,7 @@ $que=$this->db->insert('availability_slat',$data);
         $data['state']    = $this->input->post('state');
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
+        $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('doctor_id',$doctor_id);
         $this->db->update('doctors',$data);
         
@@ -1275,8 +1328,8 @@ $que=$this->db->insert('availability_slat',$data);
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
              $data['password']=sha1('mypulse');
-            // print_r($data);
-            // die;
+            $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
         
        $insert=$this->db->insert('medicallabs',$data); 
        if($insert)
@@ -1284,11 +1337,8 @@ $que=$this->db->insert('availability_slat',$data);
             
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPL'.date('y').'_'.$num;
-            $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid));
+            $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
            $id=$this->db->insert_id();
@@ -1319,18 +1369,16 @@ $que=$this->db->insert('availability_slat',$data);
         $data['password']       = sha1('mypulse');
         $data['phone']          = $this->input->post('mobile');
         $data['reg_status']   = 2;
-        
+        $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
             
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPU'.date('y').'_'.$num;
-            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
         $patient_id  =   $this->db->insert_id();
@@ -1366,18 +1414,15 @@ $que=$this->db->insert('availability_slat',$data);
         $data['family_history'] 	= $this->input->post('family_history');
          $data['past_medical_history'] 	= $this->input->post('past_medical_history');
           $data['status'] 	= $this->input->post('status');
-        
+        $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
-            
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPU'.date('y').'_'.$num;
-            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
         $patient_id  =   $this->db->insert_id();
@@ -1464,14 +1509,11 @@ function select_user_information($patient_id="")
        return $this->db->get_where('users', array('user_id' => $patient_id))->result_array();
     }
 
-    /*function select_patient_inf($patient_id)
+    function select_inpatient_info()
     {
-        //return $this->db->where('patient_type','inpatient')->get_where('patient', array('patient_id' => $patient_id))->result_array();
-        return $this->db->get_where('patient',array('patient_type'=>'inpatient','patient_id'=>$patient_id))->result_array();
-        //echo $this->db->last_query(); die();
-    
-    }*/
-    function select_patient_inf($patient_id)
+        return $this->db->get('inpatient')->result_array();
+    }
+    /*function select_patient_inf($patient_id)
     {
         //return $this->db->where('patient_type','inpatient')->get_where('patient', array('patient_id' => $patient_id))->result_array();
         return $this->db->get_where('patient',array('status'=>'1'))->result_array();
@@ -1505,7 +1547,7 @@ function select_user_information($patient_id="")
     function select_patient_info_by_patient_id( $patient_id = '' )
     {
         return $this->db->get_where('patient', array('patient_id' => $patient_id))->result_array();
-    }
+    }*/
             
     function update_user_info($user_id)
     {
@@ -1536,7 +1578,7 @@ function select_user_information($patient_id="")
         $data['family_history']     = $this->input->post('family_history');
          $data['past_medical_history']  = $this->input->post('past_medical_history');
           $data['status']   = $this->input->post('status');
-        
+        $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('user_id',$user_id);
         $this->db->update('users',$data);
         
@@ -1646,18 +1688,16 @@ function select_user_information($patient_id="")
         $data['state']    = $this->input->post('state');
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
-        
+        $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
        $insert= $this->db->insert('nurse',$data);
         if($insert)
         {
             
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPN'.date('y').'_'.$num;
-            $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid));
+            $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
         $nurse_id  =   $this->db->insert_id();
@@ -1693,7 +1733,7 @@ function select_user_information($patient_id="")
         $data['state']    = $this->input->post('state');
         $data['district']    = $this->input->post('district');  
         $data['city']    = $this->input->post('city');
-        
+        $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('nurse_id',$nurse_id);
         $this->db->update('nurse',$data);
         
@@ -1848,17 +1888,16 @@ function select_user_information($patient_id="")
         $data['qualification'] 	= $this->input->post('qualification');
         $data['experience'] 	= $this->input->post('experience');
         $data['doctor_id']  = implode(',',$this->input->post('doctor'));
+        $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('receptionist',$data);
         if($insert)
         {
             
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPR'.date('y').'_'.$num;
-            $this->db->where('receptionist_id',$lid)->update('receptionist',array('unique_id'=>$pid));
+            $this->db->where('receptionist_id',$lid)->update('receptionist',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
         $receptionist_id  =   $this->db->insert_id();
@@ -1890,6 +1929,7 @@ function select_user_information($patient_id="")
         $data['qualification']  = $this->input->post('qualification');
         $data['experience']     = $this->input->post('experience');
         $data['doctor_id']  = implode(',',$this->input->post('doctor'));
+        $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('receptionist_id',$receptionist_id);
         $this->db->update('receptionist',$data);
         move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
@@ -2194,20 +2234,17 @@ function select_user_information($patient_id="")
         if($this->input->post('remarks')){
         $data['remarks']       = $this->input->post('remarks');
     }
-        /*$data['status']       = 2;*/
+        
         $data['created_type']       = $this->session->userdata('login_type');
         $data['created_by']       = $this->session->userdata('name');
-       
+       $data['created_at']=date('Y-m-d H:i:s');
+        $data['modified_at']=date('Y-m-d H:i:s');
          $insert=$this->db->insert('appointments',$data);
         if($insert)
         {
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 16);*/
             $pid='MPA'.date('y').'_'.$num;
-            
             $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid,'status'=>2));
             $history['appointment_id']=$lid;
             $history['appointment_date']=$data['appointment_date'];
@@ -2215,39 +2252,13 @@ function select_user_information($patient_id="")
             $history['appointment_time_end']=$data['appointment_time_end'];
             $history['created_type']=$data['created_type'];
             $history['created_by']=$data['created_by'];
+            $data['created_time']=date('Y-m-d H:i:s');
             $history_ins=$this->db->insert('appointment_history',$history);
             if($history_ins){
                 $last_id=$this->db->insert_id();
                 $this->db->where('appointment_history_id',$last_id)->update('appointment_history',array('action'=>1));
             }
         }
-       
-        /*$data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
-        $data['status']     = 'approved';
-        $data['patient_id'] = $this->input->post('patient_id');
-        
-        if($this->session->userdata('login_type') == 'doctor')
-            $data['doctor_id']  = $this->session->userdata('login_user_id');
-        else
-            $data['doctor_id']  = $this->input->post('doctor_id');
-        
-        $this->db->insert('appointment',$data);
-        
-        // Notify patient with sms.
-        $notify = $this->input->post('notify');
-        if($notify != '') {
-            $patient_name   =   $this->db->get_where('patient',
-                                array('patient_id' => $data['patient_id']))->row()->name;
-            $doctor_name    =   $this->db->get_where('doctor',
-                                array('doctor_id' => $data['doctor_id']))->row()->name;
-            $date           =   date('l, d F Y', $data['timestamp']);
-            $time           =   date('g:i a', $data['timestamp']);
-            $message        =   $patient_name . ', you have an appointment with doctor ' . $doctor_name . ' on ' . $date . ' at ' . $time . '.';
-            $receiver_phone =   $this->db->get_where('patient',
-                                array('patient_id' => $data['patient_id']))->row()->phone;
-            
-            $this->sms_model->send_sms($message, $receiver_phone);
-        }*/
     }
     
     function save_requested_appointment_info()

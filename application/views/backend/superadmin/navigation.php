@@ -133,8 +133,8 @@
                 <span><?php echo get_phrase('myPulse_users'); ?></span>
             </a>
         </li>
-        <li class="#">
-            <a href="">
+        <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
+            <a href="<?php echo base_url(); ?>index.php?superadmin/inpatient">
                 <i class="menu-icon fa fa-eye "></i>
                 <span><?php echo get_phrase('inpatients'); ?></span>
             </a>
@@ -209,7 +209,7 @@
         </li>
              <!-- SETTINGS -->
 
-        <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider' || $page_name == 'specializations') echo 'opened active';?> ">
+        <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider' || $page_name == 'specializations' || $page_name == 'language') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>
                 <span><?php echo get_phrase('general_settings'); ?></span>
@@ -253,6 +253,11 @@
                 <li class="<?php if ($page_name == 'specializations') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>index.php?superadmin/specialization">
                         <span><i  class="entypo-paper-plane"></i><?php echo get_phrase('specializations'); ?></span>
+                    </a>
+                </li>
+                <li class="<?php if ($page_name == 'language') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>index.php?superadmin/language">
+                        <span><i class="entypo-paper-plane"></i><?php echo get_phrase('languages');?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'license') echo 'active'; ?> ">

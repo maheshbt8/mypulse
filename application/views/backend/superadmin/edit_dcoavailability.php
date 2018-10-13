@@ -143,13 +143,6 @@ $(document).ready(function(){
     $("#weeklyDayDiv").hide();
     $("#Dates").hide();
     $("#delete_all").hide();
-    /*var id=$("#repeat_interval").val();
-     if(id == 1){
-        $("#weeklyDayDiv").hide();
-        }
-        if(id == 0){
-        $("#weeklyDayDiv").show();
-        }*/
 });
 function upall() {
     var checkBox = document.getElementById("existDays");

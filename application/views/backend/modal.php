@@ -72,4 +72,45 @@
             </div>
         </div>
     </div>
-   
+   <script>
+       function confSubmit(form) {
+        jQuery('#alldelete').modal('show', {backdrop: 'static'});
+        $( "#delete_link_all" ).click(function() {
+            form.submit();
+        });
+}
+   </script>
+   <div class="modal fade" id="alldelete">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top:100px;">
+                
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" style="text-align:center;">Are you sure to delete this information ?</h4>
+                </div>
+                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+                    <button class="btn btn-danger" id="delete_link_all" onClick="confSubmit();"><?php echo 'Delete';?></button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><?php echo 'Cancel';?></button>
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+ function checkone() {
+        jQuery('#check_all').modal('show', {backdrop: 'static'});
+}
+   </script>
+   <div class="modal fade" id="check_all">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top:100px;">
+                
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" style="text-align:center;">Please select checkbox.</h4>
+                </div>
+                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+                    <button type="button" class="btn btn-info btn-md" data-dismiss="modal"><?php echo 'Ok';?></button>
+                </div>
+            </div>
+        </div>
+</div>
