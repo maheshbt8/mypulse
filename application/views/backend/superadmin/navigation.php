@@ -189,19 +189,19 @@
             </ul>
         </li> -->
 
-         <li class="">
+         <li class="<?php if ($page_name == 'manage_reports') echo 'opened active';?> "">
             <a href="#">
                 <i class="glyphicon glyphicon-stats"></i>
                 <span><?php echo get_phrase('reports'); ?></span>
             </a>
             <ul>
                  <li class="#">
-                    <a href="#">
+                    <a href="<?php echo base_url(); ?>index.php?superadmin/report/1">
                         <span><?php echo get_phrase('patient_report'); ?></span>
                     </a>
                 </li>
                 <li class="#">
-                    <a href="#">
+                    <a href="<?php echo base_url(); ?>index.php?superadmin/report/2">
                         <span><?php echo get_phrase('appointment_report'); ?></span>
                     </a>
                 </li>
@@ -270,7 +270,11 @@
                         <span><i class="entypo-paper-plane"></i> <?php echo get_phrase('health_insurance_providers'); ?></span>
                     </a>
                 </li>
-
+                <li class="<?php if ($page_name == 'manage_privacy') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>index.php?superadmin/manage_privacy">
+                        <span><i  class="entypo-paper-plane"></i><?php echo get_phrase('privacy & terms'); ?></span>
+                    </a>
+                </li>
             </ul>
         </li>
         <li class="#">

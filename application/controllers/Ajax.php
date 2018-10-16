@@ -40,5 +40,18 @@ class Ajax extends CI_Controller {
         
         echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);
     }
+    /***************Privacy & Policy ,Terms & Conditions****************/
+    function privacy($param1 = '', $param2 = '', $param3 = '') {
+        if($param1 == 1){
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+            $page_data['page_title'] = get_phrase('Privacy & Policy');
+        }elseif($param1 == 2){
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+            $page_data['page_title'] = get_phrase('Terms & Conditions');
+        }
+        $page_data['page_name'] = 'privacy';
+        
+        $this->load->view('backend/index', $page_data);
+    }
 }
 ?>

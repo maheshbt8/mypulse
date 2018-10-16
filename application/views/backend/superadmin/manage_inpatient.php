@@ -82,13 +82,3 @@ $this->session->set_userdata('last_page', current_url());
         });
     });
 </script>
-<script type="text/javascript">
-    function toggle(source) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i] != source)
-            checkboxes[i].checked = source.checked;
-    }
-}
-
-</script>

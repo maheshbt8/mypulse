@@ -16,7 +16,7 @@ $this->session->set_userdata('last_page', current_url());
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <th><?php echo get_phrase('appointment_no');?></th> 
             <th><?php echo get_phrase('user');?></th>
             <th><?php echo get_phrase('doctor');?></th>
@@ -33,13 +33,16 @@ $this->session->set_userdata('last_page', current_url());
 
             if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
             {
+                $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
+                if($count>0){
                 $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
                 $this->db->where($array)->update('appointments',array('status'=>'4'));
                 $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7));
+                }
             }
             ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
+                <td><input type="checkbox" name="check[]" class="check" value="<?php echo $row['appointment_id'] ?>"></td>
                  <td><a href="<?php echo base_url(); ?>index.php?superadmin/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
                 <td>
                    <!-- <a href="<?php echo base_url();?>index.php?superadmin/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
@@ -114,26 +117,33 @@ $this->session->set_userdata('last_page', current_url());
     });
 </script>
 <script type="text/javascript">
-     $(document).ready(function(){
-
+    $(document).ready(function(){
+        $("#delete1").show();
         $("#delete").hide();
-         $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                $("#delete").show();
-                $("#delete1").hide();
+        $("#all_check").click(function () {
+            $('.check').attr('checked', this.checked);
+            if($(".check:checked").length == 0){
+                $("#delete1").show();
+                $("#delete").hide();
+            }else{
+            $("#delete1").hide();
+            $("#delete").show();
             }
-            else if($(this).prop("checked") == false){
-               $("#delete").hide();
-               $("#delete1").show();
-            }
+            
         });
-    });
-    function toggle(source) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i] != source)
-            checkboxes[i].checked = source.checked;
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            $("#delete1").hide();
+            $("#delete").show();
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        $("#delete1").show();
+        $("#delete").hide();
     }
-}
-
+    });
+    });
 </script>

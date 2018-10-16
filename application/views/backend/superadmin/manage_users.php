@@ -16,7 +16,7 @@ $this->session->set_userdata('last_page', current_url());
 <table class="table table-bordered table-striped datatable" id="table-2">    
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <th><?php echo get_phrase('user_id');?></th>
             <th><?php echo get_phrase('user_name');?></th>
             <th><?php echo get_phrase('email');?></th>
@@ -133,26 +133,33 @@ $this->session->set_userdata('last_page', current_url());
     });
 </script>
 <script type="text/javascript">
-         $(document).ready(function(){
-
+    $(document).ready(function(){
+        $("#delete1").show();
         $("#delete").hide();
-         $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                $("#delete").show();
-                $("#delete1").hide();
+        $("#all_check").click(function () {
+            $('.check').attr('checked', this.checked);
+            if($(".check:checked").length == 0){
+                $("#delete1").show();
+                $("#delete").hide();
+            }else{
+            $("#delete1").hide();
+            $("#delete").show();
             }
-            else if($(this).prop("checked") == false){
-               $("#delete").hide();
-               $("#delete1").show();
-            }
+            
         });
-    });
-    function toggle(source) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i] != source)
-            checkboxes[i].checked = source.checked;
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            $("#delete1").hide();
+            $("#delete").show();
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        $("#delete1").show();
+        $("#delete").hide();
     }
-}
-
+    });
+    });
 </script>

@@ -163,12 +163,13 @@
             
             <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-12">
+                    <!-- <div class="col-sm-12">
                     <div class="form-group" id="doc_ava">
                        
                     </div>
-                    </div>
-                      <!--   <div class="col-sm-6">
+                </div> -->
+                    
+                                          <!--   <div class="col-sm-6">
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
 
@@ -186,16 +187,6 @@
                         </div>
                     </div>
                 </div> -->
-                  <div class="col-sm-6">
-                              <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
-
-                        <div class="col-sm-8" id="user_data">
-                            <input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('user'); ?>" onchange="return get_user_data(this.value)">
-                            
-                        </div>
-                    </div>
-                </div>
                 <div class="col-sm-6">
                                  <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctors'); ?></label>
@@ -220,7 +211,18 @@
                         </div>
                     </div>
                 </div>
-                
+                  <div class="col-sm-6">
+                              <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
+
+                        <div class="col-sm-8" id="user_data">
+                            <input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('user'); ?>" onchange="return get_user_data(this.value)">
+                            
+                        </div>
+                    </div>
+                </div>
+                    <span id="doc_ava">   
+                    </span>
                 <div class="col-sm-6">
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>

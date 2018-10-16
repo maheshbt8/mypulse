@@ -71,7 +71,7 @@
                              <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('description');?></label>
                                 <div class="col-sm-5">
-                                    <input type="text" class="form-control" name="description" data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                    <textarea type="text" class="form-control" name="description" data-validate="required" data-message-required="<?php echo 'Value_required';?>"></textarea>
                                 </div>
                             </div>
                             

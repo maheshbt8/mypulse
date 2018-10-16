@@ -6,7 +6,7 @@ body {
     top: 0px !important; 
     }
     .language-menu{
-    border: 1px solid;
+    /*border: 1px solid;*/
     height:0px;
     top: 5px;
     padding-bottom: 40px;
@@ -72,13 +72,13 @@ $website_language_google = $this->session->userdata('website_language_google') !
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <span style="font-weight:200; margin:0px;font-size: 30px;"><?php if($this->session->userdata('login_type') == 'superadmin'){echo $system_name;}else{echo $this->db->where('hospital_id',$this->db->where('admin_id',$this->session->userdata('login_user_id'))->get('hospitaladmins')->row()->hospital_id)->get('hospitals')->row()->name;} ?></span>
+      <span style="font-weight:200; margin:0px;font-size: 30px;"><?php if($this->session->userdata('login_type') == 'superadmin'){echo '';}else{echo $this->db->where('hospital_id',$this->db->where('admin_id',$this->session->userdata('login_user_id'))->get('hospitaladmins')->row()->hospital_id)->get('hospitals')->row()->name;} ?></span>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav navbar-right"  style="font-size: 15px;">
        <li class="dropdown language-menu select" id="lang_select">
         <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="background-color: none !important;bottom:7px;">
-      <span id="selected" class="notranslate"><?php if($this->session->userdata('website_language_google')!=''){echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);}else{echo "English";}?></span><span class="caret"></span></a>
+      <span id="selected" class="notranslate"><?php if($this->session->userdata('website_language_google')!=''){echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);}else{echo "English";}?></span>&nbsp;<span class="caret"></span></a>
          <ul class="dropdown-menu language" id="lang_scroll_div">
          <?php 
          $lang_array=$this->db->get('language')->result();

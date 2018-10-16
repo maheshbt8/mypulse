@@ -266,8 +266,8 @@ foreach ($single_hospital_info as $row) {
                         <div class="col-sm-8">
                             <select name="license_status" class="form-control" id="license_status" value="">
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
-                                <option value="1" <?php if($row['status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
-                                <option value="2" <?php if($row['status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
+                                <option value="1" <?php if($row['license_status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
+                                <option value="2" <?php if($row['license_status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
                             </select>
                         </div>
                     </div>

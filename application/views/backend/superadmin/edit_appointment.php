@@ -34,6 +34,25 @@ foreach ($single_appointment_info as $row) {
                 
                     <div class="row">
                         <div class="col-sm-6">
+                        <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctors'); ?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php $doctor=$this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row_array(); echo $doctor['unique_id'].' / '.$doctor['name']; ?>" onchange="return get_doctor_ava(this.value)">
+    <datalist id="doctors">
+        
+        <?php 
+        $users=$this->db->get('doctors')->result_array();
+        foreach ($users as $row1) {
+         ?>
+<option value="<?php echo $row1['unique_id'];?>" <?php if($row1['doctor_id'] == $row['doctor_id']){echo 'selected';}?>><?php echo 'Dr. '.ucfirst($row1['name']).'('.$this->db->where('hospital_id',$row1['hospital_id'])->get('hospitals')->row()->name.' , '.$row1['specializations'].')';?></option>
+<?php }?>
+
+  </datalist>
+                        </div>
+                    </div>
+                </div>
+                        <div class="col-sm-6">
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
 
@@ -51,25 +70,7 @@ foreach ($single_appointment_info as $row) {
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                                 <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctors'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php $doctor=$this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row_array(); echo $doctor['unique_id']; ?>" onchange="return get_doctor_ava(this.value)">
-    <datalist id="doctors">
-        
-        <?php 
-        $users=$this->db->get('doctors')->result_array();
-        foreach ($users as $row1) {
-         ?>
-<option value="<?php echo $row1['unique_id'];?>" <?php if($row1['doctor_id'] == $row['doctor_id']){echo 'selected';}?>><?php echo 'Dr. '.ucfirst($row1['name']).'('.$this->db->where('hospital_id',$row1['hospital_id'])->get('hospitals')->row()->name.' , '.$row1['specializations'].')';?></option>
-<?php }?>
-
-  </datalist>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor_availability'); ?></label>

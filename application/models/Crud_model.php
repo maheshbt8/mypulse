@@ -27,7 +27,7 @@ function email_verification($task="",$id="")
     {
     $is_email=$this->db->get_where($task, array('unique_id' => $id))->row();
     $created_at=$is_email->created_at;
-    $past_time = strtotime($modified_at);
+    $past_time = strtotime($is_email->modified_at);
     $current_time = time();
     $difference = $current_time - $past_time;
     $difference_minute =  $difference/60;
@@ -1948,7 +1948,7 @@ function select_user_information($patient_id="")
             $this->db->delete('receptionist');
         }
     }
-     function save_tests_allotment_info()
+/*     function save_tests_allotment_info()
     {
         
         $data['tests'] 		    = $this->input->post('tests');
@@ -2021,9 +2021,26 @@ function select_user_information($patient_id="")
         
         $this->db->where('blood_group_id',$blood_group_id);
         $this->db->update('blood_bank',$data);
+    }*/
+    function getReport(){
+        $start_date = isset($_GET['sd']) ? date("Y-m-d",strtotime($_GET['sd'])) : date('Y-m-d',(strtotime ( '-29 day' , time() ) ));
+        $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
+        if($start_date != "" && $end_date != ""){
+            $qry=$this->db->get('appointments');  
+            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `appointments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
+        }else if($start_date != ""){
+            $qry=$this->db->get('appointments');
+            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
+        }else if($end_date != ""){
+            $qry=$this->db->get('appointments');
+            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
+        }else{
+            $qry=$this->db->get('appointments');
+            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
+        }
+        return $this->db->query($qry)->result_array();
     }
-    
-    function save_report_info()
+    /*function save_report_info()
     {
         $data['type'] 		= $this->input->post('type');
         $data['description']    = $this->input->post('description');
@@ -2063,7 +2080,7 @@ function select_user_information($patient_id="")
     {
         $this->db->where('report_id',$report_id);
         $this->db->delete('report');
-    }
+    }*/
     
     function save_bed_info()
     {
@@ -2223,11 +2240,12 @@ function select_user_information($patient_id="")
     function save_appointment_info()
     {
         $time=explode('-',$this->input->post('available_slot'));
-        $department_id=$this->db->where('doctor_id',$this->input->post('doctor_id'))->get('doctors')->row()->department_id;
+        $department=$this->db->where('doctor_id',$this->input->post('doctor_id'))->get('doctors')->row();
         $data['user_id']       = $this->input->post('user_id');
         $data['doctor_id']       = $this->input->post('doctor_id');
         $data['appointment_date']= $this->input->post('appointment_date');
-        $data['department_id']       = $department_id;
+        $data['hospital_id']       = $department->hospital_id;
+        $data['department_id']       = $department->department_id;
         $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
         $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
         $data['reason']       = $this->input->post('reason');

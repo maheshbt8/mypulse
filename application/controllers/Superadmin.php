@@ -152,6 +152,46 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $page_data['edit_data'] = $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
         $this->load->view('backend/index', $page_data);
     }
+    /***************Privacy & Policy ,Terms & Conditions****************/
+    function edit_privacy($param1 = '', $param2 = '', $param3 = '') {
+        if($param1 == 1){
+            if($this->input->post()){
+        $data_list['description'] = $this->input->post('name');
+        $this->db->where('type', 'privacy');
+        $this->db->update('settings', $data_list);
+        $this->session->set_flashdata('message', get_phrase('data_updated_successfuly'));
+        redirect($this->session->userdata('last_page'));
+            }
+    $page_data['id']=$param1;
+    $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+    $page_data['page_title'] = get_phrase('Edit Privacy & Policy');
+        }elseif($param1 == 2){
+            if($this->input->post()){
+        $data_list['description'] = $this->input->post('name');
+        $this->db->where('type', 'terms');
+        $this->db->update('settings', $data_list);
+        $this->session->set_flashdata('message', get_phrase('data_updated_successfuly'));
+        redirect($this->session->userdata('last_page'));
+            }
+            $page_data['id']=$param1;
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+    $page_data['page_title'] = get_phrase('Edit Terms & Conditions');
+        }
+        $page_data['page_name'] = 'edit_privacy';
+        
+        $this->load->view('backend/index', $page_data);
+    }
+    function manage_privacy($param1 = '', $param2 = '', $param3 = '') {
+        if($param1 == 1){
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+            
+        }elseif($param1 == 2){
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+        }
+        $page_data['page_name'] = 'manage_privacy';
+        $page_data['page_title'] = get_phrase('Privacy & Policy , Terms & Conditions');
+        $this->load->view('backend/index', $page_data);
+    }
     /******************* Languages *********************/
     function language($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == "create") {
@@ -482,8 +522,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $doctor_id=$doctor_data['doctor_id'];
         $doctor_unique_id=$doctor_data['unique_id'];
         $doctor_message=$this->db->where('doctor_id',$doctor_id)->get('availability')->row()->message;
-        echo '<b><label for="field-ta" class="col-sm-2 control-label">'.get_phrase('doctor_availability').'</label></b><div class="col-sm-10"><label class="control-label">'.$doctor_message.'</label></div>';
-        /*echo '<input type="text" value="'.$doctor_message.'" class="form-control" name="doctor_message" id="doctor_message" disabled="">';*/
+        echo '<div class="form-group"><b><label for="field-ta" class="col-sm-2 control-label">'.get_phrase('doctor_availability').'</label></b><div class="col-sm-10"><label class="control-label">'.$doctor_message.'</label></div></div>';
         echo '<input type="hidden" value="'.$doctor_id.'" class="form-control" name="doctor_id" id="doctor_id">';
         echo '<input type="hidden" value="'.$doctor_unique_id.'" class="form-control" name="doctor_unique_id" id="doctor_unique_id">';
         
@@ -1256,7 +1295,53 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $data['page_title'] = get_phrase('manage_appointments');
         $this->load->view('backend/index', $data);
     }
-    
+    function report($report_id = "") {
+        $data['report_id']=$report_id;
+        $data['hospital_info'] = $this->crud_model->select_hospital_info();
+        $data['page_name'] = 'manage_reports';
+        if($report_id==1){
+        $this->crud_model->getReport();
+        $data['page_title'] = get_phrase('patient_reports');
+        }elseif($report_id==2){
+        $this->crud_model->getReport();
+        $data['page_title'] = get_phrase('appointment_reports');
+        }
+        $this->load->view('backend/index', $data);
+    }
+    function report_chart($report_id = "",$hospital_id = "",$sd = "",$ed = "") {
+        if($report_id==1){
+        $data['title']='Patients';
+        $this->crud_model->getReport();
+        $data['page_title'] = get_phrase('Patient_trend');
+        }elseif($report_id==2){
+        $data['title']='Appointments';
+        $this->crud_model->getReport();
+        $data['page_title'] = get_phrase('appointment_trend');
+        }
+        $data['sd'] = $sd;
+        $data['ed'] = $ed;
+        $data['report_id'] = $report_id;
+        $data['hospital_id'] = array($hospital_id);
+        $data['page_name'] = 'reports';
+        $this->load->view('backend/index', $data);
+    }
+    function report_chart1($report_id = "",$hospital_id = "") {
+        if($report_id==1){
+        $data['title']='Patients';
+        $this->crud_model->getReport();
+        $data['page_title'] = get_phrase('Patient_trend');
+        }elseif($report_id==2){
+        $data['title']='Appointments';
+        $this->crud_model->getReport();
+        $data['page_title'] = get_phrase('appointment_trend');
+        }
+        $data['sd'] = $this->input->post('sd');
+        $data['ed'] = $this->input->post('ed');
+        $data['report_id'] = $report_id;
+        $data['hospital_id'] = $this->input->post('check');
+        $data['page_name'] = 'reports';
+        $this->load->view('backend/index', $data);
+    }
     function add_stores()
     {
         if($this->input->post()){

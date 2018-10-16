@@ -22,7 +22,7 @@ $edit_data		=	$this->db->get_where('license' , array('license_id' => $param2) )-
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><?php echo get_phrase('description');?></label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="description" value="<?php echo $row['description'];?>" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" required/>
+                        <textarea type="text" class="form-control" name="description" value="" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" required><?php echo $row['description'];?></textarea>
                     </div>
                 </div>
             </div>

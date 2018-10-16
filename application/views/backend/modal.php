@@ -108,8 +108,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" style="text-align:center;">Please select checkbox.</h4>
                 </div>
-                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
-                    <button type="button" class="btn btn-info btn-md" data-dismiss="modal"><?php echo 'Ok';?></button>
+                <div class="modal-footer" style="margin:-9px; border-top:0px; text-align:center;">
+                    <button type="button" class="btn btn-info btn-lg" data-dismiss="modal"><?php echo 'Ok';?></button>
                 </div>
             </div>
         </div>
