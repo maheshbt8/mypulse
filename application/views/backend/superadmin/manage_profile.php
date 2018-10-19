@@ -32,7 +32,7 @@
               
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_hospital/" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/manage_profile/update_profile_info" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            
@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label"><?php echo get_phrase('email');?></label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="email" value="<?php echo $row['email'];?>"/>
+                                <input type="text" class="form-control" name="email" value="<?php echo $row['email'];?>" readonly=""/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -68,7 +68,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label"><?php echo get_phrase('mobile_number');?></label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="phone" value="<?php echo $row['phone'];?>"/>
+                                <input type="number" class="form-control" name="phone" value="<?php echo $row['phone'];?>" minlength="10" maxlength="10" readonly=""/>
                             </div>
                         </div>
                 </div>
@@ -125,7 +125,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>">
+                            <input type="text" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -143,26 +143,7 @@
                             <input type="text" name="address" class="form-control" id="address"value="<?=$row['address']?>">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
-
-                        <div class="col-sm-5">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url('uploads/hospitaladmin_image/').$row['admin_id'].'.jpg'?>" alt="...">
-                                </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-                                <div>
-                                    <span class="btn btn-white btn-file">
-                                        <span class="fileinput-new">Select image</span>
-                                        <span class="fileinput-exists">Change</span>
-                                        <input type="file" name="userfile" accept="image/*" id="userfile">
-                                    </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                    
                 </div>
                 <div class="col-sm-6">
@@ -245,39 +226,51 @@
                 
                     </div>
    </form>
-        <!-- <div class="panel panel-primary" >
-            <div class="panel-heading">
-                <div class="panel-title">
-                    <?php echo get_phrase('edit_profile');?>
-                </div>
-            </div>
-            <div class="panel-body">
-                
-                    <?php echo form_open(base_url().'index.php?superadmin/manage_profile/update_profile_info' , array('class' => 'form-horizontal form-groups validate','target'=>'_top'));?>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label"><?php echo get_phrase('name');?></label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label"><?php echo get_phrase('email');?></label>
-                            <div class="col-sm-5">
-                                <input type="text" class="form-control" name="email" value="<?php echo $row['email'];?>"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="col-sm-offset-3 col-sm-5">
-                              <button type="submit" class="btn btn-info"><?php echo get_phrase('update_profile');?></button>
-                          </div>
-                            </div>
-                    </form>
-                   
-            </div>
-        </div> -->
     </div>
 </div>
 	
  <?php
                 endforeach;
                 ?>
+
+
+<script type="text/javascript">
+
+    
+    function get_state(country_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
+            success: function(response)
+            {
+                jQuery('#select_state').html(response);
+            } 
+        });
+
+    }
+    
+    function get_city(state_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + state_id ,
+            success: function(response)
+            {
+                jQuery('#select_city').html(response);
+            }
+        });   
+
+    }
+    
+     function get_district(city_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + city_id ,
+            success: function(response)
+            {
+                jQuery('#select_district').html(response);
+            }
+        });
+
+    }
+
+</script>

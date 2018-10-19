@@ -1930,9 +1930,13 @@ function select_user_information($patient_id="")
         $data['experience']     = $this->input->post('experience');
         $data['doctor_id']  = implode(',',$this->input->post('doctor'));
         $data['modified_at']=date('Y-m-d H:i:s');
+        $data['country']    = $this->input->post('country');
+        $data['state']    = $this->input->post('state');
+        $data['district']    = $this->input->post('district');  
+        $data['city']    = $this->input->post('city');
         $this->db->where('receptionist_id',$receptionist_id);
         $this->db->update('receptionist',$data);
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
     }
     
     function delete_receptionist_info($receptionist_id)
@@ -1948,6 +1952,7 @@ function select_user_information($patient_id="")
             $this->db->delete('receptionist');
         }
     }
+
 /*     function save_tests_allotment_info()
     {
         
@@ -2515,8 +2520,26 @@ function select_user_information($patient_id="")
         $this->db->where('diagnosis_report_id',$diagnosis_report_id);
         $this->db->delete('diagnosis_report');
     }
-    
-    function save_notice_info()
+    function select_message()
+    {
+        return $this->db->get('messages')->result_array();
+    }
+        function save_new_message()
+    {
+        if($this->input->post('user_to[0]')==0){
+            $data['user_to']='1,2,3,4,5,6,7';
+        }else{
+            $data['user_to']=explode(',', $this->input->post('user_to'));
+        }
+        $data['title']  = $this->input->post('title');
+        $data['message'] = $this->input->post('message');
+        $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+        /*$data['doctor_id']  = implode(',',$this->input->post('doctor'));*/
+        $data['created_at']=date('Y-m-d H:i:s');
+        $insert=$this->db->insert('messages',$data);
+        
+    }
+    /*function save_notice_info()
     {
         $data['title']              = $this->input->post('title');
         $data['description']        = $this->input->post('description');
@@ -2559,8 +2582,8 @@ function select_user_information($patient_id="")
         $this->db->where('notice_id',$notice_id);
         $this->db->delete('notice');
     }
-    
-    ////////private message//////
+    */
+   /* ////////private message//////
     function send_new_private_message() {
         $message    = $this->input->post('message');
         $timestamp  = strtotime(date("Y-m-d H:i:s"));
@@ -2608,7 +2631,6 @@ function select_user_information($patient_id="")
     }
 
     function mark_thread_messages_read($message_thread_code) {
-        // mark read only the oponnent messages of this thread, not currently logged in user's sent messages
         $current_user = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
         $this->db->where('sender !=', $current_user);
         $this->db->where('message_thread_code', $message_thread_code);
@@ -2624,5 +2646,97 @@ function select_user_information($patient_id="")
                 $unread_message_counter++;
         }
         return $unread_message_counter;
+    }*/
+    /*function send_new_private_message() {
+        $message    = $this->input->post('message');
+        $timestamp  = strtotime(date("Y-m-d H:i:s"));
+
+        $reciever   = $this->input->post('reciever');
+        $sender     = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+
+        //check if the thread between those 2 users exists, if not create new thread
+        $num1 = $this->db->get_where('message_thread', array('sender' => $sender, 'reciever' => $reciever))->num_rows();
+        $num2 = $this->db->get_where('message_thread', array('sender' => $reciever, 'reciever' => $sender))->num_rows();
+
+        //check if file is attached or not
+        if ($_FILES['attached_file_on_messaging']['name'] != "") {
+          $data_message['attached_file_name'] = $_FILES['attached_file_on_messaging']['name'];
+        }
+
+        if ($num1 == 0 && $num2 == 0) {
+            $message_thread_code= substr(md5(rand(100000000, 20000000000)), 0, 15);
+            $data_message_thread['message_thread_code'] = $message_thread_code;
+            $data_message_thread['sender']              = $sender;
+            $data_message_thread['reciever']            = $reciever;
+            $this->db->insert('message_thread', $data_message_thread);
+        }
+        if ($num1 > 0)
+            $message_thread_code = $this->db->get_where('message_thread', array('sender' => $sender, 'reciever' => $reciever))->row()->message_thread_code;
+        if ($num2 > 0)
+            $message_thread_code = $this->db->get_where('message_thread', array('sender' => $reciever, 'reciever' => $sender))->row()->message_thread_code;
+
+
+        $data_message['message_thread_code']    = $message_thread_code;
+        $data_message['message']                = $message;
+        $data_message['sender']                 = $sender;
+        $data_message['timestamp']              = $timestamp;
+        $this->db->insert('message', $data_message);
+
+        // notify email to email reciever
+        //$this->email_model->notify_email('new_message_notification', $this->db->insert_id());
+
+        return $message_thread_code;
     }
+
+    function send_reply_message($message_thread_code) {
+        $message    = $this->input->post('message');
+        $timestamp  = strtotime(date("Y-m-d H:i:s"));
+        $sender     = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
+        //check if file is attached or not
+        if ($_FILES['attached_file_on_messaging']['name'] != "") {
+          $data_message['attached_file_name'] = $_FILES['attached_file_on_messaging']['name'];
+        }
+        $data_message['message_thread_code']    = $message_thread_code;
+        $data_message['message']                = $message;
+        $data_message['sender']                 = $sender;
+        $data_message['timestamp']              = $timestamp;
+        $this->db->insert('message', $data_message);
+
+        // notify email to email reciever
+        //$this->email_model->notify_email('new_message_notification', $this->db->insert_id());
+    }
+
+    function send_reply_group_message($message_thread_code) {
+        $message    = $this->input->post('message');
+        $timestamp  = strtotime(date("Y-m-d H:i:s"));
+        $sender     = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+        //check if file is attached or not
+        if ($_FILES['attached_file_on_messaging']['name'] != "") {
+          $data_message['attached_file_name'] = $_FILES['attached_file_on_messaging']['name'];
+        }
+        $data_message['group_message_thread_code']    = $message_thread_code;
+        $data_message['message']                = $message;
+        $data_message['sender']                 = $sender;
+        $data_message['timestamp']              = $timestamp;
+        $this->db->insert('group_message', $data_message);
+    }
+
+    function mark_thread_messages_read($message_thread_code) {
+        // mark read only the oponnent messages of this thread, not currently logged in user's sent messages
+        $current_user = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+        $this->db->where('sender !=', $current_user);
+        $this->db->where('message_thread_code', $message_thread_code);
+        $this->db->update('message', array('read_status' => 1));
+    }
+
+    function count_unread_message_of_thread($message_thread_code) {
+        $unread_message_counter = 0;
+        $current_user = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+        $messages = $this->db->get_where('message', array('message_thread_code' => $message_thread_code))->result_array();
+        foreach ($messages as $row) {
+            if ($row['sender'] != $current_user && $row['read_status'] == '0')
+                $unread_message_counter++;
+        }
+        return $unread_message_counter;
+    }*/
 }

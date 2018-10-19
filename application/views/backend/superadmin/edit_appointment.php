@@ -35,7 +35,7 @@ foreach ($single_appointment_info as $row) {
                     <div class="row">
                         <div class="col-sm-6">
                         <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctors'); ?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
 
                         <div class="col-sm-8">
                             <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php $doctor=$this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row_array(); echo $doctor['unique_id'].' / '.$doctor['name']; ?>" onchange="return get_doctor_ava(this.value)">
@@ -120,58 +120,9 @@ foreach ($single_appointment_info as $row) {
                     </div>
                 </div>
                 <div class="col-sm-6">
-<!-- <div class="container">
-  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">View Appointment History</button> -->
-<a href="#" class="hiper"onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/appointment_history/<?php echo $row['appointment_id'];?>');">
-                                           View Appointment History
-                                            </a>
-<!-- 
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-     
-      <div class="modal-content" style="background-color:#fbfafa; width:160%">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Appointment Details</h4>
-        </div>
-        <div class="modal-body">
- 
-    <div id="invoice_print">
-        <table width="100%" border="1">
-            <tr>
-    <td align="center"><h5><?php echo ucfirst('appointment_id'); ?> </h5></td>
-    <td align="center"><h5><?php echo ucfirst('creation_date'); ?> </h5></td>
-    <td align="center"><h5><?php echo ucfirst('creation_time'); ?> </h5></td>
-    <td align="center"><h5><?php echo ucfirst('Role'); ?> </h5></td>
-    <td align="center"><h5><?php echo ucfirst('Name'); ?> </h5></td>
-    <td align="center"><h5><?php echo ucfirst('action'); ?> </h5></td>
-    <td align="center"><h5><?php echo ucfirst('message'); ?> </h5></td>
-            </tr>
-            <tr>
-    <td align="center"><h5><?php echo $row['appointment_number'];?></h5></td>
-    <td align="center"><h5><?php echo date('d M,Y', strtotime($row['modified_at']));?></h5></td>
-    <td align="center"><h5><?php echo date('h:m A', strtotime($row['modified_at']));?></h5></td>
-    <td align="center"><h5><?php echo $row['created_type'];?></h5></td>
-    <td align="center"><h5><?php echo $row['created_by'];?></h5></td>
-    <td align="center"><h5><?php echo 'Created';?></h5></td>
-    <td align="center"><h5><?php echo 'Appointment Created for '.date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));?></h5></td>
-            </tr>
-          
-        </table>
-        
-    </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div> -->
-  
-<!-- </div> -->
-                  <!-- Trigger the modal with a button -->
+            <div class="col-sm-offset-3 col-sm-8" id="doc_ava">
+<a href="#" class="hiper"onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/appointment_history/<?php echo $row['appointment_id'];?>');">View Appointment History</a>
+            </div>
             </div>
             </div>
                     </div>

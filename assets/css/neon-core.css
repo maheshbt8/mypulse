@@ -2778,7 +2778,7 @@ input[type="button"].btn-block {
 }
 .page-container .sidebar-menu .logo-env {
   width: 100%;
-  padding: 21px;
+  padding: 12px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -3008,7 +3008,7 @@ input[type="button"].btn-block {
 }
 .page-container .sidebar-menu .sidebar-user-info {
   position: relative;
-  padding: 25px 35px;
+  padding: 15px 15px;
   border-top: 1px solid #454a54;
   -moz-transition: padding 300ms ease-in-out;
   -o-transition: padding 300ms ease-in-out;

@@ -47,7 +47,7 @@ $this->session->set_userdata('last_page', current_url());
                         echo $name;?>
                     
                 </td>
-                <td><a href="#">View Doctors</a></td>
+                <td><a href="<?php echo base_url();?>index.php?superadmin/view_doctors/receptionist/<?php echo $row['receptionist_id']?>" class="hiper">View Doctors</a></td>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
                  }
                  else if(

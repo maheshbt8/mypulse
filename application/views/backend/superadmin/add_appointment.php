@@ -189,7 +189,7 @@
                 </div> -->
                 <div class="col-sm-6">
                                  <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctors'); ?></label>
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
 
                         <div class="col-sm-8">
                             <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation " data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('doctor'); ?>" onchange="return get_doctor_ava(this.value)">

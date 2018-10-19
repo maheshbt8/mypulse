@@ -139,7 +139,7 @@ $website_language_google = $this->session->userdata('website_language_google') !
           <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
           </div>
           <hr/>
-          <a href="#" class="hiper"><center>All Messages</center></a>
+          <a href="<?php echo base_url()?>index.php?<?= $account_type?>/message" class="hiper"><center>All Messages</center></a>
         </ul>
        
       </li>
@@ -153,7 +153,7 @@ $website_language_google = $this->session->userdata('website_language_google') !
               <span>Edit_profile</span>
             </a></li>
             <li class="divider"></li>
-          <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_profile">
+          <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_password">
                           <i class="entypo-key"></i>
               <span>Change_password</span>
             </a></li>

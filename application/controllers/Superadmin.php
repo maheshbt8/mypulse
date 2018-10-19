@@ -51,6 +51,119 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $this->load->view('backend/index', $page_data);
     }
 
+    /********************MESSAGE********************/
+        /* private messaging */
+    function new_message($param1 = '', $param2 = '', $param3 = '') {
+       
+        if($this->input->post()){
+           $this->crud_model->save_new_message();
+            $this->session->set_flashdata('message', get_phrase('message_sent_successfuly'));
+            redirect(base_url() . 'index.php?superadmin/message/', 'refresh');
+        }
+        $page_data['page_name'] = 'new_message';
+        $page_data['page_title'] = get_phrase('messages');
+        $this->load->view('backend/index', $page_data);
+    }
+    function message($param1 = '', $param2 = '', $param3 = '') {
+       
+        $page_data['message_data']=$this->crud_model->select_message();
+        $page_data['page_name'] = 'manage_message';
+        $page_data['page_title'] = get_phrase('messages');
+        $this->load->view('backend/index', $page_data);
+    }
+
+   /* function message($param1 = 'message_home', $param2 = '', $param3 = '') {
+        $max_size = 2097152;
+        if ($param1 == 'send_new') {
+            if (!file_exists('uploads/private_messaging_attached_file/')) {
+              $oldmask = umask(0);  // helpful when used in linux server
+              mkdir ('uploads/private_messaging_attached_file/', 0777);
+            }
+            if ($_FILES['attached_file_on_messaging']['name'] != "") {
+              if($_FILES['attached_file_on_messaging']['size'] > $max_size){
+                $this->session->set_flashdata('error_message' , 'File_size_can_not_be_larger_that_2_Megabyte');
+                redirect(base_url() . 'index.php?superadmin/message/message_new/', 'refresh');
+              }
+              else{
+                $file_path = 'uploads/private_messaging_attached_file/'.$_FILES['attached_file_on_messaging']['name'];
+                move_uploaded_file($_FILES['attached_file_on_messaging']['tmp_name'], $file_path);
+              }
+            }
+
+            $message_thread_code = $this->crud_model->send_new_private_message();
+            $this->session->set_flashdata('flash_message', 'Message_sent!');
+            redirect(base_url() . 'index.php?superadmin/message/message_read/' . $message_thread_code, 'refresh');
+        }
+
+        if ($param1 == 'send_reply') {
+
+            if (!file_exists('uploads/private_messaging_attached_file/')) {
+              $oldmask = umask(0);  // helpful when used in linux server
+              mkdir ('uploads/private_messaging_attached_file/', 0777);
+            }
+            if ($_FILES['attached_file_on_messaging']['name'] != "") {
+              if($_FILES['attached_file_on_messaging']['size'] > $max_size){
+                $this->session->set_flashdata('error_message' , 'File_size_can_not_be_larger_that_2_Megabyte');
+                redirect(base_url() . 'index.php?superadmin/message/message_read/' . $param2, 'refresh');
+              }
+              else{
+                $file_path = 'uploads/private_messaging_attached_file/'.$_FILES['attached_file_on_messaging']['name'];
+                move_uploaded_file($_FILES['attached_file_on_messaging']['tmp_name'], $file_path);
+              }
+            }
+
+            $this->crud_model->send_reply_message($param2);  //$param2 = message_thread_code
+            $this->session->set_flashdata('flash_message', 'Message_sent!');
+            redirect(base_url() . 'index.php?superadmin/message/message_read/' . $param2, 'refresh');
+        }
+
+        if ($param1 == 'message_read') {
+            $page_data['current_message_thread_code'] = $param2;  // $param2 = message_thread_code
+            $this->crud_model->mark_thread_messages_read($param2);
+        }
+
+        $page_data['message_inner_page_name']   = $param1;
+        $page_data['page_name']                 = 'message';
+        $page_data['page_title']                = 'Private_messaging';
+        $this->load->view('backend/index', $page_data);
+    }
+
+    function group_message($param1 = "group_message_home", $param2 = ""){
+      $max_size = 2097152;
+      if ($param1 == "create_group") {
+        $this->crud_model->create_group();
+      }
+      elseif ($param1 == "edit_group") {
+        $this->crud_model->update_group($param2);
+      }
+      elseif ($param1 == 'group_message_read') {
+        $page_data['current_message_thread_code'] = $param2;
+      }
+      else if($param1 == 'send_reply'){
+        if (!file_exists('uploads/group_messaging_attached_file/')) {
+          $oldmask = umask(0);  // helpful when used in linux server
+          mkdir ('uploads/group_messaging_attached_file/', 0777);
+        }
+        if ($_FILES['attached_file_on_messaging']['name'] != "") {
+          if($_FILES['attached_file_on_messaging']['size'] > $max_size){
+            $this->session->set_flashdata('error_message' , 'File_size_can_not_be_larger_that_2_Megabyte');
+            redirect(base_url() . 'index.php/superadmin/group_message/group_message_read/' . $param2, 'refresh');
+          }
+          else{
+            $file_path = 'uploads/group_messaging_attached_file/'.$_FILES['attached_file_on_messaging']['name'];
+            move_uploaded_file($_FILES['attached_file_on_messaging']['tmp_name'], $file_path);
+          }
+        }
+
+        $this->crud_model->send_reply_group_message($param2);  //$param2 = message_thread_code
+        $this->session->set_flashdata('flash_message', 'Message_sent!');
+        redirect(base_url() . 'index.php?superadmin/group_message/group_message_read/' . $param2, 'refresh');
+      }
+      $page_data['message_inner_page_name']   = $param1;
+      $page_data['page_name']                 = 'group_message';
+      $page_data['page_title']                = 'Group_messaging';
+      $this->load->view('backend/index', $page_data);
+    }*/
     /*     * ***SITE/SYSTEM SETTINGS******** */
 
     function system_settings($param1 = '', $param2 = '', $param3 = '') {
@@ -95,10 +208,19 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         if ($param1 == 'update_profile_info') {
             $data['name'] = $this->input->post('name');
             $data['email'] = $this->input->post('email');
+            $data['description'] = $this->input->post('description');
+            $data['phone'] = $this->input->post('phone');
+            $data['dob'] = $this->input->post('dob');
+            $data['gender'] = $this->input->post('gender');
+            $data['country'] = $this->input->post('country');
+            $data['state'] = $this->input->post('state');
+            $data['district'] = $this->input->post('district');
+            $data['city'] = $this->input->post('city');
+            $data['address'] = $this->input->post('address');
 
             $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
             $this->db->update('superadmin', $data);
-
+            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/superadmin_image/'.$this->session->userdata('login_user_id').'.jpg');
             $this->session->set_flashdata('message', get_phrase('profile_info_updated_successfuly'));
             redirect(base_url() . 'index.php?superadmin/manage_profile');
         }
@@ -141,10 +263,10 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
                 $this->db->update('superadmin', array('password' => $new_password));
 
                 $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/manage_profile');
+                redirect(base_url() . 'index.php?superadmin/manage_password');
             } else {
                 $this->session->set_flashdata('message', get_phrase('password_update_failed'));
-                redirect(base_url() . 'index.php?superadmin/manage_profile');
+                redirect(base_url() . 'index.php?superadmin/manage_password');
             }
         }
         $page_data['page_name'] = 'manage_password';
@@ -968,7 +1090,27 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $data['page_title'] = get_phrase('ward');
         $this->load->view('backend/index', $data);
     }
-    
+    function view_doctors($task = "", $id = "") {
+       
+        if ($task == "nurse") {
+            $doctor=$this->db->where('nurse_id',$id)->get('nurse')->row();
+        }
+        if ($task == "receptionist") {
+            $doctor=$this->db->where('receptionist_id',$id)->get('receptionist')->row();
+            /*$doctor_id=explode(',', $doctor);
+            for($i=0;$i<count($doctor_id);$i++){
+            $doctor_data[]=$this->db->where('doctor_id',$doctor_id[$i])->get('doctors')->row();
+            }*/
+        }
+        $doctor_id=explode(',', $doctor->doctor_id);
+        for($i=0;$i<count($doctor_id);$i++){
+        $doctor_data[]=$this->db->where('doctor_id',$doctor_id[$i])->get('doctors')->row_array();
+        }
+        $data['doctor_info'] = $doctor_data;
+        $data['page_name'] = 'manage_doctor';
+        $data['page_title'] = get_phrase('Doctors - '.$doctor->name);
+        $this->load->view('backend/index', $data);
+    }
        function add_doctor()
     {
         if($this->input->post()){
@@ -1056,6 +1198,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         
         
     }
+
     function doctor($task = "", $doctor_id = "") {
        
         if ($task == "delete") {
@@ -1093,10 +1236,10 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     }
     function doctor_new_availability($task = "",$id='')
     {
-     if ($this->session->userdata('superadmin_login') != 1) {
+    /* if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
-        } 
+        } */
         if ($task == "new_availability") {
             
                 $this->crud_model->update_doctor_new_availability_info($id);
@@ -1110,10 +1253,10 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     }
     function edit_doctor_new_availability($task = "",$id='',$id1='')
     {
-      if ($this->session->userdata('superadmin_login') != 1) {
+     /* if ($this->session->userdata('superadmin_login') != 1) {
             $this->session->set_userdata('last_page', current_url());
             redirect(base_url(), 'refresh');
-        }
+        }*/
         if ($task == "update_availability") {
             
                 $this->crud_model->update_doc_availability_info($id1);
@@ -1270,9 +1413,11 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     $this->session->set_flashdata('message', get_phrase('appointment_info_updated_successfuly'));
     redirect($this->session->userdata('last_page'));
     }
+    $unique_id=$this->db->where('appointment_id',$appointment_id)->get('appointments')->row()->appointment_number;
+    
         $data['appointment_id']=$appointment_id;
         $data['page_name'] = 'edit_appointment';
-        $data['page_title'] = get_phrase('edit_Appointment');
+        $data['page_title'] = get_phrase('Appointment - '.$unique_id);
         $this->load->view('backend/index', $data);
     }
     function appointment($task = "", $appointment_id = "") {

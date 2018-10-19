@@ -335,19 +335,23 @@
                              <div class="col-sm-8"> 
                                <!--  <select multiple name="specializations[]" class="form-control" id="specializations" value="<?php echo set_value('specializations[]'); ?>">
                                     <option value=""><?php echo get_phrase('select_specializations'); ?></option> -->
+                            <input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search for specializations.." title="Type in a specialization">
+                    <ul id="myUL" style="list-style: none; min-height: 50px; max-height:100px;border: 1px solid; overflow-y: scroll;">
                                     <?php 
                                     $specializations=$this->db->get('specializations')->result();
                                     foreach ($specializations as $spe) {
                                     ?>
-                    <input type="checkbox" name="specializations[]" class="" id="specializations" value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?><br/>
+
+                    <li><a href="#"><input type="checkbox" name="specializations[]" class="" id="specializations" value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></a></li>
                    <!--  <option value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></option> -->
                 <?php }?>
                                 <!-- </select> -->
-                                
+                        </ul> 
                             </div>
                     </div>
                     
                 </div>
+
                     </div>    
                     </div>
                   
@@ -367,14 +371,24 @@
     </div>
 
 
-
-
-
-
-
-
 <!-----  DATA TABLE EXPORT CONFIGURATIONS ---->                      
-
+<script>
+function myFunction() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
 <script type="text/javascript">
 
 	function get_branch(hospital_id) {
