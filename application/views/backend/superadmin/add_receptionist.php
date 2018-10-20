@@ -131,8 +131,8 @@
                       <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
-                                <select multiple name="doctor[]" class="form-control" id="select_doctor"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('doctor[]'); ?>">
-                                    <option value=""><?php echo get_phrase('select_department_first'); ?></option>
+                                <select multiple name="doctor[]" class="form-control select2" id="select_doctor"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('doctor[]'); ?>">
+                                    <!-- <option value=""><?php echo get_phrase('select_department_first'); ?></option> -->
 
                                 </select>
                                 <span ><?php echo form_error('doctor[]'); ?></span>

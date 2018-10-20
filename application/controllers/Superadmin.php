@@ -64,11 +64,35 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $page_data['page_title'] = get_phrase('messages');
         $this->load->view('backend/index', $page_data);
     }
+    function read_message($param1 = '', $param2 = '', $param3 = '') 
+    {
+        $page_data['message_data']=$this->crud_model->read_message($param1,$param2);
+        $page_data['message_type']=$param1;
+        $page_data['message_id']=$param2;
+        $page_data['page_name'] = 'message_read';
+        $page_data['page_title'] = get_phrase('messages');
+        $this->load->view('backend/index', $page_data);
+    }
     function message($param1 = '', $param2 = '', $param3 = '') {
        
         $page_data['message_data']=$this->crud_model->select_message();
+        $page_data['private_message_data']=$this->crud_model->select_private_message();
         $page_data['page_name'] = 'manage_message';
         $page_data['page_title'] = get_phrase('messages');
+        $this->load->view('backend/index', $page_data);
+    }
+    function read_notification($param1 = '', $param2 = '', $param3 = '') 
+    {
+        $page_data['notification_data']=$this->crud_model->read_notification($param1);
+        $page_data['notification_id']=$param1;
+        $page_data['page_name'] = 'notification_read';
+        $page_data['page_title'] = get_phrase('notifications');
+        $this->load->view('backend/index', $page_data);
+    }
+    function notification($param1 = '', $param2 = '', $param3 = '') {
+        $page_data['notification_data']=$this->crud_model->select_notification();
+        $page_data['page_name'] = 'manage_notification';
+        $page_data['page_title'] = get_phrase('notifications');
         $this->load->view('backend/index', $page_data);
     }
 
@@ -551,7 +575,7 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="'.$users['name'].' '.$users['lname'].'" onchange="return get_user_data(this.value)">';
         echo '<input type="hidden" name="user_id" value="'.$users['user_id'].'">';
         }else{
-            echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="No User Available" onchange="return get_user_data(this.value)">';
+            echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="" onchange="return get_user_data(this.value)"><span style="color:red;">No User Available</span>';
         }
     }
     function get_hospital_doctors($hospital_id='')   

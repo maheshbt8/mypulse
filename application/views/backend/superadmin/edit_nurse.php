@@ -148,7 +148,7 @@ foreach ($single_nurse_info as $row) {
                       <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
-                                <select multiple name="doctor[]" class="form-control" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>">
+                                <select multiple name="doctor[]" class="form-control select2" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>">
                                     
                                       <?php 
                                   if($row['department_id'] == '0'){ 

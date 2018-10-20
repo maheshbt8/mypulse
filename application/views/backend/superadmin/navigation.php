@@ -27,14 +27,14 @@
 
         <div class="sui-normal user-link">
            
-                <img src="<?php echo $this->crud_model->get_image_url($this->session->userdata('login_type'), $this->session->userdata('login_user_id'));?>" alt="" class="img-circle" style="height:64px;">
+               <a href="<?php echo base_url()?>index.php?superadmin/manage_profile"> <img src="<?php echo $this->crud_model->get_image_url($this->session->userdata('login_type'), $this->session->userdata('login_user_id'));?>" alt="" class="img-circle" style="height:64px;">
 
                 <span><?php echo get_phrase('super_admin'); ?></span>
                 <strong><?php
                     echo $this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('login_type') . '_id' =>
                         $this->session->userdata('login_user_id')))->row()->name;
                     ?>
-                </strong>
+                </strong></a>
                 </div>
     </div>
 

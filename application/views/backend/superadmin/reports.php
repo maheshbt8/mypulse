@@ -5,6 +5,15 @@
 	a.canvasjs-chart-credit{
 		display: none;
 	}
+	div#chartContainer{
+		margin-top: 40px;
+	}
+	canvas.canvasjs-chart-canvas{
+		position: relative;
+	}
+	button{
+		margin-top: 50px;
+	}
 </style>
 <?php $color = dechex(rand(0x000000, 0xFFFFFF)); ?>
 <?php
@@ -61,6 +70,7 @@ datalist[i]={
 var chart = new CanvasJS.Chart("chartContainer", {
 
 	animationEnabled: true,
+	exportEnabled: true,
 	theme: "dark3",
 	title:{
 		responsive: true,

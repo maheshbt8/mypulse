@@ -30,7 +30,7 @@ $this->session->set_userdata('last_page', current_url());
 
     <tbody>
         <?php $i=1;foreach ($appointment_info as $row) { 
-
+           /* print_r($row);die;*/
             if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
             {
                 $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
@@ -38,6 +38,11 @@ $this->session->set_userdata('last_page', current_url());
                 $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
                 $this->db->where($array)->update('appointments',array('status'=>'4'));
                 $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7));
+            /*$notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+            $notification['user_id']='users-user-'.$data['user_id'];
+            $notification['title']='Appointment Booking';
+            $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
+                $this->db->insert('notification',);*/
                 }
             }
             ?>   

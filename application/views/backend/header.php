@@ -99,22 +99,9 @@ $website_language_google = $this->session->userdata('website_language_google') !
           <li class="notification-header"><h4>Notifications</h4></li>
           <div class="notification-body">
           <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
           </div>
           <hr/>
-          <a href="#" class="hiper"><center>Mark as read all notifications</center></a>
+          <a href="<?php echo base_url()?>index.php?<?= $account_type?>/notification" class="hiper"><center>All Notifications</center></a>
         </ul>
       </li>
       <li class="dropdown">
@@ -123,20 +110,14 @@ $website_language_google = $this->session->userdata('website_language_google') !
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Messages</h4></li>
           <div class="notification-body">
+          <!--   <?php $private_message_data=$this->crud_model->select_private_message();
+
+            $i=1;foreach ($private_message_data as $row) {
+       $message1=explode(',',$row['user_to']);
+        for($m1=0;$m1<count($message1);$m1++){
+            if($message1[$m1]=='hospitaladmins-admin-1'){?>
           <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
-          <li class="notification-list"><a href="#"><span>Edit_profile</span></a></li>
+          <?php }}}?> -->
           </div>
           <hr/>
           <a href="<?php echo base_url()?>index.php?<?= $account_type?>/message" class="hiper"><center>All Messages</center></a>
@@ -150,12 +131,12 @@ $website_language_google = $this->session->userdata('website_language_google') !
         <ul class="dropdown-menu">
           <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_profile">
                           <i class="entypo-info"></i>
-              <span>Edit_profile</span>
+              <span>Profile</span>
             </a></li>
             <li class="divider"></li>
           <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_password">
                           <i class="entypo-key"></i>
-              <span>Change_password</span>
+              <span>Update Password</span>
             </a></li>
           
         </ul>
