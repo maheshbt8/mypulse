@@ -794,8 +794,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         $this->load->view('backend/index', $data);
         }
          public function edit_hospital($hospital_id) {
-            if($this->input->post()){
-               
+        if($this->input->post()){   
         $config = array(
         array('field' => 'name','label' => 'Name','rules' => 'required'),
         array('field' => 'address','label' => 'Address','rules' => 'required'),
@@ -1441,7 +1440,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     
         $data['appointment_id']=$appointment_id;
         $data['page_name'] = 'edit_appointment';
-        $data['page_title'] = get_phrase('Appointment - '.$unique_id);
+        $data['page_title'] = get_phrase('Appointment - ').$unique_id;
         $this->load->view('backend/index', $data);
     }
     function appointment($task = "", $appointment_id = "") {

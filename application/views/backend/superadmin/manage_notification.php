@@ -2,12 +2,12 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="#" method="post">
-<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<!-- <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
-</button>
+</button> -->
 <!-- <button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/new_message'" class="btn btn-primary pull-right">
         <?php echo get_phrase('new_message'); ?>
 </button> -->
@@ -22,8 +22,13 @@ $this->session->set_userdata('last_page', current_url());
        /* $message1=explode(',',$row['user_to']);
         for($m1=0;$m1<count($message1);$m1++){
             if($message1[$m1]=='users-user-1'){*/
+                 $last=date('Y-m-d', strtotime('last month'));
+            if($row['created_at']<$last){
+                $this->db->where('id',$row['id']);
+                $this->db->delete('notification');
+            }
         ?>
-    <a href="<?php echo base_url();?>index.php?superadmin/read_notification/<?php echo $row['id'];?>" class="list-group-item"><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>" style="width: 20px;"><label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
+    <a href="<?php echo base_url();?>index.php?superadmin/read_notification/<?php echo $row['id'];?>" class="list-group-item"><!-- <input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>" style="width: 20px;"> --><label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
     <?php /*}}*/}?>
     </div>
  </div>

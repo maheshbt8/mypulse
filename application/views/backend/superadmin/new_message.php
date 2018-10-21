@@ -20,27 +20,27 @@
                             <select name="message_type" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return show_repete(this.value)">
                                 
                                 <option value="0"><?php echo "Group Message";?></option>
-                                <option value="1"><?php echo "Private Message";?></option>
+                                <option value="1"><?php echo "Individual Message";?></option>
                             </select>
                         </div><br/><br/>
     <div class="col-sm-1"> </div>
     <div class="col-sm-11" id="to_all"> 
     <label for="alls">To All Staff</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="alls" value="0">
+    <input type="checkbox" name="user_to[0]" class="email-check" id="alls" value="0">
     <label for="ha">All Hospital Admins</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="ha" value="1">
+    <input type="checkbox" name="user_to[1]" class="email-check" id="ha" value="1">
     <label for="ml">All Medical Labs</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="ml" value="2">
+    <input type="checkbox" name="user_to[2]" class="email-check" id="ml" value="2">
     <label for="ms">All Medical Stores</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="ms" value="3">
+    <input type="checkbox" name="user_to[3]" class="email-check" id="ms" value="3">
     <label for="hd">All Doctors</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="hd" value="6">
+    <input type="checkbox" name="user_to[4]" class="email-check" id="hd" value="6">
     <label for="hn">All Nurses</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="hn" value="4">
+    <input type="checkbox" name="user_to[5]" class="email-check" id="hn" value="4">
     <label for="hr">All Receptionists</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="hr" value="5">
+    <input type="checkbox" name="user_to[6]" class="email-check" id="hr" value="5">
     <label for="hp">All Patients</label>
-    <input type="checkbox" name="user_to[]" class="email-check" id="hp" value="7">
+    <input type="checkbox" name="user_to[7]" class="email-check" id="hp" value="7">
     </div>
     <div class="col-sm-8" id="to_ind"> 
     <select class="form-control select2" name="reciever[]"  data-validate="required" data-message-required="<?php echo 'Please Select Any User';?>" required multiple>
@@ -60,7 +60,7 @@
                 $users = $this->db->get('doctors')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="doctors-doctor-<?php echo $row['docotr_id']; ?>">
+                    <option value="doctors-doctor-<?php echo $row['doctor_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -75,7 +75,7 @@
             </optgroup>
             <optgroup label="<?php echo get_phrase('receptionists'); ?>">
                 <?php
-                $users = $this->db->get('nurse')->result_array();
+                $users = $this->db->get('receptionist')->result_array();
                 foreach ($users as $row):
                     ?>
                     <option value="receptionist-receptionist-<?php echo $row['receptionist_id']; ?>">
