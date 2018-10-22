@@ -14,17 +14,17 @@
             <div class="padded">
                 <div class="col-md-12"> 
                     <div class="form-group">
-                        <input type="hidden" name="hospital_id" class="hospital_id" id="hospital_id" value="0">
+                        <!-- <input type="hidden" name="hospital_id" class="hospital_id" id="hospital_id" value="0"> -->
                         <label for="field-ta" class="col-sm-1 control-label"><?php echo get_phrase('to'); ?></label>
-                        <div class="col-sm-11">
+                        <!-- <div class="col-sm-11">
                             <select name="message_type" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return show_repete(this.value)">
                                 
                                 <option value="0"><?php echo "Group Message";?></option>
                                 <option value="1"><?php echo "Individual Message";?></option>
                             </select>
-                        </div><br/><br/>
-    <div class="col-sm-1"> </div>
-    <div class="col-sm-11" id="to_all"> 
+                        </div><br/><br/> -->
+    <!-- <div class="col-sm-1"> </div> -->
+    <!-- <div class="col-sm-11" id="to_all"> 
     <label for="alls">To All Staff</label>
     <input type="checkbox" name="user_to[0]" class="email-check" id="alls" value="0">
     <label for="ha">All Hospital Admins</label>
@@ -41,17 +41,26 @@
     <input type="checkbox" name="user_to[6]" class="email-check" id="hr" value="5">
     <label for="hp">All Patients</label>
     <input type="checkbox" name="user_to[7]" class="email-check" id="hp" value="7">
-    </div>
+    </div> -->
     <div class="col-sm-8" id="to_ind"> 
     <select class="form-control select2" name="reciever[]"  data-validate="required" data-message-required="<?php echo 'Please Select Any User';?>" required multiple>
 
-            <option value=""><?php echo get_phrase('select'); ?></option>
+            <!-- <option value=""><?php echo get_phrase('select'); ?></option> -->
+            <optgroup label="<?php echo get_phrase('Group_message'); ?>">
+                <option value="0/1">All Hospital Admins</option>
+                <option value="0/4">All Doctors</option>
+                <option value="0/5">All Nurses</option>
+                <option value="0/6">All Receptionists</option>
+                <option value="0/2">All Medical Labs</option>
+                <option value="0/3">All Medical Stores</option>
+                <option value="0/7">All MyPulse Users</option>
+            </optgroup>
             <optgroup label="<?php echo get_phrase('hospital_admins'); ?>">
                 <?php
                 $users = $this->db->get('hospitaladmins')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="hospitaladmins-admin-<?php echo $row['admin_id']; ?>">
+                    <option value="1/hospitaladmins-admin-<?php echo $row['admin_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -60,7 +69,7 @@
                 $users = $this->db->get('doctors')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="doctors-doctor-<?php echo $row['doctor_id']; ?>">
+                    <option value="1/doctors-doctor-<?php echo $row['doctor_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -69,7 +78,7 @@
                 $users = $this->db->get('nurse')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="nurse-nurse-<?php echo $row['nurse_id']; ?>">
+                    <option value="1/nurse-nurse-<?php echo $row['nurse_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -78,7 +87,7 @@
                 $users = $this->db->get('receptionist')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="receptionist-receptionist-<?php echo $row['receptionist_id']; ?>">
+                    <option value="1/receptionist-receptionist-<?php echo $row['receptionist_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -87,7 +96,7 @@
                 $users = $this->db->get('medicalstores')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="medicalstores-store-<?php echo $row['store_id']; ?>">
+                    <option value="1/medicalstores-store-<?php echo $row['store_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -96,7 +105,7 @@
                 $users = $this->db->get('medicallabs')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="medicallabs-lab-<?php echo $row['lab_id']; ?>">
+                    <option value="1/medicallabs-lab-<?php echo $row['lab_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -105,7 +114,7 @@
                 $users = $this->db->get('users')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="users-user-<?php echo $row['user_id']; ?>">
+                    <option value="1/users-user-<?php echo $row['user_id']; ?>">
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -153,7 +162,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>/assets/js/ckeditor/ckeditor.js"></script> 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(document).ready(function(){
     $("#to_ind").hide();
     });
@@ -168,7 +177,7 @@
         }
     }
 
-</script>
+</script> -->
 <script>
     CKEDITOR.replace( 'message' );
 </script>

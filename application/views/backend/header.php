@@ -93,22 +93,24 @@ $website_language_google = $this->session->userdata('website_language_google') !
   </ul>
       </li>
       <li class="dropdown">
+        <?php 
+        $user_id=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+          $noti_read=$this->db->get_where('notification',array('user_id'=>$user_id,'isRead'=>2));
+        ?>
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-bell"></i>
-        <!-- <span class="info">5</span> --></a>
+        <span class="info"><!-- <?php echo $noti_read->num_rows();?> --></span></a>
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Notifications</h4></li>
           <div class="notification-body">
-          <?php $private_message_data=$this->crud_model->select_private_message();
-
+          <?php 
+          $private_message_data=$noti_read->result_array();/*$this->crud_model->select_notification()*/
             $i=1;foreach ($private_message_data as $row) {
-       $message1=explode(',',$row['created_by']);
-       $message2=explode(',',$row['user_to']);
-        /*for($m1=0;$m1<count($message1);$m1++){*/
-            if((($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')) or ($row['user_id']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))) and (date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d')))
+            if(date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d'))
               {
                 ?>
           <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_notification/<?= $row['message_id'];?>"><li class="notification-list"><span><?= $row['title']?></span></li></a>
-          <?php }/*}*/}?>
+          <?php }
+          }?>
           </div>
           <hr/>
           <a href="<?php echo base_url()?>index.php?<?= $account_type?>/notification" class="hiper"><center>All Notifications</center></a>
@@ -120,17 +122,39 @@ $website_language_google = $this->session->userdata('website_language_google') !
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Messages</h4></li>
           <div class="notification-body">
-          <?php $private_message_data=$this->crud_model->select_private_message();
+          <?php $message_data=$this->crud_model->select_message();
 
-            $i=1;foreach ($private_message_data as $row) {
-       $message1=explode(',',$row['created_by']);
-       $message2=explode(',',$row['user_to']);
-        /*for($m1=0;$m1<count($message1);$m1++){*/
-            if((($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')) or ($row['user_to']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))) and (date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d')))
+            $i=0;foreach ($message_data as $row) {
+       $message1=explode(',',$row['user_to']);
+       $message2=explode(',',$row['user_too']);
+        for($m1=0;$m1<count($message1);$m1++){
+            
+    if($message1[$m1] == 1){
+    $hospi='hospitaladmins';    
+    }elseif($message1[$m1] == 2){
+    $hospi='medicallabs';
+    }elseif($message1[$m1] == 3){
+    $hospi='medicalstores';
+    }elseif($message1[$m1] == 4){
+    $hospi='doctors';
+    }elseif($message1[$m1] == 5){
+    $hospi='nurse';
+    }elseif($message1[$m1] == 6){
+    $hospi='receptionist';
+    }elseif($message1[$m1] == 7){
+    $hospi='users';
+    }
+    if((($row['user_too']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')) or $hospi==$this->session->userdata('login_type')) and (date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d')))
               {
-                ?>
-          <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span><?= $row['title']?></span></li></a>
-          <?php }/*}*/}?> 
+               ?>
+               <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span><?= $row['title']?></span>
+               </li>
+              </a>
+               <?php 
+              }
+            }
+
+          $i++;}?> 
           </div>
           <hr/>
           <a href="<?php echo base_url()?>index.php?<?= $account_type?>/message" class="hiper"><center>All Messages</center></a>

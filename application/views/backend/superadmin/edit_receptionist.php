@@ -17,7 +17,7 @@ foreach ($single_receptionist_info as $row) {
             </li>
             <li>
                 <a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-                      <?php echo get_phrase('general_info'); ?>
+                      <?php echo get_phrase('incharge_info'); ?>
                 </a>
             </li>
                 <li>

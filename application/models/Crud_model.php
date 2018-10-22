@@ -2257,8 +2257,8 @@ function select_user_information($patient_id="")
         if($this->input->post('remarks')){
         $data['remarks']       = $this->input->post('remarks');
         }
-        $data['created_type']       = $this->session->userdata('login_type');
-        $data['created_by']       = $this->session->userdata('name');
+        /*$data['created_type']       = $this->session->userdata('login_type');*/
+        $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('appointments',$data);
@@ -2282,7 +2282,7 @@ function select_user_information($patient_id="")
             $history['appointment_date']=$data['appointment_date'];
             $history['appointment_time_start']=$data['appointment_time_start'];
             $history['appointment_time_end']=$data['appointment_time_end'];
-            $history['created_type']=$data['created_type'];
+            /*$history['created_type']=$data['created_type'];*/
             $history['created_by']=$data['created_by'];
             $data['created_time']=date('Y-m-d H:i:s');
             $history_ins=$this->db->insert('appointment_history',$history);
@@ -2536,14 +2536,18 @@ function select_user_information($patient_id="")
         $this->db->where('diagnosis_report_id',$diagnosis_report_id);
         $this->db->delete('diagnosis_report');
     }
-    function read_message($message_type,$message_id)
+    function read_message($message_id)
+    {
+   return $this->db->where('message_id',$message_id)->get('messages')->row_array();
+    }
+    /*function read_message($message_type,$message_id)
     {
     if($message_type == 0){
         return $this->db->where('message_id',$message_id)->get('messages')->row_array();
     }elseif($message_type == 1){
         return $this->db->where('message_id',$message_id)->get('private_messages')->row_array();
     }
-    }
+    }*/
     function select_message()
     {
         return $this->db->order_by('message_id','DESC')->get('messages')->result_array();
@@ -2552,32 +2556,32 @@ function select_user_information($patient_id="")
     {
         return $this->db->order_by('message_id','DESC')->get('private_messages')->result_array();
     }
-        function save_new_message()
+     /*  function save_new_message()
     {
         $hospital_id=$this->input->post('hospital_id');
         if($this->input->post('message_type')=='0'){
         if($this->input->post('user_to[0]')!='' && $this->input->post('user_to[7]')!=''){
             $data['user_to']='1,2,3,4,5,6,7';
-            /*$data['user_to']='1-'.$hospital_id.',2-'.$hospital_id.',3-'.$hospital_id.',4-'.$hospital_id.',5-'.$hospital_id.',6-'.$hospital_id.',7-'.$hospital_id;*/
+            
         }
         if($this->input->post('user_to[0]')!=''){
             $data['user_to']='1,2,3,4,5,6';
-            /*$data['user_to']='1-'.$hospital_id.',2-'.$hospital_id.',3-'.$hospital_id.',4-'.$hospital_id.',5-'.$hospital_id.',6-'.$hospital_id;*/
+            
         }else{
             $user_to=implode(',', $this->input->post('user_to'));
             $data['user_to']=$user_to;
-            /*$user_to=implode('-'.$hospital_id.',', $this->input->post('user_to'));
-            $data['user_to']=$user_to.'-'.$hospital_id;*/
+            $user_to=implode('-'.$hospital_id.',', $this->input->post('user_to'));
+            $data['user_to']=$user_to.'-'.$hospital_id;
         }
     }
     if($this->input->post('message_type')=='1'){
         $data['user_to']=implode(',', $this->input->post('reciever'));
-        /*$data['user_to']=$user_to.'-'.$hospital_id;*/
+        
     }
         $data['title']  = $this->input->post('title');
         $data['message'] = $this->input->post('message');
         $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-        /*$data['doctor_id']  = implode(',',$this->input->post('doctor'));*/
+        
         $data['created_at']=date('Y-m-d H:i:s');
         if($this->input->post('message_type')=='0'){
         $insert=$this->db->insert('messages',$data);
@@ -2585,10 +2589,67 @@ function select_user_information($patient_id="")
         $insert=$this->db->insert('private_messages',$data);
     }
         
+    }*/
+        function save_new_message()
+    {
+        $hospital_id=$this->input->post('hospital_id');
+        $count=count($this->input->post('reciever'));
+        /*print_r($_POST);die;*/
+        for($i=0;$i<$count;$i++){
+            $arr=explode('/', $_POST['reciever'][$i]);
+            if($arr[0]=='0'){
+                $mess1=0;
+                $group[]=$arr[1];
+            }elseif($arr[0]=='1'){
+                $mess2=1;
+                $ind[]=$arr[1];
+            }
+        }
+    $data['user_to']=implode(',',$group);
+    $data['user_too']=implode(',',$ind);
+    $data['title']  = $this->input->post('title');
+    $data['message'] = $this->input->post('message');
+    $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+    $data['created_at']=date('Y-m-d H:i:s');
+    $insert=$this->db->insert('messages',$data);
+        /*print_r($group);
+        print_r($ind);die;*/
+    /*if($mess1=='0'){
+    $data['user_to']=implode(',',$group);
+    $data['title']  = $this->input->post('title');
+    $data['message'] = $this->input->post('message');
+    $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+    $data['created_at']=date('Y-m-d H:i:s');
+    $insert=$this->db->insert('messages',$data);
+    }
+    if($mess2=='1'){
+    $data['user_to']=implode(',',$ind);   
+    $data['title']  = $this->input->post('title');
+    $data['message'] = $this->input->post('message');
+    $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
+    $data['created_at']=date('Y-m-d H:i:s');
+    $insert=$this->db->insert('private_messages',$data);
+    }*/
+    /*print_r($data);*/
+        /*$data['title']  = $this->input->post('title');
+        $data['message'] = $this->input->post('message');
+        $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');*/
+        /*$data['doctor_id']  = implode(',',$this->input->post('doctor'));*/
+        /*$data['created_at']=date('Y-m-d H:i:s');
+        if($mes1=='0'){
+        $insert=$this->db->insert('messages',$data);
+    }elseif($this->input->post('message_type')=='1'){
+        $insert=$this->db->insert('private_messages',$data);
+    }*/
+        
     }
     function read_notification($notification_id)
     {
-        return $this->db->where('id',$notification_id)->get('notification')->row_array();
+        $result=$this->db->where('id',$notification_id)->get('notification')->row_array();
+        if($result['isRead']=='2'){
+        $this->db->update('notification',array('isRead','1'));
+        }
+        return $result;
     }
     function select_notification()
     {

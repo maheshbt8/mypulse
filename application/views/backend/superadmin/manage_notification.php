@@ -18,18 +18,19 @@ $this->session->set_userdata('last_page', current_url());
   <!--   <a href="#" class="list-group-item list-group-item-action active" style="cursor:default">
    Private Messages
   </a> -->
-    <?php $i=1;foreach ($notification_data as $row) { 
-       /* $message1=explode(',',$row['user_to']);
-        for($m1=0;$m1<count($message1);$m1++){
-            if($message1[$m1]=='users-user-1'){*/
+    <?php 
+        $user_id=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+        $notification_data=$this->db->get_where('notification',array('user_id'=>$user_id))->result_array();
+         $i=1;foreach ($notification_data as $row) { 
                  $last=date('Y-m-d', strtotime('last month'));
             if($row['created_at']<$last){
                 $this->db->where('id',$row['id']);
                 $this->db->delete('notification');
             }
+
         ?>
     <a href="<?php echo base_url();?>index.php?superadmin/read_notification/<?php echo $row['id'];?>" class="list-group-item"><!-- <input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>" style="width: 20px;"> --><label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
-    <?php /*}}*/}?>
+    <?php }?>
     </div>
  </div>
 <!--  <div class="col-sm-6">

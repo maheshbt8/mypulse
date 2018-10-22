@@ -14,7 +14,7 @@
   <!-- 
   <img class="w3-round  w3-animate-top" src="/w3images/avatar3.png" style="width:20%;"> -->
   <h4 class="w3-opacity">Title : <?= $notification_data['title']?></h4>
-  <h4><i class="fa fa-clock-o"></i> From <?php $created_by=explode('-',$notification_data['created_by']);echo $created_by[0].' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?>, <?php echo date('M d,Y h:i A',strtotime($notification_data['created_at']));?>.<input type="button" class="btn btn-info btn-xs pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'"></h4>
+  <h4><i class="fa fa-clock-o"></i> <!-- From <?php $created_by=explode('-',$notification_data['created_by']);echo $created_by[0].' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?>, --> <?php echo date('M d,Y h:i A',strtotime($notification_data['created_at']));?>.<input type="button" class="btn btn-info btn-xs pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'"></h4>
   <?php /*if($message_type == 0){?>
   <h4><i class="entypo-right-circled"></i> To <?php $created_to=explode(',',$message_data['user_to']);for($h=0;$h<count($created_to);$h++){
     if($created_to[$h] == 1){

@@ -114,6 +114,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'doctors');
+            $this->session->set_userdata('type_id', 'doctor');
             redirect(base_url() . 'index.php?doctors/dashboard', 'refresh');
         }
         
@@ -124,6 +125,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->user_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'users');
+            $this->session->set_userdata('type_id', 'user');
             redirect(base_url() . 'index.php?users/dashboard', 'refresh');
         }
         
@@ -134,6 +136,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->nurse_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'nurse');
+            $this->session->set_userdata('type_id', 'nurse');
             redirect(base_url() . 'index.php?nurse/dashboard', 'refresh');
         }
        
@@ -145,6 +148,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->receptionist_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'receptionist');
+            $this->session->set_userdata('type_id', 'receptionist');
             redirect(base_url() . 'index.php?receptionist/dashboard', 'refresh');
         }
         $query = $this->db->get_where('medicallabs', $credential);
@@ -154,6 +158,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->lab_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'medicallabs');
+            $this->session->set_userdata('type_id', 'lab');
             redirect(base_url() . 'index.php?medicallabs/dashboard', 'refresh');
         }
         $query = $this->db->get_where('medicalstores', $credential);
@@ -163,6 +168,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->store_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('login_type', 'medicalstores');
+            $this->session->set_userdata('type_id', 'store');
             redirect(base_url() . 'index.php?medicalstores/dashboard', 'refresh');
         }
         $this->session->set_flashdata('login_error', 'Invalid_login');

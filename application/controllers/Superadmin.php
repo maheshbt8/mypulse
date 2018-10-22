@@ -66,13 +66,23 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
     function read_message($param1 = '', $param2 = '', $param3 = '') 
     {
+        $page_data['messagedata']=$this->crud_model->read_message($param1);
+        /*print_r($page_data);die;*/
+        /*$page_data['message_type']=$param1;*/
+        $page_data['message_id']=$param1;
+        $page_data['page_name'] = 'message_read';
+        $page_data['page_title'] = get_phrase('messages');
+        $this->load->view('backend/index', $page_data);
+    }
+    /*function read_message($param1 = '', $param2 = '', $param3 = '') 
+    {
         $page_data['message_data']=$this->crud_model->read_message($param1,$param2);
         $page_data['message_type']=$param1;
         $page_data['message_id']=$param2;
         $page_data['page_name'] = 'message_read';
         $page_data['page_title'] = get_phrase('messages');
         $this->load->view('backend/index', $page_data);
-    }
+    }*/
     function message($param1 = '', $param2 = '', $param3 = '') {
        
         $page_data['message_data']=$this->crud_model->select_message();
