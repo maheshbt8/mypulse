@@ -11,7 +11,7 @@
 			</li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-					 <?php echo $this->lang->line('labels')['medLabInc'];?>
+					 <?php echo get_phrase('incharge_info');?>
                 </a>
 			</li>
 				<li>

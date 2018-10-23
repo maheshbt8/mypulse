@@ -22,7 +22,7 @@ $this->session->set_userdata('last_page', current_url());
         $user_id=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $notification_data=$this->db->get_where('notification',array('user_id'=>$user_id))->result_array();
          $i=1;foreach ($notification_data as $row) { 
-                 $last=date('Y-m-d', strtotime('last month'));
+                 $last=date('Y-m-d', strtotime("-1 week +1 day"));
             if($row['created_at']<$last){
                 $this->db->where('id',$row['id']);
                 $this->db->delete('notification');

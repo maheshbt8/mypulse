@@ -2,6 +2,12 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/appointment/delete_multiple/" method="post">
+<!-- <button type="button" onClick="confclose(this.form);" id="close" class="btn btn-warning pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('close'); ?>
+</button>
+<button type="button" onClick="checkone(this.form);" id="close1" class="btn btn-warning pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('close'); ?>
+</button> -->
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -125,14 +131,20 @@ $this->session->set_userdata('last_page', current_url());
     $(document).ready(function(){
         $("#delete1").show();
         $("#delete").hide();
+        $("#close1").show();
+        $("#close").hide();
         $("#all_check").click(function () {
             $('.check').attr('checked', this.checked);
             if($(".check:checked").length == 0){
                 $("#delete1").show();
                 $("#delete").hide();
+                $("#close1").show();
+                $("#close").hide();
             }else{
             $("#delete1").hide();
             $("#delete").show();
+            $("#close1").hide();
+            $("#close").show();
             }
             
         });
@@ -140,6 +152,8 @@ $this->session->set_userdata('last_page', current_url());
             if(($(".check:checked").length)!=0){
             $("#delete1").hide();
             $("#delete").show();
+            $("#close1").hide();
+            $("#close").show();
         if($(".check").length == $(".check:checked").length) {
             $("#all_check").attr("checked", "checked");
         } else {
@@ -148,6 +162,8 @@ $this->session->set_userdata('last_page', current_url());
     }else{
         $("#delete1").show();
         $("#delete").hide();
+        $("#close1").show();
+        $("#close").hide();
     }
     });
     });

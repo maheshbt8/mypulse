@@ -2089,7 +2089,7 @@ function select_user_information($patient_id="")
     
     function save_bed_info()
     {
-         $data['hospital_id']=$this->input->post('hospital');
+        $data['hospital_id']=$this->input->post('hospital');
         $data['branch_id']=$this->input->post('branch');
         $data['department_id']=$this->input->post('department');
         $data['ward_id']=$this->input->post('ward');
@@ -2117,9 +2117,15 @@ function select_user_information($patient_id="")
     
     function update_bed_info($bed_id)
     {
-        $data['bed_number']     = $this->input->post('bed_number');
-        $data['ward'] 		= $this->input->post('ward');
-        $data['description']    = $this->input->post('description');
+        $data['hospital_id']=$this->input->post('hospital');
+        $data['branch_id']=$this->input->post('branch');
+        $data['department_id']=$this->input->post('department');
+        $data['ward_id']=$this->input->post('ward');
+        $data['name']       = $this->input->post('name');
+        $data['bed_status']    = $this->input->post('bed_status');
+        /*$data['bed_number']     = $this->input->post('bed_number');*/
+        /*$data['ward'] 		= $this->input->post('ward');
+        $data['description']    = $this->input->post('description');*/
         
         $this->db->where('bed_id',$bed_id);
         $this->db->update('bed',$data);
@@ -2387,7 +2393,7 @@ function select_user_information($patient_id="")
         return $this->db->get_where('appointment', array('patient_id' => $patient_id, 'status' => 'approved'))->result_array();
     }
     
-    function update_appointment_info($appointment_id)
+    /*function update_appointment_info($appointment_id)
     {
         $data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
         $data['patient_id'] = $this->input->post('patient_id');
@@ -2411,9 +2417,9 @@ function select_user_information($patient_id="")
             
             $this->sms_model->send_sms($message, $receiver_phone);
         }
-    }
+    }*/
     
-    function approve_appointment_info($appointment_id)
+   /* function approve_appointment_info($appointment_id)
     {
         $data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
         $data['status']     = 'approved';
@@ -2443,7 +2449,7 @@ function select_user_information($patient_id="")
             
             $this->sms_model->send_sms($message, $receiver_phone);
         }
-    }
+    }*/
     
     function delete_appointment_info($appointment_id)
     {
@@ -2456,6 +2462,15 @@ function select_user_information($patient_id="")
         for($i=0;$i<count($check);$i++){
             $this->db->where('appointment_id',$check[$i]);
             $this->db->delete('appointments');
+        }
+    }
+     function close_multiple_appointment_info()
+    {
+        $check=$_POST['check'];
+        for($i=0;$i<count($check);$i++){
+        $this->db->where('appointment_id',$check[$i]);
+        $this->db->update('appointments',array('status'=>'4'));
+        $this->db->insert('appointment_history',array('appointment_id'=>$check[$i],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
         }
     }
     function save_prescription_info()

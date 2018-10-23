@@ -2,61 +2,60 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="#" method="post">
-<!-- <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
-        <?php echo get_phrase('delete'); ?>
-</button>
-<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
-        <?php echo get_phrase('delete'); ?>
-</button> -->
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>index.php?superadmin/new_message'" class="btn btn-primary pull-right">
         <?php echo get_phrase('new_message'); ?>
 </button>
-<div style="clear:both;"></div>
 <br>
- <!-- <div class="col-sm-6">
+ <div class="row">
+    <div class="col-md-12">
+        <!--CONTROL TABS START-->
+        <ul class="nav nav-tabs bordered">
+            <li class="active">
+                <a href="#list" data-toggle="tab"><?php echo 'Received Messages';?>
+                        </a></li>
+            <li>
+                <a href="#add" data-toggle="tab"><?php echo 'Sent Messages';?>
+                        </a></li>
+        </ul>
+        <!--CONTROL TABS END-->
+        
+    
+        <div class="tab-content">
+        <br>
+            <!--TABLE LISTING STARTS-->
+            <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
     <div class="list-group">
-    <a href="#" class="list-group-item list-group-item-action active" style="cursor:default">
-   Individual Messages
-  </a>
-    <?php $i=1;foreach ($private_message_data as $row) { 
-       /* $message1=explode(',',$row['user_to']);
-        for($m1=0;$m1<count($message1);$m1++){
-            if($message1[$m1]=='users-user-1'){*/
-                $last=date('Y-m-d', strtotime('last month'));
-            if($row['created_at']<$last){
-                $this->db->where('message_id',$row['message_id']);
-                $this->db->delete('private_messages');
-            }
-        $message1=explode(',',$row['created_by']);
-        $message2=explode(',',$row['user_to']);
-        if((($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')) or ($row['user_to']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))) and (date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d')))
-              {
-        ?>
-    <a href="<?php echo base_url();?>index.php?superadmin/read_message/1/<?php echo $row['message_id'];?>" class="list-group-item"> <input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>" style="width: 20px;"> <?php if($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')){?><i class="glyphicon glyphicon-upload"></i><?php }elseif($row['user_to']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')){?><i class="glyphicon glyphicon-download"></i><?php }?>&nbsp;&nbsp;<label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
-    <?php /*}}*/}}?>
-    </div>
- </div> -->
- <div class="col-sm-12">
-    <div class="list-group">
-      <!--   <a href="" class="list-group-item list-group-item-action active" style="cursor:default">
-   Group Messages
-  </a> -->
     <?php $i=1;foreach ($message_data as $row) { 
         if($row['created_at']<$last){
                 $this->db->where('message_id',$row['message_id']);
                 $this->db->delete('messages');
             }
-            /*$message1=explode(',',$row['created_by']);*/
-            /*print_r(explode(',',$row['user_to']));*/
-            /*$message2=explode(',',$row['user_to']);*/
-            if(($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')) and (date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d')))
+            $user_too=explode(',', $row['user_too']);
+            for($us=0;$us<count($user_too);$us++){
+            if($user_too[$us]==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))
               {
         ?>
-    <a href="<?php echo base_url();?>index.php?superadmin/read_message/<?php echo $row['message_id'];?>" class="list-group-item"><!-- <input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>" style="width: 20px;"> --><?php if($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')){?><i class="glyphicon glyphicon-upload"></i><?php }elseif($row['user_to']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')){?><i class="glyphicon glyphicon-download"></i><?php }?>&nbsp;&nbsp;<label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
+    <a href="<?php echo base_url();?>index.php?superadmin/read_message/<?php echo $row['message_id'];?>" class="list-group-item"><i class="glyphicon glyphicon-download"></i>&nbsp;&nbsp;<label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
+    <?php }}}?>
+    </div>
+</div>
+            <div class="tab-pane box" id="add">
+            <div class="list-group">
+    <?php $i=1;foreach ($message_data as $row) { 
+        if($row['created_at']<$last){
+                $this->db->where('message_id',$row['message_id']);
+                $this->db->delete('messages');
+            }
+            if($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))
+              {
+        ?>
+    <a href="<?php echo base_url();?>index.php?superadmin/read_message/<?php echo $row['message_id'];?>" class="list-group-item"><i class="glyphicon glyphicon-upload"></i>&nbsp;&nbsp;<label><?php echo $row['title'];?></label><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span></a>
     <?php }} ?>
     </div>
- </div> 
-
+            </div>
+</div>
+</div>
+</div>
 </form>
 <script type="text/javascript">   
     jQuery(window).load(function ()

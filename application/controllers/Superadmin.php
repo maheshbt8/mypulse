@@ -1465,6 +1465,15 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         if ($task == "delete_multiple") {
            $this->crud_model->delete_multiple_appointment_info();
             $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
+    if ($this->session->flashdata('message') != ""){
+    echo "<script>".
+        toastr.info('<?php echo $this->session->flashdata("message");?>')."</script>";
+     }
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "close_multiple") {
+            $this->crud_model->close_multiple_appointment_info();
+            $this->session->set_flashdata('message', get_phrase('appointment_info_closed_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
        
