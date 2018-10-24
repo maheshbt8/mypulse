@@ -16,8 +16,7 @@
   if($messagedata['created_by'] == $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))
   {
     if($messagedata['user_to'] != ''){
-    ?>
-  <h4><i class="entypo-right-circled"></i> To : <?php $created_to=explode(',',$messagedata['user_to']);
+   $created_to=explode(',',$messagedata['user_to']);
   for($h=0;$h<count($created_to);$h++){
     if($created_to[$h] == 1){
     $hospi='All Hospital Admins';    
@@ -36,14 +35,12 @@
     }
     $hospital[]=$hospi;   
  }
- echo implode(',',$hospital); 
- ?>.</h4>
- <?php }
+ $user_to=implode(',',$hospital); 
+  }
 
- if($messagedata['user_too'] != ''){?>
-  <h4><i class="entypo-right-circled"></i> To : <?php $created_too=explode(',',$messagedata['user_too']);
+ if($messagedata['user_too'] != ''){ 
+  $created_too=explode(',',$messagedata['user_too']);
   for($h=0;$h<count($created_too);$h++){
-    /*print_r($created_to[$h]);*/
 $user=explode('-',$created_too[$h]);
 if($user[0] == 'hospitaladmins'){
   $user_role='Hospital Admin';
@@ -62,11 +59,39 @@ if($user[0] == 'hospitaladmins'){
 }
     $user_data[]=$user_role.' - '.$this->db->where($user[1].'_id',$user[2])->get($user[0])->row()->name;
 }
-echo implode(', ', $user_data);
-?>.</h4>
- <?php }}else{
+
+$user_too=implode(', ', $user_data);
+ }
+?>
+<h4><i class="entypo-right-circled"></i> To :
+<?php
+ if($user_to!='' && $user_too!=''){
+  echo $user_to.','.$user_too;
+}elseif($user_to != '' && $user_too ==''){
+  echo $user_to;
+}elseif($user_to == '' && $user_too !=''){
+  echo $user_too;
+}?>.</h4>
+<?php
+}else{
   ?>
-  <h4><i class="entypo-right-circled"></i> From : <?php $created_by=explode('-',$messagedata['created_by']);echo $created_by[0].' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></h4>
+  <h4><i class="entypo-right-circled"></i> From : <?php $created_by=explode('-',$messagedata['created_by']);
+if($created_by[0] == 'hospitaladmins'){
+  $user_role='Hospital Admin';
+}elseif($created_by[0] == 'doctors'){
+  $user_role='Doctor';
+}elseif($created_by[0] == 'nurse'){
+  $user_role='Nurse';
+}elseif($created_by[0] == 'receptionist'){
+  $user_role='Receptionist';
+}elseif($created_by[0] == 'medicalstores'){
+  $user_role='Pharmacist';
+}elseif($created_by[0] == 'medicallabs'){
+  $user_role='Laboratorist';
+}elseif($created_by[0] == 'users'){
+  $user_role='MyPulse Users';
+}
+  echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></h4>
   <?php
  }?>
   <hr>

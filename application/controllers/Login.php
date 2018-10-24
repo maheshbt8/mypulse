@@ -46,30 +46,6 @@ class Login extends CI_Controller {
 
         $this->load->view('backend/login');
     }
-/*
-    //Ajax login function 
-    function ajax_login() {
-
-       
-        $response = array();
-
-        
-
-        //Recieving post input of email, password from ajax request
-        $email = $_POST["email"];
-        $password = $_POST["password"];
-        $response['submitted_data'] = $_POST;
-
-        //Validating login
-        $login_status = $this->validate_login($email, $password);
-        $response['login_status'] = $login_status;
-        if ($login_status == 'success') {
-            $response['redirect_url'] = $this->session->userdata('last_page');
-        }
-
-        //Replying ajax request with validation response
-        echo json_encode($response);
-    }*/
 
     //Validating login from ajax request
     function validate_login() {
@@ -100,6 +76,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->admin_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+            $this->session->set_userdata('hospital_name', $this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row()->name);
             $this->session->set_userdata('login_type', 'hospitaladmins');
             $this->session->set_userdata('type_id', 'admin');
 

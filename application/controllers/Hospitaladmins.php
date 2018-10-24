@@ -7,7 +7,8 @@ class Hospitaladmins extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->database();   
-        $this->load->library('session');    
+        $this->load->library('session');
+        date_default_timezone_set('Asia/Kolkata');    
         error_reporting(0);  
         /* cache control */
         $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
@@ -26,7 +27,40 @@ class Hospitaladmins extends CI_Controller {
         if ($this->session->userdata('hospitaladmin_login') == 1)
             redirect(base_url() . 'index.php?hospitaladmins/dashboard', 'refresh');
     }
-function get_state($country_id)
+    public function get_hospital_branch($hospital_id='') {   
+      
+        $data['branch_info'] = $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
+        $data['hospital_id']=$hospital_id;
+        $data['page_name'] = 'manage_branch';
+        $data['page_title'] = get_phrase('branch');
+        $this->load->view('backend/index', $data);
+    }
+    
+    public function get_hospital_departments($branch_id='') {   
+       
+    $data['department_info'] = $this->db->where('branch_id',$branch_id)->get('department')->result_array();
+    $data['branch_id']=$branch_id;
+        $data['page_name'] = 'manage_department';
+        $data['page_title'] = get_phrase('department');
+        $this->load->view('backend/index', $data);
+    }
+    public function get_hospital_ward($department_id='') {   
+       
+    $data['ward_info'] = $this->db->where('department_id',$department_id)->get('ward')->result_array();
+    $data['department_id']=$department_id;
+        $data['page_name'] = 'manage_ward';
+        $data['page_title'] = get_phrase('ward');
+        $this->load->view('backend/index', $data);
+    }
+     public function get_hospital_bed($ward_id='') {   
+      
+    $data['bed_info'] = $this->db->where('ward_id',$ward_id)->get('bed')->result_array();
+    $data['ward_id']=$ward_id;
+        $data['page_name'] = 'manage_bed';
+        $data['page_title'] = get_phrase('bed');
+        $this->load->view('backend/index', $data);
+    }
+/*function get_state($country_id)
     {
         $state = $this->db->get_where('state' , array(
             'country_id' => $country_id))->result_array();
@@ -46,7 +80,7 @@ function get_state($country_id)
             echo '<option value="' . $row2['city_id'] . '">' . $row2['name'] . '</option>';
         }
     }
-     /******GET DISTRICT****/
+    
     function get_district($city_id)
     {
         $district = $this->db->get_where('district' , array(
@@ -56,7 +90,7 @@ function get_state($country_id)
             echo '<option value="' . $row3['district_id'] . '">' . $row3['name'] . '</option>';
         }
     }
-    /*GET BRANCH*/
+    
     function get_branch($hospital_id)
     {
         $branch = $this->db->get_where('branch' , array(
@@ -68,7 +102,7 @@ function get_state($country_id)
         }
     }
     
-     /*GET DEPARTMENT*/
+    
     function get_department($branch_id)
     {
         $department = $this->db->get_where('department' , array(
@@ -111,7 +145,6 @@ function get_state($country_id)
         }
     }
     }
-    /*     * *ADMIN DASHBOARD** */
  public function get_hospital_branch($hospital_id='') {   
       
         $data['branch_info'] = $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
@@ -144,8 +177,13 @@ function get_state($country_id)
         $data['page_name'] = 'manage_bed';
         $data['page_title'] = get_phrase('bed');
         $this->load->view('backend/index', $data);
+    }*/
+    public function resend_email_verification($task='',$type_id='',$id='')
+    {
+    $this->db->where('unique_id',$id)->update($task,array('modified_at'=>date('Y-m-d H:i:s')));
+    $this->email_model->account_reverification_email($task,$type_id, $id);
+        redirect($this->session->userdata('last_page'));
     }
-
     function dashboard() {
        
         $page_data['page_name'] = 'dashboard';
@@ -291,6 +329,647 @@ function get_state($country_id)
         $data['ward_info'] = $this->crud_model->select_ward_info();
         $data['page_name'] = 'manage_ward';
         $data['page_title'] = get_phrase('ward');
+        $this->load->view('backend/index', $data);
+    }
+
+    /*********Doctors**********/
+    function add_doctor()
+    {
+        if($this->input->post()){
+        $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+
+           $this->crud_model->save_doctor_info();
+            $this->session->set_flashdata('message', get_phrase('doctor_info_saved_successfuly'));
+            $this->email_model->account_opening_email('doctors','doctor', $email);
+            redirect($this->session->userdata('last_page'));
+        
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+    }
+
+        $data['page_name'] = 'add_doctor';
+        $data['page_title'] = get_phrase('add_doctor');
+        $this->load->view('backend/index', $data);
+        
+        
+    }
+    function edit_doctor($id)
+    {
+        if($this->input->post()){
+            $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation_for_edit($email, $id, 'doctors','doctor');
+          // echo $validation;die;
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation_for_edit($phone_number,$id,'doctors','doctor');
+           
+           if($phone == 1){
+           $this->crud_model->update_doctor_info($id);
+               $this->session->set_flashdata('message', get_phrase('doctor_info_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        }
+     
+        $data['doctor_id']=$id;
+        $data['page_name'] = 'edit_doctor';
+        $data['page_title'] = get_phrase('edit_doctor');
+        $this->load->view('backend/index', $data); 
+    }
+
+    function doctor($task, $doctor_id = "") {
+       
+        if ($task == "delete") {
+            $this->crud_model->delete_doctor_info($doctor_id);
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_doctor_info();
+            $this->session->set_flashdata('message', get_phrase('doctor_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        $data['doctor_info'] = $this->crud_model->select_doctor_info($task);
+        $data['page_name'] = 'manage_doctor';
+        $data['page_title'] = get_phrase('doctors');
+        $this->load->view('backend/index', $data);
+    }
+    
+
+    function doctor_availability($task = "",$id='')
+    {
+        if ($task == "update") {
+                $this->crud_model->update_doctor_availability_info($id);
+                $this->session->set_flashdata('message', get_phrase('doctor_availability_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?hospitaladmins/doctor_availability/'.$id);
+        }
+   
+        $data['doctor_id']=$task;
+        $data['page_name'] = 'add_availability';
+        $data['page_title'] = get_phrase('add_availability');
+        $this->load->view('backend/index', $data);
+    }
+    function doctor_new_availability($task = "",$id='')
+    {
+        if ($task == "new_availability") {
+            
+                $this->crud_model->update_doctor_new_availability_info($id);
+                $this->session->set_flashdata('message', get_phrase('doctor_availability_info_saved_successfuly'));
+            redirect(base_url() . 'index.php?hospitaladmins/doctor_availability/'.$id);
+        }
+        $data['doctor_id']=$task;
+        $data['page_name'] = 'add_dcoavailability';
+        $data['page_title'] = get_phrase('add_availability');
+        $this->load->view('backend/index', $data);
+    }
+    function edit_doctor_new_availability($task = "",$id='',$id1='')
+    {
+        if ($task == "update_availability") {
+            
+                $this->crud_model->update_doc_availability_info($id1);
+                $this->session->set_flashdata('message', get_phrase('doctor_availability_updated_successfuly'));
+            redirect(base_url() . 'index.php?hospitaladmins/doctor_availability/'.$id);
+        }
+        if ($task == "delete") {
+            
+                $this->crud_model->delete_doc_availability_info($id1);
+                $this->session->set_flashdata('message', get_phrase('doctor_availability_deleted_successfuly'));
+            redirect(base_url() . 'index.php?hospitaladmins/doctor_availability/'.$id);
+        }
+        if ($task == "delete_all") {
+            
+                $this->crud_model->delete_all_doc_availability_info($id1);
+                $this->session->set_flashdata('message', get_phrase('doctor_availability_deleted_successfuly'));
+            redirect(base_url() . 'index.php?hospitaladmins/doctor_availability/'.$id);
+        }
+        $data['slat_id']=$id;
+        $data['page_name'] = 'edit_dcoavailability';
+        $data['page_title'] = get_phrase('edit_availability');
+        $this->load->view('backend/index', $data);
+    }
+    function add_nurse()
+    {
+
+       if($this->input->post()){
+         $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'doctor[]','label' => 'Doctor','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+             $this->crud_model->save_nurse_info();
+                $this->session->set_flashdata('message', get_phrase('nurse_info_saved_successfuly'));
+                $this->email_model->account_opening_email('nurse','nurse', $email);
+                redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        
+       }
+        $data['page_name'] = 'add_nurse';
+        $data['page_title'] = get_phrase('Add nurse');
+        $this->load->view('backend/index', $data);
+        
+    } 
+    function edit_nurse($id)
+    {
+        if($this->input->post()){
+             $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'doctor[]','label' => 'Doctor','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation_for_edit($email, $id, 'nurse','nurse');
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation_for_edit($phone_number,$id,'nurse','nurse');
+           if($phone == 1){
+            $this->crud_model->update_nurse_info($id);
+            $this->session->set_flashdata('message', get_phrase('nurse_info_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        }
+        $data['nurse_id']=$id;
+        $data['page_name'] = 'edit_nurse';
+        $data['page_title'] = get_phrase('edit_nurse');
+        $this->load->view('backend/index', $data);
+        
+        
+    }
+    function nurse($task = "", $nurse_id = "") {
+        if ($task == "delete") {
+            $this->crud_model->delete_nurse_info($nurse_id);
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_nurse_info();
+            $this->session->set_flashdata('message', get_phrase('nurse_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+
+        $data['nurse_info'] = $this->crud_model->select_nurse_info($task);
+        $data['page_name'] = 'manage_nurse';
+        $data['page_title'] = get_phrase('nurses');
+        $this->load->view('backend/index', $data);
+    }
+
+ 
+
+   
+    function add_receptionist($task = "", $receptionist_id = "") {
+
+       if($this->input->post()){
+        $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'doctor[]','label' => 'Doctor','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+             $this->crud_model->save_receptionist_info();
+                $this->session->set_flashdata('message', get_phrase('receptionist_info_saved_successfuly'));
+                $this->email_model->account_opening_email('receptionist','receptionist', $email);
+                redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+
+           } 
+       
+       }
+      
+        $data['page_name'] = 'add_receptionist';
+        $data['page_title'] = get_phrase('add_receptionist');
+        $this->load->view('backend/index', $data);
+        
+    }
+    function edit_receptionist($id)
+    {
+        if($this->input->post()){
+             $config = array(
+        array('field' => 'fname','label' => 'First Name','rules' => 'required'),
+        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'department','label' => 'Department','rules' => 'required'),
+        array('field' => 'doctor[]','label' => 'Doctor','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation_for_edit($email, $id, 'receptionist','receptionist');
+            if ($validation == 1) {
+           $phone_number = $this->input->post('mobile');
+           $phone = mobile_validation_for_edit($phone_number,$id,'receptionist','receptionist');
+           if($phone == 1){
+
+            $this->crud_model->update_receptionist_info($id);
+            $this->session->set_flashdata('message', get_phrase('receptionist_info_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        }
+        $data['receptionist_id']=$id;
+        $data['page_name'] = 'edit_receptionist';
+        $data['page_title'] = get_phrase('edit_receptionist');
+        $this->load->view('backend/index', $data);
+        
+        
+    }
+    function receptionist($task = "", $receptionist_id = "") {
+        
+        if ($task == "delete") {
+            $this->crud_model->delete_receptionist_info($receptionist_id);
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_receptionist_info();
+            $this->session->set_flashdata('message', get_phrase('receptionist_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        $data['receptionist_info'] = $this->crud_model->select_receptionist_info($task);
+        $data['page_name'] = 'manage_receptionist';
+        $data['page_title'] = get_phrase('receptionists');
+        $this->load->view('backend/index', $data);
+    }
+    function add_stores()
+    {
+        if($this->input->post()){
+        $config = array(
+        array('field' => 'name','label' => 'First Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'address','label' => 'Address','rules' => 'required'),
+        array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
+        array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('phone_number');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+           $this->crud_model->save_medicalstores_info();
+                $this->session->set_flashdata('message', get_phrase('medical_stores_info_saved_successfuly'));
+                $this->email_model->account_opening_email('medicalstores','store', $email);
+              redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+    }
+      
+        $data['page_name'] = 'add_stores';
+        $data['page_title'] = get_phrase('Add medical store');
+        $this->load->view('backend/index', $data);
+        
+    }
+    
+  
+     function add_labs()
+    {
+     
+       if($this->input->post()){
+        $config = array(
+        array('field' => 'name','label' => 'First Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'address','label' => 'Address','rules' => 'required'),
+        array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
+        array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation($email);
+            if ($validation == 1) {
+           $phone_number = $this->input->post('phone_number');
+           $phone = mobile_validation($phone_number);
+           
+           if($phone == 1){
+            $this->crud_model->save_medicallabs_info();
+                $this->session->set_flashdata('message', get_phrase('medical_lab_info_saved_successfuly'));
+                $this->email_model->account_opening_email('medicallabs','lab', $email);
+              redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+    }
+        $data['page_name'] = 'add_labs';
+        $data['page_title'] = get_phrase('Add medical labs');
+        $this->load->view('backend/index', $data);
+        
+    }
+    
+     
+    
+     function edit_stores($id)
+    {
+        if($this->input->post()){
+            $config = array(
+        array('field' => 'name','label' => 'First Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'address','label' => 'Address','rules' => 'required'),
+        array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
+        array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation_for_edit($email, $id, 'medicalstores','store');
+            if ($validation == 1) {
+           $phone_number = $this->input->post('phone_number');
+           $phone = mobile_validation_for_edit($phone_number,$id,'medicalstores','store');
+           if($phone == 1){
+            $this->crud_model->update_medicalstores_info($id);
+                $this->session->set_flashdata('message', get_phrase('medical_store__info_updated_successfuly'));
+              redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        }
+       
+        $data['id']=$id;
+        $data['page_name'] = 'edit_stores';
+        $data['page_title'] = get_phrase('Edit medical store');
+        $this->load->view('backend/index', $data);
+        
+    }
+    
+     function edit_labs($id)
+    {
+        if($this->input->post()){
+            $config = array(
+        array('field' => 'name','label' => 'First Name','rules' => 'required'),
+        array('field' => 'description','label' => 'Description','rules' => 'required'),
+        array('field' => 'address','label' => 'Address','rules' => 'required'),
+        array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
+        array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
+        array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
+        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
+        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        );
+        $this->form_validation->set_rules($config);
+            if ($this->form_validation->run() == TRUE){
+           $email = $this->input->post('email');
+           $validation = email_validation_for_edit($email, $id, 'medicallabs','lab');
+            if ($validation == 1) {
+           $phone_number = $this->input->post('phone_number');
+           $phone = mobile_validation_for_edit($phone_number,$id,'medicallabs','lab');
+           if($phone == 1){
+            $this->crud_model->update_medicallabs_info($id);
+                $this->session->set_flashdata('message', get_phrase('medical_lab__info_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }else{
+            $this->session->set_flashdata('message', get_phrase('duplicate_phone_number'));
+        }
+            }else {
+                $this->session->set_flashdata('message', get_phrase('duplicate_email'));
+            }
+        }
+        }
+       
+        $data['id']=$id;
+        $data['page_name'] = 'edit_labs';
+        $data['page_title'] = get_phrase('Edit medical labs');
+        $this->load->view('backend/index', $data);
+        
+    }
+    
+    
+    
+     function medical_labs($task = "", $patient_id = "") {
+       
+        if ($task == "delete") {
+            $this->crud_model->delete_lab_info($patient_id);
+           redirect($this->session->userdata('last_page'));
+        }
+       
+      if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_lab_info();
+            $this->session->set_flashdata('message', get_phrase('medical_labs_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        $data['lab_info'] = $this->crud_model->select_lab_info($task);
+        $data['page_name'] = 'manage_labs';
+        $data['page_title'] = get_phrase('Medical labs');
+        $this->load->view('backend/index', $data);
+    }
+    
+    
+    
+    
+    function medical_stores($task = "", $patient_id = "") {
+       
+
+        if ($task == "delete") {
+            $this->crud_model->delete_store_info($patient_id);
+            redirect($this->session->userdata('last_page'));
+        }
+       if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_store_info();
+            $this->session->set_flashdata('message', get_phrase('medical_stores_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+      
+        $data['store_info'] = $this->crud_model->select_store_info($task);
+        $data['page_name'] = 'manage_stores';
+        $data['page_title'] = get_phrase('Medical stores');
+        $this->load->view('backend/index', $data);
+    }
+      function add_appointment()
+    {
+
+        if($this->input->post()){
+            $user= $this->input->post('user_id');
+            $appointment_date=$this->input->post('appointment_date');
+            $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
+      if($count < 2 ){  
+    $this->crud_model->save_appointment_info();
+    $this->session->set_flashdata('message', get_phrase('appointment_info_saved_successfuly'));
+    redirect($this->session->userdata('last_page'));
+    }else{
+       $this->session->set_flashdata('appointment_date_error',"You Can not Book More Than 2 Appointments Per Day");
+    }
+    }
+
+        $data['page_name'] = 'add_appointment';
+        $data['page_title'] = get_phrase('book_Appointment');
+        $this->load->view('backend/index', $data);
+    }
+    function edit_appointment($appointment_id = "")
+    {
+        if($this->input->post()){
+           
+    $this->crud_model->update_appointment_info();
+    $this->session->set_flashdata('message', get_phrase('appointment_info_updated_successfuly'));
+    redirect($this->session->userdata('last_page'));
+    }
+    $unique_id=$this->db->where('appointment_id',$appointment_id)->get('appointments')->row()->appointment_number;
+    
+        $data['appointment_id']=$appointment_id;
+        $data['page_name'] = 'edit_appointment';
+        $data['page_title'] = get_phrase('Appointment - ').$unique_id;
+        $this->load->view('backend/index', $data);
+    }
+    function appointment($task = "", $appointment_id = "") {
+        
+      
+        if ($task == "delete") {
+
+            $this->crud_model->delete_appointment_info($appointment_id);
+            $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "delete_multiple") {
+           $this->crud_model->delete_multiple_appointment_info();
+            $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
+    if ($this->session->flashdata('message') != ""){
+    echo "<script>".
+        toastr.info('<?php echo $this->session->flashdata("message");?>')."</script>";
+     }
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "close_multiple") {
+            $this->crud_model->close_multiple_appointment_info();
+            $this->session->set_flashdata('message', get_phrase('appointment_info_closed_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+       
+        $data['appointment_info'] = $this->crud_model->select_appointment_info($task);
+        $data['page_name'] = 'manage_appointment';
+        $data['page_title'] = get_phrase('manage_appointments');
         $this->load->view('backend/index', $data);
     }
     

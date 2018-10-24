@@ -4,7 +4,7 @@
         <!-- logo -->
         <div class="logo" style="">
             <a href="<?php echo base_url(); ?>">
-                <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:44px;"/>
+                <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: -15px;"/>
             </a>
         </div>  
     
@@ -42,7 +42,7 @@
     </div>
 
  <?php $menu = $_SESSION['menu'];?>
-    <div style="border-top:1px solid rgba(69, 74, 84, 0.7);"></div>	
+    <div style="border-top:1px solid rgba(69, 74, 84, 0.7);"></div> 
     <ul id="main-menu" class="">
       
         <!-- DASHBOARD -->
@@ -59,19 +59,19 @@
             </a>
         </li>
          <li class="<?php if ($page_name == 'manage_doctor') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/doctor">
+            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/doctor/<?php echo $this->session->userdata('hospital_id')?>">
                 <i class="fa fa-user-md"></i>
                 <span><?php echo get_phrase('doctors'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_nurse') echo 'active'; ?> ">
-            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/nurse">
+            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/nurse/<?php echo $this->session->userdata('hospital_id')?>">
                 <i class="fa fa-user"></i>
                 <span><?php echo get_phrase('nurses'); ?></span>
             </a>
         </li>
         <li class="<?php if ($page_name == 'manage_receptionist') echo 'active'; ?> ">
-            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/receptionist">
+            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/receptionist/<?php echo $this->session->userdata('hospital_id')?>">
                 <i class="fa fa-user"></i>
                 <span><?php echo get_phrase('receptionists'); ?></span>
             </a>
@@ -79,33 +79,24 @@
       
         
          <li class="<?php if ($page_name == 'manage_stores') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/medical_stores">
+            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/medical_stores/<?php echo $this->session->userdata('hospital_id')?>">
                 <i class="menu-icon fa fa-medkit "></i>
                 <span><?php echo get_phrase('medical_stores'); ?></span>
             </a>
         </li>
         
         <li class="<?php if ($page_name == 'manage_labs') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/medical_labs">
+            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/medical_labs/<?php echo $this->session->userdata('hospital_id')?>">
                 <i class="menu-icon fa  fa-plus-square "></i>
                 <span><?php echo get_phrase('medical_labs'); ?></span>
             </a>
         </li>
         <li class="">
-            <a href="#">
+            <a href="<?php echo base_url(); ?>index.php?hospitaladmins/appointment/<?php echo $this->session->userdata('hospital_id')?>">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>
                 <span><?php echo get_phrase('appointments'); ?></span>
             </a>
         </li>
-       
-        
-
-
-
-          
-
-
-
     </ul>
 
 </div>

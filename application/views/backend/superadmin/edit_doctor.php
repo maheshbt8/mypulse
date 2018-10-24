@@ -119,7 +119,7 @@ foreach ($single_doctor_info as $row) {
                                 <select name="branch" class="form-control" id="select_branch" value=""  onchange="return get_department(this.value)">
                                     <option value=""><?php echo get_phrase('select_hospital_first'); ?></option>
                                     <?php 
-                                $admins = $this->db->get('branch')->result_array();
+                                $admins = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['branch_id'] ?>" <?php if($row1['branch_id']==$row['branch_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -134,7 +134,7 @@ foreach ($single_doctor_info as $row) {
                                 <select name="department" class="form-control" id="select_department" value="">
                                     <option value=""><?php echo get_phrase('select_branch_first'); ?></option>
                                      <?php 
-                                $admins = $this->db->get('department')->result_array();
+                                $admins = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['department_id'] ?>" <?php if($row1['department_id']==$row['department_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 

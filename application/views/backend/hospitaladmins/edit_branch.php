@@ -10,12 +10,27 @@
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?hospitaladmins/branch/update/<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-sm-6">
-                 
+                    <input type="hidden" name="hospital" value="<?php echo $row['hospital_id'];?>"/>
+                    <!-- <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectHospital'];?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="hospital" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+                                <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
+                                <?php  
+                                $admins = $this->db->get('hospitals')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['hospital_id'] ?>"<?php if($row1['hospital_id']==$row['hospital_id']){echo "selected";}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectBranch'];?></label>
 
                         <div class="col-sm-8">
-                             <input type="hidden" name="hospital" value="<?= $this->session->userdata('hospital_id');?>">
                             <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['name']; ?>">
                         </div>
                     </div>
@@ -81,7 +96,7 @@
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
                             <div class="col-sm-8">
-                                <select name="city" class="form-control" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)">
+                                <select name="district" class="form-control" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)">
                                     <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
                                     <?php 
                                 $admins = $this->db->get_where('district')->result_array();
@@ -107,7 +122,7 @@
                             </div>
                     </div>
                    
-                      <!--  <div class="form-group">
+                       <!-- <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
 
                         <div class="col-sm-8">
@@ -122,8 +137,9 @@
                    </div>
                 
                     </div>
-                    <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                    <div class="col-sm-3 control-label col-sm-offset-9">
+                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>
                 </form>
 
@@ -144,7 +160,7 @@
     function get_state(country_id) {
     
         $.ajax({
-            url: '<?php echo base_url();?>index.php?hospitaladmins/get_state/' + country_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_state/' + country_id ,
             success: function(response)
             {
                 jQuery('#select_state').html(response);
@@ -156,7 +172,7 @@
     function get_city(state_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?hospitaladmins/get_city/' + state_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_city/' + state_id ,
             success: function(response)
             {
                 jQuery('#select_city').html(response);
@@ -168,7 +184,7 @@
      function get_district(city_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?hospitaladmins/get_district/' + city_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_district/' + city_id ,
             success: function(response)
             {
                 jQuery('#select_district').html(response);

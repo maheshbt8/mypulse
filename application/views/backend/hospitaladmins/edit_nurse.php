@@ -1,8 +1,6 @@
 <?php 
-/*$department_info = $this->db->get('department')->result_array();*/
 $single_nurse_info = $this->db->get_where('nurse', array('nurse_id' => $nurse_id))->result_array();
 foreach ($single_nurse_info as $row) {
-    
 ?>
  
 <div class="row">
@@ -27,7 +25,7 @@ foreach ($single_nurse_info as $row) {
             </li>
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/edit_nurse/<?php echo $nurse_id; ?>" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?hospitaladmins/edit_nurse/<?php echo $nurse_id; ?>" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            
@@ -81,7 +79,7 @@ foreach ($single_nurse_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label">  <?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="field-5" value="<?=$row['email']?>">
+                            <input type="email" name="email" class="form-control" id="field-5" value="<?=$row['email']?>" readonly>
                              <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -89,7 +87,7 @@ foreach ($single_nurse_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="field-6" value="<?=$row['phone']?>"   minlength="10" maxlength="10">  
+                            <input type="number" name="mobile" class="form-control" id="field-6" value="<?=$row['phone']?>"   minlength="10" maxlength="10" readonly>  
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
@@ -146,15 +144,12 @@ foreach ($single_nurse_info as $row) {
                                 </select>
                                  <span ><?php echo form_error('department'); ?></span>
                             </div>
-                    </div>  
-                    
-                    
-                    <?php print_r(explode(',',$row['doctor_id']));?>
+                    </div> 
                       <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
-                                <select multiple name="doctor[]" class="form-control" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>">
-                                    <option value=""><?php echo get_phrase('select_department_first'); ?></option>
+                                <select multiple name="doctor[]" class="form-control select2" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>">
+                                    
                                       <?php 
                                   if($row['department_id'] == '0'){ 
                                 $admins = $this->db->where('branch_id',$row['branch_id'])->get('doctors')->result_array();
@@ -162,8 +157,12 @@ foreach ($single_nurse_info as $row) {
                                     $admins = $this->db->where('department_id',$row['department_id'])->get('doctors')->result_array();
                                 }
 
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['department_id'] ?>" <?php if($row1['department_id']==$row['department_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                foreach($admins as $row1){
+                                    $doc=explode(',',$row['doctor_id']);
+                                    
+                                        
+                                    ?>
+                                <option value="<?php echo $row1['doctor_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['doctor_id']){echo 'selected';}}?>><?php echo $row1['name']; ?></option>
                                 
                                 <?php } ?>
                                 </select>
@@ -203,22 +202,22 @@ foreach ($single_nurse_info as $row) {
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
      <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('gender'); ?></label>
 
                         <div class="col-sm-8">
                             <select name="gender" class="form-control" id="gender" value="<?php echo set_value('gender'); ?>">
                                 <option value=""><?php echo get_phrase('select_gender'); ?></option>
-                                <option value="male"><?php echo get_phrase('male'); ?></option>
-                                <option value="female"><?php echo get_phrase('female'); ?></option>
+                                <option value="male"<?php if($row['gender']=='male'){echo "selected";}?>><?php echo get_phrase('male'); ?></option>
+                                <option value="female"<?php if($row['gender']=='female'){echo "selected";}?>><?php echo get_phrase('female'); ?></option>
                             </select>
                         </div>
                     </div>
@@ -226,7 +225,7 @@ foreach ($single_nurse_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('date_of_birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control datepicker" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off">
+                            <input type="text" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -240,72 +239,16 @@ foreach ($single_nurse_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('address'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
+                            <input type="text" name="address" class="form-control" id="address" value="<?=$row['address']?>">
                         </div>
                     </div>
-                    
-                    
-                    
-                            <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="country" class="form-control" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
-                                <option value=""><?php echo get_phrase('select_country'); ?></option>
-                                <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div> 
-                    
-                    
-                       <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
-                            <div class="col-sm-8">
-                                <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
-                                    <option value=""><?php echo get_phrase('select_country_first'); ?></option>
-
-                                </select>   
-                            </div>  
-                    </div>
-                    
-                    
-                       <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
-                            <div class="col-sm-8">
-                                <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
-                                    <option value=""><?php echo get_phrase('select_state_first'); ?></option>
-
-                                </select>
-                            </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
-                            <div class="col-sm-8">
-                                <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
-                                    <option value=""><?php echo get_phrase('select_district
-                                    _first'); ?></option>
-
-                                </select>
-                            </div>
-                    </div>
-                   
-                    
-                    
-                   
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profile_picture'); ?></label>
 
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="http://placehold.it/200x200" alt="...">
+                                    <img src="<?php echo base_url('uploads/nurse_image/').$row['nurse_id'].'.jpg'?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
@@ -321,43 +264,110 @@ foreach ($single_nurse_info as $row) {
                     </div>
                    
                 </div>
+                <div class="col-sm-6">
+                    <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="country" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_state(this.value)">
+                                <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
+                                <?php 
+                                $admins = $this->db->get_where('country')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> 
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
+                            <div class="col-sm-8">
+                                <select name="state" class="form-control" id="select_state"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_district(this.value)">
+                                    <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('state')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                </select>   
+                            </div>
+                    </div>
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
+                            <div class="col-sm-8">
+                                <select name="district" class="form-control" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)">
+                                    <option value=""><?php echo $this->lang->line('labels')['select_state_first'];?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('district')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                </select>
+                            </div>   
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
+                            <div class="col-sm-8">
+                                <select name="city" class="form-control" id="select_city"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  >
+                                    <option value=""><?php echo $this->lang->line('labels')['select_district_first'];?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('city')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <?php } ?>
+                                </select>
+                            </div>
+                    </div>
+                </div>
                     </div>
                     
                             
             </div>
-            </div></div></div></div>
+            </div>
+        </div>
+
+        </div>
+    </div>
             <!----CREATION FORM ENDS-->
     
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                  
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo set_value('qualification'); ?>">
+                            <input type="text" name="qualification" class="form-control" id="qualification" value="<?=$row['qualification']?>">
                         </div>
                     </div>
                    
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('experience'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="experience" class="form-control" id="experience" value="<?php echo set_value('experience'); ?>">
+                            <input type="text" name="experience" class="form-control" id="experience" value="<?=$row['experience']?>">
                         </div>
                     </div>
-                   
-                     
-                   
                 </div>
                     </div>    
                     </div>
@@ -365,8 +375,9 @@ foreach ($single_nurse_info as $row) {
                      </div></div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
+                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>
@@ -386,7 +397,7 @@ foreach ($single_nurse_info as $row) {
     function get_branch(hospital_id) {
     
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_branch/' + hospital_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_branch/' + hospital_id ,
             success: function(response)
             {
                 jQuery('#select_branch').html(response);
@@ -395,10 +406,10 @@ foreach ($single_nurse_info as $row) {
 
     }
     
-    function get_department(branch_id) {
+    function get_department_all(branch_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_department/' + branch_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_department/' + branch_id ,
             success: function(response)
             {
                 jQuery('#select_department').html(response);
@@ -412,7 +423,7 @@ foreach ($single_nurse_info as $row) {
 if(department_id == 'all'){
     var branch_id=$('#select_branch').val();
     $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_doctor/all/' + branch_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_doctor/all/' + branch_id ,
             success: function(response)
             {
                 jQuery('#select_doctor').html(response);
@@ -420,7 +431,7 @@ if(department_id == 'all'){
         });
 }else{
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_doctor/' + department_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_doctor/' + department_id ,
             success: function(response)
             {
                 jQuery('#select_doctor').html(response);
@@ -438,7 +449,7 @@ if(department_id == 'all'){
     function get_state(country_id) {
     
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_state/' + country_id ,
             success: function(response)
             {
                 jQuery('#select_state').html(response);
@@ -450,7 +461,7 @@ if(department_id == 'all'){
     function get_city(state_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + state_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_city/' + state_id ,
             success: function(response)
             {
                 jQuery('#select_city').html(response);
@@ -462,7 +473,7 @@ if(department_id == 'all'){
      function get_district(city_id) {
 
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + city_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_district/' + city_id ,
             success: function(response)
             {
                 jQuery('#select_district').html(response);

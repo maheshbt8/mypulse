@@ -163,7 +163,25 @@ $website_language_google = $this->session->userdata('website_language_google') !
       </li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="entypo-user"></i>
-        <?php echo $this->session->userdata('login_type'); ?>
+        <?php
+        if($account_type == 'superadmin'){
+  $user_role='Super Admin';
+}elseif($account_type == 'hospitaladmins'){
+  $user_role='Hospital Admin';
+}elseif($account_type == 'doctors'){
+  $user_role='Doctor';
+}elseif($account_type == 'nurse'){
+  $user_role='Nurse';
+}elseif($account_type == 'receptionist'){
+  $user_role='Receptionist';
+}elseif($account_type == 'medicalstores'){
+  $user_role='Pharmacist';
+}elseif($account_type == 'medicallabs'){
+  $user_role='Laboratorist';
+}elseif($account_type == 'users'){
+  $user_role='MyPulse Users';
+}
+        echo $user_role; ?>
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_profile">

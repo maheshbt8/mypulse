@@ -898,9 +898,13 @@ function email_verification($task="",$id="")
     {
         return $this->db->get('branch')->result_array();
     }
-     function select_store_info()
+     function select_store_info($hospital_id='')
     {
+        if($hospital_id !=''){
+        return $this->db->where('hospital',$hospital_id)->get('medicalstores')->result_array();
+        }else{
         return $this->db->get('medicalstores')->result_array();
+        }
     }
    
     function update_branch_info($branch_id)
@@ -1075,9 +1079,13 @@ function email_verification($task="",$id="")
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
     }
     
-    function select_doctor_info()
+    function select_doctor_info($hospital_id = '')
     {
+        if($hospital_id !=''){
+        return $this->db->where('hospital_id',$hospital_id)->get('doctors')->result_array();
+        }else{
         return $this->db->get('doctors')->result_array();
+        }
     }
     
        function update_doctor_availability_info($doctor_id)
@@ -1489,9 +1497,13 @@ $que=$this->db->insert('availability_slat',$data);
         return $this->db->get('checkups')->result_array();
     }
     
-     function select_lab_info()
+     function select_lab_info($hospital_id='')
     {
+        if($hospital_id !=''){
+        return $this->db->where('hospital',$hospital_id)->get('medicalstores')->result_array();
+        }else{
         return $this->db->get('medicallabs')->result_array();
+        }
     }
     
     function select_checkup_infon()
@@ -1704,9 +1716,13 @@ function select_user_information($patient_id="")
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/nurse_image/" . $nurse_id . '.jpg');
     }
     
-    function select_nurse_info()
+    function select_nurse_info($hospital_id='')
     {
+        if($hospital_id !=''){
+        return $this->db->where('hospital_id',$hospital_id)->get('nurse')->result_array();
+        }else{
         return $this->db->get('nurse')->result_array();
+        }
     }
     
     function update_nurse_info($nurse_id)
@@ -1904,9 +1920,13 @@ function select_user_information($patient_id="")
         move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
     }
     
-    function select_receptionist_info()
+    function select_receptionist_info($hospital_id='')
     {
+        if($hospital_id !=''){
+        return $this->db->where('hospital_id',$hospital_id)->get('receptionist')->result_array();
+        }else{
         return $this->db->get('receptionist')->result_array();
+        }
     }
     
     function update_receptionist_info($receptionist_id)

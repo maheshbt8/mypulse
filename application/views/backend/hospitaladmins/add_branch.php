@@ -8,6 +8,7 @@
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?hospitaladmins/branch/create" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-sm-6">
+                    <input type="hidden" name="hospital" value="<?php echo $this->session->userdata('hospital_id');?>"/>
                      <!-- <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectHospital'];?></label>
 
@@ -27,7 +28,6 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="hidden" name="hospital" value="<?= $this->session->userdata('hospital_id');?>">
                             <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
                         </div>
                     </div>
@@ -110,8 +110,9 @@
                    </div>
                 
                     </div>
-                    <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                    <div class="col-sm-3 control-label col-sm-offset-9">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>
                 </form>
 
@@ -128,7 +129,7 @@
 	function get_state(country_id) {
     
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?hospitaladmins/get_state/' + country_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_state/' + country_id ,
             success: function(response)
             {
                 jQuery('#select_state').html(response);
@@ -140,7 +141,7 @@
     function get_city(state_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?hospitaladmins/get_city/' + state_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_city/' + state_id ,
             success: function(response)
             {
                 jQuery('#select_city').html(response);
@@ -152,7 +153,7 @@
      function get_district(city_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?hospitaladmins/get_district/' + city_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_district/' + city_id ,
             success: function(response)
             {
                 jQuery('#select_district').html(response);

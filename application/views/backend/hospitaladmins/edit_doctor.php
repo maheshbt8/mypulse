@@ -27,7 +27,7 @@ foreach ($single_doctor_info as $row) {
             </li>
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/edit_doctor/<?php echo $row['doctor_id']; ?>" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?hospitaladmins/edit_doctor/<?php echo $row['doctor_id']; ?>" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            
@@ -36,7 +36,7 @@ foreach ($single_doctor_info as $row) {
             <div class="tab-pane box active" id="list">
                 
                 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -45,7 +45,7 @@ foreach ($single_doctor_info as $row) {
 
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                         <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first_name'); ?></label>
 
@@ -81,20 +81,22 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>">
+                            <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>" readonly>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
-                    </div>
+                    </div>  
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="mobile" value="<?=$row['phone']?>" minlength="10" maxlength="10">  
+                            <input type="number" name="mobile" class="form-control" id="mobile" value="<?=$row['phone']?>" minlength="10" maxlength="10"readonly>  
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
-                 
-                  <div class="form-group">     
+                  <input type="hidden" name="hospital" value="<?php echo $this->session->userdata('hospital_id');?>"/>
+                 <!--  <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
@@ -110,14 +112,14 @@ foreach ($single_doctor_info as $row) {
                             </select>
                              <span ><?php echo form_error('hospital'); ?></span>
                         </div>
-                    </div>
+                    </div> -->
                   <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
                                 <select name="branch" class="form-control" id="select_branch" value=""  onchange="return get_department(this.value)">
                                     <option value=""><?php echo get_phrase('select_hospital_first'); ?></option>
                                     <?php 
-                                $admins = $this->db->get('branch')->result_array();
+                                $admins = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['branch_id'] ?>" <?php if($row1['branch_id']==$row['branch_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -132,7 +134,7 @@ foreach ($single_doctor_info as $row) {
                                 <select name="department" class="form-control" id="select_department" value="">
                                     <option value=""><?php echo get_phrase('select_branch_first'); ?></option>
                                      <?php 
-                                $admins = $this->db->get('department')->result_array();
+                                $admins = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['department_id'] ?>" <?php if($row1['department_id']==$row['department_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -175,14 +177,14 @@ foreach ($single_doctor_info as $row) {
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
      <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
 
@@ -198,7 +200,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('date_of_birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="date" name="dob" class="form-control" id="dob" placeholder="<?php echo get_phrase('date_of_birth'); ?>"> value="<?php echo $row['dob']; ?>">
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off" value="<?php echo $row['dob']; ?>">
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -215,6 +217,31 @@ foreach ($single_doctor_info as $row) {
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo $row['address']; ?>">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profile_picture'); ?></label>
+
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="<?php echo $this->crud_model->get_image_url('doctor' , $row['doctor_id']);?>" alt="...">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new"><?php echo get_phrase('select_profile'); ?></span>
+                                        <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
+                                        <input type="file" name="userfile" id="userfile" accept="image/*">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                </div>
+                <div class="col-sm-6">
+                    
                    <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
@@ -275,29 +302,7 @@ foreach ($single_doctor_info as $row) {
                                 <?php } ?>
                                 </select>
                             </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profile_picture'); ?></label>
-
-                        <div class="col-sm-5">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url(); ?>uploads/doctor_image/<?php echo $row['doctor_id']; ?>.jpg" alt="...">
-                                </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-                                <div>
-                                    <span class="btn btn-white btn-file">
-                                        <span class="fileinput-new"><?php echo get_phrase('select_profile'); ?></span>
-                                        <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
-                                        <input type="file" name="userfile" id="userfile" accept="image/*">
-                                    </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                   
+                    </div>   
                 </div>
                     </div>
                     
@@ -309,26 +314,19 @@ foreach ($single_doctor_info as $row) {
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                  <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
 
                         <div class="col-sm-8">
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo $row['qualification']; ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="specializations" class="form-control" id="specializations" value="<?php echo $row['specializations']; ?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -338,11 +336,40 @@ foreach ($single_doctor_info as $row) {
                             <input type="text" name="experience" class="form-control" id="experience" value="<?php echo $row['experience']; ?>">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('registration_number'); ?></label>
 
+                        <div class="col-sm-8">
+                            <input type="text" name="registration" class="form-control" id="registration" value="<?php echo $row['registration']; ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
 
-                   
-                     
-                   
+                        <div class="col-sm-8">
+                            <input type="text" name="specializations" class="form-control" id="specializations" value="<?php echo $row['specializations']; ?>">
+                        </div>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
+                            <div class="col-sm-8">
+                                <select multiple name="specializations[]" class="form-control  select2" id="select_doctor" value="<?php echo set_value('specializations[]'); ?>">
+                                      <?php 
+                                    $admins = $this->db->get('specializations')->result_array();
+                                foreach($admins as $row1){
+                                    $doc=explode(',',$row['specializations']);
+                                    ?>
+                            <!-- <input type="checkbox" name="specializations[]" class="" id="specializations" value="<?php echo $row1['specializations_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['specializations_id']){echo 'checked';}}?>><?php echo $row1['name']; ?><br/> -->
+                                <option value="<?php echo $row1['specializations_id'] ?>" <?php for($i=0;$i<count($doc);$i++){if($doc[$i] == $row1['specializations_id']){echo 'selected';}}?>><?php echo $row1['name']; ?></option>
+                                
+                                <?php } ?>
+                                </select>
+                                <span ><?php echo form_error('doctor'); ?></span>
+                            </div>
+                    </div>
+                    
                 </div>
                     </div>    
                     </div>
@@ -350,8 +377,9 @@ foreach ($single_doctor_info as $row) {
                      </div></div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>
    </form>
@@ -376,7 +404,7 @@ foreach ($single_doctor_info as $row) {
 	function get_branch(hospital_id) {
     
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_branch/' + hospital_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_branch/' + hospital_id ,
             success: function(response)
             {
                 jQuery('#select_branch').html(response);
@@ -388,7 +416,7 @@ foreach ($single_doctor_info as $row) {
     function get_department(branch_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_department/' + branch_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_department/' + branch_id ,
             success: function(response)
             {
                 jQuery('#select_department').html(response);
@@ -406,7 +434,7 @@ foreach ($single_doctor_info as $row) {
 	function get_state(country_id) {
     
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_state/' + country_id ,
             success: function(response)
             {
                 jQuery('#select_state').html(response);
@@ -418,7 +446,7 @@ foreach ($single_doctor_info as $row) {
     function get_city(state_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_city/' + state_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_city/' + state_id ,
             success: function(response)
             {
                 jQuery('#select_city').html(response);
@@ -430,7 +458,7 @@ foreach ($single_doctor_info as $row) {
      function get_district(city_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + city_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_district/' + city_id ,
             success: function(response)
             {
                 jQuery('#select_district').html(response);

@@ -11,7 +11,7 @@
 			</li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-					 <?php echo get_phrase('general_info'); ?>
+					 <?php echo get_phrase('incharge_info'); ?>
                 </a>
 			</li>
 				<li>
@@ -21,7 +21,7 @@
 			</li>
 		</ul>
     	<!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/add_stores/" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?hospitaladmins/add_stores/" method="post" enctype="multipart/form-data">
              
 		<div class="tab-content">
 		   
@@ -30,14 +30,14 @@
             <div class="tab-pane box active" id="list">
 				
 				<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
         <div class="panel-body">
     
                 
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('name'); ?></label>
 
@@ -73,6 +73,22 @@
                             <span ><?php echo form_error('phone_number'); ?></span>
                         </div>
                     </div>
+                   
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
+
+                        <div class="col-sm-8">
+                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
+                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
+                                <option value="1" selected=""><?php echo $this->lang->line('labels')['active'];?></option>
+                                <option value="2"><?php echo $this->lang->line('labels')['inactive'];?></option>
+                            </select>
+                            <span ><?php echo form_error('status'); ?></span>
+                        </div>
+                    </div>
+                   
+                </div>
+                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('owner/MD_name'); ?></label>
 
@@ -125,18 +141,7 @@
                                 <span ><?php echo form_error('branch'); ?></span>
                             </div>
                     </div>
-                    <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
-
-                        <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('status'); ?>">
-                                <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
-                                <option value="1" selected=""><?php echo $this->lang->line('labels')['active'];?></option>
-                                <option value="2"><?php echo $this->lang->line('labels')['inactive'];?></option>
-                            </select>
-                            <span ><?php echo form_error('status'); ?></span>
-                        </div>
-                    </div>
+                 
                    
                 </div>
                     </div>
@@ -155,14 +160,14 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 	<div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
              <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                 
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
@@ -204,7 +209,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="date" name="dob" class="form-control" id="dob" value="<?php echo set_value('dob'); ?>">
+                            <input type="text" name="dob" class="form-control" autocomplete="off" id="dob" value="<?php echo set_value('dob'); ?>">
                         </div>
                     </div>
                     
@@ -215,28 +220,28 @@
                             <input type="text" name="in_address" class="form-control" id="in_address" value="<?php echo set_value('in_address'); ?>">
                         </div>
                     </div>
-                    
-                   
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
 
-						<div class="col-sm-5">
-							<div class="fileinput fileinput-new" data-provides="fileinput">
-								<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-									<img src="http://placehold.it/200x200" alt="...">
-								</div>
-								<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-								<div>
-									<span class="btn btn-white btn-file">
-										<span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
-										<span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
-										<input type="file" name="userfile" accept="image/*" id="userfile" value="userfile">
-									</span>
-									<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
-								</div>
-							</div>
-						</div>
-					</div>
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="http://placehold.it/200x200" alt="...">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
+                                        <span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile" value="userfile">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                    
                 </div>
                     </div>
@@ -247,14 +252,14 @@
 		
 			<div class="tab-pane box" id="pro" style="padding: 5px">
                	<div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
            <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                  
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['qualification'];?></label>
@@ -263,7 +268,8 @@
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo set_value('qualification'); ?>">
                         </div>
                     </div>
-                   
+                </div>
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['experience'];?></label>
 
@@ -271,9 +277,6 @@
                             <input type="text" name="experience" class="form-control" id="experience" value="<?php echo set_value('experience'); ?>">
                         </div>
                     </div>
-                   
-				     
-                   
                 </div>
                     </div>    
                     </div>          
@@ -281,8 +284,9 @@
 			</div></div></div>
                 
                     </div>
-                     <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                     <div class="col-sm-3 control-label col-sm-offset-9">
+                        <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
         </div>
    </form>
@@ -299,7 +303,7 @@
     function get_branch(hospital_id) {
     
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_branch/' + hospital_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_branch/' + hospital_id ,
             success: function(response)
             {
                 jQuery('#select_branch').html(response);

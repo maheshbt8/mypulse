@@ -15,7 +15,7 @@ foreach ($single_labs_info as $row) {
             </li>      
             <li>
                 <a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>  
-                    <?php echo get_phrase('general_info'); ?>
+                    <?php echo get_phrase('incharge_info'); ?>
                 </a>
             </li>
                 <li>
@@ -25,7 +25,7 @@ foreach ($single_labs_info as $row) {
             </li>
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/edit_labs/<?php echo $id ?>" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?hospitaladmins/edit_labs/<?php echo $id ?>" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            
@@ -65,23 +65,31 @@ foreach ($single_labs_info as $row) {
                             <span ><?php echo form_error('address'); ?></span>
                         </div>
                     </div>
-                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>"value="<?=$row['email']?>">
-                            <span ><?php echo form_error('email'); ?></span>
-                        </div>
-                    </div>
                        <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10"> 
+                            <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10" readonly> 
                             <span ><?php echo form_error('phone_number'); ?></span> 
                         </div>
                     </div>
-                    <div class="form-group">
+                <div class="form-group">
+                        <label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('status');?></label>
+                        
+                        <div class="col-sm-8">
+                             
+                         <select name="status" class="form-control selectbox" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                               <option value=""><?php echo get_phrase('select_status'); ?></option>
+                                 <option value="1"  <?php if($row['status']=='1'){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
+                                <option value="2"  <?php if($row['status']=='2'){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
+                            </select>
+                            <span ><?php echo form_error('status'); ?></span>
+                        </div> 
+                    </div>
+                   
+                </div>
+                <div class="col-sm-6">
+            <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('owner/md name'); ?></label>
 
                         <div class="col-sm-8">
@@ -97,9 +105,14 @@ foreach ($single_labs_info as $row) {
                             <span ><?php echo form_error('owner_mobile'); ?></span>
                         </div>
                     </div>
-                  
-                 
-                 
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email'); ?></label>
+
+                        <div class="col-sm-8">
+                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>"value="<?=$row['email']?>" readonly>
+                            <span ><?php echo form_error('email'); ?></span>
+                        </div>
+                    </div>
             <div class="form-group">
                         <label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('hospital');?></label>
                         
@@ -135,21 +148,7 @@ foreach ($single_labs_info as $row) {
                           <span ><?php echo form_error('branch'); ?></span>
                         </div>   
                     </div>
-                    
-                        <div class="form-group">
-                        <label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('status');?></label>
-                        
-                        <div class="col-sm-8">
-                             
-                         <select name="status" class="form-control selectbox" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
-                               <option value=""><?php echo get_phrase('select_status'); ?></option>
-                                 <option value="1"  <?php if($row['status']=='1'){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
-                                <option value="2"  <?php if($row['status']=='2'){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
-                            </select>
-                            <span ><?php echo form_error('status'); ?></span>
-                        </div> 
-                    </div>
-                   
+                 
                 </div>
                     </div>
                    
@@ -168,14 +167,14 @@ foreach ($single_labs_info as $row) {
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
           <div class="panel-body">
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                 
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first name'); ?></label>
@@ -218,7 +217,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control datepicker" id="dob" value="<?=$row['dob']?>">
+                            <input type="text" name="dob" class="form-control" autocomplete="off" id="dob" value="<?=$row['dob']?>">
                         </div>
                     </div>
                     
@@ -229,15 +228,15 @@ foreach ($single_labs_info as $row) {
                             <input type="text" name="in_address" class="form-control" id="in_address" value="<?=$row['in_address']?>">
                         </div>
                     </div>
-                    
-                   
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
 
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url(); ?>uploads/medical_stores_image/<?php echo $row['store_id']; ?>.jpg" alt="...">
+                                    <img src="<?php echo base_url(); ?>uploads/medical_labs/<?php echo $row['store_id']; ?>.jpg" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
@@ -265,15 +264,14 @@ foreach ($single_labs_info as $row) {
         
             <div class="tab-pane box" id="pro" style="padding: 5px">
                 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                 
                         
                     <div class="row">
-                        <div class="col-md-12">
-                 
+                        <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
 
@@ -281,13 +279,8 @@ foreach ($single_labs_info as $row) {
                             <input type="text" name="qualification" class="form-control" id="qualification" value="<?=$row['qualification']?>">
                         </div>
                     </div>
-                    <!-- <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('profession'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="profession" class="form-control" id="profession"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['profession']?>">
-                        </div>
-                    </div> -->
+                </div>
+                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('experience'); ?></label>
 
@@ -295,26 +288,16 @@ foreach ($single_labs_info as $row) {
                             <input type="text" name="experience" class="form-control" id="experience" value="<?=$row['experience']?>">
                         </div>
                     </div>
-                   
-                     
-                   
                 </div>
                     </div>    
                     </div>
-                   
-                  
-                        
-        
-                    
-  
-            
-        
     </div>
 </div>
 </div>
 </div>
- <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="submit" class="btn btn-success" value="Submit">
+ <div class="col-sm-3 control-label col-sm-offset-9">
+                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>   
  </form>
 </div>

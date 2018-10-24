@@ -4,13 +4,13 @@ $single_bed_info = $this->db->get_where('bed', array('bed_id' => $bed_id))->resu
 foreach ($single_bed_info as $row) {
 ?>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
 
             <div class="panel panel-primary" data-collapsed="0">
 
                 <div class="panel-body">
 
-                    <form role="form" class="form-horizontal form-groups-bordered" action="<?php echo base_url(); ?>index.php?superadmin/bed/update/<?php echo $row['ward_id']; ?>" method="post" enctype="multipart/form-data">
+                    <form role="form" class="form-horizontal form-groups-bordered" action="<?php echo base_url(); ?>index.php?hospitaladmins/bed/update/<?php echo $row['ward_id']; ?>" method="post" enctype="multipart/form-data">
    	<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                         
@@ -90,8 +90,9 @@ foreach ($single_bed_info as $row) {
                        </div>
 
 
-                        <div class="col-sm-3 control-label col-sm-offset-2">
-                            <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
+                        <div class="col-sm-6 control-label col-sm-offset-6">
+                            <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>
                     </form>
 
@@ -111,7 +112,7 @@ foreach ($single_bed_info as $row) {
   function get_branch(hospital_id) {
 
       $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_branch/' + hospital_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_branch/' + hospital_id ,
             success: function(response)
             {
                
@@ -123,7 +124,7 @@ foreach ($single_bed_info as $row) {
     function get_department(branch_id) {
 
       $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_department/' + branch_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_department/' + branch_id ,
             success: function(response)
             {
                
@@ -135,7 +136,7 @@ foreach ($single_bed_info as $row) {
     function get_ward(ward_id) {
 
       $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_ward/' + ward_id ,
+            url: '<?php echo base_url();?>index.php?ajax/get_ward/' + ward_id ,
             success: function(response)
             {
                
