@@ -5,7 +5,7 @@
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
         $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
         ?>  
-<title><?php echo $this->lang->line('labels')['login'];?> | <?php echo $system_title; ?></title>
+<title><?php echo $system_title; ?> - <?php echo $this->lang->line('labels')['login'];?> </title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -37,7 +37,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');height:auto;">
 			<div class="wrap-login100 p-t-190 p-b-30"> 
-				<form class="login100-form validate-form" action="<?php echo base_url();?>index.php?login/validate_login" method="post">
+				<form class="login100-form validate-form" action="<?php echo base_url();?>login/validate_login" method="post">
 					<div class="login100-form-avatar">
 						<img class="img-responsive" src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR" style="width:100%;">
 					</div>
@@ -75,7 +75,7 @@
 						</a>
 						 
 						 <br>
-							<a class="txt1" href="<?php echo base_url(); ?>index.php?login/register" ><h5 style="color:white;">
+							<a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
 							<?php echo $this->lang->line('do_not_have_account');?></h5>
 							<i class="fa fa-long-arrow-right"></i>						
 						</a>

@@ -22,10 +22,10 @@ class Superadmin extends CI_Controller {
     /*     * *default function, redirects to login page if no admin logged in yet** */
 
     public function index() {
-        
-        if ($this->session->userdata('superadmin_login') != 1) 
+        echo "hi";die;
+        if ($this->session->userdata('superadmin_login') != 1 || $this->session->userdata('hospitaladmin_login') != 1) 
             redirect(base_url() . 'index.php?login', 'refresh');
-        if ($this->session->userdata('superadmin_login') == 1)
+        if ($this->session->userdata('superadmin_login') == 1 || $this->session->userdata('hospitaladmin_login') == 1)
             redirect(base_url() . 'index.php?superadmin/dashboard', 'refresh');
     }
 
@@ -46,8 +46,9 @@ $this->load->helper('download');
 force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
     function dashboard() {
+
         $page_data['page_name'] = 'dashboard';
-        $page_data['page_title'] = get_phrase('superadmin_dashboard');
+        $page_data['page_title'] = get_phrase('super_admin_dashboard');
         $this->load->view('backend/index', $page_data);
     }
 
@@ -1049,7 +1050,8 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
             $branch=$this->input->post('branch');
             $this->crud_model->save_department_info();
             $this->session->set_flashdata('message', get_phrase('department_info_saved_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/get_hospital_departments/'.$branch);
+            redirect($this->session->userdata('last_page'));
+            /*redirect(base_url() . 'index.php?superadmin/get_hospital_departments/'.$branch);*/
         }
 
         if ($task == "update") {

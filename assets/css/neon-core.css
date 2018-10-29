@@ -42,6 +42,8 @@ img {
 }
 .row{
   margin-bottom: 0px;
+  /*margin-left: -15px;
+  margin-right: -15px;*/
 }
 a.hiper{
   color:#337ab7;
@@ -2741,7 +2743,7 @@ input[type="button"].btn-block {
   right: 0;
   top: 0;
   bottom: 0;
-  padding-left: 261px;
+  padding-left: 250px;
   width: 100%;
 }
 .page-container:before,
@@ -6269,7 +6271,9 @@ textareatable .replace-inputs input {
   height: auto;
 }
 .dataTables_wrapper .dataTable {
-  width: 100% !important;
+  width: 98% !important;
+  margin-left: 15px;
+  /*margin-right:15px; */
 }
 /* Table Tools */
 @media (min-width: 767px) {

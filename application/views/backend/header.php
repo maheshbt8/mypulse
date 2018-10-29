@@ -34,7 +34,7 @@ body {
 ul.dropdown-menu.notification{
 border-radius:4px;
 height:250px;
-width:250px;
+width:300px;
 background-color:#f1f1f1;
 }
 li.notification-header{
@@ -57,6 +57,13 @@ padding: 10px;
 }
 .nav > li{
   float: left;
+}
+.span-title{
+    display: inline-block;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
 }
 </style>
 
@@ -93,9 +100,9 @@ $website_language_google = $this->session->userdata('website_language_google') !
   </ul>
       </li>
       <li class="dropdown">
-        <?php 
-        $user_id=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-          $noti_read=$this->db->get_where('notification',array('user_id'=>$user_id,'isRead'=>2));
+        <?php /*
+        $user_id=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');*/
+          $noti_read=$this->db->get_where('notification',array('user_id'=>$account_details,'isRead'=>2));
         ?>
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-bell"></i>
         <span class="info"><!-- <?php echo $noti_read->num_rows();?> --></span></a>
@@ -103,17 +110,17 @@ $website_language_google = $this->session->userdata('website_language_google') !
           <li class="notification-header"><h4>Notifications</h4></li>
           <div class="notification-body">
           <?php 
-          $private_message_data=$noti_read->result_array();/*$this->crud_model->select_notification()*/
+          $private_message_data=$noti_read->result_array();
             $i=1;foreach ($private_message_data as $row) {
             if(date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d'))
               {
                 ?>
-          <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_notification/<?= $row['message_id'];?>"><li class="notification-list"><span><?= $row['title']?></span></li></a>
+          <a href="<?php echo base_url()?>main/read_notification/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title']?></span></li></a>
           <?php }
           }?>
           </div>
           <hr/>
-          <a href="<?php echo base_url()?>index.php?<?= $account_type?>/notification" class="hiper"><center>All Notifications</center></a>
+          <a href="<?php echo base_url()?>main/notification" class="hiper"><center>All Notifications</center></a>
         </ul>
       </li>
       <li class="dropdown">
@@ -123,12 +130,11 @@ $website_language_google = $this->session->userdata('website_language_google') !
           <li class="notification-header"><h4>Messages</h4></li>
           <div class="notification-body">
           <?php $message_data=$this->crud_model->select_message();
-
             $i=0;foreach ($message_data as $row) {
        $message1=explode(',',$row['user_to']);
        $message2=explode(',',$row['user_too']);
+       $hospi='';
         for($m1=0;$m1<count($message1);$m1++){
-            
     if($message1[$m1] == 1){
     $hospi='hospitaladmins';    
     }elseif($message1[$m1] == 2){
@@ -144,26 +150,42 @@ $website_language_google = $this->session->userdata('website_language_google') !
     }elseif($message1[$m1] == 7){
     $hospi='users';
     }
-    if((($row['user_too']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id')) or $hospi==$this->session->userdata('login_type')) and (date('Y-m-d',strtotime($row['created_at']))==date('Y-m-d')))
+  
+  $hospi1='';
+  for($m2=0;$m2<count($message2);$m2++){
+    if($message2[$m2] == $account_details){
+    $hospi1=$message2[$m2];    
+    }
+    if($account_type == 'superadmin'){
+    if($hospi1 == $account_details || $hospi==$account_type)
               {
                ?>
-               <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span><?= $row['title']?></span>
+               <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title'];?></span>
+               </li>
+              </a>
+               <?php 
+              }  
+    }else{
+    if(($hospi1 == $account_details || $hospi==$account_type) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')))
+              {
+               ?>
+               <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title'];?></span>
                </li>
               </a>
                <?php 
               }
             }
 
-          $i++;}?> 
+          $i++;}}}?> 
           </div>
           <hr/>
-          <a href="<?php echo base_url()?>index.php?<?= $account_type?>/message" class="hiper"><center>All Messages</center></a>
+          <a href="<?php echo base_url()?>main/message" class="hiper"><center>All Messages</center></a>
         </ul>
        
       </li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="entypo-user"></i>
-        <?php
+        <!-- <?php
         if($account_type == 'superadmin'){
   $user_role='Super Admin';
 }elseif($account_type == 'hospitaladmins'){
@@ -181,22 +203,23 @@ $website_language_google = $this->session->userdata('website_language_google') !
 }elseif($account_type == 'users'){
   $user_role='MyPulse Users';
 }
-        echo $user_role; ?>
+echo $user_role; ?> -->
+<?php echo $this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?>
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_profile">
+          <li><a href="<?php echo base_url()?>main/manage_profile">
                           <i class="entypo-info"></i>
               <span>Profile</span>
             </a></li>
             <li class="divider"></li>
-          <li><a href="<?php echo base_url()?>index.php?<?= $account_type?>/manage_password">
+          <li><a href="<?php echo base_url()?>main/manage_password">
                           <i class="entypo-key"></i>
               <span>Change Password</span>
             </a></li>
           
         </ul>
       </li>
-      <li><a href="<?php echo base_url(); ?>index.php?login/logout">
+      <li><a href="<?php echo base_url(); ?>login/logout">
                     Log Out <i class="entypo-logout right"></i>
                 </a></li>
     </ul>
@@ -269,7 +292,7 @@ $('ul#lang_scroll_div li a').on('click',function(){
 $("#google_translate_element").hide();
  function get_lang(lang_id) {
      $.ajax({
-            url: '<?php echo base_url();?>index.php?ajax/get_lang/' + lang_id ,
+            url: '<?php echo base_url();?>ajax/get_lang/' + lang_id ,
             success: function(response)
             {
                 jQuery('#selected').html(response);

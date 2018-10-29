@@ -28,10 +28,7 @@
                     <h4 class="modal-title"><?php echo $system_name;?></h4>
                 </div>
                 
-                <div class="modal-body" style="height:500px; overflow:auto;">
-                
-                    
-                    
+                <div class="modal-body" style="height:500px; overflow:auto;">   
                 </div>
                 
                 <div class="modal-footer">
@@ -40,11 +37,6 @@
             </div>
         </div>
     </div>
-    
-    
-    
-    
-    
     <script type="text/javascript">
 	function confirm_modal(delete_url)
 	{
@@ -77,15 +69,6 @@
         jQuery('#alldelete').modal('show', {backdrop: 'static'});
         $( "#delete_link_all" ).click(function() {
             form.submit();
-            $.ajax({
-            type: 'post',
-            url: '<?php echo base_url();?>index.php?superadmin/appointment/delete_multiple/',
-            data: $('form').serialize(),
-            success: function (response) {
-               /* alert(response);
-              alert('form was submitted');*/
-            }
-          });
         });
 }
    </script>
@@ -130,7 +113,38 @@
             /*form.submit();*/
             $.ajax({
             type: 'post',
-            url: '<?php echo base_url();?>index.php?superadmin/appointment/close_multiple/',
+            url: '<?php echo base_url();?>main/appointment/close_multiple/',
+            data: $('form').serialize(),
+            success: function (response) {
+                window.location.reload();
+            }
+          });
+        });
+}
+   </script>
+   <div class="modal fade" id="close_all">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top:100px;">
+                
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" style="text-align:center;">Are you sure to Close this Appointments ?</h4>
+                </div>
+                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+                    <button class="btn btn-warning" id="close_link_all" onClick="confSubmit();"><?php echo 'Close';?></button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><?php echo 'Cancel';?></button>
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+       function confclose(form) {
+        jQuery('#close_all').modal('show', {backdrop: 'static'});
+        $( "#close_link_all" ).click(function() {
+            /*form.submit();*/
+            $.ajax({
+            type: 'post',
+            url: '<?php echo base_url();?>main/appointment/close_multiple/',
             data: $('form').serialize(),
             /*success: function (response) {
                 alert(response);

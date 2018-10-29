@@ -32,7 +32,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');">
 			<div class="wrap-login100 p-t-190 p-b-30">
-				<form class="login100-form validate-form" action="<?php echo base_url();?>index.php?login/register" method="post">
+				<form class="login100-form validate-form" action="<?php echo base_url();?>login/register" method="post">
 					<div class="login100-form-avatar">  
 						<img src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR">
 					</div>
@@ -117,7 +117,7 @@
 					
 						 
 						 <br>
-							<a class="txt1" href="<?php echo base_url();?>index.php?login" ><h5 style="color:white;"><?php echo $this->lang->line('labels')['already_have_an_account'];?></h5>
+							<a class="txt1" href="<?php echo base_url();?>login" ><h5 style="color:white;"><?php echo $this->lang->line('labels')['already_have_an_account'];?></h5>
 							<i class="fa fa-long-arrow-right"></i>						
 						</a>
 					</div>

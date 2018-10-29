@@ -19,14 +19,16 @@ class Login extends CI_Controller {
 
     //Default function, redirects to logged in user area
     public function index() {
-
+        if ($this->session->userdata('login') == 1)
+            redirect(base_url() . 'main/dashboard', 'refresh');
+/*
         if ($this->session->userdata('superadmin_login') == 1)
             redirect(base_url() . 'index.php?superadmin/dashboard', 'refresh');
             
-        if ($this->session->userdata('hospitaladmin_login') == 1)
+    if ($this->session->userdata('hospitaladmin_login') == 1)
             redirect(base_url() . 'index.php?hospitaladmins/dashboard', 'refresh');
         
-        else if ($this->session->userdata('doctor_login') == 1)
+            else if ($this->session->userdata('doctor_login') == 1)
             redirect(base_url() . 'index.php?doctors', 'refresh');
         
         else if ($this->session->userdata('user_login') == 1)
@@ -42,7 +44,7 @@ class Login extends CI_Controller {
             redirect(base_url() . 'index.php?medicallabs', 'refresh');
         
         else if ($this->session->userdata('store_login') == 1)
-            redirect(base_url() . 'index.php?medicalstores', 'refresh');
+            redirect(base_url() . 'index.php?medicalstores', 'refresh');*/
 
         $this->load->view('backend/login');
     }
@@ -57,22 +59,22 @@ class Login extends CI_Controller {
      
         // Checking login credential for admin
         
-        $query = $this->db->get_where('superadmin', $credential);//print($query->num_rows());exit;
+        $query = $this->db->get_where('superadmin', $credential);
+        
         if ($query->num_rows() > 0) {
             $row = $query->row();
-
-            $this->session->set_userdata('superadmin_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->superadmin_id);
             $this->session->set_userdata('name', $row->name);
            	$this->session->set_userdata('login_type', 'superadmin');
             $this->session->set_userdata('type_id', 'superadmin');
-            redirect(base_url() . 'index.php?superadmin/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         }
         
         $query = $this->db->get_where('hospitaladmins', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('hospitaladmin_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->admin_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -80,76 +82,82 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_type', 'hospitaladmins');
             $this->session->set_userdata('type_id', 'admin');
 
-            redirect(base_url() . 'index.php?hospitaladmins/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         }
         
     
         $query = $this->db->get_where('doctors', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('doctor_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
+            $this->session->set_userdata('hospital_id', $row->hospital_id);
             $this->session->set_userdata('login_type', 'doctors');
             $this->session->set_userdata('type_id', 'doctor');
-            redirect(base_url() . 'index.php?doctors/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         }
         
         $query = $this->db->get_where('users', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('user_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->user_id);
             $this->session->set_userdata('name', $row->name);
+            /*$this->session->set_userdata('hospital_id', $row->hospital_id);*/
             $this->session->set_userdata('login_type', 'users');
             $this->session->set_userdata('type_id', 'user');
-            redirect(base_url() . 'index.php?users/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         }
         
         $query = $this->db->get_where('nurse', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('nurse_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->nurse_id);
             $this->session->set_userdata('name', $row->name);
+            $this->session->set_userdata('hospital_id', $row->hospital_id);
             $this->session->set_userdata('login_type', 'nurse');
             $this->session->set_userdata('type_id', 'nurse');
-            redirect(base_url() . 'index.php?nurse/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         }
        
         
         $query = $this->db->get_where('receptionist', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('receptionist_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->receptionist_id);
             $this->session->set_userdata('name', $row->name);
+            $this->session->set_userdata('hospital_id', $row->hospital_id);
             $this->session->set_userdata('login_type', 'receptionist');
             $this->session->set_userdata('type_id', 'receptionist');
-            redirect(base_url() . 'index.php?receptionist/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         }
         $query = $this->db->get_where('medicallabs', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('lab_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->lab_id);
             $this->session->set_userdata('name', $row->name);
+            $this->session->set_userdata('hospital_id', $row->hospital);
             $this->session->set_userdata('login_type', 'medicallabs');
             $this->session->set_userdata('type_id', 'lab');
-            redirect(base_url() . 'index.php?medicallabs/dashboard', 'refresh');
+            redirect(base_url() . 'main/dashboard', 'refresh');
         }
         $query = $this->db->get_where('medicalstores', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('store_login', '1');
+            $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->store_id);
             $this->session->set_userdata('name', $row->name);
+            $this->session->set_userdata('hospital_id', $row->hospital);
             $this->session->set_userdata('login_type', 'medicalstores');
             $this->session->set_userdata('type_id', 'store');
-            redirect(base_url() . 'index.php?medicalstores/dashboard', 'refresh');
+            redirect(base_url() . 'main/dashboard', 'refresh');
         }
         $this->session->set_flashdata('login_error', 'Invalid_login');
-         redirect(base_url() . 'index.php?login', 'refresh');
+         redirect(base_url() . 'login', 'refresh');
     }
 
     /*     * *DEFAULT NOR FOUND PAGE**** */
@@ -176,7 +184,7 @@ class Login extends CI_Controller {
         redirect(base_url(), 'refresh');
     }
 
-    /*     * *****LOGOUT FUNCTION ****** */
+   
     
     function register()
     {
@@ -397,7 +405,7 @@ $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|ma
         $data['id']=$id;
         $this->load->view('backend/set_password',$data);
     }*/
-
+ /*     * *****LOGOUT FUNCTION ****** */
     function logout() {
         $this->session->sess_destroy();
         $this->session->set_flashdata('logout_notification', 'logged_out');

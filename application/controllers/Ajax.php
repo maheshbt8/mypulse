@@ -40,19 +40,7 @@ class Ajax extends CI_Controller {
         
         echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);
     }
-    /***************Privacy & Policy ,Terms & Conditions****************/
-    function privacy($param1 = '', $param2 = '', $param3 = '') {
-        if($param1 == 1){
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
-            $page_data['page_title'] = get_phrase('Privacy & Policy');
-        }elseif($param1 == 2){
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
-            $page_data['page_title'] = get_phrase('Terms & Conditions');
-        }
-        $page_data['page_name'] = 'privacy';
-        
-        $this->load->view('backend/index', $page_data);
-    }
+    
     /***************AJAX GET FUNCTIONS****************/
     function get_state($country_id)
     {
@@ -127,6 +115,15 @@ class Ajax extends CI_Controller {
             echo '<option value="' . $row['ward_id'] . '">' . $row['name'] . '</option>';
         }
     }
+    function get_bed($ward_id)
+    {
+        $ward = $this->db->get_where('bed' , array('ward_id' => $ward_id
+        ))->result_array();
+        echo '<option value=""> Select Bed </option>';
+        foreach ($ward as $row) {
+            echo '<option value="' . $row['bed_id'] . '">' . $row['name'] . '</option>';
+        }
+    }
      function get_user_data()   
     {
     $user_value=$_POST['user'];
@@ -139,6 +136,19 @@ class Ajax extends CI_Controller {
         }else{
             echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="" onchange="return get_user_data(this.value)"><span style="color:red;">No User Available</span>';
         }
+    }
+    function get_department_doctors($department_id='')   
+    {
+
+        $users=$this->db->where('department_id',$department_id)->get('doctors')->result_array();
+        foreach ($users as $row) {
+            $spee=explode(',',$row['specializations']);
+            $spe='';
+            for($i=0;$i<count($spee);$i++) {
+             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+            }
+echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).' ('.$spe.')</option>';
+ }
     }
     function get_hospital_doctors($hospital_id='')   
     {
@@ -209,18 +219,18 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
         if($department_id == 'all'){
             $doctor = $this->db->get_where('doctors' , array(
             'branch_id' => $department_id1,'status'=>1
-        ))->result_array();  
-        foreach ($doctor as $row) {
-            echo '<option value="' . $row['doctor_id'] . '">' . $row['name'] . '</option>';
-        }
+        ))->result_array();
         }else{
         $doctor = $this->db->get_where('doctors' , array(
             'department_id' => $department_id,'status'=>1
         ))->result_array();
-        foreach ($doctor as $row) {
+        
+    }
+    
+    foreach ($doctor as $row) {
             echo '<option value="' . $row['doctor_id'] . '">' . $row['name'] . '</option>';
         }
-    }
+   
     }
     
     function get_doctor_data($unique_id)

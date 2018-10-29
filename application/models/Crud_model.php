@@ -589,6 +589,12 @@ function email_verification($task="",$id="")
         $this->db->where('health_insurance_provider_id',$health_insurance_provider_id);
         $this->db->delete('health_insurance_provider');
     }
+   /* function select_profile_update($id)
+    {
+        if($account_type == 'superadmin'){
+        return $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
+        }
+    }*/
     /***************HOSPITALS*****************/
     
          function save_hospital_info()
@@ -663,7 +669,8 @@ function email_verification($task="",$id="")
     {
         
         $this->db->where('hospital_id',$hospital_id);
-        $this->db->delete('hospitals');
+        $yes=$this->db->delete('hospitals');
+
     }
     
     function delete_multiple_hospital_info()
@@ -900,11 +907,12 @@ function email_verification($task="",$id="")
     }
      function select_store_info($hospital_id='')
     {
-        if($hospital_id !=''){
-        return $this->db->where('hospital',$hospital_id)->get('medicalstores')->result_array();
-        }else{
-        return $this->db->get('medicalstores')->result_array();
-        }
+    $account_type=$this->session->userdata('login_type');
+    if($account_type == 'superadmin'){
+  return $this->db->get('medicalstores')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicalstores')->result_array();
+}
     }
    
     function update_branch_info($branch_id)
@@ -1065,12 +1073,8 @@ function email_verification($task="",$id="")
         
         if($insert)
         {
-            
             $lid=$this->db->insert_id();
             $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
             $pid='MPD'.date('y').'_'.$num;
             $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
@@ -1081,11 +1085,38 @@ function email_verification($task="",$id="")
     
     function select_doctor_info($hospital_id = '')
     {
-        if($hospital_id !=''){
+        $account_type=$this->session->userdata('login_type');
+if($account_type == 'superadmin'){
+  return $this->db->get('doctors')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
+}elseif($account_type == 'nurse'){
+  $doc=$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id;
+  $doc_id=explode(',', $doc);
+  for($i=0;$i<count($doc_id);$i++){
+    $doctors[$i]=$this->db->where('doctor_id',$doc_id[$i])->get('doctors')->row_array();
+  }
+  return $doctors;
+  
+}elseif($account_type == 'receptionist'){
+  $doc=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id;
+  $doc_id=explode(',', $doc);
+  for($i=0;$i<count($doc_id);$i++){
+    $doctors[$i]=$this->db->where('doctor_id',$doc_id[$i])->get('doctors')->row_array();
+  }
+  return $doctors;
+}/*elseif($account_type == 'medicalstores'){
+  $user_role='Pharmacist';
+}elseif($account_type == 'medicallabs'){
+  $user_role='Laboratorist';
+}elseif($account_type == 'users'){
+  $user_role='MyPulse Users';
+}*/
+       /* if($hospital_id !=''){
         return $this->db->where('hospital_id',$hospital_id)->get('doctors')->result_array();
         }else{
         return $this->db->get('doctors')->result_array();
-        }
+        }*/
     }
     
        function update_doctor_availability_info($doctor_id)
@@ -1499,11 +1530,12 @@ $que=$this->db->insert('availability_slat',$data);
     
      function select_lab_info($hospital_id='')
     {
-        if($hospital_id !=''){
-        return $this->db->where('hospital',$hospital_id)->get('medicalstores')->result_array();
-        }else{
-        return $this->db->get('medicallabs')->result_array();
-        }
+           $account_type=$this->session->userdata('login_type');
+    if($account_type == 'superadmin'){
+  return $this->db->get('medicallabs')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicallabs')->result_array();
+}
     }
     
     function select_checkup_infon()
@@ -1523,7 +1555,52 @@ function select_user_information($patient_id="")
 
     function select_inpatient_info()
     {
-        return $this->db->get('inpatient')->result_array();
+      $account_type=$this->session->userdata('login_type');
+    if($account_type == 'superadmin'){
+  return $this->db->order_by('id','desc')->get('inpatient')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get('inpatient')->result_array();
+}
+    }
+    function select_inpatient_id_info($id)
+    {
+  return $this->db->where('id',$id)->get('inpatient')->row();
+    }
+    function select_inpatient_history_info($id)
+    {
+  return $this->db->order_by('id','desc')->where('in_patient_id',$id)->get('inpatient_history')->result_array();
+    }
+    function save_inpatient_info()
+    {
+    $data['user_id']       = $this->input->post('user_id');
+    $data['doctor_id']       = $this->db->where('unique_id',$this->input->post('doctor'))->get('doctors')->row()->doctor_id;
+    $data['hospital_id']       = $this->input->post('hospital');
+    /*$data['department_id']       = $this->input->post('department');*/
+    $data['bed_id']       = $this->input->post('bed');
+    $data['reason']       = $this->input->post('reason');
+    $data['status']       = $this->input->post('status');
+        /*$data['created_type']       = $this->session->userdata('login_type');*/
+    $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+    $data['created_date']=date('Y-m-d H:i:s');
+    if($data['status'] == 1){
+    $data['join_date']=date('Y-m-d H:i:s');
+    }
+    $insert=$this->db->insert('inpatient',$data);
+        if($insert)
+        {
+            $lid=$this->db->insert_id();
+            if($data['status'] == 1){$status='Admitted';}elseif($data['status'] == 0){$status='Not Admitted';}
+            /******Notification Message******/
+            $notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+            $notification['user_id']='users-user-'.$data['user_id'];
+            $notification['title']='Registered As In-Patient';
+            $notification['text']='Hi User Your Considered As In-Patient Your Current Status is '.$status.'.';
+         $this->db->insert('notification',$notification);
+         $in_patient['in_patient_id']=$lid;
+         $in_patient['created_date']=$data['created_date'];
+         $in_patient['note']='Joined As In-Patient and Status as '.$status.'.';
+         $this->db->insert('inpatient_history',$in_patient);
+        }
     }
     /*function select_patient_inf($patient_id)
     {
@@ -1718,11 +1795,12 @@ function select_user_information($patient_id="")
     
     function select_nurse_info($hospital_id='')
     {
-        if($hospital_id !=''){
-        return $this->db->where('hospital_id',$hospital_id)->get('nurse')->result_array();
-        }else{
-        return $this->db->get('nurse')->result_array();
-        }
+        $account_type=$this->session->userdata('login_type');
+        if($account_type == 'superadmin'){
+  return $this->db->get('nurse')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('nurse')->result_array();
+}
     }
     
     function update_nurse_info($nurse_id)
@@ -1821,10 +1899,10 @@ function select_user_information($patient_id="")
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/laboratorist_image/" . $laboratorist_id . '.jpg');
     }
     
-    function select_laboratorist_info()
+    /*function select_laboratorist_info()
     {
         return $this->db->get('laboratorist')->result_array();
-    }
+    }*/
     
     function update_laboratorist_info($laboratorist_id)
     {
@@ -1922,11 +2000,12 @@ function select_user_information($patient_id="")
     
     function select_receptionist_info($hospital_id='')
     {
-        if($hospital_id !=''){
-        return $this->db->where('hospital_id',$hospital_id)->get('receptionist')->result_array();
-        }else{
-        return $this->db->get('receptionist')->result_array();
-        }
+          $account_type=$this->session->userdata('login_type');
+        if($account_type == 'superadmin'){
+  return $this->db->get('receptionist')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('receptionist')->result_array();
+}
     }
     
     function update_receptionist_info($receptionist_id)
@@ -2052,16 +2131,12 @@ function select_user_information($patient_id="")
         $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
         if($start_date != "" && $end_date != ""){
             $qry=$this->db->get('appointments');  
-            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `appointments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
         }else if($start_date != ""){
             $qry=$this->db->get('appointments');
-            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date >= "'.$start_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
         }else if($end_date != ""){
             $qry=$this->db->get('appointments');
-            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.appoitment_date <= "'.$end_date.'" and a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
         }else{
             $qry=$this->db->get('appointments');
-            /*$qry = 'SELECT  @s:=@s+1 as ind, COUNT(DISTINCT a.user_id ) as count,h.name,h.id as hid FROM `hms_appoitments` a, (SELECT @s:= 0) AS s,hms_departments d,hms_branches b,hms_hospitals h where a.department_id=d.id and d.branch_id=b.id and b.hospital_id = h.id GROUP by h.id';*/
         }
         return $this->db->query($qry)->result_array();
     }
@@ -2080,10 +2155,7 @@ function select_user_information($patient_id="")
         $this->db->insert('report',$data);
     }
     
-    function select_report_info()
-    {
-        return $this->db->get('report')->result_array();
-    }
+   
     
     function update_report_info($report_id)
     {
@@ -2118,8 +2190,16 @@ function select_user_information($patient_id="")
         
         $this->db->insert('bed',$data);
     }
-    
-    function select_bed_info()
+    function select_report_info()
+    {
+        $account_type=$this->session->userdata('login_type');
+        if($account_type == 'superadmin'){
+        return $this->db->get('hospitals')->result_array();
+        }elseif($account_type == 'hospitaladmins'){
+        return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('branch')->result_array();
+        }
+    }
+  /*  function select_bed_info()
     {
          //return $this->db->get('bed')->result_array();
         $searchTerm = $_GET['term'];
@@ -2133,7 +2213,7 @@ function select_user_information($patient_id="")
     
     //return json data
     echo json_encode($data);
-    }
+    }*/
     
     function update_bed_info($bed_id)
     {
@@ -2143,10 +2223,6 @@ function select_user_information($patient_id="")
         $data['ward_id']=$this->input->post('ward');
         $data['name']       = $this->input->post('name');
         $data['bed_status']    = $this->input->post('bed_status');
-        /*$data['bed_number']     = $this->input->post('bed_number');*/
-        /*$data['ward'] 		= $this->input->post('ward');
-        $data['description']    = $this->input->post('description');*/
-        
         $this->db->where('bed_id',$bed_id);
         $this->db->update('bed',$data);
     }
@@ -2354,7 +2430,14 @@ function select_user_information($patient_id="")
     }*/
         function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
-        return $this->db->order_by('appointment_number','DESC')->get('appointments')->result_array();
+      $account_type=$this->session->userdata('login_type');
+if($account_type == 'superadmin'){
+  return $this->db->order_by('appointment_number','DESC')->get('appointments')->result_array();
+}elseif($account_type == 'hospitaladmins'){
+  return $this->db->order_by('appointment_number','DESC')->where('hospital_id',$this->session->userdata('hospital_id'))->get('appointments')->result_array();
+}elseif($account_type == 'doctors'){
+  return $this->db->order_by('appointment_number','DESC')->where('doctor_id',$this->session->userdata('login_user_id'))->get('appointments')->result_array();
+}
     }
 /*    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
@@ -2492,6 +2575,7 @@ function select_user_information($patient_id="")
         $this->db->update('appointments',array('status'=>'4'));
         $this->db->insert('appointment_history',array('appointment_id'=>$check[$i],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
         }
+        return TRUE;
     }
     function save_prescription_info()
     {
@@ -2591,45 +2675,9 @@ function select_user_information($patient_id="")
     {
         return $this->db->order_by('message_id','DESC')->get('private_messages')->result_array();
     }
-     /*  function save_new_message()
-    {
-        $hospital_id=$this->input->post('hospital_id');
-        if($this->input->post('message_type')=='0'){
-        if($this->input->post('user_to[0]')!='' && $this->input->post('user_to[7]')!=''){
-            $data['user_to']='1,2,3,4,5,6,7';
-            
-        }
-        if($this->input->post('user_to[0]')!=''){
-            $data['user_to']='1,2,3,4,5,6';
-            
-        }else{
-            $user_to=implode(',', $this->input->post('user_to'));
-            $data['user_to']=$user_to;
-            $user_to=implode('-'.$hospital_id.',', $this->input->post('user_to'));
-            $data['user_to']=$user_to.'-'.$hospital_id;
-        }
-    }
-    if($this->input->post('message_type')=='1'){
-        $data['user_to']=implode(',', $this->input->post('reciever'));
-        
-    }
-        $data['title']  = $this->input->post('title');
-        $data['message'] = $this->input->post('message');
-        $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-        
-        $data['created_at']=date('Y-m-d H:i:s');
-        if($this->input->post('message_type')=='0'){
-        $insert=$this->db->insert('messages',$data);
-    }elseif($this->input->post('message_type')=='1'){
-        $insert=$this->db->insert('private_messages',$data);
-    }
-        
-    }*/
         function save_new_message()
     {
-        $hospital_id=$this->input->post('hospital_id');
         $count=count($this->input->post('reciever'));
-        /*print_r($_POST);die;*/
         for($i=0;$i<$count;$i++){
             $arr=explode('/', $_POST['reciever'][$i]);
             if($arr[0]=='0'){
@@ -2640,43 +2688,15 @@ function select_user_information($patient_id="")
                 $ind[]=$arr[1];
             }
         }
+
     $data['user_to']=implode(',',$group);
     $data['user_too']=implode(',',$ind);
+    $data['hospital_id']=$this->input->post('hospital_id');;
     $data['title']  = $this->input->post('title');
     $data['message'] = $this->input->post('message');
     $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
     $data['created_at']=date('Y-m-d H:i:s');
     $insert=$this->db->insert('messages',$data);
-        /*print_r($group);
-        print_r($ind);die;*/
-    /*if($mess1=='0'){
-    $data['user_to']=implode(',',$group);
-    $data['title']  = $this->input->post('title');
-    $data['message'] = $this->input->post('message');
-    $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-    $data['created_at']=date('Y-m-d H:i:s');
-    $insert=$this->db->insert('messages',$data);
-    }
-    if($mess2=='1'){
-    $data['user_to']=implode(',',$ind);   
-    $data['title']  = $this->input->post('title');
-    $data['message'] = $this->input->post('message');
-    $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-    $data['created_at']=date('Y-m-d H:i:s');
-    $insert=$this->db->insert('private_messages',$data);
-    }*/
-    /*print_r($data);*/
-        /*$data['title']  = $this->input->post('title');
-        $data['message'] = $this->input->post('message');
-        $data['created_by'] = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');*/
-        /*$data['doctor_id']  = implode(',',$this->input->post('doctor'));*/
-        /*$data['created_at']=date('Y-m-d H:i:s');
-        if($mes1=='0'){
-        $insert=$this->db->insert('messages',$data);
-    }elseif($this->input->post('message_type')=='1'){
-        $insert=$this->db->insert('private_messages',$data);
-    }*/
-        
     }
     function read_notification($notification_id)
     {
