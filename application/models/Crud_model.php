@@ -38,7 +38,7 @@ function email_verification($task="",$id="")
         if($task != 'users')
         {
         if($yes){
-        redirect(base_url() . 'index.php?login/set_password/'.$task.'/'.$id, 'refresh');
+        redirect(base_url() . 'login/set_password/'.$task.'/'.$id, 'refresh');
         }
         }else{
             echo "YOUR Email Verified Successfully"."<br/>";
@@ -663,6 +663,7 @@ function email_verification($task="",$id="")
         $data['till_date']    = $this->input->post('till_date');
         $this->db->where('hospital_id',$hospital_id);
         $this->db->update('hospitals',$data);
+        move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitallogs/'. $hospital_id.  '.png');
     }
     
     function delete_hospital_info($hospital_id)

@@ -4,7 +4,8 @@
   }
    .span-user{
     display: inline-block;
-    width: 100px;
+    width: 300px;
+    text-align: left;
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis;
@@ -45,7 +46,7 @@ $this->session->set_userdata('last_page', current_url());
         <br>
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
-        <a href="#" class="list-group-item active"><p style="color: #fff;"><span>From</span><span style="margin-left: 21%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
+        <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">From</span><span style="margin-left: 21%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
     <?php $i=1;foreach ($message_data as $row) {
         if($row['created_at']<$last){
@@ -82,7 +83,9 @@ $this->session->set_userdata('last_page', current_url());
         ?>
     <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
     <p class="" style="text-align: center;"><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
-if($created_by[0] == 'hospitaladmins'){
+if($created_by[0] == 'superadmin'){
+  $user_role='Super Admin';
+}elseif($created_by[0] == 'hospitaladmins'){
   $user_role='Hospital Admin';
 }elseif($created_by[0] == 'doctors'){
   $user_role='Doctor';
@@ -107,7 +110,9 @@ if($created_by[0] == 'hospitaladmins'){
         ?>
     <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
     <p class="" style="text-align: center;"><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
-if($created_by[0] == 'hospitaladmins'){
+if($created_by[0] == 'superadmin'){
+  $user_role='Super Admin';
+}elseif($created_by[0] == 'hospitaladmins'){
   $user_role='Hospital Admin';
 }elseif($created_by[0] == 'doctors'){
   $user_role='Doctor';
@@ -133,7 +138,7 @@ if($created_by[0] == 'hospitaladmins'){
 
 
             <div class="tab-pane box" id="add">
-                <a href="#" class="list-group-item active"><p style="color: #fff;"><span>To</span><span style="margin-left: 21%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
+                <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">To</span><span style="margin-left: 21%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="/*list-style: none; */min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
     <?php $i=1;foreach ($message_data as $row) { 
         if($row['created_at']<$last){

@@ -5,7 +5,7 @@
     font-size   : 11px;
   }
 </style>
-
+ <?php $account_type=$this->session->userdata('login_type');?>
 <?php
  $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
 
@@ -233,7 +233,7 @@ foreach ($single_hospital_info as $row) {
 </div>
             <div class="tab-pane box" id="tab2" style="padding: 5px">
                     <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
 
         <div class="panel panel-primary" data-collapsed="0">
 
@@ -242,13 +242,14 @@ foreach ($single_hospital_info as $row) {
                 
                          
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                 
                          <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('license'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="license" class="form-control" id="license" value="">
+                        <?php if($account_type == 'superadmin'){?>
+                        <select name="license" class="form-control" id="license" value="">
                                 <option value=""><?php echo get_phrase('select_lisense'); ?></option>
                                 <?php 
                                 $license = $this->db->get_where('license')->result_array();
@@ -257,38 +258,88 @@ foreach ($single_hospital_info as $row) {
                                 
                                 <?php } ?>
                                
-                            </select>
+                        </select>
+                        <?php }elseif($account_type == 'hospitaladmins'){?>
+                            <select name="license" class="form-control" id="license" value="" disabled>
+                                <option value=""><?php echo get_phrase('select_lisense'); ?></option>
+                                <?php 
+                                $license = $this->db->get_where('license')->result_array();
+                                foreach($license as $row1){?>
+                                <option value="<?php echo $row1['license_id'] ?>"<?php if($row['license']== $row1['license_id'] ){ echo 'selected';} ?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                        </select>
+                            <input type="hidden" name="license" class="form-control" id="license" value="<?php echo  $row['license'] ?>">
+                        <?php }?>
                         </div>
                     </div> 
                    <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('license status'); ?></label>
 
                         <div class="col-sm-8">
-                            <select name="license_status" class="form-control" id="license_status" value="">
+                        <?php if($account_type == 'superadmin'){?>
+                        <select name="license_status" class="form-control" id="license_status" value="">
+                                <option value=""><?php echo get_phrase('select_status'); ?></option>
+                                <option value="1" <?php if($row['license_status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
+                                <option value="2" <?php if($row['license_status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
+                        </select>
+                        <?php }elseif($account_type == 'hospitaladmins'){?>
+                            <select name="license_status" class="form-control" id="license_status" value=""disabled>
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1" <?php if($row['license_status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2" <?php if($row['license_status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
                             </select>
+                            <input type="hidden" name="license_status" class="form-control" id="license_status" value="<?php echo  $row['license_status'] ?>">
+                        <?php }?>
                         </div>
-                    </div>
-                    
-                    
-                            
-                             <div class="form-group">
+                    </div>        
+                    <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('from_date'); ?></label>
-
                         <div class="col-sm-8">
+                        <?php if($account_type == 'superadmin'){?>
                             <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>">
+                        <?php }elseif($account_type == 'hospitaladmins'){?>
+                            <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>" disabled>
+                            <input type="hidden" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>">
+                        <?php }?>
                         </div>
                     </div>
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('to_date'); ?></label>
 
                         <div class="col-sm-8">
+                           <?php if($account_type == 'superadmin'){?>
                             <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>">
+                        <?php }elseif($account_type == 'hospitaladmins'){?>
+                            <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>" disabled>
+                            <input type="hidden" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>">
+                        <?php }?>
                         </div>
                     </div>
                    
+                </div>
+                <div class="col-sm-6">
+                                        <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo 'Logo';?></label>
+
+                        <div class="col-sm-5">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                                    <img src="<?php echo base_url('uploads/hospitallogs/').$row['hospital_id'].'.png'?>" alt="...">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-white btn-file">
+                                        <span class="fileinput-new">Select Logo</span>
+                                        <span class="fileinput-exists">Change</span>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                   <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="Update">

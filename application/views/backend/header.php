@@ -65,6 +65,10 @@ padding: 10px;
     overflow: hidden !important;
     text-overflow: ellipsis;
 }
+.navbar{
+  background-color: #263238;
+}
+
 </style>
 
 <?php 
@@ -79,13 +83,14 @@ $website_language_google = $this->session->userdata('website_language_google') !
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <span style="font-weight:200; margin:0px;font-size: 30px;"><?php if($this->session->userdata('login_type') == 'superadmin'){echo '';}else{echo $this->db->where('hospital_id',$this->db->where('admin_id',$this->session->userdata('login_user_id'))->get('hospitaladmins')->row()->hospital_id)->get('hospitals')->row()->name;} ?></span>
+      <?php if($account_type != 'superadmin' && $account_type != 'users'){?>
+      <span style="font-weight:200; margin:0px;font-size: 30px;color: #fff;"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $this->session->userdata('hospital_id');?>.png"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav navbar-right"  style="font-size: 15px;">
        <li class="dropdown language-menu select" id="lang_select">
-        <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="background-color: none !important;bottom:7px;">
-      <span id="selected" class="notranslate"><?php if($this->session->userdata('website_language_google')!=''){echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);}else{echo "English";}?></span>&nbsp;<span class="caret"></span></a>
+        <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="background-color: none !important;bottom:7px;color: #fff;">
+      <span id="selected" class="notranslate"><?php if($this->session->userdata('website_language_google')!=''){echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);}else{echo "English";}?></span><span class="entypo-down-open"></span></a>
          <ul class="dropdown-menu language" id="lang_scroll_div">
          <?php 
          $lang_array=$this->db->get('language')->result();
@@ -93,18 +98,17 @@ $website_language_google = $this->session->userdata('website_language_google') !
     foreach($lang_array as $lng){ ?>
       <li class="notranslate" onclick="return get_lang(this.value)" value="<?php echo ucfirst($lng->language_id);?>">
         <a href="javascript:void(0);" data-value="<?php echo ucfirst($lng->name);?>">
-           <!--<img src="https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/1465289/580/386/m1/fpnw/wm0/untitled-1-o-f-.png?1468935112&s=e27502b7e45bfc6d7f1cc26f6696109d" style="margin-right:15px;height:20px;" alt="<?php echo $lng_name;?>">--><?php echo ucfirst($lng->name);?>
+           <!--<img src="#" style="margin-right:15px;height:20px;" alt="<?php echo $lng_name;?>">--><?php echo ucfirst($lng->name);?>
         </a>
       </li>
     <?php }?>
   </ul>
       </li>
       <li class="dropdown">
-        <?php /*
-        $user_id=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');*/
+        <?php 
           $noti_read=$this->db->get_where('notification',array('user_id'=>$account_details,'isRead'=>2));
         ?>
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-bell"></i>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: #fff;"><i class="glyphicon glyphicon-bell"></i>
         <span class="info"><!-- <?php echo $noti_read->num_rows();?> --></span></a>
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Notifications</h4></li>
@@ -124,7 +128,7 @@ $website_language_google = $this->session->userdata('website_language_google') !
         </ul>
       </li>
       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <i class="glyphicon glyphicon-envelope"></i>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="color: #fff;"> <i class="glyphicon glyphicon-envelope"></i>
         <!-- <span class="info">5</span> --></a>
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Messages</h4></li>
@@ -184,28 +188,8 @@ $website_language_google = $this->session->userdata('website_language_google') !
        
       </li>
       <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="entypo-user"></i>
-        <!-- <?php
-        if($account_type == 'superadmin'){
-  $user_role='Super Admin';
-}elseif($account_type == 'hospitaladmins'){
-  $user_role='Hospital Admin';
-}elseif($account_type == 'doctors'){
-  $user_role='Doctor';
-}elseif($account_type == 'nurse'){
-  $user_role='Nurse';
-}elseif($account_type == 'receptionist'){
-  $user_role='Receptionist';
-}elseif($account_type == 'medicalstores'){
-  $user_role='Pharmacist';
-}elseif($account_type == 'medicallabs'){
-  $user_role='Laboratorist';
-}elseif($account_type == 'users'){
-  $user_role='MyPulse Users';
-}
-echo $user_role; ?> -->
-<?php echo $this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?>
-        <span class="caret"></span></a>
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="color: #fff;"><i class="entypo-user"></i><span>
+<?php echo $this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?></span><i class="entypo-down-open"></i></a>
         <ul class="dropdown-menu">
           <li><a href="<?php echo base_url()?>main/manage_profile">
                           <i class="entypo-info"></i>
@@ -219,7 +203,7 @@ echo $user_role; ?> -->
           
         </ul>
       </li>
-      <li><a href="<?php echo base_url(); ?>login/logout">
+      <li><a href="<?php echo base_url(); ?>login/logout" style="color: #fff;">
                     Log Out <i class="entypo-logout right"></i>
                 </a></li>
     </ul>

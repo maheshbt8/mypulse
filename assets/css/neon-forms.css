@@ -15,6 +15,12 @@
   opacity: @opacity / 100;
   filter: ~"alpha(opacity=@{opacity})";
 }*/
+span.verifiedsuccess{
+color: #14E91E;
+}
+span.notverified{
+color: #FF0000;
+}
 .dataTables_wrapper{
     width: 100%;    
     overflow-x: auto;

@@ -1,12 +1,35 @@
 <?php 
-                foreach($edit_data as $row):
-                    ?>
+$this->session->set_userdata('last_page', current_url());
+?>
+<?php foreach($edit_data as $row): ?>
 <div class="row">
     <div class="col-md-3">
             <center>
-        <a href="#">
-                <img src="<?php echo $this->crud_model->get_image_url('superadmin' , $row['superadmin_id']);?>" class="img-circle" style="width: 60%;">
-            </a>
+                         <?php
+if($account_type == 'superadmin'){
+  $img_type='superadmin_image';
+}elseif($account_type == 'hospitaladmins'){
+  $img_type='hospitaladmin_image';
+}elseif($account_type == 'doctors'){
+  $img_type='doctor_image';
+}elseif($account_type == 'nurse'){
+  $img_type='nurse_image';
+}elseif($account_type == 'receptionist'){
+  $img_type='receptionist_image';
+}elseif($account_type == 'medicalstores'){
+  $img_type='medical_stores';
+}elseif($account_type == 'medicallabs'){
+  $img_type='medical_labs';
+}elseif($account_type == 'users'){
+  $img_type='user_image';
+}
+if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
+      $image_url = base_url() . 'uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg';
+else
+    $image_url = base_url() . 'uploads/user.jpg';
+?>
+            <img src="<?php echo $image_url;?>" class="img-circle" style="width: 60%;">
+                <!-- <img src="<?php echo $this->crud_model->get_image_url('superadmin' , $row['superadmin_id']);?>" class="img-circle" style="width: 60%;"> -->
         <br>
         <h3><?php echo $row['name'];?></h3>
         <br>
@@ -17,6 +40,7 @@
         </div>
    
     <div class="col-md-9">
+        <?php if($account_type == 'superadmin'){?>
         <!------CONTROL TABS START------>   
         <ul class="nav nav-tabs bordered"> 
             <li class="active">
@@ -32,7 +56,7 @@
               
         </ul>
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>index.php?superadmin/manage_profile/update_profile_info" method="post" enctype="multipart/form-data">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/manage_profile/update_profile_info" method="post" enctype="multipart/form-data">
              
         <div class="tab-content">
            
@@ -51,6 +75,18 @@
                             <label class="col-sm-3 control-label"><?php echo get_phrase('name');?></label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"><?php echo get_phrase('middle_name');?></label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="mname" value="<?php echo $row['mname'];?>"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"><?php echo get_phrase('last_name');?></label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="lname" value="<?php echo $row['lname'];?>"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -77,7 +113,7 @@
                         <div class="col-sm-12">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo $this->crud_model->get_image_url('superadmin' , $row['superadmin_id']);?>" alt="...">
+                                    <img src="<?php echo $image_url;?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
@@ -225,7 +261,32 @@
                    
                 
                     </div>
-   </form>
+   </form><?php }else{
+    if($account_type == 'hospitaladmins'){
+    $edit_name='edit_hospital_admin';
+    $data['admin_id']=$this->session->userdata('login_user_id');
+    }elseif($account_type == 'doctors'){
+    $edit_name='edit_doctor';
+    $data['doctor_id']=$this->session->userdata('login_user_id');
+    }elseif($account_type == 'nurse'){
+    $edit_name='edit_nurse';
+    $data['nurse_id']=$this->session->userdata('login_user_id');
+    }elseif($account_type == 'receptionist'){
+    $edit_name='edit_receptionist';
+    $data['receptionist_id']=$this->session->userdata('login_user_id');
+    }elseif($account_type == 'medicalstores'){
+    $edit_name='edit_stores';
+    $data['id']=$this->session->userdata('login_user_id');
+    }elseif($account_type == 'medicallabs'){
+    $edit_name='edit_labs';
+    $data['id']=$this->session->userdata('login_user_id');
+    }elseif($account_type == 'users'){
+    $edit_name='edit_user';
+    $data['id']=$this->session->userdata('login_user_id');
+    }
+    $this->load->view('backend/main/'.$edit_name,$data);
+}?>
+
     </div>
 </div>
 	

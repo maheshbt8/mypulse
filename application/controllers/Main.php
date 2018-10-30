@@ -54,7 +54,7 @@ class Main extends CI_Controller {
                 {
                         $this->crud_model->save_hospital_info();
             $this->session->set_flashdata('message', get_phrase('hospital_info_saved_successfuly'));
-            redirect(base_url() . 'main/hospital');
+            redirect($this->session->userdata('last_page'));
                 }
         } 
         $data['page_name'] = 'add_hospital';
@@ -81,7 +81,7 @@ class Main extends CI_Controller {
          if ($this->form_validation->run() == TRUE){ 
             $this->crud_model->update_hospital_info($hospital_id);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
-            redirect(base_url() . 'main/hospital');
+            redirect($this->session->userdata('last_page'));
                 }
          }
          $data['hospital_id'] = $hospital_id;
@@ -1469,18 +1469,19 @@ class Main extends CI_Controller {
     {
     $this->db->where('unique_id',$id)->update($task,array('modified_at'=>date('Y-m-d H:i:s')));
     $this->email_model->account_reverification_email($task,$type_id, $id);
+        $this->session->set_flashdata('message', get_phrase('Verification Email Sended Successfully'));
         redirect($this->session->userdata('last_page'));
     }
     function system_settings($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == 'do_update') {
             $this->crud_model->update_system_settings();
             $this->session->set_flashdata('message', get_phrase('settings_updated'));
-            redirect(base_url() . 'index.php?superadmin/system_settings/', 'refresh');
+            redirect(base_url() . 'main/system_settings/', 'refresh');
         }
         if ($param1 == 'upload_logo') {
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/logo.png');
             $this->session->set_flashdata('message', get_phrase('settings_updated'));
-            redirect(base_url() . 'index.php?superadmin/system_settings/', 'refresh');
+            redirect(base_url() . 'main/system_settings/', 'refresh');
         }
         $page_data['page_name'] = 'system_settings';
         $page_data['page_title'] = get_phrase('system_settings');
@@ -1520,6 +1521,8 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     function manage_profile($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == 'update_profile_info') {
             $data['name'] = $this->input->post('name');
+            $data['mname'] = $this->input->post('mname');
+            $data['lname'] = $this->input->post('lname');
             $data['email'] = $this->input->post('email');
             $data['description'] = $this->input->post('description');
             $data['phone'] = $this->input->post('phone');
@@ -1535,7 +1538,7 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
             $this->db->update('superadmin', $data);
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/superadmin_image/'.$this->session->userdata('login_user_id').'.jpg');
             $this->session->set_flashdata('message', get_phrase('profile_info_updated_successfuly'));
-            redirect(base_url() . 'index.php?superadmin/manage_profile');
+            redirect($this->session->userdata('last_page'));
         }
         $page_data['page_name'] = 'manage_profile';
         $page_data['page_title'] = get_phrase('manage_profile');
@@ -1557,10 +1560,10 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
                 $this->db->update('superadmin', array('password' => $new_password));
 
                 $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
-                redirect(base_url() . 'index.php?superadmin/manage_password');
+                redirect(base_url() . 'main/manage_password');
             } else {
                 $this->session->set_flashdata('message', get_phrase('password_update_failed'));
-                redirect(base_url() . 'index.php?superadmin/manage_password');
+                redirect(base_url() . 'main/manage_password');
             }
         }
         $page_data['page_name'] = 'manage_password';
@@ -1568,5 +1571,30 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
         $page_data['edit_data'] = $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
         $this->load->view('backend/index', $page_data);
     }
+    function opt_verification($param1 = '', $param2 = '', $param3 = '')
+    {
+
+    $past_time=strtotime($_POST['otp_time']);
+    $current_time = time();
+    $difference = $current_time - $past_time;
+    $difference_minute =  $difference/60;
+    if(intval($difference_minute)<3){
+        $otp_form=$this->input->post('otp');
+        $otp=$this->session->userdata('otp');
+        if($otp_form == $otp){
+            $this->db->where($param2.'_id',$_POST['user_id']);
+            $s=$this->db->update($param1, array('is_mobile' =>1));
+            if($s){$this->session->set_flashdata('message', get_phrase('Your Mobile Number Verified Successfully'));
+            echo TRUE;
+            /*redirect($this->session->userdata('last_page1'));*/
+            }
+        }else{
+            echo '<span id="otp_error" style="color:red;">OTP Incorect</span>';
+        }
+    }else{
+        echo '<span id="otp_error" style="color:red;">OTP Time Was Experied</span>';
+    }
+    }
+
 }
 ?>

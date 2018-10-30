@@ -18,6 +18,16 @@ class Ajax extends CI_Controller {
             redirect(base_url(), 'refresh');
         }*/
     }
+    function get_otp()
+    {
+        $date_val=$_POST['phone'];
+        $num="12345678901234567890";
+        $shu=str_shuffle($num);
+        $otp=substr($shu, 14);
+        $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
+        $this->session->set_userdata('otp',$otp);
+        echo $this->session->userdata('otp');
+    }
     function get_email()
     {
         $email=$_POST['email'];

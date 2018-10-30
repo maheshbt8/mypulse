@@ -1,3 +1,7 @@
+<?php 
+$this->session->set_userdata('last_page', current_url());
+?>
+<?php if($account_type == 'superadmin'){?>
 <?php echo form_open(base_url() . 'main/system_settings/do_update', array('class' => 'form-horizontal form-groups-bordered validate', 'target' => '_top'));
 ?>
 <div class="row">
@@ -64,13 +68,12 @@
                         <button type="submit" class="btn btn-info"><?php echo get_phrase('save'); ?></button>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 </div>
-
-
 </form>
+<?php }elseif($account_type == 'hospitaladmins'){
+    $data['hospital_id']=$this->session->userdata('hospital_id');
+    $this->load->view('backend/main/hospital_history',$data);
+}?>

@@ -24,22 +24,17 @@
     <select class="form-control select2" name="reciever[]"  data-validate="required" data-message-required="<?php echo 'Please Select Any User';?>" required multiple>
             <optgroup label="<?php echo get_phrase('Group_message'); ?>"><?php if($account_type=='superadmin'){?>
                 <option value="0/1">All Hospital Admins</option>
-                <?php }elseif($account_type=='hospitaladmins'){?>
-                     <?php
-                $super = $this->db->get('superadmin')->result_array();
-                foreach ($super as $row):
-                    ?>
-                    <option value="1/superadmin-superadmin-<?php echo $row['superadmin_id']; ?>">
-                        <?php echo $row['name'].' ( '.$row['email'].' )'; ?></option>
-                <?php endforeach; 
-                 }?>
+                <?php }?>
                 <option value="0/4">All Doctors</option>
                 <option value="0/5">All Nurses</option>
                 <option value="0/6">All Receptionists</option>
                 <option value="0/2">All Medical Labs</option>
                 <option value="0/3">All Medical Stores</option>
+                <?php if($account_type=='superadmin'){?>
                 <option value="0/7">All MyPulse Users</option>
+                <?php }?>
             </optgroup>
+            <?php if($account_type=='superadmin'){?>
             <optgroup label="<?php echo get_phrase('hospital_admins'); ?>">
                 <?php
                 $users = $this->db->get('hospitaladmins')->result_array();
@@ -49,9 +44,24 @@
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
+            <?php }elseif($account_type=='hospitaladmins'){?>
+            <optgroup label="<?php echo get_phrase('super_admins'); ?>">    
+                     <?php
+                $super = $this->db->get('superadmin')->result_array();
+                foreach ($super as $row):
+                    ?>
+                    <option value="1/superadmin-superadmin-<?php echo $row['superadmin_id']; ?>">
+                        <?php echo $row['name'].' ( '.$row['email'].' )'; ?></option>
+                <?php endforeach; ?>
+                </optgroup>
+                <?php }?>
             <optgroup label="<?php echo get_phrase('doctors'); ?>">
                 <?php
+                if($account_type=='superadmin'){
                 $users = $this->db->get('doctors')->result_array();
+                }elseif($account_type=='hospitaladmins'){
+                $users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
+                }
                 foreach ($users as $row):
                     ?>
                     <option value="1/doctors-doctor-<?php echo $row['doctor_id']; ?>">
@@ -60,7 +70,11 @@
             </optgroup>
             <optgroup label="<?php echo get_phrase('nurse'); ?>">
                 <?php
+                if($account_type=='superadmin'){
                 $users = $this->db->get('nurse')->result_array();
+                }elseif($account_type=='hospitaladmins'){
+                $users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('nurse')->result_array();
+                }
                 foreach ($users as $row):
                     ?>
                     <option value="1/nurse-nurse-<?php echo $row['nurse_id']; ?>">
@@ -69,7 +83,11 @@
             </optgroup>
             <optgroup label="<?php echo get_phrase('receptionists'); ?>">
                 <?php
+                if($account_type=='superadmin'){
                 $users = $this->db->get('receptionist')->result_array();
+                }elseif($account_type=='hospitaladmins'){
+                $users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('receptionist')->result_array();
+                }
                 foreach ($users as $row):
                     ?>
                     <option value="1/receptionist-receptionist-<?php echo $row['receptionist_id']; ?>">
@@ -78,7 +96,11 @@
             </optgroup>
             <optgroup label="<?php echo get_phrase('medical_stores'); ?>">
                 <?php
+                if($account_type=='superadmin'){
                 $users = $this->db->get('medicalstores')->result_array();
+                }elseif($account_type=='hospitaladmins'){
+                $users = $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicalstores')->result_array();
+                }
                 foreach ($users as $row):
                     ?>
                     <option value="1/medicalstores-store-<?php echo $row['store_id']; ?>">
@@ -87,7 +109,11 @@
             </optgroup>
             <optgroup label="<?php echo get_phrase('medical_labs'); ?>">
                 <?php
+                if($account_type=='superadmin'){
                 $users = $this->db->get('medicallabs')->result_array();
+                }elseif($account_type=='hospitaladmins'){
+                $users = $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicallabs')->result_array();
+                }
                 foreach ($users as $row):
                     ?>
                     <option value="1/medicallabs-lab-<?php echo $row['lab_id']; ?>">
@@ -95,7 +121,7 @@
                 <?php endforeach; ?>
             </optgroup>
             <?php if($account_type == 'superadmin'){?>
-            <optgroup label="<?php echo get_phrase('users'); ?>">
+            <optgroup label="<?php echo get_phrase('myPulse_users'); ?>">
                 <?php
                 $users = $this->db->get('users')->result_array();
                 foreach ($users as $row):
@@ -145,7 +171,7 @@
             </div>
             <div class="form-group">
               <div class="col-sm-offset-10 col-sm-2">
-                  <input type="submit" class="btn btn-success" value="Submit">&nbsp;&nbsp;<input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                  <input type="submit" class="btn btn-success" value="Send">&nbsp;&nbsp;<input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
               </div>
             </div>
         </form>

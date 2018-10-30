@@ -49,10 +49,8 @@ if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_use
 else
     $image_url = base_url() . 'uploads/user.jpg';
 ?>
-               <a href="<?php echo base_url()?>main/manage_profile"> <!-- <img src="<?php echo $this->crud_model->get_image_url($this->session->userdata('login_type'), $this->session->userdata('login_user_id'));?>" alt="" class="img-circle" style="height:64px;"> -->
+               <a href="<?php echo base_url()?>main/manage_profile">
 <img src="<?php echo $image_url;?>" alt="" class="img-circle" style="height:64px;">
-                
-
 <span> <?php
 if($account_type == 'superadmin'){
   $user_role='Super Admin';
@@ -283,7 +281,7 @@ echo $user_role; ?>
         </li>
         <?php }?>
              <!-- SETTINGS -->
-        <?php if($account_type=='superadmin'){?>
+        
         <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider' || $page_name == 'specializations' || $page_name == 'language') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>
@@ -295,6 +293,7 @@ echo $user_role; ?>
                         <span><i class="fa fa-h-square"></i> <?php echo get_phrase('system_settings'); ?></span>
                     </a>
                 </li>
+                <?php if($account_type=='superadmin'){?>
                <!-- <li class="<?php if ($page_name == 'manage_language') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>main/manage_language">
                         <span><i class="fa fa-globe"></i><?php echo $menu['language_settings'];?></span>
@@ -350,9 +349,10 @@ echo $user_role; ?>
                         <span><i  class="entypo-paper-plane"></i><?php echo get_phrase('privacy & terms'); ?></span>
                     </a>
                 </li>
+                <?php }?>
             </ul>
         </li>
-    <?php }?>
+    
         <?php if($account_type=='superadmin'){?>
         <li class="#">
             <a href="<?php echo base_url(); ?>main/db_backup">

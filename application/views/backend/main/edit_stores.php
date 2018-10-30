@@ -1,3 +1,8 @@
+<style>
+    .modal-backdrop.in{
+        z-index: auto;
+    }
+</style>
 <?php 
 $single_store_info = $this->db->get_where('medicalstores', array('store_id' => $id))->result_array();
 foreach ($single_store_info as $row) {
@@ -71,6 +76,60 @@ foreach ($single_store_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10" readonly> 
+                     <?php if($row['is_mobile']==1){?>
+                <span class="verifiedsuccess">Mobile Verified</span>
+                <?php }elseif($row['is_mobile']==2){?>
+                <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
+                <?php }?> <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Enter OTP</h4>
+        </div>
+        <div class="modal-body">
+          
+
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="" method="post" enctype="multipart/form-data">
+             
+        
+                <div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+
+                
+                <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="field-1" class="control-label">An OTP has been sent to your mobile <?= $row['phone']?>.<br/> Please submit OTP to continue.</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo "OTP";?></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="otp" class="form-control" id="otp"  data-validate="required" data-message-required="Value Required" value="<?php echo set_value('otp'); ?>" autocomplete="off">
+                            <input type="hidden" name="user_id" id="user_id" value="<?=$row['store_id'];?>">
+                            <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>">
+                            <span id="otp_error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 control-label col-sm-offset-2">
+                        <input type="button" class="btn btn-success" value="Submit" onClick="opt_submit(this.form);">
+                </div>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+        </form>
+        </div>
+      </div>   
+    </div>
+  </div>  
                             <span ><?php echo form_error('phone_number'); ?></span> 
                         </div>
                     </div>
@@ -113,6 +172,11 @@ foreach ($single_store_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>"value="<?=$row['email']?>" readonly>
+                    <?php if($row['is_email']==1){?>
+                <span class="verifiedsuccess">Email Verified</span>
+                <?php }elseif($row['is_email']==2){?>
+                <span class="notverified">Email Not Verified <a href="<?php echo base_url(); ?>main/resend_email_verification/medicalstores/store/<?php echo $row['unique_id'] ?>" title="Verification Mail" class="hiper">Re-Send Verification Mail</a></span>
+                <?php }?>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -320,3 +384,31 @@ foreach ($single_store_info as $row) {
         });
 }
 </script>
+<script>
+      function get_otp() {
+        var phone_number=$('#mobile').val();
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_otp/' ,
+            data : {phone : phone_number},
+            success: function(response)
+            {
+                alert(response);      
+            } 
+        });
+    }
+       function opt_submit(form) {
+            $.ajax({
+            type: 'post',
+            url: '<?php echo base_url();?>main/opt_verification/medicalstores/store/',
+            data: $('form').serialize(),
+            success: function (response) {
+                if(response == 1){
+                window.location.reload();
+                }else{
+                jQuery('#otp_error').html(response);
+                }
+            }
+          });  
+}
+   </script>
