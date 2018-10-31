@@ -1,8 +1,10 @@
 
-<div class="col-sm-5">
+<div class="col-sm-8">
                   <div class="form-group">
-         <label for="field-ta" class="col-sm-3 control-label"><b> <?php echo get_phrase('date'); ?></b></label> 
+         <label for="field-ta" class="col-sm-2 control-label"><b> <?php echo get_phrase('date_range'); ?></b></label> 
+         <div class="col-sm-5">
         <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-29 days')).' - '.date('M d,Y');}?>"/>
+        </div>
                 </div>
 </div>
 

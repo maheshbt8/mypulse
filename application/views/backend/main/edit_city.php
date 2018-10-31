@@ -6,7 +6,7 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
         <?php foreach($edit_data as $row):?>
-        <?php echo form_open(base_url() . 'index.php?superadmin/city/update/'.$row['city_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+        <?php echo form_open(base_url() . 'main/city/update/'.$row['city_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 	<div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
@@ -77,24 +77,18 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
 <!-----  DATA TABLE EXPORT CONFIGURATIONS ---->                      
 
 <script type="text/javascript">
-
-	
 	function get_state(country_id) {
-    
     	$.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_state/' + country_id ,
+        url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
             success: function(response)
-            {
-               
+            {   
                 jQuery('#state').html(response);
             }
         });
-
     }
-        function get_district(state_id) {
-   
+    function get_district(state_id) {
         $.ajax({
-            url: '<?php echo base_url();?>index.php?superadmin/get_district/' + state_id ,
+            url: '<?php echo base_url();?>ajax/get_district/' + state_id ,
             success: function(response)
             {
                 jQuery('#district').html(response);
@@ -102,7 +96,4 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
         });
 
     }
-    
- 
-
 </script>

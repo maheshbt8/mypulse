@@ -1,7 +1,7 @@
-<?php $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctors')->row();
+<?php 
+$doctor=$this->db->where('doctor_id',$doctor_id)->get('doctors')->row();
 $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row();
 $availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
- 
 $this->session->set_userdata('last_page1', current_url());
 ?>
 

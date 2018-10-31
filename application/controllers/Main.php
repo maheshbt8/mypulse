@@ -562,10 +562,6 @@ class Main extends CI_Controller {
     }
     function doctor_new_availability($task = "",$id='')
     {
-    /* if ($this->session->userdata('superadmin_login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
-        } */
         if ($task == "new_availability") {
             
                 $this->crud_model->update_doctor_new_availability_info($id);
@@ -1132,7 +1128,7 @@ class Main extends CI_Controller {
         $this->load->view('backend/index', $data);
     }
     function patient($task = "", $patient_id = "") {
-        $data['appointment_info'] = $this->crud_model->select_appointment_info();
+        $data['patient_info'] = $this->crud_model->select_patient_info();
         $data['page_name'] = 'manage_patient';
         $data['page_title'] = get_phrase('patients');
         $this->load->view('backend/index', $data);
@@ -1552,12 +1548,12 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
             $new_password = sha1($this->input->post('new_password'));
             $confirm_new_password = sha1($this->input->post('confirm_new_password'));
 
-            $current_password_db = $this->db->get_where('superadmin', array('superadmin_id' =>
+            $current_password_db = $this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('type_id').'_id' =>
                         $this->session->userdata('login_user_id')))->row()->password;
 
             if ($current_password_db == $current_password_input && $new_password == $confirm_new_password) {
-                $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
-                $this->db->update('superadmin', array('password' => $new_password));
+                $this->db->where($this->session->userdata('type_id').'_id', $this->session->userdata('login_user_id'));
+                $this->db->update($this->session->userdata('login_type'), array('password' => $new_password));
 
                 $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
                 redirect(base_url() . 'main/manage_password');
@@ -1594,6 +1590,11 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }else{
         echo '<span id="otp_error" style="color:red;">OTP Time Was Experied</span>';
     }
+    }
+    function settings($param1 = '', $param2 = '', $param3 = '') {
+        $page_data['page_name'] = 'settings';
+        $page_data['page_title'] = get_phrase('settings');
+        $this->load->view('backend/index', $page_data);
     }
 
 }

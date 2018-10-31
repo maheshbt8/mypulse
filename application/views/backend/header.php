@@ -66,25 +66,30 @@ padding: 10px;
     text-overflow: ellipsis;
 }
 .navbar{
+  border-radius: 0px;
+  margin-left: -1px;
   background-color: #263238;
 }
-
+.container-fluid{
+  padding-bottom: 9px;
+}
 </style>
 
 <?php 
 $website_language_google = $this->session->userdata('website_language_google') != NULL ? $this->session->userdata('website_language_google') : '1';
 /*$website_language_image = '<img src="'.FRONT_ASSETS.'images/lang_flag/'.$website_language_google.'.png" style="margin-right:15px;" alt="'.$website_language_google.'"> '.$website_language_google;*/ 
 ?>
-<nav class="navbar navbar-default ">
+
+<nav class="navbar">
   <div class="container-fluid">
     <div class="navbar-header">
-       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
+       <button type="button" class="navbar-toggle" style="border-color: #fff" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar" style="background-color: #fff"></span>
+        <span class="icon-bar" style="background-color: #fff"></span>
+        <span class="icon-bar" style="background-color: #fff"></span>                        
       </button>
       <?php if($account_type != 'superadmin' && $account_type != 'users'){?>
-      <span style="font-weight:200; margin:0px;font-size: 30px;color: #fff;"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $this->session->userdata('hospital_id');?>.png"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
+      <span style="font-weight:200; margin:12px;font-size: 30px;color: #fff;"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $this->session->userdata('hospital_id');?>.png"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav navbar-right"  style="font-size: 15px;">

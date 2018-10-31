@@ -6,7 +6,7 @@ $edit_data		=	$this->db->get_where('country' , array('country_id' => $param2) )-
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
         <?php foreach($edit_data as $row):?>
-        <?php echo form_open(base_url() . 'index.php?superadmin/country/update/'.$row['country_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+        <?php echo form_open(base_url() . 'main/country/update/'.$row['country_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label>

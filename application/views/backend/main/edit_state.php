@@ -6,7 +6,7 @@ $edit_data		=	$this->db->get_where('state' , array('state_id' => $param2) )->res
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
         <?php foreach($edit_data as $row):?>
-        <?php echo form_open(base_url() . 'index.php?superadmin/state/update/'.$row['state_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+        <?php echo form_open(base_url() . 'main/state/update/'.$row['state_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 	<div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country_name'); ?></label> 

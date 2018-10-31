@@ -93,6 +93,8 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+            $this->session->set_userdata('branch_id', $row->branch_id);
+            $this->session->set_userdata('department_id', $row->department_id);
             $this->session->set_userdata('login_type', 'doctors');
             $this->session->set_userdata('type_id', 'doctor');
             redirect(base_url() . 'main', 'refresh');

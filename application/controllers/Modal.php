@@ -31,7 +31,7 @@ class Modal extends CI_Controller {
 		$account_type               =	$this->session->userdata('login_type');
 		$page_data['param2']		=	$param2;
 		$page_data['param3']		=	$param3;
-		$this->load->view( 'backend/'.$account_type.'/'.$page_name.'.php' ,$page_data);
+		$this->load->view( 'backend/main/'.$page_name.'.php' ,$page_data);
 		
 		echo '<script src="assets/js/neon-custom-ajax.js"></script>';
                 echo '<script>$(".html5editor").wysihtml5();</script>';

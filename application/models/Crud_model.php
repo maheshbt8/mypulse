@@ -1136,36 +1136,31 @@ if($account_type == 'superadmin'){
         }
         
     }
-          function update_doctor_new_availability_info($doctor_id)
-    {
-
-       
-                   /*echo $this->input->post('start_on');die; */
-                       
-$start    = new DateTime($this->input->post('start_on'));
-$end      = (new DateTime($this->input->post('end_on')))->modify('+1 day');
+function update_doctor_new_availability_info($doctor_id)
+    {        
+$start = new DateTime($this->input->post('start_on'));
+$end = (new DateTime($this->input->post('end_on')))->modify('+1 day');
 $interval = new DateInterval('P1D');
 $period   = new DatePeriod($start, $interval, $end);
 if($this->input->post('repeat_interval') == 0){
         $day=$this->input->post('repeat_on');
         $data['repeat_on']      = implode(',',$this->input->post('repeat_on'));
         }elseif($this->input->post('repeat_interval') == 1){
-        $dat= array('0','1','2','3','4','5','6');
+        $day= array('0','1','2','3','4','5','6');
         $data['repeat_on']      = '0,1,2,3,4,5,6';
         }
 
 $days=array(0=>'Sun',1=>'Mon',2=>'Tue',3=>'Wed',4=>'Thu',5=>'Fri',6=>'Sat');
 $shuffel=rand(1000,9999);
 foreach ($period as $dt) {
-
-    $data['unik']=$shuffel;
+$data['unik']=$shuffel;
 $data['date']=$dt->format("m/d/Y");
-$data['doctor_id']      = $doctor_id;
-$data['start_date']         = $this->input->post('start_on');
-$data['end_date']       = $this->input->post('end_on');
-$data['start_time']         = date("H:i", strtotime($this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm')));
-$data['end_time']       = date("H:i", strtotime($this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm')));
-$data['repeat_interval']        = $this->input->post('repeat_interval');
+$data['doctor_id']= $doctor_id;
+$data['start_date']= $this->input->post('start_on');
+$data['end_date']= $this->input->post('end_on');
+$data['start_time']= date("H:i", strtotime($this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm')));
+$data['end_time']= date("H:i", strtotime($this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm')));
+$data['repeat_interval']= $this->input->post('repeat_interval');
 $data['status']=2;
 for($i=0;$i<count($day);$i++){
 for($j=0;$j<count($days);$j++){
@@ -1174,13 +1169,12 @@ for($j=0;$j<count($days);$j++){
     }
     }
     }
-
    $que=$this->db->insert('availability_slat',$data);
     }
 
         return $que;
     }
-          function update_doc_availability_info($id)
+function update_doc_availability_info($id)
     {
        
         if($this->input->post('existDays')!='' && $this->input->post('existDays')=='yes'){
@@ -1220,22 +1214,11 @@ for($j=0;$j<count($days);$j++){
     }
 
 $que=$this->db->insert('availability_slat',$data);
-   /*$que=$this->db->where('unik',$this->input->post('unik'))->update('availability_slat',$data);*/
-
     }
     return $que;
         }else{
-      /* 
-        $data['start_date'] 		= $this->input->post('start_on');
-        $data['end_date'] 		= $this->input->post('end_on');*/
         $data['start_time'] 		= date("H:i", strtotime($this->input->post('time_start').':'.$this->input->post('time_start_min').' '.$this->input->post('starting_ampm')));
         $data['end_time'] 		= date("H:i", strtotime($this->input->post('time_end').':'.$this->input->post('time_end_min').' '.$this->input->post('ending_ampm')));
-       /* $data['repeat_interval'] 		= $this->input->post('repeat_interval');
-        if($this->input->post('repeat_interval') == 0){
-        $data['repeat_on'] 		= implode(',',$this->input->post('repeat_on'));
-        }elseif($this->input->post('repeat_interval') == 1){
-        $data['repeat_on'] 		= '0,1,2,3,4,5,6';
-        }*/
             return $this->db->where('id',$id)->update('availability_slat',$data);
         }
         
@@ -1553,7 +1536,15 @@ function select_user_information($patient_id="")
     {
        return $this->db->get_where('users', array('user_id' => $patient_id))->result_array();
     }
-
+    function select_patient_info()
+    {
+      /*$account_type=$this->session->userdata('login_type');*/
+   /* if($account_type == 'superadmin'){
+  return $this->db->order_by('id','desc')->get('patient')->result_array();
+}elseif($account_type == 'hospitaladmins'){*/
+  return $this->db->order_by('id','desc')->get('patient')->result_array();
+/*}*/
+    }
     function select_inpatient_info()
     {
       $account_type=$this->session->userdata('login_type');
@@ -2360,10 +2351,11 @@ function select_user_information($patient_id="")
         if($this->input->post('remarks')){
         $data['remarks']       = $this->input->post('remarks');
         }
-        /*$data['created_type']       = $this->session->userdata('login_type');*/
+
         $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
+
         $insert=$this->db->insert('appointments',$data);
         
         if($insert)
@@ -2376,6 +2368,44 @@ function select_user_information($patient_id="")
             $notification['title']='Appointment Booking';
             $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
          $this->db->insert('notification',$notification);
+
+         
+        /*********** Patient **************/
+        $patient_data['user_id']=$this->input->post('user_id');
+        $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient');
+        if($patient->num_rows()==1){
+        $hos=$patient->row()->hospital_ids;
+        $hos_ar=explode(',', $hos);
+        for($ho=0;$ho<count($hos_ar);$ho++){
+            if($hos_ar[$ho] == $department->hospital_id){
+                $s1='1';
+            }else{
+                $s1='0';
+            }
+        }
+        if($s1==0){
+            
+    $patient_data['hospital_ids']=$hos.','.$department->hospital_id; 
+        }
+        $doc=$patient->row()->doctor_ids;
+        $doc_ar=explode(',', $doc);
+        for($do=0;$do<count($doc_ar);$do++){
+            if($doc_ar[$do] == $this->input->post('doctor_id')){
+                $s2='1';
+            }else{
+                $s2='0';
+            }
+        }
+        if($s2==0){
+        $patient_data['doctor_ids']=$doc.','.$this->input->post('doctor_id'); 
+        }
+        $this->db->where('user_id',$this->input->post('user_id'));
+        $this->db->update('patient',$patient_data);
+        }else{
+        $patient_data['doctor_ids']=$this->input->post('doctor_id');
+        $patient_data['hospital_ids']=$department->hospital_id;
+        $this->db->insert('patient',$patient_data);
+        }
 
 
             $num=100000+$lid;
@@ -2429,7 +2459,7 @@ function select_user_information($patient_id="")
         $patient_id = $this->session->userdata('login_user_id');
         return $this->db->get_where('appointment', array('patient_id' => $patient_id, 'status' => 'approved'))->result_array();
     }*/
-        function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
+    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
       $account_type=$this->session->userdata('login_type');
 if($account_type == 'superadmin'){
@@ -2463,7 +2493,7 @@ if($account_type == 'superadmin'){
         return $response;
     }*/
     
-    function select_pending_appointment_info_by_patient_id()
+    /*function select_pending_appointment_info_by_patient_id()
     {
         $patient_id = $this->session->userdata('login_user_id');
         return $this->db->get_where('appointment', array('patient_id' => $patient_id, 'status' => 'pending'))->result_array();
@@ -2487,16 +2517,16 @@ if($account_type == 'superadmin'){
         
         $this->db->group_by('patient_id');
         return $this->db->get_where('appointment', array('doctor_id' => $doctor_id, 'status' => 'approved'))->result_array();
-    }
+    }*/
     
-    function select_appointments_between_loggedin_patient_and_doctor()
+    /*function select_appointments_between_loggedin_patient_and_doctor()
     {
         $patient_id = $this->session->userdata('login_user_id');
         
         $this->db->group_by('doctor_id');
         return $this->db->get_where('appointment', array('patient_id' => $patient_id, 'status' => 'approved'))->result_array();
     }
-    
+    */
     /*function update_appointment_info($appointment_id)
     {
         $data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
@@ -2601,7 +2631,7 @@ if($account_type == 'superadmin'){
         return $this->db->get_where('prescription', array('patient_id' => $patient_id))->result_array();
     }
     
-    function select_prescription_info_by_patient_id()
+    /*function select_prescription_info_by_patient_id()
     {
         $patient_id = $this->session->userdata('login_user_id');
         return $this->db->get_where('prescription', array('patient_id' => $patient_id))->result_array();
@@ -2655,11 +2685,8 @@ if($account_type == 'superadmin'){
     {
         $this->db->where('diagnosis_report_id',$diagnosis_report_id);
         $this->db->delete('diagnosis_report');
-    }
-    function read_message($message_id)
-    {
-   return $this->db->where('message_id',$message_id)->get('messages')->row_array();
-    }
+    }*/
+    
     /*function read_message($message_type,$message_id)
     {
     if($message_type == 0){
@@ -2668,6 +2695,10 @@ if($account_type == 'superadmin'){
         return $this->db->where('message_id',$message_id)->get('private_messages')->row_array();
     }
     }*/
+    function read_message($message_id)
+    {
+   return $this->db->where('message_id',$message_id)->get('messages')->row_array();
+    }
     function select_message()
     {
         return $this->db->order_by('message_id','DESC')->get('messages')->result_array();

@@ -40,14 +40,15 @@
                             <td><?php echo $this->db->where('state_id',$row['state_id'])->get('state')->row()->name;?></td>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                                <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a>
+<a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_district/<?php echo $row['district_id'];?>');" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                                <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
         					</td>
                         </tr>
      <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+  <!-- <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
-      <!-- Modal content-->
+      
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -125,7 +126,7 @@
       </div>
       
     </div>
-  </div>
+  </div> -->
                         <?php endforeach;?>
                     </tbody>
                 </table>
@@ -194,7 +195,6 @@
 
 	
 	function get_state(country_id) {
-   
     	$.ajax({
             url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
             success: function(response)
@@ -204,7 +204,7 @@
         });
 
     }
-    function get_state1(country_id) {
+  /*  function get_state1(country_id) {
    
         $.ajax({
             url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
@@ -214,7 +214,7 @@
             }
         });
 
-    }
+    }*/
     
  
 

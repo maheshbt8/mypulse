@@ -199,7 +199,7 @@ echo $user_role; ?>
         </li>
     <?php }?>
         <?php if($account_type=='doctors'){?>
-            <li class="<?php if ($page_name == 'manage_appointment') echo 'active'; ?>">
+            <li class="<?php if ($page_name == 'add_availability') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $this->session->userdata('login_user_id');?>">
                 <i class="glyphicon glyphicon-calendar"></i>
                 <span><?php echo get_phrase('availability'); ?></span>
@@ -281,7 +281,7 @@ echo $user_role; ?>
         </li>
         <?php }?>
              <!-- SETTINGS -->
-        
+        <!-- <?php if($account_type=='superadmin' || $account_type == 'hospitaladmins'){?>
         <li class="<?php if ($page_name == 'country' || $page_name == 'state' || $page_name == 'district' || $page_name == 'city'  || $page_name == 'license'  || $page_name == 'health_insurance_provider' || $page_name == 'specializations' || $page_name == 'language') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa fa-wrench"></i>
@@ -294,7 +294,7 @@ echo $user_role; ?>
                     </a>
                 </li>
                 <?php if($account_type=='superadmin'){?>
-               <!-- <li class="<?php if ($page_name == 'manage_language') echo 'active'; ?> ">
+                <li class="<?php if ($page_name == 'manage_language') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>main/manage_language">
                         <span><i class="fa fa-globe"></i><?php echo $menu['language_settings'];?></span>
                     </a>
@@ -303,7 +303,7 @@ echo $user_role; ?>
                     <a href="<?php echo base_url(); ?>main/sms_settings">
                         <span><i class="entypo-paper-plane"></i> <?php echo $menu['sms_settings'];?></span>
                     </a>
-                </li>-->
+                </li>
                 <li class="<?php if ($page_name == 'country') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>main/country">
                         <span><i  class="entypo-paper-plane"></i><?php echo get_phrase('countries'); ?></span>
@@ -352,7 +352,15 @@ echo $user_role; ?>
                 <?php }?>
             </ul>
         </li>
-    
+        <?php }?> -->
+        <?php if($account_type=='superadmin'  || $account_type == 'hospitaladmins'){?>
+        <li class="#">
+            <a href="<?php echo base_url(); ?>main/settings">
+                <i class="fa fa-wrench"></i>
+                <span><?php echo get_phrase('settings'); ?></span>
+            </a>
+        </li>
+        <?php }?>
         <?php if($account_type=='superadmin'){?>
         <li class="#">
             <a href="<?php echo base_url(); ?>main/db_backup">

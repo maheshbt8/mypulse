@@ -19,8 +19,23 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
-        <?php $i=1;foreach ($appointment_info as $row) { 
+        <?php $i=1;foreach ($patient_info as $row) { 
+            if($account_type == 'hospitaladmins'){
+                $hospital=explode(',',$row['hospital_ids']);
+                for($ha1=0;$ha1<count($hospital);$ha1++){
+            if($hospital[$ha1] == $this->session->userdata('hospital_id')){
             $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
+            }
+            }
+            }
+            if($account_type == 'doctors'){
+                $doctor=explode(',',$row['doctor_ids']);
+            for($doc1=0;$doc1<count($doctor);$doc1++){
+            if($doctor[$doc1] == $this->session->userdata('login_user_id')){
+            $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
+            }
+            }
+            }
             ?>   
             <tr>
                 <td><?= $i;?></td>

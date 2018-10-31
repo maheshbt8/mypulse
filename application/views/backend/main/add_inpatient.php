@@ -33,7 +33,7 @@
                     </div>
                 </div> 
         <div class="col-sm-6">
-                             <?php if($account_type=='superadmin'){?>
+                <?php if($account_type=='superadmin'){?>
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
@@ -51,11 +51,12 @@
                             <span ><?php echo form_error('hospital'); ?></span>
                         </div>
                     </div>
-                    <?php }elseif($account_type=='hospitaladmins'){?>
+                    <?php }elseif($account_type=='hospitaladmins' || $account_type=='doctors'){?>
                 <input type="hidden" name="hospital" value="<?php echo $this->session->userdata('hospital_id');?>"/>
                 <?php }?>
         </div>
         <div class="col-sm-6">
+            <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                               <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
@@ -74,8 +75,12 @@
                                 <span ><?php echo form_error('branch'); ?></span>
                             </div>
                     </div>
+                <?php }elseif($account_type=='doctors'){?>
+                <input type="hidden" name="branch" value="<?php echo $this->session->userdata('branch_id');?>"/>
+                <?php }?>
         </div>
         <div class="col-sm-6">
+            <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                                 <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('department'); ?></label>
                             <div class="col-sm-8">
@@ -86,13 +91,26 @@
                                 <span ><?php echo form_error('department'); ?></span>
                             </div>
                     </div>
+                <?php }elseif($account_type=='doctors'){?>
+                <input type="hidden" name="department" value="<?php echo $this->session->userdata('department_id');?>"/>
+                <?php }?>
         </div>
         <div class="col-sm-6">
                         <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectWard'];?></label>
                             <div class="col-sm-8">
                                 <select name="ward" class="form-control" id="select_ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_bed(this.value)">
+                                <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                                     <option value=""><?php echo get_phrase('select_department_first'); ?></option>
+                    <?php }elseif($account_type=='doctors'){
+$ward = $this->db->get_where('bed' , array('ward_id' => $ward_id
+        ))->result_array(); ?>
+
+        <option value=""> Select Bed </option>
+        <?php 
+        foreach ($ward as $row) {
+        ?>
+        <option value="' . $row['bed_id'] . '">' . $row['name'] . '</option> <?php } }?>
                                 </select>
                             </div>
                     </div>

@@ -104,59 +104,11 @@ foreach ($single_admin_info as $row) {
                 <span class="verifiedsuccess">Mobile Verified</span>
                 <?php }elseif($row['is_mobile']==2){?>
                 <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
-                <?php }?> <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Enter OTP</h4>
-        </div>
-        <div class="modal-body">
-          
-
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="" method="post" enctype="multipart/form-data">
-             
         
-                <div class="row">
-    <div class="col-md-12">
-
-        <div class="panel panel-primary" data-collapsed="0">
-         <div class="panel-body">
-
-                
-                <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label for="field-1" class="control-label">An OTP has been sent to your mobile <?= $row['phone']?>.<br/> Please submit OTP to continue.</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo "OTP";?></label>
-                        <div class="col-sm-8">
-                            <input type="text" name="otp" class="form-control" id="otp"  data-validate="required" data-message-required="Value Required" value="<?php echo set_value('otp'); ?>" autocomplete="off">
-                            <input type="hidden" name="user_id" id="user_id" value="<?=$row['admin_id'];?>">
-                            <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>">
-                            <span id="otp_error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3 control-label col-sm-offset-2">
-                        <input type="button" class="btn btn-success" value="Submit" onClick="opt_submit(this.form);">
-                </div>
-                </div>
-                </div>
-        </div>
-    </div>
-</div>
-        </form>
-        </div>
-      </div>   
-    </div>
-  </div>
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
+                    <?php if($account_type=='superadmin'){?>
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
@@ -189,6 +141,7 @@ foreach ($single_admin_info as $row) {
                             <span><?php echo form_error('status'); ?></span>
                         </div>
                     </div>
+                <?php }?>
                 </div>
                     </div>
             </div>
@@ -394,6 +347,58 @@ foreach ($single_admin_info as $row) {
         
     </div>
 </div>
+
+
+        <?php }?> <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Enter OTP</h4>
+        </div>
+        <div class="modal-body">
+          
+
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="" method="post" enctype="multipart/form-data">
+             
+        
+                <div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+
+                
+                <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="field-1" class="control-label">An OTP has been sent to your mobile <?= $row['phone']?>.<br/> Please submit OTP to continue.</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo "OTP";?></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="otp" class="form-control" id="otp"  data-validate="required" data-message-required="Value Required" value="<?php echo set_value('otp'); ?>" autocomplete="off">
+                            <input type="hidden" name="user_id" id="user_id" value="<?=$row['admin_id'];?>">
+                            <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>">
+                            <span id="otp_error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 control-label col-sm-offset-2">
+                        <input type="button" class="btn btn-success" value="Submit" onClick="opt_submit(this.form);">
+                </div>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+        </form>
+        </div>
+      </div>   
+    </div>
+  </div>
 <?php }?>
 <script>
       function get_otp() {
@@ -421,5 +426,5 @@ foreach ($single_admin_info as $row) {
                 }
             }
           });  
-}
+    }
    </script>

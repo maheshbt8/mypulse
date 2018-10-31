@@ -42,7 +42,8 @@
                             <td><?php echo $this->db->where('district_id',$row['district_id'])->get('district')->row()->name;?></td>
 							<td><?php echo $row['name'];?></td>   
 							<td>
-                                <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a>
+    <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_city/<?php echo $row['city_id'];?>');" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
+                                <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
         					</td>
                         </tr>
            <!-- Modal -->

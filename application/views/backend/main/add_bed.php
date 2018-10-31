@@ -1,4 +1,5 @@
 <?php $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
+
 ?>
 <div class="row">
     <div class="col-md-6">
@@ -31,8 +32,9 @@
 		                    <div class="col-sm-8">
 		                        <select name="branch" class="form-control" id="select_branch"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_department(this.value)">
 		                              <?php 
-                               $hospital_info=$this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
-                               foreach ($hospital_info as $row) { ?>
+                               $branch_info=$this->db->where('hospital_id',$ward['hospital_id'])->get('branch')->result_array();
+                               foreach ($branch_info as $row) { 
+                                ?>
                                     <option value="<?php echo $row['branch_id']; ?>" <?php if($row['branch_id'] == $ward['branch_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>
 
@@ -44,7 +46,7 @@
 		                    <div class="col-sm-8">
 		                        <select name="department" class="form-control" id="select_department"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_ward(this.value)">
 		                             <?php 
-                               $hospital_info=$this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
+                               $hospital_info=$this->db->where('branch_id',$ward['branch_id'])->get('department')->result_array();
                                foreach ($hospital_info as $row) { ?>
                                     <option value="<?php echo $row['department_id']; ?>" <?php if($row['department_id'] == $ward['department_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>
@@ -57,7 +59,7 @@
 		                    <div class="col-sm-8">
 		                        <select name="ward" class="form-control" id="select_ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
                                      <?php 
-                               $hospital_info=$this->db->where('department_id',$row['department_id'])->get('ward')->result_array();
+                               $hospital_info=$this->db->where('department_id',$ward['department_id'])->get('ward')->result_array();
                                foreach ($hospital_info as $row) { ?>
                                     <option value="<?php echo $row['ward_id']; ?>" <?php if($row['ward_id'] == $ward['ward_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>

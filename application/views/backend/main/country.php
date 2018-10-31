@@ -32,14 +32,15 @@
 						</tr>
 					</thead>
                     <tbody>
-                    	<?php $count = 1;foreach($country as $row):?>
+                    	<?php $count = 1;foreach($country as $row){?>
                         <tr>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                              <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a>
+              <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_country/<?php echo $row['country_id'];?>');">
+              <i class="entypo-pencil"></i></a>
+              <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
         					</td>
-                        </tr>
-                         <!-- Modal -->
+                                   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
@@ -62,7 +63,7 @@
                 <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label>
+                    <label class="col-sm-4 control-label"><?php echo "Country";?></label>
                     <div class="col-sm-6">
                         <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
                             data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" required/>
@@ -90,7 +91,9 @@
       
     </div>
   </div>
-                        <?php endforeach;?>
+                        </tr>
+        
+                        <?php }?>
                     </tbody>
                 </table>
 			</div>

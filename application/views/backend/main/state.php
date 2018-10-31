@@ -39,7 +39,8 @@
                             <td><?php echo $this->db->where('country_id',$row['country_id'])->get('country')->row()->name;?></td>
 							<td><?php echo $row['name'];?></td>
 							<td>
-                                 <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a>
+    <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_state/<?php echo $row['state_id'];?>');" title="Edit"><i class="entypo-pencil"></i></a>
+                                 <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
         					</td>
                         </tr>
         <!-- Modal -->
