@@ -71,10 +71,9 @@ padding: 10px;
   background-color: #263238;
 }
 .container-fluid{
-  padding-bottom: 9px;
+  padding-bottom: 0px;
 }
 </style>
-
 <?php 
 $website_language_google = $this->session->userdata('website_language_google') != NULL ? $this->session->userdata('website_language_google') : '1';
 /*$website_language_image = '<img src="'.FRONT_ASSETS.'images/lang_flag/'.$website_language_google.'.png" style="margin-right:15px;" alt="'.$website_language_google.'"> '.$website_language_google;*/ 

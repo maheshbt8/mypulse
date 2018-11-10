@@ -26,7 +26,9 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
-        <?php $i=1;foreach ($patient_info as $row) { ?>   
+        <?php $i=1;foreach ($patient_info as $row) {
+            
+         ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['user_id'] ?>"></td>
                  <td><?php echo $row['unique_id']?></td>

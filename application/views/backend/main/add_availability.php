@@ -1,7 +1,7 @@
 <?php 
 $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctors')->row();
 $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row();
-$availability_slat=$this->db->get_where('availability_slat',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
+$availability_slot=$this->db->get_where('availability_slot',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
 $this->session->set_userdata('last_page1', current_url());
 ?>
 
@@ -37,9 +37,9 @@ $this->session->set_userdata('last_page1', current_url());
                             <div class="custome_col8">
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('availability'); ?></h3>
                                 <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;">&nbsp;&nbsp;
+                                <?php if($account_type != 'users'){?>
                                <input type="submit" onclick="" class="btn btn-primary pull-right" value="Save">
-                        
-                               
+                               <?php }?>
                             </div>
                             
                             <br>
@@ -81,8 +81,10 @@ $this->session->set_userdata('last_page1', current_url());
                     </div>
                     <div class="panel-body" style="padding:0px;">
                         <div class="calendar-env">
-                            <div class="calendar-body"><button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>main/doctor_new_availability/<?php echo $doctor->doctor_id;?>'"><?php echo $this->lang->line('buttons')['addNew'];?></button>
-
+                            <div class="calendar-body">
+                                <?php if($account_type != 'users'){?>
+                                <button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>main/doctor_new_availability/<?php echo $doctor->doctor_id;?>'"><?php echo $this->lang->line('buttons')['addNew'];?></button>
+                            <?php }?>
                                 <div id="notice_calendar"></div>
                             </div>
                         </div>
@@ -119,7 +121,7 @@ $this->session->set_userdata('last_page1', current_url());
 					events: [
 						<?php
 					
-						foreach($availability_slat as $row):    
+						foreach($availability_slot as $row):    
     
 						?>
 						{

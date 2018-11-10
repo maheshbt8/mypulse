@@ -1,4 +1,6 @@
-<?php $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array(); 
+<?php 
+/*echo $this->session->userdata('last_page');die;*/
+$row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array(); 
 
 ?>
 <div class="row">

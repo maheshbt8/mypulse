@@ -1,6 +1,6 @@
 <?php 
 
-$single_doctor_info = $this->db->get_where('availability_slat', array('id' => $slat_id))->result_array();
+$single_doctor_info = $this->db->get_where('availability_slot', array('id' => $slat_id))->result_array();
 
     foreach($single_doctor_info as $row){
         

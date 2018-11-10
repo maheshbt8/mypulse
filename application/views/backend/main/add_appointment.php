@@ -4,8 +4,9 @@
     }
 </style>
 <div class="row">
+   
     <div class="col-md-12">
-        
+         <div class="row">
     <!-- <div class="col-sm-4">
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
@@ -61,7 +62,8 @@
                         </div>
                     </div>
     </div>
-       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">UNREGISTERED USER</button>
+    <?php if($account_type != 'users'){?>
+       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">UNREGISTERED USER</button><?php }?></div>
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -179,7 +181,9 @@
                         </div>
                     </div>
                 </div> -->
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'users'){?>
                 <div class="col-sm-6">
+                
                                  <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
 
@@ -189,11 +193,17 @@
         
         <?php 
         if($account_type=='superadmin'){
-        $users=$this->db->get('doctors')->result_array();
+        $doctors_details=$this->db->get('doctors')->result_array();
         }elseif($account_type=='hospitaladmins'){
-        $users=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
+        $doctors_details=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
+        }elseif($account_type=='users'){
+        /*$doctor_ids=explode(',',$this->db->where('user_id',$this->session->userdata('login_user_id'))->get('patient')->row()->doctor_ids);
+        for($i=0;$i<count($doctor_ids);$i++){
+            $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
+            }*/
+        $doctors_details=$this->db->get('doctors')->result_array();
         }
-        foreach ($users as $row) {
+        foreach ($doctors_details as $row) {
             $spee=explode(',',$row['specializations']);
             $spe='';
             for($i=0;$i<count($spee);$i++) {
@@ -207,7 +217,13 @@
                         </div>
                     </div>
                 </div>
+                <?php }elseif($account_type == 'doctors'){ ?>
+                    <input type="hidden" name="doctor_id" value="<?= $this->session->userdata('login_user_id');?>">
+                    <input type="hidden" name="doctor" id="doctor" value="<?= $this->session->userdata('unique_id');?>">
+                <?php } ?>
+                
                   <div class="col-sm-6">
+                    <?php if($account_type != 'users'){?>
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
 
@@ -216,9 +232,20 @@
                             
                         </div>
                     </div>
+                
+            <?php }else{ ?>
+                    <input type="hidden" name="user_id" value="<?= $this->session->userdata('login_user_id');?>">
+                    <!-- <input type="hidden" name="user" id="doctor" value="<?= $this->session->userdata('unique_id');?>"> -->
+                <?php } ?>
                 </div>
-                    <span id="doc_ava">   
-                    </span>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span id="doc_ava"></span>
+                    </div>
+                </div>
+                <div class="row">
                 <div class="col-sm-6">
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
@@ -324,6 +351,22 @@
         });
    
     }  
+    <?php if($account_type == 'doctors'){?>
+        $(document).ready(function(){
+           var unique_id=$('#doctor').val();
+          /* alert(unique_id);*/
+           $.ajax({
+            url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
+            success: function(response)
+            {
+                /*alert(response);*/
+                jQuery('#doc_ava').html(response);
+                document.getElementById("appointment_date").disabled = false;
+                
+            } 
+        });
+        });
+    <?php }?>
         $(document).ready(function(){
         var date = new Date();
         date.setDate(date.getDate());
@@ -331,11 +374,8 @@
         startDate: date
         });
         });
-
- 
    function get_dco_date(date_value) {
     var doctor_id=$('#doctor_id').val();
-
      $.ajax({
             type : "POST",
             url: '<?php echo base_url();?>ajax/get_dco_date/' + doctor_id,

@@ -223,24 +223,6 @@
                             </select>
                         </div>
                     </div>
-                    
-                      <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="dob" id="dob" class="form-control" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo $this->lang->line('buttons')['dob'];?>" autocomplete="off">
-                        </div>
-                    </div>
-                    
-                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="in_address" id="in_address" class="form-control" id="field-5" value="<?php echo set_value('in_address'); ?>">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['profilePic'];?></label>
 
@@ -261,7 +243,72 @@
                             </div>
                         </div>
                     </div>
-                   
+                      
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="dob" id="dob" class="form-control" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo $this->lang->line('buttons')['dob'];?>" autocomplete="off">
+                        </div>
+                    </div>
+                    
+                     <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="in_address" id="in_address" class="form-control" id="field-5" value="<?php echo set_value('in_address'); ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="country" class="form-control" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
+                                <option value=""><?php echo get_phrase('select_country'); ?></option>
+                                <?php 
+                                $admins = $this->db->get_where('country')->result_array();
+                                foreach($admins as $row){?>
+                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> 
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="state" class="form-control" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
+                                    <option value=""><?php echo get_phrase('select_country_first'); ?></option>
+
+                                </select>   
+                            </div>  
+                    </div>
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="district" class="form-control" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
+                                    <option value=""><?php echo get_phrase('select_state_first'); ?></option>
+
+                                </select>
+                            </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="city" class="form-control" id="select_city" value="<?php echo set_value('city'); ?>"  >
+                                    <option value=""><?php echo get_phrase('select_district_first'); ?></option>
+
+                                </select>
+                            </div>
+                    </div>
                 </div>
                     </div>
                    
@@ -323,5 +370,40 @@
                 jQuery('#select_branch').html(response);
             }
         });
+    }
+    function get_state(country_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
+            success: function(response)
+            {
+                jQuery('#select_state').html(response);
+            }
+        });
+
+    }
+    
+    function get_city(state_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_city/' + state_id ,
+            success: function(response)
+            {
+                jQuery('#select_city').html(response);
+            }
+        });   
+
+    }
+    
+     function get_district(city_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_district/' + city_id ,
+            success: function(response)
+            {
+                jQuery('#select_district').html(response);
+            }
+        });
+
     }
 </script>

@@ -1398,10 +1398,10 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
             $this->session->set_flashdata('message', get_phrase('user_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
-        if ($task == "dj_report") {
+        /*if ($task == "dj_report") {
              $this->crud_model->select_prescription_info_by_patient($patient_id);
              redirect(base_url() . 'index.php?superadmin/patient');
-        }
+        }*/
         $data['patient_info'] = $this->crud_model->select_user_info();
         $data['page_name'] = 'manage_users';
         $data['page_title'] = get_phrase('myPulse_users');

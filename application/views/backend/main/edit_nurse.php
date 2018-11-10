@@ -3,7 +3,8 @@
         z-index: auto;
     }
 </style>
-<?php 
+<?php
+$account_type= $this->session->userdata('login_type'); 
 $single_nurse_info = $this->db->get_where('nurse', array('nurse_id' => $nurse_id))->result_array();
 foreach ($single_nurse_info as $row) {
 ?>
@@ -85,11 +86,12 @@ foreach ($single_nurse_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>" readonly>
-                <?php if($row['is_email']==1){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'nurse'){
+                if($row['is_email']==1){?>
                 <span class="verifiedsuccess">Email Verified</span>
                 <?php }elseif($row['is_email']==2){?>
                 <span class="notverified">Email Not Verified <a href="<?php echo base_url(); ?>main/resend_email_verification/nurse/nurse/<?php echo $row['unique_id'] ?>" title="Verification Mail" class="hiper">Re-Send Verification Mail</a></span>
-                <?php }?>
+                <?php }}?>
                              <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -98,7 +100,8 @@ foreach ($single_nurse_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="number" name="mobile" class="form-control" id="mobile" value="<?=$row['phone']?>"   minlength="10" maxlength="10" readonly>
-                    <?php if($row['is_mobile']==1){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'nurse'){
+                if($row['is_mobile']==1){?>
                 <span class="verifiedsuccess">Mobile Verified</span>
                 <?php }elseif($row['is_mobile']==2){?>
                 <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
@@ -151,7 +154,7 @@ foreach ($single_nurse_info as $row) {
         </div>
       </div>   
     </div>
-  </div>
+  </div><?php }?>
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
@@ -442,7 +445,9 @@ foreach ($single_nurse_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'nurse'){?>
+            <input type="submit" class="btn btn-success" value="Update">
+            <?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>

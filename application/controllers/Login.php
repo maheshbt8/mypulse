@@ -78,6 +78,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->admin_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('hospital_name', $this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row()->name);
             $this->session->set_userdata('login_type', 'hospitaladmins');
             $this->session->set_userdata('type_id', 'admin');
@@ -93,6 +94,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('branch_id', $row->branch_id);
             $this->session->set_userdata('department_id', $row->department_id);
             $this->session->set_userdata('login_type', 'doctors');
@@ -105,6 +107,7 @@ class Login extends CI_Controller {
             $row = $query->row();
             $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->user_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('name', $row->name);
             /*$this->session->set_userdata('hospital_id', $row->hospital_id);*/
             $this->session->set_userdata('login_type', 'users');
@@ -119,11 +122,13 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->nurse_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+            $this->session->set_userdata('branch_id', $row->branch_id);
+            $this->session->set_userdata('department_id', $row->department_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'nurse');
             $this->session->set_userdata('type_id', 'nurse');
             redirect(base_url() . 'main', 'refresh');
         }
-       
         
         $query = $this->db->get_where('receptionist', $credential);
         if ($query->num_rows() > 0) {
@@ -132,6 +137,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->receptionist_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'receptionist');
             $this->session->set_userdata('type_id', 'receptionist');
             redirect(base_url() . 'main', 'refresh');
@@ -143,6 +149,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->lab_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicallabs');
             $this->session->set_userdata('type_id', 'lab');
             redirect(base_url() . 'main/dashboard', 'refresh');
@@ -154,6 +161,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->store_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicalstores');
             $this->session->set_userdata('type_id', 'store');
             redirect(base_url() . 'main/dashboard', 'refresh');

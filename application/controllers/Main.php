@@ -97,7 +97,6 @@ class Main extends CI_Controller {
             redirect(base_url() . 'main/hospital');
         }
         if ($task == "delete_multiple") {
-            print_r($_POST);die;
            $this->crud_model->delete_multiple_hospital_info();
             $this->session->set_flashdata('message', get_phrase('hospitals_info_deleted_successfuly'));
             redirect(base_url() . 'main/hospital');
@@ -814,8 +813,8 @@ class Main extends CI_Controller {
         array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
         array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
-        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
-        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        /*array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),*/
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
@@ -855,8 +854,8 @@ class Main extends CI_Controller {
         array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
         array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
-        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
-        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        /*array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),*/
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
@@ -913,8 +912,8 @@ class Main extends CI_Controller {
         array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
         array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
-        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
-        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        /*array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),*/
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
@@ -955,8 +954,8 @@ class Main extends CI_Controller {
         array('field' => 'owner_name','label' => 'Owner/MD Name','rules' => 'required'),
         array('field' => 'owner_mobile','label' => 'Owner/MD Phone Number','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
-        array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
-        array('field' => 'branch','label' => 'Branch','rules' => 'required'),
+        /*array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
+        array('field' => 'branch','label' => 'Branch','rules' => 'required'),*/
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
@@ -1069,7 +1068,7 @@ class Main extends CI_Controller {
     }
         $data['id']=$user_id;
         $data['page_name'] = 'edit_user';
-        $data['page_title'] = get_phrase('edit_myPulse_users');
+        $data['page_title'] = get_phrase('myPulse_users');
         $this->load->view('backend/index', $data);
     }
 
@@ -1085,10 +1084,10 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('user_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
-        if ($task == "dj_report") {
+        /*if ($task == "dj_report") {
              $this->crud_model->select_prescription_info_by_patient($patient_id);
              redirect(base_url() . 'main/patient');
-        }
+        }*/
         $data['patient_info'] = $this->crud_model->select_user_info();
         $data['page_name'] = 'manage_users';
         $data['page_title'] = get_phrase('myPulse_users');
@@ -1114,6 +1113,19 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('add_in-Patient');
         $this->load->view('backend/index', $data);
     }
+    function edit_inpatient($patient_id='')
+    {
+    if($this->input->post()){
+    $this->crud_model->update_inpatient_info($patient_id);
+    $this->session->set_flashdata('message', get_phrase('inpatient_info_updated_successfuly'));
+    redirect($this->session->userdata('last_page'));
+    
+    }
+        $data['patient_id'] = $patient_id;
+        $data['page_name'] = 'edit_inpatient';
+        $data['page_title'] = get_phrase('in-Patient');
+        $this->load->view('backend/index', $data);
+    }
     function inpatient($task = "", $patient_id = "") {
         $data['patient_info'] = $this->crud_model->select_inpatient_info();
         $data['page_name'] = 'manage_inpatient';
@@ -1123,8 +1135,9 @@ class Main extends CI_Controller {
     function inpatient_history($task = "", $patient_id = "") {
         $data['inpatient'] = $this->crud_model->select_inpatient_id_info($task);
         $data['inpatient_history'] = $this->crud_model->select_inpatient_history_info($task);
+        $name=$this->db->where('user_id',$data['inpatient']->user_id)->get('users')->row_array();
         $data['page_name'] = 'inpatient_history';
-        $data['page_title'] = get_phrase('inpatients');
+        $data['page_title'] = get_phrase('inpatient - ').$name['name'].' ('.$name['unique_id'].')';
         $this->load->view('backend/index', $data);
     }
     function patient($task = "", $patient_id = "") {
@@ -1169,7 +1182,6 @@ class Main extends CI_Controller {
     }
     function appointment($task = "", $appointment_id = "") {
         if ($task == "delete") {
-
             $this->crud_model->delete_appointment_info($appointment_id);
             $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
@@ -1183,16 +1195,167 @@ class Main extends CI_Controller {
             $this->crud_model->close_multiple_appointment_info();
             $this->session->set_flashdata('message', get_phrase('appointment_info_closed_successfuly'));
         }
-       
+        if ($task == "update_remark") {
+            $this->crud_model->update_appointment_remark($appointment_id);
+            $this->session->set_flashdata('message', get_phrase('remark_updated_successfuly'));
+            redirect($this->session->userdata('last_page1'));
+        }
+
         $data['appointment_info'] = $this->crud_model->select_appointment_info();
         $data['page_name'] = 'manage_appointment';
         $data['page_title'] = get_phrase('manage_appointments');
         $this->load->view('backend/index', $data);
     }
+    function appointment_cancel($task =''){
+        if ($task == "cancel_multiple") {
+        if($_POST['cancel_reason'] != ''){
+            $d=$this->crud_model->cancel_multiple_appointment_info();
+            if($d){
+            $this->session->set_flashdata('message', get_phrase('appointment_info_cancled_successfuly'));echo TRUE;}
+        }else{
+            echo '<span id="reason_error" style="color:red;">Reason Required</span>';
+        }
+        }
+    }
     function appointment_history( $appointment_id = "") {
         $data['appointment_id'] = $appointment_id;
         $data['page_name'] = 'appointment_history';
         $data['page_title'] = get_phrase('Appointment Id : ').$this->db->where('appointment_id',$appointment_id)->get('appointments')->row()->appointment_number;
+        $this->load->view('backend/index', $data);
+    }
+    /********Add Prescription*********/
+     function add_prescription($appointment_id='')
+    {
+    if($this->input->post()){
+    $this->crud_model->save_prescription_info();
+    $this->session->set_flashdata('message', get_phrase('prescription_info_saved_successfuly'));
+    redirect($this->session->userdata('last_page1'));
+    
+    }
+        $data['appointment_id'] = $appointment_id;
+        $data['page_name'] = 'add_prescription';
+        $data['page_title'] = get_phrase('add_prescription');
+        $this->load->view('backend/index', $data);
+    }
+    function edit_prescription($prescription_id='')
+    {
+    if($this->input->post()){
+    $this->crud_model->update_prescription_info();
+    $this->session->set_flashdata('message', get_phrase('prescription_info_updated_successfuly'));
+    redirect($this->session->userdata('last_page1'));
+    
+    }
+        $data['prescription_id'] = $prescription_id;
+        $data['page_name'] = 'edit_prescription';
+        $data['page_title'] = get_phrase('prescription');
+        $this->load->view('backend/index', $data);
+    }
+    function prescription_history($prescription_id='',$order_id='')
+    {
+        if($order_id!=''){
+        $data['order_id'] = $order_id;    
+        }
+        $data['prescription_id'] = $prescription_id;
+        $data['page_name'] = 'prescription_history';
+        $data['page_title'] = get_phrase('prescription');
+        $this->load->view('backend/index', $data);
+    }
+    function prescription_order($prescription_id='',$type_order='')
+    {
+        $data['prescription_id'] = $prescription_id;
+        $data['type_order'] = $type_order;
+        $data['page_name'] = 'add_placeorder';
+        $data['page_title'] = get_phrase('prescription');
+        $this->load->view('backend/index', $data);
+    }
+    function prescription($param1='',$param2='',$param3='')
+    {
+
+        if ($param1 == "order") {
+            $this->crud_model->save_prescription_order($param2);
+            $this->session->set_flashdata('message', get_phrase('order_booked_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }   
+        if ($param1 == "delete") {
+            $this->crud_model->delete_prescription($param2);
+            $this->session->set_flashdata('message', get_phrase('prescription_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($param1 == "status") {
+            $this->crud_model->update_prescription_status($param2,$param3);
+            $this->session->set_flashdata('message', get_phrase('prescription_status_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        } 
+        $data['prescription']=$this->crud_model->select_prescription_info();
+        $data['page_name'] = 'manage_prescription';
+        $data['page_title'] = get_phrase('prescriptions');
+        $this->load->view('backend/index', $data);
+    }
+    function upload_receipt($param1){
+        $this->crud_model->upload_prescription_receipt($param1);
+        $this->session->set_flashdata('message', get_phrase('recipt_uploade_successfuly'));
+        redirect($this->session->userdata('last_page'));
+    }
+    /********Add Prognosis*********/
+     function add_prognosis($appointment_id='')
+    {
+    if($this->input->post()){
+    $this->crud_model->save_prognosis_info();
+    $this->session->set_flashdata('message', get_phrase('prognosis_info_saved_successfuly'));
+    redirect($this->session->userdata('last_page1'));
+    
+    }
+        $data['appointment_id'] = $appointment_id;
+        $data['page_name'] = 'add_prognosis';
+        $data['page_title'] = get_phrase('add_prognosis');
+        $this->load->view('backend/index', $data);
+    }
+    function edit_prognosis($prognosis_id='')
+    {
+    if($this->input->post()){
+    $this->crud_model->update_prognosis_info($prognosis_id);
+    $this->session->set_flashdata('message', get_phrase('prescription_info_updated_successfuly'));
+    redirect($this->session->userdata('last_page1'));
+    
+    }
+        $data['prognosis_id'] = $prognosis_id;
+        $data['page_name'] = 'edit_prognosis';
+        $data['page_title'] = get_phrase('prognosis');
+        $this->load->view('backend/index', $data);
+    }
+    function prognosis($param1='',$param2='',$param3='')
+    {   
+        if ($param1 == "delete") {
+            $this->crud_model->delete_prognosis($param2);
+            $this->session->set_flashdata('message', get_phrase('prognosis_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($param1 == "status") {
+            $this->crud_model->update_prognosis_status($param2,$param3);
+            $this->session->set_flashdata('message', get_phrase('prognosis_status_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        } 
+        $data['prognosis']=$this->crud_model->select_prognosis_info();
+        $data['page_name'] = 'manage_prognosis';
+        $data['page_title'] = get_phrase('prognosis');
+        $this->load->view('backend/index', $data);
+    }
+    function orders($param1='',$param2='')
+    {
+
+        if ($param1 == "order") {
+            $this->crud_model->save_prescription_order($param2);
+            $this->session->set_flashdata('message', get_phrase('prognosis_ordered_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }   
+        if ($param1 == "delete") {
+            $this->crud_model->delete_prescription($param2);
+            $this->session->set_flashdata('message', get_phrase('prognosis_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        $data['order']=$this->crud_model->select_order_info();
+        $data['page_name'] = 'manage_order';
+        $data['page_title'] = get_phrase('orders');
         $this->load->view('backend/index', $data);
     }
     function report($report_id = "") {

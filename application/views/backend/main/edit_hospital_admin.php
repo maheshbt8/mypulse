@@ -4,6 +4,7 @@
     }
 </style>
 <?php
+$account_type= $this->session->userdata('login_type');
 $country_info=$this->db->get('country')->result_array();
 $single_admin_info = $this->db->get_where('hospitaladmins', array('admin_id' => $admin_id))->result_array();
 foreach ($single_admin_info as $row) {
@@ -87,11 +88,12 @@ foreach ($single_admin_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['email']?>" readonly >
-                <?php if($row['is_email']==1){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){
+                 if($row['is_email']==1){?>
                 <span class="verifiedsuccess">Email Verified</span>
                 <?php }elseif($row['is_email']==2){?>
                 <span class="notverified">Email Not Verified <a href="<?php echo base_url(); ?>main/resend_email_verification/hospitaladmins/admin/<?php echo $row['unique_id'] ?>" title="Verification Mail" class="hiper">Re-Send Verification Mail</a></span>
-                <?php }?>
+                <?php }}?>
                 <span><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -99,12 +101,13 @@ foreach ($single_admin_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase(' Phone_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10" readonly > 
-                <?php if($row['is_mobile']==1){?>
+                            <input type="number" name="mobile" class="form-control" id="mobile"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10" readonly >
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){ 
+                if($row['is_mobile']==1){?>
                 <span class="verifiedsuccess">Mobile Verified</span>
                 <?php }elseif($row['is_mobile']==2){?>
                 <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
-        
+                <?php }}?>
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
@@ -336,7 +339,8 @@ foreach ($single_admin_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+                        <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+                        <input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                    
@@ -349,7 +353,7 @@ foreach ($single_admin_info as $row) {
 </div>
 
 
-        <?php }?> <!-- Modal -->
+         <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->

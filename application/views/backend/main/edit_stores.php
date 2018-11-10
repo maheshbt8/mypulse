@@ -3,7 +3,8 @@
         z-index: auto;
     }
 </style>
-<?php 
+<?php
+$account_type= $this->session->userdata('login_type'); 
 $single_store_info = $this->db->get_where('medicalstores', array('store_id' => $id))->result_array();
 foreach ($single_store_info as $row) {
     
@@ -76,7 +77,8 @@ foreach ($single_store_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="number" name="phone_number" class="form-control" id="phone_number"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['phone']?>"  minlength="10" maxlength="10" readonly> 
-                <?php if($row['is_mobile']==1){?>
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'medicalstores'){
+                if($row['is_mobile']==1){?>
                 <span class="verifiedsuccess">Mobile Verified</span>
                 <?php }elseif($row['is_mobile']==2){?>
                 <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
@@ -129,7 +131,7 @@ foreach ($single_store_info as $row) {
         </div>
       </div>   
     </div>
-  </div>  
+  </div>  <?php }?>
                             <span ><?php echo form_error('phone_number'); ?></span> 
                         </div>
                     </div>
@@ -172,11 +174,12 @@ foreach ($single_store_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="<?php echo 'Value_required';?>"value="<?=$row['email']?>" readonly>
-                    <?php if($row['is_email']==1){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'medicalstores'){
+                if($row['is_email']==1){?>
                 <span class="verifiedsuccess">Email Verified</span>
                 <?php }elseif($row['is_email']==2){?>
                 <span class="notverified">Email Not Verified <a href="<?php echo base_url(); ?>main/resend_email_verification/medicalstores/store/<?php echo $row['unique_id'] ?>" title="Verification Mail" class="hiper">Re-Send Verification Mail</a></span>
-                <?php }?>
+                <?php }}?>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>
@@ -281,23 +284,7 @@ foreach ($single_store_info as $row) {
                           </select>
 						</div> 
 					</div>
-                      <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of birth'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>" autocomplete="off">
-                        </div>
-                    </div>
-                    
-                     <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Incharge address'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="in_address" class="form-control" id="in_address" value="<?=$row['in_address']?>">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
+                     
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Photo';?></label>
 
@@ -318,7 +305,84 @@ foreach ($single_store_info as $row) {
                             </div>
                         </div>
                     </div>
-                   
+                </div>
+                <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of birth'); ?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="dob" class="form-control" id="dob" value="<?=$row['dob']?>" autocomplete="off">
+                        </div>
+                    </div>
+                    
+                     <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Incharge address'); ?></label>
+
+                        <div class="col-sm-8">
+                            <input type="text" name="in_address" class="form-control" id="in_address" value="<?=$row['in_address']?>">
+                        </div>
+                    </div>
+                    <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="country" class="form-control" id="country" value=""  onchange="return get_state(this.value)">
+                                <option value=""><?php echo get_phrase('select_country'); ?></option>
+                                <?php 
+                                $admins = $this->db->get_where('country')->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                               
+                            </select>
+                        </div>
+                    </div> 
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="state" class="form-control" id="select_state" value=""  onchange="return get_district(this.value)">
+                                    <option value=""><?php echo get_phrase('select_country_first'); ?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('state',array('country_id'=>$row['country']))->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                </select>   
+                            </div>
+                    </div>
+                    
+                    
+                       <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="district" class="form-control" id="select_district"  value=""  onchange="return get_city(this.value)">
+                                    <option value=""><?php echo get_phrase('select_state_first'); ?></option>
+                                    <?php 
+                                $state = $this->db->get_where('district',array('state_id'=>$row['state']))->result_array();
+                                foreach($state as $row1){?>
+                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                </select>
+                            </div>   
+                    </div>
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
+                            <div class="col-sm-8">
+                                <select name="city" class="form-control" id="select_city" value=""  >
+                                    <option value=""><?php echo get_phrase('select_district_first'); ?></option>
+                                    <?php 
+                                $admins = $this->db->get_where('city',array('district_id'=>$row['district']))->result_array();
+                                foreach($admins as $row1){?>
+                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <?php } ?>
+                                </select>
+                            </div>
+                    </div>
                 </div>
                     </div>
                   
@@ -362,7 +426,8 @@ foreach ($single_store_info as $row) {
 </div>
 </div>
  <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'medicalstores'){?>
+                        <input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>   
  </form>
@@ -412,3 +477,43 @@ foreach ($single_store_info as $row) {
           });  
 }
    </script>
+
+<script type="text/javascript">
+
+    
+    function get_state(country_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
+            success: function(response)
+            {
+                jQuery('#select_state').html(response);
+            } 
+        });
+
+    }
+    
+    function get_city(state_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_city/' + state_id ,
+            success: function(response)
+            {
+                jQuery('#select_city').html(response);
+            }
+        });   
+
+    }
+    
+     function get_district(city_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_district/' + city_id ,
+            success: function(response)
+            {
+                jQuery('#select_district').html(response);
+            }
+        });
+
+    }
+</script>

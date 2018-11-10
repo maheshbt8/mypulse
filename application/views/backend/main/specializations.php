@@ -47,7 +47,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                	<?php echo form_open(base_url() . 'index.php?superadmin/specialization/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+                	<?php echo form_open(base_url() . 'main/specialization/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo 'Specialization';?></label>
                                 <div class="col-sm-5">

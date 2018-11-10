@@ -224,6 +224,34 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
 }
 }
     }
+    function get_city_stores($id='')   
+    {
+        
+            
+if($id != 0){
+       $store=$this->db->where('city',$id)->get('medicalstores')->result_array(); 
+ }
+if($id == 0){
+ $store=$this->db->get('medicalstores')->result_array(); 
+}
+
+foreach($store as $spe) { 
+echo '<option value="'.$spe['store_id'].'">'.$spe['unique_id'].' / '.$spe['name'].'</option>';
+ }
+    }
+    function get_city_labs($id='')   
+    { 
+if($id != 0){
+       $store=$this->db->where('city',$id)->get('medicallabs')->result_array(); 
+ }
+if($id == 0){
+ $store=$this->db->get('medicallabs')->result_array(); 
+}
+
+foreach($store as $spe) { 
+echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].'</option>';
+ }
+    }
      function get_doctor($department_id='',$department_id1 = '')   
     {
         if($department_id == 'all'){
@@ -257,10 +285,8 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     }
      public function get_dco_date($doctor_id)
     {
-     
     $date_val=$_POST['date_val'];
-    
-        $doctor_availability= $this->db->get_where('availability_slat' , array(
+        $doctor_availability= $this->db->get_where('availability_slot' , array(
             'doctor_id' => $doctor_id,'date'=>$date_val,'status'=>1));
         $doctor_ava=$doctor_availability->result_array();
          $appointments=$this->db->get_where('appointments' , array('doctor_id' => $doctor_id,'appointment_date'=>$date_val))->num_rows();
@@ -276,7 +302,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
                 $appointments=$this->db->get_where('appointments' , array('doctor_id' => $doctor_id,'appointment_date'=>$date_val,'appointment_time_start'=>date('H:i',$start_time1),'appointment_time_end'=>date('H:i',$start_time2)))->num_rows();
         $no_appt_handle=$this->db->get_where('availability' , array('doctor_id' => $doctor_id))->row()->no_appt_handle;
          if($appointments >= $no_appt_handle){
-           /* echo '<option value="'.date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'" disabled>' . date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'</option>';*/
+
         }else{
             echo '<option value="'.date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'" >' . date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'</option>';
         }

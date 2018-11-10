@@ -2,9 +2,11 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>index.php?superadmin/medical_labs/delete_multiple/" method="post">
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors' ){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_inpatient'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_in-Patient'); ?>
 </button>
+<?php }?>
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -29,7 +31,8 @@ $this->session->set_userdata('last_page', current_url());
             <tr><!-- 
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td> -->
                 <td><?= $i;?></td>
-                <td><?php echo $this->db->where('user_id',$row['user_id'])->get('users')->row()->unique_id;?></td>
+                <td><?php $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
+                if($account_type != 'users'){?><a href="<?php echo base_url()?>main/edit_inpatient/<?= $row['id']?>" class="hiper"><?php echo $user->name.' / '.$user->unique_id;?></a><?php }elseif($account_type == 'users'){?><?php echo $user->name.' / '.$user->unique_id;}?></td>
                  <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name;?></a></td>
                 <td><?php echo $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->name;?></td>
                 <td><?php echo date('M d,Y',strtotime($row['created_date']));?></td>

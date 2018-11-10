@@ -1,3 +1,8 @@
+<style>
+    .modal-backdrop.in{
+        z-index: auto;
+    }
+</style>
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
@@ -9,6 +14,16 @@ $this->session->set_userdata('last_page', current_url());
 <button type="button" onClick="checkone(this.form);" id="close1" class="btn btn-warning pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('close'); ?>
 </button>
+<?php }?>
+<?php if($account_type != 'users'){?>
+<button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-warning pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('cancel'); ?>
+</button>
+<button type="button" onClick="checkone(this.form);" id="cancel1" class="btn btn-warning pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('cancel'); ?>
+</button>
+<?php }?>
+<?php if($account_type=='superadmin'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -32,7 +47,8 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('city');?></th> 
             <th><?php echo get_phrase('date & time');?></th>
             <th><?php echo get_phrase('status'); ?></th>
-            <th><?php echo get_phrase('options');?></th>
+            <?php if($account_type=='superadmin'){?>
+            <th><?php echo get_phrase('options');?></th><?php }?>
         </tr> 
     </thead>
 
@@ -86,10 +102,11 @@ $this->session->set_userdata('last_page', current_url());
                  ?>
                      
                  </td>
+                 <?php if($account_type=='superadmin'){?>
                 <td>
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                     <!-- <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/close/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Close"><i class="glyphicon glyphicon-ban-circle"></i></a> -->
-                </td>
+                </td><?php }?>
             </tr>
         <?php } ?>
     </tbody>
@@ -136,6 +153,8 @@ $this->session->set_userdata('last_page', current_url());
         $("#delete").hide();
         $("#close1").show();
         $("#close").hide();
+        $("#cancel1").show();
+        $("#cancel").hide();
         $("#all_check").click(function () {
             $('.check').attr('checked', this.checked);
             if($(".check:checked").length == 0){
@@ -143,11 +162,15 @@ $this->session->set_userdata('last_page', current_url());
                 $("#delete").hide();
                 $("#close1").show();
                 $("#close").hide();
+                $("#cancel1").show();
+                $("#cancel").hide();
             }else{
             $("#delete1").hide();
             $("#delete").show();
             $("#close1").hide();
             $("#close").show();
+            $("#cancel1").hide();
+            $("#cancel").show();
             }
             
         });
@@ -157,6 +180,8 @@ $this->session->set_userdata('last_page', current_url());
             $("#delete").show();
             $("#close1").hide();
             $("#close").show();
+            $("#cancel1").hide();
+            $("#cancel").show();
         if($(".check").length == $(".check:checked").length) {
             $("#all_check").attr("checked", "checked");
         } else {
@@ -167,6 +192,8 @@ $this->session->set_userdata('last_page', current_url());
         $("#delete").hide();
         $("#close1").show();
         $("#close").hide();
+        $("#cancel1").show();
+        $("#cancel").hide();
     }
     });
     });
@@ -183,4 +210,91 @@ $this->session->set_userdata('last_page', current_url());
             }
           });  
 }
+ function opt_submit(form) {
+            $.ajax({
+            type: 'post',
+            url: '<?php echo base_url();?>main/appointment_cancel/cancel_multiple/',
+            data: $('form').serialize(),
+            success: function (response) {
+               /* alert(response);*/
+                if(response == 1){
+                window.location.reload();
+                }else{
+                jQuery('#reason_error').html(response);
+                }
+            }
+          });  
+}
+    /* function confcancel1(form) {
+        alert(form);
+        jQuery('#cancel_all').modal('show', {backdrop: 'static'});
+           
+}*/
    </script>
+     <!--  <script type="text/javascript">
+    function confirm_modal(delete_url)
+    {
+        jQuery('#cancel_all').modal('show', {backdrop: 'static'});
+        document.getElementById('delete_link').setAttribute('href' , delete_url);
+    }
+   
+    </script> -->
+    
+    <!-- (Normal Modal)-->
+  <!--   <div class="modal fade" id="cancel_all">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top:100px;">
+                
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" style="text-align:center;">Are you sure to delete this information ?</h4>
+                </div>
+                
+                
+                <div class="modal-footer" style="margin:0px; border-top:0px; text-align:center;">
+                    <a href="#" class="btn btn-danger" id="delete_link"><?php echo 'Delete';?></a>
+                    <button type="button" class="btn btn-info" data-dismiss="modal"><?php echo 'Cancel';?></button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Reason</h4>
+        </div>
+        <div class="modal-body">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="" method="post" enctype="multipart/form-data">
+                <div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+                <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="field-1" class="col-sm-3 control-label"><?php echo "Reason";?></label>
+                        <div class="col-sm-8">
+                            <input type="text" name="cancel_reason" class="form-control" id="cancel_reason"  data-validate="required" data-message-required="Value Required" value="<?php echo set_value('otp'); ?>" autocomplete="off">
+                            <span id="reason_error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 control-label col-sm-offset-2">
+                        <input type="button" class="btn btn-success" value="Submit" onClick="opt_submit(this.form);">
+                </div>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>
+        </form>
+        </div>
+      </div>   
+    </div>
+  </div>  

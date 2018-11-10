@@ -4,7 +4,7 @@
     }
 </style>
 <?php 
-/*$department_info = $this->db->get('department')->result_array();*/
+$account_type= $this->session->userdata('login_type');
 $single_doctor_info = $this->db->get_where('doctors', array('doctor_id' => $doctor_id))->result_array();
 foreach ($single_doctor_info as $row) {
     
@@ -87,11 +87,12 @@ foreach ($single_doctor_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="email" name="email" class="form-control" id="email" value="<?=$row['email']?>" readonly>
-                <?php if($row['is_email']==1){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){
+                if($row['is_email']==1){?>
                 <span class="verifiedsuccess">Email Verified</span>
                 <?php }elseif($row['is_email']==2){?>
                 <span class="notverified">Email Not Verified <a href="<?php echo base_url(); ?>main/resend_email_verification/doctors/doctor/<?php echo $row['unique_id'] ?>" title="Verification Mail" class="hiper">Re-Send Verification Mail</a></span>
-                <?php }?>
+                <?php }}?>
                             <span ><?php echo form_error('email'); ?></span>
                         </div>
                     </div>  
@@ -102,7 +103,8 @@ foreach ($single_doctor_info as $row) {
 
                         <div class="col-sm-8">
                             <input type="number" name="mobile" class="form-control" id="mobile" value="<?=$row['phone']?>" minlength="10" maxlength="10"readonly>
-                <?php if($row['is_mobile']==1){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){ 
+                if($row['is_mobile']==1){?>
                 <span class="verifiedsuccess">Mobile Verified</span>
                 <?php }elseif($row['is_mobile']==2){?>
                 <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
@@ -156,6 +158,7 @@ foreach ($single_doctor_info as $row) {
       </div>   
     </div>
   </div>  
+<?php }?>
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
@@ -316,8 +319,8 @@ foreach ($single_doctor_info as $row) {
                             <select name="country" class="form-control" id="country" value=""  onchange="return get_state(this.value)">
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
                                 <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row1){?>
+                                $country = $this->db->get_where('country')->result_array();
+                                foreach($country as $row1){?>
                                 <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
                                 <?php } ?>
@@ -333,9 +336,9 @@ foreach ($single_doctor_info as $row) {
                                 <select name="state" class="form-control" id="select_state" value=""  onchange="return get_district(this.value)">
                                     <option value=""><?php echo get_phrase('select_country_first'); ?></option>
                                     <?php 
-                                $admins = $this->db->get_where('state')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                $state = $this->db->get_where('state',array('country_id'=>$row['country']))->result_array();
+                                foreach($state as $row2){?>
+                                <option value="<?php echo $row2['state_id'] ?>" <?php if($row2['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row2['name'] ?></option>
                                 
                                 <?php } ?>
                                 </select>   
@@ -349,9 +352,9 @@ foreach ($single_doctor_info as $row) {
                                 <select name="district" class="form-control" id="select_district"  value=""  onchange="return get_city(this.value)">
                                     <option value=""><?php echo get_phrase('select_state_first'); ?></option>
                                     <?php 
-                                $admins = $this->db->get_where('district')->result_array();
-                                foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                $district = $this->db->get_where('district',array('state_id'=>$row['state']))->result_array();
+                                foreach($district as $row3){?>
+                                <option value="<?php echo $row3['district_id'] ?>" <?php if($row3['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row3['name'] ?></option>
                                 
                                 <?php } ?>
                                 </select>
@@ -363,7 +366,7 @@ foreach ($single_doctor_info as $row) {
                                 <select name="city" class="form-control" id="select_city" value=""  >
                                     <option value=""><?php echo get_phrase('select_district_first'); ?></option>
                                     <?php 
-                                $admins = $this->db->get_where('city')->result_array();
+                                $admins = $this->db->get_where('city',array('district_id'=>$row['district']))->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 <?php } ?>
@@ -445,7 +448,10 @@ foreach ($single_doctor_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
+                        <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">
+                    <?php }?>
+                        &nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
                     </div>

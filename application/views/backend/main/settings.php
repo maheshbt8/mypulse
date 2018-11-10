@@ -1,71 +1,28 @@
-<style>
-  .icon{
-    font-size:100px;
+<style type="text/css">
+  div .list-group{
+    font-size: 20px;
   }
 </style>
 <div class="row">
-<a href="<?php echo base_url(); ?>main/system_settings">
-<div class="col-sm-2">
-  <h3><?php echo get_phrase('system_settings'); ?></h3><br>
-  <i class="icon fa fa-cog"></i>
+  <div class="col-sm-6">
+    <div class="list-group">
+  <a href="<?php echo base_url(); ?>main/system_settings" class="list-group-item disabled"><i class="icon fa fa-cog"></i>&nbsp;&nbsp;<?php echo get_phrase('system_settings'); ?></a>
+  <a href="<?php echo base_url(); ?>main/license" class="list-group-item"><i class="icon fa fa-desktop"></i>&nbsp;&nbsp;<?php echo get_phrase('license_categories');?></a>
+  <a href="<?php echo base_url(); ?>main/health_insurance_provider" class="list-group-item"><i class="icon fa fa-user"></i>&nbsp;&nbsp;<?php echo get_phrase('health_insurance_providers');?></a>
+  <a href="<?php echo base_url(); ?>main/language" class="list-group-item"><i class="icon fa fa-cog"></i>&nbsp;&nbsp;<?php echo get_phrase('languages');?></a>
+  <a href="<?php echo base_url(); ?>main/manage_privacy" class="list-group-item"><i class="icon fa fa-lock"></i>&nbsp;&nbsp;<?php echo get_phrase('privacy & terms');?></a>
 </div>
-</a>
-<?php if($account_type=='superadmin'){?>
-<a href="<?php echo base_url(); ?>main/country">
-<div class="col-sm-2">
-  <h3><?php echo get_phrase('countries'); ?></h3><br>
-  <i class="icon fa fa-flag"></i>
+  </div>
+  <div class="col-sm-6">
+  <div class="list-group">
+  <a href="<?php echo base_url(); ?>main/country" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('countries'); ?></a>
+  <a href="<?php echo base_url(); ?>main/state" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('states'); ?></a>
+  <a href="<?php echo base_url(); ?>main/district" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('districts'); ?></a>
+  <a href="<?php echo base_url(); ?>main/city" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('cities'); ?></a>
+  <a href="<?php echo base_url(); ?>main/specialization" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('specializations'); ?></a>
 </div>
-</a>
-<a href="<?php echo base_url(); ?>main/state">
-<div class="col-sm-2">
-  <h3><?php echo get_phrase('states'); ?></h3><br>
-  <i class="icon fa fa-flag"></i>
-</div>
-</a>
-<a href="<?php echo base_url(); ?>main/district">
-<div class="col-sm-2">
-  <h3><?php echo get_phrase('districts'); ?></h3><br>
-  <i class="icon fa fa-flag"></i>
-</div>
-</a>
-<a href="<?php echo base_url(); ?>main/city">
-<div class="col-sm-2">
-  <h3><?php echo get_phrase('cities'); ?></h3><br>
-  <i class="icon fa fa-flag"></i>
-</div>
-</a>
-<a href="<?php echo base_url(); ?>main/specialization">
-<div class="col-sm-2">
-  <h3><?php echo get_phrase('specializations'); ?></h3><br>
-  <i class="icon fa fa-plus-square"></i>
-</div>
-</a>
-<br/><br/>
-<a href="<?php echo base_url(); ?>main/language">
-<div class="col-sm-3">
-  <h3><?php echo get_phrase('languages');?></h3><br>
-  <i class="icon fa fa-desktop"></i>
-</div>
-</a>
-<a href="<?php echo base_url(); ?>main/license">
-<div class="col-sm-3">
-  <h3><?php echo get_phrase('license_categories');?></h3><br>
-  <i class="icon fa fa-desktop"></i>
-</div>
-</a>
-<a href="<?php echo base_url(); ?>main/health_insurance_provider">
-<div class="col-sm-3">
-  <h3><?php echo get_phrase('health_insurance_providers');?></h3><br>
-  <i class="icon fa fa-user"></i>
-</div>
-</a>
-<a href="<?php echo base_url(); ?>main/manage_privacy">
-<div class="col-sm-3">
-  <h3><?php echo get_phrase('privacy & terms');?></h3><br>
-  <i class="icon fa fa-lock"></i>
-</div>
-</a>
-<?php }?>
 
+  </div>
 </div>
+
+

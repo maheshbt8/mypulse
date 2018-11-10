@@ -346,14 +346,10 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
                              <div class="col-sm-8"> 
                                 <select multiple name="specializations[]" class="form-control select2" id="specializations" value="<?php echo set_value('specializations[]'); ?>">
-                            <!-- <input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search for specializations.." title="Type in a specialization">
-                    <ul id="myUL" style="list-style: none; min-height: 50px; max-height:100px;border: 1px solid; overflow-y: scroll;"> -->
                                     <?php 
                                     $specializations=$this->db->get('specializations')->result();
                                     foreach ($specializations as $spe) {
                                     ?>
-<!-- 
-                    <li><a href="#"><input type="checkbox" name="specializations[]" class="" id="specializations" value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></a></li> -->
                      <option value="<?php echo $spe->specializations_id;?>"><?php echo $spe->name; ?></option>
                 <?php }?>
                                 </select>

@@ -218,7 +218,8 @@ foreach ($single_hospital_info as $row) {
 
               </div>
               <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="Update">
+                <?php if($account_type == 'superadmin'){?>
+                        <input type="submit" class="btn btn-success" value="Update"><?php }?>
                     </div>
                     </div>
                    
@@ -248,7 +249,7 @@ foreach ($single_hospital_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('license'); ?></label> 
 
                         <div class="col-sm-8">
-                        <?php if($account_type == 'superadmin'){?>
+                        
                         <select name="license" class="form-control" id="license" value="">
                                 <option value=""><?php echo get_phrase('select_lisense'); ?></option>
                                 <?php 
@@ -259,62 +260,37 @@ foreach ($single_hospital_info as $row) {
                                 <?php } ?>
                                
                         </select>
-                        <?php }elseif($account_type == 'hospitaladmins'){?>
-                            <select name="license" class="form-control" id="license" value="" disabled>
-                                <option value=""><?php echo get_phrase('select_lisense'); ?></option>
-                                <?php 
-                                $license = $this->db->get_where('license')->result_array();
-                                foreach($license as $row1){?>
-                                <option value="<?php echo $row1['license_id'] ?>"<?php if($row['license']== $row1['license_id'] ){ echo 'selected';} ?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                        </select>
-                            <input type="hidden" name="license" class="form-control" id="license" value="<?php echo  $row['license'] ?>">
-                        <?php }?>
+                        
                         </div>
                     </div> 
                    <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('license status'); ?></label>
 
                         <div class="col-sm-8">
-                        <?php if($account_type == 'superadmin'){?>
+                        
                         <select name="license_status" class="form-control" id="license_status" value="">
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1" <?php if($row['license_status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2" <?php if($row['license_status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
                         </select>
-                        <?php }elseif($account_type == 'hospitaladmins'){?>
-                            <select name="license_status" class="form-control" id="license_status" value=""disabled>
-                                <option value=""><?php echo get_phrase('select_status'); ?></option>
-                                <option value="1" <?php if($row['license_status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
-                                <option value="2" <?php if($row['license_status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
-                            </select>
-                            <input type="hidden" name="license_status" class="form-control" id="license_status" value="<?php echo  $row['license_status'] ?>">
-                        <?php }?>
+                      
                         </div>
                     </div>        
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('from_date'); ?></label>
                         <div class="col-sm-8">
-                        <?php if($account_type == 'superadmin'){?>
+                       
                             <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>">
-                        <?php }elseif($account_type == 'hospitaladmins'){?>
-                            <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>" disabled>
-                            <input type="hidden" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>">
-                        <?php }?>
+                        
                         </div>
                     </div>
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('to_date'); ?></label>
 
                         <div class="col-sm-8">
-                           <?php if($account_type == 'superadmin'){?>
+                           
                             <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>">
-                        <?php }elseif($account_type == 'hospitaladmins'){?>
-                            <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>" disabled>
-                            <input type="hidden" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>">
-                        <?php }?>
+                        
                         </div>
                     </div>
                    
@@ -342,7 +318,9 @@ foreach ($single_hospital_info as $row) {
                     </div>
                 </div>
                   <div class="col-sm-3 control-label col-sm-offset-9">
+                    <?php if($account_type == 'superadmin'){?>
                         <input type="submit" class="btn btn-success" value="Update">
+                    <?php }?>
                     </div>
                     </div>
                   
@@ -366,7 +344,8 @@ foreach ($single_hospital_info as $row) {
             <th><?php echo get_phrase('email'); ?></th>
             <th><?php echo get_phrase('phone'); ?></th>
             <th><?php echo get_phrase('departments'); ?></th>
-            <th><?php echo get_phrase('options'); ?></th>
+            <?php if($account_type == 'superadmin'){?>
+            <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
     </thead>
 
@@ -384,10 +363,10 @@ foreach ($single_hospital_info as $row) {
                 <td><?php echo $row['phone'] ?></td>
                 <td>
             <a href="<?php echo base_url(); ?>main/get_hospital_departments/<?php echo $row['branch_id'] ?>" title="Departments"><i class="glyphicon glyphicon-eye-open"></i></a>
-                </td>
+                </td><?php if($account_type == 'superadmin'){?>
                 <td>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                </td>
+                </td><?php }?>
             </tr>
         <?php $i++;} ?>
     </tbody>
@@ -409,7 +388,8 @@ foreach ($single_hospital_info as $row) {
             <th><?php echo get_phrase('hospital_name'); ?></th>
             <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('wards'); ?></th>
-            <th><?php echo get_phrase('options'); ?></th>
+            <?php if($account_type == 'superadmin'){?>
+            <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
     </thead>
 
@@ -423,10 +403,12 @@ foreach ($single_hospital_info as $row) {
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                <?php if($account_type == 'superadmin'){?>
                 <td>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
            
                 </td>
+            <?php }?>
             </tr>
         <?php $i++;} ?>
     </tbody>
@@ -448,7 +430,8 @@ foreach ($single_hospital_info as $row) {
             <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('department_name'); ?></th>
             <th><?php echo get_phrase('beds'); ?></th>
-            <th><?php echo get_phrase('options'); ?></th>
+            <?php if($account_type == 'superadmin'){?>
+            <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
     </thead>
 
@@ -464,10 +447,11 @@ foreach ($single_hospital_info as $row) {
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><a href="<?php echo base_url(); ?>main/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+                <?php if($account_type == 'superadmin'){?>
                 <td>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                  
-                </td>
+                </td><?php }?>
             </tr>
         <?php $i++;} ?>
     </tbody>
@@ -486,8 +470,8 @@ foreach ($single_hospital_info as $row) {
             <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('department_name'); ?></th>
             <th><?php echo get_phrase('ward_name'); ?></th>
-            
-            <th><?php echo get_phrase('options'); ?></th>
+            <?php if($account_type == 'superadmin'){?>
+            <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
     </thead>
 
@@ -504,10 +488,10 @@ foreach ($single_hospital_info as $row) {
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
-                
+                <?php if($account_type == 'superadmin'){?>
                 <td>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                </td>
+                </td><?php }?>
             </tr>
        <?php $i++; } ?>
     </tbody>

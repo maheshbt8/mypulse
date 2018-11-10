@@ -1,10 +1,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
-<form action="<?php echo base_url()?>index.php?superadmin/medical_labs/delete_multiple/" method="post">
-<!-- <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_inpatient'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_in-Patient'); ?>
-</button> -->
+<form action="<?php echo base_url()?>main/medical_labs/delete_multiple/" method="post">
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -19,32 +16,18 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
-        <?php $i=1;foreach ($patient_info as $row) { 
-            if($account_type == 'hospitaladmins'){
-                $hospital=explode(',',$row['hospital_ids']);
-                for($ha1=0;$ha1<count($hospital);$ha1++){
-            if($hospital[$ha1] == $this->session->userdata('hospital_id')){
-            $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
-            }
-            }
-            }
-            if($account_type == 'doctors'){
-                $doctor=explode(',',$row['doctor_ids']);
-            for($doc1=0;$doc1<count($doctor);$doc1++){
-            if($doctor[$doc1] == $this->session->userdata('login_user_id')){
-            $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
-            }
-            }
-            }
+        <?php  $j=1;
+            foreach ($patient_info as $user) {
+              
             ?>   
             <tr>
-                <td><?= $i;?></td>
+                <td><?= $j;?></td>
                 <td><?php echo $user->unique_id;?></td>
-                 <td><a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php echo $user->name;?></a></td>
+                 <td><a href="<?php echo base_url();?>main/edit_user/<?php echo $user->user_id;?>" class="hiper"><?php echo $user->name;?></a></td>
                 <td><?php echo $user->email;?></td>
                 <td><?php if($user->status == 1){echo "<button type='button' class='btn-success'>Active</button>";}elseif($user->status == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
             </tr>
-        <?php $i++;} ?>
+        <?php  $j++;}?>
     </tbody>
 </table>
 

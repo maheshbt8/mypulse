@@ -159,8 +159,8 @@ echo $user_role; ?>
         </li>
     <?php }?>
     <?php if($account_type=='medicalstores' || $account_type=='medicallabs'){?>
-        <li class="<?php if ($page_name == '') echo 'active'; ?>">
-            <a href="#">
+        <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
+            <a href="<?php echo base_url(); ?>main/orders">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>
                 <span><?php echo get_phrase('orders'); ?></span>
             </a>
@@ -174,7 +174,7 @@ echo $user_role; ?>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
+    <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='nurse' || $account_type=='receptionist' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
         <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/patient">
                 <i class="fa fa-users"></i>
@@ -182,15 +182,31 @@ echo $user_role; ?>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors'){?>
-        <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>main/inpatient">
-                <i class="menu-icon fa fa-eye"></i>
-                <span><?php echo get_phrase('in-Patients'); ?></span>
+    <?php if($account_type=='nurse'){?>
+        <li class="<?php if ($page_name == 'manage_ward') echo 'active'; ?>">
+            <a href="<?php echo base_url(); ?>main/get_hospital_ward/<?=$this->session->userdata('department_id')?>">
+                <i class="fa fa-users"></i>
+                <span><?php echo get_phrase('wards'); ?></span>
             </a>
         </li>
     <?php }?>
+    <?php if($account_type=='nurse'){?>
+    <!--     <li class="<?php if ($page_name == 'manage_beds') echo 'active'; ?>">
+            <a href="#">
+                <i class="fa fa-users"></i>
+                <span><?php echo get_phrase('beds'); ?></span>
+            </a>
+        </li> -->
+    <?php }?>
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users'){?>
+        <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
+            <a href="<?php echo base_url(); ?>main/inpatient">
+                <i class="menu-icon fa fa-eye"></i>
+                <span><?php if($account_type == 'users'){echo get_phrase('in-Patient_history');}else{echo get_phrase('in-Patients'); }?></span>
+            </a>
+        </li>
+    <?php }?>
+    <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users' || $account_type=='receptionist'){?>
         <li class="<?php if ($page_name == 'manage_appointment') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/appointment">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>
@@ -248,19 +264,19 @@ echo $user_role; ?>
         </li>
     <?php }?>
     <?php if($account_type=='users'){?>
-    <li class="<?php if ($page_name == 'manage_patient' || $page_name == 'manage_outpatient') echo 'opened active';?> ">
+    <li class="<?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_outpatient') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa  fa-hospital-o"></i>
                 <span><?php echo get_phrase('health_records'); ?></span>
             </a>
             <ul>
-                <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?> ">
-                    <a href="#">
+                <li class="<?php if ($page_name == 'manage_prescription') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>main/prescription">
                         <span>  <?php echo get_phrase('prescription'); ?></span>
                     </a>
                 </li>
-                <li class="<?php if ($page_name == 'manage_outpatient') echo 'active'; ?> ">
-                    <a href="#">
+                <li class="<?php if ($page_name == 'manage_prognosis') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>main/prognosis">
                         <span> <?php echo get_phrase('prognosis'); ?></span>
                     </a>
                 </li>
@@ -273,12 +289,12 @@ echo $user_role; ?>
             </ul>
         </li>
 
-        <li class="<?php if ($page_name == 'manage_appointment') echo 'active'; ?>">
+       <!--  <li class="<?php if ($page_name == 'manage_appointment') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $this->session->userdata('login_user_id');?>">
                 <i class="menu-icon fa fa-eye"></i>
                 <span><?php echo get_phrase('in-Patient_history'); ?></span>
             </a>
-        </li>
+        </li> -->
         <?php }?>
              <!-- SETTINGS -->
         <!-- <?php if($account_type=='superadmin' || $account_type == 'hospitaladmins'){?>

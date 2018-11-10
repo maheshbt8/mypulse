@@ -1,7 +1,5 @@
-<?php 
-$this->session->set_userdata('last_page', current_url());
-?>
-<button type="button" onclick="window.location.href = '<?php echo $this->session->userdata('last_page');?>" class="btn btn-orange pull-right">
+
+<button type="button" onclick="window.location.href = '<?php echo $this->session->userdata('last_page');?>'" class="btn btn-orange pull-right">
         <?php echo get_phrase('back'); ?>
 </button>
 <div class="row">

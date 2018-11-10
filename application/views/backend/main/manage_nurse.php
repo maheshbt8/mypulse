@@ -23,7 +23,7 @@ $this->session->set_userdata('last_page', current_url());
              <th><?php echo get_phrase('hospital');?></th>
             <th><?php echo get_phrase('branch');?></th>
             <th><?php echo get_phrase('department');?></th>  
-            <th><?php echo get_phrase('doctor');?></th>
+            <?php if($account_type != 'doctors'){?><th><?php echo get_phrase('doctor');?></th><?php }?>
             <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options');?></th>
         </tr> 
@@ -47,8 +47,8 @@ $this->session->set_userdata('last_page', current_url());
                     <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
                         echo $name;?>
                 </td>
-                <td><a href="<?php echo base_url();?>main/view_doctors/nurse/<?php echo $row['nurse_id']?>" class="hiper">View Doctors</a></td>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
+                <?php if($account_type != 'doctors'){?><td><a href="<?php echo base_url();?>main/view_doctors/nurse/<?php echo $row['nurse_id']?>" class="hiper">View Doctors</a></td><?php }?>
+                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
                  }
                  else if(
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
