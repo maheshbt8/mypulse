@@ -24,7 +24,7 @@ $this->session->set_userdata('last_page', current_url());
             <tr>
                 <td><?php echo $i?></td>
                 <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
-                	<?php echo $row1['title'] ?></a></td>
+                	<?php echo $this->encryption->decrypt($row1['title']);?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td><?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/prescription/status/<?= $row1['prescription_id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row1['status']==2){?><a href="<?php echo base_url(); ?>main/prescription/status/<?= $row1['prescription_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td>
@@ -33,7 +33,6 @@ $this->session->set_userdata('last_page', current_url());
               <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicin"><i class="glyphicon glyphicon-plus"></i>
             </a>&nbsp;
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/prescription/delete/<?php echo $row1['prescription_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
-            
                 </td><?php }?>
             </tr>
         <?php $i++;} ?>
@@ -77,3 +76,15 @@ $this->session->set_userdata('last_page', current_url());
         });
     });
 </script>
+<!-- <script>
+    function status_inactive(id) {
+            $.ajax({
+            type: 'post',
+            url: '<?php echo base_url(); ?>main/prescription/status/'+id+'/2',
+            success: function (response) {
+                $("#sta").load(" #sta > *");
+               /* window.location.reload();*/
+            }
+          });  
+}
+</script> -->

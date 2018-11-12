@@ -6,7 +6,7 @@ $this->session->set_userdata('last_page1', current_url());
 $single_appointment_info = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->result_array();
 foreach ($single_appointment_info as $row) {
     $user_data=$this->db->where('user_id',$row['user_id'])->get('users')->row_array();
-    if($account_type != 'doctors' || $row['status']!='2'){
+    if($account_type != 'doctors' && $account_type != 'nurse' || $row['status']!='2'){
 ?>
 
 <div class="row">
@@ -168,7 +168,7 @@ foreach ($single_appointment_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remark'); ?></label>
                             <div class="col-sm-8" id="remark">
-                                <textarea type="text" name="remark" placeholder="Remark to be updated by Hospital" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>"><?php echo $row['remarks'];?></textarea>
+                                <textarea type="text" name="remark" placeholder="Remark to be updated by Hospital" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" <?php if($account_type!='doctors'){echo 'disabled';}?>><?php echo $row['remarks'];?></textarea>
                             </div>
                     </div>
                 </div>
@@ -176,14 +176,15 @@ foreach ($single_appointment_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Date'); ?></label>
                             <div class="col-sm-8" id="remark">
-                                <input type="text" name="next_appointment" placeholder="Next Appointment Date" class="form-control" id="start_on" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['next_appointment'];?>" autocomplete="off">
+                                <input type="text" name="next_appointment" placeholder="Next Appointment Date" class="form-control" id="start_on" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['next_appointment'];?>" autocomplete="off"  <?php if($account_type!='doctors'){echo 'disabled';}?>>
                             </div>
                     </div>
-                </div>
+                </div> 
+                <?php if($account_type == 'doctors'){?>
                 <div class="col-sm-11 control-label">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
-                        
                 </div>
+            <?php }?>
         </form>
     </div>
 
@@ -380,7 +381,7 @@ foreach ($single_appointment_info as $row) {
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo $row1['title'] ?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo $this->encryption->decrypt($row1['title']); ?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
                <?php if($account_type == 'doctors'){?>
@@ -425,8 +426,8 @@ foreach ($single_appointment_info as $row) {
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $row2['title'] ?></a></td>
-                <td><?php echo $row2['case_history'] ?></td>
+                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $this->encryption->decrypt($row2['title']); ?></a></td>
+                <td><?php echo $this->encryption->decrypt($row2['case_history']); ?></td>
                 <td><?php echo $row2['created_at'] ?></td>
             </tr>
         <?php $i++;} ?>

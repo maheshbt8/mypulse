@@ -1,11 +1,14 @@
 <?php 
 $order_info=$this->crud_model->select_order_info_id($order_id);
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
-$doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
-
-
+if($order_info['order_type']==0){
+$store_info=$this->db->where('store_id',$order_info['store_id'])->get('medicalstores')->row_array();
+}elseif($order_info['order_type']==1){
+$store_info=$this->db->where('lab_id',$order_info['lab_id'])->get('medicallabs')->row_array();
+}
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
+/*print_r($prescription_info);die;*/
 ?>
 <div class="row">
     <div class="col-sm-2 pull-right">
@@ -14,7 +17,6 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 </div>
 </div>
 <br/>
-
 <div class="row" id="print_div">  
 <div class="col-md-12">
 <div class="my_pulse">  
@@ -27,19 +29,21 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-                <td align="left"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $doctor_info['hospital_id'];?>.png"  style="max-height:45px; margin: 0px;"/></td>
+    <td align="left"><h3>Title :- <?php echo $this->encryption->decrypt($prescription_info['title']);?></h3></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    <table width="100%" border="0">    
+            <tbody><tr>
                 <td align="right"></td>
             </tr>
-
             <tr>
-                <td align="left" valign="top">
-                    <h3><?php echo $hospital_info['name'];?></h3>
-<h4><i class="fa fa-map-marker m-r-xs"></i>&nbsp;&nbsp;<?php echo $hospital_info['address'];?></h4>
-<h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $hospital_info['email'];?></h4>          
-                </td>
                 <td align="right" valign="top">
-                    <h4><b>Date : </b><?php echo date('M ,d-Y h:i A',strtotime($prescription_info['created_at']));?></h4>
-                    
+                    <h4><b>Date : </b><?php echo date('M ,d-Y h:i A',strtotime($prescription_info['created_at']));?></h4>   
                 </td>
             </tr>
         </tbody>
@@ -50,19 +54,18 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-                <td align="left"><h3><u>Doctor</u></h3></td>
+                <td align="left"><h3><u><?php if($order_info['order_type']==0){echo "Medical Store";}elseif($order_info['order_type']==1){echo "Medical Lab";}?></u></h3></td>
                 <td align="right"><h3><u>Patient</u></h3></td>
             </tr>
 
             <tr>
                 <td align="left" valign="top">
-         <h3><?php echo $doctor_info['name'] .' ('.$doctor_info['unique_id'].')';?></h3>
-<h4><i class="fa fa-phone m-r-xs"></i>&nbsp;&nbsp;<?php echo $doctor_info['phone'];?></h4>
-<h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $doctor_info['email'];?></h4>
+<h3><?php echo $store_info['name'] .' ('.$store_info['unique_id'].')';?></h3>
+<h4><i class="fa fa-phone m-r-xs"></i>&nbsp;&nbsp;<?php echo $store_info['phone'];?></h4>
+<h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $store_info['email'];?></h4>
                 </td>
                 <td align="right" valign="top">
     <h3><?php echo $user_info['name'] .' ('.$user_info['unique_id'].')';?></h3>
-<!-- <h4><i class="fa fa-map-marker m-r-xs"></i>&nbsp;&nbsp;<?php echo $user_info['address'];?></h4> -->
 <h4><i class="fa fa-phone m-r-xs"></i>&nbsp;&nbsp;<?php echo $user_info['phone'];?></h4>
 <h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $user_info['email'];?></h4> 
 
@@ -72,9 +75,14 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     </table>
 </div>
 </div>
-
+<br/>
+<hr/>
+<br/>
+<form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_receipt/<?php echo $order_info['order_type'];?>" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="order_id" value="<?= $order_info['order_id'];?>">
+    
+<?php if($order_info['order_type'] == 0){?>
 <div class="row">
-    <?php if($order_type == 0){?>
 <div class="col-md-12">
     <h2 class="col-sm-3"><?php echo get_phrase('Medicine'); ?></h2>
     <div class="table-responsive">
@@ -84,44 +92,40 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
       <tr>
         <th scope="col">#</th>
         <th scope="col">Drug</th>
-        <th scope="col">Strength</th>
-        <th scope="col">Dosage</th>
-        <th scope="col">Duration</th>
         <th scope="col">Quantity</th>
-        <th scope="col">Note</th>
+        <th scope="col">Price</th>
       </tr>
     </thead>
     <tbody>
         <?php 
-
         $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
-        $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
-        $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
-        $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
-        if($account_type!='medicalstores'){
-        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
-        }elseif($account_type=='medicalstores'){
+        /*if($account_type!='medicalstores'){
+        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));*/
+        /*}elseif($account_type=='medicalstores'){*/
         $quantity=explode(',',$order_info['quantity']); 
-        }
-        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));
+        /*}*/
+        $price=explode(',',$order_info['price']);
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr>
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $drug[$i1];?></td>
-        <td><?= $strength[$i1];?></td>
-        <td><?= $dosage[$i1];?></td>
-        <td><?= $duration[$i1];?></td>
         <td><?= $quantity[$i1];?></td>
-        <td><?= $note[$i1];?></td>
+        <td><?= $price[$i1];?></td>
       </tr>
       <?php }?>
     </tbody>
+    <thead>
+        <tr> <th colspan="3" scope="col"><label>Total</label> : </th><th><b><?= $order_info['total'];?></b></th></tr>
+    </thead>
   </table>
 </div>
 </div>
-<?php }
-if($order_type == 1){?>
+</div>
+<?php }?>
+<?php if($order_info['order_type'] == 1){?>
+
+<div class="row">
 <div class="col-md-12">
     <h2 class="col-sm-3"><?php echo get_phrase('tests'); ?></h2>
     <div class="table-responsive">
@@ -132,50 +136,45 @@ if($order_type == 1){?>
         <th scope="col">#</th>
         <th scope="col">Title</th>
         <th scope="col">Description</th>
+        <th scope="col">Price</th>
       </tr>
     </thead>
     <tbody>
         <?php 
         $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
         $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
-        if($account_type=='medicallabs'){
-        $tests=explode(',',$this->encryption->decrypt($order_info['tests'])); 
-        }
+        $tests=explode(',',$order_info['tests']);
+        $price=explode(',',$order_info['price']);
         ?>
+        <input type="hidden" name="count" value="<?= count($test_title)?>">
         <?php for($i1=0;$i1<count($test_title);$i1++){
-            if($account_type == 'medicallabs'){
-                if($tests[$i1]==1){
+            if($tests[$i1]==1){
             ?>
       <tr>
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
+        <td><?= $price[$i1];?></td>
       </tr>
-      <?php }}else{ ?>
-<tr>
-        <th scope="row"><?= $i1+1;?></th>
-        <td><?= $test_title[$i1];?></td>
-        <td><?= $description[$i1];?></td>
-      </tr>
-      <?php } }?>
+      <?php }
+        }?>
     </tbody>
+    <thead>
+        <tr> <th colspan="3" scope="col"><label>Total</label> : </th><th><b><?= $order_info['total'];?></b></th></tr>
+    </thead>
   </table>
 </div>
 </div>
-<?php }?>
+
 </div>
+
+<?php }?>
+</form> 
 <br/><br/><br/>
-<footer>
-    <hr/>
-    <span style="font-size:8.0pt;mso-bidi-font-size:
-                                            9.0pt;font-family:&quot;times new roman&quot;,serif;mso-fareast-font-family:&quot;times new roman&quot;;
-                                            mso-ansi-language:en-us;mso-fareast-language:en-us;mso-bidi-language:ar-sa" lang="EN-US">&nbsp; <span style="white-space:pre" class="Apple-tab-span"> </span>&nbsp;© This document Compiled by MyPulse.</span>
-
-</footer>
-
 </div>
 </div>
 <br/><br/>
+
 <script type="text/javascript">
    function printDiv(divName) {
      var printContents = document.getElementById(divName).innerHTML;

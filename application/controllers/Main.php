@@ -8,6 +8,7 @@ class Main extends CI_Controller {
         parent::__construct();
         $this->load->database();   
         $this->load->library('session');
+        
         date_default_timezone_set('Asia/Kolkata');    
         error_reporting(0);  
         /* cache control */
@@ -1250,12 +1251,22 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('prescription');
         $this->load->view('backend/index', $data);
     }
-    function prescription_history($prescription_id='',$order_id='')
+    /*function prescription_history($prescription_id='',$order_id='')
     {
-        if($order_id!=''){
+        if($order_id != ''){
         $data['order_id'] = $order_id;    
         }
         $data['prescription_id'] = $prescription_id;
+        $data['page_name'] = 'prescription_history';
+        $data['page_title'] = get_phrase('prescription');
+        $this->load->view('backend/index', $data);
+    }*/
+    function prescription_history($order_id='',$order_type='')
+    {
+/*        $account_type=$this->session->userdata('login_type');
+        if($account_type == 'users'){*/
+        $data['order_type']=$order_type;
+        $data['order_id'] = $order_id;
         $data['page_name'] = 'prescription_history';
         $data['page_title'] = get_phrase('prescription');
         $this->load->view('backend/index', $data);
@@ -1291,10 +1302,23 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('prescriptions');
         $this->load->view('backend/index', $data);
     }
-    function upload_receipt($param1){
+    function add_receipt($param1='',$param2='',$param3=''){
+        if($this->input->post()){
         $this->crud_model->upload_prescription_receipt($param1);
-        $this->session->set_flashdata('message', get_phrase('recipt_uploade_successfuly'));
+        $this->session->set_flashdata('message', get_phrase('receipt_added_successfuly'));
         redirect($this->session->userdata('last_page'));
+        }
+       $data['prescription_id']=$param1;
+       $data['order_id']=$param2;
+        $data['page_name'] = 'add_invoice';
+        $data['page_title'] = get_phrase('Receipt');
+        $this->load->view('backend/index', $data);
+    }
+    function receipt($param1='',$param2='',$param3=''){
+       $data['order_id']=$param1;
+        $data['page_name'] = 'receipt';
+        $data['page_title'] = get_phrase('Receipt');
+        $this->load->view('backend/index', $data);
     }
     /********Add Prognosis*********/
      function add_prognosis($appointment_id='')
@@ -1342,7 +1366,6 @@ class Main extends CI_Controller {
     }
     function orders($param1='',$param2='')
     {
-
         if ($param1 == "order") {
             $this->crud_model->save_prescription_order($param2);
             $this->session->set_flashdata('message', get_phrase('prognosis_ordered_successfuly'));
@@ -1353,9 +1376,20 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('prognosis_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
+        $account_type=$this->session->userdata('login_type');
+        if($account_type == 'users'){
+        $data['order_type']=$param1;
+        }
+        if($account_type == 'medicalstores'){
+        $data['order_type']=0;
+        }
+        if($account_type == 'medicallabs'){
+        $data['order_type']=1;
+        }
+        if($data['order_type']==0){$page=get_phrase('medicine_orders');}elseif($data['order_type']==0){$page=get_phrase('medicine_orders');}
         $data['order']=$this->crud_model->select_order_info();
         $data['page_name'] = 'manage_order';
-        $data['page_title'] = get_phrase('orders');
+        $data['page_title'] = $page;
         $this->load->view('backend/index', $data);
     }
     function report($report_id = "") {

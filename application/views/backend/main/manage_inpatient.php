@@ -26,6 +26,7 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
+
         <?php $i=1;foreach ($patient_info as $row) { 
             ?>   
             <tr><!-- 

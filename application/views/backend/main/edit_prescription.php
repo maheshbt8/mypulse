@@ -28,7 +28,7 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
                                 <input type="hidden" name="appointment_id" value="<?=$prescription_info['appointment_id'];?>">
                                 <input type="hidden" name="user_id" value="<?=$prescription_info['user_id'];?>">
                                 <input type="hidden" name="doctor_id" value="<?=$prescription_info['doctor_id'];?>">
-                                <input type="text" name="title" placeholder="Title For Prescription" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?= $prescription_info['title'];?>" >
+                                <input type="text" name="title" placeholder="Title For Prescription" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?= $this->encryption->decrypt($prescription_info['title']);?>" >
                             </div>
                     </div>
                 </div>
@@ -49,16 +49,16 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
                             </tr>
                             <?php 
 
-        $drug=explode(',',$prescription_info['drug']);
-        $strength=explode(',',$prescription_info['strength']);
-        $dosage=explode(',',$prescription_info['dosage']);
-        $duration=explode(',',$prescription_info['duration']);
+        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
+        $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
+        $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
+        $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
         if($account_type!='medicalstores'){
-        $quantity=explode(',',$prescription_info['quantity']);
+        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
         }elseif($account_type=='medicalstores'){
-        $quantity=explode(',',$order_info['quantity']); 
+        $quantity=explode(',',$this->encryption->decrypt($order_info['quantity'])); 
         }
-        $note=explode(',',$prescription_info['note']);
+        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr class="element" id="div_<?= $i1+1;?>">
@@ -87,8 +87,8 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
                                 <th><button type="button" class="add1"><i class='fa fa-plus'></i></button></th>
                             </tr>
                             <?php 
-        $test_title=explode(',',$prescription_info['test_title']);
-        $description=explode(',',$prescription_info['description']);
+        $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
+        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
         for($i1=0;$i1<count($test_title);$i1++){ ?>
           <tr class="element1" id="div1_<?= $i1+1;?>">
         <th scope="row"><?= $i1+1;?></th>
@@ -104,7 +104,7 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2"><?php echo get_phrase('additional_note'); ?></label>
                             <div class="col-sm-9">
-                                <textarea type="text" name="additional_note" placeholder="Additional Note" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="4" cols="50"><?= $prescription_info['additional_note'];?></textarea>
+                                <textarea type="text" name="additional_note" placeholder="Additional Note" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="4" cols="50"><?= $this->encryption->decrypt($prescription_info['additional_note']);?></textarea>
                             </div>
                     </div>
                 </div>

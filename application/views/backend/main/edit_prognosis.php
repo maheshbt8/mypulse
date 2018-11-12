@@ -25,7 +25,7 @@ $prognosis_info = $this->db->get_where('prognosis', array('prognosis_id' => $pro
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('Title'); ?></label>
                             <div class="col-sm-10">
-                                <input type="text" name="title" placeholder="Title For Prognosis" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?= $prognosis_info['title'];?>" >
+                                <input type="text" name="title" placeholder="Title For Prognosis" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?= $this->encryption->decrypt($prognosis_info['title']);?>" >
                             </div>
                     </div>
                 </div>
@@ -33,7 +33,7 @@ $prognosis_info = $this->db->get_where('prognosis', array('prognosis_id' => $pro
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('case_history'); ?></label>
                             <div class="col-sm-10">
-                                <textarea type="text" name="case_history" placeholder="Case History" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="10" cols="50"><?= $prognosis_info['case_history'];?></textarea>
+                                <textarea type="text" name="case_history" placeholder="Case History" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="10" cols="50"><?= $this->encryption->decrypt($prognosis_info['case_history']);?></textarea>
                             </div>
                     </div>
                 </div>

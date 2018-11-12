@@ -9,8 +9,10 @@ $this->session->set_userdata('last_page', current_url());
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('title'); ?></th>
+            <th><?php echo get_phrase('case_history'); ?></th>
             <th><?php echo get_phrase('hospital / doctor'); ?></th>
             <th><?php echo get_phrase('date'); ?></th>
+            <th><?php echo get_phrase('visibility'); ?></th>
             <?php if($account_type == 'users'){?>
             <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
@@ -22,13 +24,15 @@ $this->session->set_userdata('last_page', current_url());
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><?php echo $row1['title'] ?><?php if($row1['status']==1){?><span class="pull-right" style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span><?php }elseif($row1['status']==2){?><span class="pull-right" style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i></span><?php }?></td>
+                <td><?php echo $this->encryption->decrypt($row1['title']);?></td>
+                <td><?php echo $this->encryption->decrypt($row1['case_history']);?></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
+                <td><?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/prognosis/status/<?= $row1['prognosis_id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row1['status']==2){?><a href="<?php echo base_url(); ?>main/prognosis/status/<?= $row1['prognosis_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td>
                <?php if($account_type == 'users'){?>
                 <td> 
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/prognosis/delete/<?php echo $row1['prognosis_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
-            <?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/prognosis/status/<?= $row1['prognosis_id'];?>/2" title="Hide"><i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i></a><?php }elseif($row1['status']==2){?><a href="<?php echo base_url(); ?>main/prognosis/status/<?= $row1['prognosis_id'];?>/1" title="Show"><i class="glyphicon glyphicon-ok" aria-hidden="true"></i></a><?php }?>
+            
                 </td><?php }?>
             </tr>
         <?php $i++;} ?>

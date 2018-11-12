@@ -166,6 +166,32 @@ echo $user_role; ?>
             </a>
         </li>
     <?php }?>
+    <?php if($account_type=='users'){?>
+        <li class="<?php if ($page_name == 'manage_order') echo 'opened active';?> "">
+            <a href="#">
+                <i class="menu-icon glyphicon glyphicon-list-alt"></i>
+                <span><?php echo get_phrase('orders'); ?></span>
+            </a>
+            <ul>
+                 <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
+                    <a href="<?php echo base_url(); ?>main/orders/0">
+                        <span><?php echo get_phrase('medicines'); ?></span>
+                    </a>
+                </li>
+                <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
+                    <a href="<?php echo base_url(); ?>main/orders/1">
+                        <span><?php echo get_phrase('tests'); ?></span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
+            <a href="<?php echo base_url(); ?>main/orders">
+                <i class="menu-icon glyphicon glyphicon-list-alt"></i>
+                <span><?php echo get_phrase('orders'); ?></span>
+            </a>
+        </li> -->
+    <?php }?>
     <?php if($account_type=='medicallabs'){?>
         <li class="<?php if ($page_name == '') echo 'active'; ?>">
             <a href="#">
@@ -174,7 +200,7 @@ echo $user_role; ?>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='nurse' || $account_type=='receptionist' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
+    <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
         <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/patient">
                 <i class="fa fa-users"></i>
@@ -198,7 +224,7 @@ echo $user_role; ?>
             </a>
         </li> -->
     <?php }?>
-    <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users'){?>
+    <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users'  || $account_type=='nurse' || $account_type=='receptionist'){?>
         <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/inpatient">
                 <i class="menu-icon fa fa-eye"></i>
@@ -206,7 +232,7 @@ echo $user_role; ?>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users' || $account_type=='receptionist'){?>
+    <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users' || $account_type=='receptionist' || $account_type=='nurse'){?>
         <li class="<?php if ($page_name == 'manage_appointment') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/appointment">
                 <i class="menu-icon glyphicon glyphicon-list-alt"></i>

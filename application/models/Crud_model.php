@@ -1670,6 +1670,21 @@ if($account_type == 'medicalstores'){
     return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get('inpatient')->result_array();
 }elseif($account_type == 'users'){
     return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get('inpatient')->result_array();
+}elseif($account_type == 'nurse'){
+    $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
+    for($n=0;$n<count($res);$n++){
+        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get('inpatient')->row_array();
+    }
+    return $inpatient;
+}elseif($account_type == 'receptionist'){
+    $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
+    for($n=0;$n<count($res);$n++){
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get('inpatient')->row_array();
+        if($inpatient!=''){
+            $inpatient1[]=$inpatient;
+        }
+    }
+    return $inpatient1;
 }
     }
     function select_inpatient_id_info($id)
@@ -2667,6 +2682,13 @@ for($doc=0;$doc<count($doctor_id);$doc++){
   $return[]=$this->db->order_by('appointment_number','DESC')->where('doctor_id',$doctor_id[$doc])->get('appointments')->row_array();
 }
 return $return;
+}elseif($account_type == 'nurse'){
+    $nurse=$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row();
+    $doctor_id=explode(',',$nurse->doctor_id);
+for($doc=0;$doc<count($doctor_id);$doc++){
+  $return[]=$this->db->order_by('appointment_number','DESC')->where('doctor_id',$doctor_id[$doc])->get('appointments')->row_array();
+}
+return $return;
 }
     }
 /*    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
@@ -2829,18 +2851,17 @@ return $return;
         $data['appointment_id']     = $this->input->post('appointment_id');
         $data['user_id']     = $this->input->post('user_id');
         $data['doctor_id']      = $this->session->userdata('login_user_id');
-        $data['title']     = $this->input->post('title');
-        $data['drug']     = implode(',',$this->input->post('drug'));
-        $data['strength']     = implode(',',$this->input->post('strength'));
-        $data['dosage']     = implode(',',$this->input->post('dosage'));
-        $data['duration']     = implode(',',$this->input->post('duration'));
-        $data['quantity']     = implode(',',$this->input->post('quantity'));
-        $data['note']     = implode(',',$this->input->post('note'));
-        $data['test_title']     = implode(',',$this->input->post('test_title'));
-        $data['description']     = implode(',',$this->input->post('description'));
-        $data['additional_note']     = $this->input->post('additional_note');
+        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['drug']     = $this->encryption->encrypt(implode(',',$this->input->post('drug')));
+        $data['strength']     = $this->encryption->encrypt(implode(',',$this->input->post('strength')));
+        $data['dosage']     = $this->encryption->encrypt(implode(',',$this->input->post('dosage')));
+        $data['duration']     = $this->encryption->encrypt(implode(',',$this->input->post('duration')));
+        $data['quantity']     = $this->encryption->encrypt(implode(',',$this->input->post('quantity')));
+        $data['note']     = $this->encryption->encrypt(implode(',',$this->input->post('note')));
+        $data['test_title']     = $this->encryption->encrypt(implode(',',$this->input->post('test_title')));
+        $data['description']     = $this->encryption->encrypt(implode(',',$this->input->post('description')));
+        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));
         $data['created_at']=date('Y-m-d H:i:s');
-        /*print_r($data);die;*/
         $this->db->insert('prescription',$data);
     }
     function update_prescription_info($prescription_id='')
@@ -2848,16 +2869,16 @@ return $return;
         $data['appointment_id']     = $this->input->post('appointment_id');
         $data['user_id']     = $this->input->post('user_id');
         $data['doctor_id']      = $this->session->userdata('login_user_id');
-        $data['title']     = $this->input->post('title');
-        $data['drug']     = implode(',',$this->input->post('drug'));
-        $data['strength']     = implode(',',$this->input->post('strength'));
-        $data['dosage']     = implode(',',$this->input->post('dosage'));
-        $data['duration']     = implode(',',$this->input->post('duration'));
-        $data['quantity']     = implode(',',$this->input->post('quantity'));
-        $data['note']     = implode(',',$this->input->post('note'));
-        $data['test_title']     = implode(',',$this->input->post('test_title'));
-        $data['description']     = implode(',',$this->input->post('description'));
-        $data['additional_note']     = $this->input->post('additional_note');
+        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['drug']     = $this->encryption->encrypt(implode(',',$this->input->post('drug')));
+        $data['strength']     = $this->encryption->encrypt(implode(',',$this->input->post('strength')));
+        $data['dosage']     = $this->encryption->encrypt(implode(',',$this->input->post('dosage')));
+        $data['duration']     = $this->encryption->encrypt(implode(',',$this->input->post('duration')));
+        $data['quantity']     = $this->encryption->encrypt(implode(',',$this->input->post('quantity')));
+        $data['note']     = $this->encryption->encrypt(implode(',',$this->input->post('note')));
+        $data['test_title']     = $this->encryption->encrypt(implode(',',$this->input->post('test_title')));
+        $data['description']     = $this->encryption->encrypt(implode(',',$this->input->post('description')));
+        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('prescription_id',$prescription_id);
         $this->db->insert('prescription',$data);
@@ -2882,8 +2903,16 @@ return $return;
         $this->db->where('prescription_id',$prescription_id);
         $this->db->update('prescription',$data);
     }
-    function upload_prescription_receipt($order_id){
-
+    function upload_prescription_receipt($order_type){
+        $order_id=$this->input->post('order_id');
+        $data['price']= implode(',',$this->input->post('price'));
+        $data['total']=$this->input->post('total');
+        $data['receipt_created_at']=date('Y-m-d H:i:s');
+        $this->db->where('order_id',$order_id);
+        $s=$this->db->update('prescription_order',$data);
+        if($s){
+        $this->db->where('order_id',$order_id)->update('prescription_order',array('status'=>1));
+        }     
     }
     function select_prognosis_info()
     {
@@ -2899,15 +2928,15 @@ return $return;
         $data['appointment_id']     = $this->input->post('appointment_id');
         $data['user_id']     = $this->input->post('user_id');
         $data['doctor_id']      = $this->session->userdata('login_user_id');
-        $data['title']     = $this->input->post('title');
-        $data['case_history']     = $this->input->post('case_history');
+        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['case_history']     = $this->encryption->encrypt($this->input->post('case_history'));
         $data['created_at']=date('Y-m-d H:i:s');
         $this->db->insert('prognosis',$data);
     }
     function update_prognosis_info($prognosis_id='')
     {
-        $data['title']     = $this->input->post('title');
-        $data['case_history']     = $this->input->post('case_history');
+        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['case_history']     = $this->encryption->decrypt($this->input->post('case_history'));
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('prognosis_id',$prognosis_id);
         $this->db->update('prognosis',$data);
@@ -2935,7 +2964,6 @@ return $return;
         }
         if($id == 1){
             $te=$this->input->post('tests');
-            print_r($te);
             for($c=0;$c<$_POST['count'];$c++){
             if($te[$c]!=''){
                 $st[$c]=1;
@@ -3010,7 +3038,10 @@ return $return;
     {
         $account_type = $this->session->userdata('login_type');
         $user_id = $this->session->userdata('login_user_id');
-        if($account_type=='medicalstores'){
+    if($account_type=='users'){
+        return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('user_id' => $user_id))->result_array();
+    }
+    if($account_type=='medicalstores'){
         return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('store_id' => $user_id))->result_array();
     }
     if($account_type=='medicallabs'){

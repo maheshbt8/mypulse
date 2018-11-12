@@ -22,6 +22,7 @@ $this->session->set_userdata('last_page', current_url());
         <?php  
         /*$prescription_info=$this->db->get_where('prescription',array('user_id'=>$user_data['user_id'],'status'=>1))->result_array();*/
         $i=1;foreach ($order as $row1) {
+            if($order_type==$row1['order_type']){
             /*$user_info=$this->db->where('user_id',$row1);*/
            $user_info=$this->crud_model->select_user_information($row1['user_id']);
            $prescription_info=$this->crud_model->select_prescription_information($row1['prescription_id']);
@@ -35,10 +36,10 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $user1['phone'] ?></td>
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
-                <td><a href="#" class="hiper">Receipt</a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a></td>
+                <td><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper">Receipt</a></td>
             </tr>
-        <?php }$i++;} ?>
+        <?php }}$i++;} ?>
     </tbody>
 </table>
  </div>

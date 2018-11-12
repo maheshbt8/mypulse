@@ -150,7 +150,7 @@ $this->session->set_userdata('last_page', current_url());
             <tr>
                 <td><?php echo $i?></td>
                 <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
-                    <?php echo $row1['title'] ?></a></td>
+                    <?php echo $this->encryption->decrypt($row1['title']);?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
         <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicin"><i class="glyphicon glyphicon-plus"></i>
@@ -186,7 +186,7 @@ $this->session->set_userdata('last_page', current_url());
             <tr>
                 <td><?php echo $i?></td>
                 <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
-                    <?php echo $row1['title'] ?></a></td>
+                    <?php echo $this->encryption->decrypt($row1['title']);?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
 
@@ -242,50 +242,12 @@ if($account_type == 'medicallabs'){
                 <td><?php echo $user1['phone'] ?></td>
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'].'/'.$row1['order_id'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
-                <td><form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/upload_receipt/<?=$row1['order_id'];?>" method="post" enctype="multipart/form-data">
-                                <div class="form-group">
-                        <div class="col-sm-12">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
-                                <div>
-                                    <span class="btn btn-white btn-file">
-                                        <span class="fileinput-new"><?php echo 'Select Receipt';?></span>
-                                        <span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
-                                        <input type="file" name="userfile" id="userfile" accept="image/*" id="userfile" value="<?php echo set_value('userfile'); ?>"   data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>">
-                                    </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
-                                </div>
-                            </div>
-                            <input type="submit" class="btn btn-success" value="<?php echo $this->lang->line('buttons')['submit'];?>">
-                        </div>
-                    </div>
-                </form>
-                    <!-- Trigger the modal with a button -->
-<!--   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Small Modal</button> -->
-
-  
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
+                <td>
+  <a href="<?php echo base_url(); ?>main/add_receipt/<?= $row1['prescription_id'].'/'.$row1['order_id'];?>" class="hiper">Upload Receipt</a>
                 </td>
             </tr>
-            <!-- Modal -->
- <!--  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Uploade Receipt</h4>
-        </div>
-        <div class="modal-body">
-          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_nurse/<?=$row1['order_id']?>" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="x" value="<?=$row1['order_id']?>">
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
+            
         <?php } $i++;} ?>
     </tbody>
 </table>

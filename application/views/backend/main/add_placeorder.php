@@ -17,7 +17,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php echo $prescription_info['title'];?></h3></td>
+    <td align="left"><h3>Title :- <?php echo $this->encryption->decrypt($prescription_info['title']);?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -130,12 +130,12 @@ foreach ($store as $spe) { ?>
     </thead>
     <tbody>
         <?php 
-        $drug=explode(',',$prescription_info['drug']);
-        $strength=explode(',',$prescription_info['strength']);
-        $dosage=explode(',',$prescription_info['dosage']);
-        $duration=explode(',',$prescription_info['duration']);
-        $quantity=explode(',',$prescription_info['quantity']);
-        $note=explode(',',$prescription_info['note']);
+        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
+        $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
+        $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
+        $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
+        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
+        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr>
@@ -202,8 +202,8 @@ foreach ($store as $spe) { ?>
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$prescription_info['test_title']);
-        $description=explode(',',$prescription_info['description']);
+        $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
+        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
         <?php for($i1=0;$i1<count($test_title);$i1++){?>
