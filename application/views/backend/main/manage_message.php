@@ -56,7 +56,7 @@ $this->session->set_userdata('last_page', current_url());
             $user_to=explode(',', $row['user_to']);
             $user_too=explode(',', $row['user_too']);
             $h1='';
-               for($m1=0;$m1<count($user_to);$m1++){
+    for($m1=0;$m1<count($user_to);$m1++){
     if($user_to[$m1] == 1){
     $h1='hospitaladmins';    
     }elseif($user_to[$m1] == 2){
@@ -77,6 +77,7 @@ $this->session->set_userdata('last_page', current_url());
                 if($user_too[$us] == $account_details){
                 $hospi1=$user_too[$us];    
                 }
+              }
                 if($account_type == 'superadmin'){
             if(($h1==$account_type || $hospi1==$account_details)/* && ($row['hospital_id'] == 0 || $row['hospital_id'] == $account_hospital)*/)
               {
@@ -132,7 +133,7 @@ if($created_by[0] == 'superadmin'){
     </a>
 
     <?php }
-    }}}}?>
+    }}}?>
     </div>
     </div>
 

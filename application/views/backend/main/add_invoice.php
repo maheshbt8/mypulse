@@ -8,7 +8,7 @@ $store_info=$this->db->where('lab_id',$order_info['lab_id'])->get('medicallabs')
 }
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
-/*print_r($prescription_info);die;*/
+$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 ?>
 <div class="row" id="print_div">  
 <div class="col-md-12">
@@ -22,7 +22,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php echo $this->encryption->decrypt($prescription_info['title']);?></h3></td>
+    <td align="left"><h3>Title :- <?php echo $prescription_data[0];?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -91,9 +91,9 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     </thead>
     <tbody>
         <?php 
-        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
+        $drug=explode(',',$prescription_data[1]);
         if($account_type!='medicalstores'){
-        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
+        $quantity=explode(',',$prescription_data[5]);
         }elseif($account_type=='medicalstores'){
         $quantity=explode(',',$order_info['quantity']); 
         }
@@ -128,13 +128,14 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
         <th scope="col">#</th>
         <th scope="col">Title</th>
         <th scope="col">Description</th>
+        <th scope="col">Reports</th>
         <th scope="col" formula="cost*qty"summary="sum">Price</th>
       </tr>
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
-        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
+        $test_title=explode(',',$prescription_data[7]);
+        $description=explode(',',$prescription_data[8]);
         $tests=explode(',',$order_info['tests']); 
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
@@ -145,46 +146,31 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
+        <td><div class="col-sm-12">
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                <div>
+                                    <span class="btn btn-blue btn-file">
+                                        <span class="fileinput-new"><?php echo get_phrase('select_report'); ?></span>
+                                        <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
+                                        <input type="file" name="userfile[]" id="userfile" value="<?php echo set_value('userfile'); ?>">
+                                    </span>
+                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
+                                </div>
+                            </div>
+                        </div>
+            </td>
         <td><input type="text" id="price<?=$i1+1;?>" name="price[]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" autocomplete="off"/></td>
       </tr>
       <?php }
         }?>
     </tbody>
     <thead>
-        <tr> <th colspan="3" scope="col"><label>Total</label> : </th><td><input type="text" readonly="readonly" name="total" id="total" />&nbsp;<input class="btn btn-info"type="button" value="Total" onclick="totalIt()" /></td></tr>
+        <tr> <th colspan="4" scope="col"><label class="pull-right">Total : </label>  </th><td><input type="text" readonly="readonly" name="total" id="total" />&nbsp;<input class="btn btn-info"type="button" value="Total" onclick="totalIt()" /></td></tr>
     </thead>
   </table>
 
-<!-- 
 
- <INPUT type="button" value="Add Row" onclick="addRow('dataTable')" />
-
-            <INPUT type="button" value="Delete Row" onclick="deleteRow('dataTable')" />
-        <form action="" method="post" enctype="multipart/form-data">
-        invoice:<INPUT type="text" name="invoice id"/>
-
-            <TABLE id="dataTable" width="350px" border="1" style="border-collapse:collapse;">
-        <TR>
-        <TH>Select</TH>
-        <TH>Sr. No.</TH>
-        <TH>Item</TH>
-        <TH>Qty</TH>
-        <TH>Cost</TH>
-        <TH formula="cost*qty"summary="sum">Price</TH>
-        </TR>
-                <TR>
-                    <TD><INPUT type="checkbox" name="chk[]"/></TD>
-                    <TD> 1 </TD>
-                    <TD> <INPUT type="text" name="item[] "/> </TD>
-                    <TD> <INPUT type="text" id="qty1" name="qty[]"/> </TD>
-                    <TD> <INPUT type="text" id="cost1" name="cost[]" /> </TD>
-                    <TD> <INPUT type="text" id="price1" name="price[]" /> </TD>
-                </TR>
-
-            </TABLE>
-            total: <input type="text" readonly="readonly" id="total" /><br/>
-        <input type="button" value="Total" onclick="totalIt()" /><input type="submit" />
- </form> -->
 
 
 
@@ -214,6 +200,16 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     total += isNaN(price)?0:price;
   }
   document.getElementById("total").value=isNaN(total)?"0.00":total.toFixed(2);                        
+}
+function get_cost(cost){
+/*var quantity = document.getElementsByName("que[]");
+  var total=0;
+  for (var i=1;i<=quantity.length;i++) { 
+    var cost = $("#cost"+i).value;
+    var price = $("#price"+i).value;
+    total += isNaN(price)?0:price;
+  }*/
+    alert(cost);
 } 
 </script>
 <!-- 

@@ -1,5 +1,6 @@
 <?php 
 $order_info=$this->crud_model->select_order_info_id($order_id);
+$report_info=$this->crud_model->select_medical_reports_information($order_id);
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
 if($order_info['order_type']==0){
 $store_info=$this->db->where('store_id',$order_info['store_id'])->get('medicalstores')->row_array();
@@ -8,7 +9,7 @@ $store_info=$this->db->where('lab_id',$order_info['lab_id'])->get('medicallabs')
 }
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
-/*print_r($prescription_info);die;*/
+$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 ?>
 <div class="row">
     <div class="col-sm-2 pull-right">
@@ -29,7 +30,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php echo $this->encryption->decrypt($prescription_info['title']);?></h3></td>
+    <td align="left"><h3>Title :- <?php echo $prescription_data[0];?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -98,7 +99,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     </thead>
     <tbody>
         <?php 
-        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
+        $drug=explode(',',$prescription_data[1]);
         /*if($account_type!='medicalstores'){
         $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));*/
         /*}elseif($account_type=='medicalstores'){*/
@@ -123,7 +124,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 </div>
 </div>
 <?php }?>
-<?php if($order_info['order_type'] == 1){?>
+<?php if($order_info['order_type'] == 1){ ?>
 
 <div class="row">
 <div class="col-md-12">
@@ -136,13 +137,14 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
         <th scope="col">#</th>
         <th scope="col">Title</th>
         <th scope="col">Description</th>
+        <th scope="col">Reports</th>
         <th scope="col">Price</th>
       </tr>
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
-        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
+        $test_title=explode(',',$prescription_data[7]);
+        $description=explode(',',$prescription_data[8]);
         $tests=explode(',',$order_info['tests']);
         $price=explode(',',$order_info['price']);
         ?>
@@ -154,13 +156,14 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
+        <td><?php if($report_info[$i1]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report_info[$i1]['report_id'].'.'.$report_info[$i1]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
         <td><?= $price[$i1];?></td>
       </tr>
       <?php }
         }?>
     </tbody>
     <thead>
-        <tr> <th colspan="3" scope="col"><label>Total</label> : </th><th><b><?= $order_info['total'];?></b></th></tr>
+        <tr> <th colspan="4" scope="col"><label>Total</label> : </th><th><b><?= $order_info['total'];?></b></th></tr>
     </thead>
   </table>
 </div>

@@ -1201,6 +1201,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('remark_updated_successfuly'));
             redirect($this->session->userdata('last_page1'));
         }
+        if ($task == "recommend") {
+            $this->crud_model->recommend_inpatient($appointment_id);
+            $this->session->set_flashdata('message', get_phrase('recommended_as_inpatient_successfuly'));
+            /*redirect($this->session->userdata('last_page1'));*/
+        }
 
         $data['appointment_info'] = $this->crud_model->select_appointment_info();
         $data['page_name'] = 'manage_appointment';
@@ -1225,7 +1230,7 @@ class Main extends CI_Controller {
         $this->load->view('backend/index', $data);
     }
     /********Add Prescription*********/
-     function add_prescription($appointment_id='')
+     function add_prescription($doctor_id='',$user_id='')
     {
     if($this->input->post()){
     $this->crud_model->save_prescription_info();
@@ -1233,7 +1238,8 @@ class Main extends CI_Controller {
     redirect($this->session->userdata('last_page1'));
     
     }
-        $data['appointment_id'] = $appointment_id;
+        $data['doctor_id'] = $doctor_id;
+        $data['user_id'] = $user_id;
         $data['page_name'] = 'add_prescription';
         $data['page_title'] = get_phrase('add_prescription');
         $this->load->view('backend/index', $data);
@@ -1261,12 +1267,18 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('prescription');
         $this->load->view('backend/index', $data);
     }*/
-    function prescription_history($order_id='',$order_type='')
+    function ordered_prescription_history($order_id='',$order_type='')
     {
-/*        $account_type=$this->session->userdata('login_type');
-        if($account_type == 'users'){*/
         $data['order_type']=$order_type;
         $data['order_id'] = $order_id;
+        $data['page_name'] = 'prescription_history';
+        $data['page_title'] = get_phrase('prescription');
+        $this->load->view('backend/index', $data);
+    }
+    function prescription_history($prescription_id='',$order_type='')
+    {
+        $data['order_type']=$order_type;
+        $data['prescription_id'] = $prescription_id;
         $data['page_name'] = 'prescription_history';
         $data['page_title'] = get_phrase('prescription');
         $this->load->view('backend/index', $data);
@@ -1321,7 +1333,7 @@ class Main extends CI_Controller {
         $this->load->view('backend/index', $data);
     }
     /********Add Prognosis*********/
-     function add_prognosis($appointment_id='')
+     function add_prognosis($doctor_id='',$user_id='')
     {
     if($this->input->post()){
     $this->crud_model->save_prognosis_info();
@@ -1329,6 +1341,8 @@ class Main extends CI_Controller {
     redirect($this->session->userdata('last_page1'));
     
     }
+        $data['doctor_id'] = $doctor_id;
+        $data['user_id'] = $user_id;
         $data['appointment_id'] = $appointment_id;
         $data['page_name'] = 'add_prognosis';
         $data['page_title'] = get_phrase('add_prognosis');
@@ -1386,7 +1400,7 @@ class Main extends CI_Controller {
         if($account_type == 'medicallabs'){
         $data['order_type']=1;
         }
-        if($data['order_type']==0){$page=get_phrase('medicine_orders');}elseif($data['order_type']==0){$page=get_phrase('medicine_orders');}
+        if($data['order_type']==0){$page=get_phrase('medicine_orders');}elseif($data['order_type']==1){$page=get_phrase('medicaltest_orders');}
         $data['order']=$this->crud_model->select_order_info();
         $data['page_name'] = 'manage_order';
         $data['page_title'] = $page;
@@ -1639,7 +1653,6 @@ class Main extends CI_Controller {
     }
     function message($param1 = '', $param2 = '', $param3 = '') {
         $page_data['message_data']=$this->crud_model->select_message();
-        /*$page_data['private_message_data']=$this->crud_model->select_private_message();*/
         $page_data['page_name'] = 'manage_message';
         $page_data['page_title'] = get_phrase('messages');
         $this->load->view('backend/index', $page_data);

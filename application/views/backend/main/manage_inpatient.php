@@ -1,7 +1,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
-<form action="<?php echo base_url()?>index.php?superadmin/medical_labs/delete_multiple/" method="post">
+<form action="<?php echo base_url()?>main/medical_labs/delete_multiple/" method="post">
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors' ){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_inpatient'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_in-Patient'); ?>
@@ -39,7 +39,7 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo date('M d,Y',strtotime($row['created_date']));?></td>
                 <td><?php echo $row['reason']; ?></td>
                 <td><?php echo $this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row()->name; ?></td>
-                 <td><?php if($row['status'] == 0){echo "Not Admitted";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td> 
+                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td> 
                <td>
               <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> 
                 </td>

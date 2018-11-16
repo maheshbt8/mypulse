@@ -1,11 +1,17 @@
 <?php 
+if($prescription_id==''){
 $order_info=$this->crud_model->select_order_info_id($order_id);
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
-$doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
+}
+if($prescription_id!=''){
 
+$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
+}
+$doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
 
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
+$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 ?>
 <div class="row">
     <div class="col-sm-2 pull-right">
@@ -26,7 +32,12 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 <div class="row">
     <div class="col-md-12">
     <table width="100%" border="0">    
-            <tbody><tr>
+            <tbody>
+                <tr>
+                <td align="left"><h3>Title :- <?php echo $prescription_data[0];?></h3></td>
+                <td align="right"></td>
+            </tr>
+                <tr>
                 <td align="left"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $doctor_info['hospital_id'];?>.png"  style="max-height:45px; margin: 0px;"/></td>
                 <td align="right"></td>
             </tr>
@@ -74,7 +85,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 </div>
 
 <div class="row">
-    <?php if($order_type == 0){?>
+    <?php if($order_type == 0 || $account_type=='doctors'){?>
 <div class="col-md-12">
     <h2 class="col-sm-3"><?php echo get_phrase('Medicine'); ?></h2>
     <div class="table-responsive">
@@ -93,17 +104,30 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     </thead>
     <tbody>
         <?php 
-
-        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
+        //print(explode('|',$this->encryption->decrypt($prescription_info['prescription_data'])));
+        //print_r($prescription_info);
+        $drug=explode(',',$prescription_data[1]);
+        $strength=explode(',',$prescription_data[2]);
+        $dosage=explode(',',$prescription_data[3]);
+        $duration=explode(',',$prescription_data[4]);
+        if($order_id == ''){
+        $quantity=explode(',',$prescription_data[5]);
+        }elseif($order_id != ''){
+        $quantity=explode(',',$order_info['quantity']); 
+        }
+        $note=explode(',',$prescription_data[6]);
+        
+        /*$drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
         $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
         $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
         $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
-        if($account_type!='medicalstores'){
+        if($order_id == ''){
         $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
-        }elseif($account_type=='medicalstores'){
+        }elseif($order_id != ''){
         $quantity=explode(',',$order_info['quantity']); 
         }
-        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));
+        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));*/
+
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr>
@@ -121,7 +145,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 </div>
 </div>
 <?php }
-if($order_type == 1){?>
+if($order_type == 1 || $account_type=='doctors'){?>
 <div class="col-md-12">
     <h2 class="col-sm-3"><?php echo get_phrase('tests'); ?></h2>
     <div class="table-responsive">
@@ -136,10 +160,10 @@ if($order_type == 1){?>
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
-        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
-        if($account_type=='medicallabs'){
-        $tests=explode(',',$this->encryption->decrypt($order_info['tests'])); 
+        $test_title=explode(',',$prescription_data[7]);
+        $description=explode(',',$prescription_data[8]);
+        if($account_type == 'medicallabs'){
+        $tests=explode(',',$order_info['tests']); 
         }
         ?>
         <?php for($i1=0;$i1<count($test_title);$i1++){
@@ -151,7 +175,7 @@ if($order_type == 1){?>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
       </tr>
-      <?php }}else{ ?>
+      <?php }}elseif($account_type != 'medicallabs'){ ?>
 <tr>
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
@@ -164,7 +188,19 @@ if($order_type == 1){?>
 </div>
 <?php }?>
 </div>
+<div class="row">
+    <div class="col-md-12">
+    <table width="100%" border="0">    
+            <tbody>
+                <tr>
+                <td align="left"><h3>Additional Note :- <?php echo $prescription_data[9];?></h3></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
 <br/><br/><br/>
+
 <footer>
     <hr/>
     <span style="font-size:8.0pt;mso-bidi-font-size:

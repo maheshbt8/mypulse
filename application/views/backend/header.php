@@ -133,12 +133,12 @@ $website_language_google = $this->session->userdata('website_language_google') !
       </li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="color: #fff;"> <i class="glyphicon glyphicon-envelope"></i>
-        <!-- <span class="info">5</span> --></a>
+        <span class="info"><?=$this->session->userdata('msg_count');?></span></a>
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Messages</h4></li>
           <div class="notification-body">
           <?php $message_data=$this->crud_model->select_message();
-            $i=0;foreach ($message_data as $row) {
+            $i=0;$j=0; foreach ($message_data as $row) {
        $message1=explode(',',$row['user_to']);
        $message2=explode(',',$row['user_too']);
        $hospi='';
@@ -164,11 +164,19 @@ $website_language_google = $this->session->userdata('website_language_google') !
     if($message2[$m2] == $account_details){
     $hospi1=$message2[$m2];    
     }
+  }
     if($account_type == 'superadmin'){
     if($hospi1 == $account_details || $hospi==$account_type)
               {
+      $message_read=explode(',',$row['is_read']);
+    for($m1=0;$m1<count($message_read);$m1++){
+        if($message_read[$m1]!=$account_details){
+                $j=$j+1;
+        }
+    }
+                
                ?>
-               <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title'];?></span>
+               <a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title'];?></span>
                </li>
               </a>
                <?php 
@@ -176,15 +184,21 @@ $website_language_google = $this->session->userdata('website_language_google') !
     }else{
     if(($hospi1 == $account_details || $hospi==$account_type) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')))
               {
+    $message_read=explode(',',$row['is_read']);
+    for($m2=0;$m2<count($message_read);$m2++){
+        if($message_read[$m2]!=$account_details){
+                $j=$j+1;
+        }
+    }
                ?>
-               <a href="<?php echo base_url()?>index.php?<?= $account_type?>/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title'];?></span>
+               <a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>"><li class="notification-list"><span class="span-title"><?= $row['title'];?></span>
                </li>
               </a>
                <?php 
               }
             }
 
-          $i++;}}}?> 
+          $i++;}}$this->session->set_userdata('msg_count',$j);?> 
           </div>
           <hr/>
           <a href="<?php echo base_url()?>main/message" class="hiper"><center>All Messages</center></a>

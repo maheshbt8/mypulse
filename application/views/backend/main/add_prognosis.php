@@ -1,6 +1,4 @@
-<?php 
-$appointment_info = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->row_array();
-?>
+
 <div class="row">
    
     <div class="col-md-12">
@@ -25,9 +23,9 @@ $appointment_info = $this->db->get_where('appointments', array('appointment_id' 
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('Title'); ?></label>
                             <div class="col-sm-10">
-                                <input type="hidden" name="appointment_id" value="<?=$appointment_info['appointment_id'];?>">
-                                <input type="hidden" name="user_id" value="<?=$appointment_info['user_id'];?>">
-                                <input type="hidden" name="doctor_id" value="<?=$appointment_info['doctor_id'];?>">
+                                
+                                <input type="hidden" name="user_id" value="<?=$user_id;?>">
+                                <input type="hidden" name="doctor_id" value="<?=$doctor_id;?>">
                                 <input type="text" name="title" placeholder="Title For Prognosis" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('title');?>" >
                             </div>
                     </div>

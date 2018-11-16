@@ -15,7 +15,7 @@
                 <div class="col-md-12"> 
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-1 control-label"><?php echo get_phrase('to'); ?></label>
-    <div class="col-sm-8" id="to_ind">
+    <div class="col-sm-11" id="to_ind">
     <?php if($account_type=='superadmin'){?>
                 <input type="hidden" name="hospital_id" value="0">
                 <?php }elseif($account_type=='hospitaladmins'){?>
@@ -150,7 +150,7 @@
                 <div class="col-md-12"> 
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-1 control-label"><?php echo get_phrase('title'); ?></label>
-                             <div class="col-sm-8"> 
+                             <div class="col-sm-11"> 
 <input type="text" class="form-control" name="title" value="" data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>" required>
                             </div>
                     </div>
@@ -158,15 +158,25 @@
                 </div>
                 <div class="col-md-12"> 
                     <div class="form-group">
+                        <label for="field-ta" class="col-sm-1 control-label"><?php echo get_phrase('message'); ?></label>
+                             <div class="col-sm-11"> 
+<textarea type="text" class="form-control" name="message" value=""data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>"rows="10" cols="50" required></textarea>
+                            </div>
+                    </div>
+                    
+                </div>
+               <!--  <div class="col-md-12"> 
+                    <div class="form-group">
                 <label for="field-ta" class="col-sm-1 control-label"><?php echo get_phrase('message'); ?></label>
             </div>
-            </div>
-             <div class="form-group">
+            </div> -->
+             <!-- <div class="form-group">
 
                     <div class="col-sm-12">
-            <textarea type="text" class="form-control" name="message" value=""data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>" required></textarea>
+            <label for="field-ta" class="col-sm-1 control-label"><?php echo get_phrase('message'); ?></label>    
+            <textarea type="text" class="form-control" name="message" value=""data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>"rows="10" cols="50" required></textarea>
                     </div>
-                </div>
+                </div> -->
                
             </div>
             <div class="form-group">
@@ -184,27 +194,10 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>/assets/js/ckeditor/ckeditor.js"></script> 
-
-<!-- <script type="text/javascript">
-    $(document).ready(function(){
-    $("#to_ind").hide();
-    });
-    function show_repete(id) {
-        if(id == 1){
-        $("#to_ind").show();
-        $("#to_all").hide();
-        }
-        if(id == 0){
-        $("#to_ind").hide();
-        $("#to_all").show();
-        }
-    }
-
-</script> -->
-<script>
+<!-- <script type="text/javascript" src="<?php echo base_url();?>/assets/js/ckeditor/ckeditor.js"></script> --> 
+<!-- <script>
     CKEDITOR.replace( 'message' );
-</script>
+</script> -->
   <script>
   $( function() {
     $( ".email-check" ).checkboxradio({

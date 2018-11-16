@@ -141,6 +141,14 @@ foreach ($single_appointment_info as $row) {
             <!----TABLE LISTING STARTS--> 
 <div class="row">
     <div class="col-md-12">
+        <?php if($account_type=='doctors'){?>
+<button type="button" onClick="confrecommend(this.form);" id="recommend" class="btn btn-warning pull-right" style="margin-left: 2px;width: auto;">
+        <?php echo get_phrase('Recommend as Inpatient'); ?>
+</button>
+<!-- <button type="button" onClick="checkone(this.form);" id="recommend1" class="btn btn-warning pull-right" style="margin-left: 2px;width: auto;">
+        <?php echo get_phrase('Recommend as Inpatient'); ?>
+</button> -->
+<?php }?>
       <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
   </div> 
 </div>
@@ -236,6 +244,12 @@ foreach ($single_appointment_info as $row) {
             </li>
             <li>
                 <a href="#h4" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Health Reports';?>
+
+                </a>
+            </li>
+            <li>
+                <a href="#h5" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'Inpatien';?>
 
                 </a>
@@ -358,7 +372,7 @@ foreach ($single_appointment_info as $row) {
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
             <div style="clear:both;"></div>
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prescription/<?= $row['appointment_id'];?>'" class="btn btn-primary pull-right">
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prescription/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prescription'); ?>
 </button>
 
@@ -381,7 +395,7 @@ foreach ($single_appointment_info as $row) {
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo $this->encryption->decrypt($row1['title']); ?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo explode('|',$this->encryption->decrypt($row1['prescription_data']))[0];?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
                <?php if($account_type == 'doctors'){?>
@@ -423,11 +437,12 @@ foreach ($single_appointment_info as $row) {
         <?php  
         $prognosis_info=$this->db->get_where('prognosis',array('user_id'=>$user_data['user_id'],'status'=>1))->result_array();
         $i=1;foreach ($prognosis_info as $row2) {
+            $prognosis_data=explode('|',$this->encryption->decrypt($row2['prognosis_data']));
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $this->encryption->decrypt($row2['title']); ?></a></td>
-                <td><?php echo $this->encryption->decrypt($row2['case_history']); ?></td>
+                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
+                <td><?php echo $prognosis_data[1]; ?></td>
                 <td><?php echo $row2['created_at'] ?></td>
             </tr>
         <?php $i++;} ?>
@@ -439,6 +454,51 @@ foreach ($single_appointment_info as $row) {
 </div>
 </div>
 <div class="tab-pane box" id="h4" style="padding: 5px">
+                <div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+            <div style="clear:both;"></div>
+<!-- <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $row['appointment_id'];?>'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_prognosis'); ?>
+</button> -->
+<table class="table table-bordered table-striped datatable" id="table-2">  
+    <thead>
+        <tr>
+            <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('title'); ?></th>
+            <th><?php echo get_phrase('health_report'); ?></th>
+            <th><?php echo get_phrase('date'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php  
+        $report_info=$this->db->get_where('prescription_order',array('user_id'=>$user_data['user_id'],'order_type'=>1))->result_array();
+        foreach ($report_info as $row2) {
+        $rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row2['prescription_id']))->row_array();
+        $rep_exp=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
+         $rep_exp_data=explode(',',$rep_exp[7]);
+                
+        for($j=0;$j<count($rep_exp_data);$j++) {
+        $report=$this->db->get_where('reports',array('order_id'=>$row2['order_id'],'status'=>1))->result_array();
+            ?>
+            <tr>
+                <td><?php echo $j+1;?></td>
+                <td><?php echo $rep_exp_data[$j];?></td>
+                <td><?php if($report[$j]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report[$j]['report_id'].'.'.$report[$j]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
+                <td><?php echo $report[$j]['created_at'] ?></td>
+            </tr>
+        <?php }} ?>
+    </tbody>
+</table>
+         </div>
+     </div>
+ </div>
+</div>
+</div>
+<div class="tab-pane box" id="h5" style="padding: 5px">
                 <div class="row">
     <div class="col-md-12">
 
@@ -545,6 +605,19 @@ foreach ($single_appointment_info as $row) {
           
 </script>
  -->
+ <script>
+            function confrecommend(form) {
+            /*form.submit();*/
+            var id='<?=$single_appointment_info[0]["user_id"]?>';
+            $.ajax({
+            type: 'post',
+            url: '<?php echo base_url();?>main/appointment/recommend/'+id,
+            success: function (response) {
+                window.location.reload();
+            }
+          });  
+}
+ </script>
  <script type="text/javascript">
                     $(document).ready(function(){
                     var date = new Date();
@@ -557,3 +630,44 @@ foreach ($single_appointment_info as $row) {
                     } );                  
 
 </script>
+<!-- <script type="text/javascript">
+    $(document).ready(function(){
+        
+        $("#recommend1").show();
+        $("#recommend").hide();
+       
+        $("#all_check").click(function () {
+            $('.check').attr('checked', this.checked);
+            if($(".check:checked").length == 0){
+               
+                $("#recommend1").show();
+                $("#recommend").hide();
+                
+            }else{
+           
+            $("#recommend1").hide();
+            $("#recommend").show();
+            
+            }
+            
+        });
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            
+            $("#recommend1").hide();
+            $("#recommend").show();
+           
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        
+        $("#crecommend1").show();
+        $("#recommend").hide();
+        
+    }
+    });
+    });
+</script> -->

@@ -1,3 +1,6 @@
+<?php 
+$this->session->set_userdata('last_page1', current_url());
+?>
 <style>
     .modal-backdrop.in{
         z-index: auto;
@@ -21,7 +24,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                 <div class="row">
     <div class="col-md-3">
 <h4><?php echo '<b>Bed</b> : '.$bed_info->name;?></h4>
-<h4><?php if($user_info->status == 0){$status='Not Admitted';}elseif($user_info->status == 1){$status='Admitted';}elseif($user_info->status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
+<h4><?php if($user_info->status == 0){$status='Recommended';}elseif($user_info->status == 1){$status='Admitted';}elseif($user_info->status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
 <h4><?php echo '<b>Admitted Date & Time</b> : '.$user_info->join_date;?></h4>
 <h4><?php echo '<b>Reason</b> : '.$user_info->reason;?></h4>
 <h4><?php echo '<b>Discharged Date & Time</b> : '.$user_info->discharged_date;?></h4>
@@ -133,7 +136,9 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                 <option value="<?php echo $row1['ward_id']; ?>" <?php if($row1['ward_id'] == $bed_info->ward_id){echo 'selected';}?>><?php echo $row1['name']; ?></option>
                                 <?php } ?>
                     <?php }elseif($account_type=='doctors'){ ?>
+                        <option value=""> Select Ward </option>
         <?php 
+        $ward_info=$this->db->where('department_id',$this->session->userdata('department_id'))->get('ward')->result_array();
         foreach ($ward_info as $row) {
         ?>
         <option value="<?= $row['ward_id'];?>" <?php if($row['ward_id'] == $bed_info->ward_id){echo 'selected';}?>><?= $row['name'];?></option> <?php } }?>
@@ -194,6 +199,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Status';?></label>
                             <div class="col-sm-8">
                                 <select name="status" class="form-control" id="status"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                                    <option value="1"<?php if($user_info->status==0){echo 'selected';}?>><?php echo get_phrase('recommended'); ?></option>
                                     <option value="1"<?php if($user_info->status==1){echo 'selected';}?>><?php echo get_phrase('admitted'); ?></option>
                                     <option value="2"<?php if($user_info->status==2){echo 'selected';}?>><?php echo get_phrase('discharged'); ?></option>
                                 </select>
@@ -263,6 +269,12 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
             </li>
             <li>
                 <a href="#h4" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Health Reports';?>
+
+                </a>
+            </li>
+            <li>
+                <a href="#h5" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'Inpatien';?>
 
                 </a>
@@ -385,7 +397,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
             <div style="clear:both;"></div>
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prescription/<?= $row['appointment_id'];?>'" class="btn btn-primary pull-right">
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prescription/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prescription'); ?>
 </button>
 
@@ -408,7 +420,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo $row1['title'] ?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo explode('|',$this->encryption->decrypt($row1['prescription_data']))[0];?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
                <?php if($account_type == 'doctors'){?>
@@ -433,7 +445,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
             <div style="clear:both;"></div>
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $row['appointment_id'];?>'" class="btn btn-primary pull-right">
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prognosis'); ?>
 </button>
 <table class="table table-bordered table-striped datatable" id="table-2">  
@@ -450,11 +462,12 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         <?php  
         $prognosis_info=$this->db->get_where('prognosis',array('user_id'=>$user_data['user_id'],'status'=>1))->result_array();
         $i=1;foreach ($prognosis_info as $row2) {
+            $prognosis_data=explode('|',$this->encryption->decrypt($row2['prognosis_data']));
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $row2['title'] ?></a></td>
-                <td><?php echo $row2['case_history'] ?></td>
+                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
+                <td><?php echo $prognosis_data[1];?></td>
                 <td><?php echo $row2['created_at'] ?></td>
             </tr>
         <?php $i++;} ?>
@@ -466,6 +479,51 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 </div>
 </div>
 <div class="tab-pane box" id="h4" style="padding: 5px">
+                <div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+            <div style="clear:both;"></div>
+<!-- <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $row['appointment_id'];?>'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_prognosis'); ?>
+</button> -->
+<table class="table table-bordered table-striped datatable" id="table-2">  
+    <thead>
+        <tr>
+            <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('title'); ?></th>
+            <th><?php echo get_phrase('health_report'); ?></th>
+            <th><?php echo get_phrase('date'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php  
+        $report_info=$this->db->get_where('prescription_order',array('user_id'=>$user_data['user_id'],'order_type'=>1))->result_array();
+        foreach ($report_info as $row2) {
+        $rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row2['prescription_id']))->row_array();
+        $rep_exp=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
+         $rep_exp_data=explode(',',$rep_exp[7]);
+                
+        for($j=0;$j<count($rep_exp_data);$j++) {
+        $report=$this->db->get_where('reports',array('order_id'=>$row2['order_id'],'status'=>1))->result_array();
+            ?>
+            <tr>
+                <td><?php echo $j+1;?></td>
+                <td><?php echo $rep_exp_data[$j];?></td>
+                <td><?php if($report[$j]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report[$j]['report_id'].'.'.$report[$j]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
+                <td><?php echo $report[$j]['created_at'] ?></td>
+            </tr>
+        <?php }} ?>
+    </tbody>
+</table>
+         </div>
+     </div>
+ </div>
+</div>
+</div>
+<div class="tab-pane box" id="h5" style="padding: 5px">
                 <div class="row">
     <div class="col-md-12">
 
@@ -504,7 +562,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                 <td><?php echo date('M ,d-Y h:i A',strtotime($in_pa1['join_date'])); ?></td>
                <td><?php if($in_pa1['discharged_date'] != ''){ echo date('M ,d-Y h:i A',strtotime($in_pa1['discharged_date']));}?></td>
                <td><?php echo $in_pa1['reason'] ?></td>
-               <td><?php if($in_pa1['status']==1){echo "Admited";}elseif($in_pa1['status']==2){echo "Discharged";} ?></td>
+               <td><?php if($in_pa1['status']==0){echo "Recommended";}elseif($in_pa1['status']==1){echo "Admited";}elseif($in_pa1['status']==2){echo "Discharged";} ?></td>
                 <!-- <td>
             <a href="<?php echo base_url(); ?>main/edit_prescription/<?php echo $row1['prescription_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
                 </td> -->

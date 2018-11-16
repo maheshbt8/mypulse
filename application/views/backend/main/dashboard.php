@@ -146,11 +146,12 @@ $this->session->set_userdata('last_page', current_url());
         <?php  
         $prescription_info=$this->db->order_by('prescription_id','desc')->get_where('prescription',array('user_id'=>$this->session->userdata('login_user_id'),'medicin_status'=>2))->result_array();
         $i=1;foreach ($prescription_info as $row1) {
+            $prescription_data=explode('|',$this->encryption->decrypt($row1['prescription_data']));
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
-                    <?php echo $this->encryption->decrypt($row1['title']);?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>/0" class="hiper">
+                    <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
         <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicin"><i class="glyphicon glyphicon-plus"></i>
@@ -182,11 +183,12 @@ $this->session->set_userdata('last_page', current_url());
         <?php  
         $prescription_info=$this->db->order_by('prescription_id','desc')->get_where('prescription',array('user_id'=>$this->session->userdata('login_user_id'),'test_status'=>2))->result_array();
         $i=1;foreach ($prescription_info as $row1) {
+            $prescription_data=explode('|',$this->encryption->decrypt($row1['prescription_data']));
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
-                    <?php echo $this->encryption->decrypt($row1['title']);?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>/1" class="hiper">
+                    <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
 
@@ -242,7 +244,7 @@ if($account_type == 'medicallabs'){
                 <td><?php echo $user1['phone'] ?></td>
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
+                <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
                 <td>
   <a href="<?php echo base_url(); ?>main/add_receipt/<?= $row1['prescription_id'].'/'.$row1['order_id'];?>" class="hiper">Upload Receipt</a>
                 </td>
@@ -254,39 +256,3 @@ if($account_type == 'medicallabs'){
     </div>
 </div>
 <?php }?>
-
-<!-- <script type="text/javascript">
-    jQuery(window).load(function ()
-    {
-        var $ = jQuery;
-
-        $("#table-2").dataTable({
-            "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-xs-3 col-md-3 col-left'l><'col-xs-9 col-md-9 col-right'<'export-data'T>f>r>t<'row'<'col-xs-3 col-md-3 col-left'i><'col-xs-9 col-md-9 col-right'p>>"
-        });
-
-        $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-        });
-
-        // Highlighted rows
-        $("#table-2 tbody input[type=checkbox]").each(function (i, el)
-        {
-            var $this = $(el),
-                    $p = $this.closest('tr');
-
-            $(el).on('change', function ()
-            {
-                var is_checked = $this.is(':checked');
-
-                $p[is_checked ? 'addClass' : 'removeClass']('highlight');
-            });
-        });
-
-        // Replace Checboxes
-        $(".pagination a").click(function (ev)
-        {
-            replaceCheckboxes();
-        });
-    });
-</script> -->

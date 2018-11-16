@@ -180,7 +180,7 @@ echo $user_role; ?>
                 </li>
                 <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
                     <a href="<?php echo base_url(); ?>main/orders/1">
-                        <span><?php echo get_phrase('tests'); ?></span>
+                        <span><?php echo get_phrase('medical_tests'); ?></span>
                     </a>
                 </li>
             </ul>
@@ -298,7 +298,7 @@ echo $user_role; ?>
             <ul>
                 <li class="<?php if ($page_name == 'manage_prescription') echo 'active'; ?> ">
                     <a href="<?php echo base_url(); ?>main/prescription">
-                        <span>  <?php echo get_phrase('prescription'); ?></span>
+                        <span>  <?php echo get_phrase('prescriptions'); ?></span>
                     </a>
                 </li>
                 <li class="<?php if ($page_name == 'manage_prognosis') echo 'active'; ?> ">

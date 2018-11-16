@@ -15,14 +15,14 @@ $this->session->set_userdata('last_page', current_url());
         <?php echo get_phrase('close'); ?>
 </button>
 <?php }?>
-<?php if($account_type != 'users'){?>
+
 <button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-warning pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('cancel'); ?>
 </button>
 <button type="button" onClick="checkone(this.form);" id="cancel1" class="btn btn-warning pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('cancel'); ?>
 </button>
-<?php }?>
+
 <?php if($account_type=='superadmin'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>

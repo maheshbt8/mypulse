@@ -1739,6 +1739,10 @@ if($account_type == 'medicalstores'){
     $data['status']       = $this->input->post('status');
     $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
     $data['modified_date']=date('Y-m-d H:i:s');
+    $status=$this->db->where('id',$patient_id)->get('inpatient')->row_array();
+    if($status['status'] != $data['status'] && $data['status']==1){
+    $data['join_date']=date('Y-m-d H:i:s');
+    }
     if($data['status'] == 2){
     $data['discharged_date']=date('Y-m-d H:i:s');
     }
@@ -2805,7 +2809,32 @@ return $return;
             $this->sms_model->send_sms($message, $receiver_phone);
         }
     }*/
-    
+    function recommend_inpatient($user_id)
+    {
+    $data['user_id']       = $user_id;
+    $data['doctor_id']       = $this->session->userdata('login_user_id');
+    $data['hospital_id']       = $this->session->userdata('hospital_id');
+    $data['status']       = 0;
+    $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+    $data['created_date']=date('Y-m-d H:i:s');
+    $insert=$this->db->insert('inpatient',$data);
+        if($insert)
+        {
+            $lid=$this->db->insert_id();
+            if($data['status'] == 0){$status='recommended';}elseif($data['status'] == 1){$status='Admitted';}elseif($data['status'] == 0){$status='Not Admitted';}
+            /******Notification Message******/
+            $notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+            $notification['user_id']='users-user-'.$data['user_id'];
+            $notification['title']='Registered As In-Patient';
+            $notification['text']='Hi User Your Considered As In-Patient Your Current Status is '.$status.'.';
+         $this->db->insert('notification',$notification);
+         $in_patient['in_patient_id']=$lid;
+         $in_patient['created_date']=$data['created_date'];
+         $in_patient['note']='Joined As In-Patient and Status as '.$status.'.';
+         $this->db->insert('inpatient_history',$in_patient);
+        }
+        return TRUE;
+    }
     function delete_appointment_info($appointment_id)
     {
         $this->db->where('appointment_id',$appointment_id);
@@ -2848,10 +2877,11 @@ return $return;
     }
     function save_prescription_info()
     {
-        $data['appointment_id']     = $this->input->post('appointment_id');
         $data['user_id']     = $this->input->post('user_id');
         $data['doctor_id']      = $this->session->userdata('login_user_id');
-        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['prescription_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('drug')).'|'.implode(',',$this->input->post('strength')).'|'.implode(',',$this->input->post('dosage')).'|'.implode(',',$this->input->post('duration')).'|'.implode(',',$this->input->post('quantity')).'|'.implode(',',$this->input->post('note')).'|'.implode(',',$this->input->post('test_title')).'|'.implode(',',$this->input->post('description')).'|'.$this->input->post('additional_note'));
+        /*print_r($data);die;*/
+        /*$data['title']     = $this->encryption->encrypt($this->input->post('title'));
         $data['drug']     = $this->encryption->encrypt(implode(',',$this->input->post('drug')));
         $data['strength']     = $this->encryption->encrypt(implode(',',$this->input->post('strength')));
         $data['dosage']     = $this->encryption->encrypt(implode(',',$this->input->post('dosage')));
@@ -2860,7 +2890,7 @@ return $return;
         $data['note']     = $this->encryption->encrypt(implode(',',$this->input->post('note')));
         $data['test_title']     = $this->encryption->encrypt(implode(',',$this->input->post('test_title')));
         $data['description']     = $this->encryption->encrypt(implode(',',$this->input->post('description')));
-        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));
+        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));*/
         $data['created_at']=date('Y-m-d H:i:s');
         $this->db->insert('prescription',$data);
     }
@@ -2868,8 +2898,9 @@ return $return;
     {
         $data['appointment_id']     = $this->input->post('appointment_id');
         $data['user_id']     = $this->input->post('user_id');
-        $data['doctor_id']      = $this->session->userdata('login_user_id');
-        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['doctor_id']      = $this->input->post('doctor_id');
+         $data['prescription_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('drug')).'|'.implode(',',$this->input->post('strength')).'|'.implode(',',$this->input->post('dosage')).'|'.implode(',',$this->input->post('duration')).'|'.implode(',',$this->input->post('quantity')).'|'.implode(',',$this->input->post('note')).'|'.implode(',',$this->input->post('test_title')).'|'.implode(',',$this->input->post('description')).'|'.$this->input->post('additional_note'));
+        /*$data['title']     = $this->encryption->encrypt($this->input->post('title'));
         $data['drug']     = $this->encryption->encrypt(implode(',',$this->input->post('drug')));
         $data['strength']     = $this->encryption->encrypt(implode(',',$this->input->post('strength')));
         $data['dosage']     = $this->encryption->encrypt(implode(',',$this->input->post('dosage')));
@@ -2878,7 +2909,7 @@ return $return;
         $data['note']     = $this->encryption->encrypt(implode(',',$this->input->post('note')));
         $data['test_title']     = $this->encryption->encrypt(implode(',',$this->input->post('test_title')));
         $data['description']     = $this->encryption->encrypt(implode(',',$this->input->post('description')));
-        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));
+        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));*/
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('prescription_id',$prescription_id);
         $this->db->insert('prescription',$data);
@@ -2912,6 +2943,16 @@ return $return;
         $s=$this->db->update('prescription_order',$data);
         if($s){
         $this->db->where('order_id',$order_id)->update('prescription_order',array('status'=>1));
+        for($j=0;$j<count($_FILES["userfile"]["name"]);$j++){
+            $report['order_id']=$order_id;
+            $report['created_at']=date('Y-m-d H:i:s');
+            $report['extension']=end(explode('.',$_FILES["userfile"]["name"][$j]));
+            $insert=$this->db->insert('reports',$report);
+            if($insert){
+            $lid=$this->db->insert_id();
+            move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/" . $lid . '.'.$report['extention']);
+            }
+        }
         }     
     }
     function select_prognosis_info()
@@ -2925,18 +2966,20 @@ return $return;
     }
     function save_prognosis_info()
     {
-        $data['appointment_id']     = $this->input->post('appointment_id');
+        /*$data['appointment_id']     = $this->input->post('appointment_id');*/
         $data['user_id']     = $this->input->post('user_id');
-        $data['doctor_id']      = $this->session->userdata('login_user_id');
-        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
-        $data['case_history']     = $this->encryption->encrypt($this->input->post('case_history'));
+        $data['doctor_id']      = $this->input->post('doctor_id');
+        $data['prognosis_data']     = $this->encryption->encrypt($this->input->post('title').'|'.$this->input->post('case_history'));
+        /*$data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['case_history']     = $this->encryption->encrypt($this->input->post('case_history'));*/
         $data['created_at']=date('Y-m-d H:i:s');
         $this->db->insert('prognosis',$data);
     }
     function update_prognosis_info($prognosis_id='')
     {
-        $data['title']     = $this->encryption->encrypt($this->input->post('title'));
-        $data['case_history']     = $this->encryption->decrypt($this->input->post('case_history'));
+        $data['prognosis_data']     = $this->encryption->encrypt($this->input->post('title').'|'.$this->input->post('case_history'));
+        /*$data['title']     = $this->encryption->encrypt($this->input->post('title'));
+        $data['case_history']     = $this->encryption->decrypt($this->input->post('case_history'));*/
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('prognosis_id',$prognosis_id);
         $this->db->update('prognosis',$data);
@@ -2952,9 +2995,19 @@ return $return;
         $this->db->where('prognosis_id',$prognosis_id);
         $this->db->update('prognosis',$data);
     }
+  /*  function select_medical_reports()
+    {
+        $user_id = $this->session->userdata('login_user_id');
+        return $this->db->get_where('prescription', array('user_id' => $user_id))->result_array();
+    }*/
+    function select_medical_reports_information($order_id='')
+    {
+        return $this->db->get_where('reports', array('order_id' => $order_id))->result_array();
+    }
+
+
     function save_prescription_order($id='')
     {
-
         $data['user_id']     = $this->input->post('user_id');
         $data['prescription_id']     = $this->input->post('prescription_id');
         $data['order_type']     = $id;
@@ -3167,16 +3220,44 @@ return $this->db->get_where('prescription_order',array('order_id'=>$order_id))->
     }*/
     function read_message($message_id)
     {
-   return $this->db->where('message_id',$message_id)->get('messages')->row_array();
+    $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+   $msg=$this->db->where('message_id',$message_id)->get('messages')->row_array();
+   
+   if($msg['is_read']==''){
+    $data['is_read']=$account_details;
+    $this->db->where('message_id',$message_id)->update('messages',$data);
+   }elseif($msg['is_read']!=''){
+    $message_read=explode(',',$msg['is_read']);
+    
+    for($m=0;$m<count($message_read);$m++){
+        
+        /*if($account_details == $message_read[$m]){
+            $read=0;
+        }else*/if($account_details != $message_read[$m]){
+            $read=1;
+        }
+        /*echo $message_read[$m].'/'.$account_details.'/'.$read.'<br/>';*/
+        /*if($read==1){
+    $data['is_read']=$msg['is_read'].','.$account_details;
+    $this->db->where('message_id',$message_id)->update('messages',$data);
+        }*/
+    }
+    if($read==1){
+    $data['is_read']=$msg['is_read'].','.$account_details;
+    $this->db->where('message_id',$message_id)->update('messages',$data);
+        }
+    
+   }
+   return $msg;
     }
     function select_message()
     {
         return $this->db->order_by('message_id','DESC')->get('messages')->result_array();
     }
-    function select_private_message()
+    /*function select_private_message()
     {
         return $this->db->order_by('message_id','DESC')->get('private_messages')->result_array();
-    }
+    }*/
         function save_new_message()
     {
         $count=count($this->input->post('reciever'));
@@ -3190,7 +3271,6 @@ return $this->db->get_where('prescription_order',array('order_id'=>$order_id))->
                 $ind[]=$arr[1];
             }
         }
-
     $data['user_to']=implode(',',$group);
     $data['user_too']=implode(',',$ind);
     $data['hospital_id']=$this->input->post('hospital_id');;

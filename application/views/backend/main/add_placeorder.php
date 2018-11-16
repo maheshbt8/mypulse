@@ -3,7 +3,7 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
 $doctor_info=$this->db->where('doctor_id',$prescription_info['doctor_id'])->get('doctors')->row_array();
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
-/*print_r($prescription_info);die;*/
+$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 ?>
 <div class="row" id="print_div">  
 <div class="col-md-12">
@@ -17,7 +17,7 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php echo $this->encryption->decrypt($prescription_info['title']);?></h3></td>
+    <td align="left"><h3>Title :- <?php echo $prescription_data[0];?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -130,12 +130,18 @@ foreach ($store as $spe) { ?>
     </thead>
     <tbody>
         <?php 
-        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
+        $drug=explode(',',$prescription_data[1]);
+        $strength=explode(',',$prescription_data[2]);
+        $dosage=explode(',',$prescription_data[3]);
+        $duration=explode(',',$prescription_data[4]);
+        $quantity=explode(',',$prescription_data[5]);
+        $note=explode(',',$prescription_data[6]);
+/*        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
         $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
         $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
         $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
         $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
-        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));
+        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));*/
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr>
@@ -202,8 +208,10 @@ foreach ($store as $spe) { ?>
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
-        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));
+        /*$test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
+        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));*/
+        $test_title=explode(',',$prescription_data[7]);
+        $description=explode(',',$prescription_data[8]);
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
         <?php for($i1=0;$i1<count($test_title);$i1++){?>
