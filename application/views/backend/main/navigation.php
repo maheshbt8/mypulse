@@ -290,7 +290,7 @@ echo $user_role; ?>
         </li>
     <?php }?>
     <?php if($account_type=='users'){?>
-    <li class="<?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_outpatient') echo 'opened active';?> ">
+    <li class="<?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports') echo 'opened active';?> ">
             <a href="#">
                 <i class="fa  fa-hospital-o"></i>
                 <span><?php echo get_phrase('health_records'); ?></span>
@@ -306,9 +306,9 @@ echo $user_role; ?>
                         <span> <?php echo get_phrase('prognosis'); ?></span>
                     </a>
                 </li>
-                 <li class="<?php if ($page_name == 'manage_outpatient') echo 'active'; ?> ">
-                    <a href="#">
-                        <span><?php echo get_phrase('reports'); ?></span>
+                 <li class="<?php if ($page_name == 'manage_health_reports') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>main/health_reports">
+                        <span><?php echo get_phrase('Health Reports'); ?></span>
                     </a>
                 </li>
                
@@ -406,7 +406,7 @@ echo $user_role; ?>
         <?php if($account_type=='superadmin'){?>
         <li class="#">
             <a href="<?php echo base_url(); ?>main/db_backup">
-                <i class="database"></i>
+                <i class="fa fa-database"></i>
                 <span>DB Backup</span>
             </a>
         </li>

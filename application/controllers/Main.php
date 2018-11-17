@@ -1406,6 +1406,23 @@ class Main extends CI_Controller {
         $data['page_title'] = $page;
         $this->load->view('backend/index', $data);
     }
+    function health_reports($param1='',$param2='',$param3='')
+    {   
+        if ($param1 == "delete") {
+            $this->crud_model->delete_medical_reports($param2);
+            $this->session->set_flashdata('message', get_phrase('medical_report_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if ($param1 == "status") {
+            $this->crud_model->update_medical_reports_status($param2,$param3);
+            $this->session->set_flashdata('message', get_phrase('medical_report_status_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        } 
+        $data['health_reports']=$this->crud_model->select_medical_reports();
+        $data['page_name'] = 'manage_health_reports';
+        $data['page_title'] = get_phrase('health_reports');
+        $this->load->view('backend/index', $data);
+    }
     function report($report_id = "") {
         $data['report_id']=$report_id;
         $data['hospital_info'] = $this->crud_model->select_report_info();

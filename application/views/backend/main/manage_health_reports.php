@@ -9,8 +9,7 @@ $this->session->set_userdata('last_page', current_url());
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('title'); ?></th>
-            <th><?php echo get_phrase('case_history'); ?></th>
-            <th><?php echo get_phrase('hospital / doctor'); ?></th>
+            <th><?php echo get_phrase('health_report'); ?></th>
             <th><?php echo get_phrase('date'); ?></th>
             <th><?php echo get_phrase('visibility'); ?></th>
             <?php if($account_type == 'users'){?>
@@ -20,22 +19,27 @@ $this->session->set_userdata('last_page', current_url());
 
     <tbody>
         <?php
-        $i=1;foreach ($prognosis as $row1) {
+        $i=1;foreach ($health_reports as $row1) {
+        $rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row1['prescription_id']))->row_array();
+        $rep_exp=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
+         $rep_exp_data=explode(',',$rep_exp[7]);
+         for($j=0;$j<count($rep_exp_data);$j++) {
+        $report=$this->db->get_where('reports',array('order_id'=>$row1['order_id']))->result_array();
+            
             ?>
             <tr>
-                <td><?php echo $i?></td>
-                <td><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[0];?></td>
-                <td><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[1];?></td>
-                <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
-                <td><?php echo $row1['created_at'] ?></td>
-                <td><?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/prognosis/status/<?= $row1['prognosis_id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row1['status']==2){?><a href="<?php echo base_url(); ?>main/prognosis/status/<?= $row1['prognosis_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td>
+                <td><?php echo $i;?></td>
+                <td><?php echo $rep_exp_data[$j];?></td>
+                <td><?php if($report[$j]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report[$j]['report_id'].'.'.$report[$j]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
+                <td><?php echo $report[$j]['created_at'] ?></td>
+                <td><?php if($report[$j]['status']==1){?><a href="<?php echo base_url(); ?>main/health_reports/status/<?= $report[$j]['report_id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($report[$j]['status']==2){?><a href="<?php echo base_url(); ?>main/health_reports/status/<?= $report[$j]['report_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td>
                <?php if($account_type == 'users'){?>
                 <td> 
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/prognosis/delete/<?php echo $row1['prognosis_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/health_reports/delete/<?= $report[$j]['report_id'];?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
             
                 </td><?php }?>
             </tr>
-        <?php $i++;} ?>
+        <?php $i++;} }?>
     </tbody>
 </table>
  </div>

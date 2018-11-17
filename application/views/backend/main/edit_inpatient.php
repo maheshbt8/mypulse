@@ -261,6 +261,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 
                 </a>
             </li>
+            <?php if($account_type=='doctors'){?>
             <li>
                 <a href="#h3" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'Prognosis';?>
@@ -275,10 +276,11 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
             </li>
             <li>
                 <a href="#h5" data-toggle="tab"><i class="entypo-plus-circled"></i>
-                    <?php echo 'Inpatien';?>
+                    <?php echo 'Inpatient History';?>
 
                 </a>
             </li>
+        <?php }?>
         </ul>
         <!------CONTROL TABS END------>
          

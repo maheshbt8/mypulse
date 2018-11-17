@@ -181,7 +181,7 @@
                         </div>
                     </div>
                 </div> -->
-                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'users'){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'users' || $account_type=='nurse' || $account_type=='receptionist'){?>
                 <div class="col-sm-6">
                 
                                  <div class="form-group">
@@ -197,11 +197,17 @@
         }elseif($account_type=='hospitaladmins'){
         $doctors_details=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
         }elseif($account_type=='users'){
-        /*$doctor_ids=explode(',',$this->db->where('user_id',$this->session->userdata('login_user_id'))->get('patient')->row()->doctor_ids);
+        $doctors_details=$this->db->get('doctors')->result_array();
+        }elseif($account_type=='nurse'){
+        $doctor_ids=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
         for($i=0;$i<count($doctor_ids);$i++){
             $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
-            }*/
-        $doctors_details=$this->db->get('doctors')->result_array();
+            }
+        }elseif($account_type=='receptionist'){
+        $doctor_ids=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
+        for($i=0;$i<count($doctor_ids);$i++){
+            $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
+            }
         }
         foreach ($doctors_details as $row) {
             $spee=explode(',',$row['specializations']);

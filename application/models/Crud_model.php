@@ -2995,16 +2995,28 @@ return $return;
         $this->db->where('prognosis_id',$prognosis_id);
         $this->db->update('prognosis',$data);
     }
-  /*  function select_medical_reports()
+    function select_medical_reports()
     {
         $user_id = $this->session->userdata('login_user_id');
-        return $this->db->get_where('prescription', array('user_id' => $user_id))->result_array();
-    }*/
+        /*return $this->db->get_where('prescription', array('user_id' => $user_id))->result_array();*/
+       return $this->db->get_where('prescription_order',array('user_id'=>$user_id,'order_type'=>1))->result_array();
+    }
     function select_medical_reports_information($order_id='')
     {
         return $this->db->get_where('reports', array('order_id' => $order_id))->result_array();
     }
-
+    function delete_medical_reports($report_id)
+    {
+        $this->db->where('report_id',$report_id);
+        $this->db->delete('reports');
+    }
+    function update_medical_reports_status($report_id='',$status='')
+    {
+        $data['status']=$status;
+        $this->db->where('report_id',$report_id);
+        $this->db->update('reports',$data);
+        
+    }
 
     function save_prescription_order($id='')
     {

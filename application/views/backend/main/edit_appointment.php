@@ -236,6 +236,7 @@ foreach ($single_appointment_info as $row) {
 
                 </a>
             </li>
+            <?php if($account_type=='doctors'){?>
             <li>
                 <a href="#h3" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'Prognosis';?>
@@ -250,10 +251,11 @@ foreach ($single_appointment_info as $row) {
             </li>
             <li>
                 <a href="#h5" data-toggle="tab"><i class="entypo-plus-circled"></i>
-                    <?php echo 'Inpatien';?>
+                    <?php echo 'Inpatient History';?>
 
                 </a>
             </li>
+        <?php }?>
         </ul>
         <!------CONTROL TABS END------>
          
@@ -372,10 +374,11 @@ foreach ($single_appointment_info as $row) {
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
             <div style="clear:both;"></div>
+<?php if($account_type=='doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prescription/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prescription'); ?>
 </button>
-
+<?php }?>
 <table class="table table-bordered table-striped datatable" id="table-2">  
     <thead>
         <tr>
@@ -395,7 +398,8 @@ foreach ($single_appointment_info as $row) {
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><!-- <a href="#"onclick="showAjaxModal('<?php echo base_url(); ?>modal/popup/prescription_history/<?php echo $row1['prescription_id'] ?>');" class="hiper"> --><?php echo explode('|',$this->encryption->decrypt($row1['prescription_data']))[0];?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
+                    <?php echo explode('|',$this->encryption->decrypt($row1['prescription_data']))[0];?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
                <?php if($account_type == 'doctors'){?>
