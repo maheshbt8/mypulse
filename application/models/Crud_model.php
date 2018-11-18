@@ -1663,23 +1663,23 @@ if($account_type == 'medicalstores'){
     {
       $account_type=$this->session->userdata('login_type');
     if($account_type == 'superadmin'){
-  return $this->db->order_by('id','desc')->get('inpatient')->result_array();
+  return $this->db->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'hospitaladmins'){
-  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get('inpatient')->result_array();
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'doctors'){
-    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get('inpatient')->result_array();
+    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'users'){
-    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get('inpatient')->result_array();
+    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'nurse'){
     $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get('inpatient')->row_array();
+        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
     }
     return $inpatient;
 }elseif($account_type == 'receptionist'){
     $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get('inpatient')->row_array();
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
         if($inpatient!=''){
             $inpatient1[]=$inpatient;
         }
@@ -1694,6 +1694,10 @@ if($account_type == 'medicalstores'){
     function select_inpatient_id_doctor_info($user_id='',$doctor_id='')
     {
   return $this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$this->session->userdata('login_user_id'),'user_id'=>$user_id))->result_array();
+    }
+    function select_inpatient_id_information($user_id='')
+    {
+  return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$user_id,'show_status'=>1))->result_array();
     }
     function select_inpatient_history_info($id)
     {
@@ -1762,6 +1766,13 @@ if($account_type == 'medicalstores'){
          $in_patient['note']='In-Patient Updated';
          $this->db->insert('inpatient_history',$in_patient);
         }
+    }
+    function update_inpatient_status($id='',$status='')
+    {
+        $data['show_status']=$status;
+        $this->db->where('id',$id);
+        $this->db->update('inpatient',$data);
+        
     }
     /*function select_patient_inf($patient_id)
     {
@@ -2695,7 +2706,14 @@ for($doc=0;$doc<count($doctor_id);$doc++){
 return $return;
 }
     }
-/*    function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
+function select_today_appointment_info_by_doctor(){
+return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('m/d/Y')))->result_array();
+    }
+function select_appointment_info_date($sd = '', $ed = '')
+    {
+
+    }
+/*function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
         $response = array();
         if($doctor_id == 'all') {
@@ -2703,11 +2721,10 @@ return $return;
             $this->db->order_by('timestamp', 'desc');
             $appointments = $this->db->get_where('appointment', array('status' => 'approved'))->result_array();
             foreach ($appointments as $row) {
-                if($row['timestamp'] >= $start_timestamp && $row['timestamp'] <= $end_timestamp)
+                if($row['appointment_date'] >= $start_timestamp && $row['appointment_date'] <= $end_timestamp)
                     array_push ($response, $row);
             }
-        }
-        else {
+        }else {
             $this->db->order_by('timestamp', 'desc');
             $appointments = $this->db->get_where('appointment', array('doctor_id' => $doctor_id, 'status' => 'approved'))->result_array();
             foreach ($appointments as $row) {

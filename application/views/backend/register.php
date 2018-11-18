@@ -144,7 +144,7 @@
      function get_email(email_value) {
      $.ajax({
             type : "POST",
-            url: '<?php echo base_url();?>index.php?ajax/get_email/' ,
+            url: '<?php echo base_url();?>ajax/get_email/' ,
             data : {email : email_value},
             success: function(response)
             {
@@ -156,7 +156,7 @@
      function get_phone(phone_value) {
      $.ajax({
             type : "POST",
-            url: '<?php echo base_url();?>index.php?ajax/get_phone/' ,
+            url: '<?php echo base_url();?>ajax/get_phone/' ,
             data : {phone : phone_value},
             success: function(response)
             {

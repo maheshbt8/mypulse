@@ -67,13 +67,12 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
 
             <tr>
                 <td align="left" valign="top">
-         <h3><?php echo $doctor_info['name'] .' ('.$doctor_info['unique_id'].')';?></h3>
+         <h3>Dr. <?php echo $doctor_info['name'] .' ('.$doctor_info['unique_id'].')';?></h3>
 <h4><i class="fa fa-phone m-r-xs"></i>&nbsp;&nbsp;<?php echo $doctor_info['phone'];?></h4>
 <h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $doctor_info['email'];?></h4>
                 </td>
                 <td align="right" valign="top">
     <h3><?php echo $user_info['name'] .' ('.$user_info['unique_id'].')';?></h3>
-<!-- <h4><i class="fa fa-map-marker m-r-xs"></i>&nbsp;&nbsp;<?php echo $user_info['address'];?></h4> -->
 <h4><i class="fa fa-phone m-r-xs"></i>&nbsp;&nbsp;<?php echo $user_info['phone'];?></h4>
 <h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $user_info['email'];?></h4> 
 
@@ -85,9 +84,9 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
 </div>
 
 <div class="row">
-    <?php if($order_type == 0 || $account_type=='doctors'){?>
+    <?php if($order_type == 0 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){?>
 <div class="col-md-12">
-    <h2 class="col-sm-3"><?php echo get_phrase('Medicine'); ?></h2>
+    <h2 class="col-sm-6"><?php echo get_phrase('prescription_for_medicines'); ?></h2>
     <div class="table-responsive">
     
   <table class="table">
@@ -104,8 +103,6 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
     </thead>
     <tbody>
         <?php 
-        //print(explode('|',$this->encryption->decrypt($prescription_info['prescription_data'])));
-        //print_r($prescription_info);
         $drug=explode(',',$prescription_data[1]);
         $strength=explode(',',$prescription_data[2]);
         $dosage=explode(',',$prescription_data[3]);
@@ -116,18 +113,6 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         $quantity=explode(',',$order_info['quantity']); 
         }
         $note=explode(',',$prescription_data[6]);
-        
-        /*$drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
-        $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
-        $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
-        $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
-        if($order_id == ''){
-        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
-        }elseif($order_id != ''){
-        $quantity=explode(',',$order_info['quantity']); 
-        }
-        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));*/
-
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr>
@@ -145,9 +130,9 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
 </div>
 </div>
 <?php }
-if($order_type == 1 || $account_type=='doctors'){?>
+if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){?>
 <div class="col-md-12">
-    <h2 class="col-sm-3"><?php echo get_phrase('tests'); ?></h2>
+    <h2 class="col-sm-6"><?php echo get_phrase('prescription_for_medical_tests'); ?></h2>
     <div class="table-responsive">
     
   <table class="table">
@@ -193,8 +178,12 @@ if($order_type == 1 || $account_type=='doctors'){?>
     <table width="100%" border="0">    
             <tbody>
                 <tr>
-                <td align="left"><h3>Additional Note :- <?php echo $prescription_data[9];?></h3></td>
-            </tr>
+                <td align="left"><h3>Additional Note </h3> <?php echo $prescription_data[9];?></td>
+            </tr><!-- 
+            <tr></tr>
+            <tr>
+                <td align="right"><b>Dr. <?php echo $doctor_info['name'];?></b></td>
+            </tr> -->
         </tbody>
     </table>
 </div>

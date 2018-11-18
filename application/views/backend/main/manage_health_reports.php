@@ -25,7 +25,7 @@ $this->session->set_userdata('last_page', current_url());
          $rep_exp_data=explode(',',$rep_exp[7]);
          for($j=0;$j<count($rep_exp_data);$j++) {
         $report=$this->db->get_where('reports',array('order_id'=>$row1['order_id']))->result_array();
-            
+             if($report[$j]['extension']!=''){
             ?>
             <tr>
                 <td><?php echo $i;?></td>
@@ -39,7 +39,7 @@ $this->session->set_userdata('last_page', current_url());
             
                 </td><?php }?>
             </tr>
-        <?php $i++;} }?>
+        <?php $i++;} }}?>
     </tbody>
 </table>
  </div>

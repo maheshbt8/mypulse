@@ -136,12 +136,6 @@ foreach ($store as $spe) { ?>
         $duration=explode(',',$prescription_data[4]);
         $quantity=explode(',',$prescription_data[5]);
         $note=explode(',',$prescription_data[6]);
-/*        $drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
-        $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
-        $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
-        $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
-        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
-        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));*/
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr>
@@ -208,8 +202,6 @@ foreach ($store as $spe) { ?>
     </thead>
     <tbody>
         <?php 
-        /*$test_title=explode(',',$this->encryption->decrypt($prescription_info['test_title']));
-        $description=explode(',',$this->encryption->decrypt($prescription_info['description']));*/
         $test_title=explode(',',$prescription_data[7]);
         $description=explode(',',$prescription_data[8]);
         ?>

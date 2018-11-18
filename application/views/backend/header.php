@@ -71,7 +71,7 @@ padding: 10px;
   background-color: #263238;
 }
 .container-fluid{
-  padding-bottom: 0px;
+  padding-bottom: 9px;
 }
 </style>
 <?php 
@@ -133,7 +133,7 @@ $website_language_google = $this->session->userdata('website_language_google') !
       </li>
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"  style="color: #fff;"> <i class="glyphicon glyphicon-envelope"></i>
-        <span class="info"><?=$this->session->userdata('msg_count');?></span></a>
+        <!-- <span class="info"><?=$this->session->userdata('msg_count');?></span> --></a>
         <ul class="dropdown-menu notification">
           <li class="notification-header"><h4>Messages</h4></li>
           <div class="notification-body">
@@ -218,12 +218,17 @@ $website_language_google = $this->session->userdata('website_language_google') !
                           <i class="entypo-key"></i>
               <span>Change Password</span>
             </a></li>
+            <li class="divider"></li>
+          <li><a href="<?php echo base_url(); ?>login/logout">
+                          <i class="entypo-logout right"></i>
+              <span>Log Out</span>
+            </a></li>
           
         </ul>
       </li>
-      <li><a href="<?php echo base_url(); ?>login/logout" style="color: #fff;">
+      <!-- <li><a href="<?php echo base_url(); ?>login/logout" style="color: #fff;">
                     Log Out <i class="entypo-logout right"></i>
-                </a></li>
+                </a></li> -->
     </ul>
   </div>
   </div>

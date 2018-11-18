@@ -7,6 +7,21 @@ $this->session->set_userdata('last_page', current_url());
         <?php echo get_phrase('add_in-Patient'); ?>
 </button>
 <?php }?>
+<div class="row">
+    <div class="col-sm-5">
+                  <div class="form-group">     
+                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('status'); ?></label> 
+
+                        <div class="col-sm-8">
+                            <select name="hospital" class="form-control" onchange="return get_inpatient(this.value)">
+    <option value="1"><?php echo get_phrase('Admitted'); ?></option>
+    <option value="0"><?php echo get_phrase('Recommended'); ?></option>
+    <option value="2"><?php echo get_phrase('Discharged'); ?></option>
+                            </select>
+                        </div>
+                    </div>
+    </div>
+</div>
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -21,12 +36,14 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('reason');?></th> 
             <th><?php echo get_phrase('bed');?></th>
             <th><?php echo get_phrase('status');?></th>
+            <?php if($account_type=='users'){?>
+            <th><?php echo get_phrase('visibility'); ?></th>
+            <?php }?>
             <th><?php echo get_phrase('action');?></th>
         </tr>
     </thead>
 
-    <tbody>
-
+    <tbody id="data_table">
         <?php $i=1;foreach ($patient_info as $row) { 
             ?>   
             <tr><!-- 
@@ -40,7 +57,12 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $row['reason']; ?></td>
                 <td><?php echo $this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row()->name; ?></td>
                  <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td> 
-               <td>
+               
+                <?php if($account_type=='users'){?>
+                <td><?php if($row['show_status']==1){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row['show_status']==2){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td>
+              
+                <?php }?>
+                <td>
               <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> 
                 </td>
             </tr>
@@ -84,4 +106,15 @@ $this->session->set_userdata('last_page', current_url());
             replaceCheckboxes();
         });
     });
+</script>
+<script type="text/javascript">
+    function get_inpatient(id) {
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_inpatient_status/' + id ,
+            success: function(response)
+            {
+            jQuery('#data_table').html(response);
+            }
+        });
+    }
 </script>

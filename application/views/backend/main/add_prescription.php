@@ -1,7 +1,4 @@
-<?php 
-/*$appointment_info = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->row_array();*/
-/*echo $user_id;*/
-?>
+
 <div class="row">
    
     <div class="col-md-12">
@@ -22,14 +19,21 @@
             
             <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-7">
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-2"><?php echo get_phrase('Title (Prescription for)'); ?></label>
+                        <label for="field-ta" class="col-sm-3"><?php echo get_phrase('Title (Prescription for)'); ?></label>
                             <div class="col-sm-9">
-           <!-- <input type="hidden" name="appointment_id" value="<?=$appointment_info['appointment_id'];?>"> -->
            <input type="hidden" name="user_id" value="<?=$user_id;?>">
            <input type="hidden" name="doctor_id" value="<?=$doctor_id;?>">
            <input type="text" name="title" placeholder="Title For Prescription" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('title');?>" >
+                            </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3"><?php echo get_phrase('date & time'); ?></label>
+                            <div class="col-sm-9">
+          <input type="text" class="form-control" value="<?php echo date('M d,2018 h:i A')?>" readonly/>
                             </div>
                     </div>
                 </div>

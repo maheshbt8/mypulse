@@ -255,12 +255,14 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 
                 </a>
             </li>
+            <?php if($account_type=='doctors' || $account_type=='nurse'){?>
             <li>
                 <a href="#h2" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'Prescriptions';?>
 
                 </a>
             </li>
+        <?php }?>
             <?php if($account_type=='doctors'){?>
             <li>
                 <a href="#h3" data-toggle="tab"><i class="entypo-plus-circled"></i>
@@ -399,10 +401,11 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
             <div style="clear:both;"></div>
+<?php if($account_type=='doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prescription/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prescription'); ?>
 </button>
-
+<?php }?>
 <table class="table table-bordered table-striped datatable" id="table-2">  
     <thead>
         <tr>
@@ -510,6 +513,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                 
         for($j=0;$j<count($rep_exp_data);$j++) {
         $report=$this->db->get_where('reports',array('order_id'=>$row2['order_id'],'status'=>1))->result_array();
+        if($report[$j]['extension']!=''){
             ?>
             <tr>
                 <td><?php echo $j+1;?></td>
@@ -517,7 +521,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                 <td><?php if($report[$j]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report[$j]['report_id'].'.'.$report[$j]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
                 <td><?php echo $report[$j]['created_at'] ?></td>
             </tr>
-        <?php }} ?>
+        <?php }}} ?>
     </tbody>
 </table>
          </div>
@@ -542,32 +546,43 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 <table class="table table-bordered table-striped datatable" id="table-2">  
     <thead>
         <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('bed'); ?></th>
-            <th><?php echo get_phrase('admitted_date & time'); ?></th>
-            <th><?php echo get_phrase('discharged_date & time'); ?></th>
-            <th><?php echo get_phrase('reason'); ?></th>
-            <th><?php echo get_phrase('status'); ?></th>
-            <!-- <th><?php echo get_phrase('action'); ?></th> -->
+            <th><?php echo get_phrase('sl_no');?></th>
+            <th><?php echo get_phrase('hospital');?></th>   
+            <th><?php echo get_phrase('doctor');?></th>
+            <th><?php echo get_phrase('date');?></th>
+            <th><?php echo get_phrase('reason');?></th> 
+            <th><?php echo get_phrase('bed');?></th>
+            <th><?php echo get_phrase('status');?></th>
+            <th><?php echo get_phrase('action');?></th>
         </tr>
     </thead>
 
     <tbody>
         <?php  
-        $in_pa=$this->crud_model->select_inpatient_id_doctor_info($user_data['user_id']);
-        $i=1;foreach ($in_pa as $in_pa1) {
+        $in_pa=$this->crud_model->select_inpatient_id_information($user_data['user_id']);
+        $i=1;foreach ($in_pa as $row) {
             
             ?>
+            <tr>
+                <td><?= $i;?></td>
+                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name;?></a></td>
+                <td><?php echo $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->name;?></td>
+                <td><?php echo date('M d,Y',strtotime($row['created_date']));?></td>
+                <td><?php echo $row['reason']; ?></td>
+                <td><?php echo $this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row()->name; ?></td>
+                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td> 
+               <td>
+              <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> 
+                </td>
+            </tr>
+            <!-- 
             <tr>
                 <td><?php echo $i?></td>
                 <td><?php echo $this->db->where('bed_id',$in_pa1['bed_id'])->get('bed')->row()->name; ?></td>
                 <td><?php echo date('M ,d-Y h:i A',strtotime($in_pa1['join_date'])); ?></td>
                <td><?php if($in_pa1['discharged_date'] != ''){ echo date('M ,d-Y h:i A',strtotime($in_pa1['discharged_date']));}?></td>
                <td><?php echo $in_pa1['reason'] ?></td>
-               <td><?php if($in_pa1['status']==0){echo "Recommended";}elseif($in_pa1['status']==1){echo "Admited";}elseif($in_pa1['status']==2){echo "Discharged";} ?></td>
-                <!-- <td>
-            <a href="<?php echo base_url(); ?>main/edit_prescription/<?php echo $row1['prescription_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                </td> -->
+               <td><?php if($in_pa1['status']==0){echo "Recommended";}elseif($in_pa1['status']==1){echo "Admited";}elseif($in_pa1['status']==2){echo "Discharged";} ?></td> -->
             </tr>
         <?php $i++;} ?>
     </tbody>

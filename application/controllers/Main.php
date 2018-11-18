@@ -1127,7 +1127,13 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('in-Patient');
         $this->load->view('backend/index', $data);
     }
-    function inpatient($task = "", $patient_id = "") {
+
+    function inpatient($task = "", $patient_id = "",$status='') {
+        if ($task == "status") {
+            $this->crud_model->update_inpatient_status($patient_id,$status);
+            $this->session->set_flashdata('message', get_phrase('inpatient_status_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        } 
         $data['patient_info'] = $this->crud_model->select_inpatient_info();
         $data['page_name'] = 'manage_inpatient';
         $data['page_title'] = get_phrase('inpatients');
@@ -1181,6 +1187,12 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('Appointment - ').$unique_id;
         $this->load->view('backend/index', $data);
     }
+    /*function appointment_date(){
+        $data['page_name']=$this->crud_model->select_appointment_info_date($_GET['sd'],$_GET['ed']);
+        $data['page_name'] = 'dashboard';
+        $data['page_title'] = get_phrase('dashboard');
+        $this->load->view('backend/index', $data);
+    }*/
     function appointment($task = "", $appointment_id = "") {
         if ($task == "delete") {
             $this->crud_model->delete_appointment_info($appointment_id);
