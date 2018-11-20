@@ -680,10 +680,20 @@ function email_verification($task="",$id="")
     
     function delete_hospital_info($hospital_id)
     {
-        
         $this->db->where('hospital_id',$hospital_id);
         $yes=$this->db->delete('hospitals');
-
+    }
+    function delete_patient_hospital($hospital_id)
+    {
+    /*$account_type=$this->session->userdata('login_type');*/
+$hospital_ids=explode(',',$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row()->hospital_ids);
+for($h=0;$h<count($hospital_ids);$h++){
+    if($hospital_ids[$h]!=$hospital_id){
+        $hospi[]=$hospital_ids[$h];
+    }
+}
+$this->db->where('user_id',$this->session->userdata('login_user_id'));
+$yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
     }
     
     function delete_multiple_hospital_info()
@@ -936,13 +946,15 @@ function email_verification($task="",$id="")
   return $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicalstores')->result_array();
 }elseif($account_type == 'users'){
         $store=$this->db->where('user_id',$this->session->userdata('login_user_id'))->get('patient')->row()->store_ids;
-        $store_ids=explode(',',$store);
-        if($store_ids!=''){
+        
+        if($store!=''){
+            $store_ids=explode(',',$store);
         for($i=0;$i<count($store_ids);$i++){
             $stores[$i]=$this->db->where('store_id',$store_ids[$i])->get('medicalstores')->row_array();
             }
+        }
     return $stores;
-}
+
 }
     }
    
@@ -1346,6 +1358,18 @@ $que=$this->db->insert('availability_slot',$data);
         $this->db->where('doctor_id',$doctor_id);
         $this->db->delete('doctors');
     }
+    function delete_patient_doctor($doctor_id)
+    {
+    /*$account_type=$this->session->userdata('login_type');*/
+$doctor_ids=explode(',',$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row()->doctor_ids);
+for($h=0;$h<count($doctor_ids);$h++){
+    if($doctor_ids[$h]!=$doctor_id){
+        $doc[]=$doctor_ids[$h];
+    }
+}
+$this->db->where('user_id',$this->session->userdata('login_user_id'));
+$yes=$this->db->update('patient',array('doctor_ids'=>implode(',',$doc)));
+    }
     function select_doctor_info_id($doctor_id)
     {
         return $this->db->where('doctor_id',$doctor_id)->get('doctors')->row_array();
@@ -1363,6 +1387,17 @@ $que=$this->db->insert('availability_slot',$data);
     {
         $this->db->where('store_id',$patient_id);
         $this->db->delete('medicalstores');
+    }
+    function delete_patient_store($store_id)
+    {
+$store_ids=explode(',',$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row()->store_ids);
+for($h=0;$h<count($store_ids);$h++){
+    if($store_ids[$h]!=$store_id){
+        $doc[]=$store_ids[$h];
+    }
+}
+$this->db->where('user_id',$this->session->userdata('login_user_id'));
+$yes=$this->db->update('patient',array('store_ids'=>implode(',',$doc)));
     }
      function delete_multiple_store_info()
     {
@@ -1422,6 +1457,17 @@ $que=$this->db->insert('availability_slot',$data);
     {
         $this->db->where('lab_id',$patient_id);
         $this->db->delete('medicallabs');
+    }
+    function delete_patient_lab($lab_id)
+    {
+$lab_ids=explode(',',$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row()->lab_ids);
+for($h=0;$h<count($lab_ids);$h++){
+    if($lab_ids[$h]!=$lab_id){
+        $doc[]=$lab_ids[$h];
+    }
+}
+$this->db->where('user_id',$this->session->userdata('login_user_id'));
+$yes=$this->db->update('patient',array('lab_ids'=>implode(',',$doc)));
     }
     function delete_multiple_lab_info()
     {
@@ -1663,23 +1709,23 @@ if($account_type == 'medicalstores'){
     {
       $account_type=$this->session->userdata('login_type');
     if($account_type == 'superadmin'){
-  return $this->db->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
+  return $this->db->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
 }elseif($account_type == 'hospitaladmins'){
-  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
 }elseif($account_type == 'doctors'){
-    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
+    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
 }elseif($account_type == 'users'){
     return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'nurse'){
     $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
+        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status!='=>0))->row_array();
     }
     return $inpatient;
 }elseif($account_type == 'receptionist'){
     $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status!='=>0))->row_array();
         if($inpatient!=''){
             $inpatient1[]=$inpatient;
         }
@@ -1773,6 +1819,11 @@ if($account_type == 'medicalstores'){
         $this->db->where('id',$id);
         $this->db->update('inpatient',$data);
         
+    }
+    function delete_inpatient_info($id)
+    {
+        $this->db->where('id',$id);
+        $this->db->delete('inpatient');
     }
     /*function select_patient_inf($patient_id)
     {
@@ -2652,7 +2703,36 @@ if($account_type == 'superadmin'){
             }
         }
     }
-    
+    function update_appointment_info($appointment_id='')
+    {
+    if($this->input->post('available_slot')!=''){
+    $time=explode('-',$this->input->post('available_slot'));
+    $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
+    $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
+    }
+    $data['appointment_date']= $this->input->post('appointment_date');
+    $yes=$this->db->where('appointment_id',$appointment_id)->update('appointments',$data);
+    if($yes){
+        /*******Appointment History********/
+        $history['appointment_id']=$appointment_id;
+            $history['appointment_date']=$data['appointment_date'];
+            $history['appointment_time_start']=$data['appointment_time_start'];
+            $history['appointment_time_end']=$data['appointment_time_end'];
+            $history['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+            $data['created_time']=date('Y-m-d H:i:s');
+            $history_ins=$this->db->insert('appointment_history',$history);
+            if($history_ins){
+                $last_id=$this->db->insert_id();
+                $this->db->where('appointment_history_id',$last_id)->update('appointment_history',array('action'=>5));
+            }
+         /******Notification Message******/
+          /*  $notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+            $notification['user_id']='users-user-'.$this->input->post('user_id');
+            $notification['title']='Appointment Rescheduled     ';
+            $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
+         $this->db->insert('notification',$notification);*/
+    }
+    }
     /*function save_requested_appointment_info()
     {
         $data['timestamp']  = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
@@ -2709,9 +2789,11 @@ return $return;
 function select_today_appointment_info_by_doctor(){
 return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('m/d/Y')))->result_array();
     }
-function select_appointment_info_date($sd = '', $ed = '')
+function select_appointment_info_by_date($sd = '', $ed = '')
     {
-
+/*        $this->db->where('created_date >=', date('m/d/Y',strtotime($_GET['sd'])));
+        $this->db->where('created_date <=', date('m/d/Y',strtotime($_GET['ed'])));*/
+return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>date('m/d/Y',strtotime($sd)),'appointment_date <='=>date('m/d/Y',strtotime($ed))))->result_array();
     }
 /*function select_appointment_info($doctor_id = '', $start_timestamp = '', $end_timestamp = '')
     {
@@ -2913,23 +2995,13 @@ function select_appointment_info_date($sd = '', $ed = '')
     }
     function update_prescription_info($prescription_id='')
     {
-        $data['appointment_id']     = $this->input->post('appointment_id');
+        /*$data['appointment_id']     = $this->input->post('appointment_id');*/
         $data['user_id']     = $this->input->post('user_id');
         $data['doctor_id']      = $this->input->post('doctor_id');
          $data['prescription_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('drug')).'|'.implode(',',$this->input->post('strength')).'|'.implode(',',$this->input->post('dosage')).'|'.implode(',',$this->input->post('duration')).'|'.implode(',',$this->input->post('quantity')).'|'.implode(',',$this->input->post('note')).'|'.implode(',',$this->input->post('test_title')).'|'.implode(',',$this->input->post('description')).'|'.$this->input->post('additional_note'));
-        /*$data['title']     = $this->encryption->encrypt($this->input->post('title'));
-        $data['drug']     = $this->encryption->encrypt(implode(',',$this->input->post('drug')));
-        $data['strength']     = $this->encryption->encrypt(implode(',',$this->input->post('strength')));
-        $data['dosage']     = $this->encryption->encrypt(implode(',',$this->input->post('dosage')));
-        $data['duration']     = $this->encryption->encrypt(implode(',',$this->input->post('duration')));
-        $data['quantity']     = $this->encryption->encrypt(implode(',',$this->input->post('quantity')));
-        $data['note']     = $this->encryption->encrypt(implode(',',$this->input->post('note')));
-        $data['test_title']     = $this->encryption->encrypt(implode(',',$this->input->post('test_title')));
-        $data['description']     = $this->encryption->encrypt(implode(',',$this->input->post('description')));
-        $data['additional_note']     = $this->encryption->encrypt($this->input->post('additional_note'));*/
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('prescription_id',$prescription_id);
-        $this->db->insert('prescription',$data);
+        $this->db->update('prescription',$data);
     }
     function select_prescription_info()
     {

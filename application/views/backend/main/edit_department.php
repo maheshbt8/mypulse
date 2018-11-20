@@ -65,7 +65,7 @@ foreach ($single_department_info as $row) {
                         </div>
 
                         <div class="col-sm-6 control-label col-sm-offset-6">
-                            <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+            <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>
                     </form>

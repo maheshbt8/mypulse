@@ -40,7 +40,7 @@
                 <label><b>Prescription for Medicines</b></label>
                
                 <div class="col-sm-12">
-                    <div class="form-group container">
+                    <div class="form-group container_p">
                         <table  class="table table-bordered table-striped">
                             <tr class="element"  id="div_0">
                                 <th>Sl No</th>
@@ -58,7 +58,7 @@
              <label><b>Prescription for Medical Tests</b></label>
                
                 <div class="col-sm-12">
-                    <div class="form-group container container1">
+                    <div class="form-group container1">
                         <table  class="table table-bordered table-striped">
                             <tr class="element1"  id="div1_0">
                                 <th>Sl No</th>
@@ -126,7 +126,7 @@ $(document).ready(function(){
  });
 
  // Remove element
- $('.container').on('click','.remove',function(){
+ $('.container_p').on('click','.remove',function(){
  
   var id = this.id;
   var split_id = id.split("_");

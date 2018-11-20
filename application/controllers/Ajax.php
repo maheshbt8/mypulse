@@ -338,8 +338,7 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
             $patient_info[]=$inpatient;
         }
     }
-}
-$i=1;foreach ($patient_info as $row) {
+}$i=1;foreach ($patient_info as $row) {
     if($row!=''){
 ?>
 <tr><!-- 
@@ -352,35 +351,19 @@ $i=1;foreach ($patient_info as $row) {
                 <td><?php echo date('M d,Y',strtotime($row['created_date']));?></td>
                 <td><?php echo $row['reason']; ?></td>
                 <td><?php echo $this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row()->name; ?></td>
-                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td> 
+                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td>
+                <?php if($account_type=='users'){?>
+                <td><?php if($row['show_status']==1){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row['show_status']==2){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td><?php }?> 
                <td>
               <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> 
+                      <?php if($account_type=='users' && $row['status']==0){?>
+              <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/inpatient/delete/<?php echo $row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?>
                 </td>
             </tr>
 <?php
 }$i++;}
-/*elseif($account_type == 'hospitaladmins'){
-  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
-}elseif($account_type == 'doctors'){
-    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
-}elseif($account_type == 'users'){
-    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
-}elseif($account_type == 'nurse'){
-    $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
-    for($n=0;$n<count($res);$n++){
-        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
-    }
-    return $inpatient;
-}elseif($account_type == 'receptionist'){
-    $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
-    for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
-        if($inpatient!=''){
-            $inpatient1[]=$inpatient;
-        }
-    }
-    return $inpatient1;
-}*/
+/*print_r($patient_info);*/
+/*echo json_encode($patient_info);*/
     }
 }
 ?>

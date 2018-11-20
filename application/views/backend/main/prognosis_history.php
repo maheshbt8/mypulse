@@ -1,17 +1,10 @@
 <?php 
-if($prescription_id==''){
-$order_info=$this->crud_model->select_order_info_id($order_id);
-$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
-}
-if($prescription_id!=''){
+$prognosis_info = $this->db->get_where('prognosis', array('prognosis_id' =>$prognosis_id))->row_array();
+$doctor_info=$this->crud_model->select_doctor_info_id($prognosis_info['doctor_id']);
 
-$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
-}
-$doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
-
-$user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
+$user_info=$this->db->where('user_id',$prognosis_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
-$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
+$prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['prognosis_data']));
 ?>
 <div class="row">
     <div class="col-sm-2 pull-right">
@@ -82,111 +75,13 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
     </table>
 </div>
 </div>
-
-<div class="row">
-    <?php if($order_type == 0 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){
-if($prescription_data[1]!=''){
-        ?>
-<div class="col-md-12">
-    <h2 class="col-sm-6"><?php echo get_phrase('prescription_for_medicines'); ?></h2>
-    <div class="table-responsive">
-    
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Drug</th>
-        <th scope="col">Strength</th>
-        <th scope="col">Dosage</th>
-        <th scope="col">Duration</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Note</th>
-      </tr>
-    </thead>
-    <tbody>
-        <?php 
-        $drug=explode(',',$prescription_data[1]);
-        $strength=explode(',',$prescription_data[2]);
-        $dosage=explode(',',$prescription_data[3]);
-        $duration=explode(',',$prescription_data[4]);
-        if($order_id == ''){
-        $quantity=explode(',',$prescription_data[5]);
-        }elseif($order_id != ''){
-        $quantity=explode(',',$order_info['quantity']); 
-        }
-        $note=explode(',',$prescription_data[6]);
-        ?>
-        <?php for($i1=0;$i1<count($drug);$i1++){
-            ?>
-      <tr>
-        <th scope="row"><?= $i1+1;?></th>
-        <td><?= $drug[$i1];?></td>
-        <td><?= $strength[$i1];?></td>
-        <td><?= $dosage[$i1];?></td>
-        <td><?= $duration[$i1];?></td>
-        <td><?= $quantity[$i1];?></td>
-        <td><?= $note[$i1];?></td>
-      </tr>
-      <?php }?>
-    </tbody>
-  </table>
-</div>
-</div>
-<?php }}
-if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){if($prescription_data[7]!=''){?>
-<div class="col-md-12">
-    <h2 class="col-sm-6"><?php echo get_phrase('prescription_for_medical_tests'); ?></h2>
-    <div class="table-responsive">
-    
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Title</th>
-        <th scope="col">Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <?php 
-        $test_title=explode(',',$prescription_data[7]);
-        $description=explode(',',$prescription_data[8]);
-        if($account_type == 'medicallabs'){
-        $tests=explode(',',$order_info['tests']); 
-        }
-        ?>
-        <?php for($i1=0;$i1<count($test_title);$i1++){
-            if($account_type == 'medicallabs'){
-                if($tests[$i1]==1){
-            ?>
-      <tr>
-        <th scope="row"><?= $i1+1;?></th>
-        <td><?= $test_title[$i1];?></td>
-        <td><?= $description[$i1];?></td>
-      </tr>
-      <?php }}elseif($account_type != 'medicallabs'){ ?>
-<tr>
-        <th scope="row"><?= $i1+1;?></th>
-        <td><?= $test_title[$i1];?></td>
-        <td><?= $description[$i1];?></td>
-      </tr>
-      <?php } }?>
-    </tbody>
-  </table>
-</div>
-</div>
-<?php }}?>
-</div>
 <div class="row">
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody>
                 <tr>
-                <td align="left"><h3>Additional Note </h3> <?php echo $prescription_data[9];?></td>
-            </tr><!-- 
-            <tr></tr>
-            <tr>
-                <td align="right"><b>Dr. <?php echo $doctor_info['name'];?></b></td>
-            </tr> -->
+                <td align="left"><h3>Case History</h3> <?php echo $prescription_data[1];?></td>
+            </tr>
         </tbody>
     </table>
 </div>

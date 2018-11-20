@@ -2,6 +2,7 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>main/department/delete_multiple/" method="post">
+<?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -11,6 +12,7 @@ $this->session->set_userdata('last_page', current_url());
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_department/<?= $branch_id?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_department'); ?>
 </button>
+<?php }?>
 <div style="clear:both;"></div>
 
 <br>

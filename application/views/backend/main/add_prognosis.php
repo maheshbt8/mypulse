@@ -19,27 +19,36 @@
             
             <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-7">
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('Title'); ?></label>
-                            <div class="col-sm-10">
-                                
-                                <input type="hidden" name="user_id" value="<?=$user_id;?>">
+                        <label for="field-ta" class="col-sm-3"><?php echo get_phrase('title'); ?></label>
+                            <div class="col-sm-9">
+                              <input type="hidden" name="user_id" value="<?=$user_id;?>">
                                 <input type="hidden" name="doctor_id" value="<?=$doctor_id;?>">
-                                <input type="text" name="title" placeholder="Title For Prognosis" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('title');?>" >
+           <input type="text" name="title" placeholder="Title For Prognosis" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php set_value('title');?>" >
                             </div>
                     </div>
                 </div>
-                 <div class="col-sm-12">
+                <div class="col-sm-5">
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('case_history'); ?></label>
-                            <div class="col-sm-10">
+                        <label for="field-ta" class="col-sm-3"><?php echo get_phrase('date & time'); ?></label>
+                            <div class="col-sm-9">
+          <input type="text" class="form-control" value="<?php echo date('M d,2018 h:i A')?>" readonly/>
+                            </div>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+            <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-2 control"><?php echo get_phrase('case_history'); ?></label>
+                            <div class="col-sm-12">
                                 <textarea type="text" name="case_history" placeholder="Case History" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="10" cols="50"></textarea>
                             </div>
                     </div>
                 </div>
             </div>
-                    </div>
+            </div>
             </div>
 
         </div>

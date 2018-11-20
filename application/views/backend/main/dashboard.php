@@ -265,7 +265,7 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
-        <?php $appointment_info=$this->crud_model->select_today_appointment_info_by_doctor();$i=1;foreach ($appointment_info as $row) { 
+        <?php if($_GET['sd']!=''&&$_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed']);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor();}$i=1;foreach ($appointment_info as $row) { 
            /* print_r($row);die;*/
             if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
             {

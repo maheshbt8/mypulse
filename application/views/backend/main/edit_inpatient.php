@@ -458,8 +458,11 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('title'); ?></th>
-            <th><?php echo get_phrase('case_history'); ?></th>
+            <th><?php echo get_phrase('hospital / doctor'); ?></th>
+            <!-- <th><?php echo get_phrase('case_history'); ?></th> -->
             <th><?php echo get_phrase('date'); ?></th>
+            <?php if($account_type == 'doctors'){?>
+            <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
     </thead>
 
@@ -471,9 +474,16 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
-                <td><?php echo $prognosis_data[1];?></td>
+                <td><a href="<?php echo base_url(); ?>main/prognosis_history/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
+                <td><?php $doc=$this->db->where('doctor_id',$row2['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
+                <!-- <td><?php echo $prognosis_data[1];?></td> -->
                 <td><?php echo $row2['created_at'] ?></td>
+                 <?php if($account_type == 'doctors'){?>
+                <td>
+<?php if($row2['doctor_id'] == $this->session->userdata('login_user_id')){?>
+            <a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prescription_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i>
+            </a><?php }?>
+                </td><?php }?>
             </tr>
         <?php $i++;} ?>
     </tbody>
@@ -500,6 +510,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
             <th><?php echo get_phrase('title'); ?></th>
             <th><?php echo get_phrase('health_report'); ?></th>
             <th><?php echo get_phrase('date'); ?></th>
+
         </tr>
     </thead>
 

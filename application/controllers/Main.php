@@ -102,6 +102,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('hospitals_info_deleted_successfuly'));
             redirect(base_url() . 'main/hospital');
         }
+        if ($task == "delete_hospital") {
+            $this->crud_model->delete_patient_hospital($hospital_id);
+            $this->session->set_flashdata('message', get_phrase('hospital_deleted_successfuly'));
+            redirect(base_url() . 'main/hospital');
+        }
         $data['hospital_info'] = $this->crud_model->select_hospital_info();
         $data['page_name'] = 'manage_hospital';
         $data['page_title'] = get_phrase('hospitals');
@@ -539,6 +544,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('doctor_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
+        if ($task == "delete_doctor") {
+            $this->crud_model->delete_patient_doctor($doctor_id);
+            $this->session->set_flashdata('message', get_phrase('doctor_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['doctor_info'] = $this->crud_model->select_doctor_info();
         $data['page_name'] = 'manage_doctor';
         $data['page_title'] = get_phrase('doctors');
@@ -897,6 +907,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('medical_labs_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
+        if ($task == "delete_lab") {
+            $this->crud_model->delete_patient_lab($patient_id);
+            $this->session->set_flashdata('message', get_phrase('medical_lab_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['lab_info'] = $this->crud_model->select_lab_info();
         $data['page_name'] = 'manage_labs';
         $data['page_title'] = get_phrase('Medical labs');
@@ -998,7 +1013,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('medical_stores_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
-      
+        if ($task == "delete_store") {
+            $this->crud_model->delete_patient_store($patient_id);
+            $this->session->set_flashdata('message', get_phrase('medical_store_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['store_info'] = $this->crud_model->select_store_info();
         $data['page_name'] = 'manage_stores';
         $data['page_title'] = get_phrase('Medical stores');
@@ -1134,6 +1153,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('inpatient_status_updated_successfuly'));
             redirect($this->session->userdata('last_page'));
         } 
+        if ($task == "delete") {
+            $this->crud_model->delete_inpatient_info($patient_id);
+            $this->session->set_flashdata('message', get_phrase('inpatient_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['patient_info'] = $this->crud_model->select_inpatient_info();
         $data['page_name'] = 'manage_inpatient';
         $data['page_title'] = get_phrase('inpatients');
@@ -1174,9 +1198,8 @@ class Main extends CI_Controller {
     }
     function edit_appointment($appointment_id = "")
     {
-        if($this->input->post()){
-           
-    $this->crud_model->update_appointment_info();
+    if($this->input->post()){     
+    $this->crud_model->update_appointment_info($appointment_id);
     $this->session->set_flashdata('message', get_phrase('appointment_info_updated_successfuly'));
     redirect($this->session->userdata('last_page'));
     }
@@ -1387,6 +1410,13 @@ class Main extends CI_Controller {
         } 
         $data['prognosis']=$this->crud_model->select_prognosis_info();
         $data['page_name'] = 'manage_prognosis';
+        $data['page_title'] = get_phrase('prognosis');
+        $this->load->view('backend/index', $data);
+    }
+    function prognosis_history($prognosis_id='',$order_type='')
+    {
+        $data['prognosis_id'] = $prognosis_id;
+        $data['page_name'] = 'prognosis_history';
         $data['page_title'] = get_phrase('prognosis');
         $this->load->view('backend/index', $data);
     }

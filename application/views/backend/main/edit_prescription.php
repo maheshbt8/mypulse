@@ -22,21 +22,29 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
             
             <div class="panel-body">
                 <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-7">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2"><?php echo get_phrase('Title (Prescription for)'); ?></label>
                             <div class="col-sm-9">
-                                <!-- <input type="hidden" name="appointment_id" value="<?=$prescription_info['appointment_id'];?>"> -->
                                 <input type="hidden" name="user_id" value="<?=$prescription_info['user_id'];?>">
                                 <input type="hidden" name="doctor_id" value="<?=$prescription_info['doctor_id'];?>">
                                 <input type="text" name="title" placeholder="Title For Prescription" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?= $prescription_data[0];?>" >
                             </div>
                     </div>
                 </div>
+
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="field-ta" class="col-sm-3"><?php echo get_phrase('date & time'); ?></label>
+                            <div class="col-sm-9">
+          <input type="text" class="form-control" value="<?php echo date('M d,2018 h:i A')?>" readonly/>
+                            </div>
+                    </div>
+                </div>
                 <label><b>Prescription for Medicines</b></label>
                
                 <div class="col-sm-12">
-                    <div class="form-group container">
+                    <div class="form-group container_p">
                         <table  class="table table-bordered table-striped">
                             <tr class="element"  id="div_0">
                                 <th>Sl No</th>
@@ -59,16 +67,6 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         $quantity=explode(',',$order_info['quantity']); 
         }
         $note=explode(',',$prescription_data[6]);
-        /*$drug=explode(',',$this->encryption->decrypt($prescription_info['drug']));
-        $strength=explode(',',$this->encryption->decrypt($prescription_info['strength']));
-        $dosage=explode(',',$this->encryption->decrypt($prescription_info['dosage']));
-        $duration=explode(',',$this->encryption->decrypt($prescription_info['duration']));
-        if($account_type!='medicalstores'){
-        $quantity=explode(',',$this->encryption->decrypt($prescription_info['quantity']));
-        }elseif($account_type=='medicalstores'){
-        $quantity=explode(',',$this->encryption->decrypt($order_info['quantity'])); 
-        }
-        $note=explode(',',$this->encryption->decrypt($prescription_info['note']));*/
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
       <tr class="element" id="div_<?= $i1+1;?>">
@@ -88,7 +86,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
              <label><b>Prescription for Medical Tests</b></label>
                
                 <div class="col-sm-12">
-                    <div class="form-group container container1">
+                    <div class="form-group container1">
                         <table  class="table table-bordered table-striped">
                             <tr class="element1"  id="div1_0">
                                 <th>Sl No</th>
@@ -99,6 +97,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
                             <?php 
         $test_title=explode(',',$prescription_data[7]);
         $description=explode(',',$prescription_data[8]);
+        if($prescription_data[7]!=''){
         for($i1=0;$i1<count($test_title);$i1++){ ?>
           <tr class="element1" id="div1_<?= $i1+1;?>">
         <th scope="row"><?= $i1+1;?></th>
@@ -106,7 +105,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         <td><input type="text" name="description[]"  placeholder="" class="form-control" value="<?= $description[$i1];?>"/></td>
         <td><button type="button" id="remove1_<?= $i1+1;?>" class="remove1" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>
       </tr>
-    <?php }?>
+    <?php }}?>
                         </table>
                     </div>
                 </div>
@@ -166,7 +165,7 @@ $(document).ready(function(){
  });
 
  // Remove element
- $('.container').on('click','.remove',function(){
+ $('.container_p').on('click','.remove',function(){
  
   var id = this.id;
   var split_id = id.split("_");

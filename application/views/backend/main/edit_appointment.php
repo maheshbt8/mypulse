@@ -11,20 +11,14 @@ foreach ($single_appointment_info as $row) {
 
 <div class="row">
     <div class="col-md-12">
-    
-       
         <!------CONTROL TABS END------>
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_appointment/" method="post" enctype="multipart/form-data">
-             
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_appointment/<?=$appointment_id;?>" method="post" enctype="multipart/form-data">
         <div class="tab-content">
-           
         <br>
             <!----TABLE LISTING STARTS-->
             <div class="tab-pane box active" id="list">
-                
                 <div class="row">
     <div class="col-md-12">
-
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                     <div class="row">
@@ -33,6 +27,7 @@ foreach ($single_appointment_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                         <div class="col-sm-8">
                             <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php $doctor=$this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row_array(); echo $doctor['unique_id'].' / '.$doctor['name']; ?>" onchange="return get_doctor_ava(this.value)">
+                            <input type="hidden" id="doctor_id"value="<?=$row['doctor_id'];?>">
     <datalist id="doctors">
         
         <?php 
@@ -41,7 +36,6 @@ foreach ($single_appointment_info as $row) {
          ?>
 <option value="<?php echo $row1['unique_id'];?>" <?php if($row1['doctor_id'] == $row['doctor_id']){echo 'selected';}?>><?php echo 'Dr. '.ucfirst($row1['name']).'('.$this->db->where('hospital_id',$row1['hospital_id'])->get('hospitals')->row()->name.' , '.$row1['specializations'].')';?></option>
 <?php }?>
-
   </datalist>
                         </div>
                     </div>
@@ -78,7 +72,7 @@ foreach ($single_appointment_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo $row['appointment_date']; ?>" disabled="true" onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
+                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo $row['appointment_date']; ?>" <?php if($account_type!='users'){echo 'disabled';}?> onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
                         </div>
                     </div>
                    
@@ -129,7 +123,9 @@ foreach ($single_appointment_info as $row) {
             
                     </div>   
                     <div class="col-sm-3 control-label col-sm-offset-9">
-                        <!-- <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp; -->
+                    <?php if($account_type=='users'){?>
+                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
+                    <?php }?>
                         <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>  
    </form>
@@ -424,7 +420,7 @@ foreach ($single_appointment_info as $row) {
         <div class="panel panel-primary" data-collapsed="0">
          <div class="panel-body">
             <div style="clear:both;"></div>
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $row['appointment_id'];?>'" class="btn btn-primary pull-right">
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prognosis'); ?>
 </button>
 <table class="table table-bordered table-striped datatable" id="table-2">  
@@ -432,8 +428,11 @@ foreach ($single_appointment_info as $row) {
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('title'); ?></th>
-            <th><?php echo get_phrase('case_history'); ?></th>
+            <th><?php echo get_phrase('hospital / doctor'); ?></th>
+            <!-- <th><?php echo get_phrase('case_history'); ?></th> -->
             <th><?php echo get_phrase('date'); ?></th>
+            <?php if($account_type == 'doctors'){?>
+            <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
     </thead>
 
@@ -445,9 +444,16 @@ foreach ($single_appointment_info as $row) {
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
-                <td><?php echo $prognosis_data[1]; ?></td>
+                <td><a href="<?php echo base_url(); ?>main/prognosis_history/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
+            <td><?php $doc=$this->db->where('doctor_id',$row2['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
+               <!--  <td><?php echo $prognosis_data[1]; ?></td> -->
                 <td><?php echo $row2['created_at'] ?></td>
+             <?php if($account_type == 'doctors'){?>
+                <td>
+<?php if($row2['doctor_id'] == $this->session->userdata('login_user_id')){?>
+            <a href="<?php echo base_url(); ?>main/edit_prognosis/<?php echo $row2['prescription_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i>
+            </a><?php }?>
+                </td><?php }?>
             </tr>
         <?php $i++;} ?>
     </tbody>
@@ -569,8 +575,32 @@ foreach ($single_appointment_info as $row) {
 <br/><br/>
 <?php }} ?>
 </div>
-<!-- <script type="text/javascript">
-    
+<script type="text/javascript">
+     function get_email(email_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_email/' ,
+            data : {email : email_value},
+            success: function(response)
+            {
+                jQuery('#email_error').html(response);        
+            } 
+        });
+   
+    }
+     function get_phone(phone_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_phone/' ,
+            data : {phone : phone_value},
+            success: function(response)
+            {
+                jQuery('#phone_error').html(response);        
+            } 
+        });
+   
+    }
+ 
    function get_doctor_ava(unique_id) {
      $.ajax({
             url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
@@ -583,7 +613,22 @@ foreach ($single_appointment_info as $row) {
         });
    
     }  
-
+    <?php if($account_type == 'doctors'){?>
+        $(document).ready(function(){
+           var unique_id=$('#doctor').val();
+          /* alert(unique_id);*/
+           $.ajax({
+            url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
+            success: function(response)
+            {
+                /*alert(response);*/
+                jQuery('#doc_ava').html(response);
+                document.getElementById("appointment_date").disabled = false;
+                
+            } 
+        });
+        });
+    <?php }?>
         $(document).ready(function(){
         var date = new Date();
         date.setDate(date.getDate());
@@ -591,11 +636,8 @@ foreach ($single_appointment_info as $row) {
         startDate: date
         });
         });
-
- 
    function get_dco_date(date_value) {
     var doctor_id=$('#doctor_id').val();
-
      $.ajax({
             type : "POST",
             url: '<?php echo base_url();?>ajax/get_dco_date/' + doctor_id,
@@ -611,7 +653,42 @@ foreach ($single_appointment_info as $row) {
     }  
           
 </script>
- -->
+<script type="text/javascript">
+
+    function get_user_data(user_value) {
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_user_data/' ,
+            data : {user : user_value},
+            success: function(response)
+            {
+                jQuery('#user_data').html(response);        
+            } 
+        });
+    }
+    function get_specializations_doctors(id) {
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_specializations_doctors/' + id ,
+            success: function(response)
+            {
+            jQuery('#doctors').html(response);
+            }
+        });
+    }
+    function get_city_doctors(id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_city_doctors/' + id ,
+            success: function(response)
+            {
+            jQuery('#doctors').html(response);
+            }
+        });
+
+    }
+</script>
+
+
  <script>
             function confrecommend(form) {
             /*form.submit();*/
@@ -637,44 +714,3 @@ foreach ($single_appointment_info as $row) {
                     } );                  
 
 </script>
-<!-- <script type="text/javascript">
-    $(document).ready(function(){
-        
-        $("#recommend1").show();
-        $("#recommend").hide();
-       
-        $("#all_check").click(function () {
-            $('.check').attr('checked', this.checked);
-            if($(".check:checked").length == 0){
-               
-                $("#recommend1").show();
-                $("#recommend").hide();
-                
-            }else{
-           
-            $("#recommend1").hide();
-            $("#recommend").show();
-            
-            }
-            
-        });
-         $(".check").click(function(){
-            if(($(".check:checked").length)!=0){
-            
-            $("#recommend1").hide();
-            $("#recommend").show();
-           
-        if($(".check").length == $(".check:checked").length) {
-            $("#all_check").attr("checked", "checked");
-        } else {
-            $("#all_check").removeAttr("checked");
-        }
-    }else{
-        
-        $("#crecommend1").show();
-        $("#recommend").hide();
-        
-    }
-    });
-    });
-</script> -->

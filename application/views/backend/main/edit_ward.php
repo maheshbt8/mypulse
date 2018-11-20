@@ -6,13 +6,6 @@ foreach ($single_ward_info as $row) {
         <div class="col-md-6">
 
             <div class="panel panel-primary" data-collapsed="0">
-
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        <h3><?php echo get_phrase('edit_ward'); ?></h3>
-                    </div>
-                </div>
-
                 <div class="panel-body">
 
                     <form role="form" class="form-horizontal form-groups-bordered" action="<?php echo base_url(); ?>main/ward/update/<?php echo $row['ward_id']; ?>" method="post" enctype="multipart/form-data">
@@ -88,7 +81,7 @@ foreach ($single_ward_info as $row) {
                         </div>
 
                         <div class="col-sm-6 control-label col-sm-offset-6">
-                            <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+          <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>
                     </form>

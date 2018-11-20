@@ -1,4 +1,3 @@
-
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
@@ -24,9 +23,7 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('hospital_name'); ?></th>
             <th><?php echo get_phrase('license_status'); ?></th>
             <th><?php echo get_phrase('branches'); ?></th>
-            <?php if($account_type == 'superadmin'){?>
             <th><?php echo get_phrase('options'); ?></th>
-            <?php }?>
         </tr>
     </thead>
 
@@ -44,11 +41,12 @@ $this->session->set_userdata('last_page', current_url());
                  <td>
             <a href="<?php echo base_url(); ?>main/get_hospital_branch/<?php echo $row['hospital_id'] ?>" title="Branches"><i class="glyphicon glyphicon-eye-open"></i></a>     
                 </td>
-                <?php if($account_type == 'superadmin'){?>
                 <td>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+    <?php if($account_type == 'superadmin'){?>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }elseif($account_type == 'users'){?>
+                <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete_hospital/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+            <?php }?>
                 </td>
-                <?php }?>
             </tr>
         <?php $i++;} ?>
     </tbody>

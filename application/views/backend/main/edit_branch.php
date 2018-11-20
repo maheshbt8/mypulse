@@ -143,7 +143,7 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                 
                     </div>
                     <div class="col-sm-3 control-label col-sm-offset-9">
-                        <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;
+ <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>
                 </form>

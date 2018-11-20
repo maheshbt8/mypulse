@@ -3,6 +3,7 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>main/nurse/delete_multiple/" method="post">
+<?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -12,6 +13,7 @@ $this->session->set_userdata('last_page', current_url());
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_nurse'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_nurse'); ?>
 </button>
+<?php }?>
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -25,7 +27,8 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('department');?></th>  
             <?php if($account_type != 'doctors'){?><th><?php echo get_phrase('doctor');?></th><?php }?>
             <th><?php echo get_phrase('status'); ?></th>
-            <th><?php echo get_phrase('options');?></th>
+        <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
+            <th><?php echo get_phrase('options');?></th><?php }?>
         </tr> 
     </thead>
 
@@ -54,11 +57,13 @@ $this->session->set_userdata('last_page', current_url());
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                      
                  </td>
+                <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                 <td>
                     <?php if($row['is_email'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/nurse/nurse/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/nurse/delete/<?php echo $row['nurse_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
+            <?php }?>
             </tr>
         <?php } ?>
     </tbody>

@@ -2,6 +2,7 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>main/bed/delete_multiple/" method="post">
+<?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -11,6 +12,7 @@ $this->session->set_userdata('last_page', current_url());
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_bed/<?= $ward_id;?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_bed'); ?>
 </button>
+<?php }?>
 <div style="clear:both;"></div>
 <br>
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -22,6 +24,7 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('department_name'); ?></th>
             <th><?php echo get_phrase('ward_name'); ?></th>
+            <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
     </thead>
@@ -38,7 +41,9 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
-                
+                <td>
+                    <?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not-Available";}?>
+                </td>
                 <td>
            
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>

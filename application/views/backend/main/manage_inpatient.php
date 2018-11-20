@@ -10,10 +10,10 @@ $this->session->set_userdata('last_page', current_url());
 <div class="row">
     <div class="col-sm-5">
                   <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('status'); ?></label> 
-
-                        <div class="col-sm-8">
+                        <label for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('status'); ?></label> 
+                        <div class="col-sm-6">
                             <select name="hospital" class="form-control" onchange="return get_inpatient(this.value)">
+    <option value="">Select</option>
     <option value="1"><?php echo get_phrase('Admitted'); ?></option>
     <option value="0"><?php echo get_phrase('Recommended'); ?></option>
     <option value="2"><?php echo get_phrase('Discharged'); ?></option>
@@ -63,7 +63,9 @@ $this->session->set_userdata('last_page', current_url());
               
                 <?php }?>
                 <td>
-              <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> 
+              <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a>
+              <?php if($account_type=='users' && $row['show_status']==0){?>
+              <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/inpatient/delete/<?php echo $row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?> 
                 </td>
             </tr>
         <?php $i++;} ?>
@@ -113,7 +115,14 @@ $this->session->set_userdata('last_page', current_url());
             url: '<?php echo base_url();?>ajax/get_inpatient_status/' + id ,
             success: function(response)
             {
-            jQuery('#data_table').html(response);
+                /*alert(response);*/
+                /*$patient_info=response;*/
+                /*alert($patient_info);*/
+                /*return $patient_info=json_decode(response);*/
+               /* alert($data);*/
+                /*alert('<?php $patient_info=json_decode(response)?>');*/
+            /*$character = json_decode(response);*/
+                jQuery('#data_table').html(response);
             }
         });
     }
