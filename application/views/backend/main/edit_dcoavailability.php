@@ -69,7 +69,7 @@ $single_doctor_info = $this->db->get_where('availability_slot', array('id' => $s
                 <label class="col-sm-3 control-label"><?php echo 'Starting_time';?></label>
                 <div class="col-sm-9">
                     <div class="col-md-4">
-                        <select name="time_start" id= "starting_hour" class="form-control selectboxit">
+                        <select name="time_start" id= "starting_hour" class="form-control selectbox">
                             <option value=""><?php echo 'Hour';?></option>
                             <?php for($i = 1; $i <= 12 ; $i++):?>
                                 <option value="<?php echo $i;?>" <?php if($start_time[0]==$i){echo 'selected';}?>><?php echo $i;?></option>
@@ -77,14 +77,14 @@ $single_doctor_info = $this->db->get_where('availability_slot', array('id' => $s
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select name="time_start_min" id= "starting_minute" class="form-control selectboxit">
+                        <select name="time_start_min" id= "starting_minute" class="form-control selectbox">
                             <option value=""><?php echo 'Minutes';?></option>
                             <option value="00" <?php if($start_ampm[0]==00){echo 'selected';}?>>00</option>
                             <option value="30" <?php if($start_ampm[0]==30){echo 'selected';}?>>30</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select name="starting_ampm" class="form-control selectboxit">
+                        <select name="starting_ampm" class="form-control selectbox">
                             <option value="am" <?php if($start_ampm[1]=='am'){echo 'selected';}?>>am</option>
                             <option value="pm" <?php if($start_ampm[1]=='pm'){echo 'selected';}?>>pm</option>
                         </select>
@@ -95,7 +95,7 @@ $single_doctor_info = $this->db->get_where('availability_slot', array('id' => $s
                 <label class="col-sm-3 control-label"><?php echo 'Ending_time';?></label>
                 <div class="col-sm-9">
                     <div class="col-md-4">
-                        <select name="time_end" id= "ending_hour" class="form-control selectboxit">
+                        <select name="time_end" id= "ending_hour" class="form-control selectbox">
                             <option value=""><?php echo 'Hour';?></option>
                             <?php for($i = 1; $i <= 12 ; $i++):?>
                                 <option value="<?php echo $i;?>" <?php if($end_time[0]==$i){echo 'selected';}?>><?php echo $i;?></option>
@@ -103,14 +103,14 @@ $single_doctor_info = $this->db->get_where('availability_slot', array('id' => $s
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select name="time_end_min" id= "ending_minute" class="form-control selectboxit">
+                        <select name="time_end_min" id= "ending_minute" class="form-control selectbox">
                             <option value=""><?php echo 'Minutes';?></option>  
                            <option value="00" <?php if($end_ampm[0]==00){echo 'selected';}?>>00</option>
                             <option value="30" <?php if($end_ampm[0]==30){echo 'selected';}?>>30</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <select name="ending_ampm" class="form-control selectboxit">
+                        <select name="ending_ampm" class="form-control selectbox">
                             <option value="am" <?php if($end_ampm[1]=='am'){echo 'selected';}?>>am</option>
                             <option value="pm" <?php if($end_ampm[1]=='pm'){echo 'selected';}?>>pm</option>
                         </select>
@@ -171,5 +171,23 @@ function upall() {
         }
     }
 
+
+</script>
+<script type="text/javascript">
+                    $(document).ready(function(){
+                    var date = new Date();
+                    date.setDate(date.getDate());
+
+                    $('#start_on').datepicker({ 
+                    startDate: date
+
+                    });
+
+                    $('#end_on').datepicker({ 
+                    startDate: date
+
+                    });
+
+                    } );                  
 
 </script>

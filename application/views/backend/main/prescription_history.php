@@ -14,12 +14,17 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 ?>
 <div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+            <div class="panel-heading">
+<div class="row">
     <div class="col-sm-2 pull-right">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 </div>
 </div>
-<br/>
+</div>
+<div class="panel-body">
 
 <div class="row" id="print_div">  
 <div class="col-md-12">
@@ -84,23 +89,22 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
 </div>
 
 <div class="row">
-    <?php if($order_type == 0 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){
+<?php if($order_type == 0 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){
 if($prescription_data[1]!=''){
         ?>
+<h2 class="col-sm-12"><?php echo get_phrase('prescription_for_medicines'); ?></h2>
 <div class="col-md-12">
-    <h2 class="col-sm-6"><?php echo get_phrase('prescription_for_medicines'); ?></h2>
     <div class="table-responsive">
-    
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Drug</th>
-        <th scope="col">Strength</th>
-        <th scope="col">Dosage</th>
-        <th scope="col">Duration</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Note</th>
+        <th>#</th>
+        <th>Drug</th>
+        <th>Strength</th>
+        <th>Dosage</th>
+        <th>Duration</th>
+        <th>Quantity</th>
+        <th>Note</th>
       </tr>
     </thead>
     <tbody>
@@ -119,7 +123,7 @@ if($prescription_data[1]!=''){
         <?php for($i1=0;$i1<count($drug);$i1++){
             ?>
       <tr>
-        <th scope="row"><?= $i1+1;?></th>
+        <th><?= $i1+1;?></th>
         <td><?= $drug[$i1];?></td>
         <td><?= $strength[$i1];?></td>
         <td><?= $dosage[$i1];?></td>
@@ -134,10 +138,9 @@ if($prescription_data[1]!=''){
 </div>
 <?php }}
 if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){if($prescription_data[7]!=''){?>
+<h2 class="col-sm-12"><?php echo get_phrase('prescription_for_medical_tests'); ?></h2>
 <div class="col-md-12">
-    <h2 class="col-sm-6"><?php echo get_phrase('prescription_for_medical_tests'); ?></h2>
     <div class="table-responsive">
-    
   <table class="table">
     <thead>
       <tr>
@@ -159,13 +162,13 @@ if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_t
                 if($tests[$i1]==1){
             ?>
       <tr>
-        <th scope="row"><?= $i1+1;?></th>
+        <th><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
       </tr>
       <?php }}elseif($account_type != 'medicallabs'){ ?>
 <tr>
-        <th scope="row"><?= $i1+1;?></th>
+        <th><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
       </tr>
@@ -182,11 +185,7 @@ if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_t
             <tbody>
                 <tr>
                 <td align="left"><h3>Additional Note </h3> <?php echo $prescription_data[9];?></td>
-            </tr><!-- 
-            <tr></tr>
-            <tr>
-                <td align="right"><b>Dr. <?php echo $doctor_info['name'];?></b></td>
-            </tr> -->
+            </tr>
         </tbody>
     </table>
 </div>
@@ -194,16 +193,16 @@ if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_t
 <br/><br/><br/>
 
 <footer>
-    <hr/>
-    <span style="font-size:8.0pt;mso-bidi-font-size:
-                                            9.0pt;font-family:&quot;times new roman&quot;,serif;mso-fareast-font-family:&quot;times new roman&quot;;
-                                            mso-ansi-language:en-us;mso-fareast-language:en-us;mso-bidi-language:ar-sa" lang="EN-US">&nbsp; <span style="white-space:pre" class="Apple-tab-span"> </span>&nbsp;© This document Compiled by MyPulse.</span>
-
+<hr/>
+<span style="font-size:8.0pt;mso-bidi-font-size:9.0pt;font-family:&quot;times new roman&quot;,serif;mso-fareast-font-family:&quot;times new roman&quot;mso-ansi-language:en-us;mso-fareast-language:en-us;mso-bidi-language:ar-sa" lang="EN-US">&nbsp; <span style="white-space:pre" class="Apple-tab-span"> </span>&nbsp;© This document Compiled by MyPulse.</span>
 </footer>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-</div>
-</div>
-<br/><br/>
 <script type="text/javascript">
    function printDiv(divName) {
      var printContents = document.getElementById(divName).innerHTML;

@@ -1,9 +1,7 @@
 <?php
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
 class Login extends CI_Controller {
-
     function __construct() {  
         parent::__construct();
         $this->load->model('crud_model');
@@ -16,42 +14,14 @@ class Login extends CI_Controller {
         $this->output->set_header('Pragma: no-cache');
         $this->output->set_header("Expires: Mon, 26 Jul 2010 05:00:00 GMT");
     }
-
     //Default function, redirects to logged in user area
     public function index() {
         if ($this->session->userdata('login') == 1)
             redirect(base_url() . 'main/dashboard', 'refresh');
-/*
-        if ($this->session->userdata('superadmin_login') == 1)
-            redirect(base_url() . 'index.php?superadmin/dashboard', 'refresh');
-            
-    if ($this->session->userdata('hospitaladmin_login') == 1)
-            redirect(base_url() . 'index.php?hospitaladmins/dashboard', 'refresh');
-        
-            else if ($this->session->userdata('doctor_login') == 1)
-            redirect(base_url() . 'index.php?doctors', 'refresh');
-        
-        else if ($this->session->userdata('user_login') == 1)
-            redirect(base_url() . 'index.php?users', 'refresh');
-        
-        else if ($this->session->userdata('nurse_login') == 1)
-            redirect(base_url() . 'index.php?nurse', 'refresh');
-        
-        else if ($this->session->userdata('receptionist_login') == 1)
-            redirect(base_url() . 'index.php?receptionist', 'refresh');
-        
-        else if ($this->session->userdata('lab_login') == 1)
-            redirect(base_url() . 'index.php?medicallabs', 'refresh');
-        
-        else if ($this->session->userdata('store_login') == 1)
-            redirect(base_url() . 'index.php?medicalstores', 'refresh');*/
-
         $this->load->view('backend/login');
     }
-
     //Validating login from ajax request
     function validate_login() {
-     
       $email = $this->input->post('email');
       $password = $this->input->post('password');/*
       $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";*/
@@ -109,7 +79,6 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->user_id);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('name', $row->name);
-            /*$this->session->set_userdata('hospital_id', $row->hospital_id);*/
             $this->session->set_userdata('login_type', 'users');
             $this->session->set_userdata('type_id', 'user');
             redirect(base_url() . 'main', 'refresh');
@@ -175,13 +144,11 @@ class Login extends CI_Controller {
     function four_zero_four() {
         $this->load->view('four_zero_four');
     }
-  
     /*     * *RESET AND SEND PASSWORD TO REQUESTED EMAIL*** */
-
     function reset_password() {
         $account_type = $this->input->post('account_type');
         if ($account_type == "") {
-            redirect(base_url(), 'refresh');
+            redirect(base_url('login'), 'refresh');
         }
         $email = $this->input->post('email');
         $result = $this->email_model->password_reset_email($account_type, $email); //SEND EMAIL ACCOUNT OPENING EMAIL
@@ -190,42 +157,48 @@ class Login extends CI_Controller {
         } else if ($result == false) {
             $this->session->set_flashdata('flash_message', get_phrase('account_not_found'));
         }
-
-        redirect(base_url(), 'refresh');
+        redirect(base_url('login'), 'refresh');
     }
 
-   
-    
     function register()
     {
         if($this->input->post()){
             $email = $this->input->post('email');
            $validation = email_validation($email);
-           
             if ($validation == 1) {
-                $phone = $this->input->post('mobile');
+                $phone = $this->input->post('phone');
            $validation_phone = mobile_validation($phone);
-           if($validation_phone == 1){
-                if($this->input->post('pass') == $this->input->post('cpass')){
-
+    if($validation_phone == 1){
+    if($this->input->post('pass') == $this->input->post('cpass')){
         $data['name']       = $this->input->post('username');
         $data['email']      = $this->input->post('email');
         $data['password']       = sha1($this->input->post('pass'));
-        $data['phone']          = $this->input->post('mobile');
+        $data['phone']          = $this->input->post('phone');
         $data['status']   = 1;
-
-            $user_name   =   $data['name'];
-            if($this->session->flashdata('otp') == ''){
+        $user_name   =   $data['name'];
+        /*if($this->session->flashdata('otp') == ''){
             $num="12345678901234567890";
             $shu=str_shuffle($num);
             $otp=substr($shu, 14);
             $this->session->set_flashdata('otp',$otp);
+        }*/
+        if($this->session->userdata('otp')==''){
+        $num="12345678901234567890";
+        $shu=str_shuffle($num);
+        $otp=substr($shu, 14);
+        $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
+        $this->session->set_userdata('otp',$otp);
         }
-            $this->session->set_flashdata('otp_message','OTP Send To :'.$data['phone'].'('.$this->session->flashdata('otp').')');
-            $message        =  'Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->flashdata('otp') ;
+        $this->session->set_flashdata('success','OTP Send To :'.$data['phone'].'('.$this->session->userdata('otp').')');
+            $message='Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->userdata('otp') ;
             $receiver_phone =   $data['phone'];
             /*$this->sms_model->send_sms($message, $receiver_phone);*/
-        if($this->input->post('otp')==$this->session->flashdata('otp')){
+    $past_time=strtotime($this->session->userdata('otp_time'));
+    $current_time = time();
+    $difference = $current_time - $past_time;
+    $difference_minute =  $difference/60;
+    if(intval($difference_minute)<3){
+        if($this->input->post('otp')==$this->session->userdata('otp')){
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
@@ -240,7 +213,12 @@ class Login extends CI_Controller {
         redirect(base_url() , 'refresh');
         $this->email_model->account_opening_email('users','user', $data['email']);
         }
-        }
+        }else{
+        $this->session->set_flashdata('error', 'OTP Not Correct');
+    }
+    }else{
+        $this->session->set_flashdata('error', 'OTP Time Was Experied');
+    }
             /*$user_name   =   $data['name'];
             $num="12345678901234567890";
             $shu=str_shuffle($num);
@@ -250,13 +228,13 @@ class Login extends CI_Controller {
             $receiver_phone =   $data['phone'];
             $this->sms_model->send_sms($message, $receiver_phone);*/
             }else{
-                 $this->session->set_flashdata('cpass_error', $this->lang->line('validation')['passwordNotMatch']);
+                 $this->session->set_flashdata('error', $this->lang->line('validation')['passwordNotMatch']);
             }
             }else {
-                 $this->session->set_flashdata('email_error', 'Mobile Number Already Existed' );
+                 $this->session->set_flashdata('error', 'Mobile Number Already Existed' );
         }
         }else {
-        $this->session->set_flashdata('email_error', $this->lang->line('msg_email_exist') );
+        $this->session->set_flashdata('error', $this->lang->line('msg_email_exist') );
             }
         }
         $this->load->view('backend/register');
@@ -276,15 +254,13 @@ class Login extends CI_Controller {
         
         $insert=$this->db->insert('patient',$data);
         if($insert)
-        {
-            
+        {  
             $lid=$this->db->insert_id();
             $a="12345678901234567";
             $sid=str_shuffle($a);
             $uid=substr($sid, 15);
             $pid='MYP_'.$lid.$uid;
-            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid));
-            
+            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid)); 
         }
                 $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));
             }else{
@@ -306,7 +282,6 @@ class Login extends CI_Controller {
             $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
 $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
             if ($this->form_validation->run() == TRUE){
-        /*if($task == 'hospitaladmins'){*/
             $is_email=$this->db->get_where($task, array('unique_id' => $id))->row()->is_email;
             if($is_email==1){
             $yes=$this->db->where('unique_id',$id)->update($task,array('password' =>sha1($this->input->post('pass'))));
@@ -316,110 +291,17 @@ $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|ma
         }else{
             echo "Email Not Verified";
         }
-       /* }*/
     }
     }
         $data['account']=$task;
         $data['id']=$id;
         $this->load->view('backend/set_password',$data);
     }
-     /*function set_password($task="",$id="")
-    {
-        if($this->input->post()){
-            $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
-$this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
-            
-            if ($this->form_validation->run() == TRUE){
-        if($task == 'hospitaladmins'){
-             
-            $is_email=$this->db->get_where('hospitaladmins', array('admin_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('admin_id',$id)->update('hospitaladmins',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-   
-        
-        }
-        if($task == 'doctors'){
-      
-            $is_email=$this->db->get_where('doctors', array('doctor_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('doctor_id',$id)->update('doctors',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-    
-        }
-        if($task == 'nurse'){
-         
-            $is_email=$this->db->get_where('nurse', array('nurse_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('nurse_id',$id)->update('nurse',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-    
-        }
-        if($task == 'receptionist'){
-           
-            $is_email=$this->db->get_where('receptionist', array('receptionist_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('receptionist_id',$id)->update('receptionist',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-  
-        
-        }
-        if($task == 'medicalstores'){
-        
-            $is_email=$this->db->get_where('medicalstores', array('store_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('store_id',$id)->update('medicalstores',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-   
-        }
-        if($task == 'medicallabs'){
-        
-            $is_email=$this->db->get_where('medicallabs', array('lab_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('lab_id',$id)->update('medicallabs',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-    
-        }
-        if($task == 'users'){
-          
-            $is_email=$this->db->get_where('users', array('user_id' => $id))->row()->is_email;
-            if($is_email==1){
-            $yes=$this->db->where('user_id',$id)->update('users',array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
-        }
-        }
-    
-        } 
-    }
-    }
-        $data['account']=$task;
-        $data['id']=$id;
-        $this->load->view('backend/set_password',$data);
-    }*/
  /*     * *****LOGOUT FUNCTION ****** */
     function logout() {
         $this->session->sess_destroy();
         $this->session->set_flashdata('logout_notification', 'logged_out');
-        redirect(base_url(), 'refresh');
+        redirect(base_url('login'), 'refresh');
     }
 
 }

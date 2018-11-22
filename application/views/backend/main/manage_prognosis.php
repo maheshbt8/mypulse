@@ -2,16 +2,19 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <div class="row">
-    <div class="col-md-12">
-            <div style="clear:both;"></div>
-<table class="table table-bordered table-striped datatable" id="table-2">  
+    <div class="col-lg-12">
+<div class="panel panel-default">   
+            <div class="panel-heading">
+            </div>
+<div class="panel-body">
+<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('title'); ?></th>
-            <th><?php echo get_phrase('case_history'); ?></th>
-            <th><?php echo get_phrase('hospital / doctor'); ?></th>
-            <th><?php echo get_phrase('date'); ?></th>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
+            <th data-field="title" data-sortable="true"><?php echo get_phrase('title'); ?></th>
+            <th data-field="case_history" data-sortable="true"><?php echo get_phrase('case_history'); ?></th>
+            <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital / doctor'); ?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('date'); ?></th>
             <th><?php echo get_phrase('visibility'); ?></th>
             <?php if($account_type == 'users'){?>
             <th><?php echo get_phrase('options'); ?></th><?php }?>
@@ -23,7 +26,7 @@ $this->session->set_userdata('last_page', current_url());
         $i=1;foreach ($prognosis as $row1) {
             ?>
             <tr>
-                <td><?php echo $i?></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row1['prognosis_id']; ?>"></td>
                 <td><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[0];?></td>
                 <td><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[1];?></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
@@ -40,39 +43,36 @@ $this->session->set_userdata('last_page', current_url());
 </table>
  </div>
 </div>
-
-<script type="text/javascript">
-    jQuery(window).load(function ()
-    {
-        var $ = jQuery;
-
-        $("#table-2").dataTable({
-            "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'<'export-data'T>f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
-        });
-
-        $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-        });
-
-        // Highlighted rows
-        $("#table-2 tbody input[type=checkbox]").each(function (i, el)
-        {
-            var $this = $(el),
-                    $p = $this.closest('tr');
-
-            $(el).on('change', function ()
-            {
-                var is_checked = $this.is(':checked');
-
-                $p[is_checked ? 'addClass' : 'removeClass']('highlight');
-            });
-        });
-
-        // Replace Checboxes
-        $(".pagination a").click(function (ev)
-        {
-            replaceCheckboxes();
-        });
+</div>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#delete1").show();
+        $("#delete").hide();
+ $(".all_check").click(function () {
+    if($(this).prop("checked") == true){
+                $("#delete1").hide();
+                $("#delete").show();
+            }
+            else if($(this).prop("checked") == false){
+                $("#delete1").show();
+                $("#delete").hide();
+            }
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            $("#delete1").hide();
+            $("#delete").show();
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        $("#delete1").show();
+        $("#delete").hide();
+    }
+    });
     });
 </script>

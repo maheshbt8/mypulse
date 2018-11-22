@@ -365,5 +365,30 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
 /*print_r($patient_info);*/
 /*echo json_encode($patient_info);*/
     }
+    function get_message_count(){
+        $account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+        $message_data=$this->crud_model->select_message();
+        $j=0;foreach($message_data as $row){
+            $count=explode(',',$row['is_read']);
+    for($m2=0;$m2<count($count);$m2++){
+        if($count[$m2] != $account_details){
+                $j=$j+1;
+        }
+        }
+        }
+        echo '<span class="label label-info">'.$j.'</span>';
+    }
+    function get_notification_count(){
+        $account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+        $notification_data=$this->crud_model->select_notification();
+        $j=0;foreach($notification_data as $row){
+            if($row['isRead']==2){
+                $j=$j+1;
+            }
+    }
+    echo '<span class="label label-info">'.$j.'</span>';
+    }
 }
 ?>

@@ -1743,7 +1743,7 @@ if($account_type == 'medicalstores'){
     }
     function select_inpatient_id_information($user_id='')
     {
-  return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$user_id,'show_status'=>1))->result_array();
+  return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$user_id,'show_status!='=>0))->result_array();
     }
     function select_inpatient_history_info($id)
     {
@@ -2774,14 +2774,20 @@ if($account_type == 'superadmin'){
     $receptionist=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row();
     $doctor_id=explode(',',$receptionist->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-  $return[]=$this->db->order_by('appointment_number','DESC')->where('doctor_id',$doctor_id[$doc])->get('appointments')->row_array();
+  $result=$this->db->order_by('appointment_number','DESC')->where('doctor_id',$doctor_id[$doc])->get('appointments')->row_array();
+  if($result!=''){
+    $return[]=$result;
+  }
 }
 return $return;
 }elseif($account_type == 'nurse'){
     $nurse=$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row();
     $doctor_id=explode(',',$nurse->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-  $return[]=$this->db->order_by('appointment_number','DESC')->where('doctor_id',$doctor_id[$doc])->get('appointments')->row_array();
+  $result=$this->db->order_by('appointment_number','DESC')->where('doctor_id',$doctor_id[$doc])->get('appointments')->row_array();
+  if($result!=''){
+    $return[]=$result;
+  }
 }
 return $return;
 }
@@ -3323,37 +3329,71 @@ return $this->db->get_where('prescription_order',array('order_id'=>$order_id))->
     {
     $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
    $msg=$this->db->where('message_id',$message_id)->get('messages')->row_array();
-   
    if($msg['is_read']==''){
     $data['is_read']=$account_details;
-    $this->db->where('message_id',$message_id)->update('messages',$data);
    }elseif($msg['is_read']!=''){
     $message_read=explode(',',$msg['is_read']);
-    
     for($m=0;$m<count($message_read);$m++){
-        
-        /*if($account_details == $message_read[$m]){
-            $read=0;
-        }else*/if($account_details != $message_read[$m]){
-            $read=1;
+       if($message_read[$m]==$account_details){
+        $data['is_read']=$msg['is_read'];
+        }else{
+        $data['is_read']=$msg['is_read'].','.$account_details;
         }
-        /*echo $message_read[$m].'/'.$account_details.'/'.$read.'<br/>';*/
-        /*if($read==1){
-    $data['is_read']=$msg['is_read'].','.$account_details;
-    $this->db->where('message_id',$message_id)->update('messages',$data);
-        }*/
     }
-    if($read==1){
-    $data['is_read']=$msg['is_read'].','.$account_details;
+    }/*
+    print_r($data);die;*/
+   /* if($data['is_read']==''){
+        $data['is_read']=$msg['is_read'];
+    }*//*
+    print_r($data);die;*/
     $this->db->where('message_id',$message_id)->update('messages',$data);
-        }
-    
-   }
    return $msg;
     }
     function select_message()
     {
-        return $this->db->order_by('message_id','DESC')->get('messages')->result_array();
+$account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+        $message_data=$this->db->order_by('message_id','DESC')->get('messages')->result_array();
+    $i=0;$j=0; foreach ($message_data as $row) {
+       $message1=explode(',',$row['user_to']);
+       $message2=explode(',',$row['user_too']);
+       $hospi='';
+        for($m1=0;$m1<count($message1);$m1++){
+    if($message1[$m1] == 1){
+    $hospi='hospitaladmins';    
+    }elseif($message1[$m1] == 2){
+    $hospi='medicallabs';
+    }elseif($message1[$m1] == 3){
+    $hospi='medicalstores';
+    }elseif($message1[$m1] == 4){
+    $hospi='doctors';
+    }elseif($message1[$m1] == 5){
+    $hospi='nurse';
+    }elseif($message1[$m1] == 6){
+    $hospi='receptionist';
+    }elseif($message1[$m1] == 7){
+    $hospi='users';
+    }
+    $hospi1='';
+  for($m2=0;$m2<count($message2);$m2++){
+    if($message2[$m2] == $account_details){
+    $hospi1=$message2[$m2];    
+    }
+  }
+    if($account_type == 'superadmin'){
+    if($hospi1 == $account_details || $hospi==$account_type)
+              {
+             $result[]=$row;   
+              }  
+    }else{
+    if(($hospi1 == $account_details || $hospi==$account_type) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')))
+              {
+    $result[]=$row;
+        }
+        }
+    $i++;}
+      }
+      return $result;
     }
     /*function select_private_message()
     {
@@ -3391,9 +3431,23 @@ return $this->db->get_where('prescription_order',array('order_id'=>$order_id))->
     }
     function select_notification()
     {
-        return $this->db->order_by('id','DESC')->get('notification')->result_array();
+    $account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+    $result=$this->db->order_by('id','DESC')->get_where('notification',array('user_id'=>$account_details))->result_array();
+    /*return $result;*/
     }
-
+    function delete_notification($id){
+/*$account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');*/
+    $this->db->where('id',$id);
+    $this->db->delete('notification');
+    }
+    function delete_all_notifications(){
+$account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+    $this->db->where('user_id',$account_details);
+    $this->db->delete('notification');
+    }
     /*function save_notice_info()
     {
         $data['title']              = $this->input->post('title');

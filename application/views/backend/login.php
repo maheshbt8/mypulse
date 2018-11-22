@@ -8,25 +8,7 @@
 <title><?php echo $system_title; ?> - <?php echo $this->lang->line('labels')['login'];?> </title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="<?php echo base_url();?>assets/assets1/images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/css/util.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/assets1/css/main.css">
-<!--===============================================================================================-->
-</head>
+	<?php include'login_top.php';?>
 <style>
     ..p-b-230{
         padding-bottom:0px;
@@ -41,10 +23,7 @@
 					<div class="login100-form-avatar">
 						<img class="img-responsive" src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR" style="width:100%;">
 					</div>
-
-					<span class="login100-form-title p-t-20 p-b-45">
-				
-					</span>
+	<span class="login100-form-title p-t-20 p-b-45"></span>
                     <?php if($this->session->flashdata('login_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->lang->line('usr_acc_invalid_credential'); ?></div>
@@ -66,37 +45,22 @@
 					</div>
 
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn"><?php echo $this->lang->line('buttons')['login'];?></button>
+						<button class="login100-form-btn"><?php echo 'Login';?></button>
 					</div>
  
 					<div class="text-center w-full p-t-25 p-b-230">
-						<a href="#" class="txt1">
-							<?php echo $this->lang->line('forgot_your_password');?>
-						</a>
-						 
+<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a>
 						 <br>
-							<a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
-							<?php echo $this->lang->line('do_not_have_account');?></h5>
-							<i class="fa fa-long-arrow-right"></i>						
-						</a>
+<a href="#" class="txt1"><?php echo 'Forgot Your Password';?></a>
+						 <br>
+<a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
+<?php echo "Don't Have Account? Sign Up";?></h5>
+<i class="fa fa-long-arrow-right"></i></a>
 					</div>
-
-				
 				</form>
 			</div>
 		</div>
 	</div>
-
-	
-<!--===============================================================================================-->	
-	<script src="<?php echo base_url();?>assets/assets1/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="<?php echo base_url();?>assets/assets1/vendor/bootstrap/js/popper.js"></script>
-	<script src="<?php echo base_url();?>assets/assets1/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script src="<?php echo base_url();?>assets/assets1/vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="<?php echo base_url();?>assets/assets1/js/main.js"></script>
-
+<?php include'login_bottom.php';?>
 </body>
 </html>

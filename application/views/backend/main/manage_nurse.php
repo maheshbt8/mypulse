@@ -3,6 +3,10 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>main/nurse/delete_multiple/" method="post">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+            <div class="panel-heading">
 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
@@ -14,21 +18,21 @@ $this->session->set_userdata('last_page', current_url());
         <?php echo get_phrase('add_nurse'); ?>
 </button>
 <?php }?>
-<div style="clear:both;"></div>
-<br>
-<table class="table table-bordered table-striped datatable" id="table-2">
+</div>
+<div class="panel-body">
+<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
-            <th><?php echo get_phrase('nurse_id');?></th>
-            <th><?php echo get_phrase('nurse_name');?></th> 
-             <th><?php echo get_phrase('hospital');?></th>
-            <th><?php echo get_phrase('branch');?></th>
-            <th><?php echo get_phrase('department');?></th>  
-            <?php if($account_type != 'doctors'){?><th><?php echo get_phrase('doctor');?></th><?php }?>
-            <th><?php echo get_phrase('status'); ?></th>
-        <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
-            <th><?php echo get_phrase('options');?></th><?php }?>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('nurse_id');?></th>
+            <th data-field="name" data-sortable="true"><?php echo get_phrase('nurse_name');?></th> 
+             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th>
+            <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch');?></th>
+            <th data-field="department" data-sortable="true"><?php echo get_phrase('department');?></th>  
+            <?php if($account_type != 'doctors'){?>
+            <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th><?php }?>
+            <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
+            <th><?php echo get_phrase('options');?></th>
         </tr> 
     </thead>
 
@@ -57,68 +61,35 @@ $this->session->set_userdata('last_page', current_url());
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                      
                  </td>
-                <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                 <td>
                     <?php if($row['is_email'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/nurse/nurse/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/nurse/delete/<?php echo $row['nurse_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
-            <?php }?>
             </tr>
         <?php } ?>
     </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
 </form>
-<script type="text/javascript">   
-    jQuery(window).load(function ()
-    {
-        var $ = jQuery;
-
-        $("#table-2").dataTable({
-            "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'<'export-data'T>f>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
-        });
-
-        $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-        });
-
-        // Highlighted rows
-        $("#table-2 tbody input[type=checkbox]").each(function (i, el)
-        {
-            var $this = $(el),
-                    $p = $this.closest('tr');
-
-            $(el).on('change', function ()
-            {
-                var is_checked = $this.is(':checked');
-
-                $p[is_checked ? 'addClass' : 'removeClass']('highlight');
-            });
-        });
-
-        // Replace Checboxes
-        $(".pagination a").click(function (ev)
-        {
-            replaceCheckboxes();
-        });
-    });
-</script>
-<script type="text/javascript">
+<script>
     $(document).ready(function(){
         $("#delete1").show();
         $("#delete").hide();
-        $("#all_check").click(function () {
-            $('.check').attr('checked', this.checked);
-            if($(".check:checked").length == 0){
+ $(".all_check").click(function () {
+    if($(this).prop("checked") == true){
+                $("#delete1").hide();
+                $("#delete").show();
+            }
+            else if($(this).prop("checked") == false){
                 $("#delete1").show();
                 $("#delete").hide();
-            }else{
-            $("#delete1").hide();
-            $("#delete").show();
             }
-            
-        });
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });
          $(".check").click(function(){
             if(($(".check:checked").length)!=0){
             $("#delete1").hide();

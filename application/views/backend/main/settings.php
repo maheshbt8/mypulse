@@ -10,7 +10,7 @@ $this->session->set_userdata('last_page', current_url());
   <div class="col-sm-6">
     <div class="list-group">
    <?php if($account_type=='superadmin' || $account_type == 'hospitaladmins'){?>
-  <a href="<?php echo base_url(); ?>main/system_settings" class="list-group-item disabled"><i class="icon fa fa-cog"></i>&nbsp;&nbsp;<?php echo get_phrase('system_settings'); ?></a><?php }?>
+  <a href="<?php echo base_url(); ?>main/system_settings" class="list-group-item"><i class="icon fa fa-cog"></i>&nbsp;&nbsp;<?php echo get_phrase('system_settings'); ?></a><?php }?>
   <?php if($account_type=='superadmin'){?>
   <a href="<?php echo base_url(); ?>main/license" class="list-group-item"><i class="icon fa fa-desktop"></i>&nbsp;&nbsp;<?php echo get_phrase('license_categories');?></a>
   <a href="<?php echo base_url(); ?>main/health_insurance_provider" class="list-group-item"><i class="icon fa fa-user"></i>&nbsp;&nbsp;<?php echo get_phrase('health_insurance_providers');?></a>
@@ -22,11 +22,11 @@ $this->session->set_userdata('last_page', current_url());
   <div class="col-sm-6">
   <div class="list-group">
   <?php if($account_type=='superadmin'){?>
-  <a href="<?php echo base_url(); ?>main/country" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('countries'); ?></a>
-  <a href="<?php echo base_url(); ?>main/state" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('states'); ?></a>
-  <a href="<?php echo base_url(); ?>main/district" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('districts'); ?></a>
-  <a href="<?php echo base_url(); ?>main/city" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('cities'); ?></a>
-  <a href="<?php echo base_url(); ?>main/specialization" class="list-group-item disabled"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('specializations'); ?></a><?php }?>
+  <a href="<?php echo base_url(); ?>main/country" class="list-group-item"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('countries'); ?></a>
+  <a href="<?php echo base_url(); ?>main/state" class="list-group-item"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('states'); ?></a>
+  <a href="<?php echo base_url(); ?>main/district" class="list-group-item"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('districts'); ?></a>
+  <a href="<?php echo base_url(); ?>main/city" class="list-group-item"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('cities'); ?></a>
+  <a href="<?php echo base_url(); ?>main/specialization" class="list-group-item"><i class="icon fa fa-flag"></i>&nbsp;&nbsp;<?php echo get_phrase('specializations'); ?></a><?php }?>
 </div>
 
   </div>

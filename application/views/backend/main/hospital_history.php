@@ -280,7 +280,7 @@ foreach ($single_hospital_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('from_date'); ?></label>
                         <div class="col-sm-8">
                        
-                            <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>">
+                            <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>" autocomplete="off">
                         
                         </div>
                     </div>
@@ -289,7 +289,7 @@ foreach ($single_hospital_info as $row) {
 
                         <div class="col-sm-8">
                            
-                            <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>">
+                            <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>" autocomplete="off">
                         
                         </div>
                     </div>

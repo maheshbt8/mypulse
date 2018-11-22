@@ -1,7 +1,7 @@
 <?php 
 $appointment_info = $this->db->get_where('appointment_history', array('appointment_id' => $appointment_id))->result_array();
 ?>
-<input type="button" class="btn btn-orange pull-right" value="<?php echo get_phrase('back'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page1'); ?>'">
+<input type="button" class="btn btn-orange pull-right" value="<?php echo get_phrase('back'); ?>" onclick="window.location.href = '<?= base_url('main/edit_appointment/').$appointment_id; ?>'">
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>

@@ -15,7 +15,7 @@
 		margin-top: 50px;
 	}
 </style>
-<?php $color = dechex(rand(0x000000, 0xFFFFFF)); ?>
+<?php print_r($hospital_id);$color = dechex(rand(0x000000, 0xFFFFFF)); ?>
 <?php
 $hospital_count=count($hospital_id);
 for($h=0;$h<$hospital_count;$h++){
@@ -123,4 +123,4 @@ function toggleDataSeries(e){
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 
 <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
-<script src="<?php echo base_url();?>assets/js/canvasjs.min.js"></script>
+<!-- <script src="<?php echo base_url();?>assets/js/canvasjs.min.js"></script> -->

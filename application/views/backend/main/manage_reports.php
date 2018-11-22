@@ -61,6 +61,10 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="<?php echo base_url()?>main/report_chart1/<?php echo $report_id;?>/" method="post">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+            <div class="panel-heading">
     <button type="submit" onClick="" id="delete" class="btn btn-info pull-right btn-lg" style="margin-left: 2px;">
         <i class="fa fa-bar-chart-o"></i>
 </button>
@@ -69,20 +73,20 @@ $this->session->set_userdata('last_page', current_url());
 </button>
 <input type="hidden" class="form-control" name="sd" id="sd" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "")){echo date('Y-m-d',strtotime($_GET['sd']));}else{echo date('Y-m-d', strtotime('-29 days'));}?>"/>
 <input type="hidden" class="form-control" name="ed" id="ed" value="<?php if((isset($_GET['ed']) && $_GET['ed'] != "")){echo date('Y-m-d',strtotime($_GET['ed']));}else{echo date('Y-m-d');}?>"/>
-<div style="clear:both;"></div>
-<br>
-<table class="table table-bordered table-striped datatable" id="table-2">
+</div>
+<div class="panel-body">
+<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
+         <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <?php if($account_type == 'superadmin'){?>
-            <th><?php echo get_phrase('hospital_id');?></th>
-            <th><?php echo get_phrase('hospital_name'); ?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_id');?></th>
+            <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
         <?php }elseif($account_type == 'hospitaladmins'){?>
             <!-- <th><?php echo get_phrase('branch_id');?></th> -->
-            <th><?php echo get_phrase('branch_name'); ?></th>
+            <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch_name'); ?></th>
         <?php }?>
-            <th><?php if($report_id==1){
+            <th data-field="number" data-sortable="true"><?php if($report_id==1){
         echo get_phrase('number_of_patients');
         }elseif($report_id==2){
         echo get_phrase('number_of_appointments');
@@ -95,7 +99,7 @@ $this->session->set_userdata('last_page', current_url());
         <?php  $i=1;foreach ($hospital_info as $row) {
             ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" value="<?php if($account_type == 'superadmin'){ echo $row['hospital_id'];}elseif($account_type == 'hospitaladmins'){echo $row['branch_id'];} ?>"></td>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php if($account_type == 'superadmin'){ echo $row['hospital_id'];}elseif($account_type == 'hospitaladmins'){echo $row['branch_id'];} ?>"></td>
                 <?php if($account_type == 'superadmin'){?>
                 <td><?php echo $row['unique_id'];?></td>
             <?php }?>
@@ -185,8 +189,43 @@ $this->session->set_userdata('last_page', current_url());
         <?php $i++;} ?>
     </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
 </form>
-<script type="text/javascript">
+<script>
+    $(document).ready(function(){
+        $("#delete1").show();
+        $("#delete").hide();
+ $(".all_check").click(function () {
+    if($(this).prop("checked") == true){
+                $("#delete1").hide();
+                $("#delete").show();
+            }
+            else if($(this).prop("checked") == false){
+                $("#delete1").show();
+                $("#delete").hide();
+            }
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            $("#delete1").hide();
+            $("#delete").show();
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        $("#delete1").show();
+        $("#delete").hide();
+    }
+    });
+    });
+</script>
+<!-- <script type="text/javascript">
     jQuery(window).load(function ()
     {
         var $ = jQuery;
@@ -220,59 +259,8 @@ $this->session->set_userdata('last_page', current_url());
             replaceCheckboxes();
         });
     });
-</script>
-<SCRIPT language="javascript">
-/*$(function(){
-$("#delete1").show();
-$("#delete").hide();
-    // add multiple select / deselect functionality
-    $("#all_check").click(function () {
-        $("#delete1").hide();
-            $("#delete").show();
-          $('.checkbox').attr('checked', this.checked);
-    });
-
-    // if all checkbox are selected, check the selectall checkbox
-    // and viceversa
-    $(".checkbox").click(function(){
-
-        if($(".checkbox").length == $(".checkbox:checked").length) {
-            $("#delete1").show();
-            $("#delete").hide();
-            $("#all_check").attr("checked", "checked");
-        } else {
-            $("#all_check").removeAttr("checked");
-        }
-
-    });*/
-/*    $(document).ready(function(){
-        $("#delete1").show();
-        $("#delete").hide();
-        
-         $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                $("#delete1").hide();
-                $("#delete").show();
-                
-            }
-            else if($(this).prop("checked") == false){
-            $("#delete1").show();
-            $("#delete").hide();
-               
-            }
-        });
-    });
-});*/
-</SCRIPT>
- <script type="text/javascript">
-   /*  function toggle(source) {
-    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i] != source)
-            checkboxes[i].checked = source.checked;
-    }
-
-}*/
+</script> -->
+<!--  <script type="text/javascript">
     $(document).ready(function(){
         $("#delete1").show();
         $("#delete").hide();
@@ -302,18 +290,5 @@ $("#delete").hide();
         $("#delete").hide();
     }
     });
-
-   /*      $('input[type="checkbox"]').click(function(){
-            if($(this).prop("checked") == true){
-                $("#delete1").hide();
-                $("#delete").show();
-                
-            }
-            else if($(this).prop("checked") == false){
-            $("#delete1").show();
-            $("#delete").hide();
-               
-            }
-        });*/
     });
-</script> 
+</script> --> 

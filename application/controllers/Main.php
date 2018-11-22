@@ -1496,6 +1496,7 @@ class Main extends CI_Controller {
         $this->load->view('backend/index', $data);
     }
     function report_chart1($report_id = "",$hospital_id = "") {
+/*        print_r($_POST);die;*/
         if($report_id==1){
         $data['title']='Patients';
         $this->crud_model->getReport();
@@ -1725,6 +1726,16 @@ class Main extends CI_Controller {
         $this->load->view('backend/index', $page_data);
     }
     function notification($param1 = '', $param2 = '', $param3 = '') {
+        if($param1=='delete'){
+        $this->crud_model->delete_notification($param2);
+        $this->session->set_flashdata('message', get_phrase('notification_removed_successfuly'));
+        redirect($this->session->userdata('last_page'));
+        }
+        if($param1=='delete_all'){
+        $this->crud_model->delete_all_notifications();
+        $this->session->set_flashdata('message', get_phrase('notifications_removed_successfuly'));
+        redirect($this->session->userdata('last_page'));
+        }
         $page_data['notification_data']=$this->crud_model->select_notification();
         $page_data['page_name'] = 'manage_notification';
         $page_data['page_title'] = get_phrase('notifications');
@@ -1838,7 +1849,6 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
     function opt_verification($param1 = '', $param2 = '', $param3 = '')
     {
-
     $past_time=strtotime($_POST['otp_time']);
     $current_time = time();
     $difference = $current_time - $past_time;

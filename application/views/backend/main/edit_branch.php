@@ -1,14 +1,10 @@
 <?php 
-/*echo $this->session->userdata('last_page');die;*/
 $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array(); 
-
 ?>
 <div class="row">
     <div class="col-md-12">
-
         <div class="panel panel-primary" data-collapsed="0">  
             <div class="panel-body">
-
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/branch/update/<?php echo $id; ?>" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-sm-6">

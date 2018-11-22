@@ -4,13 +4,13 @@ $this->session->set_userdata('last_page', current_url());
 <div class="row">
     <div class="col-md-12">
             <div style="clear:both;"></div>
-<table class="table table-bordered table-striped datatable" id="table-2">  
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('title'); ?></th>
-            <th><?php echo get_phrase('health_report'); ?></th>
-            <th><?php echo get_phrase('date'); ?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('sl_no'); ?></th>
+            <th data-field="title" data-sortable="true"><?php echo get_phrase('title'); ?></th>
+            <th data-field="health_report" data-sortable="true"><?php echo get_phrase('health_report'); ?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('date'); ?></th>
             <th><?php echo get_phrase('visibility'); ?></th>
             <?php if($account_type == 'users'){?>
             <th><?php echo get_phrase('options'); ?></th><?php }?>
@@ -25,7 +25,7 @@ $this->session->set_userdata('last_page', current_url());
          $rep_exp_data=explode(',',$rep_exp[7]);
          for($j=0;$j<count($rep_exp_data);$j++) {
         $report=$this->db->get_where('reports',array('order_id'=>$row1['order_id']))->result_array();
-             if($report[$j]['extension']!=''){
+            
             ?>
             <tr>
                 <td><?php echo $i;?></td>
@@ -39,7 +39,7 @@ $this->session->set_userdata('last_page', current_url());
             
                 </td><?php }?>
             </tr>
-        <?php $i++;} }}?>
+        <?php $i++;} }?>
     </tbody>
 </table>
  </div>
