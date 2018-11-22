@@ -50,7 +50,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
 		</script> -->
 		<?php include 'includes_top.php'; ?>
 </head>
-<body>
+<body style="">
 	<?php include 'main/header.php'; ?>
 	<?php include 'main/navigation.php'; ?>
 

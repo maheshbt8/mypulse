@@ -1355,8 +1355,8 @@ class Main extends CI_Controller {
         $this->session->set_flashdata('message', get_phrase('receipt_added_successfuly'));
         redirect($this->session->userdata('last_page'));
         }
-       $data['prescription_id']=$param1;
-       $data['order_id']=$param2;
+       /*$data['prescription_id']=$param1;*/
+       $data['order_id']=$param1;
         $data['page_name'] = 'add_invoice';
         $data['page_title'] = get_phrase('Receipt');
         $this->load->view('backend/index', $data);
@@ -1447,6 +1447,18 @@ class Main extends CI_Controller {
         $data['page_name'] = 'manage_order';
         $data['page_title'] = $page;
         $this->load->view('backend/index', $data);
+    }
+    function add_order($param1=''){
+        if($this->input->post()){
+        $this->crud_model->book_order($param1);
+        $this->session->set_flashdata('message', get_phrase('ordered_successfuly'));
+        redirect($this->session->userdata('last_page'));
+        }
+        if($param1==0){$page=get_phrase('order_medicens');}elseif($param1==1){$page=get_phrase('order_medicaltest');}
+        $data['order_type'] = $param1;
+        $data['page_name'] = 'add_order';
+        $data['page_title'] = $page;
+        $this->load->view('backend/index', $data);   
     }
     function health_reports($param1='',$param2='',$param3='')
     {   

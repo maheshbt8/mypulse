@@ -2654,8 +2654,7 @@ if($account_type == 'superadmin'){
                 $s1='0';
             }
         }
-        if($s1==0){
-            
+        if($s1==0){       
     $patient_data['hospital_ids']=$hos.','.$department->hospital_id; 
         }
         $doc=$patient->row()->doctor_ids;
@@ -3031,6 +3030,9 @@ return $this->db->get_where('appointments',array('doctor_id'=>$this->session->us
     }
     function upload_prescription_receipt($order_type){
         $order_id=$this->input->post('order_id');
+        if($this->input->post('cost')!=''){
+        $data['cost']= implode(',',$this->input->post('cost'));
+        }
         $data['price']= implode(',',$this->input->post('price'));
         $data['total']=$this->input->post('total');
         $data['receipt_created_at']=date('Y-m-d H:i:s');
@@ -3180,17 +3182,13 @@ return $this->db->get_where('appointments',array('doctor_id'=>$this->session->us
         }
         $this->db->insert('patient',$patient_data);
         }
-
-
            if($id == 0){
         $data1['medicin_status']     = 1;
-        $this->db->where('prescription_id',$data['prescription_id'])->update('prescription',$data1);
         }
         if($id == 1){
         $data1['test_status']     = 1;
-        $this->db->where('prescription_id',$data['prescription_id'])->update('prescription',$data1);
         }
-
+        $this->db->where('prescription_id',$data['prescription_id'])->update('prescription',$data1);
         }
 
     }
@@ -3228,6 +3226,65 @@ return $this->db->get_where('appointments',array('doctor_id'=>$this->session->us
     }
     function select_order_info_id($order_id=''){
 return $this->db->get_where('prescription_order',array('order_id'=>$order_id))->row_array(); 
+    }
+    function book_order($order_type){
+    $data['user_id']=$this->session->userdata('login_user_id');
+    $data['order_type']=$order_type;
+    $data['type_of_order']=1;
+    if($order_type==0){
+    $data['store_id']=$this->input->post('store');
+    $data['order_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('drug')).'|'.implode(',',$this->input->post('strength')).'|'.implode(',',$this->input->post('quantity')));
+    }elseif($order_type==1){
+        $data['lab_id']=$this->input->post('lab');
+        $data['order_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('test_title')).'|'.implode(',',$this->input->post('description')));
+    }
+    $data['created_at']=date('Y-m-d H:i:s');
+   $yes=$this->db->insert('prescription_order',$data);
+    if($yes){
+            /*********** Patient **************/
+        $patient_data['user_id']=$data['user_id'];
+        $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient');
+        if($patient->num_rows()==1){
+            if($order_type == 0){
+        $hos=$patient->row()->store_ids;
+        $hos_ar=explode(',', $hos);
+        for($ho=0;$ho<count($hos_ar);$ho++){
+            if($hos_ar[$ho] == $data['store_id']){
+                $s1='1';
+            }else{
+                $s1='0';
+            }
+        }
+        if($s1==0){
+    $patient_data['store_ids']=$hos.','.$data['store_id']; 
+        }
+        }
+        if($order_type == 1){
+        $hos=$patient->row()->lab_ids;
+        $hos_ar=explode(',', $hos);
+        for($ho=0;$ho<count($hos_ar);$ho++){
+            if($hos_ar[$ho] == $data['lab_id']){
+                $s1='1';
+            }else{
+                $s1='0';
+            }
+        }
+        if($s1==0){
+    $patient_data['lab_ids']=$hos.','.$data['lab_id']; 
+        }
+        }
+        $this->db->where('user_id',$data['user_id']);
+        $this->db->update('patient',$patient_data);
+        }else{
+        if($order_type == 0){
+        $patient_data['store_ids']=$this->input->post('store');
+        }
+        if($order_type == 1){
+        $patient_data['lab_ids']=$this->input->post('lab');
+        }
+        $this->db->insert('patient',$patient_data);
+        }
+    }
     }
     /*function select_order_info_prescription_id($prescription_id=''){
         $account_type = $this->session->userdata('login_type');
@@ -3340,12 +3397,7 @@ return $this->db->get_where('prescription_order',array('order_id'=>$order_id))->
         $data['is_read']=$msg['is_read'].','.$account_details;
         }
     }
-    }/*
-    print_r($data);die;*/
-   /* if($data['is_read']==''){
-        $data['is_read']=$msg['is_read'];
-    }*//*
-    print_r($data);die;*/
+    }
     $this->db->where('message_id',$message_id)->update('messages',$data);
    return $msg;
     }

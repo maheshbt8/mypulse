@@ -104,7 +104,7 @@ echo $user_role; ?></span></div>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='users'){?>
+    <?php if($account_type=='medicalstores' || $account_type=='medicallabs'){?>
         <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/orders">
                 <i class="menu-icon glyphicon glyphicon-list-alt">&nbsp;</i>
@@ -112,6 +112,24 @@ echo $user_role; ?></span></div>
             </a>
         </li>
     <?php }?>
+    <?php if($account_type=='users'){?>
+        <li class="parent <?php if ($page_name == 'manage_order') echo 'active'; ?>"><a data-toggle="collapse" href="#sub-item-1">
+                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-plus"></i></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-1">
+                <li class="#">
+                    <a href="<?php echo base_url(); ?>main/orders/0">
+                        <span><?php echo get_phrase('medicines'); ?></span>
+                    </a>
+                </li>
+                <li class="#">
+                    <a href="<?php echo base_url(); ?>main/orders/1">
+                        <span><?php echo get_phrase('medical_tests'); ?></span>
+                    </a>
+                </li>
+                    </ul>
+        </li>
+        <?php }?>
     <?php if($account_type=='medicallabs'){?>
         <li class="<?php if ($page_name == '') echo 'active'; ?>">
             <a href="#">
@@ -160,6 +178,29 @@ echo $user_role; ?></span></div>
             </a>
         </li>
     <?php }?>
+    <?php if($account_type=='users'){?>
+        <li class="parent <?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports') echo 'active';?>"><a data-toggle="collapse" href="#sub-item-2">
+                    <i class="fa fa-hospital-o">&nbsp;</i> <?php echo get_phrase('health_records'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-plus"></i></span>
+                    </a>
+                    <ul class="children collapse" id="sub-item-2">
+                <li class="#">
+                    <a href="<?php echo base_url(); ?>main/prescription">
+                        <span><?php echo get_phrase('prescriptions'); ?></span>
+                    </a>
+                </li>
+                <li class="#">
+                    <a href="<?php echo base_url(); ?>main/prognosis">
+                        <span><?php echo get_phrase('prognosis'); ?></span>
+                    </a>
+                </li>
+                <li class="#">
+                    <a href="<?php echo base_url(); ?>main/health_reports">
+                        <span><?php echo get_phrase('health_reports'); ?></span>
+                    </a>
+                </li>
+                    </ul>
+        </li>
+        <?php }?>
         <?php if($account_type=='doctors'){?>
             <li class="<?php if ($page_name == 'add_availability') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $this->session->userdata('login_user_id');?>">

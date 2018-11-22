@@ -1,17 +1,24 @@
 <?php 
-$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
 $order_info=$this->crud_model->select_order_info_id($order_id);
+$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
 if($order_info['order_type']==0){
 $store_info=$this->db->where('store_id',$order_info['store_id'])->get('medicalstores')->row_array();
 }elseif($order_info['order_type']==1){
 $store_info=$this->db->where('lab_id',$order_info['lab_id'])->get('medicallabs')->row_array();
 }
+if($prescription_info!=''){
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
+}else{
+$user_info=$this->db->where('user_id',$order_info['user_id'])->get('users')->row_array();
+}
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
+$order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 ?>
-<div class="row" id="print_div">  
-<div class="col-md-12">
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+            <div class="panel-body">
 <div class="my_pulse">  
     <div class="col-md-12" style="background-color: #40403fe8;">
     <center style="padding:5px;"><img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
@@ -22,7 +29,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php echo $prescription_data[0];?></h3></td>
+    <td align="left"><h3>Title :- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -75,9 +82,8 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
     <input type="hidden" name="order_id" value="<?= $order_info['order_id'];?>">
     
 <?php if($order_info['order_type'] == 0){?>
-<div class="row">
+<h2 class="col-sm-12"><?php echo get_phrase('Medicine'); ?></h2>
 <div class="col-md-12">
-    <h2 class="col-sm-3"><?php echo get_phrase('Medicine'); ?></h2>
     <div class="table-responsive">
     
   <table class="table">
@@ -86,16 +92,17 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         <th scope="col">#</th>
         <th scope="col">Drug</th>
         <th scope="col">Quantity</th>
+        <th scope="col">Cost</th>
         <th scope="col" formula="cost*qty"summary="sum">Price</th>
       </tr>
     </thead>
     <tbody>
         <?php 
-        $drug=explode(',',$prescription_data[1]);
+        if($prescription_data[1]!=''){$drug=explode(',',$prescription_data[1]);}else{$drug=explode(',',$order_data[1]);}
         if($account_type!='medicalstores'){
-        $quantity=explode(',',$prescription_data[5]);
+        if($prescription_data[1]!=''){$quantity=explode(',',$prescription_data[5]);}else{$quantity=explode(',',$order_data[3]);}
         }elseif($account_type=='medicalstores'){
-        $quantity=explode(',',$order_info['quantity']); 
+        if($prescription_data[1]!=''){$quantity=explode(',',$order_info['quantity']);}else{$quantity=explode(',',$order_data[3]);}
         }
         ?>
         <?php for($i1=0;$i1<count($drug);$i1++){?>
@@ -103,25 +110,25 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $drug[$i1];?></td>
         <td><?= $quantity[$i1];?></td>
-        <td><input type="text" id="price<?=$i1+1;?>" name="price[]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" autocomplete="off"/></td>
+        <td><input type="type" name="cost[]" id="cost_<?= $i1+1;?>" onchange="return get_cost(<?= $i1+1;?>);">
+            <input type="hidden" id="quantity_<?= $i1+1;?>" value="<?= $quantity[$i1];?>">
+        </td>
+        <td><input type="text" id="price<?=$i1+1;?>" name="price[]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" readonly="" autocomplete="off"/></td>
       </tr>
       <?php }?>
     </tbody>
     <thead>
-        <tr> <th colspan="3" scope="col"><label>Total</label> : </th><td><input type="text" readonly="readonly" name="total" id="total" />&nbsp;<input class="btn btn-info"type="button" value="Total" onclick="totalIt()" /></td></tr>
+        <tr> <th colspan="4" scope="col"><label>Total</label> : </th><td><input type="text" name="total" id="total"readonly="" />&nbsp;<input class="btn btn-info"type="button" value="Total"  onclick="totalIt()"  /></td></tr>
     </thead>
   </table>
-</div>
 </div>
 </div>
 <?php }?>
 <?php if($order_info['order_type'] == 1){?>
 
-<div class="row">
+<h2 class="col-sm-12"><?php echo get_phrase('tests'); ?></h2>
 <div class="col-md-12">
-    <h2 class="col-sm-3"><?php echo get_phrase('tests'); ?></h2>
     <div class="table-responsive">
-    
   <table class="table">
     <thead>
       <tr>
@@ -134,14 +141,13 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$prescription_data[7]);
-        $description=explode(',',$prescription_data[8]);
-        $tests=explode(',',$order_info['tests']); 
+        if($prescription_data[7]!=''){$test_title=explode(',',$prescription_data[7]);}else{$test_title=explode(',',$order_data[1]);}
+        if($prescription_data[7]!=''){$description=explode(',',$prescription_data[8]);}else{$description=explode(',',$order_data[2]);}
+        $tests=explode(',',$order_info['tests']);
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
-        <?php for($i1=0;$i1<count($test_title);$i1++){
-            if($tests[$i1]==1){
-            ?>
+<?php for($i1=0;$i1<count($test_title);$i1++){
+   if(($tests[$i1]==1 && $order_info['type_of_order']==0) || $order_info['type_of_order']==1){   ?>
       <tr>
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
@@ -169,16 +175,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         <tr> <th colspan="4" scope="col"><label class="pull-right">Total : </label>  </th><td><input type="text" readonly="readonly" name="total" id="total" />&nbsp;<input class="btn btn-info"type="button" value="Total" onclick="totalIt()" /></td></tr>
     </thead>
   </table>
-
-
-
-
-
-
-
 </div>
-</div>
-
 </div>
 
 <?php }?>
@@ -190,7 +187,17 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
 <br/><br/><br/>
 </div>
 </div>
+</div>
+</div>
 <br/><br/>
+<script>
+    function get_cost($i) {
+    var quantity=$('#quantity_'+$i).val();
+    var cost=$('#cost_'+$i).val();
+    var total=quantity*cost;
+    $('#price'+$i).val(total);
+    }
+</script>
 <script>
     function totalIt() {
   var count = document.getElementsByName("price[]");
@@ -201,16 +208,16 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
   }
   document.getElementById("total").value=isNaN(total)?"0.00":total.toFixed(2);                        
 }
-function get_cost(cost){
-/*var quantity = document.getElementsByName("que[]");
+/*function get_cost(cost){
+var quantity = document.getElementsByName("quantity[]");
   var total=0;
   for (var i=1;i<=quantity.length;i++) { 
     var cost = $("#cost"+i).value;
     var price = $("#price"+i).value;
     total += isNaN(price)?0:price;
-  }*/
+  }
     alert(cost);
-} 
+} */
 </script>
 <!-- 
 <script>

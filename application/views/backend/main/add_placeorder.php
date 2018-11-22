@@ -5,15 +5,16 @@ $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 ?>
-<div class="row" id="print_div">  
-<div class="col-md-12">
+<div class="row">
+    <div class="col-lg-12">
+<div class="panel panel-default">
+    <div class="panel-body">
 <div class="my_pulse">  
     <div class="col-md-12" style="background-color: #40403fe8;">
     <center style="padding:5px;"><img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
     </div>
 </div>
     <hr/>
-<div class="row">
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
@@ -22,8 +23,6 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         </tbody>
     </table>
 </div>
-</div>
-<div class="row">
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
@@ -45,8 +44,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
         </tbody>
     </table>
 </div>
-</div>
-<div class="row">
+
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
@@ -69,16 +67,12 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
             </tr>
         </tbody>
     </table>
+    <hr/>
 </div>
-</div>
-<br/>
-<hr/>
-<br/>
 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/prescription/order/<?php echo $type_order;?>" method="post" enctype="multipart/form-data">
     <input type="hidden" name="prescription_id" value="<?= $prescription_info['prescription_id'];?>">
     <input type="hidden" name="user_id" value="<?= $prescription_info['user_id'];?>">
 <?php if($type_order == 0){?>
-<div class="row">
 <div class="col-md-4"> 
 <div class="form-group">
 <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('location'); ?></label>
@@ -108,14 +102,9 @@ foreach ($store as $spe) { ?>
 </div>
 
 </div>
-</div>
-<div class="row">
-
-
-<div class="col-md-12">
-    <h2 class="col-sm-3"><?php echo get_phrase('Medicine'); ?></h2>
+<h2 class="col-sm-12"><?php echo get_phrase('Medicine'); ?></h2>
+<div class="col-md-12"> 
     <div class="table-responsive">
-    
   <table class="table">
     <thead>
       <tr>
@@ -152,7 +141,6 @@ foreach ($store as $spe) { ?>
   </table>
 </div>
 </div>
-</div>
 <?php }?>
 <?php if($type_order == 1){?>
 <div class="row">
@@ -186,11 +174,8 @@ foreach ($store as $spe) { ?>
 
 </div>
 </div>
-<div class="row">
-<div class="col-md-12">
-    <h2 class="col-sm-3"><?php echo get_phrase('tests'); ?></h2>
-    <div class="table-responsive">
-    
+    <h2 class="col-sm-12"><?php echo get_phrase('tests'); ?></h2>
+   
   <table class="table">
     <thead>
       <tr>
@@ -216,22 +201,16 @@ foreach ($store as $spe) { ?>
       <?php }?>
     </tbody>
   </table>
-</div>
-</div>
-
-</div>
-
 <?php }?>
 <div class="col-sm-3 control-label col-sm-offset-9">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
-                    </div>
+</div>
 </form> 
-<br/><br/><br/>
 </div>
 </div>
-<br/><br/>
-
+</div>
+</div>
 <script type="text/javascript">
 function get_city_stores(id) {
     

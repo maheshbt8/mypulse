@@ -1,4 +1,5 @@
 body {
+  position: inherit !important;
   background: #f7f7f7;
   padding-top: 60px;
   font-size: 14px;
@@ -95,11 +96,13 @@ input.form-control {
 .has-error .form-control:focus {
   border: 1px solid #f9243f;
   box-shadow: inset 0px 0px 0px 1px #f9243f; }
-
+.profile-sidebar{border: 1px solid rgba(255, 255, 255, 0.1);}
 .navbar-custom {
-  background: #333;
+  background: #292a2d !important;
   height: 60px; }
-
+ul.nav.menu li{
+  border-bottom: 1px solid rgba(21, 20, 20, 0.7);
+}
 .navbar-header .navbar-brand {
   color: #fff;
   font-size: 20px;
@@ -873,8 +876,8 @@ f
 
 .profile-userpic img {
   float: left;
-  margin: 10px 0px 0px 15px;
-  width: 65px;
+  margin: 20px 0px 0px 10px;
+  width: 50px;
   height: 65px;
   border-radius: 9999px !important; }
 
