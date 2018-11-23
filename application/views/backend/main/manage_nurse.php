@@ -32,7 +32,8 @@ $this->session->set_userdata('last_page', current_url());
             <?php if($account_type != 'doctors'){?>
             <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th><?php }?>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
-            <th><?php echo get_phrase('options');?></th>
+            <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
+            <th><?php echo get_phrase('options');?></th><?php }?>
         </tr> 
     </thead>
 
@@ -61,11 +62,12 @@ $this->session->set_userdata('last_page', current_url());
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                      
                  </td>
+                <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                 <td>
                     <?php if($row['is_email'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/nurse/nurse/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/nurse/delete/<?php echo $row['nurse_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                </td>
+                </td><?php }?>
             </tr>
         <?php } ?>
     </tbody>

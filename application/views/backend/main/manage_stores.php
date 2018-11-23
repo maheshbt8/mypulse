@@ -45,9 +45,14 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
                 <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
                <td>
+                 <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
                     <?php if($row['is_email'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/medicalstores/store/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
-                <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove">
+                </i></a>
+                <?php }elseif($account_type == 'users'){?>
+                    <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete_store/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove">
+                </i></a><?php }?>
                 </td>
             </tr>
         <?php } ?>

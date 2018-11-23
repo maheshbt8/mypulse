@@ -4,7 +4,7 @@ $this->session->set_userdata('last_page1', current_url());
 <?php 
 $single_appointment_info = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->result_array();
 foreach ($single_appointment_info as $row) {
-    /*$user_data=$this->db->where('user_id',$row['user_id'])->get('users')->row_array();*/
+    $user_info=$this->db->where('user_id',$row['user_id'])->get('users')->row_array();
     if($account_type != 'doctors' && $account_type != 'nurse' || $row['status']!='2'){
 ?>
 
@@ -86,7 +86,7 @@ foreach ($single_appointment_info as $row) {
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Reason for Appointment'); ?></label>
-                            <div class="col-sm-8" id="doc_ava">
+                            <div class="col-sm-8">
                                 <input type="text" name="reason" placeholder="Reason for Appointment" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['reason']; ?>" disabled="true" >
                             </div>
                     </div>
@@ -94,13 +94,13 @@ foreach ($single_appointment_info as $row) {
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remark'); ?></label>
-                            <div class="col-sm-8" id="doc_ava">
+                            <div class="col-sm-8">
                                 <input type="text" name="remark" placeholder="Remark to be updated by Hospital(Optional)" class="form-control" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['remark']; ?>">
                             </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
-            <div class="col-sm-offset-3 col-sm-8" id="doc_ava">
+            <div class="col-sm-offset-3 col-sm-8">
 <a href="<?php echo base_url();?>main/appointment_history/<?php echo $row['appointment_id'];?>" class="hiper">View Appointment History</a>
             </div>
             </div>
@@ -130,7 +130,8 @@ foreach ($single_appointment_info as $row) {
  </div>
 <div class="panel-body">
     <div class="col-md-4">
-            
+<h4><?php echo '<b>User ID</b> : '.$user_info['unique_id'];?></h4>
+<h4><?php echo '<b>User Name</b> : '.$user_info['name'];?></h4>
 <h4><b>Appointment Date : </b><?php echo date('M ,d-Y',strtotime($row['appointment_date']));?></h4>
 <h4><b>Appointment Slot : </b><?php echo date('h:i A',strtotime($row['appointment_time_starte'])) .' - '.date('h:i A',strtotime($row['appointment_time_end'])) ;?></h4>
 <h4><b>Reason : </b><?php echo $row['reason'];?></h4>
@@ -139,7 +140,9 @@ foreach ($single_appointment_info as $row) {
                  elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
                  elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
                  elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";};?></h4>   
-    <h4><a href="<?php echo base_url();?>main/appointment_history/<?php echo $row['appointment_id'];?>" class="hiper">View Appointment History</a></h4> 
+    <h4><a href="<?php echo base_url();?>main/appointment_history/<?php echo $row['appointment_id'];?>" class="hiper">View Appointment History</a><br/>
+    </h4> 
+    <a href="<?=base_url('main/edit_user/').$user_info['user_id'];?>" class="hiper">View User Details</a>
         </div>
    
     <div class="col-md-6">
@@ -214,13 +217,13 @@ foreach ($single_appointment_info as $row) {
     <?php if($account_type == 'doctors'){?>
         $(document).ready(function(){
            var unique_id=$('#doctor').val();
-          /* alert(unique_id);*/
+           /*alert(unique_id);*/
            $.ajax({
             url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
             success: function(response)
             {
                 /*alert(response);*/
-                jQuery('#doc_ava').html(response);
+                /*jQuery('#doc_ava').html(response);*/
                 document.getElementById("appointment_date").disabled = false;
                 
             } 

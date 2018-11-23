@@ -31,9 +31,7 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch');?></th>
             <th data-field="department" data-sortable="true"><?php echo get_phrase('department');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
-            <?php if($account_type != 'users'){?>
             <th><?php echo get_phrase('options');?></th>
-        <?php }?>
         </tr>
     </thead>
 
@@ -61,16 +59,20 @@ $this->session->set_userdata('last_page', current_url());
                  }
                  else if(
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
-                <?php if($account_type != 'users'){?>
+                
                <td>
+               <?php if($account_type != 'users'){?>
                 <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $row['doctor_id'] ?>" title="Availability"><i class="glyphicon glyphicon-calendar"></i></a>
+                <?php }?>
                 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                  <?php if($row['is_email'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/doctors/doctor/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/doctor/delete/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+            <?php }elseif($account_type == 'users'){?>
+        <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/doctor/delete_doctor/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
             <?php }?>
                 </td>
-            <?php }?>
+            
             </tr>
         <?php } ?>
     </tbody>

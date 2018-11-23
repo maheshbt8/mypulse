@@ -4,32 +4,12 @@
     }
 </style>
 <div class="row">
-   
     <div class="col-md-12">
-         <div class="row">
-    <!-- <div class="col-sm-4">
-                  <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
-
-                        <div class="col-sm-8">
-                            <select name="hospital" class="form-control" value="<?php echo set_value('hospital'); ?>" onchange="return get_hospital_doctors(this.value)">
-                                <option value=""><?php echo get_phrase('select_hospital'); ?></option>
-                                <?php 
-                                $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['hospital_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                           
-                        </div>
-                    </div>
-    </div> -->
+                <div class="panel panel-default">   
+            <div class="panel-heading">
     <div class="col-sm-5">
                   <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('specialization'); ?></label> 
-
+                        <span for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('specialization'); ?></span> 
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control" onchange="return get_specializations_doctors(this.value)">
                                 <option value="0"><?php echo get_phrase('ALL'); ?></option>
@@ -45,7 +25,7 @@
     </div>
     <div class="col-sm-4">
                   <div class="form-group">     
-                        <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('location'); ?></label> 
+                        <span for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('location'); ?></span> 
 
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control" value="<?php echo set_value('location'); ?>" onchange="return get_city_doctors(this.value)">
@@ -63,7 +43,8 @@
                     </div>
     </div>
     <?php if($account_type != 'users'){?>
-       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">UNREGISTERED USER</button><?php }?></div>
+       <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">UNREGISTERED USER</button><?php }?>
+
   <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -127,60 +108,19 @@
                 </div>
                 </div>
                 </div>
-
         </div>
-
     </div>
 </div>
         </form>
         </div>
-      
-      </div>
-      
+      </div> 
     </div>
   </div>
-
+</div>
+<div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_appointment/" method="post" enctype="multipart/form-data">
-             
-        <div class="tab-content">
-           
-        <br>
-            <!----TABLE LISTING STARTS-->
-            <div class="tab-pane box active" id="list">
-                
-                <div class="row">
-    <div class="col-md-12">
-
-        <div class="panel panel-primary" data-collapsed="0">
-
-            
-            <div class="panel-body">
                     <div class="row">
-                    <!-- <div class="col-sm-12">
-                    <div class="form-group" id="doc_ava">
-                       
-                    </div>
-                </div> -->
-                    
-                                          <!--   <div class="col-sm-6">
-                              <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
-
-                        <div class="col-sm-8">
-                            <input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('user'); ?>">
-    <datalist id="users">
-    
-        <?php 
-        $users=$this->db->get('users')->result_array();
-        foreach ($users as $row) {
-         ?>
-    <option value="<?php echo $row['name'].' '.$row['lname'];?>" label="<?php echo $row['unique_id'].'('.$row['email'].')('.$row['phone'].')';?>"><input type="hidden" name="user_id" value="<?php echo $row['user_id'];?>"></option>
-<?php }?>
-  </datalist>
-                        </div>
-                    </div>
-                </div> -->
                 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'users' || $account_type=='nurse' || $account_type=='receptionist'){?>
                 <div class="col-sm-6">
                 
@@ -296,26 +236,14 @@
                 
             </div>
                 
-                
-                    </div>
-                   
-
-            </div>
-
-        </div>
-
-    </div>
-</div>
-            </div>
-                    
-                     
                     <div class="col-sm-3 control-label col-sm-offset-9 ">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>  
                    
    </form>
-   
+   </div>
+</div>
     </div>
 </div>
 

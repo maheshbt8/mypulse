@@ -127,8 +127,7 @@ class Ajax extends CI_Controller {
     }
     function get_bed($ward_id)
     {
-        $ward = $this->db->get_where('bed' , array('ward_id' => $ward_id
-        ))->result_array();
+        $ward = $this->db->get_where('bed' , array('ward_id'=>$ward_id,'bed_status'=>'1'))->result_array();
         echo '<option value=""> Select Bed </option>';
         foreach ($ward as $row) {
             echo '<option value="' . $row['bed_id'] . '">' . $row['name'] . '</option>';

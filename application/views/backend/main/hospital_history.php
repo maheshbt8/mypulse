@@ -218,7 +218,7 @@ foreach ($single_hospital_info as $row) {
 
               </div>
               <div class="col-sm-3 control-label col-sm-offset-9">
-                <?php if($account_type == 'superadmin'){?>
+                <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
                         <input type="submit" class="btn btn-success" value="Update"><?php }?>
                     </div>
                     </div>
@@ -318,7 +318,7 @@ foreach ($single_hospital_info as $row) {
                     </div>
                 </div>
                   <div class="col-sm-3 control-label col-sm-offset-9">
-                    <?php if($account_type == 'superadmin'){?>
+                    <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
                         <input type="submit" class="btn btn-success" value="Update">
                     <?php }?>
                     </div>

@@ -1,11 +1,12 @@
+<?php 
+$this->session->set_userdata('last_page', current_url());
+?>
 <style>
     .title{
         font-size: 20px;
     }
 </style>
-<?php 
-$this->session->set_userdata('last_page', current_url());
-?>
+
 			<div class="panel panel-container">
 				<div class="row">
 			<!-- ************** 1 ******************* -->
@@ -92,9 +93,13 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-        <div class="panel-heading">
-  <ul class="nav nav-tabs bordered">
-        	<?php if($account_type == 'doctors'){?>
+        <!-- <div class="panel-heading"> -->
+  
+        <!-- </div> -->
+    
+        <div class="panel-body">
+        <ul class="nav nav-tabs bordered">
+            <?php if($account_type == 'doctors'||$account_type == 'users'){?>
             <li class="active">
                 <a href="#h1" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'APPOINTMENTS';?>
@@ -103,7 +108,13 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
             </li>
         <?php }?>
         <?php if($account_type == 'users'){?>
-            <li class="active">
+            <li class="">
+                <a href="#h5" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Recommended';?>
+
+                </a>
+            </li>
+            <li class="">
                 <a href="#h2" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'MEDICINES';?>
 
@@ -126,20 +137,29 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
             </li>
         <?php }?>
         </ul>
-        </div>
-    
-        <div class="panel-body">
-          	<!-- FILTERS -->
-     <?php if($account_type=='doctors'){?>
-<div class="col-sm-12">
-	<div class="col-sm-5">
+        <div class="tab-content">
+    <?php if($account_type == 'doctors' || $account_type == 'users'){?>
+    <div class="tab-pane box active" id="h1" style="padding: 5px">
+<form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
+<span class="title"><?php if($account_type=='doctors'){echo "TODAY'S APPOINTMENTS";}elseif($account_type=='users'){echo "UPCOMING APPOINTMENTS";}?></span>
+<div class="panel-body">
+<button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-warning pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('cancel'); ?>
+</button>
+<button type="button" onClick="checkone(this.form);" id="cancel1" class="btn btn-warning pull-right" style="margin-left: 2px;">
+        <?php echo get_phrase('cancel'); ?>
+</button>
+<button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_appointment'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_appointment'); ?>
+</button>
+<?php if($account_type=='doctors'){?>
+<div class="col-sm-5">
                   <div class="form-group">
          <span for="field-ta" class="col-sm-3 control-label"><b> <?php echo get_phrase('date_range'); ?></b></span> 
          <div class="col-sm-7">
         <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y');}?>"/>
         </div>
                 </div>
-</div>
 </div>
 <script type="text/javascript">
         
@@ -189,34 +209,21 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 
 </script>
 <?php }?>
-        <div class="tab-content">
-      <?php if($account_type == 'doctors'){?>
-    <div class="tab-pane box active" id="h1" style="padding: 5px">
-<form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
-<span class="title">TODAY'S APPOINTMENTS</span>
-<button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-warning pull-right" style="margin-left: 2px;">
-        <?php echo get_phrase('cancel'); ?>
-</button>
-<button type="button" onClick="checkone(this.form);" id="cancel1" class="btn btn-warning pull-right" style="margin-left: 2px;">
-        <?php echo get_phrase('cancel'); ?>
-</button>
-<button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_appointment'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_appointment'); ?>
-</button>
-<table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+</div>
+<table data-toggle="table" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
        <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <th><?php echo get_phrase('appointment_no');?></th> 
-            <th><?php echo get_phrase('user');?></th>
-            <th><?php echo get_phrase('city');?></th> 
+            <th><?php if($account_type=='doctors'){echo get_phrase('user');}elseif($account_type=='users'){echo "Doctor";}?></th>
+            <th><?php if($account_type=='doctors'){echo get_phrase('city');}elseif($account_type=='users'){echo "Hospital-Branch-Department";}?></th> 
             <th><?php echo get_phrase('date & time');?></th>
             <th><?php echo get_phrase('status'); ?></th>
         </tr>
     </thead>
 
     <tbody>
-        <?php if($_GET['sd']!=''&&$_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed']);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor();}
+        <?php if($account_type=='doctors'){if($_GET['sd']!='' && $_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed']);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor();}}elseif($account_type=='users'){$appointment_info=$this->crud_model->select_upcoming_appointments();}
         $i=1;foreach ($appointment_info as $row) {
             if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
             {
@@ -233,10 +240,13 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
                  <td><a href="<?php echo base_url(); ?>main/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a>
                  </td>
                 <td>
-             <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
-                        echo $name;?>
+             <?php if($account_type=='doctors'){$name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row();}elseif($account_type=='users'){$name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row();}
+                        echo $name->name;?>
                 </td>
-                 <td><?php echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;?></td> 
+                 <td><?php if($account_type=='doctors'){echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;}elseif($account_type=='users'){$branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
+                        echo $hospital->name.' - '.$branch->name.' - '.$name;}?></td> 
                 <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
@@ -254,9 +264,51 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 </div>
 <?php }?>
 <?php if($account_type == 'users'){?>
-    <div class="tab-pane box active" id="h2" style="padding: 5px">
+    <div class="tab-pane box" id="h5" style="padding: 5px">
+<form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
+<span class="title">RECOMMEND APPOINTMENTS</span>
+<div class="panel-body">
+<table data-toggle="table" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+    <thead>
+       <tr>
+           <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('Hospital-Branch-Department'); ?></th>
+            <th><?php echo get_phrase('doctor'); ?></th>
+            <th><?php echo get_phrase('Recommed Date'); ?></th>
+            <th><?php echo get_phrase('options'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+         <?php $appointment_info=$this->crud_model->select_recommend_appointments();
+        $i=1;foreach ($appointment_info as $row) {
+            ?>   
+            <tr>
+                <td><?=$i;?></td>
+                 <td><?php $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
+                        echo $hospital->name.' - '.$branch->name.' - '.$name;?></td>
+                <td>
+             <?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row();
+                        echo $name->name;?>
+                </td> 
+                <td><?php echo date("d M, Y",strtotime($row['next_appointment']));?></td>
+                <td>
+        <a href="<?php echo base_url(); ?>main/add_appointment" title="Book Appointment"><i class="glyphicon glyphicon-plus"></i>
+            </a>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+</div>
+</form>
+</div>
+<div class="tab-pane box" id="h2" style="padding: 5px">
 <form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
 <span class="title">OUTSTANDING PRESCRIPTIONS FOR MEDICINES</span>
+<div class="panel-body">
 <table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
        <tr>
@@ -287,11 +339,13 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
         <?php $i++;}} ?>
     </tbody>
 </table>
+</div>
 </form>
 </div>
  <div class="tab-pane box" id="h3" style="padding: 5px">
 <form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
 <span class="title">OUTSTANDING PRESCRIPTIONS FOR MEDICAL TESTS</span>
+<div class="panel-body">
 <table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
        <tr>
@@ -324,6 +378,7 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
         <?php $i++;}}?>
     </tbody>
 </table>
+</div>
 </form>
 </div>
 <?php }?>
@@ -336,6 +391,7 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 if($account_type == 'medicallabs'){
     echo get_phrase('OUTSTANDING ORDERS FOR LAB TESTS');
 }?></span>
+<div class="panel-body">
 <table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
        <tr>
@@ -374,6 +430,7 @@ if($account_type == 'medicallabs'){
         <?php } $i++;} ?>
     </tbody>
 </table>
+</div>
 </form>
 </div>
 <?php }?>  

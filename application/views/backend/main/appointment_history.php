@@ -1,7 +1,13 @@
 <?php 
 $appointment_info = $this->db->get_where('appointment_history', array('appointment_id' => $appointment_id))->result_array();
 ?>
+<div class="row">
+<div class="col-lg-12">
+<div class="panel panel-default">   
+<div class="panel-heading">
 <input type="button" class="btn btn-orange pull-right" value="<?php echo get_phrase('back'); ?>" onclick="window.location.href = '<?= base_url('main/edit_appointment/').$appointment_id; ?>'">
+</div>
+<div class="panel-body">
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>
@@ -65,3 +71,7 @@ if($hos[0] == 'superadmin'){
         <?php } ?>
     </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>

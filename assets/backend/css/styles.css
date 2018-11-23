@@ -32,6 +32,9 @@ h3, h4 {
 span.error{
   color: #ff0000;
 }
+span.validate-has-error{
+  color:#ff0000;
+}
 .large {
   font-size: 2em; }
 
@@ -726,8 +729,8 @@ f
   padding: 0; }
 
 .nav-tabs {
-  background: #f2f3f2;
-  border: 0; }
+  background: #c8c8c8;
+  border: 1px solid; }
 
 .nav-tabs li a:hover {
   background: #fff; }

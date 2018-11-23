@@ -16,7 +16,7 @@ class Email_model extends CI_Model {
         $id = $query->row()->unique_id;//$type
         $email_msg = "Welcome to " . $system_name . "<br />";
         $email_msg .= "Dear User <br/> Your ID is : " . $id . "<br />";
-        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com/login/email_verification/$account_type/$id\"> YES </a></button> <br />";
+        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"".base_url()."login/email_verification/$account_type/$id\"> YES </a></button> <br />";
         //$email_msg .= "Login Here : " . base_url() . "<br/>";
 
         /*echo $email_msg;die;*/
@@ -31,7 +31,7 @@ class Email_model extends CI_Model {
         $id = $unique_id;
         $email_msg = "Welcome to " . $system_name . "<br />";
         $email_msg .= "Dear User <br/> Your ID is : " . $id . "<br />";
-        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"http://ec2-18-236-66-199.us-west-2.compute.amazonaws.com/login/email_verification/$account_type/$id\"> YES </a></button> <br />";
+        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"".base_url()."login/email_verification/$account_type/$id\"> YES </a></button> <br />";
         //$email_msg .= "Login Here : " . base_url() . "<br/>";
 
         /*echo $email_msg;die;*/

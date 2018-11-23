@@ -1766,8 +1766,16 @@ if($account_type == 'medicalstores'){
         if($insert)
         {
             $lid=$this->db->insert_id();
-            if($data['status'] == 1){$status='Admitted';}elseif($data['status'] == 0){$status='Not Admitted';}
-            /******Notification Message******/
+            
+            /***********Bed Status**************/
+        if($this->input->post('bed')!=''){
+        $this->db->where('bed_id',$this->input->post('bed'));
+        $this->db->update('bed',array('bed_status'=>2));
+        }
+
+        /******Notification Message******/
+        if($data['status'] == 1){$status='Admitted';}elseif($data['status'] == 0){$status='Not Admitted';}
+            
             $notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
             $notification['user_id']='users-user-'.$data['user_id'];
             $notification['title']='Registered As In-Patient';
@@ -1790,6 +1798,13 @@ if($account_type == 'medicalstores'){
     $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
     $data['modified_date']=date('Y-m-d H:i:s');
     $status=$this->db->where('id',$patient_id)->get('inpatient')->row_array();
+    if($status['bed_id']!=$this->input->post('bed'))
+    {
+    $this->db->where('bed_id',$status['bed_id']);
+    $this->db->update('bed',array('bed_status'=>1));
+    $this->db->where('bed_id',$this->input->post('bed'));
+    $this->db->update('bed',array('bed_status'=>2)); 
+    }
     if($status['status'] != $data['status'] && $data['status']==1){
     $data['join_date']=date('Y-m-d H:i:s');
     }
@@ -1799,6 +1814,11 @@ if($account_type == 'medicalstores'){
     $insert=$this->db->where('id',$patient_id)->update('inpatient',$data);
         if($insert)
         {
+              /***********Bed Status**************/
+        if($data['status']==2){
+        $this->db->where('bed_id',$this->input->post('bed'));
+        $this->db->update('bed',array('bed_status'=>1));
+        }
             /*$lid=$this->db->insert_id();*/
             if($data['status'] == 2){$status='Discharged';}
             /******Notification Message******/
@@ -2640,7 +2660,7 @@ if($account_type == 'superadmin'){
             $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
          $this->db->insert('notification',$notification);
 
-         
+
         /*********** Patient **************/
         $patient_data['user_id']=$this->input->post('user_id');
         $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient');
@@ -2791,6 +2811,15 @@ for($doc=0;$doc<count($doctor_id);$doc++){
 return $return;
 }
     }
+function select_upcoming_appointments(){
+    $id=$this->session->userdata('login_user_id');
+return $this->db->get_where('appointments',array('user_id'=>$id,'appointment_date>='=>date('m/d/Y')))->result_array();
+    }
+function select_recommend_appointments(){
+    $id=$this->session->userdata('login_user_id');
+return $this->db->get_where('appointments',array('user_id'=>$id,'next_appointment!='=>'','next_appointment>='=>date('m/d/Y')))->result_array();
+    }
+    
 function select_today_appointment_info_by_doctor(){
 return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('m/d/Y')))->result_array();
     }

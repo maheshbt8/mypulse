@@ -159,7 +159,7 @@
         <?php echo get_phrase('add_prescription'); ?>
 </button>
 <?php }?>
-<table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<table data-toggle="table" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
@@ -197,7 +197,7 @@
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prognosis'); ?>
 </button>
-<table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
@@ -234,7 +234,7 @@
 </table>
 </div>
 <div class="tab-pane box" id="h4" style="padding: 5px">
-<table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
@@ -267,7 +267,7 @@
 </table>
 </div>
 <div class="tab-pane box" id="h5" style="padding: 5px">
-<table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no');?></th>

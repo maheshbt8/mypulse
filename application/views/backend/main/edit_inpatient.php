@@ -14,18 +14,16 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_inpatient/<?=$patient_id?>" method="post" enctype="multipart/form-data">
-            <!----TABLE LISTING STARTS-->
-            <!-- <div class="tab-pane box active" id="list">
-                
-                <div class="row"> -->
     <div class="col-md-3">
+<h4><?php echo '<b>User ID</b> : '.$user_data['unique_id'];?></h4>
+<h4><?php echo '<b>User Name</b> : '.$user_data['name'];?></h4>
 <h4><?php echo '<b>Bed</b> : '.$bed_info->name;?></h4>
 <h4><?php if($user_info->status == 0){$status='Recommended';}elseif($user_info->status == 1){$status='Admitted';}elseif($user_info->status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
 <h4><?php echo '<b>Admitted Date & Time</b> : '.$user_info->join_date;?></h4>
 <h4><?php echo '<b>Reason</b> : '.$user_info->reason;?></h4>
 <h4><?php echo '<b>Discharged Date & Time</b> : '.$user_info->discharged_date;?></h4>
+<a href="<?=base_url('main/edit_user/').$user_info->user_id?>" class="hiper">View User Details</a>
         </div>
     <div class="col-md-9">
         <div class="panel panel-primary" data-collapsed="0">
@@ -215,7 +213,9 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 </div>
  </div>
 </div>
+<?php if($user_info->status == 1){?>
 <?php $data['user_id']=$user_info->user_id;$this->load->view('backend/main/user_history',$data);?>
+<?php }?>
 
 <script type="text/javascript">
     function get_user_data(user_value) {
