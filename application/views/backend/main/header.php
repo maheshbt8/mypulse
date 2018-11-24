@@ -81,6 +81,8 @@ else
                 <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: -15px;"/>
             </span>
                 </a>
+              <?php if($account_type != 'superadmin' && $account_type != 'users'){?>
+      <span style="margin:5%;font-size: 35px;color: #fff;"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $this->session->userdata('hospital_id');?>.png"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
 <ul class="nav navbar-top-links navbar-right">
 <li class="dropdown language-menu select" id="lang_select">
         <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="width: 100%">
@@ -97,42 +99,7 @@ else
     <?php }?>
   </ul>
       </li>
-<li class="dropdown">
-    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-<em class="fa fa-envelope"></em><span id="message_count"></span>
-	</a>
-	   <ul class="dropdown-menu dropdown-messages">
-<?php $message_data=$this->crud_model->select_message();
-if($message_data!=''){
-    foreach ($message_data as $row) {
-    ?>
-<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
-        <li>
-        <div class="dropdown-messages-box">
-<div class="message-body">
-<strong><?= $row['title'];?></strong>.
-<br />
-<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small></div>
-</div>
-</li>
-<li class="divider"></li>
-</a>
-<?php }}else{?>
-<li>
-<div class="all-button">
-    <br/>
-<center><strong>No Messages Available</strong></center></div>
-</li>
-<li class="divider"></li>
-<?php }
-          ?> 
-<li>
-<div class="all-button"><a href="<?php echo base_url()?>main/message">
-<em class="fa fa-inbox"></em> <strong>All Messages</strong></a></div>
-</li>
-</ul>
-</li>
-<li class="dropdown">
+    <li class="dropdown">
     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
 <em class="fa fa-bell"></em><span id="notification_count"></span>
     </a>
@@ -172,6 +139,42 @@ if($notification_data!=''){
 </li>
 </ul>
 </li>
+<li class="dropdown">
+    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+<em class="fa fa-envelope"></em><span id="message_count"></span>
+	</a>
+	   <ul class="dropdown-menu dropdown-messages">
+<?php $message_data=$this->crud_model->select_message();
+if($message_data!=''){
+    foreach ($message_data as $row) {
+    ?>
+<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
+        <li>
+        <div class="dropdown-messages-box">
+<div class="message-body">
+<strong><?= $row['title'];?></strong>.
+<br />
+<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small></div>
+</div>
+</li>
+<li class="divider"></li>
+</a>
+<?php }}else{?>
+<li>
+<div class="all-button">
+    <br/>
+<center><strong>No Messages Available</strong></center></div>
+</li>
+<li class="divider"></li>
+<?php }
+          ?> 
+<li>
+<div class="all-button"><a href="<?php echo base_url()?>main/message">
+<em class="fa fa-inbox"></em> <strong>All Messages</strong></a></div>
+</li>
+</ul>
+</li>
+
 <li class="dropdown">
 <a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;"><img src="<?=$image_url;?>" alt=""><span>
 <?php echo $this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?><em class="fa fa-angle-down"></em></span></a>

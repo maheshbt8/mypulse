@@ -51,6 +51,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
 		<?php include 'includes_top.php'; ?>
 </head>
 <body style="">
+
 	<?php include 'main/header.php'; ?>
 	<?php include 'main/navigation.php'; ?>
 
@@ -73,11 +74,10 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
 			</div><!--/.row-->
 			
 			<?php include 'main/' . $page_name . '.php'; ?>
+		<?php include 'footer.php'; ?>
 			
-			<div class="col-sm-12">
-					<p class="back-link" style="color: #000">Lumino Theme by <a href="https://www.medialoot.com/">Medialoot</a></p>
-				</div>
 		</div>	<!--/.main-->
+
 		<?php include 'modal.php'; ?>
 	<?php include 'includes_bottom.php'; ?>
 </body>

@@ -17,11 +17,12 @@ class Login extends CI_Controller {
     //Default function, redirects to logged in user area
     public function index() {
         if ($this->session->userdata('login') == 1)
-            redirect(base_url() . 'main/dashboard', 'refresh');
+            redirect(base_url() . 'main', 'refresh');
         $this->load->view('backend/login');
     }
     //Validating login from ajax request
     function validate_login() {
+        if($this->input->post()){
       $email = $this->input->post('email');
       $password = $this->input->post('password');/*
       $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";*/
@@ -35,6 +36,7 @@ class Login extends CI_Controller {
             $row = $query->row();
             $this->session->set_userdata('login', '1');
             $this->session->set_userdata('login_user_id', $row->superadmin_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('name', $row->name);
            	$this->session->set_userdata('login_type', 'superadmin');
             $this->session->set_userdata('type_id', 'superadmin');
@@ -44,7 +46,7 @@ class Login extends CI_Controller {
         $query = $this->db->get_where('hospitaladmins', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
+            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->admin_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -52,15 +54,13 @@ class Login extends CI_Controller {
             $this->session->set_userdata('hospital_name', $this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row()->name);
             $this->session->set_userdata('login_type', 'hospitaladmins');
             $this->session->set_userdata('type_id', 'admin');
-
-            redirect(base_url() . 'main', 'refresh');
         }
         
     
         $query = $this->db->get_where('doctors', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
+            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -69,7 +69,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('department_id', $row->department_id);
             $this->session->set_userdata('login_type', 'doctors');
             $this->session->set_userdata('type_id', 'doctor');
-            redirect(base_url() . 'main', 'refresh');
+         
         }
         
         $query = $this->db->get_where('users', $credential);
@@ -87,7 +87,7 @@ class Login extends CI_Controller {
         $query = $this->db->get_where('nurse', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
+            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->nurse_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -96,49 +96,72 @@ class Login extends CI_Controller {
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'nurse');
             $this->session->set_userdata('type_id', 'nurse');
-            redirect(base_url() . 'main', 'refresh');
+           
         }
         
         $query = $this->db->get_where('receptionist', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
+            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->receptionist_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'receptionist');
             $this->session->set_userdata('type_id', 'receptionist');
-            redirect(base_url() . 'main', 'refresh');
+          
         }
         $query = $this->db->get_where('medicallabs', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
+            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->lab_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicallabs');
             $this->session->set_userdata('type_id', 'lab');
-            redirect(base_url() . 'main/dashboard', 'refresh');
+      
         }
         $query = $this->db->get_where('medicalstores', $credential);
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
+            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->store_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicalstores');
             $this->session->set_userdata('type_id', 'store');
-            redirect(base_url() . 'main/dashboard', 'refresh');
         }
-        $this->session->set_flashdata('login_error', 'Invalid_login');
+         $account_type=$this->session->userdata('login_type');
+if($account_type!='superadmin' && $account_type!='users'){
+    $license_status=$this->db->get_where('hospitals',array('hospital_id',$this->session->userdata('hospital_id')))->row()->license_status;
+    if($this->session->userdata('hospital_id')){
+    if($license_status==1){
+    $this->session->set_userdata('login', '1');
+    redirect(base_url() . 'main', 'refresh');
+    }else{
+        $this->session->set_flashdata('login_error', 'Login Failed Due To License Expire Please Contact Your Hospital Admin');
+         redirect(base_url() . 'login', 'refresh');
+        }
+    }else{
+            $this->session->set_userdata('login', '1');
+            redirect(base_url() . 'main', 'refresh');
+        }
+        }else{
+            $this->session->set_userdata('login', '1');
+            redirect(base_url() . 'main', 'refresh');
+        }
+    }
+        $this->session->set_flashdata('login_error', 'Please Enter Valid Login Details !!!');
          redirect(base_url() . 'login', 'refresh');
     }
+/*     * *Licence Status**** */
 
+    function license_status() {
+        $this->load->view('backend/license_exp');
+    }
     /*     * *DEFAULT NOR FOUND PAGE**** */
 
     function four_zero_four() {

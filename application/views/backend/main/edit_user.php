@@ -8,8 +8,11 @@ $account_type= $this->session->userdata('login_type');
 $single_user_info = $this->db->get_where('users', array('user_id' => $id))->result_array();
 foreach ($single_user_info as $row) {  
 ?>
+
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-lg-12">
+        
+           
     
         <!------CONTROL TABS START------>   
         <ul class="nav nav-tabs bordered"> 
@@ -30,6 +33,8 @@ foreach ($single_user_info as $row) {
                 </a>
             </li>
         </ul>
+        <div class="panel panel-default">
+         <div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_user/<?php echo $id;?>" method="post" enctype="multipart/form-data">
              
@@ -437,7 +442,8 @@ foreach ($single_user_info as $row) {
         </form>
     </div>
 </div>
-
+ </div>
+</div>
 <?php }?>
 <script type="text/javascript">
 

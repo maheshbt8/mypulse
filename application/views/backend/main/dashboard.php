@@ -6,8 +6,7 @@ $this->session->set_userdata('last_page', current_url());
         font-size: 20px;
     }
 </style>
-
-			<div class="panel panel-container">
+	<div class="panel panel-container">
 				<div class="row">
 			<!-- ************** 1 ******************* -->
 					<div class="col-xs-4 col-md-2 col-lg-2 no-padding">
@@ -87,17 +86,10 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 				</div><!--/.row-->
 			</div>
 
-<!-- Datbale Data -->
 <?php $account_type=$this->session->userdata('login_type');$user_data=$this->db->where('user_id',1)->get('users')->row_array();?>
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
-        <!-- <div class="panel-heading"> -->
-  
-        <!-- </div> -->
-    
-        <div class="panel-body">
         <ul class="nav nav-tabs bordered">
             <?php if($account_type == 'doctors'||$account_type == 'users'){?>
             <li class="active">
@@ -137,11 +129,89 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
             </li>
         <?php }?>
         </ul>
+        <div class="panel panel-default">
+        <!-- <div class="panel-heading"> -->
+  
+        <!-- </div> -->
+    <!-- ****************SUPER ADMIN********************************** -->
+<?php if($account_type=='superadmin'){?>
+
+<?php 
+$hospital_status=$this->db->get('hospitals')->result_array();
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <!-- CALENDAR-->
+            <div class="col-md-12 col-xs-12">
+                <div class="panel panel-primary " data-collapsed="0">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <i class="fa fa-calendar"></i>Hospitals Expair Dates
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding:0px;">
+                        <div class="calendar-env">
+                            <div class="calendar-body">
+                                <div id="notice_calendar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <script>
+  $(document).ready(function() {
+
+      var calendar = $('#notice_calendar');
+
+                $('#notice_calendar').fullCalendar({
+                    header: {
+                        left: 'title',
+                        right: 'today prev,next'
+                    },
+
+                    //defaultView: 'basicWeek',
+
+                    editable: false,
+                    firstDay: 0,
+                    height: 530,
+                    droppable: false,
+
+                    events: [
+                        <?php
+                        foreach($hospital_status as $row):    
+                        ?>
+                        {
+                            url:"<?php echo base_url();?>main/get_hospital_history/<?=$row['hospital_id'];?>",
+                            title: "<?php echo $row['name'];?>",
+                            start: new Date(<?php echo date('Y',strtotime($row['till_date']));?>, <?php echo date('m',strtotime($row['till_date']))-1;?>, <?php echo date('d',strtotime($row['till_date']));?>),
+                    
+                        },
+                        <?php
+                        endforeach
+                        ?>
+
+                    ]
+
+                });
+    });
+  </script>
+<?php }?>
+<!-- Datbale Data -->
+        
+        
+        <div class="panel-body">
         <div class="tab-content">
     <?php if($account_type == 'doctors' || $account_type == 'users'){?>
     <div class="tab-pane box active" id="h1" style="padding: 5px">
 <form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
-<span class="title"><?php if($account_type=='doctors'){echo "TODAY'S APPOINTMENTS";}elseif($account_type=='users'){echo "UPCOMING APPOINTMENTS";}?></span>
+<span class="title"><?php echo "UPCOMING APPOINTMENTS";?></span>
 <div class="panel-body">
 <button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-warning pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('cancel'); ?>
@@ -196,12 +266,12 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
                 "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
             },  
             ranges: {
-                '<?php echo $this->lang->line('today');?>': [moment(), moment()],
-                '<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                '<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
-                '<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
-                '<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
-                '<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                '<?php echo 'Today';?>': [moment(), moment()],
+                '<?php echo 'Tomorrow';?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+                '<?php echo 'Upcoming 7 day';?>': [moment(),moment().add(6, 'days')],
+                '<?php echo 'Upcoming 30 day';?>': [moment(),moment().add(29, 'days'),],
+                '<?php echo 'This Month';?>': [moment().startOf('month'), moment().endOf('month')],
+                '<?php echo 'Next Month';?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
             }
         },cb);
 
@@ -369,10 +439,8 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
                     <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
-
             <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/1" title="Order Medical Test"><i class="glyphicon glyphicon-plus"></i>
-            </a>&nbsp;<!-- 
-            <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/receptionist/delete/<?php echo $row1['prescription_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> -->
+            </a>&nbsp;
                 </td>
             </tr>
         <?php $i++;}}?>

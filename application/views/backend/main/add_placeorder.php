@@ -191,14 +191,16 @@ foreach ($store as $spe) { ?>
         $description=explode(',',$prescription_data[8]);
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
-        <?php for($i1=0;$i1<count($test_title);$i1++){?>
+        <?php for($i1=0;$i1<count($test_title);$i1++){
+            if($prescription_data[7]!=''){
+            ?>
       <tr>
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
         <td><input type="checkbox" name="tests[<?= $i1;?>]" value="<?= $i1;?>" checked></td>
       </tr>
-      <?php }?>
+      <?php }}?>
     </tbody>
   </table>
 <?php }?>

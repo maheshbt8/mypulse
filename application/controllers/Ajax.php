@@ -340,9 +340,9 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
 }$i=1;foreach ($patient_info as $row) {
     if($row!=''){
 ?>
-<tr><!-- 
-                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td> -->
-                <td><?= $i;?></td>
+<tr>
+                <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td>
+                <!-- <td><?= $i;?></td> -->
                 <td><?php $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
                 if($account_type != 'users'){?><a href="<?php echo base_url()?>main/edit_inpatient/<?= $row['id']?>" class="hiper"><?php echo $user->name.' / '.$user->unique_id;?></a><?php }elseif($account_type == 'users'){?><?php echo $user->name.' / '.$user->unique_id;}?></td>
                  <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name;?></a></td>

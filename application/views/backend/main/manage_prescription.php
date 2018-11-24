@@ -23,17 +23,22 @@ $this->session->set_userdata('last_page', current_url());
     <tbody>
         <?php
         $i=1;foreach ($prescription as $row1) {
+            $prescription_data=explode('|',$this->encryption->decrypt($row1['prescription_data']));
             ?>
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row1['prescription_id']; ?>"></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><?php echo explode('|',$this->encryption->decrypt($row1['prescription_data']))[0];?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper"><?php echo $prescription_data[0];?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td><?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/prescription/status/<?= $row1['prescription_id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row1['status']==2){?><a href="<?php echo base_url(); ?>main/prescription/status/<?= $row1['prescription_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td>
                <?php if($account_type == 'users'){?>
-                <td> 
-              <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicine"><i class="glyphicon glyphicon-plus"></i>
-            </a>&nbsp;
+                <td>
+            <?php if($prescription_data[1]!=''){?> 
+              <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicine"><em class="fa fa-sm fa-medkit color-blue"></em>
+            </a>&nbsp;<?php }?>
+            <?php if($prescription_data[7]!=''){?>
+            <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/1" title="Order Medical Tests"><em class="fa fa-sm fa-plus-square color-red"></em>
+            </a>&nbsp;<?php }?>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/prescription/delete/<?php echo $row1['prescription_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
                 </td><?php }?>
             </tr>

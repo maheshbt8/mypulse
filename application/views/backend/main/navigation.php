@@ -137,7 +137,7 @@ echo $user_role; ?></span></div>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
+    <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='receptionist'){?>
         <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/patient">
                 <i class="fa fa-users">&nbsp;</i>

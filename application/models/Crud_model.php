@@ -2647,7 +2647,6 @@ if($account_type == 'superadmin'){
         $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
-
         $insert=$this->db->insert('appointments',$data);
         
         if($insert)
@@ -2668,27 +2667,46 @@ if($account_type == 'superadmin'){
         $hos=$patient->row()->hospital_ids;
         $hos_ar=explode(',', $hos);
         for($ho=0;$ho<count($hos_ar);$ho++){
-            if($hos_ar[$ho] == $department->hospital_id){
-                $s1='1';
-            }else{
-                $s1='0';
-            }
+           if($hos_ar[$ho]==$department->hospital_id){
+        $patient_data['hospital_ids']=$hos;
+        break;
+        }else{
+        $patient_data['hospital_ids']=$hos.','.$department->hospital_id;
         }
-        if($s1==0){       
+        }
+       /* if($s1==0){       
     $patient_data['hospital_ids']=$hos.','.$department->hospital_id; 
+        }*/
+        /*8888888888888888888888888888888888888888888*/
+ /*********** Patient **************/
+      /*  $patient_data['user_id']=$this->input->post('user_id');
+        $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient');
+        if($patient->num_rows()==1){
+        $hos=$patient->row()->hospital_ids;
+        $hos_ar=explode(',', $hos);
+        for($ho=0;$ho<count($hos_ar);$ho++){
+        if($hos_ar[$ho]==$department->hospital_id){
+        $patient_data['hospital_ids']=$hos;
+        break;
+        }else{
+        $patient_data['hospital_ids']=$hos.','.$department->hospital_id;
+        }   
         }
+        }*/
+/*88888888888888888888888888888888888888888888*/
         $doc=$patient->row()->doctor_ids;
         $doc_ar=explode(',', $doc);
         for($do=0;$do<count($doc_ar);$do++){
-            if($doc_ar[$do] == $this->input->post('doctor_id')){
-                $s2='1';
-            }else{
-                $s2='0';
-            }
+            if($hos_ar[$ho]==$department->hospital_id){
+        $patient_data['doctor_ids']=$doc;
+        break;
+        }else{
+        $patient_data['doctor_ids']=$doc.','.$this->input->post('doctor_id');
         }
-        if($s2==0){
+        }
+        /*if($s2==0){
         $patient_data['doctor_ids']=$doc.','.$this->input->post('doctor_id'); 
-        }
+        }*/
         $this->db->where('user_id',$this->input->post('user_id'));
         $this->db->update('patient',$patient_data);
         }else{
@@ -3121,11 +3139,30 @@ return $this->db->get_where('appointments',array('doctor_id'=>$this->session->us
         $this->db->where('prognosis_id',$prognosis_id);
         $this->db->update('prognosis',$data);
     }
+    function save_medical_reports()
+    {
+        $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+        $data['created_by']=$account_details;
+        $data['user_id'] = $this->input->post('user_id');
+        $data['order_type']='1';
+      
+        for($j=0;$j<count($_FILES["report"]["name"]);$j++){
+            $data['title']=$this->input->post('title')[$j];
+            $data['created_at']=date('Y-m-d H:i:s');
+            $data['extension']=end(explode('.',$_FILES["report"]["name"][$j]));
+            $insert=$this->db->insert('reports',$data);
+            if($insert){
+            $lid=$this->db->insert_id();
+            move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/" . $lid . '.'.$report['extention']);
+            }
+        }
+        
+        
+    }
     function select_medical_reports()
     {
         $user_id = $this->session->userdata('login_user_id');
-        /*return $this->db->get_where('prescription', array('user_id' => $user_id))->result_array();*/
-       return $this->db->get_where('prescription_order',array('user_id'=>$user_id,'order_type'=>1))->result_array();
+       return $this->db->get_where('prescription_order',array('user_id'=>$user_id,'order_type'=>1,'status'=>1))->result_array();
     }
     function select_medical_reports_information($order_id='')
     {

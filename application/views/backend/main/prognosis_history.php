@@ -7,12 +7,17 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['prognosis_data']));
 ?>
 <div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+            <div class="panel-heading">
+<div class="row">
     <div class="col-sm-2 pull-right">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 </div>
 </div>
-<br/>
+</div>
+<div class="panel-body">
 
 <div class="row" id="print_div">  
 <div class="col-md-12">
@@ -96,6 +101,10 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
 
 </footer>
 
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <br/><br/>

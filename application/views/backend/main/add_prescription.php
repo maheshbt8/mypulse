@@ -1,7 +1,8 @@
 
 <div class="row">
-   
-    <div class="col-md-12">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+            <div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_prescription/" method="post" enctype="multipart/form-data">
              
@@ -92,7 +93,8 @@
                     </div>  
                    
    </form>
-
+</div>
+</div>
     </div>
 </div>
 <br/><br/>

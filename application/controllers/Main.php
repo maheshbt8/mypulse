@@ -16,7 +16,7 @@ class Main extends CI_Controller {
         $this->output->set_header('Pragma: no-cache');*/
         if ($this->session->userdata('login') != 1) {
             $this->session->set_userdata('last_page', current_url());
-            redirect(base_url(), 'refresh');
+            redirect(base_url('login'), 'refresh');
         }
     }
     public function index() {
@@ -1460,6 +1460,18 @@ class Main extends CI_Controller {
         $data['page_title'] = $page;
         $this->load->view('backend/index', $data);   
     }
+    function add_health_reports($param1='',$param2='',$param3='')
+    {   
+        if($this->input->post()){
+        $data['health_reports']=$this->crud_model->save_medical_reports();
+        $this->session->set_flashdata('message', get_phrase('reports_added_successfuly'));
+        redirect($this->session->userdata('last_page'));
+        }
+        $data['user_id'] = $param1;
+        $data['page_name'] = 'add_reports';
+        $data['page_title'] = get_phrase('health_reports');
+        $this->load->view('backend/index', $data);
+    }
     function health_reports($param1='',$param2='',$param3='')
     {   
         if ($param1 == "delete") {
@@ -1475,6 +1487,12 @@ class Main extends CI_Controller {
         $data['health_reports']=$this->crud_model->select_medical_reports();
         $data['page_name'] = 'manage_health_reports';
         $data['page_title'] = get_phrase('health_reports');
+        $this->load->view('backend/index', $data);
+    }
+    function reports_view($report_id = ""){
+        $data['report_id']=$report_id;
+        $data['page_name'] = 'view_health_reports';
+        $data['page_title'] = get_phrase('health_report');
         $this->load->view('backend/index', $data);
     }
     function report($report_id = "") {

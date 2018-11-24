@@ -26,7 +26,7 @@
 	<span class="login100-form-title p-t-20 p-b-45"></span>
                     <?php if($this->session->flashdata('login_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->lang->line('usr_acc_invalid_credential'); ?></div>
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('login_error'); ?></div>
 		<?php }?>
 					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?>">
 						<input class="input100" type="text" name="email" placeholder="<?php echo 'Email Or Mobile' ?>" autocomplete="off">
@@ -49,13 +49,14 @@
 					</div>
  
 					<div class="text-center w-full p-t-25 p-b-230">
-<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a>
-						 <br>
-<a href="#" class="txt1"><?php echo 'Forgot Your Password';?></a>
-						 <br>
+
 <a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
 <?php echo "Don't Have Account? Sign Up";?></h5>
 <i class="fa fa-long-arrow-right"></i></a>
+<br/>
+<a href="#" class="txt1"><?php echo 'Forgot Your Password';?></a>
+						 <br>
+<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a>
 					</div>
 				</form>
 			</div>

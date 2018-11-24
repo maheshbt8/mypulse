@@ -729,8 +729,8 @@ f
   padding: 0; }
 
 .nav-tabs {
-  background: #c8c8c8;
-  border: 1px solid; }
+ /* background: #c8c8c8;
+  border: 1px solid;*/ }
 
 .nav-tabs li a:hover {
   background: #fff; }

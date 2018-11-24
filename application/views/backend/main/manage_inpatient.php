@@ -6,6 +6,19 @@ $this->session->set_userdata('last_page', current_url());
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
+<div class="col-sm-5">
+                  <div class="form-group">     
+                        <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('status'); ?></span> 
+                        <div class="col-sm-6">
+                            <select name="hospital" class="form-control" onchange="return get_inpatient(this.value)">
+    <option value="">Select</option>
+    <option value="1"><?php echo get_phrase('Admitted'); ?></option>
+    <option value="0"><?php echo get_phrase('Recommended'); ?></option>
+    <option value="2"><?php echo get_phrase('Discharged'); ?></option>
+                            </select>
+                        </div>
+                    </div>
+    </div>
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors' ){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_inpatient'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_in-Patient'); ?>
@@ -29,7 +42,7 @@ $this->session->set_userdata('last_page', current_url());
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id="data_table">
 
         <?php $i=1;foreach ($patient_info as $row) { 
             ?>   
@@ -86,4 +99,17 @@ $this->session->set_userdata('last_page', current_url());
     }
     });
     });
+</script>
+<script type="text/javascript">
+    function get_inpatient(id) {
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_inpatient_status/' + id ,
+            success: function(response)
+            {
+                alert(response);
+                jQuery('#data_table').html(response);
+                loadTable();
+            }
+        });
+    }
 </script>

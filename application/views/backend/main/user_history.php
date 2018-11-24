@@ -175,6 +175,16 @@
         <?php  
         $prescription_info=$this->db->get_where('prescription',array('user_id'=>$user_data['user_id'],'status'=>1))->result_array();
         $i=1;foreach ($prescription_info as $row1) {
+            if($account_type=='nurse'){
+                $doctor_id=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
+                $state='0';
+                for($doc=0;$doc<count($doctor_id);$doc++){
+                    if($doctor_id[$doc]==$row1['doctor_id']){
+                        $state='1';
+                    }
+                }
+            }
+            if($account_type=='doctors' || ($account_type=='nurse' && $state=='1')){
             ?>
             <tr>
                 <td><?php echo $i?></td>
@@ -189,7 +199,7 @@
             </a><?php }?>
                 </td><?php }?>
             </tr>
-        <?php $i++;} ?>
+        <?php $i++;}} ?>
     </tbody>
 </table>
 </div>
@@ -234,6 +244,11 @@
 </table>
 </div>
 <div class="tab-pane box" id="h4" style="padding: 5px">
+<?php if($account_type=='doctors'){?>
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?= $user_data['user_id'];?>'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_health_report'); ?>
+</button>
+<?php }?>
 <table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>

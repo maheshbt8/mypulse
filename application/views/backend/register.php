@@ -61,7 +61,7 @@
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requriedPhone'];?>">
-						<input class="input100" type="text" name="phone" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('mobile'); ?>" onchange="return get_phone(this.value)" autocomplete="off">
+						<input class="input100" type="text" name="phone" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('mobile'); ?>" onchange="return get_phone(this.value)" autocomplete="off"minlength="10" maxlength="10">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
@@ -78,14 +78,14 @@
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredPassword'];?>">
-						<input class="input100" type="password" name="pass" placeholder="<?php echo $this->lang->line('labels')['password'];?>*" value="<?php echo set_value('pass'); ?>">
+						<input class="input100" type="password" name="pass" placeholder="<?php echo 'Password';?>*" value="<?php echo set_value('pass'); ?>"minlength="6" maxlength="10">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredConfirmPassword'];?>">
-						<input class="input100" type="password" name="cpass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*" value="<?php echo set_value('cpass'); ?>" >
+						<input class="input100" type="password" name="cpass" placeholder="<?php echo $this->lang->line('labels')['confirm_password'];?>*" value="<?php echo set_value('cpass'); ?>"minlength="6" maxlength="10">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
@@ -97,11 +97,13 @@
 					</div>
 
 					<div class="text-center w-full p-t-25 p-b-230">
-<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a> 
-						 <br>
+
 							<a class="txt1" href="<?php echo base_url();?>login" ><h5 style="color:white;"><?php echo $this->lang->line('labels')['already_have_an_account'];?></h5>
 							<i class="fa fa-long-arrow-right"></i>						
 						</a>
+						<br>
+						<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a> 
+						 
 					</div>
 				</form>
 			</div>

@@ -161,7 +161,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
                                         <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
                                         <input type="file" name="userfile[]" id="userfile" value="<?php echo set_value('userfile'); ?>">
                                     </span>
-                                    <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
+<a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
                                 </div>
                             </div>
                         </div>
