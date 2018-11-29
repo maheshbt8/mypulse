@@ -135,7 +135,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('type_id', 'store');
         }
          $account_type=$this->session->userdata('login_type');
-if($account_type!='superadmin' && $account_type!='users'){
+if($account_type !='superadmin' && $account_type!='users'){
     $license_status=$this->db->get_where('hospitals',array('hospital_id',$this->session->userdata('hospital_id')))->row()->license_status;
     if($this->session->userdata('hospital_id')){
     if($license_status==1){
@@ -145,7 +145,7 @@ if($account_type!='superadmin' && $account_type!='users'){
         $this->session->set_flashdata('login_error', 'Login Failed Due To License Expire Please Contact Your Hospital Admin');
          redirect(base_url() . 'login', 'refresh');
         }
-    }else{
+    }elseif($account_type =='superadmin' || $account_type=='users'){
             $this->session->set_userdata('login', '1');
             redirect(base_url() . 'main', 'refresh');
         }

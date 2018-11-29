@@ -83,7 +83,7 @@ $(document).ready(function(){
    $(".element1:last").after("<tr class='element1' id='div1_"+ nextindex +"'></tr>");
  
    // Adding element to <div>
-   $("#div1_" + nextindex).append('<td>'+nextindex+'</td><td><input type="text" name="title[]"  placeholder="" class="form-control" value="<?php set_value('title');?>"/></td><td><input type="file" name="report[]"  placeholder=""  value="<?php set_value('report');?>"/></td><td><button type="button" id="remove1_'+nextindex+'" class="remove1" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>');
+   $("#div1_" + nextindex).append('<td>'+nextindex+'</td><td><input type="text" name="title[]" data-validate="required" data-message-required="Value Required" placeholder="" class="form-control" value="<?php set_value('title');?>" id="title'+nextindex+'" /></td><td><input type="file" name="report[]" data-validate="required" data-message-required="Value Required"  value="<?php set_value('report');?>"/></td><td><button type="button" id="remove1_'+nextindex+'" class="remove1" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>');
    
  
   }

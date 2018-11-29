@@ -14,6 +14,8 @@ foreach ($single_appointment_info as $row) {
 <div class="col-lg-12">
 <div class="panel panel-default">   
 <div class="panel-body">
+    <h4><?php echo '<b>User ID</b> : '.$user_info['unique_id'];?></h4>
+<h4><?php echo '<b>User Name</b> : '.$user_info['name'];?></h4>
                         <div class="col-sm-6">
                         <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
@@ -93,15 +95,16 @@ foreach ($single_appointment_info as $row) {
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remark'); ?></label>
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remarks'); ?></label>
                             <div class="col-sm-8">
-                                <input type="text" name="remark" placeholder="Remark to be updated by Hospital(Optional)" class="form-control" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['remark']; ?>">
+                                <textarea type="text" name="remark" placeholder="Remark to be updated by Hospital(Optional)" class="form-control" disabled="true" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" ><?php echo $row['remarks']; ?></textarea>
                             </div>
                     </div>
                 </div>
                 <div class="col-sm-6">
             <div class="col-sm-offset-3 col-sm-8">
-<a href="<?php echo base_url();?>main/appointment_history/<?php echo $row['appointment_id'];?>" class="hiper">View Appointment History</a>
+<a href="<?php echo base_url();?>main/appointment_history/<?php echo $row['appointment_id'];?>" class="hiper">View Appointment History</a><br/>
+<a href="<?=base_url('main/edit_user/').$user_info['user_id'];?>" class="hiper">View User Details</a>
             </div>
             </div>
             <div class="col-sm-3 control-label col-sm-offset-9">
@@ -135,7 +138,7 @@ foreach ($single_appointment_info as $row) {
 <h4><b>Appointment Date : </b><?php echo date('M ,d-Y',strtotime($row['appointment_date']));?></h4>
 <h4><b>Appointment Slot : </b><?php echo date('h:i A',strtotime($row['appointment_time_starte'])) .' - '.date('h:i A',strtotime($row['appointment_time_end'])) ;?></h4>
 <h4><b>Reason : </b><?php echo $row['reason'];?></h4>
-<h4><b>Reason : </b><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+<h4><b>Status : </b><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
                  elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
                  elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
@@ -149,17 +152,17 @@ foreach ($single_appointment_info as $row) {
         <form action="<?php echo base_url()?>main/appointment/update_remark/<?php echo $row['appointment_id'];?>" method="post" class="form-horizontal form-groups-bordered validate" id="form1" enctype="multipart/form-data">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remark'); ?></label>
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Remarks'); ?></label>
                             <div class="col-sm-8" id="remark">
-                                <textarea type="text" name="remark" placeholder="Remark to be updated by Hospital" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" <?php if($account_type!='doctors'){echo 'disabled';}?>><?php echo $row['remarks'];?></textarea>
+                                <textarea type="text" name="remark" placeholder="Remark to be updated by Hospital" class="form-control" <?php if($account_type!='doctors'){echo 'disabled';}?>><?php echo $row['remarks'];?></textarea>
                             </div>
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Date'); ?></label>
+                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Next appointment Date'); ?></label>
                             <div class="col-sm-8" id="remark">
-                                <input type="text" name="next_appointment" placeholder="Next Appointment Date" class="form-control" id="start_on" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo $row['next_appointment'];?>" autocomplete="off"  <?php if($account_type!='doctors'){echo 'disabled';}?>>
+                                <input type="text" name="next_appointment" placeholder="Next Appointment Date" class="form-control" id="start_on" value="<?php echo $row['next_appointment'];?>" autocomplete="off"  <?php if($account_type!='doctors'){echo 'disabled';}?>>
                             </div>
                     </div>
                 </div> 

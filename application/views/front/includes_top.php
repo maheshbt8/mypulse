@@ -9,7 +9,7 @@
 	</script>
 
 	<!-- Bootstrap Core CSS -->
-	<link href="<?=base_url('assets/front/')?>css/bootstrap.css" rel='stylesheet' type='text/css' />
+	<link href="<?=base_url('assets/front/')?>css/bootstrap.min.css" rel='stylesheet' type='text/css'/>
 	<link href="<?=base_url('assets/front/')?>css/style.css" rel='stylesheet' type='text/css' />
 	<!-- pop up box -->
 	<link href="<?=base_url('assets/front/')?>css/popuo-box.css" rel="stylesheet" type="text/css" media="all" />

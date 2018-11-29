@@ -32,7 +32,7 @@
         </script>
 <!-- //stats -->
 <!--pop-up-box -->
-    <script src="<?=base_url('assets/front/')?>js/jquery.magnific-popup.js"></script>
+    <script src="<?=base_url('assets/front/')?>js/jquery.magnific-popup.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -50,7 +50,7 @@
     </script>
     <!-- //pop-up-box -->
     <!-- Bootstrap Core JavaScript -->
-    <script src="<?=base_url('assets/front/')?>js/bootstrap.js ">
+    <script src="<?=base_url('assets/front/')?>js/bootstrap.min.js ">
     </script>
     <!-- //Bootstrap Core JavaScript -->
 

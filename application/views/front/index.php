@@ -5,6 +5,7 @@
 	<title>MYPULSE - <?=$page_title;?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
+  <meta name="description" content="type_your_description_here">
 	<meta name="keywords" content="Home Loan Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <?php include 'includes_top.php'; ?>

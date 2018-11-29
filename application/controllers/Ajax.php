@@ -141,7 +141,7 @@ class Ajax extends CI_Controller {
         $users=$qry->row_array();
         if($qry->num_rows()>0){
         echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="'.$users['name'].' '.$users['lname'].'" onchange="return get_user_data(this.value)">';
-        echo '<input type="hidden" name="user_id" value="'.$users['user_id'].'">';
+        echo '<input type="hidden" name="user_id" id="user_id" value="'.$users['user_id'].'">';
         }else{
             echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="" onchange="return get_user_data(this.value)"><span style="color:red;">No User Available</span>';
         }
@@ -303,7 +303,9 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
          if($appointments >= $no_appt_handle){
 
         }else{
+            if((date('m/d/Y')==$date_val && strtotime(date('h:i a'))<=$start_time1) || date('m/d/Y')!=$date_val){
             echo '<option value="'.date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'" >' . date('h:i a',$start_time1) .' - '.date('h:i a', $start_time2).'</option>';
+        }
         }
             
             $start_time1=$start_time2;
@@ -312,6 +314,14 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
         }
         }else{
         echo '<option value=""> No Slot Available In This Date </option>';
+    }
+    }
+    function count_no_appointments($user_id){
+    $user= $user_id;
+    $appointment_date=$_POST['date_val'];
+    $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
+     if($count >=2 ){
+      echo "<span style='color:red;'>You Can not Book More Than 2 Appointments Per Day</span>"; 
     }
     }
     function get_inpatient_status($id){
@@ -369,10 +379,13 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $message_data=$this->crud_model->select_message();
         $j=0;foreach($message_data as $row){
-            $count=explode(',',$row['is_read']);
+    $count=explode(',',$row['is_read']);
     for($m2=0;$m2<count($count);$m2++){
-        if($count[$m2] != $account_details){
-                $j=$j+1;
+        if($account_details == $count[$m2]){
+                $j=0;
+                break;
+        }else{
+            $j=$j+1;
         }
         }
         }

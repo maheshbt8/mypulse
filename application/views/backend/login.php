@@ -49,13 +49,12 @@
 					</div>
  
 					<div class="text-center w-full p-t-25 p-b-230">
-
+<a href="#" class="txt1"><?php echo 'Forgot Your Password';?></a>
+						 <br>
 <a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
 <?php echo "Don't Have Account? Sign Up";?></h5>
 <i class="fa fa-long-arrow-right"></i></a>
 <br/>
-<a href="#" class="txt1"><?php echo 'Forgot Your Password';?></a>
-						 <br>
 <a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a>
 					</div>
 				</form>

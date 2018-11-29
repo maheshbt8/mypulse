@@ -5,6 +5,8 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
 <div class="row">
    
     <div class="col-md-12">
+      <div class="panel panel-default">   
+            <div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_prescription/<?= $prescription_info['prescription_id'];?>" method="post" enctype="multipart/form-data">
              
@@ -113,7 +115,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2"><?php echo get_phrase('additional_note'); ?></label>
                             <div class="col-sm-9">
-                                <textarea type="text" name="additional_note" placeholder="Additional Note" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="4" cols="50"><?= $prescription_data[9];?></textarea>
+                                <textarea type="text" name="additional_note" placeholder="Additional Note" class="form-control" value="" rows="4" cols="50"><?= $prescription_data[9];?></textarea>
                             </div>
                     </div>
                 </div>
@@ -132,7 +134,8 @@ $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['pr
                     </div>  
                    
    </form>
-
+ </div>
+</div>
     </div>
 </div>
 <br/><br/>

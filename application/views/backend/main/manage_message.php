@@ -15,74 +15,39 @@
 $this->session->set_userdata('last_page', current_url());
 ?>
 <form action="#" method="post">
-<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/new_message'" class="btn btn-primary pull-right">
         <?php echo get_phrase('new_message'); ?>
 </button>
 <?php }?>
 <?php if($account_type=='superadmin'){
             $account_hospital='0';
-        }else{
+        }elseif($account_type=='superadmin'){
             $account_hospital=$this->session->userdata('hospital_id');
         }
 ?>
 <br>
- <div class="row">
-    <div class="col-md-12">
-        <!--CONTROL TABS START-->
+ <!--CONTROL TABS START-->
         <ul class="nav nav-tabs bordered">
             <li class="active">
                 <a href="#list" data-toggle="tab"><?php echo 'Received Messages';?>
                         </a></li>
-            <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+<?php if($account_type=='superadmin'||$account_type=='hospitaladmins'||$account_type=='doctors'){ ?>
             <li>
                 <a href="#add" data-toggle="tab"><?php echo 'Sent Messages';?>
                         </a></li><?php }?>
         </ul>
         <!--CONTROL TABS END-->
-        
-    
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
         <div class="tab-content">
-        <br>
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
-        <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">From</span><span style="margin-left: 21%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
+        <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">From</span><span>Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
-    <?php $i=1;foreach ($message_data as $row) {
-        if($row['created_at']<$last){
-                $this->db->where('message_id',$row['message_id']);
-                $this->db->delete('messages');
-            }
-            $user_to=explode(',', $row['user_to']);
-            $user_too=explode(',', $row['user_too']);
-            $h1='';
-    for($m1=0;$m1<count($user_to);$m1++){
-    if($user_to[$m1] == 1){
-    $h1='hospitaladmins';    
-    }elseif($user_to[$m1] == 2){
-    $h1='medicallabs';
-    }elseif($user_to[$m1] == 3){
-    $h1='medicalstores';
-    }elseif($user_to[$m1] == 4){
-    $h1='doctors';
-    }elseif($user_to[$m1] == 5){
-    $h1='nurse';
-    }elseif($user_to[$m1] == 6){
-    $h1='receptionist';
-    }elseif($user_to[$m1] == 7){
-    $h1='users';
-    }
-    $hospi1='';
-            for($us=0;$us<count($user_too);$us++){
-                if($user_too[$us] == $account_details){
-                $hospi1=$user_too[$us];    
-                }
-              }
-                if($account_type == 'superadmin'){
-            if(($h1==$account_type || $hospi1==$account_details)/* && ($row['hospital_id'] == 0 || $row['hospital_id'] == $account_hospital)*/)
-              {
-        ?>
-    <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
+    <?php $message_data=$this->crud_model->select_message();$i=1;foreach ($message_data as $row) { ?>
+      <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
     <p class="" style="text-align: center;"><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
 if($created_by[0] == 'superadmin'){
   $user_role='Super Admin';
@@ -104,53 +69,19 @@ if($created_by[0] == 'superadmin'){
     echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span><span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span>
     </p>
     </a>
-
-    <?php }}else{
-         if(($h1==$account_type || $hospi1==$account_details) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $account_hospital))
-              {
-        ?>
-    <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
-    <p class="" style="text-align: center;"><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
-if($created_by[0] == 'superadmin'){
-  $user_role='Super Admin';
-}elseif($created_by[0] == 'hospitaladmins'){
-  $user_role='Hospital Admin';
-}elseif($created_by[0] == 'doctors'){
-  $user_role='Doctor';
-}elseif($created_by[0] == 'nurse'){
-  $user_role='Nurse';
-}elseif($created_by[0] == 'receptionist'){
-  $user_role='Receptionist';
-}elseif($created_by[0] == 'medicalstores'){
-  $user_role='Pharmacist';
-}elseif($created_by[0] == 'medicallabs'){
-  $user_role='Laboratorist';
-}elseif($created_by[0] == 'users'){
-  $user_role='MyPulse Users';
-}
-    echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span><span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span>
-    </p>
-    </a>
-
-    <?php }
-    }}}?>
+   <?php }?>
     </div>
     </div>
 
 
             <div class="tab-pane box" id="add">
-                <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">To</span><span style="margin-left: 21%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
+                <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">To</span><span style="margin-left:0%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="/*list-style: none; */min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
-    <?php $i=1;foreach ($message_data as $row) { 
-        if($row['created_at']<$last){
-                $this->db->where('message_id',$row['message_id']);
-                $this->db->delete('messages');
-            }
-            if($row['created_by']==$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))
-              {
+    <?php $message_data=$this->db->order_by('message_id','desc')->where('created_by',$account_details)->get('messages')->result_array();
+    $i=1;foreach ($message_data as $row) { 
         ?>
     <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
-    <p class="" style="text-align: center;"><span class="span-user pull-left">
+    <p class="" style=""><span class="span-user pull-left">
         <?php
     $user_to='';
       if($row['user_to'] != ''){
@@ -209,80 +140,15 @@ $user_too=implode(', ', $user_data);
 }elseif($user_to == '' && $user_too !=''){
   echo $user_too;
 }?></span>
-    <span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span>
+    <span style=""><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span>
     </p>
     </a>
 
-    <?php }}?>
+    <?php }?>
     </div>
     </div>
+</div>
 </div>
 </div>
 </div>
 </form>
-<script type="text/javascript">   
-    jQuery(window).load(function ()
-    {
-        var $ = jQuery;
-
-        $("#table-2").dataTable({
-            "sPaginationType": "bootstrap",
-            "sDom": "<'row'<'col-md-3 col-xs-12 col-left'l><'col-md-9 col-xs-12  col-right'>r>t<'row'<' col-md-3 col-xs-12 col-left'i><'col-md-9 col-xs-12 col-right'p>>"
-        });
-
-        $(".dataTables_wrapper select").select2({
-            minimumResultsForSearch: -1
-        });
-
-        // Highlighted rows
-        $("#table-2 tbody input[type=checkbox]").each(function (i, el)
-        {
-            var $this = $(el),
-                    $p = $this.closest('tr');
-
-            $(el).on('change', function ()
-            {
-                var is_checked = $this.is(':checked');
-
-                $p[is_checked ? 'addClass' : 'removeClass']('highlight');
-            });
-        });
-
-        // Replace Checboxes
-        $(".pagination a").click(function (ev)
-        {
-            replaceCheckboxes();
-        });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $("#delete1").show();
-        $("#delete").hide();
-        $("#all_check").click(function () {
-            $('.check').attr('checked', this.checked);
-            if($(".check:checked").length == 0){
-                $("#delete1").show();
-                $("#delete").hide();
-            }else{
-            $("#delete1").hide();
-            $("#delete").show();
-            }
-            
-        });
-         $(".check").click(function(){
-            if(($(".check:checked").length)!=0){
-            $("#delete1").hide();
-            $("#delete").show();
-        if($(".check").length == $(".check:checked").length) {
-            $("#all_check").attr("checked", "checked");
-        } else {
-            $("#all_check").removeAttr("checked");
-        }
-    }else{
-        $("#delete1").show();
-        $("#delete").hide();
-    }
-    });
-    });
-</script>

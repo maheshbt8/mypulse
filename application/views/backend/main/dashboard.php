@@ -30,12 +30,12 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 						<div class="panel panel-blue panel-widget border-right">
 							<div class="row no-padding"><em class="fa fa-xl <?php if($account_type=='doctors'){echo 'fa-user';}elseif($account_type=='medicalstores' || $account_type=='medicallabs'){echo 'fa-check-square';}else{echo 'fa-user-md';}?> color-orange"></em>
 								<div class="large"><?php if($account_type=='superadmin' || $account_type=='hospitaladmins'|| $account_type=='nurse'|| $account_type=='receptionist'|| $account_type=='users'){ echo count($this->crud_model->select_doctor_info());}elseif($account_type=='doctors'){echo count($this->crud_model->select_nurse_info());}elseif($account_type=='medicalstores' || $account_type=='medicallabs'){echo count($this->crud_model->select_completed_order_info());}?></div>
-								<div class="text-muted"><?php if($account_type=='superadmin' || $account_type=='hospitaladmins'|| $account_type=='nurse'|| $account_type=='receptionist'|| $account_type=='users'){echo 'Doctors';}elseif($account_type=='doctors'){echo 'Nurses';}elseif($account_type=='medicalstores'){echo 'Complete Orders';}elseif( $account_type=='medicallabs'){echo 'Complete Reports';}?></div>
+								<div class="text-muted"><?php if($account_type=='superadmin' || $account_type=='hospitaladmins'|| $account_type=='nurse'|| $account_type=='receptionist'|| $account_type=='users'){echo 'Doctors';}elseif($account_type=='doctors'){echo 'Nurses';}elseif($account_type=='medicalstores'){echo 'Completed Orders';}elseif( $account_type=='medicallabs'){echo 'Completed Reports';}?></div>
 							</div>
 						</div>
 					</div>
 			<!-- ************** 3 ******************* -->
-	<?php if($account_type != 'doctors' && $account_type != 'nurse' && $account_type != 'receptionist'&& $account_type != 'medicalstores'){?>
+	<?php if($account_type != 'doctors' && $account_type != 'nurse' && $account_type != 'receptionist'&& $account_type != 'medicalstores' && $account_type != 'medicallabs'){?>
 					<div class="col-xs-4 col-md-2 col-lg-2 no-padding">
 						<div class="panel panel-orange panel-widget border-right">
 							<div class="row no-padding"><em class="fa fa-xl <?php if($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'){echo 'fa-plus-square';}else{echo 'fa-users';}?> color-red"></em>
@@ -50,10 +50,10 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 <?php if($account_type != 'nurse' && $account_type != 'receptionist'){?>
 					<div class="col-xs-4 col-md-2 col-lg-2 no-padding">
 						<div class="panel panel-orange panel-widget border-right">
-							<div class="row no-padding"><em class="fa fa-xl <?php if($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'|| $account_type == 'medicalstores'){echo 'fa-medkit';}else{echo 'fa-users';}?> color-blue"></em>
+							<div class="row no-padding"><em class="fa fa-xl <?php if($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'|| $account_type == 'medicalstores' || $account_type == 'medicallabs'){echo 'fa-medkit';}else{echo 'fa-users';}?> color-blue"></em>
 								<div class="large">
-<?php if($account_type == 'doctors'){echo count($this->crud_model->select_inpatient_info());}elseif($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'){echo count($this->crud_model->select_store_info());}elseif($account_type == 'medicalstores'){echo count($this->crud_model->select_order_info());}?></div>
-								<div class="text-muted"><?php if($account_type == 'doctors' ){echo 'in-patients';}elseif($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'){echo 'Medical Stores';}elseif($account_type == 'medicalstores'){echo 'Total Orders';}?></div>
+<?php if($account_type == 'doctors'){echo count($this->crud_model->select_inpatient_info());}elseif($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'){echo count($this->crud_model->select_store_info());}elseif($account_type == 'medicalstores' || $account_type == 'medicallabs'){echo count($this->crud_model->select_order_info());}?></div>
+								<div class="text-muted"><?php if($account_type == 'doctors' ){echo 'in-patients';}elseif($account_type == 'users'||$account_type == 'superadmin'|| $account_type == 'hospitaladmins'){echo 'Medical Stores';}elseif($account_type == 'medicalstores'){echo 'Total Orders';}elseif($account_type == 'medicallabs'){echo 'Total Reports';}?></div>
 							</div>
 						</div>
 					</div>

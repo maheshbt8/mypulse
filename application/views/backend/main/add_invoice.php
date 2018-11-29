@@ -92,8 +92,8 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <th scope="col">#</th>
         <th scope="col">Drug</th>
         <th scope="col">Quantity</th>
-        <th scope="col">Cost</th>
-        <th scope="col" formula="cost*qty"summary="sum">Price</th>
+        <th scope="col">Price/unit</th>
+        <th scope="col" formula="cost*qty"summary="sum">Total Price</th>
       </tr>
     </thead>
     <tbody>

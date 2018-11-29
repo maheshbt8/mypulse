@@ -1,6 +1,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
+<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
 <div class="row">
     <div class="col-lg-12">
 <div class="panel panel-default">   
@@ -39,7 +40,8 @@ Order With Prescription
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
                 <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a></td>
-                <td><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper"><?php if($row1['status']==1){echo 'Receipt';}?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper"><?php if($row1['status']==1){echo 'Receipt';}elseif($row1['status']==2){ ?>
+                    <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }?></a></td>
             </tr>
         <?php }$i++;}} ?>
     </tbody>
@@ -48,7 +50,7 @@ Order With Prescription
 </div>
 </div>
 </div>
-
+<?php }elseif($account_type=='users'){ ?>
 <div class="row">
     <div class="col-lg-12">
 <div class="panel panel-default">   
@@ -89,7 +91,8 @@ Order By Own
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
                 <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a></td>
-                <td><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper"><?php if($row1['status']==1){echo 'Receipt';}?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper"><?php if($row1['status']==1){echo 'Receipt';}elseif($row1['status']==2){ ?>
+                    <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }?></a></td>
             </tr>
         <?php }$i++;}} ?>
     </tbody>
@@ -98,6 +101,7 @@ Order By Own
 </div>
 </div>
 </div>
+<?php }?>
 <script>
     $(document).ready(function(){
         $("#delete1").show();

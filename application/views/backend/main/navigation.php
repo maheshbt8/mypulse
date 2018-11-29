@@ -113,7 +113,7 @@ echo $user_role; ?></span></div>
     <?php }?>
     <?php if($account_type=='users'){?>
         <li class="parent <?php if ($page_name == 'manage_order') echo 'active'; ?>"><a data-toggle="collapse" href="#sub-item-1">
-                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-plus"></i></span>
+                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
                     <ul class="children collapse" id="sub-item-1">
                 <li class="#">
@@ -178,21 +178,21 @@ echo $user_role; ?></span></div>
         </li>
     <?php }?>
     <?php if($account_type=='users'){?>
-        <li class="parent <?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports') echo 'active';?>"><a data-toggle="collapse" href="#sub-item-2">
-                    <i class="fa fa-hospital-o">&nbsp;</i> <?php echo get_phrase('health_records'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-plus"></i></span>
+        <li class="parent <?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports'){echo 'active';}?>"><a data-toggle="collapse" href="#sub-item-2" >
+                    <i class="fa fa-hospital-o">&nbsp;</i> <?php echo get_phrase('health_records'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-down"></i></span>
                     </a>
-                    <ul class="children collapse" id="sub-item-2">
-                <li class="#">
+                    <ul class="children collapse <?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports'){echo 'in';}?>" id="sub-item-2">
+                <li class="<?php if ($page_name == 'manage_prescription'){echo 'active';}?>">
                     <a href="<?php echo base_url(); ?>main/prescription">
                         <span><?php echo get_phrase('prescriptions'); ?></span>
                     </a>
                 </li>
-                <li class="#">
+                <li class="<?php if ($page_name == 'manage_prognosis'){echo 'active';}?>">
                     <a href="<?php echo base_url(); ?>main/prognosis">
                         <span><?php echo get_phrase('prognosis'); ?></span>
                     </a>
                 </li>
-                <li class="#">
+                <li class="<?php if ($page_name == 'manage_health_reports'){echo 'active';}?>">
                     <a href="<?php echo base_url(); ?>main/health_reports">
                         <span><?php echo get_phrase('health_reports'); ?></span>
                     </a>
@@ -211,12 +211,12 @@ echo $user_role; ?></span></div>
 
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
 		<li class="parent"><a data-toggle="collapse" href="#sub-item-1">
-					<i class="glyphicon glyphicon-stats">&nbsp;</i> <?php echo get_phrase('reports'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-plus"></i></span>
+					<i class="glyphicon glyphicon-stats">&nbsp;</i> <?php echo get_phrase('reports'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-down"></i></span>
 					</a>
 					<ul class="children collapse" id="sub-item-1">
 						<li class="<?php if ($page_name == 'manage_prognosis') echo 'active'; ?>">
                     <a href="<?php echo base_url(); ?>main/report/1">
-                        <span><?php echo get_phrase('patient_report'); ?></span>
+                        <span><?php echo get_phrase('in-Patient_report'); ?></span>
                     </a>
                 </li>
                 <li class="#">

@@ -13,6 +13,10 @@
     border-radius: 50%;
     margin-right: 15px;
 }
+.list-body{
+  height: 250px;
+  overflow-x: auto;
+}
 </style>
     <?php
 if($account_type == 'superadmin'){
@@ -104,9 +108,9 @@ else
 <em class="fa fa-bell"></em><span id="notification_count"></span>
     </a>
        <ul class="dropdown-menu dropdown-messages">
+  <div class="list-body">
 <?php $notification_data=$this->crud_model->select_notification();
-print_r($notification_data);
-if($notification_data!=''){
+if(count($notification_data) > 0){
     foreach ($notification_data as $row) {
     ?>
 <a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>">
@@ -123,7 +127,7 @@ if($notification_data!=''){
 </li>
 </a>
 <li class="divider"></li>
-<?php }}else{
+<?php }?><?php }else{
     ?>
 <li>
 <div class="all-button">
@@ -133,9 +137,14 @@ if($notification_data!=''){
 <li class="divider"></li>
 <?php }
           ?> 
+</div>
+<li class="divider"></li>
 <li>
-<div class="all-button"><a href="<?php echo base_url()?>main/notification/delete_all">
-<strong>Clear All Notifications</strong></a></div>
+<div class="all-button"><!-- <a href="<?php echo base_url()?>main/notification/delete_all">
+<strong>Clear All NotificationsAll Messages</strong></a> -->
+  <a href="<?php echo base_url()?>main/notification">
+<strong>View All Notifications</strong></a>
+</div>
 </li>
 </ul>
 </li>
@@ -144,6 +153,7 @@ if($notification_data!=''){
 <em class="fa fa-envelope"></em><span id="message_count"></span>
 	</a>
 	   <ul class="dropdown-menu dropdown-messages">
+  <div class="list-body">
 <?php $message_data=$this->crud_model->select_message();
 if($message_data!=''){
     foreach ($message_data as $row) {
@@ -168,6 +178,8 @@ if($message_data!=''){
 <li class="divider"></li>
 <?php }
           ?> 
+</div>
+<li class="divider"></li>
 <li>
 <div class="all-button"><a href="<?php echo base_url()?>main/message">
 <em class="fa fa-inbox"></em> <strong>All Messages</strong></a></div>
@@ -204,15 +216,7 @@ if($message_data!=''){
 				</div>
 			</div><!-- /.container-fluid -->
 		</nav>
-
-
-
-
-
-
-
-
-
+    
 <?php $website_lang_int_google = $this->session->userdata('website_lang_int_google') != NULL ? trim($this->session->userdata('website_lang_int_google')) : 'en';?>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
 <div id="google_translate_element" style="display:none;"></div>

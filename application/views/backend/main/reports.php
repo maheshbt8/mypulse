@@ -1,21 +1,21 @@
 <style>
-	canvas.canvasjs-chart-canvas{
+	/*canvas.canvasjs-chart-canvas{
 		margin-top:35px;
-	}
-	a.canvasjs-chart-credit{
+	}*/
+/*	a.canvasjs-chart-credit{
 		display: none;
-	}
-	div#chartContainer{
+	}*/
+	/*div#chartContainer{
 		margin-top: 40px;
-	}
+	}*/
 	canvas.canvasjs-chart-canvas{
 		position: relative;
 	}
-	button{
+	/*button{
 		margin-top: 50px;
-	}
+	}*/
 </style>
-<?php print_r($hospital_id);$color = dechex(rand(0x000000, 0xFFFFFF)); ?>
+
 <?php
 $hospital_count=count($hospital_id);
 for($h=0;$h<$hospital_count;$h++){
@@ -117,10 +117,19 @@ function toggleDataSeries(e){
 }
 
 </script>
+<div class="row">
+    <div class="col-md-12">
+                <div class="panel panel-default">   
+            <div class="panel-heading">
 <div class="control-label">
   <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= base_url('main/report/').$report_id; ?>'">
 </div>
+</div>
+<div class="panel-body">
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-
+</div>
+</div>
+</div>
+</div>
 <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
 <!-- <script src="<?php echo base_url();?>assets/js/canvasjs.min.js"></script> -->

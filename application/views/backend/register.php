@@ -98,7 +98,7 @@
 
 					<div class="text-center w-full p-t-25 p-b-230">
 
-							<a class="txt1" href="<?php echo base_url();?>login" ><h5 style="color:white;"><?php echo $this->lang->line('labels')['already_have_an_account'];?></h5>
+							<a class="txt1" href="<?php echo base_url();?>login" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account_sign_in');?></h5>
 							<i class="fa fa-long-arrow-right"></i>						
 						</a>
 						<br>

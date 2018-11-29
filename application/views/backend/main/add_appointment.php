@@ -180,7 +180,7 @@
                     </div>
                 
             <?php }else{ ?>
-                    <input type="hidden" name="user_id" value="<?= $this->session->userdata('login_user_id');?>">
+                    <input type="hidden" name="user_id" id="user_id" value="<?= $this->session->userdata('login_user_id');?>">
                     <!-- <input type="hidden" name="user" id="doctor" value="<?= $this->session->userdata('unique_id');?>"> -->
                 <?php } ?>
                 </div>
@@ -198,6 +198,7 @@
 
                         <div class="col-sm-8">
                             <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo set_value('Appointment Date'); ?>" disabled="true" onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
+                            <span style="color:red;" id="appointment_date_error"></span>
                             <span style="color:red;"><?php if($this->session->flashdata('appointment_date_error') != ''){echo $this->session->flashdata('appointment_date_error');}?></span>
                         </div>
                     </div>
@@ -213,10 +214,9 @@
                                 </select>   
                             </div>
                     </div>
-                   
-
-              
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Reason for Appointment'); ?></label>
@@ -233,14 +233,11 @@
                             </div>
                     </div>
                 </div>
-                
-            </div>
-                
-                    <div class="col-sm-3 control-label col-sm-offset-9 ">
+                </div>
+            <div class="col-sm-3 control-label col-sm-offset-9 ">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
-                    </div>  
-                   
+                    </div>         
    </form>
    </div>
 </div>
@@ -309,6 +306,7 @@
         });
         });
    function get_dco_date(date_value) {
+    var user_id=$('#user_id').val();
     var doctor_id=$('#doctor_id').val();
      $.ajax({
             type : "POST",
@@ -319,6 +317,15 @@
                jQuery('#available_slot').html(response);
                document.getElementById("available_slot").disabled = false;
                
+            } 
+        });
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/count_no_appointments/' + user_id,
+            data : {date_val : date_value},
+            success: function(response)
+            {
+               jQuery('#appointment_date_error').html(response);
             } 
         });
    

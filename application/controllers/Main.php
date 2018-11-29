@@ -138,9 +138,12 @@ class Main extends CI_Controller {
             redirect($this->session->userdata('last_page'));
         }
         if ($task == "update") {
+            /*echo $branch_id;
+            print_r($_POST);die;*/
             $this->crud_model->update_branch_info($branch_id);
             $this->session->set_flashdata('message', get_phrase('branch_info_updated_successfuly'));
-            redirect(base_url() . 'main/branch');
+            /*redirect(base_url() . 'main/branch');*/
+            redirect($this->session->userdata('last_page'));
         }
 
         if ($task == "delete") {
@@ -1180,10 +1183,10 @@ class Main extends CI_Controller {
       function add_appointment()
     {
     if($this->input->post()){
-            $user= $this->input->post('user_id');
-            $appointment_date=$this->input->post('appointment_date');
-            $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
-      if($count < 2 ){  
+        $user= $this->input->post('user_id');
+        $appointment_date=$this->input->post('appointment_date');
+        $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
+      if($count < 2 ){ 
     $this->crud_model->save_appointment_info();
     $this->session->set_flashdata('message', get_phrase('appointment_info_saved_successfuly'));
     redirect($this->session->userdata('last_page'));
@@ -1232,8 +1235,10 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('appointment_info_closed_successfuly'));
         }
         if ($task == "update_remark") {
+        if($this->input->post('remark') !='' || $this->input->post('next_appointment')){
             $this->crud_model->update_appointment_remark($appointment_id);
             $this->session->set_flashdata('message', get_phrase('remark_updated_successfuly'));
+        }
             redirect($this->session->userdata('last_page1'));
         }
         if ($task == "recommend") {
@@ -1252,7 +1257,8 @@ class Main extends CI_Controller {
         if($_POST['cancel_reason'] != ''){
             $d=$this->crud_model->cancel_multiple_appointment_info();
             if($d){
-            $this->session->set_flashdata('message', get_phrase('appointment_info_cancled_successfuly'));echo TRUE;}
+            $this->session->set_flashdata('message', get_phrase('appointment_cancled_successfuly'));echo TRUE;
+        }
         }else{
             echo '<span id="reason_error" style="color:red;">Reason Required</span>';
         }
@@ -1282,7 +1288,7 @@ class Main extends CI_Controller {
     function edit_prescription($prescription_id='')
     {
     if($this->input->post()){
-    $this->crud_model->update_prescription_info();
+    $this->crud_model->update_prescription_info($prescription_id);
     $this->session->set_flashdata('message', get_phrase('prescription_info_updated_successfuly'));
     redirect($this->session->userdata('last_page1'));
     
@@ -1462,10 +1468,17 @@ class Main extends CI_Controller {
     }
     function add_health_reports($param1='',$param2='',$param3='')
     {   
+        $account_type=$this->session->userdata('login_type');
         if($this->input->post()){
+
         $data['health_reports']=$this->crud_model->save_medical_reports();
         $this->session->set_flashdata('message', get_phrase('reports_added_successfuly'));
+        if($account_type=='users'){
         redirect($this->session->userdata('last_page'));
+        }
+        if($account_type=='doctors'){
+        redirect($this->session->userdata('last_page1'));
+        }
         }
         $data['user_id'] = $param1;
         $data['page_name'] = 'add_reports';
@@ -1501,7 +1514,7 @@ class Main extends CI_Controller {
         $data['page_name'] = 'manage_reports';
         if($report_id==1){
         /*$this->crud_model->getReport();*/
-        $data['page_title'] = get_phrase('patient_reports');
+        $data['page_title'] = get_phrase('in-Patient_reports');
         }elseif($report_id==2){
         /*$this->crud_model->getReport();*/
         $data['page_title'] = get_phrase('appointment_reports');
@@ -1512,7 +1525,7 @@ class Main extends CI_Controller {
         if($report_id==1){
         $data['title']='Patients';
         $this->crud_model->getReport();
-        $data['page_title'] = get_phrase('Patient_trend');
+        $data['page_title'] = get_phrase('in-Patient_trend');
         }elseif($report_id==2){
         $data['title']='Appointments';
         $this->crud_model->getReport();
@@ -1530,7 +1543,7 @@ class Main extends CI_Controller {
         if($report_id==1){
         $data['title']='Patients';
         $this->crud_model->getReport();
-        $data['page_title'] = get_phrase('Patient_trend');
+        $data['page_title'] = get_phrase('in-Patient_trend');
         }elseif($report_id==2){
         $data['title']='Appointments';
         $this->crud_model->getReport();
@@ -1749,7 +1762,7 @@ class Main extends CI_Controller {
     }
     function read_notification($param1 = '', $param2 = '', $param3 = '') 
     {
-        $page_data['notification_data']=$this->crud_model->read_notification($param1);
+        $page_data['notifications']=$this->crud_model->read_notification($param1);
         $page_data['notification_id']=$param1;
         $page_data['page_name'] = 'notification_read';
         $page_data['page_title'] = get_phrase('notifications');

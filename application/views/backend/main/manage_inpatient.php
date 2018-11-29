@@ -106,7 +106,6 @@ $this->session->set_userdata('last_page', current_url());
             url: '<?php echo base_url();?>ajax/get_inpatient_status/' + id ,
             success: function(response)
             {
-                alert(response);
                 jQuery('#data_table').html(response);
                 loadTable();
             }

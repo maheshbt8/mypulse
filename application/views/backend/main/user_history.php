@@ -159,7 +159,8 @@
         <?php echo get_phrase('add_prescription'); ?>
 </button>
 <?php }?>
-<table data-toggle="table" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<br/>
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
@@ -207,7 +208,8 @@
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_prognosis/<?= $this->session->userdata('login_user_id').'/'.$user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_prognosis'); ?>
 </button>
-<table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<br/>
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
@@ -244,18 +246,14 @@
 </table>
 </div>
 <div class="tab-pane box" id="h4" style="padding: 5px">
-<?php if($account_type=='doctors'){?>
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?= $user_data['user_id'];?>'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_health_report'); ?>
-</button>
-<?php }?>
-<table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<h4>Reports By Order</h4>
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no'); ?></th>
             <th><?php echo get_phrase('title'); ?></th>
-            <th><?php echo get_phrase('health_report'); ?></th>
             <th><?php echo get_phrase('date'); ?></th>
+            <th><?php echo get_phrase('health_report'); ?></th>
         </tr>
     </thead>
 
@@ -263,9 +261,17 @@
         <?php  
         $report_info=$this->db->get_where('prescription_order',array('user_id'=>$user_data['user_id'],'order_type'=>1))->result_array();
         foreach ($report_info as $row2) {
+            if($row1['type_of_order']==0){
         $rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row2['prescription_id']))->row_array();
+        $rep_exp1=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
+        $rep_exp_data=explode(',',$rep_exp1[7]);
+    }elseif($row1['type_of_order']==1){
+        $rep_exp2=explode('|',$this->encryption->decrypt($row2['order_data']));
+        $rep_exp_data=explode(',',$rep_exp2[1]);
+    }
+        /*$rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row2['prescription_id']))->row_array();
         $rep_exp=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
-         $rep_exp_data=explode(',',$rep_exp[7]);
+         $rep_exp_data=explode(',',$rep_exp[7]);*/
                 
         for($j=0;$j<count($rep_exp_data);$j++) {
         $report=$this->db->get_where('reports',array('order_id'=>$row2['order_id'],'status'=>1))->result_array();
@@ -274,15 +280,52 @@
             <tr>
                 <td><?php echo $j+1;?></td>
                 <td><?php echo $rep_exp_data[$j];?></td>
-                <td><?php if($report[$j]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report[$j]['report_id'].'.'.$report[$j]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
                 <td><?php echo $report[$j]['created_at'] ?></td>
+                <td><?php if($report[$j]['extension']!=''){?><a href="<?=base_url('main/reports_view/').$report[$j]['report_id'];?>" class="hiper" ><input type="button" value="View Reports" class="btn btn-info " /></a><?php }?><!-- <?php if($report[$j]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report[$j]['report_id'].'.'.$report[$j]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?> --></td>
             </tr>
         <?php }}} ?>
     </tbody>
 </table>
+<br/>
+<h4>Reports By Doctor/User</h4>
+<?php if($account_type=='doctors'){?>
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?= $user_data['user_id'];?>'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_health_report'); ?>
+</button>
+<?php }?>
+<br/>
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+    <thead>
+        <tr>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('sl_no'); ?></th>
+            <th data-field="title" data-sortable="true"><?php echo get_phrase('title'); ?></th>
+            <th data-field="created_by" data-sortable="true"><?php echo get_phrase('created_by'); ?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('date'); ?></th>
+            <th data-field="health_report" data-sortable="true"><?php echo get_phrase('health_report'); ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php
+        $report=$this->db->get_where('reports',array('user_id'=>$user_data['user_id']))->result_array();
+        $i=1;foreach ($report as $row) {  
+            ?>
+            <tr>
+                <td><?php echo $i;?></td>
+                <td><?php echo $row['title'];?></td>
+                <td><?php $exp=explode('-',$row['created_by']);
+                if($exp[0]=='doctors'){
+                $doc=$this->db->get_where($exp[0],array($exp[1].'_id'=>$exp[2]))->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name;}elseif($exp[0]=='users'){echo 'Created By Me';}?></td>
+                <td><?php echo $row['created_at'] ?></td>
+                <td><?php if($row['extension']!=''){?><a href="<?=base_url('main/reports_view/').$row['report_id'];?>" class="hiper" ><input type="button" value="View Reports" class="btn btn-info " /></a><?php }?></td>
+            </tr>
+        <?php $i++;}?>
+    </tbody>
+</table>
 </div>
+
 <div class="tab-pane box" id="h5" style="padding: 5px">
-<table data-toggle="table"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
             <th><?php echo get_phrase('sl_no');?></th>

@@ -62,16 +62,10 @@ $country_info=$this->db->get('country')->result_array();
 $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
 foreach ($single_hospital_info as $row) {
 ?>
-      
-       
             <div class="tab-pane box active" id="tab1">
-                
                 <div class="row">
     <div class="col-md-12">
-
         <div class="panel panel-primary" data-collapsed="0">
-
-            
             <div class="panel-body">
     
                 
@@ -250,7 +244,7 @@ foreach ($single_hospital_info as $row) {
 
                         <div class="col-sm-8">
                         
-                        <select name="license" class="form-control" id="license" value="">
+                        <select name="license" class="form-control" id="license" value="" <?php if($account_type!='superadmin'){echo 'readonly';}?>>
                                 <option value=""><?php echo get_phrase('select_lisense'); ?></option>
                                 <?php 
                                 $license = $this->db->get_where('license')->result_array();
@@ -268,7 +262,7 @@ foreach ($single_hospital_info as $row) {
 
                         <div class="col-sm-8">
                         
-                        <select name="license_status" class="form-control" id="license_status" value="">
+                        <select name="license_status" class="form-control" id="license_status" value=""<?php if($account_type!='superadmin'){echo 'readonly';}?>>
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1" <?php if($row['license_status']==1){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2" <?php if($row['license_status']==2){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
@@ -280,7 +274,7 @@ foreach ($single_hospital_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('from_date'); ?></label>
                         <div class="col-sm-8">
                        
-                            <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>" autocomplete="off">
+                            <input type="text" name="from_date" class="form-control" id="from_date" value="<?php echo  $row['from_date'] ?>" autocomplete="off"<?php if($account_type!='superadmin'){echo 'readonly';}?>>
                         
                         </div>
                     </div>
@@ -289,7 +283,7 @@ foreach ($single_hospital_info as $row) {
 
                         <div class="col-sm-8">
                            
-                            <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>" autocomplete="off">
+                            <input type="text" name="till_date" class="form-control" id="till_date" value="<?php echo $row['till_date']?>" autocomplete="off"<?php if($account_type!='superadmin'){echo 'readonly';}?>>
                         
                         </div>
                     </div>
@@ -318,7 +312,7 @@ foreach ($single_hospital_info as $row) {
                     </div>
                 </div>
                   <div class="col-sm-3 control-label col-sm-offset-9">
-                    <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+                    <?php if($account_type == 'superadmin'){?>
                         <input type="submit" class="btn btn-success" value="Update">
                     <?php }?>
                     </div>

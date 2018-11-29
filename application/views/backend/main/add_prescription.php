@@ -74,7 +74,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-2"><?php echo get_phrase('additional_note'); ?></label>
                             <div class="col-sm-9">
-                                <textarea type="text" name="additional_note" placeholder="Additional Note" class="form-control" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="" rows="4" cols="50"></textarea>
+                                <textarea type="text" name="additional_note" placeholder="Additional Note" class="form-control" value="" rows="4" cols="50"></textarea>
                             </div>
                     </div>
                 </div>
