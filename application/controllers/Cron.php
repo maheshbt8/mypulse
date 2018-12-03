@@ -1,7 +1,7 @@
 <?php if (! defined('BASEPATH')) {
  exit('No direct script access allowed');
 }
-class Cron extends MY_Controller
+class Cron extends CI_Controller
 {
 
  public function __construct()
@@ -11,7 +11,10 @@ class Cron extends MY_Controller
    show_error('Direct access is not allowed');
    }
  }
-
+ public function index()
+ {
+ 	echo "string";
+ }
  public function run()
  {
     $this->load->library('core/CronRunner');

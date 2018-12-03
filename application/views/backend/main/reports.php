@@ -32,29 +32,29 @@ $date2=date_create($ed);
 $diff=date_diff($date1,$date2);
 $count=$diff->format("%a");
 $j=0;
-for($i=1;$i<=$count;$i++){
+for($i=0;$i<$count;$i++){
 $currmonth = date('Y-m-d', strtotime('-'.$i.' day'));
 if($report_id == 1){
 	if($account_type == 'superadmin'){
-$qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'created_date'=>date('m/d/Y', strtotime('-'.$i.' day'))))->num_rows();
+$qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime('-'.$i.' day')),'created_date<='=>date('Y-m-d 23:59:59', strtotime('-'.$i.' day'))))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
         $no=$this->db->get('doctors')->result_array();
             $qry=0;
             for($da=0;$da<count($no);$da++){
-                $qry=$qry+$this->db->get_where('inpatient', array('doctor_id' => $no[$da]['doctor_id'],'created_date'=>date('m/d/Y', strtotime('-'.$i.' day'))))->num_rows();   
+                $qry=$qry+$this->db->get_where('inpatient', array('doctor_id' => $no[$da]['doctor_id'],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime('-'.$i.' day')),'created_date<='=>date('Y-m-d 23:59:59', strtotime('-'.$i.' day'))))->num_rows();   
             }
 	}
 
 }elseif($report_id == 2){
 	if($account_type == 'superadmin'){
-$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>date('m/d/Y', strtotime('-'.$i.' day'))))->num_rows();
+$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'created_at>='=>date('Y-m-d 00:00:00', strtotime('-'.$i.' day')),'created_at<='=>date('Y-m-d 23:59:59', strtotime('-'.$i.' day'))))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($da=0;$da<count($no);$da++){
-                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>date('m/d/Y', strtotime('-'.$i.' day'))))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'created_at>='=>date('Y-m-d 00:00:00', strtotime('-'.$i.' day')),'created_at<='=>date('Y-m-d 23:59:59', strtotime('-'.$i.' day'))))->num_rows();
             }
             $qry=$cou;
 	}

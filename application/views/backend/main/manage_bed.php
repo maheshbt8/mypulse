@@ -22,7 +22,7 @@ $this->session->set_userdata('last_page', current_url());
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('name'); ?></th>
-            <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
+            <th data-field="hospital_name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch_name'); ?></th>
             <th data-field="department" data-sortable="true"><?php echo get_phrase('department_name'); ?></th>
             <th data-field="ward" data-sortable="true"><?php echo get_phrase('ward_name'); ?></th>
@@ -35,9 +35,8 @@ $this->session->set_userdata('last_page', current_url());
         $i=1;
         foreach ($bed_info as $row) { ?>   
             <tr>
-             
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['bed_id'] ?>"></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
+<td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['bed_id'] ?>"></td>
+<td><a href="<?php echo base_url(); ?>main/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>

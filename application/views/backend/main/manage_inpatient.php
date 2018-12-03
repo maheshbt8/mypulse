@@ -13,8 +13,8 @@ $this->session->set_userdata('last_page', current_url());
                             <select name="hospital" class="form-control" onchange="return get_inpatient(this.value)">
     <option value="">Select</option>
     <option value="1"><?php echo get_phrase('Admitted'); ?></option>
-    <option value="0"><?php echo get_phrase('Recommended'); ?></option>
     <option value="2"><?php echo get_phrase('Discharged'); ?></option>
+    <option value="0"><?php echo get_phrase('Recommended'); ?></option>
                             </select>
                         </div>
                     </div>
@@ -38,6 +38,8 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="reason" data-sortable="true"><?php echo get_phrase('reason');?></th> 
             <th data-field="bed" data-sortable="true"><?php echo get_phrase('bed');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status');?></th>
+            <?php if($account_type=='users'){ ?>
+            <th data-field="Visibility" data-sortable="true"><?php echo get_phrase('Visibility');?></th><?php }?>
             <th><?php echo get_phrase('action');?></th>
         </tr>
     </thead>
@@ -56,7 +58,9 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo date('M d,Y',strtotime($row['created_date']));?></td>
                 <td><?php echo $row['reason']; ?></td>
                 <td><?php echo $this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row()->name; ?></td>
-                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td> 
+                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td>
+                 <?php if($account_type=='users'){?>
+                <td><?php if($row['show_status']==1){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row['show_status']==2){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td><?php }?> 
                <td>
               <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> 
                 </td>

@@ -153,7 +153,8 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
         <td><div class="col-sm-12">
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
+        <input type="file" name="userfile[]" id="userfile" value="<?php echo set_value('userfile'); ?>">
+<!--                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
                                     <span class="btn btn-blue btn-file">
@@ -163,7 +164,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
                                     </span>
 <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
             </td>
         <td><input type="text" id="price<?=$i1+1;?>" name="price[]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" autocomplete="off"/></td>

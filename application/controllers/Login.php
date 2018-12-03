@@ -9,10 +9,10 @@ class Login extends CI_Controller {
         $this->load->library('session');
         date_default_timezone_set('Asia/Kolkata');
         /* cache control */
-        $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+       /* $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
         $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache');
-        $this->output->set_header("Expires: Mon, 26 Jul 2010 05:00:00 GMT");
+        $this->output->set_header("Expires: Mon, 26 Jul 2010 05:00:00 GMT");*/
     }
     //Default function, redirects to logged in user area
     public function index() {
@@ -134,6 +134,8 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_type', 'medicalstores');
             $this->session->set_userdata('type_id', 'store');
         }
+
+     if ($this->session->userdata('login_type')!='') {
          $account_type=$this->session->userdata('login_type');
 if($account_type !='superadmin' && $account_type!='users'){
     $license_status=$this->db->get_where('hospitals',array('hospital_id',$this->session->userdata('hospital_id')))->row()->license_status;
@@ -154,6 +156,7 @@ if($account_type !='superadmin' && $account_type!='users'){
             redirect(base_url() . 'main', 'refresh');
         }
     }
+}
         $this->session->set_flashdata('login_error', 'Please Enter Valid Login Details !!!');
          redirect(base_url() . 'login', 'refresh');
     }

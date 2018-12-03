@@ -1,13 +1,17 @@
 <?php 
 $appointment_info = $this->db->get_where('appointment_history', array('appointment_id' => $appointment_id))->result_array();
+$user = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->row()->user_id;
+$user_info=$this->db->where('user_id',$user)->get('users')->row_array();
 ?>
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">   
 <div class="panel-heading">
-<input type="button" class="btn btn-orange pull-right" value="<?php echo get_phrase('back'); ?>" onclick="window.location.href = '<?= base_url('main/edit_appointment/').$appointment_id; ?>'">
+ <input type="button" class="btn btn-orange pull-right" value="<?php echo get_phrase('back'); ?>" onclick="window.location.href = '<?= base_url('main/edit_appointment/').$appointment_id; ?>'">
 </div>
 <div class="panel-body">
+  <h4><?php echo '<b>User ID</b> : '.$user_info['unique_id'];?></h4>
+<h4><?php echo '<b>User Name</b> : '.$user_info['name'];?></h4>
 <table class="table table-bordered table-striped datatable" id="table-2">
     <thead>
         <tr>

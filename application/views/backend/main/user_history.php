@@ -261,7 +261,7 @@
         <?php  
         $report_info=$this->db->get_where('prescription_order',array('user_id'=>$user_data['user_id'],'order_type'=>1))->result_array();
         foreach ($report_info as $row2) {
-            if($row1['type_of_order']==0){
+    if($row1['type_of_order']==0){
         $rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row2['prescription_id']))->row_array();
         $rep_exp1=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
         $rep_exp_data=explode(',',$rep_exp1[7]);
@@ -269,10 +269,6 @@
         $rep_exp2=explode('|',$this->encryption->decrypt($row2['order_data']));
         $rep_exp_data=explode(',',$rep_exp2[1]);
     }
-        /*$rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row2['prescription_id']))->row_array();
-        $rep_exp=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
-         $rep_exp_data=explode(',',$rep_exp[7]);*/
-                
         for($j=0;$j<count($rep_exp_data);$j++) {
         $report=$this->db->get_where('reports',array('order_id'=>$row2['order_id'],'status'=>1))->result_array();
         if($report[$j]['extension']!=''){
@@ -307,7 +303,7 @@
 
     <tbody>
         <?php
-        $report=$this->db->get_where('reports',array('user_id'=>$user_data['user_id']))->result_array();
+        $report=$this->db->get_where('reports',array('user_id'=>$user_data['user_id'],'status'=>1))->result_array();
         $i=1;foreach ($report as $row) {  
             ?>
             <tr>

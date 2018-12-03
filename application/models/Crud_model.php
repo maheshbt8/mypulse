@@ -1717,21 +1717,21 @@ if($account_type == 'medicalstores'){
     if($account_type == 'superadmin'){
   return $this->db->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
 }elseif($account_type == 'hospitaladmins'){
-  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
+  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'doctors'){
-    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
+    return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'users'){
-    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
+    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
 }elseif($account_type == 'nurse'){
     $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status!='=>0))->row_array();
+        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
     }
     return $inpatient;
 }elseif($account_type == 'receptionist'){
     $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status!='=>0))->row_array();
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status=='=>1))->row_array();
         if($inpatient!=''){
             $inpatient1[]=$inpatient;
         }
@@ -2484,7 +2484,7 @@ if($account_type == 'superadmin'){
     {
         $account_type=$this->session->userdata('login_type');
         if($account_type == 'superadmin'){
-        return $this->db->get('hospitals')->result_array();
+        return $this->db->get_where('hospitals')->result_array();
         }elseif($account_type == 'hospitaladmins'){
         return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('branch')->result_array();
         }
@@ -3275,7 +3275,10 @@ return $this->db->get_where('appointments',array('doctor_id'=>$this->session->us
         $account_type = $this->session->userdata('login_type');
         $user_id = $this->session->userdata('login_user_id');
     if($account_type=='superadmin'){
-        return $this->db->order_by('order_id','DESC')->get_where('prescription_order')->result_array();
+        return $this->db->order_by('order_id','DESC')->get('prescription_order')->result_array();
+    }
+    if($account_type=='hospitaladmins'){
+        return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('user_id' => $this->session->userdata('hospital_id')))->result_array();
     }
     if($account_type=='users'){
         return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('user_id' => $user_id))->result_array();

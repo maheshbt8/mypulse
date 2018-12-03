@@ -1,7 +1,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
-<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
+<?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
 <div class="row">
     <div class="col-lg-12">
 <div class="panel panel-default">   
@@ -40,8 +40,8 @@ Order With Prescription
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
                 <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a></td>
-                <td><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper"><?php if($row1['status']==1){echo 'Receipt';}elseif($row1['status']==2){ ?>
-                    <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }?></a></td>
+                <td><?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper">Receipt</a><?php }elseif($row1['status']==2 && $account_type=='medicalstores'|| $account_type=='medicallabs'){ ?>
+                    <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }elseif($row1['status']==2 && $account_type!='medicalstores'|| $account_type!='medicallabs'){ ?>Receipt Not Upload<?php }?></td>
             </tr>
         <?php }$i++;}} ?>
     </tbody>
@@ -50,12 +50,13 @@ Order With Prescription
 </div>
 </div>
 </div>
-<?php }elseif($account_type=='users'){ ?>
+<?php }
+if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users'){ ?>
 <div class="row">
     <div class="col-lg-12">
 <div class="panel panel-default">   
 <div class="panel-heading">
-Order By Own
+Order By Doctors/Users
 <?php if($account_type=='users'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_order/<?=$order_type;?>'" class="btn btn-primary pull-right">
         <?php if($order_type==0){echo get_phrase('Order Medicen');}elseif($order_type==1){echo get_phrase('Order Medical Tests');} ?>

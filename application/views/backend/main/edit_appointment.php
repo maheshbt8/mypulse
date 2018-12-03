@@ -124,12 +124,12 @@ foreach ($single_appointment_info as $row) {
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
-        <?php if($account_type=='doctors'){?>
+      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+<?php if($account_type=='doctors'){?>
 <button type="button" onClick="confrecommend(this.form);" id="recommend" class="btn btn-warning pull-right" style="margin-left: 2px;width: auto;">
         <?php echo get_phrase('Recommend as Inpatient'); ?>
 </button>
 <?php }?>
-      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
  </div>
 <div class="panel-body">
     <div class="col-md-4">

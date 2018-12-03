@@ -57,11 +57,9 @@ $this->session->set_userdata('last_page', current_url());
     </thead>
 
     <tbody>
-        <?php $i=1;foreach ($appointment_info as $row) { 
-           /* print_r($row);die;*/
-            if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
-            {
-                $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
+        <?php $i=1;foreach ($appointment_info as $row) {
+    if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y'))){
+    $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
                 if($count>0){
                 $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
                 $this->db->where($array)->update('appointments',array('status'=>'4'));

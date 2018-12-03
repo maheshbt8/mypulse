@@ -5,7 +5,7 @@
             <div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_health_reports/" method="post" enctype="multipart/form-data">
-             <input type="hidden" name="user_id" value="<?=$user_id?>">
+             <input type="hidden" name="user_id" value="<?= $user_id?>">
         <div class="tab-content">
            
         <br>

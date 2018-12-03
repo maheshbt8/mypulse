@@ -3,12 +3,27 @@ $this->session->set_userdata('last_page', current_url());
 ?>
 <div class="row">
     <div class="col-md-12">
-        <div class="panel panel-default">
-        <div class="panel-heading">
-            Reports By Order
-        </div>   
+
+        <ul class="nav nav-tabs bordered"> 
+            <li class="active">
+                <a href="#h1" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Reports Based On Orders';?>
+
+                </a>
+            </li>
+            <li>
+                <a href="#h2" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Reports uploaded by Doctor/User';?>
+
+                </a>
+            </li>
+        </ul>
+    <div class="panel panel-default">
             <div class="panel-body">
-            <div style="clear:both;"></div>
+         <div class="tab-content">
+    <div class="tab-pane box active" id="h1" style="padding: 5px">
+          
+           
 <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
@@ -51,22 +66,16 @@ if($row1['type_of_order']==0){
         <?php $i++;} }?>
     </tbody>
 </table>
- </div>
 </div>
-</div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-        <div class="panel-heading">
-            Reports With Out Order
+<div class="tab-pane box" id="h2" style="padding: 5px">
+        <div class="panel-bidy">
+            
             <?php if($account_type=='users'){?>
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?= $user_data['user_id'];?>'" class="btn btn-primary pull-right">
+<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?=$this->session->userdata('login_user_id');?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_health_report'); ?>
 </button>
 <?php }?>
-        </div>   
-            <div class="panel-body">
+        </div>
 <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
@@ -104,7 +113,9 @@ if($row1['type_of_order']==0){
         <?php $i++;}?>
     </tbody>
 </table>
- </div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>

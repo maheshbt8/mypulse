@@ -1439,7 +1439,7 @@ class Main extends CI_Controller {
             redirect($this->session->userdata('last_page'));
         }
         $account_type=$this->session->userdata('login_type');
-        if($account_type == 'users'){
+        if($account_type == 'users' || $account_type == 'superadmin' || $account_type == 'hospitaladmins'){
         $data['order_type']=$param1;
         }
         if($account_type == 'medicalstores'){
@@ -1449,7 +1449,7 @@ class Main extends CI_Controller {
         $data['order_type']=1;
         }
         if($data['order_type']==0){$page=get_phrase('medicine_orders');}elseif($data['order_type']==1){$page=get_phrase('medicaltest_orders');}
-        $data['order']=$this->crud_model->select_order_info();
+        $data['order']=$this->crud_model->select_order_info($param1);
         $data['page_name'] = 'manage_order';
         $data['page_title'] = $page;
         $this->load->view('backend/index', $data);
@@ -1470,7 +1470,6 @@ class Main extends CI_Controller {
     {   
         $account_type=$this->session->userdata('login_type');
         if($this->input->post()){
-
         $data['health_reports']=$this->crud_model->save_medical_reports();
         $this->session->set_flashdata('message', get_phrase('reports_added_successfuly'));
         if($account_type=='users'){
@@ -1743,7 +1742,7 @@ class Main extends CI_Controller {
             redirect(base_url() . 'main/message/', 'refresh');
         }
         $page_data['page_name'] = 'new_message';
-        $page_data['page_title'] = get_phrase('messages');
+        $page_data['page_title'] = get_phrase('new_message');
         $this->load->view('backend/index', $page_data);
     }
     function read_message($param1 = '', $param2 = '', $param3 = '') 
@@ -1896,15 +1895,16 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     $current_time = time();
     $difference = $current_time - $past_time;
     $difference_minute =  $difference/60;
+    /*echo intval($difference_minute);*/
     if(intval($difference_minute)<3){
         $otp_form=$this->input->post('otp');
         $otp=$this->session->userdata('otp');
         if($otp_form == $otp){
             $this->db->where($param2.'_id',$_POST['user_id']);
             $s=$this->db->update($param1, array('is_mobile' =>1));
-            if($s){$this->session->set_flashdata('message', get_phrase('Your Mobile Number Verified Successfully'));
+            if($s){
+            $this->session->set_flashdata('message', get_phrase('Your Mobile Number Verified Successfully'));
             echo TRUE;
-            /*redirect($this->session->userdata('last_page1'));*/
             }
         }else{
             echo '<span id="otp_error" style="color:red;">OTP Incorect</span>';

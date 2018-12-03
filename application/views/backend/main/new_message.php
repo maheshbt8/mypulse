@@ -18,7 +18,8 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
     <select class="form-control select2" name="reciever[]"  data-validate="required" data-message-required="<?php echo 'Please Select Any User';?>" required multiple>
             <optgroup label="<?php echo get_phrase('Group_message'); ?>"><?php if($account_type=='superadmin'){?>
                 <option value="0/1">All Hospital Admins</option>
-                <?php }elseif($account_type != 'doctors'){ ?>
+                <?php }
+                if($account_type != 'doctors'){ ?>
                 <option value="0/4">All Doctors</option><?php }?>
                 <option value="0/5">All Nurses</option>
                 <option value="0/6">All Receptionists</option>

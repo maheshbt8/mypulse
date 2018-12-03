@@ -5,24 +5,11 @@
 </style>
 <div class="row">
     <div class="col-md-12">
+        <div class="panel panel-default">   
+            <div class="panel-body">
          <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_inpatient/" method="post" enctype="multipart/form-data">
-             
-        <div class="tab-content">
-           
-        <br>
-            <!----TABLE LISTING STARTS-->
-            <div class="tab-pane box active" id="list">
-                
-                <div class="row">
-    <div class="col-md-12">
-
-        <div class="panel panel-primary" data-collapsed="0">
-
-            
-            <div class="panel-body">
-                    <div class="row">
-                                  <div class="col-sm-6">
+<div class="col-sm-6">
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
 
@@ -159,15 +146,11 @@ $ward = $this->db->get_where('ward' , array('department_id' => $this->session->u
                                 </select>
                             </div>
                     </div>
-        </div>
-        <!-- <span id="doc_ava"></span> -->
-            </div>            
-            </div>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
+        </div>          
+          
+        
+
+
                     
                      
                     <div class="col-sm-3 control-label col-sm-offset-9 ">
@@ -176,28 +159,10 @@ $ward = $this->db->get_where('ward' , array('department_id' => $this->session->u
                     </div>  
                    
    </form>
-   
-    </div>
 </div>
-
-<!-- <script type="text/javascript">
-   function get_dco_date(date_value) {
-    var doctor_id=$('#doctor_id').val();
-
-     $.ajax({
-            type : "POST",
-            url: '<?php echo base_url();?>ajax/get_dco_date/' + doctor_id,
-            data : {date_val : date_value},
-            success: function(response)
-            {
-               jQuery('#available_slot').html(response);
-               document.getElementById("available_slot").disabled = false;
-               
-            } 
-        });
-   
-    }           
-</script> -->
+</div>   
+</div>
+</div>
 <script type="text/javascript">
     function get_user_data(user_value) {
      $.ajax({
@@ -284,5 +249,4 @@ $ward = $this->db->get_where('ward' , array('department_id' => $this->session->u
         });
 
     }
-
 </script>
