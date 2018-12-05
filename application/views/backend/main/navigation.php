@@ -121,7 +121,7 @@ echo $user_role; ?></span></div>
     <?php }?>
     <?php if($account_type=='users' || $account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
         <li class="parent <?php if ($page_name == 'manage_order') echo 'active'; ?>"><a data-toggle="collapse" href="#sub-item-1">
-                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-down"></i></span>
+                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-right"></i></span>
                     </a>
                     <ul class="children collapse <?php if ($page_name == 'manage_order'){echo 'in';}?>" id="sub-item-1">
                 <li class="<?php if ($page_name == 'manage_order' && $order_type==0){echo 'active';}?>">
@@ -179,7 +179,7 @@ echo $user_role; ?></span></div>
     <?php }?>
     <?php if($account_type=='users'){?>
         <li class="parent <?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports'){echo 'active';}?>"><a data-toggle="collapse" href="#sub-item-2" >
-                    <i class="fa fa-hospital-o">&nbsp;</i> <?php echo get_phrase('health_records'); ?> <span data-toggle="collapse" href="#sub-item-2" class="icon pull-right"><i class="fa fa-angle-down"></i></span>
+                    <i class="fa fa-hospital-o">&nbsp;</i> <?php echo get_phrase('health_records'); ?> <span data-toggle="collapse" href="#sub-item-2" class="icon pull-right"><i class="fa fa-angle-right"></i></span>
                     </a>
                     <ul class="children collapse <?php if ($page_name == 'manage_prescription' || $page_name == 'manage_prognosis' || $page_name == 'manage_health_reports'){echo 'in';}?>" id="sub-item-2">
                 <li class="<?php if ($page_name == 'manage_prescription'){echo 'active';}?>">
@@ -211,7 +211,7 @@ echo $user_role; ?></span></div>
 
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
 		<li class="parent"><a data-toggle="collapse" href="#sub-item-3">
-					<i class="glyphicon glyphicon-stats">&nbsp;</i> <?php echo get_phrase('trends'); ?> <span data-toggle="collapse" href="#sub-item-3" class="icon pull-right"><i class="fa fa-angle-down"></i></span>
+					<i class="glyphicon glyphicon-stats">&nbsp;</i> <?php echo get_phrase('trends'); ?> <span data-toggle="collapse" href="#sub-item-3" class="icon pull-right"><i class="fa fa-angle-right"></i></span>
 					</a>
 					<ul class="children collapse" id="sub-item-3">
 						<li class="<?php if ($page_name == 'manage_prognosis') echo 'active'; ?>">

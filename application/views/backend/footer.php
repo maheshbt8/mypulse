@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
 	.footer {
 	   position: fixed;
 	   left: 0;
@@ -8,9 +8,9 @@
 	   color: white;
 	   text-align: center;
 	}
-	</style>
+	</style> -->
 <div class="col-sm-12 footer">
-					<p class="" style="color: #fff;"><span style ="margin-right: 34%;">&copy; 2018 JagruMs Technologies - All Rights Reserved</span><a href="<?php echo base_url()?>main/privacy/2"><span class="pull-right"style="color: #fff;">Terms & Conditions</span></a><a href="<?php echo base_url()?>main/privacy/1"><span class="pull-right" style="margin-right:20px;color: #fff;">Privacy & Policy</span></a></p>
+<p class="" style="color: #000;">&copy; 2018 JagruMs Technologies - All Rights Reserved<a href="<?php echo base_url()?>main/privacy/2"><span class="pull-right">Terms & Conditions</span></a><a href="<?php echo base_url()?>main/privacy/1"><span class="pull-right" style="margin-right:20px;">Privacy & Policy</span></a></p>
 </div>
 <!-- <style>
 .footer {
