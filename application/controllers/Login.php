@@ -138,9 +138,9 @@ class Login extends CI_Controller {
      if ($this->session->userdata('login_type')!='') {
          $account_type=$this->session->userdata('login_type');
 if($account_type !='superadmin' && $account_type!='users'){
-    $license_status=$this->db->get_where('hospitals',array('hospital_id',$this->session->userdata('hospital_id')))->row()->license_status;
+$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->session->userdata('hospital_id')))->row()->license_status;
     if($this->session->userdata('hospital_id')){
-    if($license_status==1){
+    if($license_status == 1){
     $this->session->set_userdata('login', '1');
     redirect(base_url() . 'main', 'refresh');
     }else{

@@ -58,19 +58,14 @@ $this->session->set_userdata('last_page', current_url());
 
     <tbody>
         <?php $i=1;foreach ($appointment_info as $row) {
-    if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y'))){
+  /*  if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y'))){
     $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
                 if($count>0){
                 $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
                 $this->db->where($array)->update('appointments',array('status'=>'4'));
                 $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
-            /*$notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-            $notification['user_id']='users-user-'.$data['user_id'];
-            $notification['title']='Appointment Booking';
-            $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
-                $this->db->insert('notification',);*/
                 }
-            }
+            }*/
             ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>

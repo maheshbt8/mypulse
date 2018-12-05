@@ -273,7 +273,6 @@ class Main extends CI_Controller {
             $this->crud_model->save_bed_info();
             $this->session->set_flashdata('message', get_phrase('beds_info_saved_successfuly'));
            redirect($this->session->userdata('last_page'));
-          /*  redirect(base_url() . 'main/get_hospital_bed/'.$ward);*/
         }
         if ($task == "update") {
                 $this->crud_model->update_bed_info($id);

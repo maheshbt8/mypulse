@@ -22,5 +22,7 @@ class Cron_file extends CI_Controller {
     }
     public function index() {
         $this->cron_model->applications();
+        $this->cron_model->delete_notifications();
+        $this->cron_model->delete_messages();
     }
 }

@@ -48,9 +48,12 @@ foreach ($store as $spe) { ?>
 <select name="store" class="form-control select2" id="store" value=""  data-validate="required" data-message-required="<?php echo 'Value Required';?>">
 <option value=""> -- Select Medical Store -- </option>
 <?php $store=$this->db->get('medicalstores')->result(); 
-foreach ($store as $spe) { ?>     
+foreach ($store as $spe) { 
+$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital))->row()->license_status;
+  if($license_status==1){
+  ?>     
 <option value="<?php echo $spe->store_id;?>"><?php echo $spe->unique_id.' / '.$spe->name; ?></option>
-<?php }?>
+<?php }}?>
 </select>
 </div>
 </div>
@@ -96,9 +99,12 @@ foreach ($store as $spe) { ?>
 <select name="lab" class="form-control select2" id="lab"value=""  data-validate="required" data-message-required="<?php echo 'Value Required';?>">
 <option value=""> -- Select Medical Lab -- </option>
 <?php $store=$this->db->get('medicallabs')->result(); 
-foreach ($store as $spe) { ?>     
+foreach ($store as $spe) { 
+$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital))->row()->license_status;
+  if($license_status==1){
+  ?>     
 <option value="<?php echo $spe->lab_id;?>"><?php echo $spe->unique_id.' / '.$spe->name; ?></option>
-<?php }?>
+<?php }}?>
 </select>
 </div>
 </div>

@@ -246,7 +246,22 @@
 </table>
 </div>
 <div class="tab-pane box" id="h4" style="padding: 5px">
-<h4>Reports By Order</h4>
+<ul class="nav nav-tabs bordered"> 
+            <li class="active">
+                <a href="#hs1" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Reports By Order';?>
+
+                </a>
+            </li>
+            <li>
+                <a href="#hs2" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                    <?php echo 'Reports By Doctor/User';?>
+
+                </a>
+            </li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane box active" id="hs1" style="padding: 5px">
 <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
@@ -282,8 +297,8 @@
         <?php }}} ?>
     </tbody>
 </table>
-<br/>
-<h4>Reports By Doctor/User</h4>
+</div>
+<div class="tab-pane box" id="hs2" style="padding: 5px">
 <?php if($account_type=='doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?= $user_data['user_id'];?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_health_report'); ?>
@@ -318,6 +333,8 @@
         <?php $i++;}?>
     </tbody>
 </table>
+</div>
+</div>
 </div>
 
 <div class="tab-pane box" id="h5" style="padding: 5px">

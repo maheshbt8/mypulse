@@ -4,11 +4,22 @@ $this->session->set_userdata('last_page', current_url());
 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
 <div class="row">
     <div class="col-lg-12">
-<div class="panel panel-default">   
-<div class="panel-heading">
-Order With Prescription
-</div>
+<ul class="nav nav-tabs bordered"> 
+    <li class="active">
+    <a href="#h1" data-toggle="tab"><i class="entypo-plus-circled"></i>
+    <?php echo 'Orders based on Prescription';?>
+    </a>
+    </li>
+    <li>
+    <a href="#h2" data-toggle="tab"><i class="entypo-plus-circled"></i>
+    <?php echo 'Orders without Prescription';?>
+    </a>
+    </li>
+</ul> 
+<div class="panel panel-default">  
 <div class="panel-body">
+<div class="tab-content">
+<div class="tab-pane box active" id="h1" style="padding: 5px">
 <table data-toggle="table"data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
@@ -47,23 +58,16 @@ Order With Prescription
     </tbody>
 </table>
 </div>
-</div>
-</div>
-</div>
 <?php }
 if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users'){ ?>
-<div class="row">
-    <div class="col-lg-12">
-<div class="panel panel-default">   
-<div class="panel-heading">
-Order By Doctors/Users
+<div class="tab-pane box" id="h2" style="padding: 5px">
 <?php if($account_type=='users'){?>
+<div class="panel-heading">
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_order/<?=$order_type;?>'" class="btn btn-primary pull-right">
         <?php if($order_type==0){echo get_phrase('Order Medicen');}elseif($order_type==1){echo get_phrase('Order Medical Tests');} ?>
 </button>
-<?php }?>
 </div>
-<div class="panel-body">
+<?php }?>
 <table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>
@@ -99,10 +103,11 @@ Order By Doctors/Users
     </tbody>
 </table>
 </div>
-</div>
-</div>
-</div>
 <?php }?>
+</div>
+</div>
+</div>
+</div>
 <script>
     $(document).ready(function(){
         $("#delete1").show();

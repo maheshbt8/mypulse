@@ -1,11 +1,67 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
+$ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
 ?>
 <form action="<?php echo base_url()?>main/bed/delete_multiple/" method="post">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
+<div class="col-sm-10">
+<?php if($account_type == 'superadmin'){ ?>
+<div class="col-sm-3">   
+<span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
+<div class="col-sm-8">
+<select name="hospital" class="form-control" onchange="return get_branch(this.value)">
+    <?php $hospitals=$this->db->get('hospitals')->result_array();
+    foreach ($hospitals as $hospital) { ?>
+<option value="<?=$hospital['hospital_id']?>" <?php if($hospital['hospital_id'] == $ward['hospital_id']){echo "selected";}?>><?=ucfirst($hospital['name'])?></option>
+<?php    }?>
+</select>
+</div>
+    </div>
+<?php }?>
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+<div class="col-sm-3">    
+<span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('branch'); ?></span> 
+<div class="col-sm-8">
+<select name="branch" class="form-control" onchange="return get_departments(this.value)" id="branch">
+    <?php $branchs=$this->db->where('hospital_id',$ward['hospital_id'])->get('branch')->result_array();
+    foreach ($branchs as $branches) { ?>
+<option value="<?=$branches['branch_id']?>" <?php if($branches['branch_id'] == $ward['branch_id']){echo "selected";}?>><?=ucfirst($branches['name'])?></option>
+<?php    }?>
+</select>
+</div>
+</div>
+<?php }?>
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+<div class="col-sm-3">    
+<span for="field-ta" class="col-sm-5 control-label"> <?php echo get_phrase('department'); ?></span> 
+<div class="col-sm-7">
+<select name="department" class="form-control" onchange="return get_ward(this.value)" id="department">
+    <?php $departments=$this->db->where('branch_id',$ward['branch_id'])->get('department')->result_array();
+    foreach ($departments as $departments) { ?>
+<option value="<?=$departments['department_id']?>" <?php if($departments['department_id'] == $ward['department_id']){echo "selected";}?>><?=ucfirst($departments['name'])?></option>
+<?php    }?>
+</select>
+</div>
+</div>
+<?php }?>
+<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+<div class="col-sm-3">    
+<span for="field-ta" class="col-sm-5 control-label"> <?php echo get_phrase('ward'); ?></span> 
+<div class="col-sm-7">
+<select name="ward" class="form-control" onchange="return get_bed(this.value)" id="ward">
+    <?php $wards=$this->db->where('department_id',$ward['department_id'])->get('ward')->result_array();
+    foreach ($wards as $wards) { ?>
+<option value="<?=$wards['ward_id']?>" <?php if($wards['ward_id'] == $ward['ward_id']){echo "selected";}?>><?=ucfirst($wards['name'])?></option>
+<?php    }?>
+</select>
+</div>
+</div>
+<?php }?>
+</div>
+<div class="col-sm-2">
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -15,6 +71,7 @@ $this->session->set_userdata('last_page', current_url());
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_bed/<?= $ward_id;?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_bed'); ?>
 </button>
+</div>
 </div>
 <div class="panel-body">
 <table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
@@ -26,6 +83,7 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch_name'); ?></th>
             <th data-field="department" data-sortable="true"><?php echo get_phrase('department_name'); ?></th>
             <th data-field="ward" data-sortable="true"><?php echo get_phrase('ward_name'); ?></th>
+            <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
     </thead>
@@ -41,9 +99,8 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
-                
+                <td><?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not - Available";} ?></td>
                 <td>
-           
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
             </tr>
@@ -86,4 +143,42 @@ $this->session->set_userdata('last_page', current_url());
     }
     });
     });
+</script>
+<script type="text/javascript">
+    function get_branch(hospital_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_branch/' + hospital_id ,
+            success: function(response)
+            {
+                jQuery('#branch').html(response);
+            }
+        });
+
+    }
+    function get_departments(branch_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_department/' + branch_id ,
+            success: function(response)
+            {
+                jQuery('#department').html(response);
+            }
+        });
+
+    }
+    function get_ward(department_id) {
+    
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_ward/' + department_id ,
+            success: function(response)
+            {
+                jQuery('#ward').html(response);
+            }
+        });
+
+    }
+    function get_bed(id) {
+        window.location.href = '<?php echo base_url();?>main/get_hospital_bed/'+id;
+    }
 </script>

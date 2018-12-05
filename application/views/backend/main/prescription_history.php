@@ -96,7 +96,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 </div>
 
 <div class="row">
-<?php if($order_type == 0 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){
+<?php if($order_type == 0 || $account_type=='doctors' || $account_type=='nurse' ||($order_type=='' && $account_type=='users')){
 if($prescription_data[1]!='' || $order_data[1]!=''){
         ?>
 <h2 class="col-sm-12"><?php echo get_phrase('prescription_for_medicines'); ?></h2>
@@ -154,7 +154,7 @@ if($prescription_data[1]!='' || $order_data[1]!=''){
 </div>
 </div>
 <?php }}
-if($order_type == 1 || $account_type=='doctors' ||($order_type=='' && $account_type=='users')){
+if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($order_type=='' && $account_type=='users')){
     if($prescription_data[7]!='' || $order_data[1]!=''){?>
 <h2 class="col-sm-12"><?php echo get_phrase('prescription_for_medical_tests'); ?></h2>
 <div class="col-md-12">

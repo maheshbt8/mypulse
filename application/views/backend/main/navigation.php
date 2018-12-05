@@ -58,6 +58,14 @@ echo $user_role; ?></span></div>
             </a>
         </li>
     <?php }?>
+    <?php if($account_type=='hospitaladmins' || $account_type=='nurse' || $account_type=='receptionist'){?>
+        <li class="<?php if ($page_name == 'manage_beds') echo 'active'; ?>">
+            <a href="<?=base_url('main/bed');?>">
+                <i class="fa fa-bed">&nbsp;</i>
+                <span><?php echo get_phrase('beds'); ?></span>
+            </a>
+        </li>
+    <?php }?>
         <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='nurse' || $account_type=='receptionist' || $account_type=='users'){?>
         <li class="<?php if ($page_name == 'manage_doctor') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/doctor">
@@ -152,14 +160,6 @@ echo $user_role; ?></span></div>
                 <span><?php echo get_phrase('wards'); ?></span>
             </a>
         </li>
-    <?php }?>
-    <?php if($account_type=='nurse'){?>
-    <!--     <li class="<?php if ($page_name == 'manage_beds') echo 'active'; ?>">
-            <a href="#">
-                <i class="fa fa-users">&nbsp;</i>
-                <span><?php echo get_phrase('beds'); ?></span>
-            </a>
-        </li> -->
     <?php }?>
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users'  || $account_type=='nurse' || $account_type=='receptionist'){?>
         <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">

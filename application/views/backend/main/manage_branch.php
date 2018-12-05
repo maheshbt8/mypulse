@@ -6,6 +6,22 @@ $this->session->set_userdata('last_page', current_url());
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
+<?php if($account_type == 'superadmin'){?>
+<div class="col-sm-5">
+                  <div class="form-group">     
+                        <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
+                        <div class="col-sm-6">
+<select name="hospital" class="form-control" onchange="return get_data(this.value)">
+    <?php $hospitals=$this->db->get('hospitals')->result_array();
+    foreach ($hospitals as $hospital) { ?>
+<option value="<?=$hospital['hospital_id']?>" <?php if($hospital['hospital_id'] == $hospital_id){echo "selected";}?>><?=ucfirst($hospital['name'])?></option>
+<?php    }?>
+</select>
+</div>
+</div>
+    </div>
+<?php }?>
+
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
@@ -88,4 +104,9 @@ $this->session->set_userdata('last_page', current_url());
     }
     });
     });
+</script>
+<script type="text/javascript">
+    function get_data(id) {
+        window.location.href = '<?php echo base_url();?>main/get_hospital_branch/'+id;
+    }
 </script>

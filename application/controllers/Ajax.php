@@ -176,6 +176,8 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     {
         $users=$this->db->get('doctors')->result_array();
         foreach ($users as $row) {
+    $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
+  if($license_status==1){
             $spee=explode(',',$row['specializations']);
             if($id != 0){
             for($j=0;$j<count($spee);$j++) {
@@ -197,11 +199,14 @@ if($id == 0){
 echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
 }
 }
+}
     }
     function get_city_doctors($id='')   
     {
         $users=$this->db->get('doctors')->result_array();
         foreach ($users as $row) {
+        $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
+  if($license_status==1){
             $spee=explode(',',$row['specializations']);
             if($id != 0){
             $city=$this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->city;
@@ -220,6 +225,7 @@ if($id == 0){
              $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
             }
 echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
+}
 }
 }
     }

@@ -147,7 +147,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                 <div class="panel panel-primary " data-collapsed="0">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            <i class="fa fa-calendar"></i>Hospitals Expair Dates
+                            <i class="fa fa-calendar"></i>&nbsp;Calender for License Expiry dates
                         </div>
                     </div>
                     <div class="panel-body" style="padding:0px;">

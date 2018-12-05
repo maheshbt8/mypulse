@@ -132,7 +132,7 @@
     <datalist id="doctors">
         
         <?php 
-        if($account_type=='superadmin'){
+        /*if($account_type=='superadmin'){
         $doctors_details=$this->db->get('doctors')->result_array();
         }elseif($account_type=='hospitaladmins'){
         $doctors_details=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
@@ -148,8 +148,11 @@
         for($i=0;$i<count($doctor_ids);$i++){
             $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
             }
-        }
+        }*/
+        $doctors_details=$this->crud_model->select_doctor_info();
         foreach ($doctors_details as $row) {
+$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
+  if($license_status==1){ 
             $spee=explode(',',$row['specializations']);
             $spe='';
             for($i=0;$i<count($spee);$i++) {
@@ -157,7 +160,7 @@
             }
          ?>
 <option value="<?php echo $row['unique_id'].'/ Dr. '.ucfirst($row['name']);?>"><?php echo '('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.' / '.$spe.')';?></option>
-<?php }?>
+<?php }}?>
 
   </datalist>
                         </div>

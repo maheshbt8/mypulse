@@ -3,18 +3,16 @@ $this->session->set_userdata('last_page', current_url());
 ?>
 <div class="row">
     <div class="col-md-12">
-
         <ul class="nav nav-tabs bordered"> 
             <li class="active">
                 <a href="#h1" data-toggle="tab"><i class="entypo-plus-circled"></i>
-                    <?php echo 'Reports Based On Orders';?>
+                    <?php echo 'Reports uploaded by Medical Labs';?>
 
                 </a>
             </li>
             <li>
                 <a href="#h2" data-toggle="tab"><i class="entypo-plus-circled"></i>
-                    <?php echo 'Reports uploaded by Doctor/User';?>
-
+                    <?php echo 'Reports uploaded by Doctors';?>
                 </a>
             </li>
         </ul>
@@ -68,14 +66,14 @@ if($row1['type_of_order']==0){
 </table>
 </div>
 <div class="tab-pane box" id="h2" style="padding: 5px">
-        <div class="panel-bidy">
+       <!--  <div class="panel-body">
             
             <?php if($account_type=='users'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_health_reports/<?=$this->session->userdata('login_user_id');?>'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_health_report'); ?>
 </button>
 <?php }?>
-        </div>
+        </div> -->
 <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
         <tr>

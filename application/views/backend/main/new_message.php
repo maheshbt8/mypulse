@@ -27,9 +27,7 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
                 <option value="0/2">All Medical Labs</option>
                 <option value="0/3">All Medical Stores</option>
             <?php }?>
-                <?php if($account_type=='superadmin'){?>
-                <option value="0/7">All MyPulse Users</option>
-                <?php }?>
+                <option value="0/7"><?php if($account_type=='superadmin'){ echo 'All MyPulse Users';}elseif($account_type=='hospitaladmins' || $account_type=='doctors'){ echo 'All Patients';}?></option>
             </optgroup>
             <?php if($account_type=='superadmin' || $account_type=='doctors'){?>
             <optgroup label="<?php echo get_phrase('hospital_admins'); ?>">
@@ -61,11 +59,6 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
             <optgroup label="<?php echo get_phrase('doctors'); ?>">
                 <?php
                 $users=$this->crud_model->select_doctor_info();
-                /*if($account_type=='superadmin'){
-                $users = $this->db->get('doctors')->result_array();
-                }elseif($account_type=='hospitaladmins'){
-                $users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
-                }*/
                 foreach ($users as $row):
                     ?>
                     <option value="1/doctors-doctor-<?php echo $row['doctor_id']; ?>">
@@ -75,11 +68,6 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
             <optgroup label="<?php echo get_phrase('nurse'); ?>">
                 <?php
                 $users=$this->crud_model->select_nurse_info();
-               /* if($account_type=='superadmin'){
-                $users = $this->db->get('nurse')->result_array();
-                }elseif($account_type=='hospitaladmins'){
-                $users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('nurse')->result_array();
-                }*/
                 foreach ($users as $row):
                     ?>
                     <option value="1/nurse-nurse-<?php echo $row['nurse_id']; ?>">
@@ -89,11 +77,6 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
             <optgroup label="<?php echo get_phrase('receptionists'); ?>">
                 <?php
                 $users=$this->crud_model->select_receptionist_info();
-                /*if($account_type=='superadmin'){
-                $users = $this->db->get('receptionist')->result_array();
-                }elseif($account_type=='hospitaladmins'){
-                $users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('receptionist')->result_array();
-                }*/
                 foreach ($users as $row):
                     ?>
                     <option value="1/receptionist-receptionist-<?php echo $row['receptionist_id']; ?>">
@@ -104,11 +87,6 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
             <optgroup label="<?php echo get_phrase('medical_stores'); ?>">
                 <?php
                 $users=$this->crud_model->select_store_info();
-                /*if($account_type=='superadmin'){
-                $users = $this->db->get('medicalstores')->result_array();
-                }elseif($account_type=='hospitaladmins'){
-                $users = $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicalstores')->result_array();
-                }*/
                 foreach ($users as $row):
                     ?>
                     <option value="1/medicalstores-store-<?php echo $row['store_id']; ?>">
@@ -118,11 +96,6 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
             <optgroup label="<?php echo get_phrase('medical_labs'); ?>">
                 <?php
                 $users=$this->crud_model->select_lab_info();
-                /*if($account_type=='superadmin'){
-                $users = $this->db->get('medicallabs')->result_array();
-                }elseif($account_type=='hospitaladmins'){
-                $users = $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicallabs')->result_array();
-                }*/
                 foreach ($users as $row):
                     ?>
                     <option value="1/medicallabs-lab-<?php echo $row['lab_id']; ?>">
@@ -142,8 +115,7 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
         <?php }elseif($account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
             <optgroup label="<?php echo get_phrase('Patients'); ?>">
                 <?php
-               $users=$this->crud_model->select_patient_info(); 
-                /*$users = $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('inpatient')->result_array();*/
+               $users=$this->crud_model->select_patient_info();
                 foreach ($users as $row):
                     $user=$this->db->where('user_id',$row->user_id)->get('users')->row_array();
                     ?>

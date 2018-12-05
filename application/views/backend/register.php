@@ -97,22 +97,20 @@
 					</div>
 
 					<div class="text-center w-full p-t-25 p-b-230">
-
-							<a class="txt1" href="<?php echo base_url();?>login" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account ?_login');?></h5>
-							<i class="fa fa-long-arrow-right"></i>						
-						</a>
-						<br>
-						<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a> 
-						 
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<?php include'login_bottom.php';?>
+<a class="txt1" href="<?php echo base_url();?>login" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account?_login');?></h5>
+<i class="fa fa-long-arrow-right"></i>						
+</a>
+<br>
+<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a> 
+</div>
+</form>
+</div>
+</div>
+</div>
+<?php include'login_bottom.php';?>
 <script type="text/javascript">
-     function get_email(email_value) {
-     $.ajax({
+function get_email(email_value){
+	$.ajax({
             type : "POST",
             url: '<?php echo base_url();?>ajax/get_email/' ,
             data : {email : email_value},
@@ -121,10 +119,9 @@
                 jQuery('#email_error').html(response);        
             } 
         });
-   
     }
-     function get_phone(phone_value) {
-     $.ajax({
+function get_phone(phone_value) {
+    $.ajax({
             type : "POST",
             url: '<?php echo base_url();?>ajax/get_phone/' ,
             data : {phone : phone_value},
@@ -133,8 +130,7 @@
                 jQuery('#phone_error').html(response);        
             } 
         });
-   
-    }
+}
 </script>
 </body>
 </html>
