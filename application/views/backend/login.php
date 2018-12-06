@@ -49,7 +49,7 @@
 					</div>
  
 					<div class="text-center w-full p-t-25 p-b-230">
-<a href="#" class="txt1"><?php echo 'Forgot Your Password';?></a>
+<a href="<?php echo base_url(); ?>login/forgot_password" class="txt1"><?php echo 'Forgot Your Password';?></a>
 						 <br>
 <a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
 <?php echo "Don't Have Account? Sign Up";?></h5>

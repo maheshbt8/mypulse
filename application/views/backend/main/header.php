@@ -41,38 +41,6 @@ if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_use
 else
     $image_url = base_url() . 'uploads/user.jpg';
 ?>
-    <!--Theme Switcher-->
-        <!-- <style id="hide-theme">
-            body{
-                display:none;
-            }
-        </style>
-        <script type="text/javascript">
-            function setTheme(name){
-                var theme = document.getElementById('theme-css');
-                var style = 'css/theme-' + name + '.css';
-                if(theme){
-                    theme.setAttribute('href', style);
-                } else {
-                    var head = document.getElementsByTagName('head')[0];
-                    theme = document.createElement("link");
-                    theme.setAttribute('rel', 'stylesheet');
-                    theme.setAttribute('href', style);
-                    theme.setAttribute('id', 'theme-css');
-                    head.appendChild(theme);
-                }
-                window.localStorage.setItem('lumino-theme', name);
-            }
-            var selectedTheme = window.localStorage.getItem('lumino-theme');
-            if(selectedTheme) {
-                setTheme(selectedTheme);
-            }
-            window.setTimeout(function(){
-                    var el = document.getElementById('hide-theme');
-                    el.parentNode.removeChild(el);
-                }, 5);
-        </script> -->
-
     	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -113,19 +81,19 @@ else
 if(count($notification_data) > 0){
     foreach ($notification_data as $row) {
     ?>
-<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>">
-        <li>
-        <div class="dropdown-messages-box">
-<div class="message-body">
-<a href="<?=base_url('main/notification/delete/').$row['id'];?>"><b class="pull-right" style="font-size: 20px;"><i class="fa fa-times-circle-o"></i></b>
-</a>
+<li>
+
+<div class="dropdown-messages-box">
+<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>"><div class="message-body">
 <strong><?= $row['title'];?></strong>.
 <br />
 <small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
 </div>
+</a>
+<a href="<?=base_url('main/notification/delete/').$row['id'];?>"><b class="pull-right" style="font-size: 20px;"><i class="fa fa-times-circle-o"></i></b>
+</a>
 </div>
 </li>
-</a>
 <li class="divider"></li>
 <?php }?><?php }else{
     ?>

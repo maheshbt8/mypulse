@@ -25,6 +25,21 @@ class Email_model extends CI_Model {
 
         $this->do_email($email_msg, $email_sub, $email_to);
     }
+    function forgot_password(){
+        $account_type=$this->session->userdata('login_type');
+    $query = $this->db->get_where($account_type, array($this->session->userdata('type_id').'_id'=> $this->session->userdata('login_id')));
+        $id = $query->row()->unique_id;
+        $email_msg = "Welcome to " . $system_name . "<br />";
+        $email_msg .= "Dear User <br/> Your ID is : " . $id . "<br />";
+        $email_msg .= "You Can Reset Your Password Here : <button style='color:white'><a href=\"".base_url()."login/reset_password/$account_type/$id\"> Reset Password </a></button> <br />";
+        //$email_msg .= "Login Here : " . base_url() . "<br/>";
+
+        /*echo $email_msg;die;*/
+        $email_sub = "Account Opening Email";
+        $email_to = $email;
+
+        $this->do_email($email_msg, $email_sub, $email_to);
+    }
     function account_reverification_email($account_type = '',$id_type = '', $unique_id = '') {
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
         $email = $this->db->get_where($account_type, array('unique_id' => $unique_id))->row()->email;

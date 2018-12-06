@@ -149,7 +149,11 @@
             $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
             }
         }*/
+        if($account_type!='users'){
         $doctors_details=$this->crud_model->select_doctor_info();
+        }elseif($account_type=='users'){
+        $doctors_details=$this->db->get('doctors')->result_array();
+        }
         foreach ($doctors_details as $row) {
 $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
   if($license_status==1){ 

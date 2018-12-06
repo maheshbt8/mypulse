@@ -1096,7 +1096,6 @@ class Main extends CI_Controller {
 
     function users($task = "", $patient_id = "") {
         if ($task == "delete") {
-
             $this->crud_model->delete_user_info($patient_id);
             $this->session->set_flashdata('message', get_phrase('user_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
@@ -1105,6 +1104,11 @@ class Main extends CI_Controller {
            $this->crud_model->delete_multiple_user_info();
             $this->session->set_flashdata('message', get_phrase('user_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
+        }
+        if ($task == "user_update") {
+            $this->crud_model->user_update_info($patient_id);
+            $this->session->set_flashdata('message', get_phrase('user_info_updated_successfuly'));
+            redirect($this->session->userdata('last_page1'));
         }
         /*if ($task == "dj_report") {
              $this->crud_model->select_prescription_info_by_patient($patient_id);
@@ -1125,6 +1129,7 @@ class Main extends CI_Controller {
      function add_inpatient()
     {
     if($this->input->post()){
+    
     $this->crud_model->save_inpatient_info();
     $this->session->set_flashdata('message', get_phrase('inpatient_info_saved_successfuly'));
     redirect($this->session->userdata('last_page'));
@@ -1184,6 +1189,8 @@ class Main extends CI_Controller {
     if($this->input->post()){
         $user= $this->input->post('user_id');
         $appointment_date=$this->input->post('appointment_date');
+        $perday=$this->db->get_where('appointments', array('user_id' => $user,'created_at>='=>date('Y-m-d 00:00:00'),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
+        if($perday<2){
         $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
       if($count < 2 ){ 
     $this->crud_model->save_appointment_info();
@@ -1191,6 +1198,9 @@ class Main extends CI_Controller {
     redirect($this->session->userdata('last_page'));
     }else{
        $this->session->set_flashdata('appointment_date_error',"You Can not Book More Than 2 Appointments Per Day");
+    }
+}else{
+    $this->session->set_flashdata('appointment_date_error',"You Can Book Only 2 Appointments Every Day");
     }
     }
 

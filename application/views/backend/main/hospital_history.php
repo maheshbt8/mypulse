@@ -1,21 +1,16 @@
-<style>
+<!-- <style>
   .exam_chart {
     width       : 100%;
     height      : 265px;
     font-size   : 11px;
   }
-</style>
+</style> -->
  <?php $account_type=$this->session->userdata('login_type');?>
 <?php
  $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
-
-foreach ($single_hospital_info as $row) :
-  
-        
+foreach ($single_hospital_info as $row) :      
 ?>
  <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_hospital/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
-<div class="profile-env">
-    
     <div class="col-md-12">
         <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
         <ul class="nav nav-tabs">
@@ -55,7 +50,8 @@ foreach ($single_hospital_info as $row) :
                 </a>
             </li> 
         </ul>
-
+<div class="panel panel-default">
+            <div class="panel-body">
         <div class="tab-content">
             <?php
 $country_info=$this->db->get('country')->result_array();
@@ -368,10 +364,6 @@ foreach ($single_hospital_info as $row) {
             </div>
             <div class="tab-pane" id="tab4">
 
-       <!-- <a href="<?php echo base_url(); ?>main/add_department/<?= $branch_id?>"><button  
-    class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_department'); ?>
-</button></a> -->
 <div style="clear:both;"></div>
 
 <table class="table table-bordered table-striped datatable" id="table-2">
@@ -464,6 +456,7 @@ foreach ($single_hospital_info as $row) {
             <th><?php echo get_phrase('branch_name'); ?></th>
             <th><?php echo get_phrase('department_name'); ?></th>
             <th><?php echo get_phrase('ward_name'); ?></th>
+            <th><?php echo get_phrase('status'); ?></th>
             <?php if($account_type == 'superadmin'){?>
             <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
@@ -482,6 +475,7 @@ foreach ($single_hospital_info as $row) {
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
+                <td><?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not - Available";} ?></td>
                 <?php if($account_type == 'superadmin'){?>
                 <td>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
@@ -494,10 +488,9 @@ foreach ($single_hospital_info as $row) {
             </div>
         
         </div>
-
-  </div>  
-
 </div>
+</div>
+  </div>  
 </form>
     <?php } ?>
 <?php endforeach; ?>

@@ -170,22 +170,6 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     function four_zero_four() {
         $this->load->view('four_zero_four');
     }
-    /*     * *RESET AND SEND PASSWORD TO REQUESTED EMAIL*** */
-    function reset_password() {
-        $account_type = $this->input->post('account_type');
-        if ($account_type == "") {
-            redirect(base_url('login'), 'refresh');
-        }
-        $email = $this->input->post('email');
-        $result = $this->email_model->password_reset_email($account_type, $email); //SEND EMAIL ACCOUNT OPENING EMAIL
-        if ($result == true) {
-            $this->session->set_flashdata('flash_message', get_phrase('password_sent'));
-        } else if ($result == false) {
-            $this->session->set_flashdata('flash_message', get_phrase('account_not_found'));
-        }
-        redirect(base_url('login'), 'refresh');
-    }
-
     function register()
     {
         if($this->input->post()){
@@ -302,12 +286,86 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     {
         $this->crud_model->email_verification($task,$id);
     }
+    function reset_password($task="",$id="")
+    {
+        $this->crud_model->reset_password($task,$id);
+    }
+ function forgot_password($task="",$id="")
+    {
+        if($this->input->post()){
+        $email=$this->input->post('email');
+        $where=array('email'=>$email);
+        $data=$this->db->get_where('superadmin',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['superadmin_id']);
+        $this->session->set_userdata('login_type', 'superadmin');
+        $this->session->set_userdata('type_id', 'superadmin'); 
+        }
+        $data=$this->db->get_where('hospitaladmins',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['admin_id']);
+        $this->session->set_userdata('login_type', 'hospitaladmins');
+        $this->session->set_userdata('type_id', 'admin'); 
+        }
+        $data=$this->db->get_where('users',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['user_id']);
+        $this->session->set_userdata('login_type', 'users');
+        $this->session->set_userdata('type_id', 'user'); 
+        }
+        $data=$this->db->get_where('doctors',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['doctor_id']);
+        $this->session->set_userdata('login_type', 'doctors');
+        $this->session->set_userdata('type_id', 'doctor'); 
+        }
+        $data=$this->db->get_where('nurse',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['nurse_id']);
+        $this->session->set_userdata('login_type', 'nurse');
+        $this->session->set_userdata('type_id', 'nurse'); 
+        }
+        $data=$this->db->get_where('receptionist',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['receptionist_id']);
+        $this->session->set_userdata('login_type', 'receptionist');
+        $this->session->set_userdata('type_id', 'receptionist'); 
+        }
+        $data=$this->db->get_where('medicalstores',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['store_id']);
+        $this->session->set_userdata('login_type', 'medicalstores');
+        $this->session->set_userdata('type_id', 'store'); 
+        }
+        $data=$this->db->get_where('medicallabs',$where);
+        if($data->num_rows()>0){
+            $row=$data->row_array();
+        $this->session->set_userdata('login_id', $row['lab_id']);
+        $this->session->set_userdata('login_type', 'medicallabs');
+        $this->session->set_userdata('type_id', 'lab'); 
+        }
+        if($this->session->userdata('login_id')!=''){
+        $this->session->set_userdata('password_time',date('Y-m-d H:i:s'));
+        $this->session->set_flashdata('email_success', 'Password Reset Link Send To Your Email');
+        }else{
+        $this->session->set_flashdata('email_error', 'Email Not Find');
+        }
+        }
+    $this->load->view('backend/forgot_password');
+    }
     function set_password($task="",$id="")
     {
         if($this->input->post()){
-            $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
+$this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
 $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
-            if ($this->form_validation->run() == TRUE){
+if ($this->form_validation->run() == TRUE){
             $is_email=$this->db->get_where($task, array('unique_id' => $id))->row()->is_email;
             if($is_email==1){
             $yes=$this->db->where('unique_id',$id)->update($task,array('password' =>sha1($this->input->post('pass'))));
@@ -323,6 +381,21 @@ $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|ma
         $data['id']=$id;
         $this->load->view('backend/set_password',$data);
     }
+     /** *RESET AND SEND PASSWORD TO REQUESTED EMAIL*** */
+    /*function reset_password() {
+        $account_type = $this->input->post('account_type');
+        if ($account_type == "") {
+            redirect(base_url('login'), 'refresh');
+        }
+        $email = $this->input->post('email');
+        $result = $this->email_model->password_reset_email($account_type, $email);
+        if ($result == true) {
+            $this->session->set_flashdata('flash_message', get_phrase('password_sent'));
+        } else if ($result == false) {
+            $this->session->set_flashdata('flash_message', get_phrase('account_not_found'));
+        }
+        redirect(base_url('login'), 'refresh');
+    }*/
  /*     * *****LOGOUT FUNCTION ****** */
     function logout() {
         $this->session->sess_destroy();

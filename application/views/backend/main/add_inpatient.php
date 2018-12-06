@@ -9,16 +9,16 @@
             <div class="panel-body">
          <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_inpatient/" method="post" enctype="multipart/form-data">
+<div class="col-sm-12"><span class="col-sm-offset-2" id="inpatient_check" style="color: red;"></span></div>
 <div class="col-sm-6">
                               <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('user'); ?></label>
 
                         <div class="col-sm-8" id="user_data">
                             <input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('user'); ?>" onchange="return get_user_data(this.value)">
-                            
                         </div>
                     </div>
-                </div> 
+                </div>
         <div class="col-sm-6">
                 <?php if($account_type=='superadmin'){?>
                   <div class="form-group">     
@@ -172,6 +172,15 @@ $ward = $this->db->get_where('ward' , array('department_id' => $this->session->u
             success: function(response)
             {
                 jQuery('#user_data').html(response);        
+            } 
+        });
+     $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/check_inpatient/' ,
+            data : {user : user_value},
+            success: function(response)
+            {
+                jQuery('#inpatient_check').html(response);        
             } 
         });
     }

@@ -66,7 +66,7 @@ foreach ($single_appointment_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo $row['appointment_date']; ?>" <?php if($account_type!='users' || $account_details!=$row['created_by'] || $account_details!=$row['created_by']){echo 'disabled';}?> onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
+                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo $row['appointment_date']; ?>" <?php if($row['status']!= 2){echo 'disabled';}?> onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
                         </div>
                     </div>
                    
@@ -108,7 +108,7 @@ foreach ($single_appointment_info as $row) {
             </div>
             </div>
             <div class="col-sm-3 control-label col-sm-offset-9">
-                    <?php if($account_type=='users'){?>
+                    <?php if($row['status']== 2){?>
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
                     <?php }?>
                         <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
@@ -211,7 +211,8 @@ foreach ($single_appointment_info as $row) {
             success: function(response)
             {
                 jQuery('#doc_ava').html(response);
-                document.getElementById("appointment_date").disabled = false;
+                if('<?php echo $row['status'];?>'==2){
+                document.getElementById("appointment_date").disabled = false;}
                 
             } 
         });
@@ -225,9 +226,8 @@ foreach ($single_appointment_info as $row) {
             url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
             success: function(response)
             {
-                /*alert(response);*/
-                /*jQuery('#doc_ava').html(response);*/
-                document.getElementById("appointment_date").disabled = false;
+                if('<?php echo $row['status'];?>'==2){
+                document.getElementById("appointment_date").disabled = false;}
                 
             } 
         });

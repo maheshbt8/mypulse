@@ -146,6 +146,16 @@ class Ajax extends CI_Controller {
             echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="" onchange="return get_user_data(this.value)"><span style="color:red;">No User Available</span>';
         }
     }
+    function check_inpatient()   
+    {
+    $user_value=$_POST['user'];
+    $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";
+    $qry=$this->db->where($where)->get('users')->row()->user_id;
+    $in_patient=$this->db->get('inpatient',array('user_id'=>$qry,'status'=>'1'))->num_rows();
+    if($in_patient>0){
+    echo "This User Already InPatient";
+    }
+    }
     function get_department_doctors($department_id='')   
     {
 
@@ -325,9 +335,14 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
     function count_no_appointments($user_id){
     $user= $user_id;
     $appointment_date=$_POST['date_val'];
+    $perday=$this->db->get_where('appointments', array('user_id' => $user,'created_at>='=>date('Y-m-d 00:00:00'),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
+    if($perday<2){
     $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
      if($count >=2 ){
       echo "<span style='color:red;'>You Can not Book More Than 2 Appointments Per Day</span>"; 
+    }
+    }else{
+        echo "<span style='color:red;'>You Can Book Only 2 Appointments Every Day</span>";
     }
     }
     function get_inpatient_status($id){

@@ -61,53 +61,51 @@
         </ul>
         <div class="tab-content">
     <div class="tab-pane box active" id="h1" style="padding: 5px">
-            <form role="form" class="form-horizontal form-groups-bordered validate" action="#" method="post" enctype="multipart/form-data">
-                <div class="row">
-                        <div class="col-md-6">
-                  <div class="form-group">
-                        <label for="field-ta" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['bloodGroup'];?></label>
-
-                        <div class="col-sm-8">
-                            <select name="blood_group" class="form-control" id="blood_group" value="" disabled="">
-                                <option value=""><?php echo $this->lang->line('labels')['selectBloodGroup'];?></option>
-                                    <option value="A+"<?php if($user_data['blood_group']=='A+'){echo 'selected';}?>><?php echo get_phrase('A+'); ?></option>
-                                    <option value="A-"<?php if($user_data['blood_group']=='A-'){echo 'selected';}?>><?php echo get_phrase('A-'); ?></option>
-                                    <option value="B+"<?php if($user_data['blood_group']=='B+'){echo 'selected';}?>><?php echo get_phrase('B+'); ?></option>
-                                    <option value="B-"<?php if($user_data['blood_group']=='B-'){echo 'selected';}?>><?php echo get_phrase('B-'); ?></option>
-                                    <option value="AB+"<?php if($user_data['blood_group']=='AB+'){echo 'selected';}?>><?php echo get_phrase('AB+'); ?></option>
-                                    <option value="AB-"<?php if($user_data['blood_group']=='AB-'){echo 'selected';}?>><?php echo get_phrase('AB-'); ?></option>
-                                    <option value="O+"<?php if($user_data['blood_group']=='O-'){echo 'selected';}?>><?php echo get_phrase('o+'); ?></option>
-                                    <option value="O-"<?php if($user_data['blood_group']=='O-'){echo 'selected';}?>><?php echo get_phrase('o-'); ?></option>
-                                   
-                            </select>
-                        </div>
+    <form role="form" class="form-horizontal form-groups-bordered validate" action="<?=base_url('main/users/user_update/').$user_id;?>" method="post" enctype="multipart/form-data">
+    <div class="row">
+    <div class="col-md-6">
+    <div class="form-group">
+    <label for="field-ta" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['bloodGroup'];?></label>
+    <div class="col-sm-8">
+    <select name="blood_group" class="form-control" id="blood_group" value="">
+    <option value=""><?php echo $this->lang->line('labels')['selectBloodGroup'];?></option>
+    <option value="A+"<?php if($user_data['blood_group']=='A+'){echo 'selected';}?>><?php echo get_phrase('A+'); ?></option>
+    <option value="A-"<?php if($user_data['blood_group']=='A-'){echo 'selected';}?>><?php echo get_phrase('A-'); ?></option>
+    <option value="B+"<?php if($user_data['blood_group']=='B+'){echo 'selected';}?>><?php echo get_phrase('B+'); ?></option>
+    <option value="B-"<?php if($user_data['blood_group']=='B-'){echo 'selected';}?>><?php echo get_phrase('B-'); ?></option>
+    <option value="AB+"<?php if($user_data['blood_group']=='AB+'){echo 'selected';}?>><?php echo get_phrase('AB+'); ?></option>
+    <option value="AB-"<?php if($user_data['blood_group']=='AB-'){echo 'selected';}?>><?php echo get_phrase('AB-'); ?></option>
+    <option value="O+"<?php if($user_data['blood_group']=='O+'){echo 'selected';}?>><?php echo get_phrase('o+'); ?></option>
+    <option value="O-"<?php if($user_data['blood_group']=='O-'){echo 'selected';}?>><?php echo get_phrase('o-'); ?></option>
+    </select>
+    </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['age'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="age" class="form-control" id="age" value="<?=$user_data['age']?>" disabled>
+                            <input type="text" name="age" class="form-control" id="age" value="<?=$user_data['age']?>" >
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['height'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="height" class="form-control" id="height" value="<?=$user_data['height']?>"disabled>
+                            <input type="text" name="height" class="form-control" id="height" value="<?=$user_data['height']?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['weight'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="weight" class="form-control" id="weight" value="<?=$user_data['weight']?>"disabled>
+                            <input type="text" name="weight" class="form-control" id="weight" value="<?=$user_data['weight']?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['bloodPressure'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="blood_pressure" class="form-control" id="blood_pressure" value="<?=$user_data['blood_pressure']?>"disabled>
+                            <input type="text" name="blood_pressure" class="form-control" id="blood_pressure" value="<?=$user_data['blood_pressure']?>">
                         </div>
                     </div>
                 </div>
@@ -116,40 +114,41 @@
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['sugarLevel'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="sugar_level" class="form-control" id="sugar_level" value="<?=$user_data['sugar_level']?>"disabled>
+                            <input type="text" name="sugar_level" class="form-control" id="sugar_level" value="<?=$user_data['sugar_level']?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['healthInsuranceProvider'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="health_insurance_provider" class="form-control" id="health_insurance_provider" value="<?=$user_data['health_insurance_provider']?>"disabled>
+                            <input type="text" name="health_insurance_provider" class="form-control" id="health_insurance_provider" value="<?=$user_data['health_insurance_provider']?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['healthInsuranceId'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="health_insurance_id" class="form-control" id="health_insurance_id" value="<?=$user_data['health_insurance_id']?>"disabled>
+                            <input type="text" name="health_insurance_id" class="form-control" id="health_insurance_id" value="<?=$user_data['health_insurance_id']?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['familyHistory'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="family_history" class="form-control" id="family_history" value="<?=$user_data['family_history']?>"disabled>
+                            <input type="text" name="family_history" class="form-control" id="family_history" value="<?=$user_data['family_history']?>">
                         </div>
                     </div>
                    <div class="form-group">
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['pastMedicalHistory'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="past_medical_history" class="form-control" id="past_medical_history" value="<?=$user_data['past_medical_history']?>"disabled>
+                            <input type="text" name="past_medical_history" class="form-control" id="past_medical_history" value="<?=$user_data['past_medical_history']?>">
                         </div>
                     </div>
                      
                    
                 </div>
+                <input type="submit" class="btn btn-success pull-right" value="Update">&nbsp;&nbsp;
                     </div> 
                     </form>   
         </div>
