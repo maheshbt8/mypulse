@@ -308,12 +308,17 @@ foreach ($single_hospital_info as $row) {
                     </div>
                 </div>
                   <div class="col-sm-3 control-label col-sm-offset-9">
-                    <?php if($account_type == 'superadmin'){?>
+                    <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
                         <input type="submit" class="btn btn-success" value="Update">
                     <?php }?>
                     </div>
                     </div>
-                  
+  <?php if($account_type=='hospitaladmins'){?>
+<input type="hidden" name="license" value="<?php echo $row['license'];?>"/>
+<input type="hidden" name="license_status" value="<?php echo $row['license_status'];?>"/>
+<input type="hidden" name="from_date" value="<?php echo $row['from_date'];?>"/>
+<input type="hidden" name="till_date" value="<?php echo $row['till_date'];?>"/>
+<?php }?>                
             </div>
             </div>
           

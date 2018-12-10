@@ -3,7 +3,7 @@ $this->session->set_userdata('last_page', current_url());
 ?>
 <?php foreach($edit_data as $row): ?>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-2">
             <center>
                          <?php
 if($account_type == 'superadmin'){
@@ -32,6 +32,7 @@ else
                 <!-- <img src="<?php echo $this->crud_model->get_image_url('superadmin' , $row['superadmin_id']);?>" class="img-circle" style="width: 60%;"> -->
         <br>
         <h3><?php echo $row['name'];?></h3>
+        <h4><?php echo $row['unique_id'];?></h4>
         <br>
         <h4><i class="fa fa-map-marker m-r-xs"></i>&nbsp;&nbsp;<?php echo $row['address'];?></h4>
         <h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $row['email'];?></h4>
@@ -39,7 +40,7 @@ else
       </center>
         </div>
    
-    <div class="col-md-9">
+    <div class="col-md-10">
         <?php if($account_type == 'superadmin'){?>
         <!------CONTROL TABS START------>   
         <ul class="nav nav-tabs bordered"> 

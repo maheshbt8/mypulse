@@ -151,7 +151,7 @@ class Ajax extends CI_Controller {
     $user_value=$_POST['user'];
     $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";
     $qry=$this->db->where($where)->get('users')->row()->user_id;
-    $in_patient=$this->db->get('inpatient',array('user_id'=>$qry,'status'=>'1'))->num_rows();
+    $in_patient=$this->db->get_where('inpatient',array('user_id'=>$qry,'status'=>'1'))->num_rows();
     if($in_patient>0){
     echo "This User Already InPatient";
     }
@@ -342,7 +342,7 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
       echo "<span style='color:red;'>You Can not Book More Than 2 Appointments Per Day</span>"; 
     }
     }else{
-        echo "<span style='color:red;'>You Can Book Only 2 Appointments Every Day</span>";
+        echo "<span style='color:red;'>You Can Book a maximum of 2 Appointments Per Day</span>";
     }
     }
     function get_inpatient_status($id){

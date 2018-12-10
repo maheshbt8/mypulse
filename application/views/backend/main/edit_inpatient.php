@@ -213,9 +213,10 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 </div>
  </div>
 </div>
-<?php if($user_info->status == 1){?>
+<?php if(($account_type == 'doctors' || $account_type == 'nurse') && $user_info->status==1){
+if($user_info->status == 1){?>
 <?php $data['user_id']=$user_info->user_id;$this->load->view('backend/main/user_history',$data);?>
-<?php }?>
+<?php }}?>
 
 <script type="text/javascript">
     function get_user_data(user_value) {

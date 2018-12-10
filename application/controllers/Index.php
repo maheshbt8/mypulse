@@ -11,6 +11,11 @@ class Index extends CI_Controller {
         $data['page_title'] = 'Home';
         $this->load->view('front/index', $data);
     }
+    function my(){
+        $data['page_name'] = 'my';
+        $data['page_title'] = 'my';
+        $this->load->view('front/my', $data);
+    }
     function about(){
     	$data['page_name'] = 'about';
         $data['page_title'] = 'About Us';

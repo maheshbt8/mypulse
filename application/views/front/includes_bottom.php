@@ -3,6 +3,7 @@
 <!-- js-->
 <!-- Banner Responsiveslides -->
     <script src="<?=base_url('assets/front/')?>js/responsiveslides.min.js"></script>
+ 
     <script>
         // You can also use "$(window).load(function() {"
         $(function () {

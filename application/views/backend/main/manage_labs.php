@@ -53,7 +53,9 @@ $this->session->set_userdata('last_page', current_url());
                <?php if($row['is_email'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/medicallabs/lab/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_labs/delete/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                <?php }elseif($account_type == 'users'){?> 
+                <?php }elseif($account_type == 'users'){?>
+                <a href="<?php echo base_url(); ?>main/add_order/1/<?=$row['lab_id'];?>" title="Order Medical Tests"><em class="fa fa-sm fa-plus-square color-red"></em>
+            </a>&nbsp;&nbsp; 
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_labs/delete_lab/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?>
                 </td>
             </tr>

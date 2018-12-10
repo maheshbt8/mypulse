@@ -402,7 +402,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                     <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
-        <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicin"><i class="glyphicon glyphicon-plus"></i>
+        <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/0" title="Order Medicin"><em class="fa fa-sm fa-medkit color-blue"></em>
             </a>
                 </td>
             </tr>
@@ -439,7 +439,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                     <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
-            <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/1" title="Order Medical Test"><i class="glyphicon glyphicon-plus"></i>
+            <a href="<?php echo base_url(); ?>main/prescription_order/<?php echo $row1['prescription_id'] ?>/1" title="Order Medical Test"><em class="fa fa-sm fa-plus-square color-red"></em>
             </a>&nbsp;
                 </td>
             </tr>

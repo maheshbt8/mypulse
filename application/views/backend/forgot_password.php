@@ -42,6 +42,11 @@
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn"><?php echo $this->lang->line('buttons')['submit'];?></button>
 					</div>
+					<div class="text-center w-full p-t-25 p-b-230">
+<a href="<?=base_url('login')?>" class="txt1"><?php echo 'Back To Login';?></a>
+<br>
+<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a> 
+</div>
 				</form>
 			</div>
 		</div>

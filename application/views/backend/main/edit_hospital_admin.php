@@ -33,7 +33,8 @@ foreach ($single_admin_info as $row) {
         </ul>
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_hospital_admins/<?=$row['admin_id']?>" method="post" enctype="multipart/form-data">
-             
+        <div class="panel panel-default">   
+            <div class="panel-body">     
         <div class="tab-content">
            
         <br>
@@ -343,7 +344,8 @@ foreach ($single_admin_info as $row) {
                         <input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
-                   
+         </div>
+         </div>          
    </form>
             
            

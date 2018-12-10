@@ -1,14 +1,15 @@
 <link href="<?= base_url('assets/backend/')?>css/bootstrap.min.css" rel="stylesheet">
 <link href="<?= base_url('assets/backend/')?>css/font-awesome.min.css" rel="stylesheet">
-<link href="<?= base_url('assets/backend/')?>css/datepicker3.css" rel="stylesheet">
 <link href="<?= base_url('assets/backend/')?>css/styles.css" rel="stylesheet">
-<link href="<?= base_url('assets/backend/')?>css/bootstrap-table.css" rel="stylesheet">
-<link rel="stylesheet" href="<?= base_url('assets/backend/')?>css/theme-midnight.css">
+<link href="<?= base_url('assets/backend/')?>css/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" href="<?= base_url('assets/backend/')?>css/theme-midnight.min.css">
 <script src="<?= base_url('assets/backend/')?>js/jquery.min.js"></script>
 <!-- mypulse main -->
 <link rel="stylesheet" href="<?= base_url('assets/backend/')?>css/neon-theme.css">
 <link rel="stylesheet" href="<?= base_url('assets/backend/')?>/css/neon-forms.css">
-
+<!-- ****************No Need Files********************** -->
+<!-- <link href="<?= base_url('assets/backend/')?>css/datepicker3.css" rel="stylesheet"> -->
+<!-- **************************************************** -->
 <script>
     function checkDelete()
     {

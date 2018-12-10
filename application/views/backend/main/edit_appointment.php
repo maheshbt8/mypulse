@@ -136,7 +136,7 @@ foreach ($single_appointment_info as $row) {
 <h4><?php echo '<b>User ID</b> : '.$user_info['unique_id'];?></h4>
 <h4><?php echo '<b>User Name</b> : '.$user_info['name'];?></h4>
 <h4><b>Appointment Date : </b><?php echo date('M ,d-Y',strtotime($row['appointment_date']));?></h4>
-<h4><b>Appointment Slot : </b><?php echo date('h:i A',strtotime($row['appointment_time_starte'])) .' - '.date('h:i A',strtotime($row['appointment_time_end'])) ;?></h4>
+<h4><b>Appointment Slot : </b><?php echo date('h:i A',strtotime($row['appointment_time_start'])) .' - '.date('h:i A',strtotime($row['appointment_time_end'])) ;?></h4>
 <h4><b>Reason : </b><?php echo $row['reason'];?></h4>
 <h4><b>Status : </b><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }

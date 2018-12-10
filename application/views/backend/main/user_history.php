@@ -1,8 +1,6 @@
 <?php $account_type=$this->session->userdata('login_type');$user_data=$this->db->where('user_id',$user_id)->get('users')->row_array();?>
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
     <div class="col-md-2">
             <center>
         <a href="#">
@@ -59,6 +57,8 @@
             </li>
         <?php }?>
         </ul>
+        <div class="panel panel-default">
+            <div class="panel-body">
         <div class="tab-content">
     <div class="tab-pane box active" id="h1" style="padding: 5px">
     <form role="form" class="form-horizontal form-groups-bordered validate" action="<?=base_url('main/users/user_update/').$user_id;?>" method="post" enctype="multipart/form-data">
@@ -69,14 +69,14 @@
     <div class="col-sm-8">
     <select name="blood_group" class="form-control" id="blood_group" value="">
     <option value=""><?php echo $this->lang->line('labels')['selectBloodGroup'];?></option>
-    <option value="A+"<?php if($user_data['blood_group']=='A+'){echo 'selected';}?>><?php echo get_phrase('A+'); ?></option>
-    <option value="A-"<?php if($user_data['blood_group']=='A-'){echo 'selected';}?>><?php echo get_phrase('A-'); ?></option>
-    <option value="B+"<?php if($user_data['blood_group']=='B+'){echo 'selected';}?>><?php echo get_phrase('B+'); ?></option>
-    <option value="B-"<?php if($user_data['blood_group']=='B-'){echo 'selected';}?>><?php echo get_phrase('B-'); ?></option>
-    <option value="AB+"<?php if($user_data['blood_group']=='AB+'){echo 'selected';}?>><?php echo get_phrase('AB+'); ?></option>
-    <option value="AB-"<?php if($user_data['blood_group']=='AB-'){echo 'selected';}?>><?php echo get_phrase('AB-'); ?></option>
-    <option value="O+"<?php if($user_data['blood_group']=='O+'){echo 'selected';}?>><?php echo get_phrase('o+'); ?></option>
-    <option value="O-"<?php if($user_data['blood_group']=='O-'){echo 'selected';}?>><?php echo get_phrase('o-'); ?></option>
+    <option class="notranslate" value="A+"<?php if($user_data['blood_group']=='A+'){echo 'selected';}?>><?php echo get_phrase('A+'); ?></option>
+    <option class="notranslate" value="A-"<?php if($user_data['blood_group']=='A-'){echo 'selected';}?>><?php echo get_phrase('A-'); ?></option>
+    <option class="notranslate" value="B+"<?php if($user_data['blood_group']=='B+'){echo 'selected';}?>><?php echo get_phrase('B+'); ?></option>
+    <option class="notranslate" value="B-"<?php if($user_data['blood_group']=='B-'){echo 'selected';}?>><?php echo get_phrase('B-'); ?></option>
+    <option class="notranslate" value="AB+"<?php if($user_data['blood_group']=='AB+'){echo 'selected';}?>><?php echo get_phrase('AB+'); ?></option>
+    <option class="notranslate" value="AB-"<?php if($user_data['blood_group']=='AB-'){echo 'selected';}?>><?php echo get_phrase('AB-'); ?></option>
+    <option class="notranslate" value="O+"<?php if($user_data['blood_group']=='O+'){echo 'selected';}?>><?php echo get_phrase('o+'); ?></option>
+    <option class="notranslate" value="O-"<?php if($user_data['blood_group']=='O-'){echo 'selected';}?>><?php echo get_phrase('o-'); ?></option>
     </select>
     </div>
                     </div>
@@ -377,6 +377,6 @@
 </div>
     </div>
 </div>
-</div>
+    </div>
 </div>
 </div>

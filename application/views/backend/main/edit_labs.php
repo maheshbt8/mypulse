@@ -32,7 +32,8 @@ foreach ($single_labs_info as $row) {
         </ul>
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_labs/<?php echo $id ?>" method="post" enctype="multipart/form-data">
-             
+           <div class="panel panel-default">   
+            <div class="panel-body">  
         <div class="tab-content">
            
         <br>
@@ -52,7 +53,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase(' name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="name" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>">
+                            <input type="text" name="name" class="form-control" id="name" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'medicallabs'){echo "disabled";}?>>
                             <span ><?php echo form_error('name'); ?></span>
                         </div>
                     </div>
@@ -60,14 +61,14 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['description']?>"><span ><?php echo form_error('description'); ?></span>
+                            <input type="text" name="description" class="form-control" id="description"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['description']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'medicallabs'){echo "disabled";}?>><span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('address'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="address"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['address']?>">
+                            <input type="text" name="address" class="form-control" id="address"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['address']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'medicallabs'){echo "disabled";}?>>
                             <span ><?php echo form_error('address'); ?></span>
                         </div>
                     </div>
@@ -140,7 +141,7 @@ foreach ($single_labs_info as $row) {
                         
                         <div class="col-sm-8">
                              
-                         <select name="status" class="form-control selectbox" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                         <select name="status" class="form-control selectbox" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins'){echo "disabled";}?>>
                                <option value=""><?php echo get_phrase('select_status'); ?></option>
                                  <option value="1"  <?php if($row['status']=='1'){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2"  <?php if($row['status']=='2'){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
@@ -155,7 +156,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('owner/md name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="owner_name" class="form-control" id="owner_name"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['owner_name']?>">
+                            <input type="text" name="owner_name" class="form-control" id="owner_name"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['owner_name']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'medicallabs'){echo "disabled";}?>>
                             <span ><?php echo form_error('owner_name'); ?></span>
                         </div>
                     </div>
@@ -163,7 +164,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('owner/md mobile number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="number" name="owner_mobile" class="form-control" id="owner_mobile"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['owner_mobile']?>"  minlength="10" maxlength="10">
+                            <input type="number" name="owner_mobile" class="form-control" id="owner_mobile"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['owner_mobile']?>"  minlength="10" maxlength="10"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'medicallabs'){echo "disabled";}?>>
                             <span ><?php echo form_error('owner_mobile'); ?></span>
                         </div>
                     </div>
@@ -207,7 +208,7 @@ foreach ($single_labs_info as $row) {
                         <label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('branch');?></label>
                         
                         <div class="col-sm-8">
-                            <select name="branch" class="form-control selectbox" id="branch">
+                            <select name="branch" class="form-control selectbox" id="branch"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins'){echo "disabled";}?>>
                             <?php 
                                 $admins = $this->db->where('hospital_id',$row['hospital'])->get('branch')->result_array();
                                 foreach($admins as $row1){?>
@@ -232,7 +233,11 @@ foreach ($single_labs_info as $row) {
               
             </div>
             <!----TABLE LISTING ENDS--->
-            
+   <?php if($account_type=='medicallabs'){?>
+<input type="hidden" name="hospital" value="<?php echo $row['hospital'];?>"/>
+<input type="hidden" name="branch" value="<?php echo $row['branch'];?>"/>
+<input type="hidden" name="status" value="<?php echo $row['status'];?>"/>
+<?php }?>           
             
             <!----CREATION FORM STARTS---->
             <div class="tab-pane box" id="add" style="padding: 5px">
@@ -430,6 +435,8 @@ foreach ($single_labs_info as $row) {
             <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'medicallabs'){?>
         <input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                    </div>
+                    </div>
                     </div>   
  </form>
 </div>

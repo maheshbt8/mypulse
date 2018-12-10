@@ -18,15 +18,13 @@
 					<div class="footer-office-hour">
 						<ul>
 							<li class="hd">Address :</li>
-							<li>No.27 - 5549436 street lorem, Newyork City, USA</li>
+							<li><?=$this->db->get_where('settings', array('type' => 'address'))->row()->description;?></li>
 
 						</ul>
 						<ul>
-							<li class="hd">Phone:+ 1 (234) 567 8901</li>
-							<li class="hd">Email:
-								<a href="mailto:info@example.com">info@example.com</a>
+							<li class="hd">Phone: <?=$this->db->get_where('settings', array('type' => 'phone'))->row()->description;?></li>
+							<li class="hd">Email: <?=$this->db->get_where('settings', array('type' => 'system_email'))->row()->description;?>
 							</li>
-							<li class="hd">Fax: 1(234) 567 8901</li>
 						</ul>
 					</div>
 				</div>
@@ -130,8 +128,7 @@
 				</ul>
 			</div>
 			<div class="copyrightbottom">
-				<p>© 2018 Home Loan. All Rights Reserved | Design by
-					<a href="http://w3layouts.com/">W3layouts</a>
+				<p>© 2018 JagruMs Technologies - All Rights Reserved.
 				</p>
 			</div>
 			<div class="clearfix"></div>

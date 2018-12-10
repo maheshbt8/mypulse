@@ -84,8 +84,8 @@ if($created_by[0] == 'superadmin'){
     <p class="" style=""><span class="span-user pull-left">
         <?php
     $user_to='';
-      if($row['user_to'] != ''){
-   $created_to=explode(',',$row['user_to']);
+      if($row['group_ids'] != ''){
+   $created_to=explode(',',$row['group_ids']);
    for($h=0;$h<count($created_to);$h++){
     if($created_to[$h] == 1){
     $hospi='All Hospital Admins';    
@@ -102,13 +102,14 @@ if($created_by[0] == 'superadmin'){
     }elseif($created_to[$h] == 7){
    $hospi='All MyPulse Users';    
     }
-    $user_to=$hospi.',';
+    $user_data[$h]=$hospi;
  }
-    }
+ $user_to=implode(',', $user_data);
+}
 
   $user_too='';
- if($row['user_too'] != ''){ 
-  $created_too=explode(',',$row['user_too']);
+ if($row['user_ids'] != ''){ 
+  $created_too=explode(',',$row['user_ids']);
   for($h=0;$h<count($created_too);$h++){
 $user=explode('-',$created_too[$h]);
 if($user[0] == 'hospitaladmins'){
@@ -128,10 +129,8 @@ if($user[0] == 'hospitaladmins'){
 }
     $user_data[$h]=$user_role.' - '.$this->db->where($user[1].'_id',$user[2])->get($user[0])->row()->name;
 }
-
-$user_too=implode(', ', $user_data);
-
- }
+$user_too=implode(',', $user_data);
+}
 
  if($user_to!='' && $user_too!=''){
   echo $user_to.','.$user_too;

@@ -14,10 +14,10 @@ class Main extends CI_Controller {
         /* cache control */
        /* $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache');*/
-        if ($this->session->userdata('login') != 1) {
-            $this->session->set_userdata('last_page', current_url());
-            redirect(base_url('login'), 'refresh');
-        }
+            if ($this->session->userdata('login') != 1) {
+                $this->session->set_userdata('last_page', current_url());
+                redirect(base_url('login'), 'refresh');
+            }
     }
     public function index() {
         if ($this->session->userdata('login') != 1){ 
@@ -63,6 +63,7 @@ class Main extends CI_Controller {
         $this->load->view('backend/index', $data);
         }
          public function edit_hospital($hospital_id) {
+            $account_type=$this->session->userdata('login_type');
         if($this->input->post()){   
         $config = array(
         array('field' => 'name','label' => 'Name','rules' => 'required'),
@@ -82,7 +83,11 @@ class Main extends CI_Controller {
          if ($this->form_validation->run() == TRUE){ 
             $this->crud_model->update_hospital_info($hospital_id);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
+            if($account_type!='hospitaladmins'){
             redirect($this->session->userdata('last_page'));
+        }elseif($account_type=='hospitaladmins'){
+            redirect('main/get_hospital_history/'.$hospital_id);
+        }
                 }
          }
          $data['hospital_id'] = $hospital_id;
@@ -1200,7 +1205,7 @@ class Main extends CI_Controller {
        $this->session->set_flashdata('appointment_date_error',"You Can not Book More Than 2 Appointments Per Day");
     }
 }else{
-    $this->session->set_flashdata('appointment_date_error',"You Can Book Only 2 Appointments Every Day");
+    $this->session->set_flashdata('appointment_date_error',"You Can Book a maximum of 2 Appointments Per Day");
     }
     }
 
@@ -1228,7 +1233,7 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('dashboard');
         $this->load->view('backend/index', $data);
     }*/
-    function appointment($task = "", $appointment_id = "") {
+    function appointment($task = "", $appointment_id = "",$status="") {
         if ($task == "delete") {
             $this->crud_model->delete_appointment_info($appointment_id);
             $this->session->set_flashdata('message', get_phrase('appointment_info_deleted_successfuly'));
@@ -1255,7 +1260,11 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('recommended_as_inpatient_successfuly'));
             /*redirect($this->session->userdata('last_page1'));*/
         }
-
+        if ($task == "attended_status") {
+            $this->crud_model->update_appointment_attended_status($appointment_id,$status);
+            $this->session->set_flashdata('message', get_phrase('appointment_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
         $data['appointment_info'] = $this->crud_model->select_appointment_info();
         $data['page_name'] = 'manage_appointment';
         $data['page_title'] = get_phrase('manage_appointments');
@@ -1463,13 +1472,16 @@ class Main extends CI_Controller {
         $data['page_title'] = $page;
         $this->load->view('backend/index', $data);
     }
-    function add_order($param1=''){
+    function add_order($param1='',$param2=''){
         if($this->input->post()){
         $this->crud_model->book_order($param1);
         $this->session->set_flashdata('message', get_phrase('ordered_successfuly'));
         redirect($this->session->userdata('last_page'));
         }
         if($param1==0){$page=get_phrase('order_medicens');}elseif($param1==1){$page=get_phrase('order_medicaltest');}
+        if($param2!=''){
+        $data['id'] = $param2;    
+        }
         $data['order_type'] = $param1;
         $data['page_name'] = 'add_order';
         $data['page_title'] = $page;

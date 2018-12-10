@@ -68,7 +68,9 @@ if($hos[0] == 'superadmin'){
                 elseif($row['action'] == 4){ echo "Appointment Updated for".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));}
                 elseif($row['action'] == 5){ echo "Appointment Rescheduled for".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:i A', strtotime($row['appointment_time_start'])).' - '.date('h:i A', strtotime($row['appointment_time_end']));}
                 elseif($row['action'] == 6){ echo "Appointment Was Cancelled Because Of ".$row['reason'];}
-                elseif($row['action'] == 7){ echo "Appointment Was Closed";}
+                elseif($row['action'] == 7){ echo "Appointment Was Closed";}else{
+                  echo $row['reason'];
+                }
                 ?>
                 </td>
             </tr>

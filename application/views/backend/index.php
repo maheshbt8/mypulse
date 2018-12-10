@@ -15,7 +15,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
 		<meta name="author" content="Mahesh BT" />
 		
 		<!--Custom Font-->
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+		<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> -->
 
 		<!--Theme Switcher-->
 		<!-- <style id="hide-theme">

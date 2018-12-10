@@ -26,11 +26,12 @@ $title=$reports['title'];
         <div class="panel panel-default">   
             <div class="panel-heading">
             	<?=$title?>
-            	<div class="col-sm-2 pull-right">
+            	<div class="col-sm-3 pull-right">
 <?php if($reports['extension']!='pdf'){?>
     <input type="button" onclick="printDiv('ext_file')" class="btn btn-primary" value="Print">
 <?php }?>
-    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+<a href="<?=base_url('uploads/reports/').$report_id.'.'.$reports['extension']?>" download="<?=$title?>" class="btn btn-success"><?php echo get_phrase('download'); ?></a>
+    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
 </div>
             </div>
             <div class="panel-body" id="ext_file">

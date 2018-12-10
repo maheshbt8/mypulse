@@ -256,14 +256,14 @@
                         <div class="col-sm-8">
                             <select name="blood_group" class="form-control" id="blood_group" value="<?php echo set_value('blood_group'); ?>">
                                 <option value=""><?php echo $this->lang->line('labels')['selectBloodGroup'];?></option>
-                                    <option value="A+"><?php echo get_phrase('A+'); ?></option>
-                                    <option value="A-"><?php echo get_phrase('A-'); ?></option>
-                                    <option value="B+"><?php echo get_phrase('B+'); ?></option>
-                                    <option value="B-"><?php echo get_phrase('B-'); ?></option>
-                                    <option value="AB+"><?php echo get_phrase('AB+'); ?></option>
-                                    <option value="AB-"><?php echo get_phrase('AB-'); ?></option>
-                                    <option value="O+"><?php echo get_phrase('o+'); ?></option>
-                                    <option value="O-"><?php echo get_phrase('o-'); ?></option>
+                                    <option class="notranslate" value="A+"><?php echo get_phrase('A+'); ?></option>
+                                    <option class="notranslate" value="A-"><?php echo get_phrase('A-'); ?></option>
+                                    <option class="notranslate" value="B+"><?php echo get_phrase('B+'); ?></option>
+                                    <option class="notranslate" value="B-"><?php echo get_phrase('B-'); ?></option>
+                                    <option class="notranslate" value="AB+"><?php echo get_phrase('AB+'); ?></option>
+                                    <option class="notranslate" value="AB-"><?php echo get_phrase('AB-'); ?></option>
+                                    <option class="notranslate" value="O+"><?php echo get_phrase('o+'); ?></option>
+                                    <option class="notranslate" value="O-"><?php echo get_phrase('o-'); ?></option>
                                    
                             </select>
                         </div>

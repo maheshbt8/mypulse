@@ -9,7 +9,7 @@ $this->session->set_userdata('last_page', current_url());
 <div class="row">
   <div class="col-sm-6">
     <div class="list-group">
-   <?php if($account_type=='superadmin' || $account_type == 'hospitaladmins'){?>
+   <?php if($account_type=='superadmin'){?>
   <a href="<?php echo base_url(); ?>main/system_settings" class="list-group-item"><i class="icon fa fa-cog"></i>&nbsp;&nbsp;<?php echo get_phrase('system_settings'); ?></a><?php }?>
   <?php if($account_type=='superadmin'){?>
   <a href="<?php echo base_url(); ?>main/license" class="list-group-item"><i class="icon fa fa-desktop"></i>&nbsp;&nbsp;<?php echo get_phrase('license_categories');?></a>

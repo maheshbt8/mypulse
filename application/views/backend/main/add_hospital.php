@@ -18,7 +18,8 @@
         </ul>
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_hospital/" method="post" enctype="multipart/form-data">
-             
+       <div class="panel panel-default">
+            <div class="panel-body">      
         <div class="tab-content">
            
         <br>
@@ -244,7 +245,8 @@
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
-                   
+                   </div>
+               </div>
    </form>
     </div>
 </div>
@@ -287,3 +289,21 @@
 
 </script>
 
+<script type="text/javascript">
+                    $(document).ready(function(){
+                    var date = new Date();
+                    date.setDate(date.getDate());
+
+                    $('#from_date').datepicker({ 
+                    startDate: date
+
+                    });
+
+                    $('#till_date').datepicker({ 
+                    startDate: date
+
+                    });
+
+                    } );                  
+
+</script>

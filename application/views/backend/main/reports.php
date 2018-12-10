@@ -14,45 +14,43 @@ $row=$this->db->where('hospital_id',$hospital_id[$h])->get('hospitals')->row_arr
 $row=$this->db->where('branch_id',$hospital_id[$h])->get('branch')->row_array();	
 }
 $hospital_name[]=$row['name'];
-$last=date('Y-m-d', strtotime('last month'));
-$date1=date_create($sd);
-$date2=date_create($ed);
-$diff=date_diff($date1,$date2);
-$count=$diff->format("%a");
+$start = new DateTime($sd);
+$end = (new DateTime($ed))->modify('+1 day');
+$interval = new DateInterval('P1D');
+$period   = new DatePeriod($start, $interval, $end);
 $j=0;
-for($i=0;$i<$count;$i++){
-$currmonth = date('Y-m-d', strtotime('-'.$i.' day'));
+foreach ($period as $dt) {
+$date=$dt->format("m/d/Y");
+$currmonth = $dt->format('Y-m-d');
 if($report_id == 1){
 	if($account_type == 'superadmin'){
-$qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime('-'.$i.' day')),'created_date<='=>date('Y-m-d 23:59:59', strtotime('-'.$i.' day'))))->num_rows();
+$qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'status!='=>0,'created_date>='=>$currmonth.' 00:00:00','created_date<='=>$currmonth.' 23:59:59'))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
         $no=$this->db->get('doctors')->result_array();
             $qry=0;
             for($da=0;$da<count($no);$da++){
-                $qry=$qry+$this->db->get_where('inpatient', array('doctor_id' => $no[$da]['doctor_id'],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime('-'.$i.' day')),'created_date<='=>date('Y-m-d 23:59:59', strtotime('-'.$i.' day'))))->num_rows();   
+                $qry=$qry+$this->db->get_where('inpatient', array('doctor_id' => $no[$da]['doctor_id'],'status!='=>0,'created_date>='=>$currmonth.' 00:00:00','created_date<='=>$currmonth.' 23:59:59'))->num_rows();
             }
 	}
-
 }elseif($report_id == 2){
 		if($account_type == 'superadmin'){
-$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>date('m/d/Y', strtotime('-'.$i.' day')),'status'=>2))->num_rows();
+$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>$date,'status'=>2))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($da=0;$da<count($no);$da++){
-                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>date('m/d/Y', strtotime('-'.$i.' day')),'status'=>2))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>$date,'status'=>2))->num_rows();
             }
             $qry=$cou;
 	}
-
 }
 $data[$j]=array('x'=>strtotime($currmonth)*1000,'y'=>$qry);
-$j++;
-}
+$j++;}
+
 $color = dechex(rand(0x000000, 0xFFFFFF));
-$dataPoints[$h]=array_reverse($data);
+$dataPoints[$h]=$data;
 	$data_points[]= '{
 		type: "spline",
 		name: "'.$row['name'].'",

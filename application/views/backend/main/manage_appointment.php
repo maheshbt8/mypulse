@@ -11,6 +11,15 @@ $this->session->set_userdata('last_page', current_url());
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
+<div class="col-sm-5">
+                  <div class="form-group">
+         <span for="field-ta" class="col-sm-3 control-label"><b> <?php echo get_phrase('date_range'); ?></b></span> 
+         <div class="col-sm-7">
+        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'Select Date Range';}?>"/>
+        </div>
+                </div>
+</div>
+
 <?php if($account_type=='superadmin'){?>
 <button type="button" onClick="confclose1(this.form);" id="close" class="btn btn-warning pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('close'); ?>
@@ -44,20 +53,23 @@ $this->session->set_userdata('last_page', current_url());
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
-            <th data-field="id" data-sortable="true"><?php echo get_phrase('appointment_no');?></th> 
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('appointment_no.');?></th> 
             <th data-field="user" data-sortable="true"><?php echo get_phrase('user');?></th>
             <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('Hospital-Branch-Department');?></th>  
             <th data-field="city" data-sortable="true"><?php echo get_phrase('city');?></th> 
             <th data-field="date" data-sortable="true"><?php echo get_phrase('date & time');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
+            <th data-field="attended" data-sortable="true"><?php echo get_phrase('attended-status'); ?></th>
             <?php if($account_type=='superadmin'){?>
             <th><?php echo get_phrase('options');?></th><?php }?>
         </tr> 
     </thead>
 
     <tbody>
-        <?php $i=1;foreach ($appointment_info as $row) {
+        <?php if($_GET['sd']!='' && $_GET['ed']!=''){
+            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed']);}else{$appointment_info;}
+        $i=1;foreach ($appointment_info as $row) {
   /*  if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y'))){
     $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
                 if($count>0){
@@ -98,6 +110,9 @@ $this->session->set_userdata('last_page', current_url());
                  elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
                  ?>
                      
+                 </td>
+                 <td>
+                <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Attended";?></span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Not-Attended";?></span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Attended";?></span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Not-Attended";?></span><?php }}?>
                  </td>
                  <?php if($account_type=='superadmin'){?>
                 <td>
@@ -234,3 +249,50 @@ $this->session->set_userdata('last_page', current_url());
       </div>   
     </div>
   </div>  
+  <script type="text/javascript">
+        
+    $(document).ready(function(){
+        var start = moment();
+        var end = moment();
+
+        <?php
+        if(isset($_GET['sd']) && $_GET['sd'] != ""){
+            ?>
+            start = moment('<?php echo $_GET['sd'];?>');
+            <?php
+        }
+        ?>
+
+        <?php
+        if(isset($_GET['ed']) && $_GET['ed'] != ""){
+            ?>
+            end = moment('<?php echo $_GET['ed'];?>');
+            <?php
+        }
+        ?>
+        function cb(start, end) {
+            window.location.href = '<?php echo base_url();?>main/appointment?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD');
+
+        }
+        
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: { 
+                applyLabel : '<?php echo $this->lang->line('apply');?>',
+                cancelLabel: '<?php echo $this->lang->line('clear');?>',
+                "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+            },  
+            ranges: {
+                '<?php echo 'Today';?>': [moment(), moment()],
+                '<?php echo 'Tomorrow';?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+                '<?php echo 'Upcoming 7 day';?>': [moment(),moment().add(6, 'days')],
+                '<?php echo 'Upcoming 30 day';?>': [moment(),moment().add(29, 'days'),],
+                '<?php echo 'This Month';?>': [moment().startOf('month'), moment().endOf('month')],
+                '<?php echo 'Next Month';?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+            }
+        },cb);
+
+    });
+
+</script>

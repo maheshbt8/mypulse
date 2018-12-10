@@ -18,6 +18,7 @@
   overflow-x: auto;
 }
 </style>
+
     <?php
 if($account_type == 'superadmin'){
   $img_type='superadmin_image';
@@ -187,7 +188,7 @@ if($message_data!=''){
     
 <?php $website_lang_int_google = $this->session->userdata('website_lang_int_google') != NULL ? trim($this->session->userdata('website_lang_int_google')) : 'en';?>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>
-<div id="google_translate_element" style="display:none;"></div>
+<div id="google_translate_element" style="display:none !important;"></div>
 
 <script type="text/javascript">
 function googleTranslateElementInit() { 

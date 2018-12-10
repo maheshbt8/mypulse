@@ -1,4 +1,4 @@
-		<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 			<a href="<?=base_url('main/manage_profile')?>"><div class="profile-sidebar">
 				<div class="profile-userpic">
 					<img src="<?php echo $image_url;?>" width="50" class="img-responsive" alt="">
@@ -51,6 +51,12 @@ echo $user_role; ?></span></div>
             </a>
         </li>
 <?php }elseif($account_type=='hospitaladmins'){?>
+        <li class="<?php if ($page_name == 'manage_branch') echo 'active'; ?> ">
+            <a href="<?php echo base_url(); ?>main/get_hospital_history/<?= $this->session->userdata('hospital_id');?>">
+                <i class="fa  fa-hospital-o ">&nbsp;</i>
+                <span><?php echo get_phrase('hospital_details'); ?></span>
+            </a>
+        </li>
         <li class="<?php if ($page_name == 'manage_branch') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>main/get_hospital_branch/<?= $this->session->userdata('hospital_id');?>">
                 <i class="fa  fa-hospital-o ">&nbsp;</i>
@@ -111,32 +117,6 @@ echo $user_role; ?></span></div>
             </a>
         </li>
     <?php }?>
-    <?php if($account_type=='medicalstores' || $account_type=='medicallabs'){?>
-        <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
-            <a href="<?php echo base_url(); ?>main/orders">
-                <i class="menu-icon glyphicon glyphicon-list-alt">&nbsp;</i>
-                <span><?php echo get_phrase('orders'); ?></span>
-            </a>
-        </li>
-    <?php }?>
-    <?php if($account_type=='users' || $account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
-        <li class="parent <?php if ($page_name == 'manage_order') echo 'active'; ?>"><a data-toggle="collapse" href="#sub-item-1">
-                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-right"></i></span>
-                    </a>
-                    <ul class="children collapse <?php if ($page_name == 'manage_order'){echo 'in';}?>" id="sub-item-1">
-                <li class="<?php if ($page_name == 'manage_order' && $order_type==0){echo 'active';}?>">
-                    <a href="<?php echo base_url(); ?>main/orders/0">
-                        <span><?php echo get_phrase('medicines'); ?></span>
-                    </a>
-                </li>
-                <li class="<?php if ($page_name == 'manage_order' && $order_type==1){echo 'active';}?>">
-                    <a href="<?php echo base_url(); ?>main/orders/1">
-                        <span><?php echo get_phrase('medical_tests'); ?></span>
-                    </a>
-                </li>
-                    </ul>
-        </li>
-        <?php }?>
     <?php if($account_type=='medicallabs'){?>
         <li class="<?php if ($page_name == '') echo 'active'; ?>">
             <a href="#">
@@ -149,7 +129,7 @@ echo $user_role; ?></span></div>
         <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/patient">
                 <i class="fa fa-users">&nbsp;</i>
-                <span><?php echo get_phrase('Patients'); ?></span>
+                <span><?php echo get_phrase('out_Patients'); ?></span>
             </a>
         </li>
     <?php }?>
@@ -200,6 +180,32 @@ echo $user_role; ?></span></div>
                     </ul>
         </li>
         <?php }?>
+        <?php if($account_type=='medicalstores' || $account_type=='medicallabs'){?>
+        <li class="<?php if ($page_name == 'manage_order') echo 'active'; ?>">
+            <a href="<?php echo base_url(); ?>main/orders">
+                <i class="menu-icon glyphicon glyphicon-list-alt">&nbsp;</i>
+                <span><?php echo get_phrase('orders'); ?></span>
+            </a>
+        </li>
+    <?php }?>
+    <?php if($account_type=='users' || $account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
+        <li class="parent <?php if ($page_name == 'manage_order') echo 'active'; ?>"><a data-toggle="collapse" href="#sub-item-1">
+                    <i class="glyphicon glyphicon-list-alt">&nbsp;</i> <?php echo get_phrase('orders'); ?> <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><i class="fa fa-angle-right"></i></span>
+                    </a>
+                    <ul class="children collapse <?php if ($page_name == 'manage_order'){echo 'in';}?>" id="sub-item-1">
+                <li class="<?php if ($page_name == 'manage_order' && $order_type==0){echo 'active';}?>">
+                    <a href="<?php echo base_url(); ?>main/orders/0">
+                        <span><?php echo get_phrase('medicines'); ?></span>
+                    </a>
+                </li>
+                <li class="<?php if ($page_name == 'manage_order' && $order_type==1){echo 'active';}?>">
+                    <a href="<?php echo base_url(); ?>main/orders/1">
+                        <span><?php echo get_phrase('medical_tests'); ?></span>
+                    </a>
+                </li>
+                    </ul>
+        </li>
+        <?php }?>
         <?php if($account_type=='doctors'){?>
             <li class="<?php if ($page_name == 'add_availability') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $this->session->userdata('login_user_id');?>">
@@ -227,7 +233,7 @@ echo $user_role; ?></span></div>
 					</ul>
 		</li>
 		<?php }?>
-        <?php if($account_type=='superadmin' || $account_type == 'hospitaladmins'){?>
+        <?php if($account_type=='superadmin'){?>
     <li class="<?php if ($page_name == 'settings') echo 'active'; ?>">
     <a href="<?php echo base_url(); ?>main/settings">
     <i class="fa fa-wrench">&nbsp;</i>

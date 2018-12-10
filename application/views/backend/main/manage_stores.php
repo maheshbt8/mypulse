@@ -51,6 +51,8 @@ $this->session->set_userdata('last_page', current_url());
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove">
                 </i></a>
                 <?php }elseif($account_type == 'users'){?>
+            <a href="<?php echo base_url(); ?>main/add_order/0/<?=$row['store_id'];?>" title="Order Medicine"><em class="fa fa-sm fa-medkit color-blue"></em>
+            </a>&nbsp;&nbsp;
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete_store/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove">
                 </i></a><?php }?>
                 </td>

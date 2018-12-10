@@ -52,7 +52,7 @@ foreach ($store as $spe) {
 $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital))->row()->license_status;
   if($license_status==1){
   ?>     
-<option value="<?php echo $spe->store_id;?>"><?php echo $spe->unique_id.' / '.$spe->name; ?></option>
+<option value="<?php echo $spe->store_id;?>" <?php if($id!=''){if($id == $spe->store_id){echo "selected";}}?>><?php echo $spe->unique_id.' / '.$spe->name; ?></option>
 <?php }}?>
 </select>
 </div>

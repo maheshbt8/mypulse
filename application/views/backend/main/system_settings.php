@@ -73,7 +73,4 @@ $this->session->set_userdata('last_page', current_url());
     </div>
 </div>
 </form>
-<?php }elseif($account_type == 'hospitaladmins'){
-    $data['hospital_id']=$this->session->userdata('hospital_id');
-    $this->load->view('backend/main/hospital_history',$data);
-}?>
+<?php }?>
