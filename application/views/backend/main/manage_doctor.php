@@ -61,15 +61,16 @@ $this->session->set_userdata('last_page', current_url());
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
                 
                <td>
+            <a href="<?php echo base_url(); ?>main/add_appointment/<?php echo $row['doctor_id'] ?>" title="Book Appointment"><i class="menu-icon glyphicon glyphicon-list-alt"></i></a>&nbsp;
                <?php if($account_type != 'users'){?>
-                <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $row['doctor_id'] ?>" title="Availability"><i class="glyphicon glyphicon-calendar"></i></a>
+                <a href="<?php echo base_url(); ?>main/doctor_availability/<?php echo $row['doctor_id'] ?>" title="Availability"><i class="glyphicon glyphicon-calendar"></i></a>&nbsp;
                 <?php }?>
                 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                  <?php if($row['is_email'] == '2'){?>
-                <a href="<?php echo base_url(); ?>main/resend_email_verification/doctors/doctor/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
-                <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/doctor/delete/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                <a href="<?php echo base_url(); ?>main/resend_email_verification/doctors/doctor/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a>&nbsp;<?php }?>
+                <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/doctor/delete/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
             <?php }elseif($account_type == 'users'){?>
-        <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/doctor/delete_doctor/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+        <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/doctor/delete_doctor/<?php echo $row['doctor_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
             <?php }?>
                 </td>
             

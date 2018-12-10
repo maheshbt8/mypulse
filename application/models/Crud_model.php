@@ -2946,7 +2946,22 @@ return $this->db->get_where('appointments',array('user_id'=>$id,'next_appointmen
     }
     
 function select_today_appointment_info_by_doctor(){
+$account_type=$this->session->userdata('login_type');
+    if($account_type=='doctors'){
 return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('m/d/Y')))->result_array();
+    }elseif($account_type=='receptionist'){
+    $receptionist=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row();
+    $doctor_id=explode(',',$receptionist->doctor_id);
+for($doc=0;$doc<count($doctor_id);$doc++){
+$result[]=$this->db->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date'=>date('m/d/Y')))->result_array();
+}
+for($i=0;$i<count($result);$i++){
+    for($j=0;$j<count($result[$i]);$j++){
+ $return[]=$result[$i][$j];
+ }   
+}
+return $return;
+    }
     }
 function select_appointment_info_by_date($sd = '', $ed = '')
     {

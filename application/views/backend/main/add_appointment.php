@@ -128,32 +128,19 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation " data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('doctor'); ?>" onchange="return get_doctor_ava(this.value)">
+                            <?php if($doctor_id==''){ ?>
+                            <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation " data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('doctor'); ?>" onchange="return get_doctor_ava(this.value)"><?php }elseif ($doctor_id!='') { ?>
+<input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation " data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php $d=$this->db->get_where('doctors',array('doctor_id'=>$doctor_id))->row_array();echo $d['unique_id'].'/ Dr. '.$d['name'];?>" onchange="return get_doctor_ava(this.value)">
+<?php }?>
     <datalist id="doctors">
+        <?php
         
-        <?php 
-        /*if($account_type=='superadmin'){
-        $doctors_details=$this->db->get('doctors')->result_array();
-        }elseif($account_type=='hospitaladmins'){
-        $doctors_details=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
-        }elseif($account_type=='users'){
-        $doctors_details=$this->db->get('doctors')->result_array();
-        }elseif($account_type=='nurse'){
-        $doctor_ids=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
-        for($i=0;$i<count($doctor_ids);$i++){
-            $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
-            }
-        }elseif($account_type=='receptionist'){
-        $doctor_ids=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
-        for($i=0;$i<count($doctor_ids);$i++){
-            $doctors_details[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get('doctors')->row_array();
-            }
-        }*/
         if($account_type!='users'){
         $doctors_details=$this->crud_model->select_doctor_info();
         }elseif($account_type=='users'){
         $doctors_details=$this->db->get('doctors')->result_array();
         }
+        
         foreach ($doctors_details as $row) {
 $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
   if($license_status==1){ 
@@ -276,8 +263,21 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hosp
         });
    
     }
- 
+
+        $(document).ready(function(){
+        var unique_id=$('#doctor').val();
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
+            success: function(response)
+            {
+                jQuery('#doc_ava').html(response);
+                document.getElementById("appointment_date").disabled = false;
+                
+            } 
+        });
+        });
    function get_doctor_ava(unique_id) {
+    
      $.ajax({
             url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
             success: function(response)
@@ -287,8 +287,8 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hosp
                 
             } 
         });
-   
-    }  
+   }
+    
     <?php if($account_type == 'doctors'){?>
         $(document).ready(function(){
            var unique_id=$('#doctor').val();

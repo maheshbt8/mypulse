@@ -26,7 +26,11 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('branch'); ?></span> 
 <div class="col-sm-8">
 <select name="branch" class="form-control" onchange="return get_departments(this.value)" id="branch">
-    <?php $branchs=$this->db->where('hospital_id',$ward['hospital_id'])->get('branch')->result_array();
+    <?php if($ward_id!=''){ $branchs=$this->db->where('hospital_id',$ward['hospital_id'])->get('branch')->result_array();}elseif($ward_id==''){$branchs=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('branch')->result_array();}
+    if($ward_id==''){
+        ?>
+<option value="">Select Branch</option>
+<?php    }
     foreach ($branchs as $branches) { ?>
 <option value="<?=$branches['branch_id']?>" <?php if($branches['branch_id'] == $ward['branch_id']){echo "selected";}?>><?=ucfirst($branches['name'])?></option>
 <?php    }?>

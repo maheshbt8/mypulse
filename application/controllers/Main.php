@@ -1189,7 +1189,7 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('patients');
         $this->load->view('backend/index', $data);
     }
-      function add_appointment()
+      function add_appointment($id="")
     {
     if($this->input->post()){
         $user= $this->input->post('user_id');
@@ -1208,7 +1208,9 @@ class Main extends CI_Controller {
     $this->session->set_flashdata('appointment_date_error',"You Can Book a maximum of 2 Appointments Per Day");
     }
     }
-
+        if($id!=''){
+        $data['doctor_id'] = $id;
+        }
         $data['page_name'] = 'add_appointment';
         $data['page_title'] = get_phrase('book_Appointment');
         $this->load->view('backend/index', $data);

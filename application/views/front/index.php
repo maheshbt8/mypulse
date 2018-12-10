@@ -45,7 +45,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <div class="container"  style="background-color: -webkit-linear-gradient(bottom, #005bea, #00c6fb);">
       <nav class="navbar navbar-expand-lg navbar-light">
         <h1>
-          <a class="navbar-brand text-capitalize" href="index.html">
+          <a class="navbar-brand text-capitalize" href="">
             <img src="<?=base_url('assets/logo.png')?>"  style="max-height:60px; margin: -35px;"/>
           </a>
         </h1>
@@ -699,6 +699,6 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!-- //smooth-scrolling-of-move-up -->
     <!-- Bootstrap core JavaScript
 ================================================== -->
- 
+ <?php include 'includes_bottom.php'; ?>
 </body>
 </html>
