@@ -60,9 +60,7 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="city" data-sortable="true"><?php echo get_phrase('city');?></th> 
             <th data-field="date" data-sortable="true"><?php echo get_phrase('date & time');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
-            <th data-field="attended" data-sortable="true"><?php echo get_phrase('attended-status'); ?></th>
-            <?php if($account_type=='superadmin'){?>
-            <th><?php echo get_phrase('options');?></th><?php }?>
+            <th><?php echo get_phrase('options');?></th>
         </tr> 
     </thead>
 
@@ -70,14 +68,6 @@ $this->session->set_userdata('last_page', current_url());
         <?php if($_GET['sd']!='' && $_GET['ed']!=''){
             $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed']);}else{$appointment_info;}
         $i=1;foreach ($appointment_info as $row) {
-  /*  if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y'))){
-    $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
-                if($count>0){
-                $array=array('appointment_id'=>$row['appointment_id'],'status'=>2);
-                $this->db->where($array)->update('appointments',array('status'=>'4'));
-                $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
-                }
-            }*/
             ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
@@ -85,14 +75,14 @@ $this->session->set_userdata('last_page', current_url());
                 <td>
                    <!-- <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
                         echo $name;?></a> -->
-             <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
-                        echo $name;?>
+             <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
+                        echo $name;?></a>
                 </td>
                  <td>
                     <!-- <a href="<?php echo base_url(); ?>main/edit_doctor/<?php echo $row['doctor_id'] ?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->unique_id;
                         echo $name;?></a> -->
-                <?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
-                        echo $name;?>
+                <a href="<?php echo base_url();?>main/edit_doctor/<?php echo $row['doctor_id']?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
+                        echo $name;?></a>
                 </td>
                 <td>
                     <?php 
@@ -111,14 +101,13 @@ $this->session->set_userdata('last_page', current_url());
                  ?>
                      
                  </td>
-                 <td>
-                <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Attended";?></span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Not-Attended";?></span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Attended";?></span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Not-Attended";?></span><?php }}?>
-                 </td>
-                 <?php if($account_type=='superadmin'){?>
                 <td>
+                    <?php if($account_type=='superadmin'){?>
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                     <!-- <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/close/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Close"><i class="glyphicon glyphicon-ban-circle"></i></a> -->
-                </td><?php }?>
+                    <?php }?>&nbsp;&nbsp;
+                    <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
+                </td>
             </tr>
         <?php } ?>
     </tbody>

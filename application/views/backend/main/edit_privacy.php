@@ -27,7 +27,7 @@ if($id == 1){
     </div>
 </div>
 
-<script type="text/javascript" src="<?php echo base_url();?>/assets/js/ckeditor/ckeditor.js"></script> 
+<script type="text/javascript" src="<?php echo base_url();?>/assets/backend/js/ckeditor/ckeditor.js"></script> 
 
 
 <script>

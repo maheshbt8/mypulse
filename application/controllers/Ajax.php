@@ -358,16 +358,30 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
 }elseif($account_type == 'nurse'){
     $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $patient_info[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->row_array();
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->result_array();
+        if($inpatient!=''){
+            $inpatient1[]=$inpatient;
+        }
     }
+     for($i=0;$i<count($inpatient1);$i++){
+    for($j=0;$j<count($inpatient1[$i]);$j++){
+ $patient_info[]=$inpatient1[$i][$j];
+ }   
+}
 }elseif($account_type == 'receptionist'){
     $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->row_array();
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->result_array();
         if($inpatient!=''){
-            $patient_info[]=$inpatient;
+            $inpatient1[]=$inpatient;
         }
     }
+      for($i=0;$i<count($inpatient1);$i++){
+    for($j=0;$j<count($inpatient1[$i]);$j++){
+ $patient_info[]=$inpatient1[$i][$j];
+ }   
+}
+
 }$i=1;foreach ($patient_info as $row) {
     if($row!=''){
 ?>
@@ -386,8 +400,8 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
                 <td><?php if($row['show_status']==1){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row['show_status']==2){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td><?php }?> 
                <td>
               <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i>
-              </a>&nbsp; 
-                      <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users' && $row['status']==0){?>
+              </a>&nbsp;&nbsp; 
+                      <?php if(($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users') && $row['status']==0){?>
               <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/inpatient/delete/<?php echo $row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?>
                 </td>
             </tr>

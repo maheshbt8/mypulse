@@ -18,10 +18,11 @@
                     	</a></li>
 		</ul>
     	<!--CONTROL TABS END-->
-        
+      <div class="panel panel-default">   
+            <div class="panel-body">  
 	
 		<div class="tab-content">
-        <br>
+      
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
@@ -124,4 +125,6 @@
             
 		</div>
 	</div>
+</div>
+</div>
 </div>

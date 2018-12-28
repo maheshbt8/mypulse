@@ -1,8 +1,6 @@
-
 <div class="row">
 	<div class="col-md-12">
-    
-    	<!------CONTROL TABS START------>   
+        <!------CONTROL TABS START------>   
 		<ul class="nav nav-tabs bordered"> 
 			<li class="active">
             	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
@@ -21,12 +19,12 @@
                 </a>
 			</li>
 		</ul>
+        <div class="panel panel-default">   
+            <div class="panel-body">
     	<!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_user/" method="post" enctype="multipart/form-data">
              
 		<div class="tab-content">
-		   
-        <br>
             <!----TABLE LISTING STARTS-->
             <div class="tab-pane box active" id="list">
 				
@@ -133,13 +131,14 @@
                         <div class="col-sm-6">
                             
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
+                        <label for="field-ta" class="col-sm-3 control-label">Gender</label>
 
                         <div class="col-sm-8">
                             <select name="gender" class="form-control" id="gender" value="<?php echo set_value('gender'); ?>">
-                                <option value=""><?php echo $this->lang->line('labels')['select_gender'];?></option>
-                                <option value="male"><?php echo $this->lang->line('labels')['male'];?></option>
-                                <option value="female"><?php echo $this->lang->line('labels')['female'];?></option>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="others">Other / Transgender</option>
                             </select>
                         </div>
                     </div>
@@ -147,7 +146,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" value="<?php echo set_value('dob'); ?>" autocomplete="off">
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" value="<?php echo set_value('dob'); ?>" autocomplete="off" onchange="return calculate_age(this.value)">
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -272,7 +271,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['age'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="age" class="form-control" id="age" value="<?php echo set_value('age'); ?>">
+                            <input type="text" name="age" class="form-control" id="age" value="<?php echo set_value('age'); ?>" readonly>
                         </div>
                     </div>
                     <div class="form-group">
@@ -349,6 +348,8 @@
                     </div> 
 		</div>
 		</form>
+    </div>
+</div>
 	</div>
 </div>
 
@@ -391,7 +392,6 @@
         });
 
     }
-
 </script>
 
 

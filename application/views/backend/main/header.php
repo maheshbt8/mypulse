@@ -87,6 +87,14 @@ if(count($notification_data) > 0){
 <div class="dropdown-messages-box">
 <a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>"><div class="message-body">
 <strong><?= $row['title'];?></strong>.
+ <?php /*$s=0;
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }*/
+        if($row['isRead']==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($row['isRead']==2){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
 <br />
 <small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
 </div>
@@ -132,8 +140,18 @@ if($message_data!=''){
         <div class="dropdown-messages-box">
 <div class="message-body">
 <strong><?= $row['title'];?></strong>.
+    <?php $count=explode(',',$row['is_read']);
+    $s=0;
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }
+        if($s==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($s==0){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
 <br />
-<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small></div>
+<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
+</div>
 </div>
 </li>
 <li class="divider"></li>

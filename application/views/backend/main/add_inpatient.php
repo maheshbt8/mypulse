@@ -141,8 +141,8 @@ $ward = $this->db->get_where('ward' , array('department_id' => $this->session->u
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Status';?></label>
                             <div class="col-sm-8">
                                 <select name="status" class="form-control" id="status"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
-                                   <!--  <option value="0" selected=""><?php echo get_phrase('not_admitted'); ?></option> -->
                                     <option value="1" selected=""><?php echo get_phrase('admitted'); ?></option>
+                                    <option value="0"><?php echo get_phrase('Recommended'); ?></option>
                                 </select>
                             </div>
                     </div>

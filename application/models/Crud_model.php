@@ -702,7 +702,7 @@ function email_verification($task="",$id="")
         $yes=$this->db->delete('hospitals');
         if($yes){
         $this->db->where('hospital_id',$hospital_id);
-        $a=$this->db->delete('branch_id');
+        $a=$this->db->delete('branch');
         if($a){
         $this->db->where('hospital_id',$hospital_id);
         $b=$this->db->delete('department');
@@ -721,7 +721,7 @@ function email_verification($task="",$id="")
     {
 $hospital_ids=explode(',',$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row()->hospital_ids);
 for($h=0;$h<count($hospital_ids);$h++){
-    if($hospital_ids[$h]!=$hospital_id){
+    if($hospital_ids[$h]!= $hospital_id){
         $hospi[]=$hospital_ids[$h];
     }
 }
@@ -737,7 +737,7 @@ $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
         $yes=$this->db->delete('hospitals');
         if($yes){
         $this->db->where('hospital_id',$hospital_id);
-        $a=$this->db->delete('branch_id');
+        $a=$this->db->delete('branch');
         if($a){
         $this->db->where('hospital_id',$hospital_id);
         $b=$this->db->delete('department');
@@ -1808,28 +1808,41 @@ if($account_type == 'medicalstores'){
     {
       $account_type=$this->session->userdata('login_type');
     if($account_type == 'superadmin'){
-  return $this->db->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
+  return $this->db->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'hospitaladmins'){
   return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'doctors'){
     return $this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'users'){
-    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status!='=>0))->result_array();
+    return $this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>1))->result_array();
 }elseif($account_type == 'nurse'){
     $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient[]=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
-    }
-    return $inpatient;
-}elseif($account_type == 'receptionist'){
-    $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
-    for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->row_array();
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->result_array();
         if($inpatient!=''){
             $inpatient1[]=$inpatient;
         }
     }
-    return $inpatient1;
+    for($i=0;$i<count($inpatient1);$i++){
+    for($j=0;$j<count($inpatient1[$i]);$j++){
+ $return[]=$inpatient1[$i][$j];
+ }   
+}
+    return $return;
+}elseif($account_type == 'receptionist'){
+    $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
+    for($n=0;$n<count($res);$n++){
+        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>1))->result_array();
+        if($inpatient!=''){
+            $inpatient1[]=$inpatient;
+        }
+    }  
+    for($i=0;$i<count($inpatient1);$i++){
+    for($j=0;$j<count($inpatient1[$i]);$j++){
+ $return[]=$inpatient1[$i][$j];
+ }   
+}
+    return $return;
 }
     }
     function select_inpatient_id_info($id)
@@ -1889,8 +1902,10 @@ if($account_type == 'medicalstores'){
     function update_inpatient_info($patient_id)
     {
     $data['user_id']       = $this->input->post('user_id');
-    $data['doctor_id']       = $this->db->where('unique_id',$this->input->post('doctor'))->get('doctors')->row()->doctor_id;
-    $data['hospital_id']       = $this->input->post('hospital');
+    if($this->input->post('doctor')!=''){
+    $data['doctor_id']       = $this->db->where('unique_id',$this->input->post('doctor'))->get('doctors')->row()->doctor_id;}
+    if($this->input->post('doctor')!=''){
+    $data['hospital_id']       = $this->input->post('hospital');}
     $data['bed_id']       = $this->input->post('bed');
     $data['reason']       = $this->input->post('reason');
     $data['status']       = $this->input->post('status');
@@ -3166,22 +3181,37 @@ return $return;
     }
     function cancel_multiple_appointment_info()
     {
-        $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+$account_type=$this->session->userdata('login_type');
+if($account_type == 'superadmin'){
+  $user_role='Super Admin';
+}elseif($account_type == 'hospitaladmins'){
+  $user_role='Hospital Admin';
+}elseif($account_type == 'doctors'){
+  $user_role='Doctor';
+}elseif($account_type == 'nurse'){
+  $user_role='Nurse';
+}elseif($account_type == 'receptionist'){
+  $user_role='Receptionist';
+}elseif($account_type == 'users'){
+  $user_role='MyPulse Users';
+}
+ $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $check=$_POST['check'];
         $reason=$_POST['cancel_reason'];
         for($i=0;$i<count($check);$i++){
+        $appointment_number=$this->db->where('appointment_id',$check[$i])->get('appointments')->row()->appointment_number;
+        $name=$this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($this->session->userdata('login_type'))->row()->name;
         $this->db->where('appointment_id',$check[$i]);
         $this->db->where('status',2);
-        $s=$this->db->update('appointments',array('status'=>'3','remarks'=>'Canceled By The Reason " '.$reason.'" '));
-
+        $s=$this->db->update('appointments',array('status'=>'3','remarks'=>'Appointment was cancelled by: "'.$user_role.' - '.$name.'" for the reason: " '.$reason.'".'));
         if($s){
         $this->db->insert('appointment_history',array('appointment_id'=>$check[$i],'action'=>6,'created_by'=>$account_details,'reason'=>$reason));
             /**********Notification***********/
     $appointment_data=$this->db->where('appointment_id',$check[$i])->get('appointments')->row_array();
         $user_id[]='users-user-'.$appointment_data['user_id'];
         $user_id[]='doctors-doctor-'.$appointment_data['doctor_id'];
-        $notification['title']='Appointment Canceled';
-        $notification['text']='Hi User Your Appointment Canceled The Reason " '.$reason.' " .';
+        $notification['title']=$appointment_number.' Appointment Canceled';
+        $notification['text']='Hi User Your Appointment No '.$appointment_number.' was Canceled for the Reason " '.$reason.' " .';
     for($u=0;$u<count($user_id);$u++){
         $notification['user_id']=$user_id[$u];
         $this->db->insert('notification',$notification);

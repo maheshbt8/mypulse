@@ -22,9 +22,10 @@ $this->session->set_userdata('last_page', current_url());
 		</ul>
     	<!--CONTROL TABS END-->
         
-	
+	<div class="panel panel-default">   
+            <div class="panel-body">
 		<div class="tab-content">
-        <br>
+        
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
             	<div class="col-md-12">
@@ -70,4 +71,6 @@ $this->session->set_userdata('last_page', current_url());
 			</div>
 		</div>
 	</div>
+</div>
+</div>
 </div>

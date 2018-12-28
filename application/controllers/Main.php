@@ -1480,7 +1480,7 @@ class Main extends CI_Controller {
         $this->session->set_flashdata('message', get_phrase('ordered_successfuly'));
         redirect($this->session->userdata('last_page'));
         }
-        if($param1==0){$page=get_phrase('order_medicens');}elseif($param1==1){$page=get_phrase('order_medicaltest');}
+        if($param1==0){$page=get_phrase('order_medicins');}elseif($param1==1){$page=get_phrase('order_medicaltest');}
         if($param2!=''){
         $data['id'] = $param2;    
         }
@@ -1914,11 +1914,10 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
     }
     function opt_verification($param1 = '', $param2 = '', $param3 = '')
     {
-    $past_time=strtotime($_POST['otp_time']);
+    $past_time=strtotime($this->session->userdata('otp_time'));
     $current_time = time();
     $difference = $current_time - $past_time;
     $difference_minute =  $difference/60;
-    /*echo intval($difference_minute);*/
     if(intval($difference_minute)<3){
         $otp_form=$this->input->post('otp');
         $otp=$this->session->userdata('otp');

@@ -8,11 +8,6 @@ class Login extends CI_Controller {
         $this->load->database();
         $this->load->library('session');
         date_default_timezone_set('Asia/Kolkata');
-        /* cache control */
-       /* $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
-        $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-        $this->output->set_header('Pragma: no-cache');
-        $this->output->set_header("Expires: Mon, 26 Jul 2010 05:00:00 GMT");*/
     }
     //Default function, redirects to logged in user area
     public function index() {
@@ -180,18 +175,13 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
            $validation_phone = mobile_validation($phone);
     if($validation_phone == 1){
     if($this->input->post('pass') == $this->input->post('cpass')){
+        $this->session->set_flashdata('error', '');
         $data['name']       = $this->input->post('username');
         $data['email']      = $this->input->post('email');
         $data['password']       = sha1($this->input->post('pass'));
         $data['phone']          = $this->input->post('phone');
         $data['status']   = 1;
         $user_name   =   $data['name'];
-        /*if($this->session->flashdata('otp') == ''){
-            $num="12345678901234567890";
-            $shu=str_shuffle($num);
-            $otp=substr($shu, 14);
-            $this->session->set_flashdata('otp',$otp);
-        }*/
         if($this->session->userdata('otp')==''){
         $num="12345678901234567890";
         $shu=str_shuffle($num);
@@ -208,37 +198,34 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     $difference = $current_time - $past_time;
     $difference_minute =  $difference/60;
     if(intval($difference_minute)<3){
-        if($this->input->post('otp')==$this->session->userdata('otp')){
+    if($this->input->post('otp')){
+        if($this->input->post('otp') == $this->session->userdata('otp')){
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
-            $lid=$this->db->insert_id();
-            $a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);
-            $pid='MPU'.date('y').'_'.$uid;
-            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
-        /*
-        $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));*/
-        redirect(base_url() , 'refresh');
+        $this->session->set_userdata('otp','');
+        $lid=$this->db->insert_id();
+        $a="12345678901234567890";
+        $sid=str_shuffle($a);
+        $uid=substr($sid, 14);
+        $pid='MPU'.date('y').'_'.$uid;
+        $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+        $this->session->set_flashdata('success','Registration Completed Successfully');
+        /*redirect(base_url('login') , 'refresh');*/
         $this->email_model->account_opening_email('users','user', $data['email']);
+        
         }
         }else{
         $this->session->set_flashdata('error', 'OTP Not Correct');
     }
+}
     }else{
+        $this->session->sess_destroy();
+        redirect(base_url('login/register'), 'refresh');
         $this->session->set_flashdata('error', 'OTP Time Was Experied');
     }
-            /*$user_name   =   $data['name'];
-            $num="12345678901234567890";
-            $shu=str_shuffle($num);
-            $otp=substr($shu, 14);
-            $this->session->set_flashdata('otp',$otp);
-            $message        =  'Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $otp ;
-            $receiver_phone =   $data['phone'];
-            $this->sms_model->send_sms($message, $receiver_phone);*/
             }else{
-                 $this->session->set_flashdata('error', $this->lang->line('validation')['passwordNotMatch']);
+                 $this->session->set_flashdata('error', 'Please Confirm password, does not match');
             }
             }else {
                  $this->session->set_flashdata('error', 'Mobile Number Already Existed' );
@@ -369,8 +356,9 @@ if ($this->form_validation->run() == TRUE){
             $is_email=$this->db->get_where($task, array('unique_id' => $id))->row()->is_email;
             if($is_email==1){
             $yes=$this->db->where('unique_id',$id)->update($task,array('password' =>sha1($this->input->post('pass'))));
-            if($yes){
-            redirect(base_url() , 'refresh');
+        if($yes){
+        $this->session->set_flashdata('success','password reset successed. please login...');
+        redirect(base_url('login') , 'refresh');
         }
         }else{
             echo "Email Not Verified";

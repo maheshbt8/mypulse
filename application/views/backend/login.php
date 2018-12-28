@@ -24,9 +24,13 @@
 						<img class="img-responsive" src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR" style="width:100%;">
 					</div>
 	<span class="login100-form-title p-t-20 p-b-45"></span>
-                    <?php if($this->session->flashdata('login_error')!=''){?>
+            <?php if($this->session->flashdata('login_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('login_error'); ?></div>
+		<?php }?>
+		<?php if($this->session->flashdata('success')!=''){?>
+		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('success'); ?></div>
 		<?php }?>
 					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?>">
 						<input class="input100" type="text" name="email" placeholder="<?php echo 'Email Or Mobile' ?>" autocomplete="off">

@@ -112,9 +112,9 @@ foreach ($single_store_info as $row) {
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo "OTP";?></label>
                         <div class="col-sm-8">
-                            <input type="text" name="otp" class="form-control" id="otp"  data-validate="required" data-message-required="Value Required" value="<?php echo set_value('otp'); ?>" autocomplete="off">
+                            <input type="text" name="otp" class="form-control" id="otp"  data-validate="required" data-message-required="Value Required" value="" autocomplete="off">
                             <input type="hidden" name="user_id" id="user_id" value="<?=$row['store_id'];?>">
-                            <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>">
+                            <!-- <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>"> -->
                             <span id="otp_error"></span>
                         </div>
                     </div>

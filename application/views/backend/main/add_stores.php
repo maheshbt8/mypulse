@@ -20,6 +20,8 @@
                 </a>
 			</li>
 		</ul>
+        <div class="panel panel-default">   
+            <div class="panel-body">
     	<!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_stores/" method="post" enctype="multipart/form-data">
              
@@ -349,6 +351,8 @@
                     </div> 
         </div>
    </form>
+</div>
+</div>
 	</div>
 </div>
 

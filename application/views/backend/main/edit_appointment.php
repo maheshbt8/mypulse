@@ -1,3 +1,6 @@
+<style type="text/css">
+   
+</style>
 <?php 
 $this->session->set_userdata('last_page1', current_url());
 ?>
@@ -124,7 +127,7 @@ foreach ($single_appointment_info as $row) {
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
-      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 <?php if($account_type=='doctors'){?>
 <button type="button" onClick="confrecommend(this.form);" id="recommend" class="btn btn-warning pull-right" style="margin-left: 2px;width: auto;">
         <?php echo get_phrase('Recommend as Inpatient'); ?>

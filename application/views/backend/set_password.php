@@ -21,13 +21,12 @@
 					</div>
 
 					<span class="login100-form-title p-t-20 p-b-45">
-				  
+				  Set Your Password<br/><br/>
 					</span>
-						   <?php if($this->session->flashdata('msg_registration_complete')!=''){?>
+		<?php if($this->session->flashdata('msg_registration_complete')!=''){?>
 		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('msg_registration_complete'); ?></div>
-		<?php }
-				
+		<?php }		
 		 if($this->session->flashdata('cpass_error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('cpass_error'); ?></div>

@@ -14,6 +14,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
+                <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_inpatient/<?=$patient_id?>" method="post" enctype="multipart/form-data">
     <div class="col-md-3">
 <h4><?php echo '<b>User ID</b> : '.$user_data['unique_id'];?></h4>
@@ -174,7 +175,7 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                         </div>
                     </div>
                     <?php }elseif($account_type == 'doctors'){ ?>
-                    <input type="hidden" name="doctor" id="doctor" value="<?php echo $user_info->doctor_id;?>"> 
+                    <input type="hidden" name="doctor" id="doctor" value="<?php echo $this->db->where('doctor_id',$user_info->doctor_id)->get('doctors')->row()->unique_id;?>"> 
                   <?php }?>
                 </div>
 
@@ -204,7 +205,6 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         </div> 
                     <div class="col-sm-3 control-label col-sm-offset-9 ">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
-                        <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>  
                    
    </form>

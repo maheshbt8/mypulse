@@ -33,7 +33,7 @@
 							<td><?php echo $row['name'];?></td>
 							<td>
                             <div class="btn-group">
-                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/Language/delete/<?php echo $row['language_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/Language/delete/<?php echo $row['language_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                             </div>
         					</td>
                         </tr>
@@ -47,7 +47,7 @@
 			<!----CREATION FORM STARTS---->
 			<div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                	<?php echo form_open(base_url() . 'index.php?superadmin/Language/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+                	<?php echo form_open(base_url() . 'main/Language/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo 'Language';?></label>
                                 <div class="col-sm-5">

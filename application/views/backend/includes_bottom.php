@@ -40,7 +40,14 @@
 
                     });
 
-                    } );                  
+                    } ); 
+
+    function calculate_age(dob){
+dob = new Date(dob);
+var today = new Date();
+var age = Math.floor((today-dob) / (365.25 * 24 * 60 * 60 * 1000));
+jQuery('#age').attr('value',age);
+}                 
 
 </script>
 

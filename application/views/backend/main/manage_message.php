@@ -66,7 +66,17 @@ if($created_by[0] == 'superadmin'){
 }elseif($created_by[0] == 'users'){
   $user_role='MyPulse Users';
 }
-    echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span><span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span>
+    echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span><span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at'])); ?>
+    <?php $count=explode(',',$row['is_read']);
+    $s=0;
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }
+        if($s==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($s==0){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
+    </span>
     </p>
     </a>
    <?php }?>

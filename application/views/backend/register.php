@@ -21,7 +21,6 @@
 					</div>
 
 					<span class="login100-form-title p-t-20 p-b-45">
-				  
 					</span>
 						   <?php if($this->session->flashdata('msg_registration_complete')!=''){?>
 		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
@@ -34,17 +33,13 @@
 					  if($this->session->flashdata('error')!=''){?>
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('error'); ?></div>
-		<?php }
-		 /*if($this->session->flashdata('cpass_error')!=''){?>
-		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('cpass_error'); ?></div>
-		<?php }*/?>
+		<?php }?>
 		<span id="email_error"></span><span id="phone_error"></span>
 		<?php
-		if($this->session->flashdata('otp')!=''){
+		if($this->session->userdata('otp')!=''){
 			?>
 			<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredFname'];?>">
-						<input class="input100" type="text" name="otp" placeholder="<?php echo 'OTP';?>*" value="<?php echo set_value('otp'); ?>" autocomplete="off">
+						<input class="input100" type="text" name="otp" placeholder="<?php echo 'OTP';?>*" value="" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
@@ -61,7 +56,7 @@
 						</span>
 					</div>
 						<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requriedPhone'];?>">
-						<input class="input100" type="text" name="phone" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('mobile'); ?>" onchange="return get_phone(this.value)" autocomplete="off"minlength="10" maxlength="10">
+						<input class="input100" type="text" name="phone" placeholder="<?php echo 'Mobile Number';?>*" value="<?php echo set_value('phone'); ?>" onchange="return get_phone(this.value)" autocomplete="off"minlength="10" maxlength="10">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>

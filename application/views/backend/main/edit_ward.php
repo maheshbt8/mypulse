@@ -14,7 +14,7 @@ foreach ($single_ward_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('hospital');?></label>
                         
 						<div class="col-sm-8">
-							<select name="hospital" class="form-control selectbox" onchange="return get_branch(this.value)">
+							<select name="hospital" class="form-control selectbox" onchange="return get_branch(this.value)"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                              
                               <?php
                               	$sections = $this->db->get_where('hospitals' , array('status' => 1))->result_array();
@@ -34,7 +34,7 @@ foreach ($single_ward_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('branch');?></label>
                         
 						<div class="col-sm-8">
-							<select name="branch" class="form-control selectbox" onchange="return get_department(this.value)" id="branch">
+							<select name="branch" class="form-control selectbox" onchange="return get_department(this.value)" id="branch" <?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                               <?php
                               	$sections1 = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
                             
@@ -50,7 +50,7 @@ foreach ($single_ward_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('department');?></label>
                         
 						<div class="col-sm-8">
-							<select name="department" class="form-control selectbox" id="department">
+							<select name="department" class="form-control selectbox" id="department"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                               <?php
                               	$sections1 = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
                             
@@ -67,7 +67,7 @@ foreach ($single_ward_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>">
+                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                         </div>
                        </div>
 
@@ -76,7 +76,7 @@ foreach ($single_ward_info as $row) {
 
                             <div class="col-sm-8">
                                 <textarea name="description" class="form-control"
-                                    id="field-ta"><?php echo $row['description']; ?></textarea>
+                                    id="field-ta"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>><?php echo $row['description']; ?></textarea>
                             </div>
                         </div>
 

@@ -26,9 +26,9 @@ $this->session->set_userdata('last_page', current_url());
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital / doctor'); ?></th>
             <th data-field="patient" data-sortable="true"><?php echo get_phrase('patient'); ?></th>
-            <th data-field="contact_number" data-sortable="true"><?php echo get_phrase('contact_number'); ?></th>
-            <th data-field="address" data-sortable="true"><?php echo get_phrase('address'); ?></th>
+            <th data-field="<?php if($order_type==0){echo get_phrase('store');}elseif($order_type==1){echo get_phrase('lab');} ?>" data-sortable="true"><?php if($order_type==0){echo get_phrase('medical store');}elseif($order_type==1){echo get_phrase('medical lab');} ?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('date & time'); ?></th>
             <th><?php echo get_phrase('prescription'); ?></th>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
@@ -46,10 +46,10 @@ $this->session->set_userdata('last_page', current_url());
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row1['order_id'] ?>"></td>
                 <td><?php $doc=$this->db->where('doctor_id',$prescription_info['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
-                <td><?php echo $user1['name'] ?></td>
-                <td><?php echo $user1['phone'] ?></td>
-                <td><?php echo $user1['address'] ?></td>
+                <td><a href="<?php echo base_url();?>main/edit_user/<?php echo $row1['user_id']?>" class="hiper"><?php echo $user1['name'] ?></a></td>
+                <td><?php if($order_type==0){ ?><a href="<?php echo base_url();?>main/edit_stores/<?php echo $row1['store_id']?>" class="hiper"><?php echo get_phrase($this->db->where('store_id',$row1['store_id'])->get('medicalstores')->row()->name);?></a><?php }elseif($order_type==1){ ?><a href="<?php echo base_url();?>main/edit_labs/<?php echo $row1['lab_id']?>" class="hiper"><?php echo get_phrase($this->db->where('lab_id',$row1['lab_id'])->get('medicallabs')->row()->name);?> </a><?php } ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
+                <td><?php echo date('d M,Y h:i A',strtotime($row1['created_at']));?></td>
                 <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a></td>
                 <td><?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper">Receipt</a><?php }elseif($row1['status']==2 && $account_type=='medicalstores'|| $account_type=='medicallabs'){ ?>
                     <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }elseif($row1['status']==2 && $account_type!='medicalstores'|| $account_type!='medicallabs'){ ?>Receipt Not Upload<?php }?></td>
@@ -64,7 +64,7 @@ if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_ty
 <?php if($account_type=='users'){?>
 <div class="panel-heading">
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_order/<?=$order_type;?>'" class="btn btn-primary pull-right">
-        <?php if($order_type==0){echo get_phrase('Order Medicen');}elseif($order_type==1){echo get_phrase('Order Medical Tests');} ?>
+        <?php if($order_type==0){echo get_phrase('Order Medicine');}elseif($order_type==1){echo get_phrase('Order Medical Tests');} ?>
 </button>
 </div>
 <?php }?>
@@ -73,9 +73,9 @@ if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_ty
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <th data-field="patient" data-sortable="true"><?php echo get_phrase('patient'); ?></th>
-            <th data-field="contact_number" data-sortable="true"><?php echo get_phrase('contact_number'); ?></th>
-            <th data-field="address" data-sortable="true"><?php echo get_phrase('address'); ?></th>
+            <th data-field="<?php if($order_type==0){echo get_phrase('store');}elseif($order_type==1){echo get_phrase('lab');} ?>" data-sortable="true"><?php if($order_type==0){echo get_phrase('medical store');}elseif($order_type==1){echo get_phrase('medical lab');} ?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('date & time'); ?></th>
             <th><?php echo get_phrase('prescription'); ?></th>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
@@ -91,11 +91,12 @@ if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_ty
             ?>
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row1['order_id'] ?>"></td>
-                <td><?php echo $user1['name'] ?></td>
-                <td><?php echo $user1['phone'] ?></td>
-                <td><?php echo $user1['address'] ?></td>
+                <td><a href="<?php echo base_url();?>main/edit_user/<?php echo $row1['user_id']?>" class="hiper"><?php echo $user1['name'] ?></a></td>
+                <td><?php if($order_type==0){ ?><a href="<?php echo base_url();?>main/edit_stores/<?php echo $row1['store_id']?>" class="hiper"><?php echo get_phrase($this->db->where('store_id',$row1['store_id'])->get('medicalstores')->row()->name);?></a><?php }elseif($order_type==1){ ?><a href="<?php echo base_url();?>main/edit_labs/<?php echo $row1['lab_id']?>" class="hiper"><?php echo get_phrase($this->db->where('lab_id',$row1['lab_id'])->get('medicallabs')->row()->name);?> </a><?php } ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
-                <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a></td>
+                <td><?php echo date('d M,Y h:i A',strtotime($row1['created_at']));?></td>
+                <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type']; ?>" class="hiper"><i class="fa fa-file"></i></a>
+                </td>
                 <td>
                 <?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper">Receipt</a><?php }elseif($row1['status']==2 && $account_type=='medicalstores'|| $account_type=='medicallabs'){ ?>
                     <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }elseif($row1['status']==2 && $account_type!='medicalstores'|| $account_type!='medicallabs'){ ?>Receipt Not Upload<?php }?>

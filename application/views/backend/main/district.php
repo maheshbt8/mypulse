@@ -19,9 +19,10 @@
 		</ul>
     	<!--CONTROL TABS END-->
         
-	
+	<div class="panel panel-default">   
+            <div class="panel-body">
 		<div class="tab-content">
-        <br>
+        
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
@@ -41,92 +42,7 @@
 							<td><?php echo $row['name'];?></td>
 							<td>
 <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_district/<?php echo $row['district_id'];?>');" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a>
-                                <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
-        					</td>
-                        </tr>
-     <!-- Modal -->
-  <!-- <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit District</h4>
-        </div>
-        <div class="modal-body">
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/district/update/<?=$row['district_id']?>" method="post" enctype="multipart/form-data">
-    <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" data-collapsed="0">
-         <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-12">
-                     <div class="padded">
-                    <div class="form-group">     
-                        <label for="field-ta" class="col-sm-4 control-label"><?php echo get_phrase('country_name'); ?></label> 
-
-                        <div class="col-sm-6">
-                            <select name="country_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  onchange="return get_state1(this.value)">
-                                <option value=""><?php echo get_phrase('select_country'); ?></option>
-                                <?php 
-                                $country = $this->db->get('country')->result_array();
-                                foreach($country as $row1){?>
-                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id']==$row['country_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div>
-                    <br/><br/>
-                    <div class="form-group">     
-                        <label for="field-ta" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label> 
-
-                        <div class="col-sm-6">
-                            <select name="state_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="state"   value="" >
-                                <option value=""><?php echo $this->lang->line('labels')['select_country_first'];?></option>
-                                <?php 
-                                $state = $this->db->where('country_id',$row['country_id'])->get('state')->result_array();
-                                foreach($state as $row2){?>
-                                <option value="<?php echo $row2['state_id'] ?>" <?php if($row2['state_id']==$row['state_id']){echo 'selected';}?>><?php echo $row2['name'] ?></option>
-                                
-                                <?php } ?>
-                            </select>
-                        </div>
-                    </div>
-                    <br/>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo ucfirst('District Name');?></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
-                            data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>" required/>
-                    </div>
-                </div>
-               
-            </div>
-            <br/><br/>
-            <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo ucfirst('Update');?></button>
-              </div>
-            </div>
-                </div>
-                
-                </div>
-                </div>
-
-        </div>
-
-    </div>
-</div>
-        </form>
-        </div>
-      
-      </div>
-      
-    </div>
-  </div> -->
+                   
                         <?php endforeach;?>
                     </tbody>
                 </table>
@@ -185,7 +101,8 @@
 		</div>
 	</div>
 </div>
-
+</div>
+</div>
 
 
 

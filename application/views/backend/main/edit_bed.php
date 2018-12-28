@@ -16,7 +16,7 @@ foreach ($single_bed_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectHospital'];?></label>
                         
 						<div class="col-sm-8">
-							<select name="hospital" class="form-control selectbox"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_branch(this.value)">
+							<select name="hospital" class="form-control selectbox"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_branch(this.value)" <?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                               <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
                               <?php
                               	$sections = $this->db->get_where('hospitals' , array('status' => 1))->result_array();
@@ -36,7 +36,7 @@ foreach ($single_bed_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectBranch'];?></label>
                         
 						<div class="col-sm-8">
-							<select name="branch" class="form-control selectbox" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_department(this.value)">
+							<select name="branch" class="form-control selectbox" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_department(this.value)"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                               <?php
                               	$sections1 = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
                             
@@ -52,7 +52,7 @@ foreach ($single_bed_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectDepartment'];?></label>
                         
 						<div class="col-sm-8">
-							<select name="department" class="form-control selectbox"  id="select_department"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_ward(this.value)">
+							<select name="department" class="form-control selectbox"  id="select_department"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_ward(this.value)"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                               <?php
                               	$sections1 = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
                             
@@ -68,7 +68,7 @@ foreach ($single_bed_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo $this->lang->line('labels')['selectWard'];?></label>
                         
 						<div class="col-sm-8">
-							<select name="ward" class="form-control selectbox" id="select_ward"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+							<select name="ward" class="form-control selectbox" id="select_ward"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                               <?php
                               	$sections1 = $this->db->where('department_id',$row['department_id'])->get('ward')->result_array();
                             
@@ -85,14 +85,14 @@ foreach ($single_bed_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['name'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['name']?>">
+                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['name']?>"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                         </div>
                        </div>
 
                                             <div class="form-group">
             <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['bed_status'];?></label>
                         <div class="col-sm-8">
-                            <select name="bed_status" class="form-control" id="status"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                            <select name="bed_status" class="form-control" id="status"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
                                 <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
                                 <option value="1" <?php if($row['bed_status'] == 1){echo 'selected';}?>><?php echo $this->lang->line('available');?></option>
                                     <option value="2" <?php if($row['bed_status'] == 2){echo 'selected';}?>><?php echo $this->lang->line('not_available');?></option>

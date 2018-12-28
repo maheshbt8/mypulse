@@ -20,6 +20,8 @@
                 </a>
             </li>
         </ul>
+        <div class="panel panel-default">   
+            <div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_doctor/" method="post" enctype="multipart/form-data">
              
@@ -204,9 +206,6 @@
                             <input type="text" name="dob" class="form-control" id="dob" value="<?php echo set_value('dob');?>" autocomplete="off" placeholder="<?php echo get_phrase('date_of_birth'); ?>">
                         </div>
                     </div>
-
-
-
                     <div class="form-group" hidden="">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('aadhar_number'); ?></label>
 
@@ -371,8 +370,8 @@
                     </div> 
                     </div>
    </form>
-            
-           
+   </div>
+   </div>    
             <!----CREATION FORM ENDS-->
         </div>
     </div>

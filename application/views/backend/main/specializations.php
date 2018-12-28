@@ -15,9 +15,9 @@
 		</ul>
     	<!--CONTROL TABS END-->
         
-	
+	<div class="panel panel-default">   
+            <div class="panel-body">
 		<div class="tab-content">
-        <br>
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
@@ -33,7 +33,7 @@
 							<td><?php echo $row['name'];?></td>
 							<td>
                             <div class="btn-group">
-                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?superadmin/specialization/delete/<?php echo $row['specializations_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/specialization/delete/<?php echo $row['specializations_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                             </div>
         					</td>
                         </tr>
@@ -58,7 +58,7 @@
                             
                         <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-info"><?php echo $this->lang->line('buttons')['submit'];?></button>
+                                  <button type="submit" class="btn btn-success">Submit</button>
                               </div>
 							</div>
                     </form>                
@@ -68,4 +68,6 @@
             
 		</div>
 	</div>
+</div>
+</div>
 </div>

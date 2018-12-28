@@ -141,7 +141,7 @@ foreach ($single_user_info as $row) {
                         <div class="col-sm-8">
                             <input type="text" name="otp" class="form-control" id="otp"  data-validate="required" data-message-required="Value Required" value="" autocomplete="off">
                             <input type="hidden" name="user_id" id="user_id" value="<?=$row['user_id'];?>">
-                            <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>">
+                            <!-- <input type="hidden" name="otp_time" id="otp_time" value="<?php echo $this->session->userdata('otp_time')?>"> -->
                             <span id="otp_error"></span>
                         </div>
                     </div>
@@ -206,13 +206,14 @@ foreach ($single_user_info as $row) {
                         <div class="col-sm-6">
                             
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
+                        <label for="field-ta" class="col-sm-3 control-label">Gender</label>
 
                         <div class="col-sm-8">
                             <select name="gender" class="form-control" id="gender" value=""<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
-                                <option value=""><?php echo $this->lang->line('labels')['select_gender'];?></option>
+                                <option value="">Select Gender</option>
                                  <option value="male" <?php if($row['gender']=='male'){echo 'selected';}?>><?php echo get_phrase('male'); ?></option>
                                 <option value="female"  <?php if($row['gender']=='female'){echo 'selected';}?>><?php echo get_phrase('female'); ?></option>
+                                <option value="others" <?php if($row['gender']=='others'){echo 'selected';}?>>Other / Transgender</option>
                             </select>
                         </div>
                     </div>
@@ -220,7 +221,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" value="<?=$row['dob']?>" autocomplete="off"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" onchange="return calculate_age(this.value)" value="<?=$row['dob']?>" autocomplete="off"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group" hidden="">
@@ -359,7 +360,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['age'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="age" class="form-control" id="age" value="<?=$row['age']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="age" class="form-control" id="age" value="<?=$row['age']?>" readonly <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">

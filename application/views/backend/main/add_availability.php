@@ -58,8 +58,7 @@ $this->session->set_userdata('last_page1', current_url());
                                     <label><?php echo $this->lang->line('labels')['availabilityText'];?></label>
                                     <textarea class="form-control " placeholder="<?php echo $this->lang->line('labels')['availabilityTextPlace'];?>" name="message" id="availability_text"><?php echo $availability->message;?></textarea>
                                 </div>
-                            </div>    
-                        
+                            </div>  
                     </div>
                 </div>
         </form>
@@ -76,15 +75,14 @@ $this->session->set_userdata('last_page1', current_url());
                         <div class="panel-title">
                             <i class="fa fa-calendar"></i>
                             <?php echo $this->lang->line('labels')['doctor_availability_schedule'];?>
-                            
+                             <?php if($account_type != 'users'){?>
+                                <button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>main/doctor_new_availability/<?php echo $doctor->doctor_id;?>'"><?php echo $this->lang->line('buttons')['addNew'];?></button>
+                            <?php }?>
                         </div>
                     </div>
                     <div class="panel-body" style="padding:0px;">
                         <div class="calendar-env">
                             <div class="calendar-body">
-                                <?php if($account_type != 'users'){?>
-                                <button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>main/doctor_new_availability/<?php echo $doctor->doctor_id;?>'"><?php echo $this->lang->line('buttons')['addNew'];?></button>
-                            <?php }?>
                                 <div id="notice_calendar"></div>
                             </div>
                         </div>
