@@ -26,7 +26,9 @@ class Ajax extends CI_Controller {
         $otp=substr($shu, 14);
         $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
         $this->session->set_userdata('otp',$otp);
+        /*$this->sms_model->send_sms('Your JagruMs Technologies OTP code is '.$otp.'. Please use the code within 2 minutes.',$data_val);*/
         echo $this->session->userdata('otp');
+
     }
     function get_email()
     {
@@ -345,20 +347,42 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
         echo "<span style='color:red;'>You Can Book a maximum of 2 Appointments Per Day</span>";
     }
     }
-    function get_inpatient_status($id){
-    $account_type=$this->session->userdata('login_type');
-          if($account_type == 'superadmin'){
-  $patient_info=$this->db->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+    function get_appointment_status($id){
+        echo $_GET['sd'];
+       $account_type=$this->session->userdata('login_type');
+
+if($account_type == 'superadmin'){
+if($id=='all'){
+$patient_info=$this->db->order_by('appointment_id','desc')->get('appointments')->result_array();
+}elseif($id!='all'){
+  $patient_info=$this->db->order_by('appointment_id','desc')->get_where('appointments',array('status'=>$id))->result_array();
+}
 }elseif($account_type == 'hospitaladmins'){
-  $patient_info=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+if($id=='all'){
+$patient_info=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('appointment_id','desc')->get('appointments')->result_array();
+}elseif($id!='all'){
+  $patient_info=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('appointment_id','desc')->get_where('appointments',array('status'=>$id))->result_array();
+}
 }elseif($account_type == 'doctors'){
-    $patient_info=$this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+    if($id=='all'){
+$patient_info=$this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('appointment_id','desc')->get('appointments')->result_array();
+}elseif($id!='all'){
+    $patient_info=$this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('appointment_id','desc')->get_where('appointments',array('status'=>$id))->result_array();
+}
 }elseif($account_type == 'users'){
-    $patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+       if($id=='all'){
+$patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('appointment_id','desc')->get('appointments')->result_array();
+}elseif($id!='all'){
+    $patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('appointment_id','desc')->get_where('appointments',array('status'=>$id))->result_array();
+}
 }elseif($account_type == 'nurse'){
     $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->result_array();
+        if($id=='all'){
+        $inpatient=$this->db->order_by('appointment_id','desc')->where('doctor_id',$res[$n])->get('appointments')->result_array();
+        }elseif($id!='all'){
+        $inpatient=$this->db->order_by('appointment_id','desc')->where('doctor_id',$res[$n])->get_where('appointments',array('status'=>$id))->result_array();
+        }
         if($inpatient!=''){
             $inpatient1[]=$inpatient;
         }
@@ -371,7 +395,119 @@ echo '<option value="'.$spe['lab_id'].'">'.$spe['unique_id'].' / '.$spe['name'].
 }elseif($account_type == 'receptionist'){
     $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
     for($n=0;$n<count($res);$n++){
-        $inpatient=$this->db->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->result_array();
+        if($id=='all'){
+        $inpatient=$this->db->order_by('appointment_id','desc')->where('doctor_id',$res[$n])->get('appointments')->result_array();
+        }elseif($id!='all'){
+        $inpatient=$this->db->order_by('appointment_id','desc')->where('doctor_id',$res[$n])->get_where('appointments',array('status'=>$id))->result_array();
+        }
+        if($inpatient!=''){
+            $inpatient1[]=$inpatient;
+        }
+    }
+      for($i=0;$i<count($inpatient1);$i++){
+    for($j=0;$j<count($inpatient1[$i]);$j++){
+ $patient_info[]=$inpatient1[$i][$j];
+ }   
+}
+
+}$i=1;foreach ($patient_info as $row) {
+    if($row != ''){ ?>
+    <tr>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
+                 <td><a href="<?php echo base_url(); ?>main/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
+                <td>
+                   <!-- <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
+                        echo $name;?></a> -->
+             <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
+                        echo $name;?></a>
+                </td>
+                 <td>
+                    <!-- <a href="<?php echo base_url(); ?>main/edit_doctor/<?php echo $row['doctor_id'] ?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->unique_id;
+                        echo $name;?></a> -->
+                <a href="<?php echo base_url();?>main/edit_doctor/<?php echo $row['doctor_id']?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
+                        echo $name;?></a>
+                </td>
+                <td>
+                    <?php 
+                    $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
+                        echo $hospital->name.' - '.$branch->name.' - '.$name;?>
+                </td>
+                 <td><?php echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;?></td> 
+                <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
+                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+                 }
+                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
+                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
+                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
+                 ?>
+                     
+                 </td>
+                <td>
+                    <?php if($account_type=='superadmin'){?>
+                    <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                    <!-- <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/close/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Close"><i class="glyphicon glyphicon-ban-circle"></i></a> -->
+                    <?php }?>&nbsp;&nbsp;
+                    <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
+                </td>
+            </tr>
+    <?php 
+    }
+    }
+}
+    function get_inpatient_status($id){
+    $account_type=$this->session->userdata('login_type');
+
+if($account_type == 'superadmin'){
+if($id=='all'){
+$patient_info=$this->db->order_by('id','desc')->get('inpatient')->result_array();
+}elseif($id!='all'){
+  $patient_info=$this->db->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+}
+}elseif($account_type == 'hospitaladmins'){
+if($id=='all'){
+$patient_info=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get('inpatient')->result_array();
+}elseif($id!='all'){
+  $patient_info=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+}
+}elseif($account_type == 'doctors'){
+    if($id=='all'){
+$patient_info=$this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get('inpatient')->result_array();
+}elseif($id!='all'){
+    $patient_info=$this->db->where('doctor_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+}
+}elseif($account_type == 'users'){
+       if($id=='all'){
+$patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get('inpatient')->result_array();
+}elseif($id!='all'){
+    $patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id'))->order_by('id','desc')->get_where('inpatient',array('status'=>$id))->result_array();
+}
+}elseif($account_type == 'nurse'){
+    $res=explode(',',$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id);
+    for($n=0;$n<count($res);$n++){
+        if($id=='all'){
+        $inpatient=$this->db->order_by('id','desc')->where('doctor_id',$res[$n])->get('inpatient')->result_array();
+        }elseif($id!='all'){
+        $inpatient=$this->db->order_by('id','desc')->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->result_array();
+        }
+        if($inpatient!=''){
+            $inpatient1[]=$inpatient;
+        }
+    }
+     for($i=0;$i<count($inpatient1);$i++){
+    for($j=0;$j<count($inpatient1[$i]);$j++){
+ $patient_info[]=$inpatient1[$i][$j];
+ }   
+}
+}elseif($account_type == 'receptionist'){
+    $res=explode(',',$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id);
+    for($n=0;$n<count($res);$n++){
+        if($id=='all'){
+        $inpatient=$this->db->order_by('id','desc')->where('doctor_id',$res[$n])->get('inpatient')->result_array();
+        }elseif($id!='all'){
+        $inpatient=$this->db->order_by('id','desc')->where('doctor_id',$res[$n])->get_where('inpatient',array('status'=>$id))->result_array();
+        }
         if($inpatient!=''){
             $inpatient1[]=$inpatient;
         }

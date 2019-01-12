@@ -370,7 +370,7 @@ a.label:hover, a.label:focus {
   background-color: #f9243f; }
 
 .panel {
-  border: 0; }
+  border: 1px solid; }
 
 .panel-container {
   padding-top: 20px; }

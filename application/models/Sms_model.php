@@ -11,14 +11,14 @@ class Sms_model extends CI_Model {
         $clickatell_user       = $this->db->get_where('settings', array('type' => 'clickatell_user'))->row()->description;
         $clickatell_password   = $this->db->get_where('settings', array('type' => 'clickatell_password'))->row()->description;
         $clickatell_api_id     = $this->db->get_where('settings', array('type' => 'clickatell_api_id'))->row()->description;
-        $clickatell_baseurl    = "http://api.clickatell.com";
+        $clickatell_baseurl    = "https://www.smsgateway.center/SMSApi/rest/send";
 
         $text   = urlencode($message);
         $to     = $reciever_phone;
 
         // auth call
         $url = "$clickatell_baseurl/http/auth?user=$clickatell_user&password=$clickatell_password&api_id=$clickatell_api_id";
-
+echo $url;die;
         // do auth call
         $ret = file($url);
 

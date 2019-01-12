@@ -11,8 +11,8 @@ class Main extends CI_Controller {
         
         date_default_timezone_set('Asia/Kolkata');    
         error_reporting(0);  
-        /* cache control */
-       /* $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+      /*   cache control 
+        $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache');*/
             if ($this->session->userdata('login') != 1) {
                 $this->session->set_userdata('last_page', current_url());
@@ -315,6 +315,13 @@ class Main extends CI_Controller {
         $data['page_title'] = get_phrase('branch');
         $this->load->view('backend/index', $data);
     }
+    public function get_hospital_branch1($hospital_id='') {   
+        $data['branch_info'] = $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
+        $data['hospital_id']=$hospital_id;
+        /*$data['page_name'] = 'manage_branch';
+        $data['page_title'] = get_phrase('branch');*/
+        $this->load->view('backend/main/manage_branch', $data);
+    }
     
     public function get_hospital_departments($branch_id='') {
     $data['department_info'] = $this->db->where('branch_id',$branch_id)->get('department')->result_array();
@@ -410,6 +417,8 @@ class Main extends CI_Controller {
             }else {
                 $this->session->set_flashdata('message', get_phrase('duplicate_email'));
             }
+        }else{
+           redirect($this->session->userdata('last_page')); 
         }
     }
         $data['admin_id'] = $id;
@@ -1820,6 +1829,7 @@ class Main extends CI_Controller {
             redirect(base_url() . 'main/system_settings/', 'refresh');
         }
         if ($param1 == 'upload_logo') {
+            unlink('uploads/logo.png');
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/logo.png');
             $this->session->set_flashdata('message', get_phrase('settings_updated'));
             redirect(base_url() . 'main/system_settings/', 'refresh');
@@ -1877,6 +1887,7 @@ force_download('MyPulse-DB'.date('Ymd').'.sql', $backup);
 
             $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
             $this->db->update('superadmin', $data);
+            unlink('uploads/superadmin_image/'.$this->session->userdata('login_user_id').  '.jpg');
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/superadmin_image/'.$this->session->userdata('login_user_id').'.jpg');
             $this->session->set_flashdata('message', get_phrase('profile_info_updated_successfuly'));
             redirect($this->session->userdata('last_page'));

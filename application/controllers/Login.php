@@ -158,7 +158,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
 /*     * *Licence Status**** */
 
     function license_status() {
-        $this->load->view('backend/license_exp');
+        $this->load->view('backend/email');
     }
     /*     * *DEFAULT NOR FOUND PAGE**** */
 
@@ -205,10 +205,8 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         {
         $this->session->set_userdata('otp','');
         $lid=$this->db->insert_id();
-        $a="12345678901234567890";
-        $sid=str_shuffle($a);
-        $uid=substr($sid, 14);
-        $pid='MPU'.date('y').'_'.$uid;
+        $num=100000+$lid;
+        $pid='MPU'.date('y').'_'.$num;
         $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
         $this->session->set_flashdata('success','Registration Completed Successfully');
         /*redirect(base_url('login') , 'refresh');*/
@@ -253,10 +251,8 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         if($insert)
         {  
             $lid=$this->db->insert_id();
-            $a="12345678901234567";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 15);
-            $pid='MYP_'.$lid.$uid;
+           $num=100000+$lid;
+        $pid='MPU'.date('y').'_'.$num;
             $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid)); 
         }
                 $this->session->set_flashdata('msg_registration_complete', $this->lang->line('msg_registration_complete'));
@@ -269,13 +265,15 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $this->load->view('backend/register');
         
     }
-     function email_verification($task="",$id="")
+     function email_verification()
     {
-        $this->crud_model->email_verification($task,$id);
+        $task=str_replace(['%2F', '%3A'], ['/', ':'],urlencode($_GET['id']));
+        $this->crud_model->email_verification($task);
     }
-    function reset_password($task="",$id="")
+    function reset_password()
     {
-        $this->crud_model->reset_password($task,$id);
+        $task=str_replace(['%2F', '%3A'], ['/', ':'],urlencode($_GET['id']));
+        $this->crud_model->reset_password($task);
     }
  function forgot_password($task="",$id="")
     {
@@ -341,8 +339,9 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         if($this->session->userdata('login_id')!=''){
         $this->session->set_userdata('password_time',date('Y-m-d H:i:s'));
         $this->session->set_flashdata('email_success', 'Password Reset Link Send To Your Email');
+        $this->email_model->forgot_password($email);
         }else{
-        $this->session->set_flashdata('email_error', 'Email Not Find');
+        $this->session->set_flashdata('email_error', 'Email Not Found');
         }
         }
     $this->load->view('backend/forgot_password');
@@ -384,6 +383,19 @@ if ($this->form_validation->run() == TRUE){
         }
         redirect(base_url('login'), 'refresh');
     }*/
+      /************Privacy & Policy ,Terms & Conditions****************/
+    function privacy($param1 = '', $param2 = '', $param3 = '') {
+        if($param1 == 1){
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+            $page_data['page_title'] = get_phrase('Privacy & Policy');
+        }elseif($param1 == 2){
+            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+            $page_data['page_title'] = get_phrase('Terms & Conditions');
+        }
+        $page_data['page_name'] = 'privacy';
+        
+        $this->load->view('backend/main/privacy', $page_data);
+    }
  /*     * *****LOGOUT FUNCTION ****** */
     function logout() {
         $this->session->sess_destroy();
