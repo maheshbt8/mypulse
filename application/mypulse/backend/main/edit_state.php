@@ -35,7 +35,7 @@ $edit_data		=	$this->db->get_where('state' , array('state_id' => $param2) )->res
             </div>
             <div class="form-group">
               <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo ucfirst('edit_state');?></button>
+                  <button type="submit" class="btn btn-success pull-right"><?php echo ucfirst('update');?></button>
               </div>
             </div>
         </form>

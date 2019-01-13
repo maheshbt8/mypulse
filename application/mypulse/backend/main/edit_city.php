@@ -66,7 +66,7 @@ $edit_data=	$this->db->get_where('city' , array('city_id' => $param2) )->result_
             </div>
             <div class="form-group">
               <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo $this->lang->line('buttons')['submit'];?></button>
+                  <button type="submit" class="btn btn-success pull-right">Update</button>
               </div>
             </div>
         </form>

@@ -41,80 +41,9 @@
 							<td><?php echo $row['name'];?></td>
 							<td>
     <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_state/<?php echo $row['state_id'];?>');" title="Edit"><i class="fa fa-pencil"></i></a>
-                                 <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
         					</td>
                         </tr>
         <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit State</h4>
-        </div>
-        <div class="modal-body">
-          
-
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/state/update/<?=$row['state_id']?>" method="post" enctype="multipart/form-data">
-             
-        
-                <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" data-collapsed="0">
-         <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-12">
-                     <div class="padded">
-                    <div class="form-group">     
-                        <label for="field-ta" class="col-sm-4 control-label"><?php echo get_phrase('country_name'); ?></label> 
-
-                        <div class="col-sm-6">
-                            <select name="country_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  onchange="return get_branch(this.value)">
-                                <option value=""><?php echo get_phrase('select_country'); ?></option>
-                                <?php 
-                                $country = $this->db->get('country')->result_array();
-                                foreach($country as $row1){?>
-                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id']==$row['country_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                
-                                <?php } ?>
-                               
-                            </select>
-                        </div>
-                    </div>
-                    <br/><br/>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo ucfirst('state Name');?></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
-                            data-validate="required" data-message-required="<?php echo ucfirst('value_required');?>" required/>
-                    </div>
-                </div>
-               
-            </div>
-            <br/><br/>
-            <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo ucfirst('Update');?></button>
-              </div>
-            </div>
-                </div>
-                
-                </div>
-                </div>
-
-        </div>
-
-    </div>
-</div>
-        </form>
-        </div>
-      
-      </div>
-      
-    </div>
-  </div>
                         <?php endforeach;?>
                     </tbody>
                 </table>
@@ -152,7 +81,7 @@
                             
                         <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-info"><?php echo get_phrase('add_state');?></button>
+                                  <button type="submit" class="btn btn-success pull-right"><?php echo get_phrase('submit');?></button>
                               </div>
 							</div>
                     </form>                

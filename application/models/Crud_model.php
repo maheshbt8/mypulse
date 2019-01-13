@@ -578,8 +578,31 @@ function email_verification($data="")
         $this->db->where('city_id',$city_id);
         $this->db->update('city',$data);
     }
+    function save_license_category_info()
+    {
+        $data['name']       = $this->input->post('license_category_name');
+        $data['description']       = $this->input->post('license_category_description');
+        $data['license_category_code']       = $this->input->post('license_category_code');
+        
+        $this->db->insert('license_category',$data);
+    }
+    function select_license_category_id($id)
+    {
+        return $this->db->where('license_category_id',$id)->get('license_category')->row_array();
+    }
+    function update_license_category_info($license_id)
+    {
+       
+        $data['name']       = $this->input->post('license_category_name');
+        $data['description']       = $this->input->post('license_category_description');
+        $data['license_category_code']       = $this->input->post('license_category_code');
+        
+        $this->db->where('license_category_id',$license_id);
+        $this->db->update('license_category',$data);
+    }
     function save_license_info()
     {
+        $data['license_category_id']       = $this->input->post('license_category');
         $data['name'] 		= $this->input->post('name');
         $data['description']       = $this->input->post('description');
         $data['license_code'] 		= $this->input->post('license_code');
@@ -593,6 +616,7 @@ function email_verification($data="")
     }
     function update_license_info($license_id)
     {
+        $data['license_category_id']       = $this->input->post('license_category');
         $data['name'] 		= $this->input->post('name');
         $data['description']       = $this->input->post('description');
         $data['license_code'] 		= $this->input->post('license_code');
@@ -792,8 +816,18 @@ $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
         if($insert)
         {
             $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPS'.date('y').'_'.$num;
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('store_id',$lid-1)->get('medicalstores')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPS'.date('y').'_'.$num;
             $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
         }
            $id=$this->db->insert_id();
@@ -881,10 +915,7 @@ $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
            
        }
     }
-    
-    
-    
-         function save_hospitaladmins_info()
+    function save_hospitaladmins_info()
     {
         $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
@@ -907,16 +938,24 @@ $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
           
        $insert=$this->db->insert('hospitaladmins',$data);
        if($insert)
-        {
-            
-            $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPHA'.date('y').'_'.$num;
-            $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-            
+        { 
+$lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('admin_id',$lid-1)->get('hospitaladmins')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPHA'.date('y').'_'.$num;
+
+            $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));   
         }
            $id=$this->db->insert_id();
-           
            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $id.  '.jpg');
        
     }
@@ -1220,9 +1259,19 @@ $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
         
         if($insert)
         {
-            $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPD'.date('y').'_'.$num;
+$lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('doctor_id',$lid-1)->get('doctors')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPD'.date('y').'_'.$num;
             $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
         }
         $doctor_id  =   $this->db->insert_id();
@@ -1547,10 +1596,22 @@ $yes=$this->db->update('patient',array('store_ids'=>implode(',',$doc)));
        $insert=$this->db->insert('medicallabs',$data); 
        if($insert)
         {
-            
-            $lid=$this->db->insert_id();
+           $lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('lab_id',$lid-1)->get('medicallabs')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPL'.date('y').'_'.$num; 
+            /*$lid=$this->db->insert_id();
             $num=100000+$lid;
-            $pid='MPL'.date('y').'_'.$num;
+            $pid='MPL'.date('y').'_'.$num;*/
             $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
@@ -1598,11 +1659,20 @@ $yes=$this->db->update('patient',array('lab_ids'=>implode(',',$doc)));
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
-            
-            $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPU'.date('y').'_'.$num;
-            $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
+$lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('user_id',$lid-1)->get('users')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPU'.date('y').'_'.$num;
+$this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
         $patient_id  =   $this->db->insert_id();
@@ -1641,9 +1711,19 @@ $yes=$this->db->update('patient',array('lab_ids'=>implode(',',$doc)));
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
-            $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPU'.date('y').'_'.$num;
+                $lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('user_id',$lid-1)->get('users')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPU'.date('y').'_'.$num;
             $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
@@ -2283,10 +2363,19 @@ return $return;
        $insert= $this->db->insert('nurse',$data);
         if($insert)
         {
-            
-            $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPN'.date('y').'_'.$num;
+    $lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('nurse_id',$lid-1)->get('nurse')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPN'.date('y').'_'.$num;
             $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
@@ -2499,10 +2588,19 @@ return $return;
         $insert=$this->db->insert('receptionist',$data);
         if($insert)
         {
-            
-            $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPR'.date('y').'_'.$num;
+          $lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('receptionist_id',$lid-1)->get('receptionist')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPR'.date('y').'_'.$num;
             $this->db->where('receptionist_id',$lid)->update('receptionist',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
@@ -2953,8 +3051,18 @@ $this->db->where('user_id',$this->input->post('user_id'));
 $this->db->update('patient',$patient_data);
 }
         /********Appointment Unique Id Generate*****************/
-            $num=100000+$lid;
-            $pid='MPA'.date('y').'_'.$num;
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('appointment_id',$lid-1)->get('appointments')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPA'.date('y').'_'.$num;
             $this->db->where('appointment_id',$lid)->update('appointments',array('appointment_number'=>$pid,'status'=>2));
             $history['appointment_id']=$lid;
             $history['appointment_date']=$data['appointment_date'];
@@ -3066,15 +3174,15 @@ function select_recommend_appointments(){
 return $this->db->get_where('appointments',array('user_id'=>$id,'next_appointment!='=>'','next_appointment>='=>date('m/d/Y')))->result_array();
     }
     
-function select_today_appointment_info_by_doctor(){
+function select_today_appointment_info_by_doctor($status=''){
 $account_type=$this->session->userdata('login_type');
     if($account_type=='doctors'){
-return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('m/d/Y')))->result_array();
+return $this->db->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('m/d/Y'),'status'=>2))->result_array();
     }elseif($account_type=='receptionist'){
     $receptionist=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row();
     $doctor_id=explode(',',$receptionist->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-$result[]=$this->db->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date'=>date('m/d/Y')))->result_array();
+$result[]=$this->db->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date'=>date('m/d/Y'),'status'=>2))->result_array();
 }
 for($i=0;$i<count($result);$i++){
     for($j=0;$j<count($result[$i]);$j++){

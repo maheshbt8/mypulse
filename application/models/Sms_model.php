@@ -7,6 +7,7 @@ class Sms_model extends CI_Model {
     }
     
     function send_sms($message = '' , $numbers = '') {
+      
         // Authorisation details.
   $username = "maheshbt8@gmail.com";
   $hash = "ecdce5eb4a21ed321e736e37bb6782f922eb68f812ede0e1281c0cae6fa655a6";

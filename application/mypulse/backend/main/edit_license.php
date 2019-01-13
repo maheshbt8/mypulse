@@ -5,8 +5,21 @@ $edit_data		=	$this->db->get_where('license' , array('license_id' => $param2) )-
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
         <?php foreach($edit_data as $row):?>
-        <?php echo form_open(base_url() . 'index.php?superadmin/license/update/'.$row['license_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+        <?php echo form_open(base_url() . 'main/license/update/'.$row['license_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
+                <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo get_phrase('license_category');?></label>
+    <div class="col-sm-5">
+                                    <select class="form-control select2" name="license_category" data-validate="required" data-message-required="<?php echo 'Value_required';?>">
+                <?php 
+                $admins = $this->db->get_where('license_category')->result_array();
+                foreach($admins as $row1){?>
+                <option value="<?php echo $row1['license_category_id'] ?>" <?php if($row1['license_category_id']==$row['license_category_id']){echo 'selected';}?>><?php echo $row1['license_category_code'].' / '.$row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><?php echo get_phrase('license_code');?></label>
                     <div class="col-sm-5">

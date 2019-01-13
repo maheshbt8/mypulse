@@ -25,7 +25,11 @@ if($account_type == 'superadmin'){
 echo $user_role; ?></span></div>
 					<div class="profile-usertitle-name">
 					<?php
-                    echo $this->session->userdata('unique_id').'<br/>'.$this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('type_id') . '_id' =>$this->session->userdata('login_user_id')))->row()->name;
+                    $ac='';
+                    if($account_type=='doctors'){
+                        $ac='Dr.';
+                    }
+                    echo $this->session->userdata('unique_id').'<br/>'.$ac.' '.$this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('type_id') . '_id' =>$this->session->userdata('login_user_id')))->row()->name;
                     ?>	
 					</div>
 					

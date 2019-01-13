@@ -6,7 +6,21 @@ $this->session->set_userdata('last_page', current_url());
         font-size: 20px;
     }
 </style>
-  
+  <?php
+$lid=2;
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('admin_id',$lid-1)->get('hospitaladmins')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPHA'.date('y').'_'.$num;
+  ?>
 	<div class="panel panel-container">
 				<div class="row">
 			<!-- ************** 1 ******************* -->
@@ -295,9 +309,9 @@ $hospital_status=$this->db->get('hospitals')->result_array();
     </thead>
 
     <tbody>
-        <?php if($account_type=='doctors' || $account_type=='receptionist'){if($_GET['sd']!='' && $_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed']);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor();}}elseif($account_type=='users'){$appointment_info=$this->crud_model->select_upcoming_appointments();}
+        <?php if($account_type=='doctors' || $account_type=='receptionist'){if($_GET['sd']!='' && $_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],2);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor(2);}}elseif($account_type=='users'){$appointment_info=$this->crud_model->select_upcoming_appointments();}
         $i=1;foreach ($appointment_info as $row) {
-            if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
+           /* if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
             {
                 $count=$this->db->get_where('appointments',array('appointment_id' => $row['appointment_id'],'status'=>2 ))->num_rows();
                 if($count>0){
@@ -305,7 +319,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                 $this->db->where($array)->update('appointments',array('status'=>'4'));
                 $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
                 }
-            }
+            }*/
             ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>

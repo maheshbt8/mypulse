@@ -44,21 +44,23 @@ class Cron_model extends CI_Model {
         }
        }
     }
-    function applications(){
+    function appointments(){
     $list=$this->db->get_where('appointments',array('appointment_date<'=>date('m/d/Y'),'status'=>2))->result_array();
     foreach ($list as $row){
     $this->db->where('appointment_id',$row['appointment_id'])->update('appointments',array('status'=>4));
    $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
     }
     }
-    function applications_notifications(){
+    function appointments_notifications(){
     $doctors=$this->db->get('doctors')->result_array();
     foreach($doctors as $doctor) {
     $list=$this->db->get_where('appointments',array('appointment_date'=>date('m/d/Y'),'doctor_id'=>$doctor['doctor_id'],'status'=>2))->num_rows();
+    if($list>0){
         $notification['user_id']='doctors-doctor-'.$doctor['doctor_id'];
         $notification['title']='Today Appointments : '.$list;
         $notification['text']='You have '.$list.' Appointments Today.';
         $this->db->insert('notification',$notification);
+      }
     }
     }
     function delete_notifications(){

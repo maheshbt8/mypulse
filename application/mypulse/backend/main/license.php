@@ -12,10 +12,17 @@
             	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
 				<?php echo get_phrase('license_list'); ?>
                     	</a></li>
-			<li>
-            	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
+		<li>
+        	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
 				<?php echo get_phrase('add_license'); ?>
-                    	</a></li>
+            </a>
+        </li>
+        <li>
+            <a href="#category" data-toggle="tab"><i class="entypo-plus-circled"></i>
+                <?php echo get_phrase('add_license_category'); ?>
+            </a>
+        </li>
+
 		</ul>
     	<!--CONTROL TABS END-->
         <div class="panel panel-default">   
@@ -31,6 +38,7 @@
                     		<th><div><?php echo get_phrase('license_code'); ?></div></th>
                     		<th><div><?php echo get_phrase('license_name'); ?></div></th>
                             <th><div><?php echo get_phrase('description'); ?></div></th>
+                            <td><?php echo get_phrase('license_category');?></td>
                     	    <th><div><?php echo get_phrase('options'); ?></div></th>
 						</tr>
 					</thead>
@@ -40,82 +48,18 @@
                             <td><?php echo $row['license_code'];?></td>
 							<td><?php echo $row['name'];?></td>
                             <td><?php echo $row['description'];?></td>
+                            <td><?php $license=$this->crud_model->select_license_category_id($row['license_category_id']);?>
+                            <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license_category/<?php echo $row['license_category_id'];?>');" class="hiper">
+                            <?php echo $license['license_category_code'].' / '.$license['name'];?></a></td>
 							<td>
-                            <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a>
-                           <!--  <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/edit_license/<?php echo $row['license_id'];?>');" title="Edit">
-                                            <i class="entypo-pencil"></i>     
-                                            </a> -->
+                            <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license/<?php echo $row['license_id'];?>');" title="Edit">
+                                            <i class="fa fa-pencil"></i>     
+                                            </a>&nbsp;
                              <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/license/delete/<?php echo $row['license_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
                              </a>
 
         					</td>
                         </tr>
-        <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit State</h4>
-        </div>
-        <div class="modal-body">
-          
-
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/license/update/<?=$row['license_id']?>" method="post" enctype="multipart/form-data">
-             
-        
-                <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" data-collapsed="0">
-         <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-12">
-                     <div class="padded">
-                    
-               <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo get_phrase('license_code');?></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="license_code" value="<?php echo $row['license_code'];?>" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" required/>
-                    </div>
-                </div><br/><br/>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo get_phrase('license_name');?></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" required/>
-                    </div>
-                </div><br/>
-                <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo get_phrase('description');?></label>
-                    <div class="col-sm-6">
-                        <textarea type="text" class="form-control" name="description" value="" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" required><?php echo $row['description'];?></textarea>
-                    </div>
-                </div><br/>
-            </div>
-               
-            </div>
-            <br/>
-            <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo ucfirst('Update');?></button>
-              </div>
-            </div>
-                </div>
-                
-                </div>
-                </div>
-
-        </div>
-
-    </div>
-        </form>
-        </div>
-      
-      </div>
-      
-    </div>
-  </div>
                         <?php endforeach;?>
                     </tbody>
                 </table>
@@ -124,9 +68,23 @@
             
             
 			<!----CREATION FORM STARTS---->
-			<div class="tab-pane box" id="add" style="padding: 5px">
+		<div class="tab-pane box" id="add" style="padding: 5px">
                 <div class="box-content">
-                	<?php echo form_open(base_url() . 'main/license/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+        <?php echo form_open(base_url() . 'main/license/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo get_phrase('license_category');?></label>
+    <div class="col-sm-5">
+                                    <select class="form-control select2" name="license_category" data-validate="required" data-message-required="<?php echo 'Value_required';?>">
+                <option value="">-- Select License Category --</option>
+                <?php 
+                $admins = $this->db->get_where('license_category')->result_array();
+                foreach($admins as $row1){?>
+                <option value="<?php echo $row1['license_category_id'] ?>"><?php echo $row1['license_category_code'].' / '.$row1['name'] ?></option>
+                                
+                                <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('license_code');?></label>
                                 <div class="col-sm-5">
@@ -149,14 +107,46 @@
                             
                         <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-success"><?php echo get_phrase('add_license');?></button>
+                                  <button type="submit" class="btn btn-success pull-right"><?php echo get_phrase('add_license');?></button>
                               </div>
 							</div>
                     </form>                
                 </div>                
 			</div>
 			<!----CREATION FORM ENDS-->
-            
+            <!-- Category -->
+            <div class="tab-pane box" id="category" style="padding: 5px">
+                <div class="box-content">
+                    <?php echo form_open(base_url() . 'main/license_category/create/' , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo get_phrase('license_category_code');?></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="license_category_code" data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo get_phrase('license_category_name');?></label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" name="license_category_name"
+                                        data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo get_phrase('license_category_description');?></label>
+                                <div class="col-sm-5">
+                                    <textarea type="text" class="form-control" name="license_category_description" data-validate="required" data-message-required="<?php echo 'Value_required';?>"></textarea>
+                                </div>
+                            </div>
+                            
+                        <div class="form-group">
+                              <div class="col-sm-offset-3 col-sm-5">
+                                  <button type="submit" class="btn btn-success  pull-right"><?php echo get_phrase('add_license_category');?></button>
+                              </div>
+                            </div>
+                    </form>                
+                </div>                
+            </div>
+            <!-- Category End -->
 		</div>
 	</div>
 </div>

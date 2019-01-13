@@ -19,7 +19,7 @@ $edit_data		=	$this->db->get_where('country' , array('country_id' => $param2) )-
             </div>
             <div class="form-group">
               <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-success pull-right"><?php echo 'Submit';?></button>
+                  <button type="submit" class="btn btn-success pull-right"><?php echo 'Update';?></button>
               </div>
             </div>
         </form>

@@ -1749,6 +1749,26 @@ class Main extends CI_Controller {
         $page_data['license'] = $this->db->get('license')->result_array();
         $this->load->view('backend/index', $page_data);
     }
+      function license_category($param1 = '', $param2 = '', $param3 = '') {
+        if ($param1 == "create") {
+            $this->crud_model->save_license_category_info();
+            $this->session->set_flashdata('message', get_phrase('license_category_info_saved_successfuly'));
+            redirect(base_url() . 'main/license');
+        }
+        if ($param1 == "update") {
+            $this->crud_model->update_license_category_info($param2);
+            $this->session->set_flashdata('message', get_phrase('license_category_info_updated_successfuly'));
+            redirect(base_url() . 'main/license');
+        }
+        if ($task == "delete") {
+            $this->crud_model->delete_license($param2);
+            redirect(base_url() . 'main/license');
+        }
+        $page_data['page_name'] = 'license';
+        $page_data['page_title'] = get_phrase('license');
+        $page_data['license'] = $this->db->get('license')->result_array();
+        $this->load->view('backend/index', $page_data);
+    }
     function health_insurance_provider($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == "create") {
             $this->crud_model->save_health_insurance_provider_info();

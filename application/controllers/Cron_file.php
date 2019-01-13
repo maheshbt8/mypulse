@@ -13,17 +13,20 @@ class Cron_file extends CI_Controller {
         $this->load->model('cron_model');
     }
     public function index() {
+
         $this->cron_model->hospital_license();
-        $this->cron_model->applications();
-        $this->cron_model->applications_notifications();
+        $this->cron_model->appointments();
+        $this->cron_model->appointments_notifications();
         $this->cron_model->delete_notifications();
         $this->cron_model->delete_messages();
 
         /*Db BackUps*/
-         $path='backups';
+$path='backups/MyPulse-DB'.date('Ymd',strtotime('-7 days')).'.sql';
 $this->load->helper("file"); // load the helper
-delete_files($path, true); // delete all files/folders
-               // Load the DB utility class
+unlink(FCPATH . $path); // delete all files/folders
+
+
+// Load the DB utility class
 $this->load->dbutil();
 
 // Backup your entire database and assign it to a variable

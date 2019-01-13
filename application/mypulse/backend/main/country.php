@@ -10,11 +10,11 @@
 		<ul class="nav nav-tabs bordered">
 			<li class="active">
             	<a href="#list" data-toggle="tab"><i class="entypo-menu"></i> 
-				<?php echo 'Countries List'];?>
+				<?php echo 'Countries List';?>
                     	</a></li>
 			<li>
             	<a href="#add" data-toggle="tab"><i class="entypo-plus-circled"></i>
-				<?php echo 'Add Country'];?>
+				<?php echo 'Add Country';?>
                     	</a></li>
 		</ul>
     	<!--CONTROL TABS END-->
@@ -44,52 +44,7 @@
                                    <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Edit Country</h4>
-        </div>
-        <div class="modal-body">
-          
 
-         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/country/update/<?=$row['country_id']?>" method="post" enctype="multipart/form-data">
-             
-        
-                <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-primary" data-collapsed="0">
-         <div class="panel-body">
-                <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                    <label class="col-sm-4 control-label"><?php echo "Country";?></label>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
-                            data-validate="required" data-message-required="<?php echo 'Value Required'];?>" required/>
-                    </div>
-                </div>
-                <br/><br/>
-                <div class="form-group">
-              <div class="col-sm-offset-3 col-sm-5">
-                  <button type="submit" class="btn btn-info"><?php echo 'Update';?></button>
-              </div>
-            </div>
-                </div>
-                
-                </div>
-                </div>
-
-        </div>
-
-    </div>
-</div>
-        </form>
-        </div>
-      
-      </div>
-      
     </div>
   </div>
                         </tr>
@@ -115,7 +70,7 @@
                             
                         <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-info"><?php echo $this->lang->line('buttons')['submit'];?></button>
+                                  <button type="submit" class="btn btn-success pull-right"><?php echo $this->lang->line('buttons')['submit'];?></button>
                               </div>
 							</div>
                     </form>                

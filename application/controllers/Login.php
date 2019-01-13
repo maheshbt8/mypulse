@@ -189,10 +189,10 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
         $this->session->set_userdata('otp',$otp);
         }
-        $this->session->set_flashdata('success','OTP Send To :'.$data['phone'].'('.$this->session->userdata('otp').')');
+        $this->session->set_flashdata('success','OTP Send To :'.$data['phone']);
             $message='Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->userdata('otp') ;
             $receiver_phone =   $data['phone'];
-            /*$this->sms_model->send_sms($message, $receiver_phone);*/
+            $this->sms_model->send_sms($message, $data['phone']);
     $past_time=strtotime($this->session->userdata('otp_time'));
     $current_time = time();
     $difference = $current_time - $past_time;
@@ -205,8 +205,18 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         {
         $this->session->set_userdata('otp','');
         $lid=$this->db->insert_id();
-        $num=100000+$lid;
-        $pid='MPU'.date('y').'_'.$num;
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('user_id',$lid-1)->get('users')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPU'.date('y').'_'.$num;
         $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
         $this->session->set_flashdata('success','Registration Completed Successfully');
         /*redirect(base_url('login') , 'refresh');*/
@@ -234,7 +244,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         }
         $this->load->view('backend/register');
     }
-    function user_register(){
+    /*function user_register(){
             $email = $this->input->post('email');
             $password=$this->input->post('password');
            $validation = email_validation($email);
@@ -264,7 +274,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
             }
         $this->load->view('backend/register');
         
-    }
+    }*/
      function email_verification()
     {
         $task=str_replace(['%2F', '%3A'], ['/', ':'],urlencode($_GET['id']));

@@ -87,13 +87,7 @@ if(count($notification_data) > 0){
 <div class="dropdown-messages-box">
 <a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>"><div class="message-body">
 <strong><?= $row['title'];?></strong>.
- <?php /*$s=0;
-    for($m2=0;$m2<count($count);$m2++){
-        if($account_details == $count[$m2]){
-                $s=1;
-                break;
-        }
-        }*/
+ <?php
         if($row['isRead']==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($row['isRead']==2){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
 <br />
 <small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
@@ -173,10 +167,13 @@ if($message_data!=''){
 </li>
 </ul>
 </li>
-
 <li class="dropdown">
 <a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;"><img src="<?=$image_url;?>" alt=""><span>
-<?php echo $this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?><em class="fa fa-angle-down"></em></span></a>
+<?php $ac='';
+ if($account_type=='doctors'){
+  $ac='Dr.';
+ }
+ echo $ac.' '.$this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?><em class="fa fa-angle-down"></em></span></a>
         <ul class="dropdown-menu">
           <li><a href="<?php echo base_url()?>main/manage_profile"><em class="fa fa-user"></em><span>Profile</span>
             </a></li>

@@ -88,7 +88,6 @@ $this->session->set_userdata('last_page', current_url());
             $this->db->where('appointment_date >=', date('m/d/Y',strtotime($_GET['sd'])));
             $this->db->where('appointment_date <=', date('m/d/Y',strtotime($_GET['ed'])));
             $this->db->where('hospital_id', $row['hospital_id']);
-            $this->db->where('status', 2);
             $no=$this->db->get('appointments')->num_rows();
             echo $no;
             }elseif($account_type == 'hospitaladmins'){
@@ -98,21 +97,20 @@ $this->session->set_userdata('last_page', current_url());
             for($i=0;$i<count($no);$i++){
             $this->db->where('appointment_date >=', date('m/d/Y',strtotime($_GET['sd'])));
             $this->db->where('appointment_date <=', date('m/d/Y',strtotime($_GET['ed'])));
-            $this->db->where('status', 2);
             $cou=$cou+$this->db->where('doctor_id',$no[$i]['doctor_id'])->get('appointments')->num_rows();
             }
             echo $cou;
         }
         }else{
         if($account_type == 'superadmin'){
-            $no=$this->db->get_where('appointments',array('hospital_id'=>$row['hospital_id'],'appointment_date>='=>date('m/d/Y', strtotime('-29 days')),'appointment_date<='=>date('m/d/Y'),'status'=>2))->num_rows();
+            $no=$this->db->get_where('appointments',array('hospital_id'=>$row['hospital_id'],'appointment_date>='=>date('m/d/Y', strtotime('-29 days')),'appointment_date<='=>date('m/d/Y')))->num_rows();
             echo $no;
         }elseif($account_type == 'hospitaladmins'){
             $this->db->where('branch_id', $row['branch_id']);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($i=0;$i<count($no);$i++){
-                $cou=$cou+$this->db->get_where('appointments',array('doctor_id'=>$no[$i]['doctor_id'],'appointment_date>='=>date('m/d/Y', strtotime('-29 days')),'appointment_date<='=>date('m/d/Y'),'status'=>2))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments',array('doctor_id'=>$no[$i]['doctor_id'],'appointment_date>='=>date('m/d/Y', strtotime('-29 days')),'appointment_date<='=>date('m/d/Y')))->num_rows();
             }
             echo $cou;
         }

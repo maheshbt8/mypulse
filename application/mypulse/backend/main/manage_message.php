@@ -14,6 +14,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
+<div class="alert bg-info" style="background: #30a5ff" role="alert">&nbsp;&nbsp;1. Dear User Messages Will Be Automatically Deleted After 30 Days.<br/>&nbsp;&nbsp;2. Green Color Will Indicate Read Messages And Red Color Will Indicate Unread Messages.</div>
 <form action="#" method="post">
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/new_message'" class="btn btn-primary pull-right">
