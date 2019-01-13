@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = '';//http://localhost/mypulse/http://'.$_SERVER['HTTP_HOST'].'/mypulse/
+$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/mypulse/';//http://localhost/mypulse/http://'.$_SERVER['HTTP_HOST'].'/mypulse/
 
 /*
 |--------------------------------------------------------------------------

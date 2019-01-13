@@ -71,13 +71,31 @@ setInterval(function(){
 
 </script>
 
-<script language="JavaScript">
+
+
+
+    <!-- <script src="<?= base_url('assets/backend/')?>js/chart.min.js"></script> -->
+<!-- <script src="<?= base_url('assets/backend/')?>js/chart-data.js"></script> -->
+             
+
+  <!--  <script language="javascript">
+      window.onload = function () {
+        var chart1 = document.getElementById("line-chart").getContext("2d");
+        window.myLine = new Chart(chart1).Line(lineChartData, {
+        responsive: true,
+        scaleLineColor: "rgba(0,0,0,.2)",
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleFontColor: "#c5c7cc"
+        });
+      };
+    </script> -->
+    <script language="JavaScript">
   /**
     * Disable right-click of mouse, F12 key, and save key combinations on page
     * By Arthur Gareginyan (arthurgareginyan@gmail.com)
     * For full source code, visit https://mycyberuniverse.com
     */
-  /*window.onload = function() {
+  window.onload = function() {
     document.addEventListener("contextmenu", function(e){
       e.preventDefault();
     }, false);
@@ -113,5 +131,15 @@ setInterval(function(){
       e.preventDefault();
       return false;
     }
-  };*/
+
+    /*Chart */
+    var chart1 = document.getElementById("line-chart").getContext("2d");
+        window.myLine = new Chart(chart1).Line(lineChartData, {
+        responsive: true,
+        scaleLineColor: "rgba(0,0,0,.2)",
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleFontColor: "#c5c7cc"
+        });
+        /*Chart End*/
+  };
 </script>

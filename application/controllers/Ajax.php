@@ -26,8 +26,8 @@ class Ajax extends CI_Controller {
         $otp=substr($shu, 14);
         $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
         $this->session->set_userdata('otp',$otp);
-        /*$this->sms_model->send_sms('Your JagruMs Technologies OTP code is '.$otp.'. Please use the code within 2 minutes.',$data_val);*/
-        echo $this->session->userdata('otp');
+        $this->sms_model->send_sms('Your JagruMs Technologies OTP code is '.$otp.'. Please use the code within 2 minutes.',$_POST['phone']);
+        /*echo $this->session->userdata('otp');*/
 
     }
     function get_email()

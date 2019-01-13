@@ -4,6 +4,7 @@
 	}
 </style>
 
+
 <?php
 $hospital_count=count($hospital_id);
 for($h=0;$h<$hospital_count;$h++){
@@ -46,76 +47,81 @@ $qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h
             $qry=$cou;
 	}
 }
-$data[$j]=array('x'=>strtotime($currmonth)*1000,'y'=>$qry);
-$j++;}
-
-$color = dechex(rand(0x000000, 0xFFFFFF));
+$dates[$j]='"'.date('M d-Y',strtotime($currmonth)).'"';
+$data[$j]=$qry;
+$j++;
+}
+$color = dechex(rand(0xBDBDBD, 0x323232));
 $dataPoints[$h]=$data;
 	$data_points[]= '{
-		type: "spline",
-		name: "'.$row['name'].'",
-		showInLegend: "true",
-		color: "#'.$color.'",
-		xValueType: "dateTime",
-		xValueFormatString: "DD MMM",
-		yValueFormatString: "#,##0",
-		dataPoints:  '.json_encode($dataPoints[$h]).'
+		label: "'.$row['name'].'",
+        fillColor : "#'.$color.'",
+        strokeColor : "#'.$color.'",
+        pointColor : "#'.$color.'",
+        pointStrokeColor : "#fff",
+        pointHighlightFill : "#fff",
+        pointHighlightStroke : "rgba(48, 164, 255, 1)",
+        data : '.json_encode($dataPoints[$h]).'
 	}';
+	$colors[]=$color;
 }
-$data_list='['.implode(',',$data_points).']';
+$trend_dates=implode(',', $dates);
+$data_list=implode(',',$data_points);
+
 ?>
-<script>
-window.onload = function () {
-var chart = new CanvasJS.Chart("chartContainer", {
+  <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
 
-	animationEnabled: true,
-	exportEnabled: true,
-	theme: "dark3",
-	title:{
-		responsive: true,
-		text: '<?php print_r(implode(' vs ',$hospital_name));?>'
-	},
-	subtitles: [{
-		text: "<?php echo ' ( '.$sd.' To '.$ed.' ) ';?>",
-		fontSize: 18
-	}],
-	axisX: {
-		valueFormatString: "DD MMM"
-	},
-	axisY: {
-		title: '<?php echo $title;?>',
-		suffix: "",
-	},
+           <center><small class="pull-left"><?php echo ' ( '.$sd.' To '.$ed.' ) ';?></small>
+                    <?php print_r(implode(' vs ',$hospital_name));?>
+                      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= base_url('main/report/').$report_id; ?>'">
+                      <!-- <ul class="pull-right panel-settings panel-button-tab-right">
+                                <li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <em class="fa fa-cogs"></em>
+                                </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li>
+                                            <ul class="dropdown-settings">
+                                                <li><a href="#">
+                                                    <em class="fa fa-cog"></em> Settings 1
+                                                </a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">
+                                                    <em class="fa fa-cog"></em> Settings 2
+                                                </a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#">
+                                                    <em class="fa fa-cog"></em> Settings 3
+                                                </a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul> -->
+                  </center>
+                          </div>
+                        <div class="panel-body">
+                            <div class="canvas-wrapper">
+                                <canvas class="chart" id="line-chart" height="200" width="600"></canvas>
+                            </div>
+<?php
+for($col=0;$col<count($hospital_name);$col++){
+?>
+<span style="color:#<?=$colors[$col];?>"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;<?=$hospital_name[$col];?></span><br/>
+<?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div><!--/.row-->
+<script src="<?= base_url('assets/backend/')?>js/chart.min.js"></script>
+                <script>
+      var randomScalingFactor = function(){ return Math.round(Math.random())};
+  var lineChartData = {
+    labels : [<?=$trend_dates;?>],
+    datasets : [<?=$data_list;?>
+    ]
 
-	data: <?php echo $data_list;?>
-});
- 
-chart.render();
-function toggleDataSeries(e){
-	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-		e.dataSeries.visible = false;
-	}
-	else{
-		e.dataSeries.visible = true;
-	}
-	chart.render();
-}
-}
-
+  }
 </script>
-<div class="row">
-    <div class="col-md-12">
-                <div class="panel panel-default">   
-            <div class="panel-heading">
-<div class="control-label">
-  <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= base_url('main/report/').$report_id; ?>'">
-</div>
-</div>
-<div class="panel-body">
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-</div>
-</div>
-</div>
-</div>
-<!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
-<!-- <script src="<?php echo base_url();?>assets/js/canvasjs.min.js"></script> -->

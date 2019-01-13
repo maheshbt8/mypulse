@@ -80,6 +80,8 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
 		</div>	<!--/.main-->
 
 		<?php include 'modal.php'; ?>
+		
 	<?php include 'includes_bottom.php'; ?>
+
 </body>
 </html>

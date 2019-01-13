@@ -18,5 +18,26 @@ class Cron_file extends CI_Controller {
         $this->cron_model->applications_notifications();
         $this->cron_model->delete_notifications();
         $this->cron_model->delete_messages();
+
+        /*Db BackUps*/
+         $path='backups';
+$this->load->helper("file"); // load the helper
+delete_files($path, true); // delete all files/folders
+               // Load the DB utility class
+$this->load->dbutil();
+
+// Backup your entire database and assign it to a variable
+$backup = $this->dbutil->backup();
+
+// Load the file helper and write the file to your server
+$this->load->helper('file');
+$db_name = 'MyPulse-DB'.date('Ymd').'.sql';
+$save = 'backups/'.$db_name;
+write_file($save, $backup);
+
+// Load the download helper and send the file to your desktop
+$this->load->helper('download');
+force_download($db_name, $backup);
+        /*Db Backups End*/
     }
 }

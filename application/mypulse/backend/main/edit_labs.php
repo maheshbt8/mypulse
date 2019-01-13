@@ -464,8 +464,7 @@ foreach ($single_labs_info as $row) {
             url: '<?php echo base_url();?>ajax/get_otp/' ,
             data : {phone : phone_number},
             success: function(response)
-            {
-                alert(response);      
+            {    
             } 
         });
     }

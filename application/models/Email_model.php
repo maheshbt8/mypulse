@@ -60,7 +60,7 @@ class Email_model extends CI_Model {
         $data['url']='reset_password';
         $data['button']='Reset Password';
         $email_msg=$this->load->view('backend/email',$data,true);
-        $email_sub = "Account Opening Email";
+        $email_sub = "Reset Password Email";
         $email_to = $email;
         $this->do_email($email_msg, $email_sub, $email_to);
     }

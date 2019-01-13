@@ -6,41 +6,27 @@ class Sms_model extends CI_Model {
         parent::__construct();
     }
     
-    function send_sms($message = '' , $reciever_phone = '') {
-        
-        $clickatell_user       = $this->db->get_where('settings', array('type' => 'clickatell_user'))->row()->description;
-        $clickatell_password   = $this->db->get_where('settings', array('type' => 'clickatell_password'))->row()->description;
-        $clickatell_api_id     = $this->db->get_where('settings', array('type' => 'clickatell_api_id'))->row()->description;
-        $clickatell_baseurl    = "https://www.smsgateway.center/SMSApi/rest/send";
+    function send_sms($message = '' , $numbers = '') {
+        // Authorisation details.
+  $username = "maheshbt8@gmail.com";
+  $hash = "ecdce5eb4a21ed321e736e37bb6782f922eb68f812ede0e1281c0cae6fa655a6";
 
-        $text   = urlencode($message);
-        $to     = $reciever_phone;
+  // Config variables. Consult http://api.textlocal.in/docs for more info.
+  $test = "0";
 
-        // auth call
-        $url = "$clickatell_baseurl/http/auth?user=$clickatell_user&password=$clickatell_password&api_id=$clickatell_api_id";
-echo $url;die;
-        // do auth call
-        $ret = file($url);
-
-        // explode our response. return string is on first line of the data returned
-        $sess = explode(":",$ret[0]);
-        print_r($sess);echo '<br>';
-        if ($sess[0] == "OK") {
-
-            $sess_id = trim($sess[1]); // remove any whitespace
-            $url = "$clickatell_baseurl/http/sendmsg?session_id=$sess_id&to=$to&text=$text";
-
-            // do sendmsg call
-            $ret = file($url);
-            $send = explode(":",$ret[0]);
-            print_r($send);echo '<br>';
-            if ($send[0] == "ID") {
-                echo "successnmessage ID: ". $send[1];
-            } else {
-                echo "send message failed";
-            }
-        } else {
-            echo "Authentication failure: ". $ret[0];
+  // Data for text message. This is the text message data.
+  $sender = "TXTLCL"; // This is who the message appears to be from.
+  /*$numbers = "910000000000"; // A single number or a comma-seperated list of numbers
+  $message = "This is a test message from the PHP API script.";
+  // 612 chars or less*/
+  // A single number or a comma-seperated list of numbers
+  $message = urlencode($message);
+  $data = "username=".$username."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$numbers."&test=".$test;
+  $ch = curl_init('http://api.textlocal.in/send/?');
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  $result = curl_exec($ch); // This is the result from the API
+  curl_close($ch);
         }
-    }
 }
