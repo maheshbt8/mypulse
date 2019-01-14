@@ -4,6 +4,7 @@ $system_title   = $this->db->get_where('settings', array('type' => 'system_title
 $text_align     = $this->db->get_where('settings', array('type' => 'text_align'))->row()->description;
 $account_type   = $this->session->userdata('login_type');
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+$license_category=$this->db->where('license_category_id',$this->db->where('license_id',$this->session->userdata('license'))->get('license')->row()->license_category_id)->get('license_category')->row()->license_category_code;
 ?>
 <!DOCTYPE html>
 <html>

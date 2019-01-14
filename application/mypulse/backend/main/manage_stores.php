@@ -17,6 +17,13 @@ $this->session->set_userdata('last_page', current_url());
         <?php echo get_phrase('add_medical_store'); ?>
 </button>
 <?php }?>
+<?php
+if($account_type=='users'){ ?>
+    <a href="<?php echo base_url(); ?>main/add_order/0;?>" class="pull-right" title="Order Medicine"><em class="fa fa-lg fa-medkit color-blue"></em>
+            </a>
+
+<?php }
+?>
 </div>
 <div class="panel-body">
 <table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">

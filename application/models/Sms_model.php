@@ -9,8 +9,10 @@ class Sms_model extends CI_Model {
     function send_sms($message = '' , $numbers = '') {
       
         // Authorisation details.
-  $username = "maheshbt8@gmail.com";
-  $hash = "ecdce5eb4a21ed321e736e37bb6782f922eb68f812ede0e1281c0cae6fa655a6";
+  $username = "mypulsecare@gmail.com";
+  /*"maheshbt8@gmail.com";*/
+  $hash ="cddf2cc5ee765ba136bfbdd1cefd20f5dd1e1ecb6c76ee774a1af85c4370197c"; 
+  /*"ecdce5eb4a21ed321e736e37bb6782f922eb68f812ede0e1281c0cae6fa655a6";*/
 
   // Config variables. Consult http://api.textlocal.in/docs for more info.
   $test = "0";
@@ -28,6 +30,7 @@ class Sms_model extends CI_Model {
   curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($ch); // This is the result from the API
+  echo $result;
   curl_close($ch);
         }
 }

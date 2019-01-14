@@ -46,7 +46,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
             $this->session->set_userdata('unique_id', $row->unique_id);
-            $this->session->set_userdata('hospital_name', $this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row()->name);
+            $ha=$this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row();
+            $this->session->set_userdata('hospital_name', $ha->name);
+            $this->session->set_userdata('license', $ha->license);
             $this->session->set_userdata('login_type', 'hospitaladmins');
             $this->session->set_userdata('type_id', 'admin');
         }
@@ -59,6 +61,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+             $ha=$this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row();
+            $this->session->set_userdata('hospital_name', $ha->name);
+            $this->session->set_userdata('license', $ha->license);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('branch_id', $row->branch_id);
             $this->session->set_userdata('department_id', $row->department_id);
@@ -86,6 +91,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->nurse_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+             $ha=$this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row();
+            $this->session->set_userdata('hospital_name', $ha->name);
+            $this->session->set_userdata('license', $ha->license);
             $this->session->set_userdata('branch_id', $row->branch_id);
             $this->session->set_userdata('department_id', $row->department_id);
             $this->session->set_userdata('unique_id', $row->unique_id);
@@ -101,6 +109,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->receptionist_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
+             $ha=$this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row();
+            $this->session->set_userdata('hospital_name', $ha->name);
+            $this->session->set_userdata('license', $ha->license);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'receptionist');
             $this->session->set_userdata('type_id', 'receptionist');
@@ -113,6 +124,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->lab_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
+             $ha=$this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row();
+            $this->session->set_userdata('hospital_name', $ha->name);
+            $this->session->set_userdata('license', $ha->license);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicallabs');
             $this->session->set_userdata('type_id', 'lab');
@@ -125,6 +139,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('login_user_id', $row->store_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
+             $ha=$this->db->where('hospital_id',$row->hospital_id)->get('hospitals')->row();
+            $this->session->set_userdata('hospital_name', $ha->name);
+            $this->session->set_userdata('license', $ha->license);
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicalstores');
             $this->session->set_userdata('type_id', 'store');

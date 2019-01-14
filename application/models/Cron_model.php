@@ -33,7 +33,8 @@ class Cron_model extends CI_Model {
             $notification['text']='MyPulse license for your hospital will expire in 1 months. Please renew your license.';
             $this->db->insert('notification',$notification);
        }
-       for($i=7;$i>=1;$i--){
+       for($i=7;$i>=0;$i--){
+        if($i!=0){
        $list3=$this->db->get_where('hospitals',array('till_date'=>date('m/d/Y',strtotime('+'.$i.' days')),'license_status'=>1))->result_array();
        foreach ($list3 as $row3) {
         $admin3=$this->db->get_where('hospitaladmins',array('hospitals'=>$row3['hospital_id']))->row();
@@ -42,6 +43,9 @@ class Cron_model extends CI_Model {
         $notification['text']='MyPulse license for your hospital will expire in '.$i.' months. Please renew your license.';
         $this->db->insert('notification',$notification);
         }
+      }elseif($i==0){
+        $this->db->where('till_date',date('m/d/Y'))->update('hospitals',array('license_status'=>2));
+      }
        }
     }
     function appointments(){

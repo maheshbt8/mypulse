@@ -749,14 +749,42 @@ function email_verification($data="")
     }
     function delete_patient_hospital($hospital_id)
     {
-$hospital_ids=explode(',',$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row()->hospital_ids);
+$patient_data=$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row();
+$hospital_doctors=$this->db->get_where('doctors',array('hospital_id'=>$hospital_id))->result_array();
+$hospital_stores=$this->db->get_where('medicalstores',array('hospital_id'=>$hospital_id))->result_array();
+$hospital_labs=$this->db->get_where('medicallabs',array('hospital_id'=>$hospital_id))->result_array();
+$hospital_ids=explode(',',$patient_data->hospital_ids);
 for($h=0;$h<count($hospital_ids);$h++){
     if($hospital_ids[$h]!= $hospital_id){
         $hospi[]=$hospital_ids[$h];
     }
 }
+$doctor_ids=explode(',',$patient_data->doctor_ids);
+for($d1=0;$d1<count($hospital_doctors);$d1++){
+    for($d2=0;$d2<count($doctor_ids);$d2++){
+    if($hospital_doctors[$d1]['doctor_id']!= $doctor_ids[$d2]){
+        $docs[]=$doctor_ids[$d2];
+    }
+}
+}
+$store_ids=explode(',',$patient_data->store_ids);
+for($d1=0;$d1<count($hospital_stores);$d1++){
+    for($d2=0;$d2<count($store_ids);$d2++){
+    if($hospital_stores[$d1]['store_id']!= $store_ids[$d2]){
+        $store[]=$store_ids[$d2];
+    }
+}
+}
+$lab_ids=explode(',',$patient_data->lab_ids);
+for($d1=0;$d1<count($hospital_labs);$d1++){
+    for($d2=0;$d2<count($lab_ids);$d2++){
+    if($hospital_labs[$d1]['lab_id']!= $lab_ids[$d2]){
+        $lab[]=$lab_ids[$d2];
+    }
+}
+}
 $this->db->where('user_id',$this->session->userdata('login_user_id'));
-$yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi)));
+$yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi),'doctor_ids'=>implode(',',$docs),'store_ids'=>implode(',',$store),'lab_ids'=>implode(',',$lab)));
     }
     
     function delete_multiple_hospital_info()
@@ -3165,9 +3193,9 @@ for($i=0;$i<count($result);$i++){
 return $return;
 }
     }
-function select_upcoming_appointments(){
+function select_upcoming_appointments($status=''){
     $id=$this->session->userdata('login_user_id');
-return $this->db->get_where('appointments',array('user_id'=>$id,'appointment_date>='=>date('m/d/Y')))->result_array();
+return $this->db->get_where('appointments',array('user_id'=>$id,'appointment_date>='=>date('m/d/Y'),'status'=>$status))->result_array();
     }
 function select_recommend_appointments(){
     $id=$this->session->userdata('login_user_id');
@@ -3995,7 +4023,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     {
     $account_type   = $this->session->userdata('login_type');
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-    /*$result=*/return $this->db->get_where('notification',array('user_id'=>$account_details))->result_array();
+    /*$result=*/return $this->db->order_by('id','desc')->get_where('notification',array('user_id'=>$account_details))->result_array();
     /*return $result;*/
     }
     function delete_notification($id){

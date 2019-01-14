@@ -7,7 +7,7 @@ $this->session->set_userdata('last_page', current_url());
     }
 </style>
   <?php
-$lid=2;
+/*$lid=2;
 if($lid==1){
 $num=100001;
 }elseif($lid!=1){
@@ -19,7 +19,7 @@ $num=$my[1]+1;
 $num=100001;
 }
 }
-$pid='MPHA'.date('y').'_'.$num;
+$pid='MPHA'.date('y').'_'.$num;*/
   ?>
 	<div class="panel panel-container">
 				<div class="row">
@@ -309,7 +309,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
     </thead>
 
     <tbody>
-        <?php if($account_type=='doctors' || $account_type=='receptionist'){if($_GET['sd']!='' && $_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],2);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor(2);}}elseif($account_type=='users'){$appointment_info=$this->crud_model->select_upcoming_appointments();}
+        <?php if($account_type=='doctors' || $account_type=='receptionist'){if($_GET['sd']!='' && $_GET['ed']!=''){$appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],2);}else{$appointment_info=$this->crud_model->select_today_appointment_info_by_doctor(2);}}elseif($account_type=='users'){$appointment_info=$this->crud_model->select_upcoming_appointments(2);}
         $i=1;foreach ($appointment_info as $row) {
            /* if(strtotime($row['appointment_date']) < strtotime(date('m/d/Y')))
             {

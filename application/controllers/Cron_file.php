@@ -35,7 +35,7 @@ $backup = $this->dbutil->backup();
 // Load the file helper and write the file to your server
 $this->load->helper('file');
 $db_name = 'MyPulse-DB'.date('Ymd').'.sql';
-$save = 'backups/'.$db_name;
+$save = FCPATH'backups/'.$db_name;
 write_file($save, $backup);
 
 // Load the download helper and send the file to your desktop

@@ -30,6 +30,7 @@ foreach ($single_hospital_info as $row) :
                     <span class="hidden-xs"><?php echo get_phrase('departments'); ?></span>
                 </a>
             </li> 
+            <?php if($license_category=='MPHL_19002'){ ?>
             <li class="">
                 <a href="#tab5" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-mail"></i></span>
@@ -41,7 +42,8 @@ foreach ($single_hospital_info as $row) :
                     <span class="visible-xs"><i class="entypo-mail"></i></span>
                     <span class="hidden-xs"><?php echo get_phrase('beds'); ?></span>
                 </a>
-            </li> 
+            </li>
+            <?php }?> 
         </ul>
 <div class="panel panel-default">
             <div class="panel-body">
@@ -376,7 +378,7 @@ foreach ($single_hospital_info as $row) {
             <th><?php echo get_phrase('name'); ?></th>
             <th><?php echo get_phrase('hospital_name'); ?></th>
             <th><?php echo get_phrase('branch_name'); ?></th>
-            <th><?php echo get_phrase('wards'); ?></th>
+            <?php if($license_category=='MPHL_19002'){ ?><th><?php echo get_phrase('wards'); ?></th><?php }?>
             <?php if($account_type == 'superadmin'){?>
             <th><?php echo get_phrase('options'); ?></th><?php }?>
         </tr>
@@ -391,7 +393,7 @@ foreach ($single_hospital_info as $row) {
                 <td><a href="<?php echo base_url(); ?>main/edit_department/<?php echo $row['department_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-                <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+               <?php if($license_category=='MPHL_19002'){ ?> <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td><?php }?>
                 <?php if($account_type == 'superadmin'){?>
                 <td>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>

@@ -1,5 +1,5 @@
 <!-- js-->
-    <script src="<?=base_url('assets/front/')?>js/jquery-2.2.3.min.js"></script>
+    <!-- <script src="<?=base_url('assets/front/')?>js/jquery-2.2.3.min.js"></script> -->
 <!-- js-->
 <!-- Banner Responsiveslides -->
     <script src="<?=base_url('assets/front/')?>js/responsiveslides.min.js"></script>
@@ -33,7 +33,7 @@
         </script>
 <!-- //stats -->
 <!--pop-up-box -->
-    <script src="<?=base_url('assets/front/')?>js/jquery.magnific-popup.min.js"></script>
+ <!--    <script src="<?=base_url('assets/front/')?>js/jquery.magnific-popup.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.popup-with-zoom-anim').magnificPopup({
@@ -48,47 +48,22 @@
                 mainClass: 'my-mfp-zoom-in'
             });
         });
-    </script>
+    </script> -->
     <!-- //pop-up-box -->
     <!-- Bootstrap Core JavaScript -->
     <script src="<?=base_url('assets/front/')?>js/bootstrap.min.js ">
     </script>
     <!-- //Bootstrap Core JavaScript -->
-
-
-<!-- Right click disable in this site!! -->
-<script type="text/javascript">
-/*jQuery(document).ready(function(){
-   //Disable cut copy paste
-    $('body').bind('cut copy paste', function (e) {
-        e.preventDefault();
-    });
-   
-    //Disable mouse right click
-    $("body").on("contextmenu",function(e){
-        return false;
-    });
-    document.onkeydown = function(e){
-        if (e.ctrlKey &&
-            (e.keyCode === 67 ||
-                e.keyCode === 86 ||
-                e.keyCode === 85 ||
-                e.keyCode === 117)) {
-            return false;
-        } else {
-            return true;
-        }
-
-    };
-});*/
-</script>
 <script language="JavaScript">
   /**
     * Disable right-click of mouse, F12 key, and save key combinations on page
     * By Arthur Gareginyan (arthurgareginyan@gmail.com)
     * For full source code, visit https://mycyberuniverse.com
     */
-  window.onload = function() {
+  /*window.onload = function() {
+    $('body').bind('cut copy paste', function (e) {
+        e.preventDefault();
+    });
     document.addEventListener("contextmenu", function(e){
       e.preventDefault();
     }, false);
@@ -124,5 +99,5 @@
       e.preventDefault();
       return false;
     }
-  };
+  };*/
 </script>

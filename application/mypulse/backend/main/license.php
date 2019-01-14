@@ -45,19 +45,18 @@
                     <tbody>
                     	<?php $count = 1;foreach($license as $row):?>
                         <tr>
-                            <td><?php echo $row['license_code'];?></td>
+                            <td><a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license/<?php echo $row['license_id'];?>');" class="hiper" ><?php echo $row['license_code'];?></a></td>
 							<td><?php echo $row['name'];?></td>
                             <td><?php echo $row['description'];?></td>
                             <td><?php $license=$this->crud_model->select_license_category_id($row['license_category_id']);?>
                             <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license_category/<?php echo $row['license_category_id'];?>');" class="hiper">
                             <?php echo $license['license_category_code'].' / '.$license['name'];?></a></td>
 							<td>
-                            <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license/<?php echo $row['license_id'];?>');" title="Edit">
+                            <!-- <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license/<?php echo $row['license_id'];?>');" title="Edit">
                                             <i class="fa fa-pencil"></i>     
-                                            </a>&nbsp;
+                                            </a>&nbsp; -->
                              <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/license/delete/<?php echo $row['license_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
                              </a>
-
         					</td>
                         </tr>
                         <?php endforeach;?>

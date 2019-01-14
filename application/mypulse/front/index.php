@@ -10,16 +10,32 @@
 SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <?php include 'includes_top.php'; ?>
 <style>
+body{
+  line-height: 0.5;
+}
+header{
+    background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);
+  }
+  #myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
 </style>
 <!--  -->
 </head>
 
 <body>
-	<style type="text/css">
+	<!-- <style type="text/css">
   header{
     background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);
   }
-</style>
+</style> -->
 <!-- header -->
   <header>
   <div class="top">
@@ -61,14 +77,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 <span class="sr-only">(current)</span>
               </a>
             </li>
-            <li class="nav-item  mr-lg-3 mt-lg-0 mt-3">
+           <!--  <li class="nav-item  mr-lg-3 mt-lg-0 mt-3">
               <a class="nav-link scroll" href="#about">about</a>
             </li>
-            <li class="nav-item  mr-lg-3 mt-lg-0 mt-3">
+ -->            <li class="nav-item  mr-lg-3 mt-lg-0 mt-3">
               <a class="nav-link scroll" href="#services">services</a>
             </li>
             <li class="nav-item  mr-lg-3 mt-lg-0 mt-3">
-              <a class="nav-link scroll" href="#pricing">pricing plans</a>
+              <a class="nav-link scroll" href="#doctors">Doctors</a>
             </li>
            <!--  <li class="nav-item dropdown mr-lg-3 mt-lg-0 mt-3">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -100,7 +116,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             <div class="banner-text container">
 
               <h4 class="movetxt text-left mb-3 agile-title text-capitalize">MyPulse</h4>
-              <p class="text-white mb-3">MyPulse is an integrated healthcare solution that automates and simplifies various Hospital/Clinical services and provides seamless experience for Healthcare consumers and Healthcare providers.</p>
+              <p class="text-white mb-3">MyPulse Is A Cloud Hosted Integrated Healthcare Solution That Automates And Simplifies How Various Healthcare Services are Delivered and Consumed, Thus Providing Seamless Experience For Both Healthcare Providers And Consumers.</p>
             </div>
           </div>
         </li>
@@ -138,128 +154,68 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
    </div> 
 </section>
 <!-- //stats -->
-
-  <!-- about -->
-  <div id="about">
-  <section class="welcome py-5">
-    <div class="container py-md-4 mt-md-3">
-      <h3 class="heading-agileinfo">About MyPulse<span></span></h3>
-      <div class="row about-tp mt-md-5 pt-5">
-        <div class="col-lg-6 welcome-left">
-          <h3>Welcome</h3>
-          <h4>MyPulse is an integrated healthcare solution that automates and simplifies various Hospital/Clinical services and provides seamless experience for Healthcare consumers and Healthcare providers.</h4>
-          <p><b>Our Vision :-</b> MyPulse to be the de facto Healthcare solution for everybody.</p>
-        </div>
-        <div class="col-lg-6 welcome-right">
-          <div class="welcome-right-top">
-            <img src="<?=base_url('assets/front/');?>images/myimage.jpg" alt="" class="img-fluid">
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- //about -->
-<!-- about-team -->
-  <section class="team py-5">
-    <div class="container py-md-4 mt-md-3">
-      <h3 class="heading-agileinfo">Our Team<span></span></h3>
+<div  id="services">
+<!-- Products -->
+  <section class="services py-5">
+    <div class="container-fluid py-md-4 mt-md-3"> 
+      <h2 class="heading-agileinfo">MyPulse1.0 - Our Services/What we offer?</h2>
       <span class="w3-line black"></span>
-      <div class="row team-row-agileinfo mt-md-5 pt-5">
-        <div class="col-lg-3 col-md-6 col-sm-6 team-grids">
-          <div class="thumbnail team-agileits">
-            <img src="<?=base_url('assets/front/');?>images/te1.jpg" class="img-fluid" alt="" />
-            <div class="effectd-caption">
-              <h4 class="mb-3">Rajasekhar Reddy</h4>
-              <div class="social-lsicon">
-                <a href="#" class="social-button twitter">
-                  <span class="fab fa-twitter"></span>
-                </a>
-                <a href="#" class="social-button facebook">
-                  <span class="fab fa-facebook-f"></span>
-                </a>
-                <a href="#" class="social-button google">
-                  <span class="fab fa-google-plus-g"></span>
-                </a>
-              </div>
-            </div>
+      <div class="row inner_w3l_agile_grids-1 mt-md-5 pt-4">
+        <div class="col-md-4 w3layouts_news_left_grid1">
+          <div class="new_top">
+            <i class="fas fa-home"></i>     
+            <h3 class="mb-3 mt-3">Appointment handling</h3>
+            <p>Users should be able to seamlessly book appointments with our Hospitals and the appointments are confirmed by the System automatically. Also, appointments are rescheduled/cancelled as reqd. And Hospitals will be able to track all their scheduled appointments easily.</p>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6 team-grids">
-          <div class="thumbnail team-agileits">
-            <img src="<?=base_url('assets/front/');?>images/te2.jpg" class="img-fluid" alt="" />
-            <div class="effectd-caption">
-              <h4 class="mb-3">Mahesh</h4>
-              <div class="social-lsicon">
-                <a href="#" class="social-button twitter">
-                  <span class="fab fa-twitter"></span>
-                </a>
-                <a href="#" class="social-button facebook">
-                  <span class="fab fa-facebook-f"></span>
-                </a>
-                <a href="#" class="social-button google">
-                  <span class="fab fa-google-plus-g"></span>
-                </a>
-              </div>
-            </div>
+        <div class="col-md-4 w3layouts_news_left_grid2">
+          <div class="new_top">
+            <i class="fas fa-building"></i>
+            <h3 class="mb-3 mt-3">Managing of health records</h3>
+            <p>Health records across the Hospitals are stored, protected and managed in electronic form, reducing the paper work for both Hospitals and End users and eliminating the risk of missing/misplacement of Health records.</p>
           </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-6 team-grids">
-          <div class="thumbnail team-agileits">
-            <img src="<?=base_url('assets/front/');?>images/te3.jpg" class="img-fluid" alt="" />
-            <div class="effectd-caption">
-              <h4 class="mb-3">Chunk Erson</h4>
-              <div class="social-lsicon">
-                <a href="#" class="social-button twitter">
-                  <span class="fab fa-twitter"></span>
-                </a>
-                <a href="#" class="social-button facebook">
-                  <span class="fab fa-facebook-f"></span>
-                </a>
-                <a href="#" class="social-button google">
-                  <span class="fab fa-google-plus-g"></span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-6 team-grids">
-          <div class="thumbnail team-agileits">
-            <img src="<?=base_url('assets/front/');?>images/te4.jpg" class="img-fluid" alt="" />
-            <div class="effectd-caption">
-              <h4 class="mb-3">Goes Marry</h4>
-              <div class="social-lsicon">
-                <a href="#" class="social-button twitter">
-                  <span class="fab fa-twitter"></span>
-                </a>
-                <a href="#" class="social-button facebook">
-                  <span class="fab fa-facebook-f"></span>
-                </a>
-                <a href="#" class="social-button google">
-                  <span class="fab fa-google-plus-g"></span>
-                </a>
-              </div>
-            </div>
+        <div class="col-md-4 w3layouts_news_left_grid3">
+          <div class="new_top">
+            <i class="fas fa-credit-card"></i>
+            <h3 class="mb-3 mt-3">Patient management</h3>
+            <p>Hospitals/Clinics should be able to track and manage list of their patients easily(Both Out-patients and In-patents).</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- //about-team -->
-</div>
+      <div class="row inner_w3l_agile_grids-1 mt-md-5 pt-4">
+        <div class="col-md-4 w3layouts_news_left_grid1">
+          <div class="new_top">
+            <i class="fas fa-home"></i>     
+            <h3 class="mb-3 mt-3">Orders for Medicines and Medical Tests</h3>
+            <p>Users should be able to order medicines and Medical Tests. And the the receipts and reports are made available to users.</p>
+          </div>
+        </div>
+        <div class="col-md-4 w3layouts_news_left_grid2">
+          <div class="new_top">
+            <i class="fas fa-building"></i>
+            <h3 class="mb-3 mt-3">Notifications and Messages</h3>
+            <p>Users are notified about important activities and reminders for the same. Also, simple messaging system for communication among various staff/users.</p>
+          </div>
+        </div>
+        <div class="col-md-4 w3layouts_news_left_grid3">
+          <div class="new_top">
+            <i class="fas fa-credit-card"></i>
+            <h3 class="mb-3 mt-3">Web & Android Apps</h3>
+            <p>Simple and easy to use Web and Android apps that provide users access to our services.</p>
+          </div>
+        </div>
+      </div>
+      
+  </div>   
+</section>
+<!-- //Products -->
+
    <!-- services -->
-        <div class="agileits-services py-5 position-relative" id="services">
-            <span class="icon-trans">MyPulse</span>
-            <div class="container py-lg-5">
-                <div class="title-wthree text-center">
-                    <h3 class="agile-title   text-white">
-                        our services
-                    </h3>
-                    <span></span>
-                </div>
-                <!-- details -->
+ 
   <section class="details-books py-5">
     <div class="container py-md-4 mt-md-3">
-    <h2 class="heading-agileinfo">Services Overview<span></span></h2>
+    <h2 class="heading-agileinfo">MyPulse1.0 - What it means?<span></span></h2>
       <span class="w3-line black"></span>
       <div class="row mt-md-5 pt-4">
       <div class="col-lg-12 agileits_updates_grid_right">
@@ -275,16 +231,15 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             </div>
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
-                <h6>MyPulse provides following services to hospitals:</h6>
+               <!--  <h6>MyPulse provides following services to hospitals:</h6> -->
               <ul>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Simplification of Patient management(Both out-patient and in-patient)</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Creates a branding for your Hospital along with unique URL</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Ease of communication among hospital staff</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Ease with which Patients can associate with your Hospital (Booking of appointments, tracking of patients, prescriptions and medical records etc)</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Large pool of MyPulse user base to access your hospital services seamlessly</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless integration with your Medical Store and Medical Lab for ordering of medicines and lab tests.</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware requirement and no hassles of having to install and maintain the hardware/software (We do it for you :)</li>
-
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Easily Track and manage list of all your Patients(Both out-patient, in-patient, their appointments, Inpatient data etc.)</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Easy to communicate with your Hospital staff with our simple communication mechanism</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Large pool of your MyPulse user base to access your hospital services seamlessly.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Ease with which Patients can associate with your Hospital (Ease of booking appointments, tracking of your prescriptions and medical records etc).</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless integration with your Medical Store and Medical Lab for ordering of medicines and Medical tests.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware requirement and no hassles to install and maintain the hardware/software (We take care of this for you :)</li>
+<!-- <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware requirement and no hassles of having to install and maintain the hardware/software (We do it for you :)</li> -->
               </ul>
               </div>
             </div>
@@ -300,12 +255,11 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
               <div class="card-body">
-              <h6>MyPulse provides following services to End-Users:</h6>
+              <!-- <h6>MyPulse provides following services to End-Users:</h6> -->
               <ul>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Management of your Health records across the Hospitals</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No more paper work. No more missing/misplacement of critical health records/history</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Health records are protected and secured with AES encryption</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Simplification of Patient life cycle Management - Booking appointments, tracking your hospitals, doctors, appointments, prescriptions, health records, tracking in-patient history etc.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Tracking and Managing of your Health records across the Hospitals</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Eliminates the risk of missing/misplacement of critical health records/health history</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Simplification of Patient life cycle Management - Booking appointments, tracking your hospitals, doctors, Appointments, prescriptions, health records, tracking in-patient history etc.</li>
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless access to various hospitals and doctors across the country.</li>
               </ul>
               </div>
@@ -323,13 +277,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             </div>
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
               <div class="card-body">
-              <h6>MyPulse provides following services to Medical Stores:</h6>
+              <!-- <h6>MyPulse provides following services to Medical Stores:</h6> -->
               <ul>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Healthcare solution that integrates seamlessly with your medical store</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Helps to review prescriptions/track orders for medicines</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Helps to process the orders for medicines and deliver the same</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless access to your medical store by large set of user base across the country</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles of having to install and maintain the hardware/software (We do it for you :)</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Integrates seamlessly with your medical Store to track orders for Medicines.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Provides access to prescriptions and helps to process the orders for Medicines and upload Receipts for Users.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles to install and maintain the hardware/software (We take care of this for you :)</li>
+<!-- <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless access to your medical store by large set of user base across the country</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles of having to install and maintain the hardware/software (We do it for you :)</li> -->
               </ul>
               </div>
             </div>
@@ -345,13 +299,13 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
               <div class="card-body">
-        <h6>MyPulse provides following services to Medical Labs:</h6>
+        <!-- <h6>MyPulse provides following services to Medical Labs:</h6> -->
               <ul>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Healthcare solution that integrates seamlessly with your medical lab</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Be able to review prescriptions/orders for medical tests</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Process orders for medical tests and upload reports for the patient.</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless access to your medical lab from large set of user base across the country</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles of having to install and maintain the hardware/software (We do it for you :)</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Integrates seamlessly with your medical Lab to track orders for Medical Tests.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Provides access to prescriptions and helps to process the orders for Medical tests.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Helps to Upload receipts and health records for the users.</li>
+<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles to install and maintain the hardware/software (We take care of this for you :)</li>
+<!-- <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles of having to install and maintain the hardware/software (We do it for you :)</li> -->
 
               </ul>
               </div>
@@ -363,106 +317,176 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </div>
   </section>
   <!-- //details -->
-            </div>
-        </div>
+          
+      </div>
         <!-- //services -->
-         <!-- process -->
-        <section class="wthree-row py-lg-5 position-relative" id="process">
-            <span class="letter-02">w</span>
-            <div class="container py-5">
-                <div class="title-wthree text-center py-lg-5">
-                    <h3 class="agile-title">
-                        how it works
-                    </h3>
-                    <span></span>
-                </div>
-                <div class="row abbot-main py-lg-5 py-4 mb-sm-5">
-                    <div class="col-lg-4 abbot-right">
-                        <img src="<?=base_url('assets/front/')?>images/p1.png" class="img-fluid rounded-circle" alt="" />
-                    </div>
-                    <div class="offset-lg-2"></div>
-                    <div class="col-lg-6 about-text-grid position-relative mt-lg-0 mt-5">
-                        <div class="d-flex">
-                            <span class="process-circle"></span>
-                            <h4 class="sec-title1">Buy Stack</h4>
-                        </div>
-                        <p class="mt-md-5 mb-3 mt-3">Donec mi nulla, auctor nec sem a, ornare auctor m faucibus orci luctus et ultrices posuere cubilia
-                            Curai. Sed mi tortor, commodo a felis in, fringilla tincidunt nulla. </p>
-                        <p>fringilla tincidunt nulla onec mi nulla, auctor nec sem a, ornare auctor m faucibus orci luctus et
-                            ultrices posuere cubilia Curai. Sed mi tortor, commodo a felis in. </p>
-                        <div class="process-direction"></div>
-                    </div>
-                </div>
-                <div class="row abbot-main py-lg-5 py-4 my-md-5">
-                    <div class="col-lg-6 about-text-grid">
-                        <div class="d-flex">
-                            <h4 class="sec-title1 flow-odd">Prototyping
-                            </h4>
-                            <span class="process-circle"></span>
-                        </div>
-                        <ul class="list-group mt-md-3 my-3">
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Cras justo odio</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Dapibus ac facilisis</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Morbi leo risus</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Porta ac consectetur</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Vestibulum at eros</li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 abbot-right">
-                        <img src="<?=base_url('assets/front/')?>images/p2.png" class="img-fluid" alt="" />
-                    </div>
-                </div>
-                <div class="row abbot-main py-lg-5 py-4 mb-sm-5">
-                    <div class="col-lg-4 abbot-right">
-                        <img src="<?=base_url('assets/front/')?>images/p3.png" class="img-fluid" alt="" />
-                    </div>
-                    <div class="offset-lg-2"></div>
-                    <div class="col-lg-6 about-text-grid position-relative">
-                        <div class="d-flex">
-                            <span class="process-circle"></span>
-                            <h4 class="sec-title1">production</h4>
-                        </div>
-                        <p class="mt-md-5 mb-3 mt-3">Fringilla tincidunt nulla onec mi nulla, auctor nec sem a, ornare auctor m faucibus orci luctus et
-                            ultrices posuere cubilia Curai. Sed mi tortor, commodo a felis in. </p>
-                        <p>Donec mi nulla, auctor nec sem a, ornare auctor m faucibus orci luctus et ultrices posuere cubilia
-                            Curai. Sed mi tortor, commodo a felis in, fringilla tincidunt nulla. </p>
-                        <div class="process-direction2"></div>
-                    </div>
-                </div>
-                <div class="row abbot-main py-lg-5">
-                    <div class="col-lg-6 about-text-grid">
-                        <div class="d-flex">
-                            <h4 class="sec-title1 flow-odd">visual design</h4>
-                            <span class="process-circle"></span>
-                        </div>
-                        <ul class="list-group mt-md-3 my-3">
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Cras justo odio</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Dapibus ac facilisis</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Morbi leo risus</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Porta ac consectetur</li>
-                            <li class="list-group-item border-0">
-                                <i class="fas fa-check mr-3"></i>Vestibulum at eros</li>
-                        </ul>
-                        <div class="process-direction-last"></div>
-                    </div>
-                    <div class="col-lg-4 abbot-right">
-                        <img src="<?=base_url('assets/front/')?>images/p4.jpg" class="img-fluid rounded-circle" alt="" />
-                    </div>
-                </div>
+         
+<!-- clients -->
+  <section class="features py-md-5">
+    <div class="container py-md-4 mt-md-3">
+      <h3 class="heading-agileinfo">Some important customers & Their feedback.</h3>
+     
+      <span class="w3-line black"></span>
+      <div class="row about-main pt-5 mt-md-5">
+        <div class="col-lg-6 about-right">
+        <!-- stats -->
+          <div class="stats1">
+            <div class="row stats_inner">
+              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
+                <img src="<?=base_url('assets/front/')?>images/logo1.jpg" alt="logo1" class=" img-fluid">
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
+                <img src="<?=base_url('assets/front/')?>images/logo2.jpg" alt="logo1" class=" img-fluid">
+              </div>
             </div>
-        </section>
-        <!-- //process -->
+            <div class="row stats_inner top-st">
+              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
+                <img src="<?=base_url('assets/front/')?>images/logo3.jpg" alt="logo1" class=" img-fluid">
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
+                <img src="<?=base_url('assets/front/')?>images/logo1.jpg" alt="logo1" class=" img-fluid">
+              </div>
+              
+            </div>
+            <div class="row stats_inner top-st">
+              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
+                <img src="<?=base_url('assets/front/')?>images/logo1.jpg" alt="logo1" class=" img-fluid">
+              </div>
+              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
+                <img src="<?=base_url('assets/front/')?>images/logo3.jpg" alt="logo1" class=" img-fluid">
+              </div>
+              
+            </div>
+          </div>
+          <!-- //stats -->
+
+        </div>
+        <div class="col-lg-6 about-left">
+              <!-- testimonials -->
+            <div class="w3_agile-section testimonials text-center" id="testimonials">
+              <div class=" w3ls-team-info test-bg">
+                <div class="testi-left">
+                  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                      <ol class="carousel-indicators">
+                      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                      </ol>
+                      <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <div class="row thumbnail adjust1">
+                           <div class="col-md-3 col-sm-3">
+                              <img class="media-object img-fluid" src="<?=base_url('assets/front/')?>images/ts1.jpg" alt="" />
+                             </div>
+                             <div class="col-md-9 col-sm-9">
+                              <div class="caption testi-text">
+                                  <h4>Jane Wilson,</h4>
+                                  <h5>Worker</h5>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span>Donec euismod consequat mi, pretium consequat mi, pretium
+                             volutpat nibh tempor volutpat nibh tempor nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ullamcorper mauris. Vivamus fringilla venenatis enim, non pulvinar turpis euismod eu </p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                           <div class="col-md-3 col-sm-3">
+                              <img class="media-object img-fluid" src="<?=base_url('assets/front/')?>images/ts2.jpg" alt="" />
+                             </div>
+                             <div class="col-md-9 col-sm-9">
+                              <div class="caption testi-text">
+                                  <h4>Jane Wilson</h4>
+                                  <h5>Worker</h5>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span>Donec euismod consequat mi, pretium consequat mi, pretium
+                             volutpat nibh tempor volutpat nibh tempor nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ullamcorper mauris. Vivamus fringilla venenatis enim, non pulvinar turpis euismod eu</p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                           <div class="col-md-3 col-sm-3">
+                              <img class="media-object img-fluid" src="<?=base_url('assets/front/')?>images/ts3.jpg" alt="" />
+                             </div>
+                             <div class="col-md-9 col-sm-9">
+                              <div class="caption testi-text">
+                                  <h4>Jane Wilson</h4>
+                                  <h5>Worker</h5>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span>Donec euismod consequat mi, pretium consequat mi, pretium
+                             volutpat nibh tempor volutpat nibh tempor nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ullamcorper mauris. Vivamus fringilla venenatis enim, non pulvinar turpis euismod eu</p>
+                        </div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+    <!-- //testimonials-->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- clients -->
+<!-- Doctors Info -->
+<div id="doctors">
+  <section class="features py-md-5">
+    <div class="container-fluid py-md-4 mt-md-3">
+      <h3 class="heading-agileinfo">Search For Doctor Information.</h3>
+     
+      <span class="w3-line black"></span>
+      <div class="row about-main pt-5 mt-md-12">
+        <div class="col-lg-12">
+        <!-- stats -->
+          <div class="stats1">
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Doctor or Hospital or Branch or Specializations.." title="Type in a name">
+           <div class="bs-docs-example table-responsive">
+  <table class="table table-hover table-bordered table-condensed"  id="myTable">
+    <tr class="header">
+    <th style="width:15%;">Doctor</th>
+    <th style="width:15%;">Hospital - Branch</th>
+    <th style="width:20%;">Specializations</th>
+    <th style="width:50%;">Available Status</th>
+  </tr>
+  <?php
+$hospi=$this->db->order_by('name','asc')->get('doctors')->result_array();
+foreach ($hospi as $row) {
+  ?>
+  <tr>
+    <td><?=$row['name'];?></td>
+    <td><?php 
+    $branch=$this->db->get_where('branch' , array('branch_id' => $row['branch_id']))->row();
+    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $row['hospital_id']))->row();
+    echo $hospital->name.' - '.$branch->name;
+        ?>
+        </td>
+    <td><?php if($row['specializations']!=''){$spe=explode(',', $row['specializations']);
+            for($i=0;$i<count($spe);$i++){
+                $specializations[]=$this->db->where('specializations_id',$spe[$i])->get('specializations')->row()->name;
+            }
+            echo implode(',',$specializations);}?></td>
+    <td><?php $message='';$data=$this->db->where('doctor_id',$row['doctor_id'])->get('availability')->row();if($data!=''){echo $data->message;}?></td>
+  </tr>
+<?php }?>  
+        </table>
+      </div>
+            
+          </div>
+          <!-- //stats -->
+
+        </div>
+        
+    </div>
+  </div>
+</section>
+</div>
+<!-- Doctors Info -->
         <!-- pricing plans -->
-        <section class="wthree-row pb-lg-5 position-relative" id="pricing">
+        <!-- <section class="wthree-row pb-lg-5 position-relative" id="pricing">
             <span class="icon-trans">p</span>
             <div class="container py-5">
                 <div class="title-wthree text-center py-lg-5">
@@ -552,14 +576,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <!-- //pricing plans -->
         <!-- contact -->
         <div class="contact-wthree position-relative" id="contact">
             <span class="letter-02">c</span>
             <div class="container py-sm-5">
                 <div class="row py-lg-5 py-4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-8">
                         <div class="title-wthree">
                             <h3 class="agile-title">
                                 contact
@@ -567,72 +591,22 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                             <span></span>
                         </div>
                         <div class="map-responsive">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7612.569324584898!2d78.43960212369728!3d17.446084237504024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb90e76b6662c5%3A0x9ad96c95b077cb8e!2sSanjeeva+Reddy+Nagar%2C+Hyderabad%2C+Telangana+500038!5e0!3m2!1sen!2sin!4v1544389951019" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7612.569324584898!2d78.43960212369728!3d17.446084237504024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb90e76b6662c5%3A0x9ad96c95b077cb8e!2sSanjeeva+Reddy+Nagar%2C+Hyderabad%2C+Telangana+500038!5e0!3m2!1sen!2sin!4v1544389951019" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
                           </div>
                     </div>
                     <!-- <div class="offset-2"></div> -->
-                    <div class="col-lg-6 mt-lg-0 mt-5">
-                        <!-- register form grid -->
-                        <div class="register-top1">
-                            <form action="#" method="get" class="register-wthree">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-2 d-md-flex align-items-end justify-content-end px-md-0">
-                                            <label class="mb-0">
-                                                <span class="fas fa-user"></span>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <label>
-                                                First name
-                                            </label>
-                                            <input class="form-control" type="text" placeholder="Johnson" name="email" required="">
-                                        </div>
-                                        <div class="col-md-5">
-                                            <label>
-                                                Last name
-                                            </label>
-                                            <input class="form-control" type="text" placeholder="Kc" name="email" required="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-2 d-md-flex align-items-end justify-content-end px-md-0">
-                                            <label class="mb-0">
-                                                <span class="fas fa-envelope-open"></span>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <label>
-                                                Email
-                                            </label>
-                                            <input class="form-control" type="email" placeholder="example@email.com" name="email" required="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-2 d-md-flex align-items-end justify-content-end px-md-0">
-                                            <label class="mb-0">
-                                                <span class="far fa-edit"></span>
-                                            </label>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <label>
-                                                Your message
-                                            </label>
-                                            <textarea placeholder="Type your message here" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-lg-5 mt-3">
-                                    <div class="offset-2"></div>
-                                    <div class="col-md-10">
-                                        <button type="submit" class="btn btn-agile btn-block w-100 btn-success">Send</button>
-                                    </div>
-                                </div>
-                            </form>
+                    <div class="col-lg-4 mt-lg-0 mt-5">
+                      <div class="container" style="border-bottom:1px solid black">
+                            <h2>John Doe</h2>
+                          </div>
+                            <hr/>
+                          <ul class="container details">
+                            <li><i class="fas fa-phone"></i> <?=$this->db->get_where('settings', array('type' => 'phone'))->row()->description;?></li><br/>
+                            <li><i class="fas fa-envelope"></i> <?=$this->db->get_where('settings', array('type' => 'system_email'))->row()->description;?></li><br/>
+                            <li><i class="fas fa-map-marker"></i> <?=$this->db->get_where('settings', array('type' => 'address'))->row()->description;?></li><br/>
+                            <li><p><span class="glyphicon glyphicon-new-window one" style="width:50px;"></span><a href="#">www.example.com</p></a>
+                          </ul>
+
                         </div>
                         <!--  //register form grid ends here -->
                     </div>
@@ -640,7 +614,49 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
             </div>
         </div>
         <!-- //contact -->
-<?php include 'footer.php'; ?>
+<!-- footer  -->
+<!--footer-->
+ 
+  <!---->
+  <div class="copyright py-3">
+    <div class="container">
+      <div class="copyrighttop">
+        <ul>
+          <li>
+            <h4>Follow us on:</h4>
+          </li>
+          <li>
+            <a class="facebook" href="#">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook" href="#">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook" href="#">
+              <i class="fab fa-google-plus-g"></i>
+            </a>
+          </li>
+          <li>
+            <a class="facebook" href="#">
+              <i class="fab fa-pinterest-p"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="copyrightbottom">
+        <p>© 2018 JagruMs Technologies - All Rights Reserved.
+        </p>
+      </div>
+      <div class="clearfix"></div>
+
+    </div>
+  </div>
+
+<!-- footer -->
 	<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -667,10 +683,9 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 <!-- //Modal -->
 <!-- js -->
 <script src="<?=base_url('assets/front/')?>js/jquery-2.2.3.min.js"></script>
-   <script src="<?=base_url('assets/front/')?>js/move-top.js"></script>
-    <script src="<?=base_url('assets/front/')?>js/easing.js"></script>
-<!--     <script src="<?=base_url('assets/front/new/')?>js/bootstrap.js"></script> -->
-   
+   <!-- <script src="<?=base_url('assets/front/')?>js/move-top.js"></script> -->
+    <script src="<?=base_url('assets/front/')?>js/easing.min.js"></script>
+
     <!-- //testimonials  Responsiveslides -->
     <!-- start-smooth-scrolling -->
    
@@ -687,14 +702,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     </script>
     <!-- //end-smooth-scrolling -->
     <!-- smooth-scrolling-of-move-up -->
-    <script>
+ <!--    <script>
         $(document).ready(function () {
              $().UItoTop({
                 easingType: 'easeOutQuart'
             });
 
         });
-    </script>
+    </script> -->
     <script src="<?=base_url('assets/front/')?>js/SmoothScroll.min.js"></script>
     <!-- //smooth-scrolling-of-move-up -->
     <!-- Bootstrap core JavaScript
@@ -717,5 +732,25 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
   </script>
 
  <?php include 'includes_bottom.php'; ?>
+ <script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
 </body>
 </html>

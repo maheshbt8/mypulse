@@ -96,7 +96,7 @@ setInterval(function(){
     * For full source code, visit https://mycyberuniverse.com
     */
   window.onload = function() {
-    document.addEventListener("contextmenu", function(e){
+    /*document.addEventListener("contextmenu", function(e){
       e.preventDefault();
     }, false);
     document.addEventListener("keydown", function(e) {
@@ -130,7 +130,7 @@ setInterval(function(){
       }
       e.preventDefault();
       return false;
-    }
+    }*/
 
     /*Chart */
     var chart1 = document.getElementById("line-chart").getContext("2d");

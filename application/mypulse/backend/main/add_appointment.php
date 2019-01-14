@@ -2,6 +2,9 @@
     .modal-backdrop.in{
         z-index: auto;
     }
+    datalist { 
+  display: none;
+}
 </style>
 <div class="row">
     <div class="col-md-12">

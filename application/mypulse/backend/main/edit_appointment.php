@@ -135,9 +135,11 @@ foreach ($single_appointment_info as $row) {
             <div class="panel-heading">
       <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 <?php if($account_type=='doctors'){?>
+<?php if($license_category=='MPHL_19002'){ ?>
 <button type="button" onClick="confrecommend(this.form);" id="recommend" class="btn btn-warning pull-right" style="margin-left: 2px;width: auto;">
         <?php echo get_phrase('Recommend as Inpatient'); ?>
 </button>
+<?php }?>
 <?php }?>
  </div>
 <div class="panel-body">

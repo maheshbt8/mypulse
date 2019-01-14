@@ -98,16 +98,12 @@ class Email_model extends CI_Model {
         $config['wordwrap']     = TRUE;
         $this->load->library('email');
         $this->email->initialize($config);
-
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-
             $from = $system_email;
-
         $this->email->from($from, $system_name);
         $this->email->from($from, $system_name);
         $this->email->to($to);
         $this->email->subject($sub);
-
         $msg = $msg;
         $this->email->message($msg);
 

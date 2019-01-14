@@ -55,7 +55,7 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
             <th data-field="name" data-sortable="true"><?php echo get_phrase('name'); ?></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch_name'); ?></th>
-            <th data-field="ward" data-sortable="true"><?php echo get_phrase('wards'); ?></th>
+            <?php if($license_category=='MPHL_19002'){ ?><th data-field="ward" data-sortable="true"><?php echo get_phrase('wards'); ?></th><?php }?>
             <th><?php echo get_phrase('options'); ?></th>
         </tr>
     </thead>
@@ -67,7 +67,7 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
                 <td><a href="<?php echo base_url(); ?>main/edit_department/<?php echo $row['department_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-                <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td>
+               <?php if($license_category=='MPHL_19002'){ ?> <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td><?php }?>
                 <td>
               <!-- <a href="<?php echo base_url(); ?>main/edit_department/<?php echo $row['department_id'] ?>" title="Edit"><i class="glyphicon glyphicon-pencil"></i></a> -->
             

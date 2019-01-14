@@ -69,12 +69,14 @@ echo $user_role; ?></span></div>
         </li>
     <?php }?>
     <?php if($account_type=='hospitaladmins' || $account_type=='nurse' || $account_type=='receptionist'){?>
+        <?php if($license_category=='MPHL_19002'){ ?>
         <li class="<?php if ($page_name == 'manage_bed') echo 'active'; ?>">
             <a href="<?=base_url('main/bed');?>">
                 <i class="fa fa-bed">&nbsp;</i>
                 <span><?php echo get_phrase('beds'); ?></span>
             </a>
         </li>
+    <?php }?>
     <?php }?>
     <?php if($account_type=='nurse'){?>
         <li class="<?php if ($page_name == 'manage_ward') echo 'active'; ?>">
@@ -130,12 +132,12 @@ echo $user_role; ?></span></div>
         </li>
     <?php }?>
     <?php if($account_type=='medicallabs'){?>
-        <li class="<?php if ($page_name == '') echo 'active'; ?>">
+        <!-- <li class="<?php if ($page_name == 'manage_health_reports') echo 'active'; ?>">
             <a href="#">
                 <i class="menu-icon glyphicon glyphicon-list-alt">&nbsp;</i>
                 <span><?php echo get_phrase('reports'); ?></span>
             </a>
-        </li>
+        </li> -->
     <?php }?>
     <?php if($account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='receptionist' || $account_type=='nurse'){?>
         <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?>">
@@ -146,12 +148,14 @@ echo $user_role; ?></span></div>
         </li>
     <?php }?>
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users'  || $account_type=='nurse' || $account_type=='receptionist'){?>
+        <?php if($license_category=='MPHL_19002' || $account_type=='users'){ ?>
         <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/inpatient">
                 <i class="menu-icon fa fa-eye">&nbsp;</i>
                 <span><?php if($account_type == 'users'){echo get_phrase('in-Patient_history');}else{echo get_phrase('in-Patients'); }?></span>
             </a>
         </li>
+    <?php }?>
     <?php }?>
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users' || $account_type=='receptionist' || $account_type=='nurse'){?>
         <li class="<?php if ($page_name == 'manage_appointment') echo 'active'; ?>">
