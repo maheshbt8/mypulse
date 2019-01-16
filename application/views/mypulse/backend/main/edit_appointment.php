@@ -129,11 +129,7 @@ foreach ($single_appointment_info as $row) {
    </form>
 <?php }else{ ?>
             <!----TABLE LISTING STARTS-->
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">   
-            <div class="panel-heading">
-      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+<input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 <?php if($account_type=='doctors'){?>
 <?php if($license_category=='MPHL_19002'){ ?>
 <button type="button" onClick="confrecommend(this.form);" id="recommend" class="btn btn-warning pull-right" style="margin-left: 2px;width: auto;">
@@ -141,9 +137,12 @@ foreach ($single_appointment_info as $row) {
 </button>
 <?php }?>
 <?php }?>
- </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">   
+       <!-- <div class="panel-heading"></div> -->
 <div class="panel-body">
-    <div class="col-md-4">
+    <div class="col-md-6">
 <h4><?php echo '<b>User ID</b> : '.$user_info['unique_id'];?></h4>
 <h4><?php echo '<b>User Name</b> : '.$user_info['name'];?></h4>
 <h4><b>Appointment Date : </b><?php echo date('M ,d-Y',strtotime($row['appointment_date']));?></h4>

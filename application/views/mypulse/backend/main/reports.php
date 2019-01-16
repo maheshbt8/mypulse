@@ -69,14 +69,17 @@ $trend_dates=implode(',', $dates);
 $data_list=implode(',',$data_points);
 
 ?>
+<input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?=$this->session->userdata('last_page');?>'">
+
   <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-default">
+
                         <div class="panel-heading">
 
-           <center><small class="pull-left"><?php echo ' ( '.$sd.' To '.$ed.' ) ';?></small>
-                    <?php print_r(implode(' vs ',$hospital_name));?>
-                      <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= base_url('main/report/').$report_id; ?>'">
+           <center><small class="pull-left"><?php echo ' ( '.date('M d-Y',strtotime($sd)).' To '.date('M d-Y',strtotime($ed)).' ) ';?></small>
+                    <?php /*print_r(implode(' vs ',$hospital_name));*/?>
+                     
                       <!-- <ul class="pull-right panel-settings panel-button-tab-right">
                                 <li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
                                     <em class="fa fa-cogs"></em>

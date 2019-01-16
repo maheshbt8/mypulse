@@ -25,7 +25,7 @@ $this->session->set_userdata('last_page', current_url());
 <input type="hidden" class="form-control" name="ed" id="ed" value="<?php if((isset($_GET['ed']) && $_GET['ed'] != "")){echo date('Y-m-d',strtotime($_GET['ed']));}else{echo date('Y-m-d');}?>"/>
 </div>
 <div class="panel-body">
-<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
+<table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
     <thead>
         <tr>
          <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>

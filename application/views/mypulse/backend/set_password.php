@@ -8,21 +8,6 @@
 	<title><?php echo $this->lang->line('labels')['sign_up'];?> | <?php echo $system_title; ?></title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Mahesh BT" />
-<meta name="geo.region" content="IN-AP" />
-<meta name="geo.placename" content="Hyderabad" />
-<meta name="language" content="English">
-<meta name="geo.position" content="17.41556;78.452628" />
-<meta name="keywords" content="" />
-<meta name="description" content=""/>
-<link rel="canonical" href="<?php base_url('login/set_password');?>" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="MyPulse Reset Your Password Page." />
-<meta property="og:description" content="" />
-<meta property="og:url" content="<?php base_url('login/set_password');?>" />
-<meta property="og:image" content="<?php base_url('assets/logo.png');?>"/>
-
 <?php include'login_top.php';?>
 </head>  
 <body>

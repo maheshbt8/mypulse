@@ -5,9 +5,8 @@
 	<title>MyPulse - <?=$page_title;?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf-8">
-  <meta name="description" content="type_your_description_here">
-	<meta name="keywords" content="Home Loan Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+  <meta name="description" content="Welcome to MyPulse, Healthcare solution that provides a seamless experience for Hospitals and end users. Book appointments, Manage prescriptions and health records across the hospitals, Order Medicines and Medical Tests.">
+	<meta name="keywords" content="Healthcare, MyPulse, Book appointments, Manage health records, Prescriptions, Order medicines, Order Medical tests" />
 <?php include 'includes_top.php'; ?>
 <style>
 body{
@@ -164,7 +163,7 @@ header{
 <!-- Products -->
   <section class="services py-5">
     <div class="container-fluid py-md-4 mt-md-3"> 
-      <h2 class="heading-agileinfo">MyPulse1.0 - Our Services/What we offer?</h2>
+      <h2 class="heading-agileinfo">MyPulse - What we offer?</h2>
       <span class="w3-line black"></span>
       <div class="row inner_w3l_agile_grids-1 mt-md-5 pt-4">
         <div class="col-md-4 w3layouts_news_left_grid1">
@@ -221,7 +220,7 @@ header{
  
   <section class="details-books py-5">
     <div class="container py-md-4 mt-md-3">
-    <h2 class="heading-agileinfo">MyPulse1.0 - What it means?<span></span></h2>
+    <h2 class="heading-agileinfo">MyPulse - What it means?<span></span></h2>
       <span class="w3-line black"></span>
       <div class="row mt-md-5 pt-4">
       <div class="col-lg-12 agileits_updates_grid_right">
@@ -607,14 +606,14 @@ foreach ($hospi as $row) {
                     <!-- <div class="offset-2"></div> -->
                     <div class="col-lg-4 mt-lg-0 mt-5">
                       <div class="container" style="border-bottom:1px solid black">
-                            <h2>John Doe</h2>
+                            <h3>MyPulse Customer care</h3>
                           </div>
                             <hr/>
                           <ul class="container details">
                             <li><i class="fas fa-phone"></i> <?=$this->db->get_where('settings', array('type' => 'phone'))->row()->description;?></li><br/>
                             <li><i class="fas fa-envelope"></i> <?=$this->db->get_where('settings', array('type' => 'system_email'))->row()->description;?></li><br/>
                             <li><i class="fas fa-map-marker"></i> <?=$this->db->get_where('settings', array('type' => 'address'))->row()->description;?></li><br/>
-                            <li><p><span class="glyphicon glyphicon-new-window one" style="width:50px;"></span><a href="#">www.example.com</p></a>
+                            <li><p><span class="glyphicon glyphicon-new-window one" style="width:50px;"></span><a href="#">www.mypulse.in</p></a>
                           </ul>
 
                         </div>

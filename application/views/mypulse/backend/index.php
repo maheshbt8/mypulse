@@ -13,20 +13,9 @@ $license_category=$this->db->where('license_category_id',$this->db->where('licen
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo $system_title; ?> - <?php echo $page_title; ?></title>
+<meta name="description" content="Create an account or login to MyPulse. Book appointments, Manage prescriptions and health records across the hospitals, Order Medicines and Medical Tests.">
+	<meta name="keywords" content="Healthcare, MyPulse, Book appointments, Manage health records, Prescriptions, Order medicines, Order Medical tests" />
 
-<meta name="author" content="Mahesh BT" />
-<meta name="geo.region" content="IN-AP" />
-<meta name="geo.placename" content="Hyderabad" />
-<meta name="language" content="English">
-<meta name="geo.position" content="17.41556;78.452628" />
-<meta name="keywords" content="" />
-<meta name="description" content=""/>
-<link rel="canonical" href="<?php base_url();?>" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="MyPulse." />
-<meta property="og:description" content="" />
-<meta property="og:url" content="<?php base_url();?>" />
-<meta property="og:image" content="<?php base_url('assets/logo.png');?>"/>
 
 		<!--Custom Font-->
 		<!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet"> -->
