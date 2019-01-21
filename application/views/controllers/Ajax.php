@@ -543,23 +543,25 @@ $patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id
             </tr>
 <?php
 }$i++;}
-/*print_r($patient_info);*/
-/*echo json_encode($patient_info);*/
     }
     function get_message_count(){
-        $account_type   = $this->session->userdata('login_type');
+$account_type   = $this->session->userdata('login_type');
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-        $message_data=$this->crud_model->select_message();
-        $j=0;foreach($message_data as $row){
+$message_data=$this->crud_model->select_message();
+$j=0;foreach($message_data as $row){
+    if($row['is_read']!=''){
     $count=explode(',',$row['is_read']);
     for($m2=0;$m2<count($count);$m2++){
         if($account_details == $count[$m2]){
-                $j=0;
+               /* $j=0;*/
                 break;
         }else{
             $j=$j+1;
         }
         }
+    }else{
+        $j=$j+1;
+    }
         }
         echo '<span class="label label-info">'.$j.'</span>';
     }

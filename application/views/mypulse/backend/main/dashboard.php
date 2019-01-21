@@ -6,21 +6,6 @@ $this->session->set_userdata('last_page', current_url());
         font-size: 20px;
     }
 </style>
-  <?php
-/*$lid=2;
-if($lid==1){
-$num=100001;
-}elseif($lid!=1){
-$my=explode('_',$this->db->where('admin_id',$lid-1)->get('hospitaladmins')->row()->unique_id);
-$year=substr ($my[0], -2);
-if($year==date('y')){
-$num=$my[1]+1;
-}else{
-$num=100001;
-}
-}
-$pid='MPHA'.date('y').'_'.$num;*/
-  ?>
 	<div class="panel panel-container">
 				<div class="row">
 			<!-- ************** 1 ******************* -->

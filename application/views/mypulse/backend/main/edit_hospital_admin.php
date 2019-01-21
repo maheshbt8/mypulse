@@ -107,7 +107,7 @@ foreach ($single_admin_info as $row) {
                 if($row['is_mobile']==1){?>
                 <span class="verifiedsuccess">Mobile Verified</span>
                 <?php }elseif($row['is_mobile']==2){?>
-                <span class="notverified">Mobile Not Verified <a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a></span>
+                <span class="notverified">Mobile Not Verified <?php if(($row['admin_id']==$this->session->userdata('login_user_id')) && ('hospitaladmins'==$account_type)){ ?><a href="" class="hiper"  data-toggle="modal" data-target="#myModal" onclick="return get_otp()">Send OTP</a><?php }?></span>
                 <?php }}?>
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>

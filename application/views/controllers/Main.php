@@ -1970,6 +1970,82 @@ force_download($db_name, $backup);
         $page_data['page_title'] = get_phrase('settings');
         $this->load->view('backend/index', $page_data);
     }
+       // SMS settings.
+    function sms_settings($param1 = '') {
+        if ($param1 == 'do_update') {
+            $this->crud_model->update_sms_settings();
+            $this->session->set_flashdata('message', get_phrase('settings_updated'));
+            redirect(base_url() . 'main/sms_settings/', 'refresh');
+        }
+
+        $page_data['page_name'] = 'sms_settings';
+        $page_data['page_title'] = get_phrase('sms_settings');
+        $this->load->view('backend/index', $page_data);
+    }
+
+       // feedback.
+    function feedback($param1 = '', $param2 = '') {
+        if ($param1 == 'do_update') {
+            $this->crud_model->update_feedback($param2);
+            $this->session->set_flashdata('message', get_phrase('feedback_updated'));
+            redirect(base_url() . 'main/feedback/', 'refresh');
+        }
+        $page_data['page_name'] = 'feedback';
+        $page_data['page_title'] = get_phrase('feedback');
+        $this->load->view('backend/index', $page_data);
+    }
+    function edit_feedback($param1 = '') {
+        $page_data['id']=$param1;
+        $page_data['page_name'] = 'edit_feedback';
+        $page_data['page_title'] = get_phrase('feedback');
+        $this->load->view('backend/index', $page_data);
+    }
+    public function errors_logs($param1 = '', $param2 = '', $param3 = '') {  
+        $data['title'] = 'Error Log';
+        $data['clear'] = site_url('tool/error_log/clear');
+        $data['log'] = '';
+        if($_GET['date']!=''){
+        $date=date('Y-m-d',strtotime($_GET['date']));
+        }else{
+        $date=date('Y-m-d');
+        }
+         // Current Filename;
+        $file = APPPATH . 'logs/' . 'log-'.$date.'.php';
+        /*$file = APPPATH . 'logs/' . 'log-2019-01-16.php';*/
+        if (file_exists($file)) {
+            $size = filesize($file);
+            if ($size >= 5242880) {
+                $suffix = array(
+                    'B',
+                    'KB',
+                    'MB',
+                    'GB',
+                    'TB',
+                    'PB',
+                    'EB',
+                    'ZB',
+                    'YB'
+                );
+                $i = 0;
+                while (($size / 1024) > 1) {
+                    $size = $size / 1024;
+                    $i++;
+                }
+                $error_warning = 'Warning: Your error log file %s is %s!';
+                $data['error_warning'] = sprintf($error_warning, basename($file), round(substr($size, 0, strpos($size, '.') + 4), 2) . $suffix[$i]);
+            } else {
+                 // Updated from comment
+                $log = file_get_contents($file, FILE_USE_INCLUDE_PATH, null);
+                $lines = explode("\n", $log); 
+                /*$content = implode("\n", array_slice($lines, 1));*/ 
+                $data['log'] = $lines;
+                /*print_r($data);die;*/
+            }
+        }
+        $data['page_name'] = 'logs';
+        $data['page_title'] = get_phrase('logs');
+        $this->load->view('backend/index', $data);
+    }
 
 }
 ?>

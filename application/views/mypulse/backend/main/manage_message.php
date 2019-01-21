@@ -14,7 +14,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
-<div class="alert bg-info" style="background: #30a5ff" role="alert">Dear User ,<br/>&nbsp;&nbsp;1. Messages Will Be Automatically Deleted After 30 Days.<br/>&nbsp;&nbsp;2. Green Color Will Indicate Read Messages And Red Color Will Indicate Unread Messages.</div>
+<div class="alert bg-info" style="background: #30a5ff" role="alert">Dear User ,<br/>&nbsp;&nbsp;Messages Will Be Automatically Deleted After 30 Days.</div>
 <form action="#" method="post">
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/new_message'" class="btn btn-primary pull-right">
@@ -47,8 +47,18 @@ $this->session->set_userdata('last_page', current_url());
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
         <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">From</span><span>Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
-    <?php $message_data=$this->crud_model->select_message();$i=1;foreach ($message_data as $row) { ?>
+    <?php $message_data=$this->crud_model->select_message();$i=1;foreach ($message_data as $row) { 
+      $count=explode(',',$row['is_read']);
+    $s=0;
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }
+      ?>
       <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
+      <?php if($s==0){ ?><strong> <?php }?>
     <p class="" style="text-align: center;"><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
 if($created_by[0] == 'superadmin'){
   $user_role='Super Admin';
@@ -68,23 +78,13 @@ if($created_by[0] == 'superadmin'){
   $user_role='MyPulse Users';
 }
     echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span><span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at'])); ?>
-    <?php $count=explode(',',$row['is_read']);
-    $s=0;
-    for($m2=0;$m2<count($count);$m2++){
-        if($account_details == $count[$m2]){
-                $s=1;
-                break;
-        }
-        }
-        if($s==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($s==0){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
     </span>
     </p>
+      <?php if($s==0){ ?></strong><?php }?>
     </a>
    <?php }?>
     </div>
     </div>
-
-
             <div class="tab-pane box" id="add">
                 <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">To</span><span style="margin-left:0%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="/*list-style: none; */min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">

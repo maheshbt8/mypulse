@@ -19,14 +19,11 @@ class Login extends CI_Controller {
     function validate_login() {
         if($this->input->post()){
       $email = $this->input->post('email');
-      $password = $this->input->post('password');/*
-      $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";*/
+      $password = $this->input->post('password');
+      /* $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";*/
       $credential = array('email' => $email, 'password' => sha1($password),'status'=>'1','is_email'=>'1');
-     
         // Checking login credential for admin
-        
         $query = $this->db->get_where('superadmin', $credential);
-        
         if ($query->num_rows() > 0) {
             $row = $query->row();
             $this->session->set_userdata('login', '1');
@@ -422,6 +419,11 @@ if ($this->form_validation->run() == TRUE){
         $page_data['page_name'] = 'privacy';
         
         $this->load->view('backend/main/privacy', $page_data);
+    }
+
+    /*Error */
+    function errors(){
+        $this->load->view('errors/html/error_php');
     }
  /*     * *****LOGOUT FUNCTION ****** */
     function logout() {

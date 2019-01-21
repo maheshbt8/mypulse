@@ -77,7 +77,7 @@ if($_POST) {
                 	<?php if(is_writable($db_config_path)){?>
 
 		  <?php if(isset($message)) {echo '<p class="error">' . $message . '</p>';}?>
-		  			<h4>Database Seetings</h4>
+		  			<h4>Database Settings</h4>
 		  			<hr/>
                    <form class="form-horizontal" id="install_form" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                         <div class="form-group">

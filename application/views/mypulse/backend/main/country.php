@@ -39,14 +39,7 @@
 							<td>
               <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_country/<?php echo $row['country_id'];?>');">
               <i class="fa fa-pencil"></i></a>
-              <!-- <a href="#"><i class="entypo-pencil" data-toggle="modal" data-target="#myModal"></i></a> -->
         					</td>
-                                   <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-    </div>
-  </div>
                         </tr>
         
                         <?php }?>

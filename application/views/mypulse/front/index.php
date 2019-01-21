@@ -162,56 +162,105 @@ header{
 <div  id="services">
 <!-- Products -->
   <section class="services py-5">
-    <div class="container-fluid py-md-4 mt-md-3"> 
+    <div class="container py-md-4 mt-md-3"> 
       <h2 class="heading-agileinfo">MyPulse - What we offer?</h2>
       <span class="w3-line black"></span>
-      <div class="row inner_w3l_agile_grids-1 mt-md-5 pt-4">
-        <div class="col-md-4 w3layouts_news_left_grid1">
-          <div class="new_top">
-            <i class="fas fa-home"></i>     
-            <h3 class="mb-3 mt-3">Appointment handling</h3>
-            <p>Users should be able to seamlessly book appointments with our Hospitals and the appointments are confirmed by the System automatically. Also, appointments are rescheduled/cancelled as reqd. And Hospitals will be able to track all their scheduled appointments easily.</p>
+      <div class="row about-main pt-5 mt-md-5">
+        <div class="col-lg-12 about-left">
+          <div class="stats1">
+              <!-- testimonials -->
+            <div class="w3_agile-section testimonials text-center" id="testimonials">
+              <div class=" w3ls-team-info test-bg">
+                <div class="testi-left">
+                  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                      <ol class="carousel-indicators">
+                      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+                      </ol>
+                      <div class="carousel-inner">
+                      <div class="carousel-item active">
+                        <div class="row thumbnail adjust1">
+                             <div class="col-md-12 col-sm-12">
+                              <div class="caption testi-text">
+                                  <h4>Appointment handling</h4>
+                                </div>
+                            </div>
+                            <p class="mt-3">Users should be able to seamlessly book appointments with our Hospitals and the appointments are confirmed by the System automatically. Also, appointments are rescheduled/cancelled as reqd. And Hospitals will be able to track all their scheduled appointments easily.</p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                             <div class="col-md-12 col-sm-12">
+                              <div class="caption testi-text">
+                                  <h4>Managing of health records</h4>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                              Health records across the Hospitals are stored, protected and managed in electronic form, reducing the paper work for both Hospitals and End users and eliminating the risk of missing/misplacement of Health records.
+                            </p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                             <div class="col-md-12 col-sm-12">
+                              <div class="caption testi-text">
+                                  <h4>Patient management</h4>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                              Hospitals/Clinics should be able to track and manage list of their patients easily(Both Out-patients and In-patents).
+                            </p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                             <div class="col-md-12 col-sm-12">
+                              <div class="caption testi-text">
+                                  <h4>Orders for Medicines and Medical Tests</h4>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                            Users should be able to order medicines and Medical Tests. And the the receipts and reports are made available to users.
+                            </p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                             <div class="col-md-12 col-sm-12">
+                              <div class="caption testi-text">
+                                  <h4>Notifications and Messages</h4>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                            Users are notified about important activities and reminders for the same. Also, simple messaging system for communication among various staff/users.
+                            </p>
+                        </div>
+                      </div>
+                      <div class="carousel-item">
+                        <div class="row thumbnail adjust1">
+                             <div class="col-md-12 col-sm-12">
+                              <div class="caption testi-text">
+                                  <h4>Web & Android Apps</h4>
+                                </div>
+                            </div>
+                            <p class="mt-3">
+                            Simple and easy to use Web and Android apps that provide users access to our services.
+                            </p>
+                        </div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
           </div>
-        </div>
-        <div class="col-md-4 w3layouts_news_left_grid2">
-          <div class="new_top">
-            <i class="fas fa-building"></i>
-            <h3 class="mb-3 mt-3">Managing of health records</h3>
-            <p>Health records across the Hospitals are stored, protected and managed in electronic form, reducing the paper work for both Hospitals and End users and eliminating the risk of missing/misplacement of Health records.</p>
-          </div>
-        </div>
-        <div class="col-md-4 w3layouts_news_left_grid3">
-          <div class="new_top">
-            <i class="fas fa-credit-card"></i>
-            <h3 class="mb-3 mt-3">Patient management</h3>
-            <p>Hospitals/Clinics should be able to track and manage list of their patients easily(Both Out-patients and In-patents).</p>
-          </div>
+    <!-- //testimonials-->
         </div>
       </div>
-      <div class="row inner_w3l_agile_grids-1 mt-md-5 pt-4">
-        <div class="col-md-4 w3layouts_news_left_grid1">
-          <div class="new_top">
-            <i class="fas fa-home"></i>     
-            <h3 class="mb-3 mt-3">Orders for Medicines and Medical Tests</h3>
-            <p>Users should be able to order medicines and Medical Tests. And the the receipts and reports are made available to users.</p>
-          </div>
-        </div>
-        <div class="col-md-4 w3layouts_news_left_grid2">
-          <div class="new_top">
-            <i class="fas fa-building"></i>
-            <h3 class="mb-3 mt-3">Notifications and Messages</h3>
-            <p>Users are notified about important activities and reminders for the same. Also, simple messaging system for communication among various staff/users.</p>
-          </div>
-        </div>
-        <div class="col-md-4 w3layouts_news_left_grid3">
-          <div class="new_top">
-            <i class="fas fa-credit-card"></i>
-            <h3 class="mb-3 mt-3">Web & Android Apps</h3>
-            <p>Simple and easy to use Web and Android apps that provide users access to our services.</p>
-          </div>
-        </div>
-      </div>
-      
+    </div>
   </div>   
 </section>
 <!-- //Products -->
@@ -287,8 +336,6 @@ header{
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Integrates seamlessly with your medical Store to track orders for Medicines.</li>
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Provides access to prescriptions and helps to process the orders for Medicines and upload Receipts for Users.</li>
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles to install and maintain the hardware/software (We take care of this for you :)</li>
-<!-- <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Seamless access to your medical store by large set of user base across the country</li>
-<li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles of having to install and maintain the hardware/software (We do it for you :)</li> -->
               </ul>
               </div>
             </div>
@@ -310,8 +357,6 @@ header{
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Provides access to prescriptions and helps to process the orders for Medical tests.</li>
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>Helps to Upload receipts and health records for the users.</li>
 <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles to install and maintain the hardware/software (We take care of this for you :)</li>
-<!-- <li><span class="fa fa-arrow-right mr-2" aria-hidden="true">&nbsp;</span>No Hardware reqmt and no hassles of having to install and maintain the hardware/software (We do it for you :)</li> -->
-
               </ul>
               </div>
             </div>
@@ -333,105 +378,84 @@ header{
      
       <span class="w3-line black"></span>
       <div class="row about-main pt-5 mt-md-5">
-        <div class="col-lg-6 about-right">
-        <!-- stats -->
+        <div class="col-lg-12 about-left">
           <div class="stats1">
-            <div class="row stats_inner">
-              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
-                <img src="<?=base_url('assets/front/')?>images/logo1.jpg" alt="logo1" class=" img-fluid">
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
-                <img src="<?=base_url('assets/front/')?>images/logo2.jpg" alt="logo1" class=" img-fluid">
-              </div>
-            </div>
-            <div class="row stats_inner top-st">
-              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
-                <img src="<?=base_url('assets/front/')?>images/logo3.jpg" alt="logo1" class=" img-fluid">
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
-                <img src="<?=base_url('assets/front/')?>images/logo1.jpg" alt="logo1" class=" img-fluid">
-              </div>
-              
-            </div>
-            <div class="row stats_inner top-st">
-              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
-                <img src="<?=base_url('assets/front/')?>images/logo1.jpg" alt="logo1" class=" img-fluid">
-              </div>
-              <div class="col-md-6 col-sm-6 col-xs-6 stat-grids">
-                <img src="<?=base_url('assets/front/')?>images/logo3.jpg" alt="logo1" class=" img-fluid">
-              </div>
-              
-            </div>
-          </div>
-          <!-- //stats -->
-
-        </div>
-        <div class="col-lg-6 about-left">
               <!-- testimonials -->
             <div class="w3_agile-section testimonials text-center" id="testimonials">
               <div class=" w3ls-team-info test-bg">
                 <div class="testi-left">
+                  <?php
+                  $feedback=$this->db->get('feedback')->result_array();
+                  ?>
                   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                       <ol class="carousel-indicators">
-                      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        <?php
+                        for($i=0;$i<count($feedback);$i++) {
+                        ?>
+                      <li data-target="#carouselExampleIndicators" data-slide-to="<?=$i;?>" class="<?php if($i==0){"active";}?>"></li>
+                    <?php }?>
                       </ol>
                       <div class="carousel-inner">
-                      <div class="carousel-item active">
+                                  <?php
+                        $j=0;
+                        foreach ($feedback as $feed ) {
+                          $customer=explode('-',$feed['customer_id']);
+                        ?>
+<?php
+if($customer[0] == 'superadmin'){
+  $img_type='superadmin_image';
+  $account='Super Admin';
+}elseif($customer[0] == 'hospitaladmins'){
+  $img_type='hospitaladmin_image';
+  $account='Hospital Admin';
+}elseif($customer[0] == 'doctors'){
+  $img_type='doctor_image';
+  $account='Doctor';
+}elseif($customer[0] == 'nurse'){
+  $img_type='nurse_image';
+  $account='Nurse';
+}elseif($customer[0] == 'receptionist'){
+  $img_type='receptionist_image';
+  $account='Receptionist';
+}elseif($customer[0] == 'medicalstores'){
+  $img_type='medical_stores';
+  $account='Medical Store';
+}elseif($customer[0] == 'medicallabs'){
+  $img_type='medical_labs';
+  $account='Medical Lab';
+}
+if (file_exists('uploads/'. $img_type.'/'.$customer[2]. '.jpg'))
+      $image_url = base_url() . 'uploads/' . $img_type.'/' .$customer[2]. '.jpg';
+else
+    $image_url = base_url() . 'uploads/user.jpg';
+?>
+                      <div class="carousel-item <?php if($j==0){echo 'active';}?>">
                         <div class="row thumbnail adjust1">
                            <div class="col-md-3 col-sm-3">
-                              <img class="media-object img-fluid" src="<?=base_url('assets/front/')?>images/ts1.jpg" alt="" />
+                              <img class="media-object img-fluid" src="<?=$image_url;?>" alt="" style="height:100px;"/>
                              </div>
                              <div class="col-md-9 col-sm-9">
                               <div class="caption testi-text">
-                                  <h4>Jane Wilson,</h4>
-                                  <h5>Worker</h5>
+              <h4><?php $ac='';
+ if($account=='Doctor'){
+  $ac='Dr.';
+ }
+ echo $ac.' '.$this->db->where($customer[1].'_id',$customer[2])->get($customer[0])->row()->name;?></h4>
+                                  <h5><?=$account;?></h5>
                                 </div>
                             </div>
                             <p class="mt-3">
-                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span>Donec euismod consequat mi, pretium consequat mi, pretium
-                             volutpat nibh tempor volutpat nibh tempor nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ullamcorper mauris. Vivamus fringilla venenatis enim, non pulvinar turpis euismod eu </p>
+                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span><?=$feed['feedback'];?> </p>
                         </div>
                       </div>
-                      <div class="carousel-item">
-                        <div class="row thumbnail adjust1">
-                           <div class="col-md-3 col-sm-3">
-                              <img class="media-object img-fluid" src="<?=base_url('assets/front/')?>images/ts2.jpg" alt="" />
-                             </div>
-                             <div class="col-md-9 col-sm-9">
-                              <div class="caption testi-text">
-                                  <h4>Jane Wilson</h4>
-                                  <h5>Worker</h5>
-                                </div>
-                            </div>
-                            <p class="mt-3">
-                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span>Donec euismod consequat mi, pretium consequat mi, pretium
-                             volutpat nibh tempor volutpat nibh tempor nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ullamcorper mauris. Vivamus fringilla venenatis enim, non pulvinar turpis euismod eu</p>
-                        </div>
-                      </div>
-                      <div class="carousel-item">
-                        <div class="row thumbnail adjust1">
-                           <div class="col-md-3 col-sm-3">
-                              <img class="media-object img-fluid" src="<?=base_url('assets/front/')?>images/ts3.jpg" alt="" />
-                             </div>
-                             <div class="col-md-9 col-sm-9">
-                              <div class="caption testi-text">
-                                  <h4>Jane Wilson</h4>
-                                  <h5>Worker</h5>
-                                </div>
-                            </div>
-                            <p class="mt-3">
-                            <span class="fa fa-quote-left pr-3" aria-hidden="true"></span>Donec euismod consequat mi, pretium consequat mi, pretium
-                             volutpat nibh tempor volutpat nibh tempor nec. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget ullamcorper mauris. Vivamus fringilla venenatis enim, non pulvinar turpis euismod eu</p>
-                        </div>
-                      </div>
+                    <?php $j++;}?>
                       </div>
                   </div>
                 </div>
               </div>
           </div>
     <!-- //testimonials-->
+        </div>
       </div>
     </div>
   </div>

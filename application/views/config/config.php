@@ -17,7 +17,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/mypulse/';//http://localhost/mypulse/http://'.$_SERVER['HTTP_HOST'].'/mypulse/
+$config['base_url'] = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['HTTP_HOST'].'/mypulse/';
+//http://localhost/mypulse/http://'.$_SERVER['HTTP_HOST'].'/mypulse/
 
 /*
 |--------------------------------------------------------------------------
@@ -211,7 +212,7 @@ $config['directory_trigger'] = 'd';
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -498,3 +499,8 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+
+
+/*$config["clv_log_folder_path"] = APPPATH . "logs";
+$config["clv_log_file_pattern"] = "log-*.php";*/

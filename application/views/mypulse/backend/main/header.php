@@ -78,19 +78,21 @@ else
     </a>
        <ul class="dropdown-menu dropdown-messages">
   <div class="list-body">
-<?php $notification_data=$this->crud_model->select_notification();
+
+<div id="n"><?php $notification_data=$this->crud_model->select_notification();?></div>
+<?php 
 if(count($notification_data) > 0){
     foreach ($notification_data as $row) {
     ?>
 <li>
 
 <div class="dropdown-messages-box">
-<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>"><div class="message-body">
-<strong><?= $row['title'];?></strong>.
- <?php
-        if($row['isRead']==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($row['isRead']==2){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
+<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>">
+<div class="message-body">
+<?php if($row['isRead']==2){ ?><strong> <?php }?><?= $row['title'];?>.
 <br />
 <small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
+<?php if($row['isRead']==2){ ?></strong> <?php }?>
 </div>
 </a>
 <a href="<?=base_url('main/notification/delete/').$row['id'];?>"><b class="pull-right" style="font-size: 20px;"><i class="fa fa-times-circle-o"></i></b>
@@ -125,16 +127,11 @@ if(count($notification_data) > 0){
 	</a>
 	   <ul class="dropdown-menu dropdown-messages">
   <div class="list-body">
-<?php $message_data=$this->crud_model->select_message();
+<div id="m"><?php $message_data=$this->crud_model->select_message();?></div>
+<?php
 if($message_data!=''){
     foreach ($message_data as $row) {
-    ?>
-<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
-        <li>
-        <div class="dropdown-messages-box">
-<div class="message-body">
-<strong><?= $row['title'];?></strong>.
-    <?php $count=explode(',',$row['is_read']);
+      $count=explode(',',$row['is_read']);
     $s=0;
     for($m2=0;$m2<count($count);$m2++){
         if($account_details == $count[$m2]){
@@ -142,10 +139,19 @@ if($message_data!=''){
                 break;
         }
         }
-        if($s==1){?><span style="color: green">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }elseif($s==0){?><span style="color: red">&nbsp;&nbsp;<i class="fa fa-dot-circle-o fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;</span><?php }?>
-<br />
-<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
+    ?>
+<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
+        <li>
+        <div class="dropdown-messages-box">
+         
+<div class="message-body">
+  <?php if($s==0){ ?> <strong><?php }?>
+&nbsp;&nbsp;<?= $row['title'];?>.
+<br/>
+&nbsp;&nbsp;<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
+<?php if($s==0){ ?></strong><?php }?>
 </div>
+
 </div>
 </li>
 <li class="divider"></li>
@@ -189,14 +195,6 @@ if($message_data!=''){
         </ul>
       </li>
 					</ul>
-                                      <!--   <ul class="navbar-right theme-switcher">
-                        <li><span>Choose Theme:</span></li>
-                        <li><a href="#" title="Default" data-theme="default" class="theme-btn theme-btn-default">Default</a></li>
-                        <li><a href="#" title="Iris" data-theme="iris" class="theme-btn theme-btn-iris">Iris</a></li>
-                        <li><a href="#" title="Midnight" data-theme="midnight" class="theme-btn theme-btn-midnight">Midnight</a></li>
-                        <li><a href="#" title="Lime" data-theme="lime"  class="theme-btn theme-btn-lime">Lime</a></li>
-                        <li><a href="#" title="Rose" data-theme="rose" class="theme-btn theme-btn-rose">Rose</a></li>
-                    </ul> -->
 				</div>
 			</div><!-- /.container-fluid -->
 		</nav>
@@ -275,6 +273,13 @@ $("#google_translate_element").hide();
     } 
 </script>
 <script>
+/*  function Load_external_content()
+{
+      $('#n').load('#n');
+      $('#m').load('#m');
+}
+setInterval('Load_external_content()', 10000);
+*/
 $( document ).ready(function() {
    $.ajax({
             url: '<?php echo base_url();?>ajax/get_message_count/',

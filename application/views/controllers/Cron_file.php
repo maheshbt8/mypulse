@@ -38,5 +38,13 @@ write_file($save, $backup);
 $this->load->helper('download');
 force_download($db_name, $backup);
         /*Db Backups End*/
+
+
+
+        /*Log Delete */
+$path='logs/log-'.date('Y-m-d',strtotime('-7 days')).'.php';
+$this->load->helper("file"); // load the helper
+unlink(APPPATH . $path); // delete all files/folders
+        /*Log Delete*/
     }
 }

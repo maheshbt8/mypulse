@@ -61,7 +61,7 @@
     * For full source code, visit https://mycyberuniverse.com
     */
   window.onload = function() {
-    $('body').bind('cut copy paste', function (e) {
+ /*   $('body').bind('cut copy paste', function (e) {
         e.preventDefault();
     });
     document.addEventListener("contextmenu", function(e){
@@ -98,6 +98,6 @@
       }
       e.preventDefault();
       return false;
-    }
+    }*/
   };
 </script>

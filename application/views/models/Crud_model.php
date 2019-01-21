@@ -73,269 +73,6 @@ function email_verification($data="")
             echo "<a href='".base_url()."'>Go To Home</a>";
         }
     }
-
-/*
-    function email_verification($task="",$id="")
-    {
-        if($task == 'hospitaladmins'){
-    
-    $is_email=$this->db->get_where('hospitaladmins', array('admin_id' => $id))->row();
-    $past_time = strtotime($is_email->created_at);
-    $current_time = time();
-    $difference = $current_time - $past_time;
-    $difference_minute =  $difference/60;
-    
-    if(intval($difference_minute)<30){
-            if($is_email->is_email==2){
-            $yes=$this->db->where('admin_id',$id)->update('hospitaladmins',array('is_email' =>1));
-            if($yes){
-            redirect(base_url() . 'index.php?login/set_password/hospitaladmins/'.$id, 'refresh');
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        }else{
-            echo "Your Link Was Expired"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        }
-        if($task == 'doctors'){
-
-            $is_email=$this->db->get_where('doctors', array('doctor_id' => $id))->row()->is_email;
-            if($is_email->is_email==2){
-            $yes=$this->db->where('doctor_id',$id)->update('doctors',array('is_email' =>1));
-               if($yes){
-            redirect(base_url() . 'index.php?login/set_password/doctors/'.$id);
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        }
-        if($task == 'nurse'){
-           $is_email=$this->db->get_where('nurse', array('nurse_id' => $id))->row()->is_email;
-            if($is_email->is_email==2){
-            $yes=$this->db->where('nurse_id',$id)->update('nurse',array('is_email' =>1));
-               if($yes){
-            redirect(base_url() . 'index.php?login/set_password/nurse/'.$id, 'refresh');
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        
-        }
-        if($task == 'receptionist'){
-           $is_email=$this->db->get_where('receptionist', array('receptionist_id' => $id))->row()->is_email;
-            if($is_email->is_email==2){
-            $yes=$this->db->where('receptionist_id',$id)->update('receptionist',array('is_email' =>1));
-               if($yes){
-            redirect(base_url() . 'index.php?login/set_password/receptionist/'.$id, 'refresh');
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        
-        }
-        if($task == 'medicalstores'){
-           $is_email=$this->db->get_where('medicalstores', array('store_id' => $id))->row()->is_email;
-            if($is_email->is_email==2){
-            $yes=$this->db->where('store_id',$id)->update('medicalstores',array('is_email' =>1));
-               if($yes){
-            redirect(base_url() . 'index.php?login/set_password/medicalstores/'.$id, 'refresh');
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        
-        }
-        if($task == 'medicallabs'){
-           $is_email=$this->db->get_where('medicallabs', array('lab_id' => $id))->row()->is_email;
-            if($is_email->is_email==2){
-            $yes=$this->db->where('lab_id',$id)->update('medicallabs',array('is_email' =>1));
-               if($yes){
-            redirect(base_url() . 'index.php?login/set_password/medicallabs/'.$id, 'refresh');
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        
-        }
-        if($task == 'users'){
-           $is_email=$this->db->get_where('users', array('user_id' => $id))->row()->is_email;
-            if($is_email->is_email==2){
-            $yes=$this->db->where('user_id',$id)->update('users',array('is_email' =>1));
-               if($yes){
-            redirect(base_url() . 'index.php?login/set_password/users/'.$id, 'refresh');
-        }
-        }else{
-            echo "YOU Already Verified Your Email"."<br/>";
-            echo "<a href='".base_url()."'>Go To Home</a>";
-        }
-        
-        }
-    }*/
-    // Create a new invoice.
-    function create_invoice() 
-    {
-        $data['title']              = $this->input->post('title');
-        $data['invoice_number']     = $this->input->post('invoice_number');
-        $data['patient_id']         = $this->input->post('patient_id');
-        $data['creation_timestamp'] = $this->input->post('creation_timestamp');
-        $data['due_timestamp']      = $this->input->post('due_timestamp');
-        $data['vat_percentage']     = $this->input->post('vat_percentage');
-        $data['discount_amount']    = $this->input->post('discount_amount');
-       $data['status']             = $this->input->post('status');
-
-        $invoice_entries            = array();
-        $descriptions               = $this->input->post('entry_description');
-        $amounts                    = $this->input->post('entry_amount');
-        $number_of_entries          = sizeof($descriptions);
-        
-             
-        for ($i = 0; $i < $number_of_entries; $i++)
-        {
-            if ($descriptions[$i] != "" && $amounts[$i] != "")
-            {
-                $new_entry          = array('description' => $descriptions[$i], 'amount' => $amounts[$i]);
-                array_push($invoice_entries, $new_entry);
-            }
-        }
-        $data['invoice_entries']    = json_encode($invoice_entries);
-       // echo $data['invoice_entries'];die();
-        
-        
-        $invoice_entries    = json_decode($data['invoice_entries']);
-      //  print_r($invoice_entries);die();
-                $i = 1;
-                foreach ($invoice_entries as $invoice_entry)
-                {
-                    $total_amount += $invoice_entry->amount; 
-                       $i++;
-                 }
-                 $vat=$this->input->post('vat_percentage');
-                 $gst=$this->db->where(array('type' => 'GST'))->get('settings')->row()->description;
-                 $dis=$this->input->post('discount_amount');
-                 $total_amount;
-                   $vat= ( $total_amount* $vat)/ 100;
-                   $gst1= ( $total_amount* $gst)/ 100;
-                   $amout=$total_amount+$vat+ $gst1;
-                  $grand_total=$amout- $dis; 
-                 $data['grand_total']    = $grand_total;
-                // print_r($data);die();
-        $this->db->insert('invoice', $data);
-        
-    }
-    function create_payment() 
-    {
-        $data['invoice_number']              = $this->input->post   ('invoice_number');
-        $data['total_amount']              = $this->input->post('total_amount');
-          $data['amount']              = $this->input->post('amount');
-            $data['timestamp']              = $this->input->post('timestamp');
-             //$data['status']              = $this->input->post('status');
-      
-                $dis=$this->input->post('total_amount');
-                 $amount=$this->input->post('amount');
-                 $pending=$dis-$amount;
-                   
-                 $data['pending_amount']    = $pending;
-                //print_r($data);die();
-
-        $this->db->insert('payments', $data);
-    }
-
-    function create_expense() 
-    {
-        $data['expense']              = $this->input->post('expense');
-      
-
-        $this->db->insert('expenses', $data);
-    }
-
-
-
-    function create_expenses() 
-    {
-        $data['expense']              = $this->input->post('expense');
-          $data['amount']              = $this->input->post('amount');
-            $data['date']              = $this->input->post('creation_timestamp');
-             $data['status']              = $this->input->post('status');
-      
-      
-
-        $this->db->insert('add_expense', $data);
-    }
-    
-    function select_invoice_info()
-    {
-        return $this->db->get('invoice')->result_array();
-    }
-    function select_expense_info()
-    {
-        return $this->db->get('add_expense')->result_array();
-    }
-    
-    function select_invoice_info_by_patient_id()
-    {
-        $patient_id = $this->session->userdata('login_user_id');
-        return $this->db->get_where('invoice', array('patient_id' => $patient_id))->result_array();
-    }
-
-
-
-    function update_expense($id)
-    {
-        $data['expense']              = $this->input->post('expense');
-        $data['amount']     = $this->input->post('amount');
-        //$data['patient_id']         = $this->input->post('patient_id');
-        $data['date'] = $this->input->post('creation_timestamp');
-      
-        $data['status']             = $this->input->post('status');
-
-      
-       
-      //  $number_of_entries          = sizeof($descriptions);
-        
-       
-
-        $this->db->where('id', $id);
-        $this->db->update('add_expense', $data);
-    }
-
-    function delete_invoice($invoice_id)
-    {
-        $this->db->where('invoice_id', $invoice_id);
-        $this->db->delete('invoice');
-    }
-
-    function calculate_invoice_total_amount($expense)
-    {
-        //echo $expense;die();
-        $total_amount           = 0;
-        $invoice                = $this->db->get_where('add_expense', array('expense' => $expense))->result_array();
-       
-        foreach ($invoice as $row)
-        {
-            
-          //print_r($row);die();
-                $total_amount  += $row['amount'];
-            
-          
-            $gst                = $total_amount * $this->db->where(array('type' => 'GST'))->get('settings')->row()->description/ 100;
-            $grand_total        = $total_amount +$gst ;
-            //print_r($grand_total);die();
-        }
-
-        return $grand_total;
-        
-    }
-
-  
-
     //////system settings//////
     function update_system_settings() {
         $data['description'] = $this->input->post('system_name');
@@ -370,17 +107,9 @@ function email_verification($data="")
         $this->db->where('type', 'GST');
         $this->db->update('settings', $data);
 
-        /*$data['description'] = $this->input->post('buyer');
-        $this->db->where('type', 'buyer');
-        $this->db->update('settings', $data);*/
-
         $data['description'] = $this->input->post('system_name');
         $this->db->where('type', 'system_name');
         $this->db->update('settings', $data);
-
-        /*$data['description'] = $this->input->post('purchase_code');
-        $this->db->where('type', 'purchase_code');
-        $this->db->update('settings', $data);*/
 
         $data['description'] = $this->input->post('language');
         $this->db->where('type', 'language');
@@ -394,17 +123,24 @@ function email_verification($data="")
     // SMS settings.
     function update_sms_settings() {
         
-        $data['description'] = $this->input->post('clickatell_user');
-        $this->db->where('type', 'clickatell_user');
+        $data['description'] = $this->input->post('sms_username');
+        $this->db->where('type', 'sms_username');
         $this->db->update('settings', $data);
         
-        $data['description'] = $this->input->post('clickatell_password');
-        $this->db->where('type', 'clickatell_password');
+        $data['description'] = $this->input->post('sms_sender');
+        $this->db->where('type', 'sms_sender');
         $this->db->update('settings', $data);
         
-        $data['description'] = $this->input->post('clickatell_api_id');
-        $this->db->where('type', 'clickatell_api_id');
+        $data['description'] = $this->input->post('sms_hash');
+        $this->db->where('type', 'sms_hash');
         $this->db->update('settings', $data);
+    }
+     // SMS settings.
+    function update_feedback($id) {
+        $data['customer_id'] = $this->input->post('customer');
+        $data['feedback'] = $this->input->post('feedback');
+        $this->db->where('id', $id);
+        $this->db->update('feedback', $data);
     }
 
     /////creates log/////
@@ -419,8 +155,6 @@ function email_verification($data="")
     ////////BACKUP RESTORE/////////
     function create_backup($type) {
         $this->load->dbutil();
-
-
         $options = array(
             'format' => 'txt', // gzip, zip, txt
             'add_drop' => TRUE, // Whether to add DROP TABLE statements to backup file
@@ -448,8 +182,6 @@ function email_verification($data="")
     function restore_backup() {
         move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/backup.sql');
         $this->load->dbutil();
-
-
         $prefs = array(
             'filepath' => 'uploads/backup.sql',
             'delete_after_upload' => TRUE,
@@ -634,12 +366,6 @@ function email_verification($data="")
         $this->db->where('health_insurance_provider_id',$health_insurance_provider_id);
         $this->db->delete('health_insurance_provider');
     }
-   /* function select_profile_update($id)
-    {
-        if($account_type == 'superadmin'){
-        return $this->db->get_where('superadmin', array('superadmin_id' => $this->session->userdata('login_user_id')))->result_array();
-        }
-    }*/
     /***************HOSPITALS*****************/
     
          function save_hospital_info()
@@ -672,10 +398,17 @@ function email_verification($data="")
         {
             
             $lid=$this->db->insert_id();
-            $num=100000+$lid;
-            /*$a="12345678901234567890";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 14);*/
+            if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('hospital_id',$lid-1)->get('hospitals')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
             $pid='MPH'.date('y').'_'.$num;
             $this->db->where('hospital_id',$lid)->update('hospitals',array('unique_id'=>$pid));
             
@@ -873,9 +606,7 @@ $pid='MPS'.date('y').'_'.$num;
         $data['phone']    = $this->input->post('phone_number');
         $data['owner_name']    = $this->input->post('owner_name');   
         $data['owner_mobile']    = $this->input->post('owner_mobile');
-       
         $data['hospital']    = $this->input->post('hospital');
-       // $data['status']    = $this->input->post('status');
         $data['branch']    = $this->input->post('branch');
         $data['fname']    = $this->input->post('fname');
         $data['lname']    = $this->input->post('lname');
@@ -891,9 +622,6 @@ $pid='MPS'.date('y').'_'.$num;
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
              $data['modified_at']=date('Y-m-d H:i:s');
-            // print_r($data);
-            // die;
-        
            $this->db->where('store_id',$patient_id);
         $query= $this->db->update('medicalstores',$data);
        if($query)
@@ -927,13 +655,9 @@ $pid='MPS'.date('y').'_'.$num;
           $data['gender']    = $this->input->post('gender');
             $data['dob']    = $this->input->post('dob');
              $data['in_address']    = $this->input->post('in_address');
-         /* $data['profession']    = $this->input->post('profession');*/
             $data['experience']    = $this->input->post('experience');
              $data['qualification']    = $this->input->post('qualification');
              $data['modified_at']=date('Y-m-d H:i:s');
-            // print_r($data);
-            // die;
-        
            $this->db->where('lab_id',$id);
         $query= $this->db->update('medicallabs',$data);
        if($query)
@@ -1342,19 +1066,6 @@ if($account_type == 'superadmin'){
         }
         return $doctors;
 }
-
-/*elseif($account_type == 'medicalstores'){
-  $user_role='Pharmacist';
-}elseif($account_type == 'medicallabs'){
-  $user_role='Laboratorist';
-}elseif($account_type == 'users'){
-  $user_role='MyPulse Users';
-}*/
-       /* if($hospital_id !=''){
-        return $this->db->where('hospital_id',$hospital_id)->get('doctors')->result_array();
-        }else{
-        return $this->db->get('doctors')->result_array();
-        }*/
     }
     
        function update_doctor_availability_info($doctor_id)
@@ -1408,14 +1119,11 @@ for($j=0;$j<count($days);$j++){
     }
    $que=$this->db->insert('availability_slot',$data);
     }
-
         return $que;
     }
 function update_doc_availability_info($id)
     {
-       
-        if($this->input->post('existDays')!='' && $this->input->post('existDays')=='yes'){
-          
+if($this->input->post('existDays')!='' && $this->input->post('existDays')=='yes'){          
   $this->db->where('unik',$this->input->post('unik'))->delete('availability_slot');
 $start    = new DateTime($this->input->post('start_on'));
 $end      = (new DateTime($this->input->post('end_on')))->modify('+1 day');
@@ -1432,7 +1140,6 @@ if($this->input->post('repeat_interval') == 0){
 $days=array(0=>'Sun',1=>'Mon',2=>'Tue',3=>'Wed',4=>'Thu',5=>'Fri',6=>'Sat');
 $shuffel=rand(1000,9999);
 foreach ($period as $dt) {
-
 $data['unik']=$shuffel; 
 $data['date']=$dt->format("m/d/Y");
 $data['doctor_id']      = $this->input->post('doctor_id');
@@ -1466,49 +1173,9 @@ $que=$this->db->insert('availability_slot',$data);
     function delete_all_doc_availability_info($id){
         return $this->db->where('unik',$this->db->where('id',$id)->get('availability_slot')->row()->unik)->delete('availability_slot');
     }
-    /*function save_rmp_info()
-    {
-        $data['name']       = $this->input->post('name');
-        $data['commission']         = $this->input->post('commission');
-        $data['date']       = $this->input->post('creation_timestamp');
-       
-        
-       return $this->db->insert('rmp',$data);
-        
-       
-    }
-
-
-    function update_rmp_info($rmp_id)
-    {
-        $data['name']       = $this->input->post('name');
-        $data['commission']   = $this->input->post('commission');
-        $data['date']   = $this->input->post('creation_timestamp');
-       
-        
-        $this->db->where('rmp_id',$rmp_id);
-   return   $this->db->update('rmp',$data);
-        
-  
-
-   }
-
- function select_rmp_info()
-    {
-        return $this->db->get('rmp')->result_array();
-    }
-    
-
-    function delete_rmp_info($rmp_id)
-    {
-        $this->db->where('rmp_id',$rmp_id);
-        return $this->db->delete('rmp');
-    }*/
-    
     function update_doctor_info($doctor_id)
-    {
-                   
-         $data['name'] 		= $this->input->post('fname');
+    {           
+        $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
         $data['description'] 		= $this->input->post('description');
@@ -1636,10 +1303,7 @@ $num=$my[1]+1;
 $num=100001;
 }
 }
-$pid='MPL'.date('y').'_'.$num; 
-            /*$lid=$this->db->insert_id();
-            $num=100000+$lid;
-            $pid='MPL'.date('y').'_'.$num;*/
+$pid='MPL'.date('y').'_'.$num;
             $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
             
         }
@@ -1648,8 +1312,6 @@ $pid='MPL'.date('y').'_'.$num;
            move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_labs/'. $id.  '.jpg');
        
     }
-    
-    
      function delete_lab_info($patient_id)
     {
         $this->db->where('lab_id',$patient_id);
@@ -1758,67 +1420,6 @@ $pid='MPU'.date('y').'_'.$num;
         $patient_id  =   $this->db->insert_id();
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
-     /*function save_outpatient_info()
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1($this->input->post('password'));
-         $data['city'] 	= $this->input->post('city');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        $data['sex']            = $this->input->post('sex');
-        $data['birth_date']     = strtotime($this->input->post('birth_date'));
-        $data['age']            = $this->input->post('age');
-        $data['in_time']            = $this->input->post('in_time');
-        $data['patient_type']            = $this->input->post('patient_type');
-        $data['blood_group'] 	= $this->input->post('blood_group');
-        
-        $insert=$this->db->insert('patient',$data);
-        if($insert)
-        {
-            
-            $lid=$this->db->insert_id();
-            $a="12345678901234567";
-            $sid=str_shuffle($a);
-            $uid=substr($sid, 15);
-             $pid='ARA_'.$lid.$uid;
-            $this->db->where('patient_id',$lid)->update('patient',array('unique_id'=>$pid));
-            
-        }
-        $patient_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
-    }*/
-   /*   function save_patientex_info()
-    {
-        
-        $data['name'] 		= $this->input->post('name');
-         $data['hospital'] 		= $this->input->post('hospital');
-        $data['medicine'] 		= $this->input->post('medicine');
-        $data['bed']       = $this->input->post('bed');
-        $data['days']       = $this->input->post('days');
-        $data['join_date'] 	= $this->input->post('join_date');
-        $data['discharge_date']          = $this->input->post('discharge_date');
-       
-        
-        $this->db->insert('patient_expenses',$data);
-        
-       
-    }*/
-/*
-    function save_checkup_info()
-    {
-        $data['tests'] 		= $this->input->post('tests');
-         $data['amount'] 		= $this->input->post('amount');
-      
-        $this->db->insert('checkups',$data);
-        
-       
-    }*/
-   /* function select_checkup_info()
-    {
-        return $this->db->get('checkups')->result_array();
-    }*/
-    
      function select_lab_info($hospital_id='')
     {
            $account_type=$this->session->userdata('login_type');
@@ -1837,11 +1438,6 @@ $pid='MPU'.date('y').'_'.$num;
 }
 }
     }
-    
-  /*  function select_checkup_infon()
-    {
-        return $this->db->get('users')->result_array();
-    }*/
     function select_user_info()
     {
         
@@ -2126,12 +1722,6 @@ return $return;
 
         /******Notification Message******/
         if($data['status'] == 1){$status='Admitted';}elseif($data['status'] == 0){$status='Not Admitted';}
-            
-            /*$notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-            $notification['user_id']='users-user-'.$data['user_id'];
-            $notification['title']='Registered As In-Patient';
-            $notification['text']='Hi User Your Considered As In-Patient Your Current Status is '.$status.'.';
-         $this->db->insert('notification',$notification);*/
          $in_patient['in_patient_id']=$lid;
          $in_patient['created_date']=$data['created_date'];
          $in_patient['note']='Joined As In-Patient and Status as '.$status.'.';
@@ -2172,14 +1762,7 @@ return $return;
         $this->db->where('bed_id',$this->input->post('bed'));
         $this->db->update('bed',array('bed_status'=>1));
         }
-            /*$lid=$this->db->insert_id();*/
             if($data['status'] == 2){$status='Discharged';}
-            /******Notification Message******/
-/*            $notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-            $notification['user_id']='users-user-'.$data['user_id'];
-            $notification['title']='Updated In-Patient Details';
-            $notification['text']='Hi User Your In-Patient Updated';
-         $this->db->insert('notification',$notification);*/
          $in_patient['in_patient_id']=$patient_id;
          $in_patient['created_date']=$data['modified_date'];
          $in_patient['note']='In-Patient Updated';
@@ -2197,43 +1780,7 @@ return $return;
     {
         $this->db->where('id',$id);
         $this->db->delete('inpatient');
-    }
-    /*function select_patient_inf($patient_id)
-    {
-        //return $this->db->where('patient_type','inpatient')->get_where('patient', array('patient_id' => $patient_id))->result_array();
-        return $this->db->get_where('patient',array('status'=>'1'))->result_array();
-        //echo $this->db->last_query(); die();
-    
-    }
-    function select_outpatient_inf($patient_id)
-    {
-        //return $this->db->where('patient_type','inpatient')->get_where('patient', array('patient_id' => $patient_id))->result_array();
-        return $this->db->get_where('patient',array('patient_type'=>'outpatient','patient_id'=>$patient_id))->result_array();
-        //echo $this->db->last_query(); die();
-    
-    }
-    function select_outpatient_info($patient)
-    {
-        return $this->db->where('patient_type','outpatient')->get('patient')->result_array();
-    }
-    
-     
-      function select_patientex_info()
-    {
-        return $this->db->get('payments')->result_array();
-    }
-    
-    function select_beds_info()
-    {
-        return $this->db->get('bed')->result_array();
-    }
-    
-    
-    function select_patient_info_by_patient_id( $patient_id = '' )
-    {
-        return $this->db->get_where('patient', array('patient_id' => $patient_id))->result_array();
-    }*/
-            
+    }       
     function update_user_info($user_id)
     {
         $data['name']      = $this->input->post('fname');
@@ -2302,40 +1849,7 @@ return $return;
         
         move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
     }
-    
-      function update_patientex_info($id)
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['hospital'] 		= $this->input->post('hospital');
-        $data['medicine'] 	= $this->input->post('medicine');
-        $data['bed']          = $this->input->post('bed');
-        $data['days']            = $this->input->post('days');
-        $data['join_date']     = $this->input->post('join_date');
-        $data['discharge_date']            = $this->input->post('discharge_date');
-       
-        
-        $this->db->where('id',$id);
-        $this->db->update('patient_expenses',$data);
-        
-    }
- 
-     function update_checkup_info($id)
-    {
-        $data['tests'] 		= $this->input->post('tests');
-        $data['amount'] 		= $this->input->post('amount');
-       
-        
-       
-        $this->db->where('id',$id);
-        $this->db->update('checkups',$data);
-        
-    }
-    
-    function delete_checkup_info($id)
-    {
-        $this->db->where('id',$id);
-        $this->db->delete('checkups');
-    }
+
     function delete_user_info($user_id)
     {
         $this->db->where('user_id',$user_id);
@@ -2354,14 +1868,6 @@ return $return;
         $this->db->where('patient_id',$patient_id);
         $this->db->delete('patient');
     }
-    
-       function delete_patientex_info($id)
-    {
-        $this->db->where('id',$id);
-        $this->db->delete('patient_expenses');
-    }
-    
-   
     function save_nurse_info()
     {
         $data['name'] 		= $this->input->post('fname');
@@ -2476,120 +1982,6 @@ $pid='MPN'.date('y').'_'.$num;
             $this->db->delete('nurse');
         }
     }
-    /*function save_pharmacist_info()
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1($this->input->post('password'));
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        
-        $this->db->insert('pharmacist',$data);
-        
-        $pharmacist_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/pharmacist_image/" . $pharmacist_id . '.jpg');
-    }
-    
-    function select_pharmacist_info()
-    {
-        return $this->db->get('pharmacist')->result_array();
-    }
-    
-    function update_pharmacist_info($pharmacist_id)
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        
-        $this->db->where('pharmacist_id',$pharmacist_id);
-        $this->db->update('pharmacist',$data);
-        
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/pharmacist_image/" . $pharmacist_id . '.jpg');
-    }
-    
-    function delete_pharmacist_info($pharmacist_id)
-    {
-        $this->db->where('pharmacist_id',$pharmacist_id);
-        $this->db->delete('pharmacist');
-    }
-    
-    function save_laboratorist_info()
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1($this->input->post('password'));
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        
-        $this->db->insert('laboratorist',$data);
-        
-        $laboratorist_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/laboratorist_image/" . $laboratorist_id . '.jpg');
-    }*/
-    
-    /*function select_laboratorist_info()
-    {
-        return $this->db->get('laboratorist')->result_array();
-    }*/
-    
-   /* function update_laboratorist_info($laboratorist_id)
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        
-        $this->db->where('laboratorist_id',$laboratorist_id);
-        $this->db->update('laboratorist',$data);
-        
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/laboratorist_image/" . $laboratorist_id . '.jpg');
-    }
-    
-    function delete_laboratorist_info($laboratorist_id)
-    {
-        $this->db->where('laboratorist_id',$laboratorist_id);
-        $this->db->delete('laboratorist');
-    }
-    
-    function save_accountant_info()
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['password']       = sha1($this->input->post('password'));
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        
-        $this->db->insert('accountant',$data);
-        
-        $accountant_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/accountant_image/" . $accountant_id . '.jpg');
-    }
-    
-    function select_accountant_info()
-    {
-        return $this->db->get('accountant')->result_array();
-    }
-    
-    function update_accountant_info($accountant_id)
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['email'] 		= $this->input->post('email');
-        $data['address'] 	= $this->input->post('address');
-        $data['phone']          = $this->input->post('phone');
-        
-        $this->db->where('accountant_id',$accountant_id);
-        $this->db->update('accountant',$data);
-        
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/accountant_image/" . $accountant_id . '.jpg');
-    }
-    
-    function delete_accountant_info($accountant_id)
-    {
-        $this->db->where('accountant_id',$accountant_id);
-        $this->db->delete('accountant');
-    }*/
-    
     function save_receptionist_info()
     {
        
@@ -2655,27 +2047,6 @@ if($account_type == 'superadmin'){
   }
   return $recep;
 }
- /*      $account_type=$this->session->userdata('login_type');
-if($account_type == 'superadmin'){
-  return $this->db->get('doctors')->result_array();
-}elseif($account_type == 'hospitaladmins'){
-  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('doctors')->result_array();
-}elseif($account_type == 'nurse'){
-  $doc=$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row()->doctor_id;
-  $doc_id=explode(',', $doc);
-  for($i=0;$i<count($doc_id);$i++){
-    $doctors[$i]=$this->db->where('doctor_id',$doc_id[$i])->get('doctors')->row_array();
-  }
-  return $doctors;
-  
-}elseif($account_type == 'receptionist'){
-  $doc=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id;
-  $doc_id=explode(',', $doc);
-  for($i=0;$i<count($doc_id);$i++){
-    $doctors[$i]=$this->db->where('doctor_id',$doc_id[$i])->get('doctors')->row_array();
-  }
-  return $doctors;
-}*/
     }
     
     function update_receptionist_info($receptionist_id)
@@ -2708,7 +2079,6 @@ if($account_type == 'superadmin'){
         unlink('uploads/receptionist_image/'. $receptionist_id.  '.jpg');
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
     }
-    
     function delete_receptionist_info($receptionist_id)
     {
         $this->db->where('receptionist_id',$receptionist_id);
@@ -2722,81 +2092,6 @@ if($account_type == 'superadmin'){
             $this->db->delete('receptionist');
         }
     }
-
-/*     function save_tests_allotment_info()
-    {
-        
-        $data['tests'] 		    = $this->input->post('tests');
-         $data['patient_id'] 		    = $this->input->post('patient_id');
-        $data['allotment_time'] 		    = $this->input->post('allotment_time');
-        
-       $this->db->insert('outpatient_tests',$data);
-    }
-    
-    function save_bed_allotment_info()
-    {
-        $data['bed_id']                 = $this->input->post('bed_id');
-        $data['patient_id'] 		    = $this->input->post('patient_id');
-        $data['tests'] 		    = $this->input->post('tests');
-        $data['allotment_timestamp'] 	= strtotime($this->input->post('allotment_timestamp'));
-        $data['discharge_timestamp']    = strtotime($this->input->post('discharge_timestamp'));
-        
-        $this->db->insert('bed_allotment',$data);
-    }
-    
-    function update_tests_allotment_info($tests_id)
-    {
-        
-        $data['tests'] 		= $this->input->post('tests');
-        $data['allotment_time'] 	= strtotime($this->input->post('allotment_time'));
-        $data['patient_id'] 		    = $this->input->post('patient_id');
-        
-        
-        $this->db->where('tests_id',$tests_id);
-        $this->db->update('outpatient_tests',$data);
-    }
-    function select_bed_allotment_info()
-    {
-        return $this->db->get('bed_allotment')->result_array();
-    }
-     function select_tests_allotment_info()
-    {
-        return $this->db->get('outpatient_tests')->result_array();
-    }
-    
-    function update_bed_allotment_info($bed_allotment_id)
-    {
-        $data['bed_id']                 = $this->input->post('bed_id');
-        $data['patient_id'] 		= $this->input->post('patient_id');
-        $data['allotment_timestamp'] 	= strtotime($this->input->post('allotment_timestamp'));
-        $data['discharge_timestamp']    = strtotime($this->input->post('discharge_timestamp'));
-        
-        $this->db->where('bed_allotment_id',$bed_allotment_id);
-        $this->db->update('bed_allotment',$data);
-    }
-    
-    function delete_bed_allotment_info($bed_allotment_id)
-    {
-        $this->db->where('bed_allotment_id',$bed_allotment_id);
-        $this->db->delete('bed_allotment');
-    }
-    function delete_tests_allotment_info($tests_id)
-    {
-        $this->db->where('tests_id',$tests_id);
-        $this->db->delete('outpatient_tests');
-    }
-    function select_blood_bank_info()
-    {
-        return $this->db->get('blood_bank')->result_array();
-    }
-    
-    function update_blood_bank_info($blood_group_id)
-    {
-        $data['status']    = $this->input->post('status');
-        
-        $this->db->where('blood_group_id',$blood_group_id);
-        $this->db->update('blood_bank',$data);
-    }*/
     function getReport(){
         $start_date = isset($_GET['sd']) ? date("Y-m-d",strtotime($_GET['sd'])) : date('Y-m-d',(strtotime ( '-29 day' , time() ) ));
         $end_date = isset($_GET['ed']) ? date("Y-m-d",strtotime($_GET['ed'])) : date("Y-m-d");
@@ -2810,46 +2105,7 @@ if($account_type == 'superadmin'){
             $qry=$this->db->get('appointments');
         }
         return $this->db->query($qry)->result_array();
-    }
-    /*function save_report_info()
-    {
-        $data['type'] 		= $this->input->post('type');
-        $data['description']    = $this->input->post('description');
-        $data['timestamp']      = strtotime($this->input->post('timestamp'));
-        $data['patient_id']     = $this->input->post('patient_id');
-        
-        $login_type             = $this->session->userdata('login_type');
-        if($login_type=='nurse')
-            $data['doctor_id']  = $this->input->post('doctor_id');
-        else $data['doctor_id'] = $this->session->userdata('login_user_id');
-        
-        $this->db->insert('report',$data);
-    }
-    
-   
-    
-    function update_report_info($report_id)
-    {
-        $data['type'] 		= $this->input->post('type');
-        $data['description']    = $this->input->post('description');
-        $data['timestamp']      = strtotime($this->input->post('timestamp'));
-        $data['patient_id']     = $this->input->post('patient_id');
-        
-        $login_type             = $this->session->userdata('login_type');
-        if($login_type=='nurse')
-            $data['doctor_id']  = $this->input->post('doctor_id');
-        else $data['doctor_id'] = $this->session->userdata('login_user_id');
-        
-        $this->db->where('report_id',$report_id);
-        $this->db->update('report',$data);
-    }
-    
-    function delete_report_info($report_id)
-    {
-        $this->db->where('report_id',$report_id);
-        $this->db->delete('report');
-    }*/
-    
+    }    
     function save_bed_info()
     {
         $data['hospital_id']=$this->input->post('hospital');
@@ -2904,111 +2160,7 @@ if($account_type == 'superadmin'){
             $this->db->where('bed_id',$check[$i]);
             $this->db->delete('bed');
         }
-    }
-    /*function save_blood_donor_info()
-    {
-        $data['name']                       = $this->input->post('name');
-        $data['email']                      = $this->input->post('email');
-        $data['address']                    = $this->input->post('address');
-        $data['phone']                      = $this->input->post('phone');
-        $data['sex']                        = $this->input->post('sex');
-        $data['age']                        = $this->input->post('age');
-        $data['blood_group']                = $this->input->post('blood_group');
-        $data['last_donation_timestamp']    = strtotime($this->input->post('last_donation_timestamp'));
-        
-        $this->db->insert('blood_donor',$data);
-    }
-    
-    function select_blood_donor_info()
-    {
-        return $this->db->get('blood_donor')->result_array();
-    }
-    
-    function update_blood_donor_info($blood_donor_id)
-    {
-        $data['name']                       = $this->input->post('name');
-        $data['email']                      = $this->input->post('email');
-        $data['address']                    = $this->input->post('address');
-        $data['phone']                      = $this->input->post('phone');
-        $data['sex']                        = $this->input->post('sex');
-        $data['age']                        = $this->input->post('age');
-        $data['blood_group']                = $this->input->post('blood_group');
-        $data['last_donation_timestamp']    = strtotime($this->input->post('last_donation_timestamp'));
-        
-        $this->db->where('blood_donor_id',$blood_donor_id);
-        $this->db->update('blood_donor',$data);
-    }
-    
-    function delete_blood_donor_info($blood_donor_id)
-    {
-        $this->db->where('blood_donor_id',$blood_donor_id);
-        $this->db->delete('blood_donor');
-    }
-    
-    function save_medicine_category_info()
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['description']    = $this->input->post('description');
-        
-        $this->db->insert('medicine_category',$data);
-    }
-    
-    function select_medicine_category_info()
-    {
-        return $this->db->get('medicine_category')->result_array();
-    }
-    
-    function update_medicine_category_info($medicine_category_id)
-    {
-        $data['name'] 		= $this->input->post('name');
-        $data['description'] 	= $this->input->post('description');
-        
-        $this->db->where('medicine_category_id',$medicine_category_id);
-        $this->db->update('medicine_category',$data);
-    }*/
-    
-    /*function delete_medicine_category_info($medicine_category_id)
-    {
-        $this->db->where('medicine_category_id',$medicine_category_id);
-        $this->db->delete('medicine_category');
-    }*/
-    
-    /*function save_medicine_info()
-    {
-        $data['name']                   = $this->input->post('name');
-        $data['medicine_category_id']   = $this->input->post('medicine_category_id');
-        $data['description']            = $this->input->post('description');
-        $data['price']                  = $this->input->post('price');
-        $data['manufacturing_company']  = $this->input->post('manufacturing_company');
-        $data['status'] 		= $this->input->post('status');
-        
-        $this->db->insert('medicine',$data);
-    }*/
-    
-    /*function select_medicine_info()
-    {
-        return $this->db->get('medicine')->result_array();
-    }
-    
-    function update_medicine_info($medicine_id)
-    {
-        $data['name']                   = $this->input->post('name');
-        $data['medicine_category_id']   = $this->input->post('medicine_category_id');
-        $data['description']            = $this->input->post('description');
-        $data['price']                  = $this->input->post('price');
-        $data['manufacturing_company']  = $this->input->post('manufacturing_company');
-        $data['status'] 		= $this->input->post('status');
-        
-        $this->db->where('medicine_id',$medicine_id);
-        $this->db->update('medicine',$data);
-    }*/
-    
-    /*function delete_medicine_info($medicine_id)
-    {
-        $this->db->where('medicine_id',$medicine_id);
-        $this->db->delete('medicine');
-    }*/
-    
+    }    
     function save_appointment_info()
     {
         $time=explode('-',$this->input->post('available_slot'));
@@ -3028,19 +2180,10 @@ if($account_type == 'superadmin'){
         $data['created_by']       = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
-        /*print_r($data);
-        echo date("Y-m-d H:i:s");die;*/
         $insert=$this->db->insert('appointments',$data);
         if($insert)
         {
             $lid=$this->db->insert_id();
-        /******Notification Message******/
-        /*$notification['user_id']='users-user-'.$data['user_id'];
-        $notification['title']='Appointment Booking';
-        $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
-        $this->db->insert('notification',$notification);*/
-
-
         /*********** Patient **************/
      $patient_data['user_id']=$this->input->post('user_id');
     $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient')->row_array();
@@ -3082,7 +2225,7 @@ $this->db->update('patient',$patient_data);
 if($lid==1){
 $num=100001;
 }elseif($lid!=1){
-$my=explode('_',$this->db->where('appointment_id',$lid-1)->get('appointments')->row()->unique_id);
+$my=explode('_',$this->db->where('appointment_id',$lid-1)->get('appointments')->row()->appointment_number);
 $year=substr ($my[0], -2);
 if($year==date('y')){
 $num=$my[1]+1;
@@ -3105,9 +2248,6 @@ $pid='MPA'.date('y').'_'.$num;
 
             $doctor=$this->db->where('doctor_id',$data['doctor_id'])->get('doctors')->row();
             $appointments=$this->db->where('appointment_id',$lid)->get('appointments')->row();
-            /*$notification['title']='Appointment Booking Confirmation';
-            $notification['text']='Hi User Your Appointment is Confirmed <br/> Appointment Date : '.date('M d,Y',$history['appointment_date']).', <br/>Appointment Time : '. date('h:i A',strtotime($appointments->appointment_time_start)).' - '.date('h:i A',strtotime($appointments->appointment_time_end)).',<br/>Appointment ID : '. $pid.',<br/>Appointment With : Dr.'.$doctor->name.',<br/> Doctor ID : '.$doctor->unique_id.',<br/> From '.$this->db->where('hospital_id',$doctor->hospital_id)->get('hospitals')->row()->name.'.';
-         $this->db->insert('notification',$notification);*/
             }
         }
     }
@@ -3133,12 +2273,6 @@ $pid='MPA'.date('y').'_'.$num;
                 $last_id=$this->db->insert_id();
                 $this->db->where('appointment_history_id',$last_id)->update('appointment_history',array('action'=>5));
             }
-         /******Notification Message******/
-          /*  $notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-            $notification['user_id']='users-user-'.$this->input->post('user_id');
-            $notification['title']='Appointment Rescheduled     ';
-            $notification['text']='Hi User Your Appointment is Booked Please Wait For The Confirmation.';
-         $this->db->insert('notification',$notification);*/
     }
     }
     function update_appointment_attended_status($appointment_id='',$status='')
@@ -3375,12 +2509,6 @@ return $return;
         {
             $lid=$this->db->insert_id();
             if($data['status'] == 0){$status='recommended';}elseif($data['status'] == 1){$status='Admitted';}elseif($data['status'] == 0){$status='Not Admitted';}
-            /******Notification Message******/
-            /*$notification['created_by']=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-            $notification['user_id']='users-user-'.$data['user_id'];
-            $notification['title']='Registered As In-Patient';
-            $notification['text']='Hi User Your Considered As In-Patient Your Current Status is '.$status.'.';
-         $this->db->insert('notification',$notification);*/
          $in_patient['in_patient_id']=$lid;
          $in_patient['created_date']=$data['created_date'];
          $in_patient['note']='Joined As In-Patient and Status as '.$status.'.';
@@ -3431,8 +2559,12 @@ if($account_type == 'superadmin'){
         $check=$_POST['check'];
         $reason=$_POST['cancel_reason'];
         for($i=0;$i<count($check);$i++){
-        $appointment_number=$this->db->where('appointment_id',$check[$i])->get('appointments')->row()->appointment_number;
-        $name=$this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($this->session->userdata('login_type'))->row()->name;
+    $appointment_data=$this->db->where('appointment_id',$check[$i])->get('appointments')->row();
+    $appointment_time=strtotime($appointment_data->appointment_date.' '.$appointment_data->appointment_time_start);
+    $exp=strtotime(date('Y-m-d H:i',strtotime('-2 hours')));
+    if($appointment_time<=$exp){
+    $appointment_number=$appointment_data->appointment_number;
+    $name=$this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($this->session->userdata('login_type'))->row()->name;
         $this->db->where('appointment_id',$check[$i]);
         $this->db->where('status',2);
         $s=$this->db->update('appointments',array('status'=>'3','remarks'=>'Appointment was cancelled by: "'.$user_role.' - '.$name.'" for the reason: " '.$reason.'".'));
@@ -3450,6 +2582,7 @@ if($account_type == 'superadmin'){
         }
     /**********End Notification***********/
         }
+    }
     }
         return TRUE;
     }
@@ -3576,8 +2709,6 @@ if($account_type == 'superadmin'){
     function update_prognosis_info($prognosis_id='')
     {
         $data['prognosis_data']     = $this->encryption->encrypt($this->input->post('title').'|'.$this->input->post('case_history'));
-        /*$data['title']     = $this->encryption->encrypt($this->input->post('title'));
-        $data['case_history']     = $this->encryption->decrypt($this->input->post('case_history'));*/
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('prognosis_id',$prognosis_id);
         $this->db->update('prognosis',$data);
@@ -3815,102 +2946,7 @@ $this->db->update('patient',$patient_data);
 }
     }
     }
-    /*function select_order_info_prescription_id($prescription_id=''){
-        $account_type = $this->session->userdata('login_type');
-        if($account_type == 'medicalstores'){
-       return $this->db->order_by('order_id','desc')->get_where('prescription_order',array('store_id'=>$this->session->userdata('login_user_id'),'status'=>1))->result_array();
-        }
-        if($account_type == 'medicallabs'){
-        return $this->db->order_by('order_id','desc')->get_where('prescription_order',array('lab_id'=>$this->session->userdata('login_user_id'),'status'=>1))->result_array();
-        }
-    }*/
-    /*function save_prescription_info()
-    {
-        $data['timestamp']      = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
-        $data['patient_id']     = $this->input->post('patient_id');
-        $data['case_history']   = $this->input->post('case_history');
-        $data['medication']     = $this->input->post('medication');
-        $data['note']           = $this->input->post('note');
-        $data['doctor_id']      = $this->session->userdata('login_user_id');
-        
-        $this->db->insert('prescription',$data);
-    }*/
-    
-    /*function select_prescription_info_by_doctor_id()
-    {
-        $doctor_id = $this->session->userdata('login_user_id');
-        return $this->db->get_where('prescription', array('doctor_id' => $doctor_id))->result_array();
-    }
-    
-    function select_medication_history( $patient_id = '' )
-    {
-        return $this->db->get_where('prescription', array('patient_id' => $patient_id))->result_array();
-    }*/
-    
-    /*function select_prescription_info_by_patient_id()
-    {
-        $patient_id = $this->session->userdata('login_user_id');
-        return $this->db->get_where('prescription', array('patient_id' => $patient_id))->result_array();
-    }
-    function select_prescription_info_by_patient($patient_id='')
-    {
-        //$patient_id = $this->session->userdata('login_user_id');
-        return $this->db->get_where('prescription', array('patient_id' => $patient_id))->result_array();
-    }
-    
-    function update_prescription_info($prescription_id)
-    {
-        $data['timestamp']      = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
-        $data['patient_id']     = $this->input->post('patient_id');
-        $data['case_history']   = $this->input->post('case_history');
-        $data['medication']     = $this->input->post('medication');
-        $data['note']           = $this->input->post('note');
-        $data['doctor_id']      = $this->session->userdata('login_user_id');
-        
-        $this->db->where('prescription_id',$prescription_id);
-        $this->db->update('prescription',$data);
-    }
-    
-    function delete_prescription_info($prescription_id)
-    {
-        $this->db->where('prescription_id',$prescription_id);
-        $this->db->delete('prescription');
-    }
-    
-    function save_diagnosis_report_info()
-    {
-        $data['timestamp']          = strtotime($this->input->post('date_timestamp').' '.$this->input->post('time_timestamp') );
-        $data['report_type']        = $this->input->post('report_type');
-        $data['file_name']          = $_FILES["file_name"]["name"];
-        $data['document_type']      = $this->input->post('document_type');
-        $data['description']        = $this->input->post('description');
-        $data['prescription_id']    = $this->input->post('prescription_id');
-        
-        $this->db->insert('diagnosis_report',$data);
-        
-        $diagnosis_report_id        = $this->db->insert_id();
-        move_uploaded_file($_FILES["file_name"]["tmp_name"], "uploads/diagnosis_report/" . $_FILES["file_name"]["name"]);
-    }
-    
-    function select_diagnosis_report_info()
-    {
-        return $this->db->get('diagnosis_report')->result_array();
-    }
-    
-    function delete_diagnosis_report_info($diagnosis_report_id)
-    {
-        $this->db->where('diagnosis_report_id',$diagnosis_report_id);
-        $this->db->delete('diagnosis_report');
-    }*/
-    
-    /*function read_message($message_type,$message_id)
-    {
-    if($message_type == 0){
-        return $this->db->where('message_id',$message_id)->get('messages')->row_array();
-    }elseif($message_type == 1){
-        return $this->db->where('message_id',$message_id)->get('private_messages')->row_array();
-    }
-    }*/
+
     function read_message($message_id)
     {
     $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
@@ -3985,10 +3021,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
       }
       return $result;
     }
-    /*function select_private_message()
-    {
-        return $this->db->order_by('message_id','DESC')->get('private_messages')->result_array();
-    }*/
+
         function save_new_message()
     {
         $count=count($this->input->post('reciever'));
@@ -4023,12 +3056,9 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     {
     $account_type   = $this->session->userdata('login_type');
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
-    /*$result=*/return $this->db->order_by('id','desc')->get_where('notification',array('user_id'=>$account_details))->result_array();
-    /*return $result;*/
+    return $this->db->order_by('id','desc')->get_where('notification',array('user_id'=>$account_details))->result_array();
     }
     function delete_notification($id){
-/*$account_type   = $this->session->userdata('login_type');
-$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');*/
     $this->db->where('id',$id);
     $this->db->delete('notification');
     }
@@ -4038,204 +3068,4 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     $this->db->where('user_id',$account_details);
     $this->db->delete('notification');
     }
-    /*function save_notice_info()
-    {
-        $data['title']              = $this->input->post('title');
-        $data['description']        = $this->input->post('description');
-        if($this->input->post('start_timestamp') != '')
-            $data['start_timestamp']    = strtotime($this->input->post('start_timestamp'));
-        else 
-            $data['start_timestamp']    = '';
-        if($this->input->post('end_timestamp') != '')
-            $data['end_timestamp']      = strtotime($this->input->post('end_timestamp'));
-        else
-            $data['end_timestamp']      = $data['start_timestamp'];
-        
-        $this->db->insert('notice',$data);
-    }
-    
-    function select_notice_info()
-    {
-        return $this->db->get('notice')->result_array();
-    }
-    
-    function update_notice_info($notice_id)
-    {
-        $data['title']              = $this->input->post('title');
-        $data['description']        = $this->input->post('description');
-        if($this->input->post('start_timestamp') != '')
-            $data['start_timestamp']    = strtotime($this->input->post('start_timestamp'));
-        else 
-            $data['start_timestamp']    = '';
-        if($this->input->post('end_timestamp') != '')
-            $data['end_timestamp']      = strtotime($this->input->post('end_timestamp'));
-        else
-            $data['end_timestamp']      = $data['start_timestamp'];
-        
-        $this->db->where('notice_id',$notice_id);
-        $this->db->update('notice',$data);
-    }
-    
-    function delete_notice_info($notice_id)
-    {
-        $this->db->where('notice_id',$notice_id);
-        $this->db->delete('notice');
-    }
-    */
-   /* ////////private message//////
-    function send_new_private_message() {
-        $message    = $this->input->post('message');
-        $timestamp  = strtotime(date("Y-m-d H:i:s"));
-
-        $reciever   = $this->input->post('reciever');
-        $sender     = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
-
-        //check if the thread between those 2 users exists, if not create new thread
-        $num1 = $this->db->get_where('message_thread', array('sender' => $sender, 'reciever' => $reciever))->num_rows();
-        $num2 = $this->db->get_where('message_thread', array('sender' => $reciever, 'reciever' => $sender))->num_rows();
-
-        if ($num1 == 0 && $num2 == 0) {
-            $message_thread_code                        = substr(md5(rand(100000000, 20000000000)), 0, 15);
-            $data_message_thread['message_thread_code'] = $message_thread_code;
-            $data_message_thread['sender']              = $sender;
-            $data_message_thread['reciever']            = $reciever;
-            $this->db->insert('message_thread', $data_message_thread);
-        }
-        if ($num1 > 0)
-            $message_thread_code = $this->db->get_where('message_thread', array('sender' => $sender, 'reciever' => $reciever))->row()->message_thread_code;
-        if ($num2 > 0)
-            $message_thread_code = $this->db->get_where('message_thread', array('sender' => $reciever, 'reciever' => $sender))->row()->message_thread_code;
-
-
-        $data_message['message_thread_code']    = $message_thread_code;
-        $data_message['message']                = $message;
-        $data_message['sender']                 = $sender;
-        $data_message['timestamp']              = $timestamp;
-        $this->db->insert('message', $data_message);
-
-        return $message_thread_code;
-    }
-
-    function send_reply_message($message_thread_code) {
-        $message    = $this->input->post('message');
-        $timestamp  = strtotime(date("Y-m-d H:i:s"));
-        $sender     = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
-
-
-        $data_message['message_thread_code']    = $message_thread_code;
-        $data_message['message']                = $message;
-        $data_message['sender']                 = $sender;
-        $data_message['timestamp']              = $timestamp;
-        $this->db->insert('message', $data_message);
-    }
-
-    function mark_thread_messages_read($message_thread_code) {
-        $current_user = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
-        $this->db->where('sender !=', $current_user);
-        $this->db->where('message_thread_code', $message_thread_code);
-        $this->db->update('message', array('read_status' => 1));
-    }
-
-    function count_unread_message_of_thread($message_thread_code) {
-        $unread_message_counter = 0;
-        $current_user = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
-        $messages = $this->db->get_where('message', array('message_thread_code' => $message_thread_code))->result_array();
-        foreach ($messages as $row) {
-            if ($row['sender'] != $current_user && $row['read_status'] == '0')
-                $unread_message_counter++;
-        }
-        return $unread_message_counter;
-    }*/
-    /*function send_new_private_message() {
-        $message    = $this->input->post('message');
-        $timestamp  = strtotime(date("Y-m-d H:i:s"));
-
-        $reciever   = $this->input->post('reciever');
-        $sender     = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-
-        //check if the thread between those 2 users exists, if not create new thread
-        $num1 = $this->db->get_where('message_thread', array('sender' => $sender, 'reciever' => $reciever))->num_rows();
-        $num2 = $this->db->get_where('message_thread', array('sender' => $reciever, 'reciever' => $sender))->num_rows();
-
-        //check if file is attached or not
-        if ($_FILES['attached_file_on_messaging']['name'] != "") {
-          $data_message['attached_file_name'] = $_FILES['attached_file_on_messaging']['name'];
-        }
-
-        if ($num1 == 0 && $num2 == 0) {
-            $message_thread_code= substr(md5(rand(100000000, 20000000000)), 0, 15);
-            $data_message_thread['message_thread_code'] = $message_thread_code;
-            $data_message_thread['sender']              = $sender;
-            $data_message_thread['reciever']            = $reciever;
-            $this->db->insert('message_thread', $data_message_thread);
-        }
-        if ($num1 > 0)
-            $message_thread_code = $this->db->get_where('message_thread', array('sender' => $sender, 'reciever' => $reciever))->row()->message_thread_code;
-        if ($num2 > 0)
-            $message_thread_code = $this->db->get_where('message_thread', array('sender' => $reciever, 'reciever' => $sender))->row()->message_thread_code;
-
-
-        $data_message['message_thread_code']    = $message_thread_code;
-        $data_message['message']                = $message;
-        $data_message['sender']                 = $sender;
-        $data_message['timestamp']              = $timestamp;
-        $this->db->insert('message', $data_message);
-
-        // notify email to email reciever
-        //$this->email_model->notify_email('new_message_notification', $this->db->insert_id());
-
-        return $message_thread_code;
-    }
-
-    function send_reply_message($message_thread_code) {
-        $message    = $this->input->post('message');
-        $timestamp  = strtotime(date("Y-m-d H:i:s"));
-        $sender     = $this->session->userdata('login_type') . '-' . $this->session->userdata('login_user_id');
-        //check if file is attached or not
-        if ($_FILES['attached_file_on_messaging']['name'] != "") {
-          $data_message['attached_file_name'] = $_FILES['attached_file_on_messaging']['name'];
-        }
-        $data_message['message_thread_code']    = $message_thread_code;
-        $data_message['message']                = $message;
-        $data_message['sender']                 = $sender;
-        $data_message['timestamp']              = $timestamp;
-        $this->db->insert('message', $data_message);
-
-        // notify email to email reciever
-        //$this->email_model->notify_email('new_message_notification', $this->db->insert_id());
-    }
-
-    function send_reply_group_message($message_thread_code) {
-        $message    = $this->input->post('message');
-        $timestamp  = strtotime(date("Y-m-d H:i:s"));
-        $sender     = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-        //check if file is attached or not
-        if ($_FILES['attached_file_on_messaging']['name'] != "") {
-          $data_message['attached_file_name'] = $_FILES['attached_file_on_messaging']['name'];
-        }
-        $data_message['group_message_thread_code']    = $message_thread_code;
-        $data_message['message']                = $message;
-        $data_message['sender']                 = $sender;
-        $data_message['timestamp']              = $timestamp;
-        $this->db->insert('group_message', $data_message);
-    }
-
-    function mark_thread_messages_read($message_thread_code) {
-        // mark read only the oponnent messages of this thread, not currently logged in user's sent messages
-        $current_user = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-        $this->db->where('sender !=', $current_user);
-        $this->db->where('message_thread_code', $message_thread_code);
-        $this->db->update('message', array('read_status' => 1));
-    }
-
-    function count_unread_message_of_thread($message_thread_code) {
-        $unread_message_counter = 0;
-        $current_user = $this->session->userdata('login_type').'-'.$this->session->userdata('type_id') . '-' . $this->session->userdata('login_user_id');
-        $messages = $this->db->get_where('message', array('message_thread_code' => $message_thread_code))->result_array();
-        foreach ($messages as $row) {
-            if ($row['sender'] != $current_user && $row['read_status'] == '0')
-                $unread_message_counter++;
-        }
-        return $unread_message_counter;
-    }*/
 }
