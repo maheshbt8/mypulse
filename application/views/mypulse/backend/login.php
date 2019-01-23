@@ -37,8 +37,8 @@
 		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('success'); ?></div>
 		<?php }?>
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredEmail'];?>">
-						<input class="input100" type="text" name="email" placeholder="<?php echo 'Email Or Mobile' ?>" autocomplete="off">
+					<div class="wrap-input100 validate-input m-b-10" data-validate = "Enter Email or Mobile Number">
+						<input class="input100" type="text" name="username" placeholder="<?php echo 'Email Or Mobile' ?>" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>

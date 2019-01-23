@@ -148,7 +148,7 @@ echo $user_role; ?></span></div>
         </li>
     <?php }?>
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users'  || $account_type=='nurse' || $account_type=='receptionist'){?>
-        <?php if($license_category=='MPHL_19002' || $account_type=='users'){ ?>
+        <?php if($account_type=='superadmin' || $license_category=='MPHL_19002' || $account_type=='users'){ ?>
         <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>main/inpatient">
                 <i class="menu-icon fa fa-eye">&nbsp;</i>
@@ -224,16 +224,16 @@ echo $user_role; ?></span></div>
         <?php }?>
 
     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
-		<li class="parent"><a data-toggle="collapse" href="#sub-item-3">
+		<li class="parent <?php if ($page_name == 'manage_reports') echo 'active'; ?>"><a data-toggle="collapse" href="#sub-item-3">
 					<i class="glyphicon glyphicon-stats">&nbsp;</i> <?php echo get_phrase('trends'); ?> <span data-toggle="collapse" href="#sub-item-3" class="icon pull-right"><i class="fa fa-angle-right"></i></span>
 					</a>
-					<ul class="children collapse" id="sub-item-3">
-						<li class="<?php if ($page_name == 'manage_prognosis') echo 'active'; ?>">
+					<ul class="children collapse <?php if ($page_name == 'manage_reports'){echo 'in';}?>" id="sub-item-3">
+						<li class="<?php if ($page_name == 'manage_reports' && $report_id == '1') echo 'active'; ?>">
                     <a href="<?php echo base_url(); ?>main/report/1">
                         <span><?php echo get_phrase('in-Patient_trend'); ?></span>
                     </a>
                 </li>
-                <li class="#">
+                <li class="<?php if ($page_name == 'manage_reports' && $report_id == '2') echo 'active'; ?>">
                     <a href="<?php echo base_url(); ?>main/report/2">
                         <span><?php echo get_phrase('appointment_trend'); ?></span>
                     </a>

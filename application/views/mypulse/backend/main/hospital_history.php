@@ -30,7 +30,7 @@ foreach ($single_hospital_info as $row) :
                     <span class="hidden-xs"><?php echo get_phrase('departments'); ?></span>
                 </a>
             </li> 
-            <?php if($license_category=='MPHL_19002'){ ?>
+            <?php if($account_type=='superadmin' || $license_category=='MPHL_19002'){ ?>
             <li class="">
                 <a href="#tab5" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-mail"></i></span>
@@ -474,12 +474,11 @@ foreach ($single_hospital_info as $row) {
         $i=1;
         foreach ($bed_info as $row) { ?>   
             <tr>
-             
                 <td><?php echo $i;?></td>
                 <td><a href="<?php echo base_url(); ?>main/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-                <td><?php echo $this->db->where('branch_id',$row['department_id'])->get('department')->row()->name; ?></td>
+                <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
                 <td><?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not - Available";} ?></td>
                 <?php if($account_type == 'superadmin'){?>

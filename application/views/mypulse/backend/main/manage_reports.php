@@ -33,7 +33,6 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_id');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
         <?php }elseif($account_type == 'hospitaladmins'){?>
-            <!-- <th><?php echo get_phrase('branch_id');?></th> -->
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch_name'); ?></th>
         <?php }?>
             <th data-field="number" data-sortable="true"><?php if($report_id==1){
@@ -103,7 +102,10 @@ $this->session->set_userdata('last_page', current_url());
         }
         }else{
         if($account_type == 'superadmin'){
-            $no=$this->db->get_where('appointments',array('hospital_id'=>$row['hospital_id'],'appointment_date>='=>date('m/d/Y', strtotime('-29 days')),'appointment_date<='=>date('m/d/Y')))->num_rows();
+            $this->db->where('appointment_date >=', date('m/d/Y', strtotime('-29 days')));
+            $this->db->where('appointment_date <=', date('m/d/Y'));
+            $no=$this->db->get_where('appointments',array('hospital_id'=>$row['hospital_id']))->num_rows();
+            echo $this->db->last_query();
             echo $no;
         }elseif($account_type == 'hospitaladmins'){
             $this->db->where('branch_id', $row['branch_id']);

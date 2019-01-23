@@ -199,7 +199,7 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('date_of_birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control datepicker" autocomplete="off" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo get_phrase('date_of_birth'); ?>">
+                            <input type="text" name="dob" class="form-control" autocomplete="off" id="dob" value="<?php echo set_value('dob'); ?>" placeholder="<?php echo get_phrase('date_of_birth'); ?>">
                         </div>
                     </div>
                     <div class="form-group" hidden="">

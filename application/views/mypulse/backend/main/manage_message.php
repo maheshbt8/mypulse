@@ -47,7 +47,10 @@ $this->session->set_userdata('last_page', current_url());
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
         <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">From</span><span>Subject</span><span class="pull-right">Date & Time</span></p></a>
         <div class="message-list"  style="min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
-    <?php $message_data=$this->crud_model->select_message();$i=1;foreach ($message_data as $row) { 
+    <?php $message_data=$this->crud_model->select_message();
+/*$message_data1=$this->crud_model->select_message();
+        $message_data=json_decode($message_data1,TRUE);*/
+    $i=1;foreach ($message_data as $row) { 
       $count=explode(',',$row['is_read']);
     $s=0;
     for($m2=0;$m2<count($count);$m2++){
@@ -59,7 +62,7 @@ $this->session->set_userdata('last_page', current_url());
       ?>
       <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
       <?php if($s==0){ ?><strong> <?php }?>
-    <p class="" style="text-align: center;"><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
+    <p class="" style=""><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
 if($created_by[0] == 'superadmin'){
   $user_role='Super Admin';
 }elseif($created_by[0] == 'hospitaladmins'){
@@ -77,7 +80,9 @@ if($created_by[0] == 'superadmin'){
 }elseif($created_by[0] == 'users'){
   $user_role='MyPulse Users';
 }
-    echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span><span style="margin-right: 50%;"><?php echo $row['title'];?></span><span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at'])); ?>
+    echo $user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;?></span>
+    <span style="margin-left: 0px;"><?php echo $row['title'];?></span>
+    <span class="pull-right"><?php echo date('M d,Y h:i A',strtotime($row['created_at'])); ?>
     </span>
     </p>
       <?php if($s==0){ ?></strong><?php }?>
@@ -86,7 +91,9 @@ if($created_by[0] == 'superadmin'){
     </div>
     </div>
             <div class="tab-pane box" id="add">
-                <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">To</span><span style="margin-left:0%;">Subject</span><span class="pull-right">Date & Time</span></p></a>
+                <a href="#" class="list-group-item active"><p style="color: #fff;"><span class="span-user">To</span><span style="margin-left:0%;">Subject</span><span class="pull-right">Date & Time</span>
+                </p>
+                </a>
         <div class="message-list"  style="/*list-style: none; */min-height: 50px; max-height:500px;border: 1px solid; overflow-y: scroll;">
     <?php $message_data=$this->db->order_by('message_id','desc')->where('created_by',$account_details)->get('messages')->result_array();
     $i=1;foreach ($message_data as $row) { 

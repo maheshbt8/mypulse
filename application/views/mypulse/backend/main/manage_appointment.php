@@ -78,29 +78,21 @@ $this->session->set_userdata('last_page', current_url());
             <th><?php echo get_phrase('options');?></th>
         </tr> 
     </thead>
-
     <tbody id="data_table">
-        <div id="refresh_data">
-
-       <?php
-    if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
+<?php
+if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
             $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
         }else{$appointment_info=$this->crud_model->select_appointment_info();}?>
-</div>
         <?php $i=1;foreach ($appointment_info as $row) {
             ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
                  <td><a href="<?php echo base_url(); ?>main/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
                 <td>
-                   <!-- <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"> <?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->unique_id;
-                        echo $name;?></a> -->
              <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
                         echo $name;?></a>
                 </td>
                  <td>
-                    <!-- <a href="<?php echo base_url(); ?>main/edit_doctor/<?php echo $row['doctor_id'] ?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->unique_id;
-                        echo $name;?></a> -->
                 <a href="<?php echo base_url();?>main/edit_doctor/<?php echo $row['doctor_id']?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
                         echo $name;?></a>
                 </td>
@@ -124,12 +116,12 @@ $this->session->set_userdata('last_page', current_url());
                 <td>
                     <?php if($account_type=='superadmin'){?>
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                    <!-- <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/close/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Close"><i class="glyphicon glyphicon-ban-circle"></i></a> -->
                     <?php }?>
                     <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
                 </td>
             </tr>
-        <?php } ?>
+        <?php }
+?>
     </tbody>
 </table>
 </div>
@@ -282,7 +274,6 @@ $this->session->set_userdata('last_page', current_url());
         function cb(start, end) {
             window.location.href = '<?php echo base_url();?>main/appointment?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD');
         }
-        
         $('#reportrange').daterangepicker({
             startDate: start,
             endDate: end,
@@ -317,51 +308,28 @@ $this->session->set_userdata('last_page', current_url());
         <?php
        }
        ?>
-    /*window.location.href = '<?php echo base_url();?>main/appointment?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD');*/
-       /* alert(id);*/
-        /*<?php 
-        $status_id = id;
-        ?>
-        alert(<?=$status_id;?>);*/
-        /*$.ajax({
-            url: '<?php echo base_url();?>ajax/get_appointment_status/' + id ,
-            success: function(response)
-            {
-                jQuery('#data_table').html(response);
-                loadTable();
-            }
-        });*/
     }
 </script>
-<!-- <script language="javascript" type="text/javascript">
-var timeout = setTimeout(reloadChat, 5000);
-
-function reloadChat () {
-$('#refresh_data').load('manage_appointment.php #refresh_data',function () {
-        $(this).unwrap();
-        timeout = setTimeout(reloadChat, 5000);
+<!-- <script>
+$(function() {
+    Load_external_content();
 });
+ function Load_external_content()
+{
+    var sd='<?=$_GET['sd']?>';
+    var ed='<?=$_GET['ed']?>';
+    var status='<?=$_GET['status_id']?>';
+var data = "sd="+ sd + '&ed='+ed+'&status_id='+status;
+   $.ajax({
+            type:"GET",
+            cache:false,
+            url: '<?php echo base_url();?>ajax/get_ajax_appointments/',
+            data:data,
+            success: function(response)
+            {
+            jQuery('#data_table').html(response);
+            } 
+        });
 }
+ setInterval('Load_external_content()', 5000);
 </script> -->
-<script type="text/javascript">
-   /* function loadlink(){
-    $('#refresh_data').load('index.php',function () {
-         $(this).unwrap();
-    });
-}
-
-loadlink(); // This will run on page load
-setInterval(function(){
-    loadlink() // this will run after every 5 seconds
-}, 5000);*/
-/*function loadlink(){
-$('#refresh_data').load(" <?php
-    if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
-            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
-        }else{$appointment_info=$this->crud_model->select_appointment_info();;}?>");
-}
-loadlink(); // This will run on page load
-setInterval(function(){
-    loadlink() // this will run after every 5 seconds
-}, 5000);*/
-</script>

@@ -1,11 +1,9 @@
 <?php if( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Track extends CI_Controller{
-	
 	function __construct(){
 		parent::__construct();
 		
 	}
-	
 	function index(){
 		$this->db->limit(30);
 		$this->db->order_by('track_date', 'desc');

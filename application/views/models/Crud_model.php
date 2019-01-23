@@ -67,7 +67,7 @@ function email_verification($data="")
     $difference = $current_time - $past_time;
     $difference_minute =  $difference/60;
     if(intval($difference_minute)<30){
-        redirect(base_url() . 'login/set_password/'.$task.'/'.$id, 'refresh');
+        redirect(base_url() . 'login/set_password/'.$data, 'refresh');
         }else{
             echo "Your Link Was Expired"."<br/>";
             echo "<a href='".base_url()."'>Go To Home</a>";
@@ -483,38 +483,37 @@ $num=100001;
     function delete_patient_hospital($hospital_id)
     {
 $patient_data=$this->db->get_where('patient',array('user_id'=>$this->session->userdata('login_user_id')))->row();
-$hospital_doctors=$this->db->get_where('doctors',array('hospital_id'=>$hospital_id))->result_array();
-$hospital_stores=$this->db->get_where('medicalstores',array('hospital_id'=>$hospital_id))->result_array();
-$hospital_labs=$this->db->get_where('medicallabs',array('hospital_id'=>$hospital_id))->result_array();
+$hospital_doctors=$this->db->select('doctor_id')->get_where('doctors',array('hospital_id'=>$hospital_id))->result_array();
+$hospital_stores=$this->db->select('store_id')->get_where('medicalstores',array('hospital'=>$hospital_id))->result_array();
+$hospital_labs=$this->db->select('lab_id')->get_where('medicallabs',array('hospital'=>$hospital_id))->result_array();
+if($patient_data->hospital_ids!=''){
 $hospital_ids=explode(',',$patient_data->hospital_ids);
 for($h=0;$h<count($hospital_ids);$h++){
     if($hospital_ids[$h]!= $hospital_id){
         $hospi[]=$hospital_ids[$h];
     }
 }
+}
+if($patient_data->doctor_ids!=''){
 $doctor_ids=explode(',',$patient_data->doctor_ids);
 for($d1=0;$d1<count($hospital_doctors);$d1++){
-    for($d2=0;$d2<count($doctor_ids);$d2++){
-    if($hospital_doctors[$d1]['doctor_id']!= $doctor_ids[$d2]){
-        $docs[]=$doctor_ids[$d2];
-    }
+    $doc[]=$hospital_doctors[$d1]['doctor_id'];
 }
+$docs=array_diff($doctor_ids, $doc);
 }
+if($patient_data->store_ids!=''){
 $store_ids=explode(',',$patient_data->store_ids);
 for($d1=0;$d1<count($hospital_stores);$d1++){
-    for($d2=0;$d2<count($store_ids);$d2++){
-    if($hospital_stores[$d1]['store_id']!= $store_ids[$d2]){
-        $store[]=$store_ids[$d2];
-    }
+    $sto[]=$hospital_stores[$d1]['store_id'];
 }
+$store=array_diff($store_ids, $sto);
 }
+if($patient_data->lab_ids!=''){
 $lab_ids=explode(',',$patient_data->lab_ids);
 for($d1=0;$d1<count($hospital_labs);$d1++){
-    for($d2=0;$d2<count($lab_ids);$d2++){
-    if($hospital_labs[$d1]['lab_id']!= $lab_ids[$d2]){
-        $lab[]=$lab_ids[$d2];
-    }
+    $la[]=$hospital_labs[$d1]['lab_id'];
 }
+$lab=array_diff($lab_ids, $la);
 }
 $this->db->where('user_id',$this->session->userdata('login_user_id'));
 $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi),'doctor_ids'=>implode(',',$docs),'store_ids'=>implode(',',$store),'lab_ids'=>implode(',',$lab)));
@@ -589,13 +588,10 @@ $num=100001;
 }
 }
 $pid='MPS'.date('y').'_'.$num;
-            $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-        }
-           $id=$this->db->insert_id();
-           
-           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_stores/'. $id.  '.jpg');
+            $this->db->where('store_id',$lid)->update('medicalstores',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));   
+           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_stores/'. $lid.  '.jpg');
        
-    }
+   } }
     
     
       function update_medicalstores_info($patient_id)
@@ -706,10 +702,9 @@ $num=100001;
 $pid='MPHA'.date('y').'_'.$num;
 
             $this->db->where('admin_id',$lid)->update('hospitaladmins',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));   
-        }
-           $id=$this->db->insert_id();
-           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $id.  '.jpg');
-       
+        
+           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $lid.  '.jpg');
+       }
     }
     
     function select_hospitaladmins_info()
@@ -1025,9 +1020,8 @@ $num=100001;
 }
 $pid='MPD'.date('y').'_'.$num;
             $this->db->where('doctor_id',$lid)->update('doctors',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-        }
-        $doctor_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $lid . '.jpg');
+    }
     }
     
     function select_doctor_info($hospital_id = '')
@@ -1305,12 +1299,8 @@ $num=100001;
 }
 $pid='MPL'.date('y').'_'.$num;
             $this->db->where('lab_id',$lid)->update('medicallabs',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-            
-        }
-           $id=$this->db->insert_id();
-           
-           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_labs/'. $id.  '.jpg');
-       
+           move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_labs/'. $lid.  '.jpg');
+      }  
     }
      function delete_lab_info($patient_id)
     {
@@ -1415,11 +1405,9 @@ $num=100001;
 }
 $pid='MPU'.date('y').'_'.$num;
             $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-            
-        }
-        $patient_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
-    }
+       
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $lid . '.jpg');
+    }}
      function select_lab_info($hospital_id='')
     {
            $account_type=$this->session->userdata('login_type');
@@ -1911,10 +1899,8 @@ $num=100001;
 }
 $pid='MPN'.date('y').'_'.$num;
             $this->db->where('nurse_id',$lid)->update('nurse',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-            
-        }
-        $nurse_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/nurse_image/" . $nurse_id . '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/nurse_image/" . $lid . '.jpg');
+    }
     }
     
     function select_nurse_info($hospital_id='')
@@ -1984,7 +1970,6 @@ $pid='MPN'.date('y').'_'.$num;
     }
     function save_receptionist_info()
     {
-       
         $data['name'] 		= $this->input->post('fname');
         $data['mname'] 		= $this->input->post('mname');
         $data['lname'] 		= $this->input->post('lname');
@@ -2022,21 +2007,18 @@ $num=100001;
 }
 $pid='MPR'.date('y').'_'.$num;
             $this->db->where('receptionist_id',$lid)->update('receptionist',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
-            
-        }
-        $receptionist_id  =   $this->db->insert_id();
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
-    }
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/receptionist_image/" . $lid . '.jpg');
+   } }
     
     function select_receptionist_info($hospital_id='')
     {
 $account_type=$this->session->userdata('login_type');
 if($account_type == 'superadmin'){
-  return $this->db->get('receptionist')->result_array();
+  return $this->db->order_by('receptionist_id','DESC')->get('receptionist')->result_array();
 }elseif($account_type == 'hospitaladmins'){
-  return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('receptionist')->result_array();
+  return $this->db->order_by('receptionist_id','DESC')->where('hospital_id',$this->session->userdata('hospital_id'))->get('receptionist')->result_array();
 }elseif($account_type == 'doctors'){
-    $receptionist=$this->db->where('branch_id',$this->session->userdata('branch_id'))->get('receptionist')->result_array();
+    $receptionist=$this->db->where('branch_id',$this->session->userdata('branch_id'))->order_by('receptionist_id','DESC')->get('receptionist')->result_array();
     for($i=0;$i<count($receptionist);$i++){
         $rec=explode(',',$receptionist[$i]['doctor_id']);
         for($j=0;$j<count($rec);$j++){
@@ -2558,11 +2540,13 @@ if($account_type == 'superadmin'){
  $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
         $check=$_POST['check'];
         $reason=$_POST['cancel_reason'];
+
         for($i=0;$i<count($check);$i++){
     $appointment_data=$this->db->where('appointment_id',$check[$i])->get('appointments')->row();
-    $appointment_time=strtotime($appointment_data->appointment_date.' '.$appointment_data->appointment_time_start);
-    $exp=strtotime(date('Y-m-d H:i',strtotime('-2 hours')));
-    if($appointment_time<=$exp){
+    $appointment_date_time=$appointment_data->appointment_date.' '.$appointment_data->appointment_time_start;
+$current_time=date('Y-m-d H:i');
+$appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($appointment_date_time)));
+    if(strtotime($current_time)<strtotime($appointment_date_time_less)){
     $appointment_number=$appointment_data->appointment_number;
     $name=$this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($this->session->userdata('login_type'))->row()->name;
         $this->db->where('appointment_id',$check[$i]);
@@ -2858,7 +2842,9 @@ if($account_type == 'superadmin'){
         return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('user_id' => $user_id))->result_array();
     }
     if($account_type=='medicalstores'){
+        
         return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('store_id' => $user_id))->result_array();
+
     }
     if($account_type=='medicallabs'){
         return $this->db->order_by('order_id','DESC')->get_where('prescription_order', array('lab_id' => $user_id))->result_array();

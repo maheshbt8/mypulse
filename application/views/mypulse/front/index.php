@@ -627,7 +627,6 @@ foreach ($hospi as $row) {
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7612.569324584898!2d78.43960212369728!3d17.446084237504024!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb90e76b6662c5%3A0x9ad96c95b077cb8e!2sSanjeeva+Reddy+Nagar%2C+Hyderabad%2C+Telangana+500038!5e0!3m2!1sen!2sin!4v1544389951019" width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
                           </div>
                     </div>
-                    <!-- <div class="offset-2"></div> -->
                     <div class="col-lg-4 mt-lg-0 mt-5">
                       <div class="container" style="border-bottom:1px solid black">
                             <h3>MyPulse Customer care</h3>
@@ -639,9 +638,7 @@ foreach ($hospi as $row) {
                             <li><i class="fas fa-map-marker"></i> <?=$this->db->get_where('settings', array('type' => 'address'))->row()->description;?></li><br/>
                             <li><p><span class="glyphicon glyphicon-new-window one" style="width:50px;"></span><a href="#">www.mypulse.in</p></a>
                           </ul>
-
                         </div>
-                        <!--  //register form grid ends here -->
                     </div>
                 </div>
             </div>
@@ -681,7 +678,8 @@ foreach ($hospi as $row) {
         </ul>
       </div>
       <div class="copyrightbottom">
-        <p>© 2018 JagruMs Technologies - All Rights Reserved.
+        <p>© 2019 JagruMs Technologies - All Rights Reserved.&nbsp;&nbsp;<small><a href="<?=base_url('login/privacy/1')?>" style="color:#fff;text-decoration:underline;font-family:Helvetica,Arial,sans-serif" target="_blank" data-saferedirecturl=<?=base_url('login/privacy/1')?>>Privacy Policy</a> |
+                            <a href="<?=base_url('login/privacy/2')?>" style="color:#fff;text-decoration:underline;font-family:Helvetica,Arial,sans-serif" target="_blank" data-saferedirecturl=<?=base_url('login/privacy/2')?>>Terms and Conditions</a></small>
         </p>
       </div>
       <div class="clearfix"></div>

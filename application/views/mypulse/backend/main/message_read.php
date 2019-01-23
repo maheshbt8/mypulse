@@ -11,7 +11,7 @@
 
                     <div id="Borge" class="w3-container person" style="display: block;min-height: 350px;">
   <h4 class="w3-opacity">Title : <?= $messagedata['title']?></h4>
-  <h4><i class="fa fa-clock-o"></i>&nbsp;&nbsp;<?php echo date('M d,Y h:i A',strtotime($messagedata['created_at']));?>.<input type="button" class="btn btn-info btn-xs pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'"></h4>
+  <h4><i class="fa fa-clock-o"></i>&nbsp;&nbsp;<?php echo date('M d,Y h:i A',strtotime($messagedata['created_at']));?>.<input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'"></h4>
   <?php
   if($messagedata['created_by'] == $this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'))
   {

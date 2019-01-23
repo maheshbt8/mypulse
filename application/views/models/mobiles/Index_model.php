@@ -1,6 +1,24 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  
 class Index_model extends CI_Model {
 	
+public function select_hospital_info(){
+		$hospitals=$this->db->get('hospitals')->result_array();
+		if($hospitals){
+		return $hospitals; 
+		}else{
+		return false;
+		}
+	}
+public function checkMobileExists($mobnumber = NULL){
+		
+		$checkmob = $this->db->query("SELECT `user_id` FROM `users` WHERE `mobile` = '$mobnumber'")->row();
+		if($checkmob){
+		return $checkmob; 
+		}else{
+		return false;
+		}
+	}
+
 public function checkMobileExist($mobnumber = NULL){
 		
 		$checkmob = $this->db->query("SELECT `id` FROM `hms_users` WHERE `mobile` = '$mobnumber' AND `isRegister` !='0'")->row();

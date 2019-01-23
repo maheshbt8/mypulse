@@ -1,7 +1,7 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
-<?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){?>
+
 <div class="row">
     <div class="col-lg-12">
 <ul class="nav nav-tabs bordered"> 
@@ -19,6 +19,7 @@ $this->session->set_userdata('last_page', current_url());
 <div class="panel panel-default">  
 <div class="panel-body">
 <div class="tab-content">
+<?php if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){ ?>
 <div class="tab-pane box active" id="h1" style="padding: 5px">
 <table data-toggle="table"data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
@@ -59,7 +60,7 @@ $this->session->set_userdata('last_page', current_url());
 </table>
 </div>
 <?php }
-if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users'){ ?>
+if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs'){ ?>
 <div class="tab-pane box" id="h2" style="padding: 5px">
 <?php if($account_type=='users'){?>
 <div class="panel-heading">
@@ -84,6 +85,7 @@ if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_ty
     <tbody>
         <?php
         $i=1;foreach ($order as $row1) {
+
             if($order_type==$row1['order_type'] && $row1['type_of_order']==1){
            $user_info=$this->crud_model->select_user_information($row1['user_id']);
            $prescription_info=$this->crud_model->select_prescription_information($row1['prescription_id']);
@@ -100,14 +102,14 @@ if($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_ty
                 <td>
                 <?php if($row1['status']==1){?><a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper">Receipt</a><?php }elseif($row1['status']==2 && $account_type=='medicalstores'|| $account_type=='medicallabs'){ ?>
                     <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }elseif($row1['status']==2 && $account_type!='medicalstores'|| $account_type!='medicallabs'){ ?>Receipt Not Upload<?php }?>
-                <!-- <a href="<?php echo base_url(); ?>main/receipt/<?php echo $row1['order_id'] ?>" class="hiper"><?php if($row1['status']==1){echo 'Receipt';}elseif($row1['status']==2){ ?>
-                    <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a><?php }?></a> --></td>
+                </td>
             </tr>
         <?php }$i++;}} ?>
     </tbody>
 </table>
 </div>
 <?php }?>
+</div>
 </div>
 </div>
 </div>

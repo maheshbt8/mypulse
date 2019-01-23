@@ -17,17 +17,11 @@ class Email_model extends CI_Model {
         $task=$this->encryption->encrypt($account_type.'/'.$id);
         $data['id']=$id;
         $data['task']=$task;
-        $data['message']="Is This Your Email Plese Verify : ";
+        $data['message']="Thanks for registering with MyPulse. Please click this button to complete your registration:";
         $data['url']='email_verification';
         $data['button']='Yes';
         $email_msg=$this->load->view('backend/email',$data,true);
-       /* $email_msg = "Welcome to " . $system_name . "<br />";
-        $email_msg .= "Dear User <br/> Your ID is : " . $id . "<br />";
-        $email_msg .= "Is This Your Email Plese Verify : <button style='color:white'><a href=\"".base_url()."login/email_verification?id=$task\"> YES </a></button> <br />";*/
-        //$email_msg .= "Login Here : " . base_url() . "<br/>";
-
-        /*echo $email_msg;die;*/
-        $email_sub = "Account Opening Email";
+        $email_sub = "Activate your MyPulse Account";
         $email_to = $email;
 
         $this->do_email($email_msg, $email_sub, $email_to);
@@ -40,11 +34,11 @@ class Email_model extends CI_Model {
         $task=$this->encryption->encrypt($account_type.'/'.$id);
         $data['id']=$id;
         $data['task']=$task;
-        $data['message']="Is This Your Email Plese Verify : ";
+        $data['message']="Thanks for registering with MyPulse. Please click this button to complete your registration:";
         $data['url']='email_verification';
         $data['button']='Yes';
         $email_msg=$this->load->view('backend/email',$data,true);
-        $email_sub = "Account Reverification Email";
+        $email_sub = "Activate your MyPulse Account";
         $email_to = $email;
 
         $this->do_email($email_msg, $email_sub, $email_to);
@@ -56,15 +50,15 @@ class Email_model extends CI_Model {
         $task=$this->encryption->encrypt($account_type.'/'.$id);
         $data['id']=$id;
         $data['task']=$task;
-        $data['message']="You Can Reset Your Password Here : ";
+        $data['message']="Thanks for requesting to reset your MyPulse Password. Please click this button to reset password:";
         $data['url']='reset_password';
         $data['button']='Reset Password';
         $email_msg=$this->load->view('backend/email',$data,true);
-        $email_sub = "Reset Password Email";
+        $email_sub = "Reset your MyPulse Password";
         $email_to = $email;
         $this->do_email($email_msg, $email_sub, $email_to);
     }
-    function password_reset_email($account_type = '', $email = '') {
+    /*function password_reset_email($account_type = '', $email = '') {
         $query = $this->db->get_where($account_type, array('email' => $email));
         if ($query->num_rows() > 0) {
             $id = $query->row()->$account_type.'_id';
@@ -79,7 +73,7 @@ class Email_model extends CI_Model {
             return false;
         }
     }
-
+*/
     /*     * *custom email sender*** */
 
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {

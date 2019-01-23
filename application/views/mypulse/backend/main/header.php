@@ -77,39 +77,8 @@ else
 <em class="fa fa-bell"></em><span id="notification_count"></span>
     </a>
        <ul class="dropdown-menu dropdown-messages">
-  <div class="list-body">
-
-<div id="n"><?php $notification_data=$this->crud_model->select_notification();?></div>
-<?php 
-if(count($notification_data) > 0){
-    foreach ($notification_data as $row) {
-    ?>
-<li>
-
-<div class="dropdown-messages-box">
-<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>">
-<div class="message-body">
-<?php if($row['isRead']==2){ ?><strong> <?php }?><?= $row['title'];?>.
-<br />
-<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
-<?php if($row['isRead']==2){ ?></strong> <?php }?>
-</div>
-</a>
-<a href="<?=base_url('main/notification/delete/').$row['id'];?>"><b class="pull-right" style="font-size: 20px;"><i class="fa fa-times-circle-o"></i></b>
-</a>
-</div>
-</li>
-<li class="divider"></li>
-<?php }?><?php }else{
-    ?>
-<li>
-<div class="all-button">
-    <br/>
-<center><strong>No Notifications</strong></center></div>
-</li>
-<li class="divider"></li>
-<?php }
-          ?> 
+  <div class="list-body" id="ajax_notification">
+ 
 </div>
 <li class="divider"></li>
 <li>
@@ -126,45 +95,9 @@ if(count($notification_data) > 0){
 <em class="fa fa-envelope"></em><span id="message_count"></span>
 	</a>
 	   <ul class="dropdown-menu dropdown-messages">
-  <div class="list-body">
-<div id="m"><?php $message_data=$this->crud_model->select_message();?></div>
-<?php
-if($message_data!=''){
-    foreach ($message_data as $row) {
-      $count=explode(',',$row['is_read']);
-    $s=0;
-    for($m2=0;$m2<count($count);$m2++){
-        if($account_details == $count[$m2]){
-                $s=1;
-                break;
-        }
-        }
-    ?>
-<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
-        <li>
-        <div class="dropdown-messages-box">
-         
-<div class="message-body">
-  <?php if($s==0){ ?> <strong><?php }?>
-&nbsp;&nbsp;<?= $row['title'];?>.
-<br/>
-&nbsp;&nbsp;<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
-<?php if($s==0){ ?></strong><?php }?>
-</div>
-
-</div>
-</li>
-<li class="divider"></li>
-</a>
-<?php }}else{?>
-<li>
-<div class="all-button">
-    <br/>
-<center><strong>No Messages Available</strong></center></div>
-</li>
-<li class="divider"></li>
-<?php }
-          ?> 
+  <div class="list-body" id="ajax_message">
+<!-- <div id="m"><?php $message_data=$this->crud_model->select_message();?></div>
+ -->
 </div>
 <li class="divider"></li>
 <li>
@@ -258,8 +191,6 @@ $('ul#lang_scroll_div li a').on('click',function(){
       }
     });
 });
-
-
 $("#google_translate_element").hide();
  function get_lang(lang_id) {
      $.ajax({
@@ -273,14 +204,11 @@ $("#google_translate_element").hide();
     } 
 </script>
 <script>
-/*  function Load_external_content()
+$(function() {
+    Load_external_content();
+});
+ function Load_external_content()
 {
-      $('#n').load('#n');
-      $('#m').load('#m');
-}
-setInterval('Load_external_content()', 10000);
-*/
-$( document ).ready(function() {
    $.ajax({
             url: '<?php echo base_url();?>ajax/get_message_count/',
             success: function(response)
@@ -295,5 +223,20 @@ $( document ).ready(function() {
             jQuery('#notification_count').html(response);
             } 
         });
-});
+   $.ajax({
+            url: '<?php echo base_url();?>ajax/get_ajax_message/',
+            success: function(response)
+            {
+            jQuery('#ajax_message').html(response);
+            } 
+        });
+   $.ajax({
+            url: '<?php echo base_url();?>ajax/get_ajax_notification/',
+            success: function(response)
+            {
+            jQuery('#ajax_notification').html(response);
+            } 
+        });
+   }
+ setInterval('Load_external_content()', 5000);
 </script>

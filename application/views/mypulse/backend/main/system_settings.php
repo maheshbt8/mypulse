@@ -1,6 +1,3 @@
-<?php 
-$this->session->set_userdata('last_page', current_url());
-?>
 <?php if($account_type == 'superadmin'){?>
 <?php echo form_open(base_url() . 'main/system_settings/do_update', array('class' => 'form-horizontal form-groups-bordered validate', 'target' => '_top'));
 ?>
@@ -65,7 +62,7 @@ $this->session->set_userdata('last_page', current_url());
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-5">
-                        <button type="submit" class="btn btn-info"><?php echo get_phrase('save'); ?></button>
+                        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'"><button type="submit" class="btn btn-success pull-right"><?php echo get_phrase('update'); ?></button>
                     </div>
                 </div>
             </div>

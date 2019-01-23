@@ -19,7 +19,7 @@ if($id == 1){
             </div>
             <div class="form-group">
               <div class="col-sm-offset-10 col-sm-2">
-                  <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;<input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                  <input type="submit" class="btn btn-success" value="Update">&nbsp;&nbsp;<input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page1'); ?>'">
               </div>
             </div>
         </form>

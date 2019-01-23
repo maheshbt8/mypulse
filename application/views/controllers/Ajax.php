@@ -544,6 +544,46 @@ $patient_info=$this->db->where('user_id',$this->session->userdata('login_user_id
 <?php
 }$i++;}
     }
+    function get_ajax_message(){
+$account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+$message_data=$this->crud_model->select_message();
+if($message_data!=''){
+    foreach ($message_data as $row) {
+      $count=explode(',',$row['is_read']);
+    $s=0;
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }
+    ?>
+<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
+        <li>
+        <div class="dropdown-messages-box">
+<div class="message-body">
+  <?php if($s==0){ ?> <strong><?php }?>
+&nbsp;&nbsp;<?= $row['title'];?>.
+<br/>
+&nbsp;&nbsp;<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
+<?php if($s==0){ ?></strong><?php }?>
+</div>
+
+</div>
+</li>
+<li class="divider"></li>
+</a>
+<?php }}else{?>
+<li>
+<div class="all-button">
+    <br/>
+<center><strong>No Messages Available</strong></center></div>
+</li>
+<li class="divider"></li>
+<?php }
+          
+    }
     function get_message_count(){
 $account_type   = $this->session->userdata('login_type');
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
@@ -565,6 +605,40 @@ $j=0;foreach($message_data as $row){
         }
         echo '<span class="label label-info">'.$j.'</span>';
     }
+    function get_ajax_notification(){
+$account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+$notification_data=$this->crud_model->select_notification();
+if(count($notification_data) > 0){
+    foreach ($notification_data as $row) {
+    ?>
+<li>
+
+<div class="dropdown-messages-box">
+<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>">
+<div class="message-body">
+<?php if($row['isRead']==2){ ?><strong> <?php }?><?= $row['title'];?>.
+<br/>
+<small class="text-muted"><?= date('h:i A - d/m/Y',strtotime($row['created_at']));?></small>
+<?php if($row['isRead']==2){ ?></strong> <?php }?>
+</div>
+</a>
+<a href="<?=base_url('main/notification/delete/').$row['id'];?>"><b class="pull-right" style="font-size: 20px;"><i class="fa fa-times-circle-o"></i></b>
+</a>
+</div>
+</li>
+<li class="divider"></li>
+<?php }?><?php }else{
+    ?>
+<li>
+<div class="all-button">
+    <br/>
+<center><strong>No Notifications</strong></center></div>
+</li>
+<li class="divider"></li>
+<?php }
+          
+    }
     function get_notification_count(){
         $account_type   = $this->session->userdata('login_type');
 $account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
@@ -575,6 +649,52 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
             }
     }
     echo '<span class="label label-info">'.$j.'</span>';
+    }
+    function get_ajax_appointments(){
+        $account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+         
+    if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
+            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
+        }else{$appointment_info=$this->crud_model->select_appointment_info();}?>
+        <?php $i=1;foreach ($appointment_info as $row) {
+            ?>   
+            <tr>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
+                 <td><a href="<?php echo base_url(); ?>main/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
+                <td>
+             <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
+                        echo $name;?></a>
+                </td>
+                 <td>
+                <a href="<?php echo base_url();?>main/edit_doctor/<?php echo $row['doctor_id']?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
+                        echo $name;?></a>
+                </td>
+                <td>
+                    <?php 
+                    $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
+                        echo $hospital->name.' - '.$branch->name.' - '.$name;?>
+                </td>
+                 <td><?php echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;?></td> 
+                <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
+                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+                 }
+                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
+                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
+                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
+                 ?>
+                     
+                 </td>
+                <td>
+                    <?php if($account_type=='superadmin'){?>
+                    <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                    <?php }?>
+                    <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
+                </td>
+            </tr>
+        <?php } 
     }
 }
 ?>

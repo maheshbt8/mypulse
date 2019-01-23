@@ -1595,7 +1595,7 @@ class Main extends CI_Controller {
         $this->db->where('type', 'privacy');
         $this->db->update('settings', $data_list);
         $this->session->set_flashdata('message', get_phrase('data_updated_successfuly'));
-        redirect($this->session->userdata('last_page'));
+        redirect($this->session->userdata('last_page1'));
             }
     $page_data['id']=$param1;
     $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
@@ -1606,7 +1606,7 @@ class Main extends CI_Controller {
         $this->db->where('type', 'terms');
         $this->db->update('settings', $data_list);
         $this->session->set_flashdata('message', get_phrase('data_updated_successfuly'));
-        redirect($this->session->userdata('last_page'));
+        redirect($this->session->userdata('last_page1'));
             }
             $page_data['id']=$param1;
             $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;

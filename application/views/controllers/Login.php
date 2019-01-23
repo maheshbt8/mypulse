@@ -18,12 +18,10 @@ class Login extends CI_Controller {
     //Validating login from ajax request
     function validate_login() {
         if($this->input->post()){
-      $email = $this->input->post('email');
+      $email = $this->input->post('username');
       $password = $this->input->post('password');
-      /* $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";*/
-      $credential = array('email' => $email, 'password' => sha1($password),'status'=>'1','is_email'=>'1');
-        // Checking login credential for admin
-        $query = $this->db->get_where('superadmin', $credential);
+    $where = "(email='".$email."' OR phone='".$email."') AND password='".sha1($password)."' AND status='1'  AND is_email='1'";
+        $query = $this->db->where($where)->get('superadmin');
         if ($query->num_rows() > 0) {
             $row = $query->row();
             $this->session->set_userdata('login', '1');
@@ -35,7 +33,7 @@ class Login extends CI_Controller {
             redirect(base_url() . 'main', 'refresh');
         }
         
-        $query = $this->db->get_where('hospitaladmins', $credential);
+        $query = $this->db->where($where)->get('hospitaladmins');
         if ($query->num_rows() > 0) {
             $row = $query->row();
             /*$this->session->set_userdata('login', '1');*/
@@ -51,7 +49,7 @@ class Login extends CI_Controller {
         }
         
     
-        $query = $this->db->get_where('doctors', $credential);
+        $query = $this->db->where($where)->get('doctors');
         if ($query->num_rows() > 0) {
             $row = $query->row();
             /*$this->session->set_userdata('login', '1');*/
@@ -68,23 +66,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('type_id', 'doctor');
          
         }
-        
-        $query = $this->db->get_where('users', $credential);
+        $query = $this->db->where($where)->get('nurse');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            $this->session->set_userdata('login', '1');
-            $this->session->set_userdata('login_user_id', $row->user_id);
-            $this->session->set_userdata('unique_id', $row->unique_id);
-            $this->session->set_userdata('name', $row->name);
-            $this->session->set_userdata('login_type', 'users');
-            $this->session->set_userdata('type_id', 'user');
-            redirect(base_url() . 'main', 'refresh');
-        }
-        
-        $query = $this->db->get_where('nurse', $credential);
-        if ($query->num_rows() > 0) {
-            $row = $query->row();
-            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->nurse_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -99,10 +83,9 @@ class Login extends CI_Controller {
            
         }
         
-        $query = $this->db->get_where('receptionist', $credential);
+        $query = $this->db->where($where)->get('receptionist');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->receptionist_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -114,10 +97,9 @@ class Login extends CI_Controller {
             $this->session->set_userdata('type_id', 'receptionist');
           
         }
-        $query = $this->db->get_where('medicallabs', $credential);
+        $query = $this->db->where($where)->get('medicallabs');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->lab_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
@@ -129,7 +111,7 @@ class Login extends CI_Controller {
             $this->session->set_userdata('type_id', 'lab');
       
         }
-        $query = $this->db->get_where('medicalstores', $credential);
+        $query = $this->db->where($where)->get('medicalstores');
         if ($query->num_rows() > 0) {
             $row = $query->row();
             /*$this->session->set_userdata('login', '1');*/
@@ -142,6 +124,19 @@ class Login extends CI_Controller {
             $this->session->set_userdata('unique_id', $row->unique_id);
             $this->session->set_userdata('login_type', 'medicalstores');
             $this->session->set_userdata('type_id', 'store');
+        }
+        $where = "(email='".$email."' OR phone='".$email."') AND password='".sha1($password)."' AND status='1'  AND is_mobile='1'";
+        $query = $this->db->where($where)->get('users');
+        
+        if ($query->num_rows() > 0) {
+            $row = $query->row();
+            $this->session->set_userdata('login', '1');
+            $this->session->set_userdata('login_user_id', $row->user_id);
+            $this->session->set_userdata('unique_id', $row->unique_id);
+            $this->session->set_userdata('name', $row->name);
+            $this->session->set_userdata('login_type', 'users');
+            $this->session->set_userdata('type_id', 'user');
+            redirect(base_url() . 'main', 'refresh');
         }
 
      if ($this->session->userdata('login_type')!='') {
@@ -370,12 +365,19 @@ $pid='MPU'.date('y').'_'.$num;
         }
     $this->load->view('backend/forgot_password');
     }
-    function set_password($task="",$id="")
+    function set_password($task='')
     {
+    /*$email_data=explode('/',$this->encryption->decrypt($data));
+    $task=$email_data[0];
+    $id=$email_data[1];*/
         if($this->input->post()){
+        
 $this->form_validation->set_rules('pass', 'Password', 'required|min_length[5]|max_length[8]');
 $this->form_validation->set_rules('cpass', 'Password Confirmation', 'required|matches[pass]');
 if ($this->form_validation->run() == TRUE){
+    $email_data=explode('/',$this->encryption->decrypt($task));
+    $task=$email_data[0];
+    $id=$email_data[1];
             $is_email=$this->db->get_where($task, array('unique_id' => $id))->row()->is_email;
             if($is_email==1){
             $yes=$this->db->where('unique_id',$id)->update($task,array('password' =>sha1($this->input->post('pass'))));
@@ -388,25 +390,12 @@ if ($this->form_validation->run() == TRUE){
         }
     }
     }
-        $data['account']=$task;
-        $data['id']=$id;
+    $data['task']=$task;
+
+        /*$data['account']=$task;
+        $data['id']=$id;*/
         $this->load->view('backend/set_password',$data);
     }
-     /** *RESET AND SEND PASSWORD TO REQUESTED EMAIL*** */
-    /*function reset_password() {
-        $account_type = $this->input->post('account_type');
-        if ($account_type == "") {
-            redirect(base_url('login'), 'refresh');
-        }
-        $email = $this->input->post('email');
-        $result = $this->email_model->password_reset_email($account_type, $email);
-        if ($result == true) {
-            $this->session->set_flashdata('flash_message', get_phrase('password_sent'));
-        } else if ($result == false) {
-            $this->session->set_flashdata('flash_message', get_phrase('account_not_found'));
-        }
-        redirect(base_url('login'), 'refresh');
-    }*/
       /************Privacy & Policy ,Terms & Conditions****************/
     function privacy($param1 = '', $param2 = '', $param3 = '') {
         if($param1 == 1){
@@ -423,7 +412,8 @@ if ($this->form_validation->run() == TRUE){
 
     /*Error */
     function errors(){
-        $this->load->view('errors/html/error_php');
+        $this->load->view('backend/email');
+        //$this->load->view('errors/html/error_php');
     }
  /*     * *****LOGOUT FUNCTION ****** */
     function logout() {

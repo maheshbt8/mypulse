@@ -25,7 +25,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 <div class="row">
     <div class="col-sm-2 pull-right">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
-    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
+    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='superadmin' || $account_type=='hospitaladmins'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
 </div>
 </div>
 </div>
