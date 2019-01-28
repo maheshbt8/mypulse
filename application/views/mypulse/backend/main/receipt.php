@@ -16,6 +16,7 @@ $user_info=$this->db->where('user_id',$order_info['user_id'])->get('users')->row
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 ?>
+
 <div class="row">
     <div class="col-sm-2 pull-right">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
@@ -153,14 +154,24 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
     </thead>
     <tbody>
         <?php 
-        $test_title=explode(',',$prescription_data[7]);
-        $description=explode(',',$prescription_data[8]);
+        if($prescription_data[7]!=''){
+            $test_title=explode(',',$prescription_data[7]);
+        }else{
+        $test_title=explode(',',$order_data[1]);}
+        if($prescription_data[7]!=''){
+            $description=explode(',',$prescription_data[8]);
+        }else{
+        $description=explode(',',$order_data[2]);
+        }
+       /* $test_title=explode(',',$prescription_data[7]);
+        $description=explode(',',$prescription_data[8]);*/
         $tests=explode(',',$order_info['tests']);
         $price=explode(',',$order_info['price']);
+        
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
         <?php for($i1=0;$i1<count($test_title);$i1++){
-            if($tests[$i1]==1){
+            /*if($tests[$i1]==1){*/
             ?>
       <tr>
         <th scope="row"><?= $i1+1;?></th>
@@ -169,7 +180,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <td><?php if($report_info[$i1]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report_info[$i1]['report_id'].'.'.$report_info[$i1]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
         <td><?= $price[$i1];?></td>
       </tr>
-      <?php }
+      <?php /*}*/
         }?>
     </tbody>
     <thead>
@@ -198,4 +209,5 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 
      document.body.innerHTML = originalContents;
 }
+
 </script>

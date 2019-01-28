@@ -26,7 +26,8 @@ class Ajax extends CI_Controller {
         $otp=substr($shu, 14);
         $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
         $this->session->set_userdata('otp',$otp);
-        $this->sms_model->send_sms('Your JagruMs Technologies OTP code is '.$otp.'. Please use the code within 2 minutes.',$_POST['phone']);
+        $this->sms_model->send_sms('Your MyPulse OTP code is '.$otp.'. Please use the code within 2 minutes.',$_POST['phone']);
+        $this->session->set_userdata('otp_sended','1');
         /*echo $this->session->userdata('otp');*/
 
     }
@@ -586,19 +587,15 @@ if($message_data!=''){
     }
     function get_message_count(){
 $account_type   = $this->session->userdata('login_type');
-$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+$account_details=array($this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id'));
 $message_data=$this->crud_model->select_message();
 $j=0;foreach($message_data as $row){
     if($row['is_read']!=''){
     $count=explode(',',$row['is_read']);
-    for($m2=0;$m2<count($count);$m2++){
-        if($account_details == $count[$m2]){
-               /* $j=0;*/
-                break;
-        }else{
-            $j=$j+1;
-        }
-        }
+    $docs=array_intersect($account_details,$count);
+    if(count($docs)==0){
+        $j=$j+1;
+    }
     }else{
         $j=$j+1;
     }

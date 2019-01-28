@@ -15,6 +15,50 @@ class Login extends CI_Controller {
             redirect(base_url() . 'main', 'refresh');
         $this->load->view('backend/login');
     }
+     function send_email()
+ {
+ $config = array( //"Array" changed to "array" 1/15/15
+ 
+ 'protocol' => 'smtp',
+ 'smtp_host' => 'ssl://smtp.gmail.com',
+ 'smtp_port' => 465, //465
+ 'smtp_user' => 'mypulsecare@gmail.com',
+ 'smtp_pass' => 'MyPulse@123',
+ 'mailtype' => 'html',
+     'charset' => 'utf-8',//iso-8859-1
+     'wordwrap' => TRUE
+ );
+        /*$config['mailtype']     = 'html';
+        $config['charset']      = 'utf-8';
+        $config['newline']      = "\r\n";
+        $config['wordwrap']     = TRUE;*/
+ 
+ $this->load->library('email'); //$config
+ $this->email->initialize($config);
+ $this->email->set_newline("\r\n");
+ 
+ $this->email->from('mypulsecare@gmail.com','MyPulse');
+ 
+ $this->email->to('maheshbt8@gmail.com');
+ 
+ $this->email->subject('This is an email test.');
+ 
+ $this->email->message('It is working.');
+ 
+ // $this->email->send();
+ 
+ //echo $this->email->print_debugger();
+ 
+ if($this->email->send())
+ {
+ echo 'Your email was sent';
+ }
+ else
+ {
+ show_error($this->email->print_debugger());
+ }
+ 
+ }
     //Validating login from ajax request
     function validate_login() {
         if($this->input->post()){
@@ -36,7 +80,6 @@ class Login extends CI_Controller {
         $query = $this->db->where($where)->get('hospitaladmins');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->admin_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -52,7 +95,6 @@ class Login extends CI_Controller {
         $query = $this->db->where($where)->get('doctors');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->doctor_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital_id);
@@ -114,7 +156,6 @@ class Login extends CI_Controller {
         $query = $this->db->where($where)->get('medicalstores');
         if ($query->num_rows() > 0) {
             $row = $query->row();
-            /*$this->session->set_userdata('login', '1');*/
             $this->session->set_userdata('login_user_id', $row->store_id);
             $this->session->set_userdata('name', $row->name);
             $this->session->set_userdata('hospital_id', $row->hospital);
@@ -197,11 +238,16 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $otp=substr($shu, 14);
         $this->session->set_userdata('otp_time',date('Y-m-d H:i:s'));
         $this->session->set_userdata('otp',$otp);
+        $this->session->set_userdata('otp_sended','');
         }
         $this->session->set_flashdata('success','OTP Send To :'.$data['phone']);
-            $message='Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->userdata('otp') ;
+            $message='Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->userdata('otp').'. Please use the code within 2 minutes.' ;
             $receiver_phone =   $data['phone'];
+         
+        if($this->session->userdata('otp_sended')==''){  
             $this->sms_model->send_sms($message, $data['phone']);
+            $this->session->set_userdata('otp_sended','1');
+        }
     $past_time=strtotime($this->session->userdata('otp_time'));
     $current_time = time();
     $difference = $current_time - $past_time;
@@ -209,6 +255,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     if(intval($difference_minute)<3){
     if($this->input->post('otp')){
         if($this->input->post('otp') == $this->session->userdata('otp')){
+        $data['is_mobile']   = 1;
         $insert=$this->db->insert('users',$data);
         if($insert)
         {
@@ -227,10 +274,9 @@ $num=100001;
 }
 $pid='MPU'.date('y').'_'.$num;
         $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
-        $this->session->set_flashdata('success','Registration Completed Successfully');
-        /*redirect(base_url('login') , 'refresh');*/
         $this->email_model->account_opening_email('users','user', $data['email']);
-        
+        $this->session->set_flashdata('success','Registration Completed Successfully');
+        redirect(base_url('login/logout') , 'refresh');
         }
         }else{
         $this->session->set_flashdata('error', 'OTP Not Correct');

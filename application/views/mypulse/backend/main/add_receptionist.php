@@ -437,11 +437,21 @@ if(department_id == 'all'){
         });
 
     }
-    
-    function get_city(state_id) {
+    function get_district(state_id) {
+
+        $.ajax({
+            url: '<?php echo base_url();?>ajax/get_district/' + state_id ,
+            success: function(response)
+            {
+                jQuery('#select_district').html(response);
+            }
+        });
+
+    }
+    function get_city(district_id) {
 
     	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_city/' + state_id ,
+            url: '<?php echo base_url();?>ajax/get_city/' + district_id ,
             success: function(response)
             {
                 jQuery('#select_city').html(response);
@@ -450,17 +460,7 @@ if(department_id == 'all'){
 
     }
     
-     function get_district(city_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_district/' + city_id ,
-            success: function(response)
-            {
-                jQuery('#select_district').html(response);
-            }
-        });
-
-    }
+     
 
 </script>
 

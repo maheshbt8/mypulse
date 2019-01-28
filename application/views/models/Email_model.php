@@ -78,13 +78,52 @@ class Email_model extends CI_Model {
 
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {
         $system_email=$this->db->get_where('settings', array('type' => 'system_email'))->row()->description;
-        $config = array();
+         $config = array( //"Array" changed to "array" 1/15/15
+ 
+ 'protocol' => 'smtp',
+ 'smtp_host' => 'ssl://smtp.googlemail.com',
+ 'smtp_port' => 465, //465
+ 'smtp_user' => $system_email,
+ 'smtp_pass' => 'MyPulse@123',
+ 'mailtype' => 'html',
+     'charset' => 'utf-8',
+     'wordwrap' => TRUE
+ );
+$config['useragent']    = "CodeIgniter";
+ //print_r($config);die;
+ $this->load->library('email', $config); //$config
+ 
+ $this->email->set_newline("\r\n");
+
+$system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
+            $from = $system_email;
+
+        $this->email->from($system_email, $system_name);
+        $this->email->to($to);
+        $this->email->reply_to($from, $system_name);
+        $this->email->subject($sub);
+        $msg = $msg;
+        $this->email->message($msg);
+ 
+  $this->email->send();
+ 
+ /*echo $this->email->print_debugger();*/
+ 
+/* if($this->email->send())
+ {
+ echo 'Your email was sent';
+ }
+ else
+ {
+ show_error($this->email->print_debugger());
+ }*/
+       /* $config = array();
         $config['useragent']    = "CodeIgniter";
-        /*$config['mailpath']     = "ssl://smtp.gmail.com";*/ // or "/usr/sbin/sendmail"
+        //$config['mailpath']     = "ssl://smtp.gmail.com"; // or "/usr/sbin/sendmail"
         $config['protocol']     = "smtp";
         $config['smtp_host']    = "ssl://smtp.gmail.com";
         $config['smtp_user'] = $system_email;//'mypulsecare@gmail.com'
-        $config['smtp_pass'] = 'Mypulse123';//ravikumar@518
+        $config['smtp_pass'] = 'MyPulse@123';
         $config['smtp_port']    = 465;
         $config['mailtype']     = 'html';
         $config['charset']      = 'utf-8';
@@ -95,16 +134,21 @@ class Email_model extends CI_Model {
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
             $from = $system_email;
         $this->email->from($from, $system_name);
-        $this->email->from($from, $system_name);
         $this->email->to($to);
         $this->email->subject($sub);
         $msg = $msg;
         $this->email->message($msg);
-
-        $this->email->send();
-
-        /*echo $this->email->print_debugger();die;*/
+        //$this->email->send();
+  if($this->email->send())
+    {echo "string";
+        //$this->session->set_flashdata("success","Email sent.");
+    }
+     else
+    {
+        show_error($this->email->print_debugger());
+    }
         
+     */   
     }
 
 }

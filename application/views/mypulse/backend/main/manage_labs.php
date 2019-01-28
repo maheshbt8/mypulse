@@ -18,7 +18,7 @@ $this->session->set_userdata('last_page', current_url());
 </button>
 <?php }?>
 <?php if($account_type == 'users'){?>
-<a href="<?php echo base_url(); ?>main/add_order/1/;?>" class="pull-right" title="Order Medical Tests"><em class="fa fa-lg fa-plus-square color-red"></em>
+<a href="<?php echo base_url(); ?>main/add_order/1/" class="pull-right" title="Order Medical Tests"><em class="fa fa-lg fa-plus-square color-red"></em>
             </a>
 <?php }?>
 </div>

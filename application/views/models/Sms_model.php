@@ -7,6 +7,7 @@ class Sms_model extends CI_Model {
     }
     
 function send_sms($message = '' , $numbers = '') {
+
         // Authorisation details.
   $username = $this->db->get_where('settings', array('type' => 'sms_username'))->row()->description;
   /*"maheshbt8@gmail.com";*/
@@ -21,7 +22,8 @@ function send_sms($message = '' , $numbers = '') {
   // 612 chars or less*/
   // A single number or a comma-seperated list of numbers
   $message = urlencode($message);
-  $data = "username=".$username."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$numbers."&test=".$test;
+  /*$data = "username=".$username."&hash=".$hash."&message=".$message."&sender=".$sender."&numbers=".$numbers."&test=".$test;*/
+  $data = "api_key=".$hash."&sender=".$sender."&numbers=".$numbers."&message=".$message;
   $ch = curl_init('http://api.textlocal.in/send/?');
   curl_setopt($ch, CURLOPT_POST, true);
   curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -31,3 +33,5 @@ function send_sms($message = '' , $numbers = '') {
   curl_close($ch);
         }
 }
+
+//https://api.textlocal.in/send/?apiKey=WZP8pxiSvDc-hkiwoYe2agXVNdb75LvnppDL9iYn51&sender=TXTLCL&numbers=918121815502&message=Test_message&test=0

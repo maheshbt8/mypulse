@@ -25,7 +25,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 <div class="row">
     <div class="col-sm-2 pull-right">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
-    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='superadmin' || $account_type=='hospitaladmins'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
+    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='superadmin' || $account_type=='hospitaladmins'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
 </div>
 </div>
 </div>
@@ -155,7 +155,7 @@ if($prescription_data[1]!='' || $order_data[1]!=''){
 </div>
 <?php }}
 if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($order_type=='' && $account_type=='users')){
-    if($prescription_data[7]!='' || $order_data[1]!=''){?>
+    if($prescription_data[7]!='' || $order_data[1]!=''){ ?>
 <h2 class="col-sm-12"><?php echo get_phrase('prescription_for_medical_tests'); ?></h2>
 <div class="col-md-12">
     <div class="table-responsive">
@@ -182,17 +182,18 @@ if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($or
         if($account_type == 'medicallabs'){
         $tests=explode(',',$order_info['tests']); 
         }
+        /*print_r($test_title);die;*/
         ?>
         <?php for($i1=0;$i1<count($test_title);$i1++){
             if($account_type == 'medicallabs'){
-                if($tests[$i1]==1){
+              /*  if($tests[$i1]==1){*/
             ?>
       <tr>
         <th><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
       </tr>
-      <?php }}elseif($account_type != 'medicallabs'){ ?>
+      <?php /*}*/}elseif($account_type != 'medicallabs'){ ?>
 <tr>
         <th><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>

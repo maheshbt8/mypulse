@@ -19,7 +19,7 @@ $this->session->set_userdata('last_page', current_url());
 <?php }?>
 <?php
 if($account_type=='users'){ ?>
-    <a href="<?php echo base_url(); ?>main/add_order/0;?>" class="pull-right" title="Order Medicine"><em class="fa fa-lg fa-medkit color-blue"></em>
+    <a href="<?php echo base_url(); ?>main/add_order/0" class="pull-right" title="Order Medicine"><em class="fa fa-lg fa-medkit color-blue"></em>
             </a>
 
 <?php }
