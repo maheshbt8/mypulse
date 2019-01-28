@@ -65,6 +65,8 @@
 <i class="fa fa-long-arrow-right"></i></a>
 <br/>
 <a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a>
+<p><small><a href="<?=base_url('Privacy&Policy')?>" style="color:#fff;" target="_blank">Privacy Policy</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<?=base_url('Terms&Coditions')?>" style="color:#fff;" target="_blank">Terms and Conditions</a></small>
+        </p>
 					</div>
 				</form>
 			</div>

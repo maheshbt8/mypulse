@@ -3,9 +3,11 @@
         z-index: auto;
     }
 </style>
-<?php 
-$this->session->set_userdata('last_page', current_url());
-?>
+
+<?php
+if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
+    $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
+        }else{$this->session->set_userdata('last_page', current_url());}?>
 <form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
 <div class="row">
     <div class="col-lg-12">

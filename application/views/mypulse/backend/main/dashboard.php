@@ -470,6 +470,7 @@ if($account_type == 'medicallabs'){
             <th><?php echo get_phrase('patient'); ?></th>
             <th><?php echo get_phrase('contact_number'); ?></th>
             <th><?php echo get_phrase('address'); ?></th>
+            <th><?php echo get_phrase('Date'); ?></th>
             <th><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('prescription'); ?></th>
             <th><?php echo get_phrase('Upload Receipt'); ?></th>
@@ -492,6 +493,7 @@ if($account_type == 'medicallabs'){
                 <td><?php echo $user1['phone'] ?></td>
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
+                <td><?php echo date('M d-Y h:i A',strtotime($row1['created_at'])); ?></td>
                 <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
                 <td>
   <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a>

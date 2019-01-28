@@ -678,8 +678,7 @@ foreach ($hospi as $row) {
         </ul>
       </div>
       <div class="copyrightbottom">
-        <p>© 2019 JagruMs Technologies - All Rights Reserved.&nbsp;&nbsp;<small><a href="<?=base_url('login/privacy/1')?>" style="color:#fff;text-decoration:underline;font-family:Helvetica,Arial,sans-serif" target="_blank" data-saferedirecturl=<?=base_url('login/privacy/1')?>>Privacy Policy</a> |
-                            <a href="<?=base_url('login/privacy/2')?>" style="color:#fff;text-decoration:underline;font-family:Helvetica,Arial,sans-serif" target="_blank" data-saferedirecturl=<?=base_url('login/privacy/2')?>>Terms and Conditions</a></small>
+        <p>© 2019 JagruMs Technologies - All Rights Reserved.&nbsp;&nbsp;<small><a href="<?=base_url('Privacy&Policy')?>" style="color:#fff;text-decoration:underline;font-family:Helvetica,Arial,sans-serif" target="_blank">Privacy Policy</a> | <a href="<?=base_url('Terms&Coditions')?>" style="color:#fff;text-decoration:underline;font-family:Helvetica,Arial,sans-serif" target="_blank">Terms and Conditions</a></small>
         </p>
       </div>
       <div class="clearfix"></div>

@@ -433,6 +433,9 @@ $num=100001;
         }
         
         return $hospi;
+    }
+    function select_hospital_info_by_id($hospital_id){
+        return $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
     }   
     
    
@@ -786,6 +789,11 @@ $pid='MPHA'.date('y').'_'.$num;
     {
         return $this->db->get('branch')->result_array();
     }
+    function select_branch_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
+    }
+
+
      function select_store_info($hospital_id='')
     {
     $account_type=$this->session->userdata('login_type');
@@ -2285,7 +2293,7 @@ $pid='MPA'.date('y').'_'.$num;
     $time=explode('-',$this->input->post('available_slot'));
     $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
     $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
-    }
+    
     $data['appointment_date']= $this->input->post('appointment_date');
     $yes=$this->db->where('appointment_id',$appointment_id)->update('appointments',$data);
     if($yes){
@@ -2301,6 +2309,7 @@ $pid='MPA'.date('y').'_'.$num;
                 $last_id=$this->db->insert_id();
                 $this->db->where('appointment_history_id',$last_id)->update('appointment_history',array('action'=>5));
             }
+    }
     }
     }
     function update_appointment_attended_status($appointment_id='',$status='')

@@ -73,12 +73,10 @@ foreach ($single_appointment_info as $row) {
                 <div class="col-sm-6">
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
-
                         <div class="col-sm-8">
                             <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo $row['appointment_date']; ?>" <?php if($row['status']!= 2){echo 'disabled';}?> onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
                         </div>
                     </div>
-                   
                 </div>
                       <div class="col-sm-6">
                      <div class="form-group">
@@ -260,7 +258,6 @@ foreach ($single_appointment_info as $row) {
             {
                jQuery('#available_slot').html(response);
                document.getElementById("available_slot").disabled = false;
-               
             } 
         });
    

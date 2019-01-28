@@ -25,7 +25,8 @@ $this->session->set_userdata('last_page', current_url());
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th><?php }?>
             <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_id');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
-            <th data-field="license" data-sortable="true"><?php echo get_phrase('license_status'); ?></th>
+            <?php if($account_type!='users'){?>
+            <th data-field="license" data-sortable="true"><?php echo get_phrase('license_status'); ?></th><?php }?>
             <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branches'); ?></th><?php }?>
             <th><?php echo get_phrase('options'); ?></th>
@@ -38,11 +39,12 @@ $this->session->set_userdata('last_page', current_url());
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['hospital_id'] ?>"></td><?php }?>
                 <td><?php echo $row['unique_id'];?></td>
                 <td><a href="<?php echo base_url();?>main/get_hospital_history/<?php echo $row['hospital_id'];?>" class="hiper"><?php echo $row['name'] ?></a></td>
+                <?php if($account_type!='users'){?>
                 <td><?php $license_code=$this->db->where('license_id',$row['license'])->get('license')->row()->license_code;
                  if($row['license_status'] == 1){echo "<button type='button' class='btn-success'>".$license_code." - Active</button>";   
                  }
                  else if($row['license_status'] == 2){ echo "<button type='button' class='btn-danger'>".$license_code." - Inactive</button>";}?>
-                </td>
+                </td><?php }?>
                 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                  <td>
             <a href="<?php echo base_url(); ?>main/get_hospital_branch/<?php echo $row['hospital_id'] ?>" title="Branches"><i class="glyphicon glyphicon-eye-open"></i></a>     

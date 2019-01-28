@@ -8,7 +8,7 @@
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/branch/create" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-sm-6">
-                    <?php if($account_type=='superadmin'){?>
+                    <?php if($account_type=='superadmin'){ ?>
                      <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Hospital';?></label>
 
@@ -24,7 +24,7 @@
                             </select>
                         </div>
                     </div>
-                <?php }elseif($account_type=='hospitaladmins'){?>
+                <?php }elseif($account_type=='hospitaladmins'){ ?>
                 <input type="hidden" name="hospital" value="<?php echo $this->session->userdata('hospital_id');?>"/>
                 <?php }?>
                     <div class="form-group">

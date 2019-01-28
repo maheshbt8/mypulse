@@ -5,7 +5,7 @@
 </style>
 <div class="row">
 	<div class="col-md-12">
-    <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+    <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
     	<!--CONTROL TABS START-->
 		<ul class="nav nav-tabs bordered">
 			<li class="active">

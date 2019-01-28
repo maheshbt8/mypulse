@@ -57,3 +57,6 @@ $route['translate_uri_dashes'] = FALSE;
 $route['About-Us']='index/about';
 $route['Services']='index/services';
 $route['Contact-Us']='index/contact';
+
+$route['Privacy&Policy'] ='login/privacy/1';
+$route['Terms&Coditions'] ='login/privacy/2';

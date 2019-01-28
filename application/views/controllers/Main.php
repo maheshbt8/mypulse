@@ -89,7 +89,9 @@ class Main extends CI_Controller {
             redirect('main/get_hospital_history/'.$hospital_id);
         }
                 }
-         }
+         }else{
+           redirect('main/get_hospital_history/'.$hospital_id);
+        }
          $data['hospital_id'] = $hospital_id;
         $data['page_name'] = 'edit_hospital';
         $data['page_title'] = get_phrase('edit_hospital');
@@ -143,14 +145,10 @@ class Main extends CI_Controller {
             redirect($this->session->userdata('last_page'));
         }
         if ($task == "update") {
-            /*echo $branch_id;
-            print_r($_POST);die;*/
             $this->crud_model->update_branch_info($branch_id);
             $this->session->set_flashdata('message', get_phrase('branch_info_updated_successfuly'));
-            /*redirect(base_url() . 'main/branch');*/
             redirect($this->session->userdata('last_page'));
         }
-
         if ($task == "delete") {
             $this->crud_model->delete_branch_info($branch_id);
             redirect($this->session->userdata('last_page'));

@@ -39,7 +39,7 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="patient" data-sortable="true"><?php echo get_phrase('patient');?></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th>   
             <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th>
-            <th data-field="date" data-sortable="true"><?php echo get_phrase('date');?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('created_date');?></th>
             <th data-field="reason" data-sortable="true"><?php echo get_phrase('reason');?></th> 
             <th data-field="bed" data-sortable="true"><?php echo get_phrase('bed');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status');?></th>
