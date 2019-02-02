@@ -15,50 +15,6 @@ class Login extends CI_Controller {
             redirect(base_url() . 'main', 'refresh');
         $this->load->view('backend/login');
     }
-     function send_email()
- {
- $config = array( //"Array" changed to "array" 1/15/15
- 
- 'protocol' => 'smtp',
- 'smtp_host' => 'ssl://smtp.gmail.com',
- 'smtp_port' => 465, //465
- 'smtp_user' => 'mypulsecare@gmail.com',
- 'smtp_pass' => 'MyPulse@123',
- 'mailtype' => 'html',
-     'charset' => 'utf-8',//iso-8859-1
-     'wordwrap' => TRUE
- );
-        /*$config['mailtype']     = 'html';
-        $config['charset']      = 'utf-8';
-        $config['newline']      = "\r\n";
-        $config['wordwrap']     = TRUE;*/
- 
- $this->load->library('email'); //$config
- $this->email->initialize($config);
- $this->email->set_newline("\r\n");
- 
- $this->email->from('mypulsecare@gmail.com','MyPulse');
- 
- $this->email->to('maheshbt8@gmail.com');
- 
- $this->email->subject('This is an email test.');
- 
- $this->email->message('It is working.');
- 
- // $this->email->send();
- 
- //echo $this->email->print_debugger();
- 
- if($this->email->send())
- {
- echo 'Your email was sent';
- }
- else
- {
- show_error($this->email->print_debugger());
- }
- 
- }
     //Validating login from ajax request
     function validate_login() {
         if($this->input->post()){
@@ -218,7 +174,6 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     function register()
     {
         if($this->input->post()){
-        $reg_status = $this->input->post('reg_status');
         $phone = $this->input->post('phone');
            $validation_phone = mobile_validation($phone);
         if($validation_phone==0){
@@ -236,7 +191,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $data['password']       = sha1($this->input->post('pass'));
         $data['phone']          = $this->input->post('phone');
         $data['status']   = 1;
-        $data['reg_status']   = $reg_status;
+        
         $user_name   =   $data['name'];
         if($this->session->userdata('otp')==''){
         $num="12345678901234567890";
@@ -262,14 +217,18 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     if($this->input->post('otp')){
         if($this->input->post('otp') == $this->session->userdata('otp')){
         $data['is_mobile']   = 1;
-        if($reg_status==2){
+        if($validation_phone==1){
         $insert=$this->db->insert('users',$data);
-        }elseif($reg_status==1){
+        }elseif($validation_phone!=1){
+        $data['reg_status']   = '1';
         $insert=$this->db->where('phone',$phone)->update('users',$data);
         }
         if($insert)
         {
+        //$this->session->sess_destroy();
         $this->session->set_userdata('otp','');
+        $this->session->set_userdata('otp_time','');
+        $this->session->set_userdata('otp_sended','');
         $lid=$this->db->insert_id();
 if($lid==1){
 $num=100001;
@@ -285,9 +244,8 @@ $num=100001;
 $pid='MPU'.date('y').'_'.$num;
         $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
         $this->email_model->account_opening_email('users','user', $data['email']);
-        $this->session->sess_destroy();
         $this->session->set_flashdata('success','Registration Completed Successfully');
-        redirect(base_url('login') , 'refresh');
+        redirect(base_url() . 'login', 'refresh');
         }
         }else{
         $this->session->set_flashdata('error', 'OTP Not Correct');
@@ -295,8 +253,8 @@ $pid='MPU'.date('y').'_'.$num;
 }
     }else{
         $this->session->sess_destroy();
-        redirect(base_url('login/register'), 'refresh');
         $this->session->set_flashdata('error', 'OTP Time Was Experied');
+        redirect(base_url('login/register'), 'refresh');
     }
             }else{
                  $this->session->set_flashdata('error', 'Please Confirm password, does not match');

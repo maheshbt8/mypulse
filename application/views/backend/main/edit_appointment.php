@@ -170,7 +170,7 @@ foreach ($single_appointment_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('Next appointment Date'); ?></label>
                             <div class="col-sm-8" id="remark">
-                                <input type="text" name="next_appointment" placeholder="Next Appointment Date" class="form-control" id="start_on" value="<?php echo date('m/d/Y',strtotime($row['next_appointment']));?>" autocomplete="off"  <?php if($account_type!='doctors'){echo 'disabled';}?>>
+                                <input type="text" name="next_appointment" placeholder="Next Appointment Date" class="form-control" id="start_on" value="<?php if($row['next_appointment']!=''){echo date('m/d/Y',strtotime($row['next_appointment']));}?>" autocomplete="off"  <?php if($account_type!='doctors'){echo 'disabled';}?>>
                             </div>
                     </div>
                 </div> 

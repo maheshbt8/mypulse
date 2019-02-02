@@ -5,36 +5,65 @@
 </style>
 
 <?php
-if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
+/*if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
     $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
-        }else{$this->session->set_userdata('last_page', current_url());}?>
+        }else{$this->session->set_userdata('last_page', current_url());}*/
+if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
+    $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
+        }elseif($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']==''){
+    $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed']);
+        }elseif($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!=''){
+    $this->session->set_userdata('last_page', current_url().'?status_id='.$_GET['status_id']);
+        }else{$this->session->set_userdata('last_page', current_url());}
+?>
+<!-- <script>
+$(function() {
+    get_ajax_appointments();
+});
+ function get_ajax_appointments()
+{
+    var sd='<?=$_GET['sd']?>';
+    var ed='<?=$_GET['ed']?>';
+    var status='<?=$_GET['status_id']?>';
+var data = "sd="+ sd + '&ed='+ed+'&status_id='+status;
+   $.ajax({
+            type:"GET",
+            cache:false,
+            url: '<?php echo base_url();?>ajax/get_ajax_appointments/',
+            data:data,
+            success: function(response)
+            {
+                jQuery('#data_table').html(response);
+            } 
+        });
+
+}
+ //setInterval('Load_external_content1()', 5000);
+</script> -->
+<!-- <script>
+$(function() {
+    get_ajax_appointments();
+});
+ function get_ajax_appointments()
+{
+     
+}
+</script> -->
+   <?php
+if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
+            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
+        }else{
+            $sd=date('Y-m-d', strtotime('-0 days'));
+            $ed=date('Y-m-d', strtotime('+6 days'));
+            $status='2';
+            $appointment_info=$this->crud_model->select_appointment_info_by_date($sd,$ed,$status);}?>
 <form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
+
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">   
-            <div class="panel-heading">
-<div class="col-sm-12">
-<div class="col-sm-8 col-xs-12">
-                  <div class="form-group">
-         <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
-         <div class="col-sm-4">
-        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'Select Date Range';}?>"/>
-        </div>
-
-      <span for="field-ta" class="col-sm-2"> <?php echo get_phrase('status'); ?></span> 
-                        <div class="col-sm-4">
-                            <select name="hospital" class="form-control" onchange="return get_appointment(this.value)">
-    <option value="all" <?php if($_GET['status_id']=='all'){echo 'selected';}elseif($_GET['status_id']==''){echo 'selected';}?>><?php echo get_phrase('All'); ?></option>
-    <option value="2" <?php if($_GET['status_id']=='2'){echo 'selected';}?>><?php echo get_phrase('Confirmed'); ?></option>
-    <option value="3" <?php if($_GET['status_id']=='3'){echo 'selected';}?>><?php echo get_phrase('Cancelled'); ?></option>
-    <option value="4" <?php if($_GET['status_id']=='4'){echo 'selected';}?>><?php echo get_phrase('closed'); ?></option>
-    <option value="1" <?php if($_GET['status_id']=='1'){echo 'selected';}?>><?php echo get_phrase('Pending'); ?></option>
-                            </select>
-                        </div>
-                    </div>
-</div>
-<div class="col-sm-4 col-xs-12">
-<?php if($account_type=='superadmin'){?>
+        <div class="panel panel-default">
+    <button type="button" class="btn btn-info pull-right" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;"><i class="glyphicon glyphicon-refresh icon-refresh"></i>&nbsp;Refresh</button>
+        <?php if($account_type=='superadmin'){?>
 <button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
@@ -51,22 +80,45 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
 </button>
 <?php }?>
 
-<button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-default pull-right" style="margin-left: 2px;">
+<button type="button" data-toggle="modal" data-target="#myModal" onClick="confcancel1(this.form);" id="cancel" class="btn btn-info pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('cancel'); ?>
 </button>
-<button type="button" onClick="checkone(this.form);" id="cancel1" class="btn btn-default pull-right" style="margin-left: 2px;">
+<button type="button" onClick="checkone(this.form);" id="cancel1" class="btn btn-info pull-right" style="margin-left: 2px;">
         <?php echo get_phrase('cancel'); ?>
 </button>
-
-
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_appointment'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_appointment'); ?>
 </button>
+<br/><br/>  
+            <div class="panel-heading">
+<div class="col-sm-12">
+<div class="col-md-8 col-sm-12 col-xs-12">
+                  <div class="form-group">
+         <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
+         <div class="col-sm-4">
+        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+6 days'));}?>"/>
+        </div>
+
+      <span for="field-ta" class="col-sm-2"> <?php echo get_phrase('status'); ?></span> 
+                        <div class="col-sm-4">
+                            <select name="hospital" class="form-control" onchange="return get_appointment(this.value)">
+    <option value="all" <?php if($_GET['status_id']=='all'){echo 'selected';}?>><?php echo get_phrase('All'); ?></option>
+    <option value="2" <?php if($_GET['status_id']=='2'){echo 'selected';}elseif($_GET['status_id']==''){echo 'selected';}?>><?php echo get_phrase('Confirmed'); ?></option>
+    <option value="3" <?php if($_GET['status_id']=='3'){echo 'selected';}?>><?php echo get_phrase('Cancelled'); ?></option>
+    <option value="4" <?php if($_GET['status_id']=='4'){echo 'selected';}?>><?php echo get_phrase('closed'); ?></option>
+    <option value="1" <?php if($_GET['status_id']=='1'){echo 'selected';}?>><?php echo get_phrase('Pending'); ?></option>
+                            </select>
+                        </div>
+                    </div>
 </div>
+<!-- <div class="col-sm-4 col-xs-12">
+
+
+</div> -->
 </div>
 </div>
 <div class="panel-body">
-<table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
+<table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered" id="data_table">
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
@@ -75,27 +127,20 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
             <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('Hospital-Branch-Department');?></th>  
             <th data-field="city" data-sortable="true"><?php echo get_phrase('city');?></th> 
-            <th data-field="date" data-sortable="true"><?php echo get_phrase('date & time');?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('appointment date & time');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
             <th><?php echo get_phrase('options');?></th>
         </tr> 
     </thead>
-    <tbody id="data_table">
-<!-- <div id="my_data_ajax">
-
-    </div> -->
-    <?php
-if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
-            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
-        }else{$appointment_info=$this->crud_model->select_appointment_info();}?>
+    <tbody>
         <?php $i=1;foreach ($appointment_info as $row) {
-            ?>   
+            ?>  
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
                  <td><a href="<?php echo base_url(); ?>main/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
                 <td>
-             <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php $name = $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row()->name;
-                        echo $name;?></a>
+             <a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php $user= $this->db->get_where('users' , array('user_id' => $row['user_id'] ))->row();
+                        echo $user->name;?></a>
                 </td>
                  <td>
                 <a href="<?php echo base_url();?>main/edit_doctor/<?php echo $row['doctor_id']?>" class="hiper"><?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row()->name;
@@ -108,7 +153,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                     if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
                         echo $hospital->name.' - '.$branch->name.' - '.$name;?>
                 </td>
-                 <td><?php echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;?></td> 
+                 <td><?php echo $this->db->where('city_id',$user->city)->get('city')->row()->name;?></td> 
                 <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
@@ -125,66 +170,14 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                     <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
                 </td>
             </tr>
-        <?php }
-?>
-    </tbody>
+        <?php } ?>
+        </tbody>
 </table>
 </div>
 </div>
  </div>
 </div>
 </form>
-<script>
-    $(document).ready(function(){
-        $("#delete1").show();
-        $("#delete").hide();
-        $("#close1").show();
-        $("#close").hide();
-        $("#cancel1").show();
-        $("#cancel").hide();
- $(".all_check").click(function () {
-    if($(this).prop("checked") == true){
-                $("#delete1").hide();
-                $("#delete").show();
-                $("#close1").hide();
-                $("#close").show();
-                $("#cancel1").hide();
-                $("#cancel").show();
-            }
-            else if($(this).prop("checked") == false){
-                $("#delete1").show();
-                $("#delete").hide();
-                $("#close1").show();
-                $("#close").hide();
-                $("#cancel1").show();
-                $("#cancel").hide();
-            }
-     $('input:checkbox').not(this).prop('checked', this.checked);
- });
-         $(".check").click(function(){
-            if(($(".check:checked").length)!=0){
-            $("#delete1").hide();
-            $("#delete").show();
-            $("#close1").hide();
-            $("#close").show();
-            $("#cancel1").hide();
-            $("#cancel").show();
-        if($(".check").length == $(".check:checked").length) {
-            $("#all_check").attr("checked", "checked");
-        } else {
-            $("#all_check").removeAttr("checked");
-        }
-    }else{
-        $("#delete1").show();
-        $("#delete").hide();
-        $("#close1").show();
-        $("#close").hide();
-        $("#cancel1").show();
-        $("#cancel").hide();
-    }
-    });
-    });
-</script>
 
  <script>
        function confclose1(form) {
@@ -260,7 +253,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
         
     $(document).ready(function(){
         var start = moment();
-        var end = moment();
+        var end = moment().add(6, 'days');
         <?php
         if(isset($_GET['sd']) && $_GET['sd'] != ""){
             ?>
@@ -277,7 +270,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
         }
         ?>
         function cb(start, end) {
-            window.location.href = '<?php echo base_url();?>main/appointment?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD');
+            window.location.href = '<?php echo base_url();?>main/appointment?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=2";
         }
         $('#reportrange').daterangepicker({
             startDate: start,
@@ -315,54 +308,55 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
        ?>
     }
 </script>
-<!-- <script>
-$(function() {
-    Load_external_content();
-});
- function Load_external_content()
-{
-    var sd='<?=$_GET['sd']?>';
-    var ed='<?=$_GET['ed']?>';
-    var status='<?=$_GET['status_id']?>';
-var data = "sd="+ sd + '&ed='+ed+'&status_id='+status;
-   $.ajax({
-            type:"GET",
-            cache:false,
-            url: '<?php echo base_url();?>ajax/get_ajax_appointments/',
-            data:data,
-            success: function(response)
-            {
-            jQuery('#data_table').html(response);
-            } 
-        });
-}
- setInterval('Load_external_content()', 5000);
-</script> -->
-<script>
-$(function() {
-    Load_external_content1();
-});
- function Load_external_content1()
-{
-    $("#my_data_ajax").html('<?php
-if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
-            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
-        }else{$appointment_info=$this->crud_model->select_appointment_info();}?>');
-    //$("#my_data_ajax").load();
-    /*var sd='<?=$_GET['sd']?>';
-    var ed='<?=$_GET['ed']?>';
-    var status='<?=$_GET['status_id']?>';
-var data = "sd="+ sd + '&ed='+ed+'&status_id='+status;
-   $.ajax({
-            type:"GET",
-            cache:false,
-            url: '<?php echo base_url();?>ajax/get_ajax_appointments/',
-            data:data,
-            success: function(response)
-            {
-            jQuery('#data_table').html(response);
-            } 
-        });*/
-}
- setInterval('Load_external_content1()', 5000);
+
+ <script>
+    $(document).ready(function(){
+        $("#delete1").show();
+        $("#delete").hide();
+        $("#close1").show();
+        $("#close").hide();
+        $("#cancel1").show();
+        $("#cancel").hide();
+ $(".all_check").click(function () {
+    if($(this).prop("checked") == true){
+                $("#delete1").hide();
+                $("#delete").show();
+                $("#close1").hide();
+                $("#close").show();
+                $("#cancel1").hide();
+                $("#cancel").show();
+            }
+            else if($(this).prop("checked") == false){
+                $("#delete1").show();
+                $("#delete").hide();
+                $("#close1").show();
+                $("#close").hide();
+                $("#cancel1").show();
+                $("#cancel").hide();
+            }
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            $("#delete1").hide();
+            $("#delete").show();
+            $("#close1").hide();
+            $("#close").show();
+            $("#cancel1").hide();
+            $("#cancel").show();
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        $("#delete1").show();
+        $("#delete").hide();
+        $("#close1").show();
+        $("#close").hide();
+        $("#cancel1").show();
+        $("#cancel").hide();
+    }
+    });
+    });
 </script>

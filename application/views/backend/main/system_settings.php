@@ -61,6 +61,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label  class="col-sm-3 control-label"><?php echo get_phrase('email_password'); ?></label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="email_password" 
+                               value="<?php echo $this->db->get_where('settings', array('type' => 'email_password'))->row()->description; ?>">
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-5">
                         <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'"><button type="submit" class="btn btn-success pull-right"><?php echo get_phrase('update'); ?></button>
                     </div>

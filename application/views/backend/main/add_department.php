@@ -12,7 +12,7 @@
 
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_branch(this.value)">
-                                <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
+                                <option value=""><?php echo 'Select Hospital';?></option>
                                <?php 
                                $hospital_info=$this->db->where('status','1')->get('hospitals')->result_array();
                                foreach ($hospital_info as $row) { ?>
@@ -29,10 +29,14 @@
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectBranch'];?></label>
 		                    <div class="col-sm-8">
 		                        <select name="branch" class="form-control select2" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
-		                            <option value=""><?php echo $this->lang->line('labels')['select_branch'];?></option>
+		                            <option value="">Select Branch</option>
                                      <?php 
-                               $hospital_info=$this->db->where('hospital_id',$branch['hospital_id'])->get('branch')->result_array();
-                               foreach ($hospital_info as $row) { ?>
+                                if($branch['hospital_id']!=''){
+                                        $branch_info=$this->crud_model->select_branch_info_by_hospital_id($branch['hospital_id']);
+                                      }else{
+                                        $branch_info=$this->crud_model->select_branch_info_by_hospital_id($this->session->userdata('hospital_id'));
+                                      }
+                               foreach ($branch_info as $row) { ?>
                                     <option value="<?php echo $row['branch_id']; ?>" <?php if($row['branch_id'] == $branch['branch_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>
 			                    </select>

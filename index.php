@@ -312,5 +312,5 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
-/*require_once BASEPATH.'core/CodeIgniter.php';
-$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];*/
+require_once BASEPATH.'core/CodeIgniter.php';
+$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];

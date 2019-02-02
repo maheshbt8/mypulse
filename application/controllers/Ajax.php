@@ -18,6 +18,20 @@ class Ajax extends CI_Controller {
             redirect(base_url(), 'refresh');
         }*/
     }
+    function test(){
+        //$this->session->unset_userdata('json');
+        $account_type   = $this->session->userdata('login_type');
+$account_details=$this->session->userdata('login_type').'-'.$this->session->userdata('type_id').'-'.$this->session->userdata('login_user_id');
+    if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
+            $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
+        }else{$appointment_info=$this->crud_model->select_appointment_info();}
+        //return json_encode($appointment_info);
+        //$this->session->set_userdata('json',"string11");
+        //$this->session->set_flashdata('json','ll');
+        //echo "string";
+        //echo json_encode($appointment_info);
+        //return $appointment_info['appointment_info'];
+    }
     function get_otp()
     {
         $date_val=$_POST['phone'];
@@ -685,8 +699,22 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
             $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
         }else{$appointment_info=$this->crud_model->select_appointment_info();}?>
+         <thead>
+        <tr>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('appointment_no.');?></th> 
+            <th data-field="user" data-sortable="true"><?php echo get_phrase('user');?></th>
+            <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th>
+            <th data-field="hospital" data-sortable="true"><?php echo get_phrase('Hospital-Branch-Department');?></th>  
+            <th data-field="city" data-sortable="true"><?php echo get_phrase('city');?></th> 
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('date & time');?></th>
+            <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
+            <th><?php echo get_phrase('options');?></th>
+        </tr> 
+    </thead>
+    <tbody>
         <?php $i=1;foreach ($appointment_info as $row) {
-            ?>   
+            ?>  
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['appointment_id'] ?>"></td>
                  <td><a href="<?php echo base_url(); ?>main/edit_appointment/<?php echo $row['appointment_id'] ?>" class="hiper"><?php echo $row['appointment_number'] ?></a></td>
@@ -722,7 +750,60 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
                     <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
                 </td>
             </tr>
-        <?php } 
+        <?php } ?>
+        </tbody>
+        <script>
+    $(document).ready(function(){
+        $("#delete1").show();
+        $("#delete").hide();
+        $("#close1").show();
+        $("#close").hide();
+        $("#cancel1").show();
+        $("#cancel").hide();
+ $(".all_check").click(function () {
+    if($(this).prop("checked") == true){
+                $("#delete1").hide();
+                $("#delete").show();
+                $("#close1").hide();
+                $("#close").show();
+                $("#cancel1").hide();
+                $("#cancel").show();
+            }
+            else if($(this).prop("checked") == false){
+                $("#delete1").show();
+                $("#delete").hide();
+                $("#close1").show();
+                $("#close").hide();
+                $("#cancel1").show();
+                $("#cancel").hide();
+            }
+     $('input:checkbox').not(this).prop('checked', this.checked);
+ });
+         $(".check").click(function(){
+            if(($(".check:checked").length)!=0){
+            $("#delete1").hide();
+            $("#delete").show();
+            $("#close1").hide();
+            $("#close").show();
+            $("#cancel1").hide();
+            $("#cancel").show();
+        if($(".check").length == $(".check:checked").length) {
+            $("#all_check").attr("checked", "checked");
+        } else {
+            $("#all_check").removeAttr("checked");
+        }
+    }else{
+        $("#delete1").show();
+        $("#delete").hide();
+        $("#close1").show();
+        $("#close").hide();
+        $("#cancel1").show();
+        $("#cancel").hide();
+    }
+    });
+    });
+</script>
+        <?php 
     }
 }
 ?>

@@ -1,25 +1,24 @@
 <?php $account_type=$this->session->userdata('login_type');?>
 <?php
  $single_hospital_info = $this->crud_model->select_hospital_info_by_id($hospital_id);
-foreach ($single_hospital_info as $row) : 
-/*$license_category=$this->db->where('license_category_id',$this->db->where('license_id',$this->session->userdata('license'))->get('license')->row()->license_category_id)->get('license_category')->row()->license_category_code;*/     
+foreach ($single_hospital_info as $row) :  
 ?>
- <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_hospital/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
+ 
     <div class="col-md-12">
         <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab1" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-home"></i></span>
-                    <span class="hidden-xs"><?php echo get_phrase('basic_info'); ?></span>
+                    <span class="hidden-xs"><?php echo get_phrase('hospital_info'); ?></span>
                 </a>
             </li>
             <?php if($account_type!='users'){ ?>
-             <li class="">
+            <!--  <li class="">
                 <a href="#tab2" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-user"></i></span>
                     <span class="hidden-xs"><?php echo get_phrase('license_info'); ?></span>
                 </a>
-            </li>
+            </li> -->
            <li class="">
                 <a href="#tab3" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-mail"></i></span>
@@ -46,6 +45,18 @@ foreach ($single_hospital_info as $row) :
                 </a>
             </li>
             <?php }}?> 
+            <li class="">
+                <a href="#tab7" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-mail"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('medical_stores'); ?></span>
+                </a>
+            </li> 
+            <li class="">
+                <a href="#tab8" data-toggle="tab" class="btn btn-default">
+                    <span class="visible-xs"><i class="entypo-mail"></i></span>
+                    <span class="hidden-xs"><?php echo get_phrase('medical_labs'); ?></span>
+                </a>
+            </li>
         </ul>
 <div class="panel panel-default">
             <div class="panel-body">
@@ -56,12 +67,12 @@ $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' =>
 foreach ($single_hospital_info as $row) {
 ?>
             <div class="tab-pane box active" id="tab1">
+                <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_hospital/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
                 <div class="row">
     <div class="col-md-12">
+        <label class="control-label">Basic Info</label>
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
-    
-                
                     <div class="row">
                         <div class="col-sm-6">
                       <div class="form-group">
@@ -204,10 +215,10 @@ foreach ($single_hospital_info as $row) {
                     </div>
 
               </div>
-              <div class="col-sm-3 control-label col-sm-offset-9">
+             <!--  <div class="col-sm-3 control-label col-sm-offset-9">
                 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
                         <input type="submit" class="btn btn-success" value="Update"><?php }?>
-                    </div>
+                    </div> -->
                     </div>
                    
 
@@ -218,17 +229,13 @@ foreach ($single_hospital_info as $row) {
     </div>
     
 </div>
-</div>
-            <div class="tab-pane box" id="tab2" style="padding: 5px">
+<!-- </div>
+            <div class="tab-pane box" id="tab2" style="padding: 5px"> -->
                     <div class="row">
     <div class="col-md-12">
-
+<label class="control-label">License Info</label>
         <div class="panel panel-primary" data-collapsed="0">
-
-
             <div class="panel-body">
-                
-                         
                     <div class="row">
                         <div class="col-sm-6">
                 
@@ -304,11 +311,6 @@ foreach ($single_hospital_info as $row) {
                         </div>
                     </div>
                 </div>
-                  <div class="col-sm-3 control-label col-sm-offset-9">
-                    <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-                        <input type="submit" class="btn btn-success" value="Update">
-                    <?php }?>
-                    </div>
                     </div>
   <?php if($account_type=='hospitaladmins'){?>
 <input type="hidden" name="license" value="<?php echo $row['license'];?>"/>
@@ -322,183 +324,45 @@ foreach ($single_hospital_info as $row) {
         </div>
 
     </div>
+    <div class="col-sm-3 control-label col-sm-offset-9">
+                    <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
+                        <input type="submit" class="btn btn-success" value="Update">
+                    <?php }?>
+                    </div>
+    </form>
 </div>
-                   
-   
             <div class="tab-pane" id="tab3">
-                <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_branch/<?php echo $hospital_id;?>'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_branch'); ?>
-</button>
-<div style="clear:both;"></div>
-
-<table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
-    <thead>
-        <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('name'); ?></th>
-            <th><?php echo get_phrase('email'); ?></th>
-            <th><?php echo get_phrase('phone'); ?></th>
-            <th><?php echo get_phrase('departments'); ?></th>
-            <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-            <th><?php echo get_phrase('options'); ?></th><?php }?>
-        </tr>
-    </thead>
-
-    <tbody>
-        <?php  
-        $branch_info=$this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
-        $i=1;foreach ($branch_info as $row) {
-            
-            ?>
-        
-            <tr>
-                <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_branch/<?php echo $row['branch_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
-                <td><?php echo $row['email'] ?></td>
-                <td><?php echo $row['phone'] ?></td>
-                <td>
-            <a href="<?php echo base_url(); ?>main/get_hospital_departments/<?php echo $row['branch_id'] ?>" title="Departments"><i class="glyphicon glyphicon-eye-open"></i></a>
-                </td><?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-                <td>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                </td><?php }?>
-            </tr>
-        <?php $i++;} ?>
-    </tbody>
-</table>
+                <?php $data['account_type']=$account_type;$data['branch_info']=$this->crud_model->select_branch_info_by_hospital_id($row['hospital_id']);
+                $this->load->view('backend/main/manage_branch',$data);?>
             </div>
             <div class="tab-pane" id="tab4">
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_department/<?= $branch_id?>'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_department'); ?>
-</button>
-<div style="clear:both;"></div>
-
-<table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
-    <thead>
-        <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('name'); ?></th>
-            <th><?php echo get_phrase('hospital_name'); ?></th>
-            <th><?php echo get_phrase('branch_name'); ?></th>
-            <?php if($license_category=='MPHL_19002'){ ?><th><?php echo get_phrase('wards'); ?></th><?php }?>
-            <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-            <th><?php echo get_phrase('options'); ?></th><?php }?>
-        </tr>
-    </thead>
-
-    <tbody>
-        <?php
-        $department_info=$this->db->where('hospital_id',$row['hospital_id'])->get('department')->result_array();
-         $i=1;foreach ($department_info as $row) { ?>   
-            <tr>  
-                <td><?php echo $i;?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_department/<?php echo $row['department_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
-                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-               <?php if($license_category=='MPHL_19002'){ ?> <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td><?php }?>
-                <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-                <td>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-           
-                </td>
-            <?php }?>
-            </tr>
-        <?php $i++;} ?>
-    </tbody>
-</table>
+                <?php $data['account_type']=$account_type;$data['department_info']=$this->crud_model->select_department_info_by_hospital_id($row['hospital_id']);
+                $this->load->view('backend/main/manage_department',$data);?>
             </div>
             <div class="tab-pane" id="tab5">
-<button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_ward/'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_ward'); ?>
-</button>
-
-<div style="clear:both;"></div>
-<table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
-    <thead>
-        <tr>
-            <th><?php echo get_phrase('sl_no'); ?></th>
-            <th><?php echo get_phrase('name'); ?></th>
-            <th><?php echo get_phrase('hospital_name'); ?></th>
-            <th><?php echo get_phrase('branch_name'); ?></th>
-            <th><?php echo get_phrase('department_name'); ?></th>
-            <th><?php echo get_phrase('beds'); ?></th>
-            <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-            <th><?php echo get_phrase('options'); ?></th><?php }?>
-        </tr>
-    </thead>
-
-    <tbody>
-        
-        <?php 
-        $ward_info=$this->db->where('hospital_id',$row['hospital_id'])->get('ward')->result_array();
-        $i=1;foreach ($ward_info as $row) { ?>   
-            <tr>  
-                <td><?php echo $i;?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_ward/<?php echo $row['ward_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
-                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-                <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
-                <td><a href="<?php echo base_url(); ?>main/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
-                <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-                <td>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                 
-                </td><?php }?>
-            </tr>
-        <?php $i++;} ?>
-    </tbody>
-</table>
-
+        <?php $data['account_type']=$account_type;$data['ward_info']=$this->crud_model->select_ward_info_by_hospital_id($row['hospital_id']);
+                $this->load->view('backend/main/manage_ward',$data);?>
             </div>
             <div class="tab-pane" id="tab6">
-                <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_bed/<?= $ward_id;?>'" class="btn btn-primary pull-right">
-        <?php echo get_phrase('add_bed'); ?></button>
-<div style="clear:both;"></div>
-
-<table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
-    <thead>
-        <tr>
-            <th><?php echo get_phrase('Sl_no');?></th>
-            <th><?php echo get_phrase('name'); ?></th>
-            <th><?php echo get_phrase('hospital_name'); ?></th>
-            <th><?php echo get_phrase('branch_name'); ?></th>
-            <th><?php echo get_phrase('department_name'); ?></th>
-            <th><?php echo get_phrase('ward_name'); ?></th>
-            <th><?php echo get_phrase('status'); ?></th>
-            <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-            <th><?php echo get_phrase('options'); ?></th><?php }?>
-        </tr>
-    </thead>
-
-    <tbody>
-        <?php
-        $bed_info=$this->db->where('hospital_id',$row['hospital_id'])->get('bed')->result_array(); 
-        $i=1;
-        foreach ($bed_info as $row) { ?>   
-            <tr>
-                <td><?php echo $i;?></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
-                <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-                <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
-                <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
-                <td><?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not - Available";} ?></td>
-                <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-                <td>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                </td><?php }?>
-            </tr>
-       <?php $i++; } ?>
-    </tbody>
-</table>
-
+        <?php $data['account_type']=$account_type;$data['bed_info']=$this->crud_model->select_bed_info_by_hospital_id($row['hospital_id']);
+                $this->load->view('backend/main/manage_bed',$data);?>
+            </div>
+            <div class="tab-pane" id="tab7">
+        <?php   $data['account_type']=$account_type;
+        $data['store_info']=$this->crud_model->select_store_info_by_hospital_id($row['hospital_id']);
+        $this->load->view('backend/main/manage_stores',$data);?>
+            </div>
+            <div class="tab-pane" id="tab8">
+        <?php $data['account_type']=$account_type;
+        $data['lab_info']=$this->crud_model->select_lab_info_by_hospital_id($row['hospital_id']);
+                $this->load->view('backend/main/manage_labs',$data);?>
             </div>
         
         </div>
 </div>
 </div>
   </div>  
-</form>
+
     <?php } ?>
 <?php endforeach; ?>
 

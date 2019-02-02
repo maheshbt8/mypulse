@@ -11,10 +11,11 @@
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/bed/create" method="post" enctype="multipart/form-data">
                      <?php if($account_type=='superadmin'){?>
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectHospital'];?></label>
+                        <label for="field-ta" class="col-sm-3 control-label">Hospital</label>
 
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_branch(this.value)">
+                                <option value=""><?php echo 'Select Hospital';?></option>
                                <?php 
                                $hospital_info=$this->db->where('status','1')->get('hospitals')->result_array();
                                foreach ($hospital_info as $row) { ?>
@@ -28,13 +29,14 @@
                 <input type="hidden" name="hospital" value="<?php echo $this->session->userdata('hospital_id');?>"/>
                 <?php }?>
                     <div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectBranch'];?></label>
+						<label for="field-ta" class="col-sm-3 control-label">Branch</label>
 		                    <div class="col-sm-8">
 		                        <select name="branch" class="form-control select2" id="select_branch"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_department(this.value)">
+                                <option value="">Select Branch</option>
 		                              <?php
 
                      if($ward['hospital_id'] != ''){$hospital_id=$ward['hospital_id'];}else{$hospital_id=$this->session->userdata('hospital_id');}
-                               $branch_info=$this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
+                               $branch_info=$this->crud_model->select_branch_info_by_hospital_id($hospital_id);
                                foreach ($branch_info as $row) { 
                                 ?>
                                     <option value="<?php echo $row['branch_id']; ?>" <?php if($row['branch_id'] == $ward['branch_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>

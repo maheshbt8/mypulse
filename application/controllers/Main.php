@@ -1288,6 +1288,7 @@ class Main extends CI_Controller {
     function appointment_cancel($task =''){
         if ($task == "cancel_multiple") {
         if($_POST['cancel_reason'] != ''){
+
             $d=$this->crud_model->cancel_multiple_appointment_info();
             if($d){
             $this->session->set_flashdata('message', get_phrase('appointment_cancled_successfuly'));echo TRUE;
@@ -1677,6 +1678,12 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('country_info_updated_successfuly'));
             redirect(base_url() . 'main/country');
         }
+         if ($param1 == "delete") {
+            
+            $this->crud_model->delete_country_info($param2);
+            $this->session->set_flashdata('message', get_phrase('country_info_deleted_successfuly'));
+            redirect(base_url() . 'main/country');
+        }
         $page_data['page_name'] = 'country';
         $page_data['page_title'] = get_phrase('country');
         $page_data['country'] = $this->db->get('country')->result_array();
@@ -1692,6 +1699,11 @@ class Main extends CI_Controller {
             
             $this->crud_model->update_state_info($param2);
             $this->session->set_flashdata('message', get_phrase('state_info_updated_successfuly'));
+            redirect(base_url() . 'main/state');
+        }
+        if ($param1 == "delete") {
+            $this->crud_model->delete_state_info($param2);
+            $this->session->set_flashdata('message', get_phrase('state_info_deleted_successfuly'));
             redirect(base_url() . 'main/state');
         }
         $page_data['page_name'] = 'state';
@@ -1711,6 +1723,12 @@ class Main extends CI_Controller {
             $this->session->set_flashdata('message', get_phrase('district_info_updated_successfuly'));
             redirect(base_url() . 'main/district');
         }
+        if ($param1 == "delete") {
+            
+            $this->crud_model->delete_district_info($param2);
+            $this->session->set_flashdata('message', get_phrase('district_info_deleted_successfuly'));
+            redirect(base_url() . 'main/district');
+        }
         $page_data['page_name'] = 'district';
         $page_data['page_title'] = get_phrase('district');
         $page_data['country'] = $this->db->get('district')->result_array();
@@ -1726,6 +1744,12 @@ class Main extends CI_Controller {
             
             $this->crud_model->update_city_info($param2);
             $this->session->set_flashdata('message', get_phrase('city_info_updated_successfuly'));
+            redirect(base_url() . 'main/city');
+        }
+        if ($param1 == "delete") {
+            
+            $this->crud_model->delete_city_info($param2);
+            $this->session->set_flashdata('message', get_phrase('city_info_deleted_successfuly'));
             redirect(base_url() . 'main/city');
         }
         $page_data['page_name'] = 'city';

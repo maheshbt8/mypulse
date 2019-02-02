@@ -78,13 +78,14 @@ class Email_model extends CI_Model {
 
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {
         $system_email=$this->db->get_where('settings', array('type' => 'system_email'))->row()->description;
+        $email_password=$this->db->get_where('settings', array('type' => 'email_password'))->row()->description;
          $config = array( //"Array" changed to "array" 1/15/15
  
  'protocol' => 'smtp',
  'smtp_host' => 'ssl://smtp.googlemail.com',
  'smtp_port' => 465, //465
  'smtp_user' => $system_email,
- 'smtp_pass' => 'MyPulse@123',
+ 'smtp_pass' => $email_password,
  'mailtype' => 'html',
      'charset' => 'utf-8',
      'wordwrap' => TRUE

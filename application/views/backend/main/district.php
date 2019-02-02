@@ -42,6 +42,7 @@
 							<td><?php echo $row['name'];?></td>
 							<td>
 <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_district/<?php echo $row['district_id'];?>');" title="Edit"><i class="fa fa-pencil"></i></a>
+<a href="#" onclick="confirm_modal('<?php echo base_url();?>main/district/delete/<?php echo $row['district_id'];?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                    
                         <?php endforeach;?>
                     </tbody>

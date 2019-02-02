@@ -47,7 +47,7 @@
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
-					<a href="#" onclick="return otp_resend()" style="color:white;">Re - Send OTP</a>
+					<a href="#" onclick="return otp_resend()" style="color:white;margin-left: 70%;">Re - Send OTP</a>
 			<?php
 		}
 		/*if($this->session->userdata('otp')==''){*/
@@ -154,7 +154,7 @@ function otp_resend() {
             data : {phone : number},
             success: function(response)
             {
-               
+               /*alert(response);*/
             } 
         });
 }

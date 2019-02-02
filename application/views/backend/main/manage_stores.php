@@ -7,10 +7,10 @@ $this->session->set_userdata('last_page', current_url());
         <div class="panel panel-default">   
             <div class="panel-heading">
 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
-<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right delete" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
-<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right delete1" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_stores'" class="btn btn-primary pull-right">
@@ -42,7 +42,7 @@ if($account_type=='users'){ ?>
     </thead>
 
     <tbody>
-        <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){$store_info = $this->crud_model->select_store_info_table();}
+        <?php if(($account_type=='superadmin' || $account_type=='hospitaladmins') && $page_name!='hospital_history'){$store_info = $this->crud_model->select_store_info_table();}
         $i=1;foreach ($store_info as $row) { ?>   
             <tr>
                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['store_id'] ?>"></td>

@@ -1,3 +1,4 @@
+
 <?php 
 $this->session->set_userdata('last_page', current_url());
 ?>
@@ -288,7 +289,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
             <th><?php if($account_type=='doctors'){echo get_phrase('user');}elseif($account_type=='users' || $account_type=='receptionist'){echo "Doctor";}?></th>
             <?php if($account_type!='receptionist'){?>
             <th><?php if($account_type=='doctors'){echo get_phrase('city');}elseif($account_type=='users'){echo "Hospital-Branch-Department";}?></th> <?php }?>
-            <th><?php echo get_phrase('date & time');?></th>
+            <th><?php echo get_phrase('appointment date & time');?></th>
             <th><?php echo get_phrase('status'); ?></th>
         </tr>
     </thead>
@@ -315,7 +316,9 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                         echo $name->name;?>
                 </td>
                 <?php if($account_type!='receptionist'){?>
-                 <td><?php if($account_type=='doctors'){echo $this->db->where('city_id',$branch->city)->get('city')->row()->name;}elseif($account_type=='users'){$branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                 <td><?php 
+                 $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
+                 if($account_type=='doctors'){echo $this->db->where('city_id',$name->city)->get('city')->row()->name;}elseif($account_type=='users'){
                     $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
                     if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
                         echo $hospital->name.' - '.$branch->name.' - '.$name;}?></td> <?php }?>
@@ -492,8 +495,8 @@ if($account_type == 'medicallabs'){
                 <td><?php echo $user1['name'] ?></td>
                 <td><?php echo $user1['phone'] ?></td>
                 <td><?php echo $user1['address'] ?></td>
-                <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
                 <td><?php echo date('M d-Y h:i A',strtotime($row1['created_at'])); ?></td>
+                <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
                 <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
                 <td>
   <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a>

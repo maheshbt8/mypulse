@@ -103,6 +103,10 @@ function email_verification($data="")
         $this->db->where('type', 'system_email');
         $this->db->update('settings', $data);
 
+        $data['description'] = $this->input->post('email_password');
+        $this->db->where('type', 'email_password');
+        $this->db->update('settings', $data);
+
          $data['description'] = $this->input->post('gst');
         $this->db->where('type', 'GST');
         $this->db->update('settings', $data);
@@ -254,6 +258,19 @@ function email_verification($data="")
         $this->db->where('country_id',$country_id);
         $this->db->update('country',$data);
     }
+    function delete_country_info($country_id)
+    {
+        $a=$this->db->where('country_id',$country_id)->delete('country');
+        if($a){
+            $b=$this->db->where('country_id',$country_id)->delete('state');
+            if($b){
+            $c=$this->db->where('country_id',$country_id)->delete('district');
+             if($c){
+            $d=$this->db->where('country_id',$country_id)->delete('city');
+        }
+        }
+        }
+    }
       function save_state_info()
     {
         
@@ -272,6 +289,16 @@ function email_verification($data="")
         $this->db->where('state_id',$state_id);
         $this->db->update('state',$data);
     }
+    function delete_state_info($state_id)
+    {
+            $b=$this->db->where('state_id',$state_id)->delete('state');
+            if($b){
+            $c=$this->db->where('state_id',$state_id)->delete('district');
+             if($c){
+            $d=$this->db->where('state_id',$state_id)->delete('city');
+        }
+        }
+    }
      function save_district_info()
     {
         $data['name'] 		= $this->input->post('name');
@@ -289,6 +316,13 @@ function email_verification($data="")
         
         $this->db->where('district_id',$district_id);
         $this->db->update('district',$data);
+    }
+    function delete_district_info($district_id)
+    {
+            $c=$this->db->where('district_id',$district_id)->delete('district');
+             if($c){
+            $d=$this->db->where('district_id',$district_id)->delete('city');
+        }
     }
      function save_city_info()
     {
@@ -309,6 +343,10 @@ function email_verification($data="")
         
         $this->db->where('city_id',$city_id);
         $this->db->update('city',$data);
+    }
+    function delete_city_info($city_id)
+    {
+            $d=$this->db->where('city_id',$city_id)->delete('city');
     }
     function save_license_category_info()
     {
@@ -459,6 +497,7 @@ $num=100001;
         $data['till_date']    = $this->input->post('till_date');
         $this->db->where('hospital_id',$hospital_id);
         $this->db->update('hospitals',$data);
+        unlink('uploads/hospitallogs/'. $hospital_id.  '.png');
         move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitallogs/'. $hospital_id.  '.png');
     }
     
@@ -690,7 +729,10 @@ $pid='MPS'.date('y').'_'.$num;
         $data['experience']    = $this->input->post('experience');
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
-          
+        $data['country']    = $this->input->post('country');
+        $data['state']    = $this->input->post('state');
+        $data['district']    = $this->input->post('district');  
+        $data['city']    = $this->input->post('city');
        $insert=$this->db->insert('hospitaladmins',$data);
        if($insert)
         { 
@@ -802,6 +844,9 @@ function select_store_info_table($hospital_id='')
   return $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicalstores')->result_array();
 }
 }
+function select_store_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital',$hospital_id)->get('medicalstores')->result_array();
+    }
      function select_store_info($hospital_id='')
     {
     $account_type=$this->session->userdata('login_type');
@@ -890,7 +935,9 @@ function select_store_info_table($hospital_id='')
     {
         return $this->db->get('department')->result_array();
     }
-    
+    function select_department_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital_id',$hospital_id)->get('department')->result_array();
+    }
    
     function update_department_info($department_id)
     {
@@ -954,7 +1001,9 @@ function select_store_info_table($hospital_id='')
     {
         return $this->db->get_where('ward',array('status'=>'1','isDeleted'=>'1'))->result_array();
     }
-    
+    function select_ward_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital_id',$hospital_id)->get('ward')->result_array();
+    }
    
     function update_ward_info($ward_id)
     {
@@ -1476,6 +1525,9 @@ if($account_type == 'superadmin'){
   return $this->db->where('hospital',$this->session->userdata('hospital_id'))->get('medicallabs')->result_array();
 }
 }
+function select_lab_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital',$hospital_id)->get('medicallabs')->result_array();
+    }
      function select_lab_info($hospital_id='')
     {
            $account_type=$this->session->userdata('login_type');
@@ -1914,7 +1966,7 @@ return $return;
         $this->db->where('patient_id',$patient_id);
         $this->db->update('patient',$data);
         
-        move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');
+        /*move_uploaded_file($_FILES["image"]["tmp_name"], "uploads/user_image/" . $patient_id . '.jpg');*/
     }
 
     function delete_user_info($user_id)
@@ -2106,7 +2158,8 @@ $num=100001;
 $pid='MPR'.date('y').'_'.$num;
             $this->db->where('receptionist_id',$lid)->update('receptionist',array('unique_id'=>$pid,'modified_at'=>date('Y-m-d H:i:s')));
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/receptionist_image/" . $lid . '.jpg');
-   } }
+   }
+   }
      function select_receptionist_info_table($hospital_id='')
     {
 $account_type=$this->session->userdata('login_type');
@@ -2218,6 +2271,10 @@ if($account_type == 'superadmin'){
         return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('bed')->result_array();
         }
     }
+    function select_bed_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital_id',$hospital_id)->get('bed')->result_array();
+    }
+   
     function select_report_info()
     {
         $account_type=$this->session->userdata('login_type');
@@ -2438,6 +2495,7 @@ function select_today_appointment_info_by_doctor($status=''){
 $account_type=$this->session->userdata('login_type');
     if($account_type=='doctors'){
 return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date'=>date('Y-m-d'),'status'=>2))->result_array();
+
     }elseif($account_type=='receptionist'){
     $receptionist=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row();
     $doctor_id=explode(',',$receptionist->doctor_id);

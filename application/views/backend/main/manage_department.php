@@ -8,7 +8,7 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
         <div class="panel panel-default">   
             <div class="panel-heading">
 <div class="col-sm-8">
-<?php if($account_type == 'superadmin'){ ?>
+<?php if($account_type == 'superadmin' && $page_name != 'hospital_history'){ ?>
 <div class="col-sm-4">   
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
 <div class="col-sm-8">
@@ -21,7 +21,7 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
 </div>
     </div>
 <?php }?>
-<?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
+<?php if(($account_type == 'superadmin' || $account_type == 'hospitaladmins') && $page_name != 'hospital_history'){?>
 <div class="col-sm-4">    
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('branch'); ?></span> 
 <div class="col-sm-8">
@@ -36,10 +36,10 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
 <?php }?>
 </div>
 <div class="col-sm-4">
-<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right delete" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
-<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right delete1" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_department/<?= $branch_id?>'" class="btn btn-primary pull-right">

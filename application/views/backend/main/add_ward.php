@@ -1,5 +1,8 @@
 
-<?php $department=$this->db->where('department_id',$department_id)->get('department')->row_array();?>
+<?php 
+if($department_id!=''){
+$department=$this->db->where('department_id',$department_id)->get('department')->row_array();}
+?>
 <div class="row">
     <div class="col-md-6">
 
@@ -10,11 +13,11 @@
                 <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/ward/create" method="post" enctype="multipart/form-data">
                 <?php if($account_type=='superadmin'){?>
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectHospital'];?></label>
+                        <label for="field-ta" class="col-sm-3 control-label">Hospital</label>
 
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_branch(this.value)">
-                                <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
+                               <option value=""><?php echo 'Select Hospital';?></option>
                                <?php 
                                $hospital_info=$this->db->where('status','1')->get('hospitals')->result_array();
                                foreach ($hospital_info as $row) { ?>
@@ -24,17 +27,21 @@
                             </select>
                         </div>   
                     </div>
-                    <?php }elseif($account_type=='hospitaladmins'){?>
+                    <?php }elseif($account_type=='hospitaladmins'){ ?>
                 <input type="hidden" name="hospital" value="<?php echo $this->session->userdata('hospital_id');?>"/>
                 <?php }?>
                     <div class="form-group">
-						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectBranch'];?></label>
+						<label for="field-ta" class="col-sm-3 control-label">Branch</label>
 		                    <div class="col-sm-8">
 		                        <select name="branch" class="form-control select2" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_department(this.value)">
-		                            <option value=""><?php echo $this->lang->line('labels')['select_branch'];?></option>
+		                            <option value="">Select Branch</option>
                                       <?php 
-                               $hospital_info=$this->db->where('hospital_id',$department['hospital_id'])->get('branch')->result_array();
-                               foreach ($hospital_info as $row) { ?>
+                                      if($department['hospital_id']!=''){
+                                        $branch_info=$this->crud_model->select_branch_info_by_hospital_id($department['hospital_id']);
+                                      }else{
+                                        $branch_info=$this->crud_model->select_branch_info_by_hospital_id($this->session->userdata('hospital_id'));
+                                      }
+                               foreach ($branch_info as $row) { ?>
                                     <option value="<?php echo $row['branch_id']; ?>" <?php if($row['branch_id'] == $department['branch_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>
 			                    </select>

@@ -1,12 +1,9 @@
-<?php 
-$this->session->set_userdata('last_page', current_url());
-?>
 <form action="<?php echo base_url()?>main/branch/delete_multiple/" method="post">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
-<?php if($account_type == 'superadmin'){?>
+<?php if($account_type == 'superadmin' && $page_name != 'hospital_history'){ ?>
 <div class="col-sm-5">
                   <div class="form-group">     
                         <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
@@ -23,10 +20,10 @@ $this->session->set_userdata('last_page', current_url());
 <?php }?>
 
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
-<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="confSubmit(this.form);" id="delete" class="btn btn-danger pull-right delete" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
-<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right" style="margin-left: 2px;">
+<button type="button" onClick="checkone(this.form);" id="delete1" class="btn btn-danger pull-right delete1" style="margin-left: 2px;">
         <?php echo get_phrase('delete'); ?>
 </button>
 <button type="button" onclick="window.location.href = '<?php echo base_url(); ?>main/add_branch/<?php echo $hospital_id;?>'" class="btn btn-primary pull-right">
@@ -76,31 +73,31 @@ $this->session->set_userdata('last_page', current_url());
 
 <script>
     $(document).ready(function(){
-        $("#delete1").show();
-        $("#delete").hide();
+        $(".delete1").show();
+        $(".delete").hide();
  $(".all_check").click(function () {
     if($(this).prop("checked") == true){
-                $("#delete1").hide();
-                $("#delete").show();
+                $(".delete1").hide();
+                $(".delete").show();
             }
             else if($(this).prop("checked") == false){
-                $("#delete1").show();
-                $("#delete").hide();
+                $(".delete1").show();
+                $(".delete").hide();
             }
      $('input:checkbox').not(this).prop('checked', this.checked);
  });
          $(".check").click(function(){
             if(($(".check:checked").length)!=0){
-            $("#delete1").hide();
-            $("#delete").show();
+            $(".delete1").hide();
+            $(".delete").show();
         if($(".check").length == $(".check:checked").length) {
             $("#all_check").attr("checked", "checked");
         } else {
             $("#all_check").removeAttr("checked");
         }
     }else{
-        $("#delete1").show();
-        $("#delete").hide();
+        $(".delete1").show();
+        $(".delete").hide();
     }
     });
     });

@@ -33,7 +33,7 @@
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('login_error'); ?></div>
 		<?php }?>
-		<?php if($this->session->flashdata('success')!=''){?>
+		<?php if($this->session->flashdata('success')!=''){ ?>
 		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('success'); ?></div>
 		<?php }?>
@@ -52,10 +52,10 @@
 							<i class="fa fa-lock"></i>
 						</span>  
 					</div>
-					<div class="custom-control">
+					<!-- <div class="custom-control">
 					<input type="checkbox" class="" id="customControlInline" style="margin-top: 4px;margin-left: 10px;">
 					<label class="custom-control-label" for="customControlInline"><h6 style="color:white;">&nbsp;&nbsp;Remember me</h6></label>
-					</div>
+					</div> -->
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn"><?php echo 'Login';?></button>
 					</div>

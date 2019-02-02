@@ -4,7 +4,7 @@ $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row
 $availability_slot=$this->db->get_where('availability_slot',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
 $this->session->set_userdata('last_page1', current_url());
 ?>
-<input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;">
+<input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;">
 <div class="row">
     <div class="">
             <div class="panel-body">
