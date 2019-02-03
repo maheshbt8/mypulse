@@ -2,7 +2,7 @@
 class Index_model extends CI_Model {
 
 public function user_login($unm = '', $pwd = ''){
-		$where = "email='".$unm."' OR phone='".$unm."' AND password='".sha1($pwd)."' AND status='1'  AND is_mobile='1'";
+        $where = "(email='".$unm."' OR phone='".$unm."') AND password='".sha1($pwd)."' AND status='1'  AND is_mobile='1' AND isDeleted='1'";
         $query = $this->db->where($where)->get('users')->row_array();
         if(!empty($query))
         {

@@ -6,8 +6,8 @@ class Modal extends CI_Controller {
 	function __construct()
     {
         parent::__construct();
-		$this->load->database();
-        $this->load->library('session');
+		/*$this->load->database();
+        $this->load->library('session');*/
 		/*cache control*/
 		$this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
         $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');

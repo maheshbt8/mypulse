@@ -31,94 +31,161 @@ class Index extends REST_Controller {
         $this->methods['users_delete']['limit'] = 50; // 50 requests per hour per user/key
         $this->load->model('api/index_model');
     }
-public function users_get()
-    {
-        // Users from a data store e.g. database
-        $users = [
-            ['id' => 1, 'name' => 'John', 'email' => 'john@example.com', 'fact' => 'Loves coding'],
-            ['id' => 2, 'name' => 'Jim', 'email' => 'jim@example.com', 'fact' => 'Developed on CodeIgniter'],
-            ['id' => 3, 'name' => 'Jane', 'email' => 'jane@example.com', 'fact' => 'Lives in the USA', ['hobbies' => ['guitar', 'cycling']]],
-        ];
 
-        $id = $this->get('id');
-
-        // If the id parameter doesn't exist return all the users
-
-        if ($id === NULL)
-        {
-            // Check if the users data store contains users (in case the database result returns NULL)
-            if ($users)
-            {
-                // Set the response and exit
-                $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                // Set the response and exit
-                $this->response([
-                    'status' => FALSE,
-                    'message' => 'No users were found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
-        }
-
-        // Find and return a single record for a particular user.
-
-        $id = (int) $id;
-
-        // Validate the id.
-        if ($id <= 0)
-        {
-            // Invalid id, set the response and exit.
-            $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-        }
-
-        // Get the user from the array, using the id as key for retrieval.
-        // Usually a model is to be used for this.
-
-        $user = NULL;
-
-        if (!empty($users))
-        {
-            foreach ($users as $key => $value)
-            {
-                if (isset($value['id']) && $value['id'] === $id)
-                {
-                    $user = $value;
-                }
-            }
-        }
-
-        if (!empty($user))
-        {
-            $this->set_response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-        }
-        else
-        {
-            $this->set_response([
-                'status' => FALSE,
-                'message' => 'User could not be found'
-            ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-        }
-    }
 
 /*Login For Users*/
-public function userlogin_post(){
-        $emailormobile = $this->post('username');
+    public function login_post() {
+        // Get the post data
+        $emailormobile = $this->post('emailormobile');
         $password = $this->post('password');
-        $logindata = $this->index_model->user_login($emailormobile,$password);
-        if($logindata){
-            $response = array("Status"=>1,
-                              "logindata"=>$logindata
-                              );
-        }else{
-            $response = array("Status"=>0,
-                              "Message"=>'Invalid Login Details',
-                              );
-            
-        }
-    $this->response($response);
+            // Check if any user exists with the given credentials
+            $user = $this->index_model->user_login($emailormobile,$password);
+            if($user){
+                // Set the response and exit
+                $this->response([
+                    'status' => TRUE,
+                    'message' => 'User login successful.',
+                    'data' => $user
+                ], REST_Controller::HTTP_OK);
+            }else{
+                // Set the response and exit
+                //BAD_REQUEST (400) being the HTTP response code
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'Invalid Login Details.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            }
     }
+    public function checkMobileExist_post(){
+        $phone = $this->post('mobilenumber');
+        $validation_phone = mobile_validation($phone);
+        if($validation_phone==0){
+           $check_users=$this->db->get_where('users',array('phone'=>$phone))->row_array();
+        }
+    if($validation_phone == 1 || $check_users['reg_status']=='2'){
+        $this->response([
+                    'status' => TRUE
+                ], REST_Controller::HTTP_OK);
+        }else {
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'Mobile Number Already Existed.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    
+    }
+    
+  public function checkEmailExist_post(){
+        $email = $this->post('email');
+        $phone = $this->post('mobilenumber');
+        $validation_email = email_validation($email);
+        if($validation_email==0){
+           $check_email=$this->db->get_where('users',array('email'=>$email))->row_array();
+        }
+    if($validation_email == 1 || ($check_email['phone']==$phone && $check_email['reg_status']=='2')){
+        $this->response([
+                    'status' => TRUE
+                ], REST_Controller::HTTP_OK);
+        }else {
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'This email id is already registered with us.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+        
+    }
+    public function sendOTPtoMobile_post(){
+        $phone = $this->post('mobilenumber');
+        $name = strip_tags($this->post('name'));
+        $num="12345678901234567890";
+        $shu=str_shuffle($num);
+        $otp=substr($shu, 14);
+        $data['phone']=$phone;
+        $message='Dear '. ucfirst($name) . ', Welcome To MyPulse Your OPT Number :' . $otp.'. Please use the code within 2 minutes.' ;  
+        $send=$this->sms_model->send_sms($message, $data['phone']);
+        if($send){
+        $this->response([
+                    'status' => TRUE,
+                    'sent_otp' => $otp,
+                    'otp_time'=>date('Y-m-d H:i:s'),
+                    'message'=>'OTP Send To :'.$data['phone']
+                ], REST_Controller::HTTP_OK);
+        }
+    }
+    public function verifyOTPNumber_post(){
+        $sent_otp = $this->post('sent_otp');
+        $otpnumber = $this->post('otpnumber');
+        $past_time = strtotime($this->post('otp_time'));
+    $current_time = time();
+    $difference = $current_time - $past_time;
+    $difference_minute =  $difference/60;
+    if(intval($difference_minute)<3){
+        if($sent_otp == $otpnumber){
+            $this->response([
+                    'status' => TRUE
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'OTP Not Correct.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }else{
+        $this->response([
+                    'status' => FALSE,
+                    'message' => 'OTP Time Was Experied.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+        
+    }
+    public function registration_post() {
+        // Get the post data
+        $name = strip_tags($this->post('name'));
+        $phone = strip_tags($this->post('mobilenumber'));
+        $email = strip_tags($this->post('email'));
+        $password = $this->post('password');
+        $validation_phone = mobile_validation($phone);
+        $data['name']       = $name;
+        $data['email']      = $email;
+        $data['password']   = sha1($password);
+        $data['phone']      = $phone;
+        $data['status']   = 1;
+        $data['is_mobile']   = 1;
+        if($validation_phone==1){
+        $insert=$this->db->insert('users',$data);
+        $lid=$this->db->insert_id();
+if($lid==1){
+$num=100001;
+}elseif($lid!=1){
+$my=explode('_',$this->db->where('user_id',$lid-1)->get('users')->row()->unique_id);
+$year=substr ($my[0], -2);
+if($year==date('y')){
+$num=$my[1]+1;
+}else{
+$num=100001;
+}
+}
+$pid='MPU'.date('y').'_'.$num;
+        $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+        }elseif($validation_phone!=1){
+        $data['reg_status']   = '1';
+        $insert=$this->db->where('phone',$phone)->update('users',$data);
+        }
+        if($insert)
+        {
+        $this->email_model->account_opening_email('users','user', $data['email']);
+        $this->response([
+                    'status' => TRUE,
+                    'message' => 'Registration Completed Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Registration Not Completed.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    
     public function hospitals_get($id=''){
         $hospitals = $this->index_model->select_hospitals_info($id);
         if($hospitals){

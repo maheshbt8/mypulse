@@ -4,10 +4,15 @@ if (!defined('BASEPATH'))
 class Login extends CI_Controller {
     function __construct() {  
         parent::__construct();
-        $this->load->model('crud_model');
+        /*$this->load->model('crud_model');
         $this->load->database();
-        $this->load->library('session');
+        $this->load->library('session');*/
         date_default_timezone_set('Asia/Kolkata');
+        error_reporting(0);
+        $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
+        $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+        $this->output->set_header('Pragma: no-cache');
+        $this->output->set_header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     }
     //Default function, redirects to logged in user area
     public function index() {
@@ -182,7 +187,9 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     if($validation_phone == 1 || $check_users['reg_status']=='2'){
             $email = $this->input->post('email');
            $validation = email_validation($email);
+            if($validation_phone==0){
            $check_email=$this->db->get_where('users',array('email'=>$email))->row_array();
+            }
     if ($validation == 1 || ($check_email['phone']==$phone && $check_email['reg_status']=='2')) {
     if($this->input->post('pass') == $this->input->post('cpass')){
         $this->session->set_flashdata('error', '');
@@ -219,16 +226,6 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $data['is_mobile']   = 1;
         if($validation_phone==1){
         $insert=$this->db->insert('users',$data);
-        }elseif($validation_phone!=1){
-        $data['reg_status']   = '1';
-        $insert=$this->db->where('phone',$phone)->update('users',$data);
-        }
-        if($insert)
-        {
-        //$this->session->sess_destroy();
-        $this->session->set_userdata('otp','');
-        $this->session->set_userdata('otp_time','');
-        $this->session->set_userdata('otp_sended','');
         $lid=$this->db->insert_id();
 if($lid==1){
 $num=100001;
@@ -243,6 +240,16 @@ $num=100001;
 }
 $pid='MPU'.date('y').'_'.$num;
         $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
+        }elseif($validation_phone!=1){
+        $data['reg_status']   = '1';
+        $insert=$this->db->where('phone',$phone)->update('users',$data);
+        }
+        if($insert)
+        {
+        //$this->session->sess_destroy();
+        $this->session->set_userdata('otp','');
+        $this->session->set_userdata('otp_time','');
+        $this->session->set_userdata('otp_sended','');
         $this->email_model->account_opening_email('users','user', $data['email']);
         $this->session->set_flashdata('success','Registration Completed Successfully');
         redirect(base_url() . 'login', 'refresh');
@@ -256,7 +263,7 @@ $pid='MPU'.date('y').'_'.$num;
         $this->session->set_flashdata('error', 'OTP Time Was Experied');
         redirect(base_url('login/register'), 'refresh');
     }
-            }else{
+    }else{
                  $this->session->set_flashdata('error', 'Please Confirm password, does not match');
             }
             
