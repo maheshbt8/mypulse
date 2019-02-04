@@ -1,5 +1,12 @@
 <?php 
-$this->session->set_userdata('last_page', current_url());
+if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
+    $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
+        }elseif($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']==''){
+    $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed']);
+        }elseif($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!=''){
+    $this->session->set_userdata('last_page', current_url().'?status_id='.$_GET['status_id']);
+        }else{$this->session->set_userdata('last_page', current_url());}    
+/*$this->session->set_userdata('last_page', current_url());*/
 ?>
 <form action="<?php echo base_url()?>main/medical_labs/delete_multiple/" method="post">
 <div class="row">
@@ -10,7 +17,7 @@ $this->session->set_userdata('last_page', current_url());
                   <div class="form-group">  
                   <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
          <div class="col-sm-4">
-        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'Select Date Range';}?>"/>
+        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+6 days'));}?>"/>
         </div>   
                         <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('status'); ?></span> 
                         <div class="col-sm-4">
@@ -24,6 +31,7 @@ $this->session->set_userdata('last_page', current_url());
                         </div>
                     </div>
     </div>
+<button type="button" class="btn btn-info pull-right" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;"><i class="glyphicon glyphicon-refresh icon-refresh"></i>&nbsp;Refresh</button>
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors' ){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_inpatient'" class="btn btn-primary pull-right">
         <?php echo get_phrase('add_in-Patient'); ?>
@@ -54,7 +62,13 @@ $this->session->set_userdata('last_page', current_url());
        <?php
     if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
             $patient_info=$this->crud_model->select_inpatient_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
-        }else{$patient_info=$this->crud_model->select_inpatient_info();}?>
+        }else{
+            $sd=date('Y-m-d', strtotime('-0 days'));
+            $ed=date('Y-m-d', strtotime('+6 days'));
+            $status='1';
+            /*$patient_info=$this->crud_model->select_inpatient_info();*/
+            $patient_info=$this->crud_model->select_inpatient_info_by_date($sd,$ed,$status);
+        }?>
 </div>
         <?php $i=1;foreach ($patient_info as $row) { 
             ?>   
@@ -120,8 +134,10 @@ $this->session->set_userdata('last_page', current_url());
     function get_inpatient(id) {
         <?php
        if($_GET['sd'] == '' && $_GET['ed'] == ''){
+        $sd=date('Y-m-d', strtotime('-0 days'));
+        $ed=date('Y-m-d', strtotime('+6 days'));
         ?>
-        window.location.href = '<?php echo base_url();?>main/inpatient?status_id='+id;
+        window.location.href = '<?php echo base_url();?>main/inpatient?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
         <?php
        }elseif($_GET['sd'] != '' && $_GET['ed'] != ''){
         ?>
@@ -129,14 +145,6 @@ $this->session->set_userdata('last_page', current_url());
         <?php
        }
        ?>
-        /*$.ajax({
-            url: '<?php echo base_url();?>ajax/get_inpatient_status/' + id ,
-            success: function(response)
-            {
-                jQuery('#data_table').html(response);
-                loadTable();
-            }
-        });*/
     }
 </script>
 <script type="text/javascript">
@@ -160,7 +168,7 @@ $this->session->set_userdata('last_page', current_url());
         }
         ?>
         function cb(start, end) {
-            window.location.href = '<?php echo base_url();?>main/inpatient?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD');
+            window.location.href = '<?php echo base_url();?>main/inpatient?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=1";
         }
         
         $('#reportrange').daterangepicker({

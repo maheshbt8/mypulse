@@ -110,6 +110,11 @@ class Index extends REST_Controller {
                     'otp_time'=>date('Y-m-d H:i:s'),
                     'message'=>'OTP Send To :'.$data['phone']
                 ], REST_Controller::HTTP_OK);
+        }else{
+        $this->response([
+                    'status' => FALSE,
+                    'message'=>'OTP Not Send'
+                ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
     public function verifyOTPNumber_post(){
@@ -185,35 +190,53 @@ $pid='MPU'.date('y').'_'.$num;
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    
     public function hospitals_get($id=''){
         $hospitals = $this->index_model->select_hospitals_info($id);
         if($hospitals){
-            $response = array("Status"=>1,
-                              "hospitals"=>$hospitals,
-                              "hospitals_count"=>count($hospitals)
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'hospitals'=>$hospitals,
+                    'hospitals_count'=>count($hospitals),
+                    'message' => 'All Hospitals and Number of hospitals count.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found',
-                              "hospitals_count"=>0
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
             
         }
-    $this->response($response);
+    }
+    public function hospital_get($id=''){
+        $hospitals = $this->index_model->select_hospital_info($id);
+        if($hospitals){
+            $this->response([
+                    'status' => TRUE,
+                    'hospitals'=>$hospitals,
+                    'message' => 'Single Hospital Details.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
     }
     public function doctors_get($id=''){
         $doctors = $this->index_model->select_doctors_info($id);
         if($doctors){
-            $response = array("Status"=>1,
-                              "doctors"=>$doctors,
-                              "doctors_count"=>count($doctors)
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'doctors'=>$doctors,
+                    'doctors_count'=>count($doctors),
+                    'message' => 'All doctors and Number of doctors count.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found',
-                              "doctors_count"=>0
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
             
         }
     $this->response($response);
@@ -221,181 +244,101 @@ $pid='MPU'.date('y').'_'.$num;
     public function medicalstores_get($id=''){
         $stores = $this->index_model->select_stores_info($id);
         if($stores){
-            $response = array("Status"=>1,
-                              "stores"=>$stores,
-                              "stores_count"=>count($stores)
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'stores'=>$stores,
+                    'stores_count'=>count($stores),
+                    'message' => 'All Medical stores and Number of Medical stores count.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found',
-                              "stores_count"=>0
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
             
         }
-    $this->response($response);
     }
     public function medicallabs_get($id=''){
         $labs = $this->index_model->select_labs_info($id);
         if($labs){
-            $response = array("Status"=>1,
-                              "labs"=>$labs,
-                              "labs_count"=>count($labs)
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'labs'=>$labs,
+                    'labs_count'=>count($labs),
+                    'message' => 'All Medical labs and Number of Medical labs count.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found',
-                              "labs_count"=>0
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
         }
-    $this->response($response);
     }
     public function inpatient_get($id=''){
-        $inpatient = $this->index_model->select_inpatient_info($id);
+        $sd=$_GET['sd'];
+        $ed=$_GET['ed'];
+        $status=$_GET['status_id'];
+        $inpatient = $this->index_model->select_inpatient_info($sd,$ed,$status,$id);
         if($inpatient){
-            $response = array("Status"=>1,
-                              "inpatient"=>$inpatient
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'inpatient'=>$inpatient,
+                    'message' => 'All Inpatient Details of Login User.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found'
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
         }
-    $this->response($response);
     }
     public function inpatient_history_get($id=''){
         $inpatient_history = $this->index_model->select_inpatient_history_info($id);
         if($inpatient_history){
-            $response = array("Status"=>1,
-                              "inpatient_history"=>$inpatient_history
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'inpatient_history'=>$inpatient_history,
+                    'message' => 'History Inpatient Details of Login User.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found'
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
         }
-    $this->response($response);
     }
     public function appointments_get($id=''){
-        $appointments = $this->index_model->select_appointments_info($id);
+        $sd=$_GET['sd'];
+        $ed=$_GET['ed'];
+        $status=$_GET['status_id'];
+        $appointments = $this->index_model->select_appointments_info($sd,$ed,$status,$id);
         if($appointments){
-            $response = array("Status"=>1,
-                              "appointments"=>$appointments
-                              );
+            $this->response([
+                    'status' => TRUE,
+                    'appointments'=>$appointments,
+                    'appointments_count'=>count($appointments),
+                    'message' => 'All Appointments Details of Login User.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found'
-                              );
-        }
-    $this->response($response);
-    }
-    public function appointments_by_date_get($id = '',$param1 = '', $param2 = '',$param3=''){
-        $appointments = $this->index_model->select_appointment_info_by_date($id);
-        if($appointments){
-            $response = array("Status"=>1,
-                              "appointments"=>$appointments
-                              );
-        }else{
-            $response = array("Status"=>0,
-                              "Message"=>'No Data Found'
-                              );
-        }
-    $this->response($response);
-    }
-
-/*Login For Users*/
-    /*Testing Only*/
-  /*  public function hospitals_get(){
-    $hospital_data=$this->index_model->select_hospital_info();
-      $id = $this->get('hospital_id');
-        // If the id parameter doesn't exist return all the users
-        if ($id === NULL)
-        {
-            // Check if the users data store contains users (in case the database result returns NULL)
-            if ($hospital_data)
-            {
-                // Set the response and exit
-                $this->response($hospital_data, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-            }
-            else
-            {
-                // Set the response and exit
-                $this->response([
+            $this->response([
                     'status' => FALSE,
-                    'message' => 'No users were found'
-                ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-            }
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
         }
-
-        // Find and return a single record for a particular user.
-
-        $id = (int) $id;
-
-        // Validate the id.
-        if ($id <= 0)
-        {
-            // Invalid id, set the response and exit.
-            $this->response(NULL, REST_Controller::HTTP_BAD_REQUEST); // BAD_REQUEST (400) being the HTTP response code
-        }
-
-        // Get the user from the array, using the id as key for retrieval.
-        // Usually a model is to be used for this.
-
-        $hospital = NULL;
-
-        if (!empty($hospital_data))
-        {
-            foreach ($hospital_data as $key => $value)
-            {
-                if (isset($value['hospital_id']) && $value['hospital_id'] === $id)
-                {
-                    $user = $value;
-                }
-            }
-        }
-        if (!empty($user))
-        {
-            $this->set_response($user, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
-        }
-        else
-        {
-            $this->set_response([
-                'status' => FALSE,
-                'message' => 'User could not be found'
-            ], REST_Controller::HTTP_NOT_FOUND); // NOT_FOUND (404) being the HTTP response code
-        }
-    }*/
-    public function hospital_get(){
-    $hospital_data=$this->index_model->select_hospital_info();
-    if(!empty($hospital_data)){
-            $response = array('Status' => 1,        
-                              'Message' => 'Hospital Data',
-                              'hospital_data'=>$hospital_data
-                              );
+    }
+    public function appointment_history_get($id=''){
+        $appointment_history = $this->index_model->select_appointment_history_info($id);
+        if($appointment_history){
+            $this->response([
+                    'status' => TRUE,
+                    'appointment_history'=>$appointment_history,
+                    'message' => 'History Appointment Details of Login User.'
+                ], REST_Controller::HTTP_OK);
         }else{
-            $response = array('Status' => 0,
-                              "Message" => 'No Data'
-                              );
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
         }
-    echo json_encode($response);
-    }
-    public function hospitalls_get(){
-    $hospital_data=$this->index_model->select_hospital_info();
-    $status=0;
-    if($hospital_data){
-    $status=1;
-    }
-    if($status==0)
-    {
-        $mainarray['status']=$status;
-        $mainarray['message']="Data Not Added";
-    }else{
-        $mainarray['status']=$status;
-        $mainarray['result']=$hospital_data;
-    }              
-$ar['status']=$status;
-   $ajson = array();
-   $ajson[] = $mainarray;
-   $finalresult=json_encode($ajson);
-   echo $finalresult;
     }
 }

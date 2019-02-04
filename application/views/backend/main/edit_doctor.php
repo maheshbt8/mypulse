@@ -163,12 +163,12 @@ foreach ($single_doctor_info as $row) {
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
-                 <?php if($account_type=='superadmin'){?>
+                 <?php if($account_type=='superadmin' || $account_type=='users'){?>
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" id="hospital" value=""  onchange="return get_branch(this.value)">
+                            <select name="hospital" class="form-control select2" id="hospital" value=""  onchange="return get_branch(this.value)" <?php if($account_type=='users'){echo 'disabled';}?>>
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();

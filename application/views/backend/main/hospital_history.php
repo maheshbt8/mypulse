@@ -44,7 +44,8 @@ foreach ($single_hospital_info as $row) :
                     <span class="hidden-xs"><?php echo get_phrase('beds'); ?></span>
                 </a>
             </li>
-            <?php }}?> 
+            <?php }
+            ?>
             <li class="">
                 <a href="#tab7" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-mail"></i></span>
@@ -57,6 +58,8 @@ foreach ($single_hospital_info as $row) :
                     <span class="hidden-xs"><?php echo get_phrase('medical_labs'); ?></span>
                 </a>
             </li>
+        <?php }?> 
+            
         </ul>
 <div class="panel panel-default">
             <div class="panel-body">
@@ -237,6 +240,7 @@ foreach ($single_hospital_info as $row) {
         <div class="panel panel-primary" data-collapsed="0">
             <div class="panel-body">
                     <div class="row">
+                        <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                         <div class="col-sm-6">
                 
                          <div class="form-group">     
@@ -289,8 +293,9 @@ foreach ($single_hospital_info as $row) {
                     </div>
                    
                 </div>
+            <?php }?>
                 <div class="col-sm-6">
-                                        <div class="form-group">
+                <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Logo';?></label>
 
                         <div class="col-sm-5">
@@ -303,7 +308,7 @@ foreach ($single_hospital_info as $row) {
                                     <span class="btn btn-white btn-file">
                                         <span class="fileinput-new">Select Logo</span>
                                         <span class="fileinput-exists">Change</span>
-                                        <input type="file" name="userfile" accept="image/*" id="userfile">
+                                        <input type="file" name="userfile" accept="image/*" id="userfile" <?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){echo 'disabled';}?>>
                                     </span>
                                     <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput">Remove</a>
                                 </div>

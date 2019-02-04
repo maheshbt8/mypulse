@@ -1439,9 +1439,9 @@ $yes=$this->db->update('patient',array('lab_ids'=>implode(',',$doc)));
         $data['name']       = $this->input->post('fname');
         $data['lname']      = $this->input->post('lname');
         $data['email']      = $this->input->post('email');
-        $data['password']       = sha1('mypulse');
-        $data['phone']          = $this->input->post('mobile');
-        $data['reg_status']   = 2;
+        $data['password']   = sha1('mypulse');
+        $data['phone']      = $this->input->post('mobile');
+        $data['reg_status']= 2;
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('users',$data);
@@ -1681,88 +1681,43 @@ function select_inpatient_info_by_date($param1 = '', $param2 = '',$param3='')
     {
 $account_type=$this->session->userdata('login_type');
 if($account_type == 'superadmin'){
-    if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('id','desc')->get_where('inpatient',array('created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array(); 
     }elseif($param3!='all'){
     return $this->db->order_by('id','desc')->get_where('inpatient',array('created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'status'=>$param3))->result_array();  
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    return $this->db->order_by('id','desc')->get_where('inpatient',array('created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array(); 
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('id','desc')->get_where('inpatient',array())->result_array(); 
-    }elseif($param3!='all'){
-return $this->db->order_by('id','desc')->get_where('inpatient',array('status'=>$param3))->result_array(); 
-    }
-        }
+        
 }elseif($account_type == 'hospitaladmins'){
-    if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('id','desc')->get_where('inpatient',array('hospital_id'=>$this->session->userdata('hospital_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('id','desc')->get_where('inpatient',array('hospital_id'=>$this->session->userdata('hospital_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'status'=>$param3))->result_array();   
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    return $this->db->order_by('id','desc')->get_where('inpatient',array('hospital_id'=>$this->session->userdata('hospital_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('id','desc')->get_where('inpatient',array('hospital_id'=>$this->session->userdata('hospital_id')))->result_array();
-    }elseif($param3!='all'){
-      return $this->db->order_by('id','desc')->get_where('inpatient',array('hospital_id'=>$this->session->userdata('hospital_id'),'status'=>$param3))->result_array();
-    }
-        }
+        
 }elseif($account_type == 'doctors'){
-    if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$this->session->userdata('login_user_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$this->session->userdata('login_user_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'status'=>$param3))->result_array();
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-   return $this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$this->session->userdata('login_user_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$this->session->userdata('login_user_id')))->result_array();
-    }elseif($param3!='all'){
-        return $this->db->get_where('inpatient',array('doctor_id'=>$this->session->userdata('login_user_id'),'status'=>$param3))->result_array();
-    }
-        }
+        
 }elseif($account_type == 'users'){
-if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$this->session->userdata('login_user_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$this->session->userdata('login_user_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'status'=>$param3))->result_array();
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-   return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$this->session->userdata('login_user_id'),'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$this->session->userdata('login_user_id')))->result_array();
-        }elseif($param3!='all'){
-        return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$this->session->userdata('login_user_id'),'status'=>$param3))->result_array();
-        }
-        }
+        
 }elseif($account_type == 'receptionist'){
     $receptionist=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row();
     $doctor_id=explode(',',$receptionist->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
     }elseif($param3!='all'){
     $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'status'=>$param3))->result_array();  
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc]))->result_array();
-    }elseif($param3!='all'){
-        $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'status'=>$param3))->result_array();
-    }
-        }
+        
 }
 for($i=0;$i<count($result);$i++){
     for($j=0;$j<count($result[$i]);$j++){
@@ -1774,21 +1729,11 @@ return $return;
     $nurse=$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row();
     $doctor_id=explode(',',$nurse->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
     }elseif($param3!='all'){
     $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'status'=>$param3))->result_array();  
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc]))->result_array();
-    }elseif($param3!='all'){
-        $result[]=$this->db->order_by('id','desc')->get_where('inpatient',array('doctor_id'=>$doctor_id[$doc],'status'=>$param3))->result_array();
-    }
-        }
 }
 for($i=0;$i<count($result);$i++){
     for($j=0;$j<count($result[$i]);$j++){
@@ -2514,104 +2459,41 @@ function select_appointment_info_by_date($param1 = '', $param2 = '',$param3='')
     {
 $account_type=$this->session->userdata('login_type');
 if($account_type == 'superadmin'){
-    if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('appointment_date >='=>$param1,'appointment_date <='=>$param2,'status'=>$param3))->result_array();   
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments')->result_array();
-    }elseif($param3!='all'){
-return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('status'=>$param3))->result_array();
-    }
-        }
 }elseif($account_type == 'hospitaladmins'){
-    if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('hospital_id'=>$this->session->userdata('hospital_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('hospital_id'=>$this->session->userdata('hospital_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2,'status'=>$param3))->result_array();   
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    if($param3=='all'){
-    return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('hospital_id'=>$this->session->userdata('hospital_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }elseif($param3!='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('hospital_id'=>$this->session->userdata('hospital_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('hospital_id'=>$this->session->userdata('hospital_id')))->result_array();
-    }elseif($param3!='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('hospital_id'=>$this->session->userdata('hospital_id'),'status'=>$param3))->result_array();
-    }
-        }
 }elseif($account_type == 'doctors'){
-    if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2,'status'=>$param3))->result_array();   
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    if($param3=='all'){
-    return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }elseif($param3!='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id')))->result_array();
-    }elseif($param3!='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$this->session->userdata('login_user_id'),'status'=>$param3))->result_array();
-    }
-        }
+        
 }elseif($account_type == 'users'){
-if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('user_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
     }elseif($param3!='all'){
      return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('user_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2,'status'=>$param3))->result_array();   
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    if($param3=='all'){
-    return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('user_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }elseif($param3!='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('user_id'=>$this->session->userdata('login_user_id'),'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('user_id'=>$this->session->userdata('login_user_id')))->result_array();
-        }elseif($param3!='all'){
-        return $this->db->order_by('appointment_number','DESC')->get_where('appointments',array('user_id'=>$this->session->userdata('login_user_id'),'status'=>$param3))->result_array();
-        }
-        }
+        
 }elseif($account_type == 'receptionist'){
     $receptionist=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row();
     $doctor_id=explode(',',$receptionist->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
     }elseif($param3!='all'){
      $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2,'status'=>$param3))->result_array();   
     }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    if($param3=='all'){
-    $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }elseif($param3!='all'){
-        $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc]))->result_array();
-    }elseif($param3!='all'){
-        $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'status'=>$param3))->result_array();
-    }
-        }
+        
 }
 for($i=0;$i<count($result);$i++){
     for($j=0;$j<count($result[$i]);$j++){
@@ -2623,25 +2505,11 @@ return $return;
     $nurse=$this->db->where('nurse_id',$this->session->userdata('login_user_id'))->get('nurse')->row();
     $doctor_id=explode(',',$nurse->doctor_id);
 for($doc=0;$doc<count($doctor_id);$doc++){
-if($param1!='' && $param2!='' && $param3!=''){
     if($param3=='all'){
     $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
     }elseif($param3!='all'){
      $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2,'status'=>$param3))->result_array();   
-    }
-        }elseif($param1!='' && $param2!='' && $param3==''){
-    if($param3=='all'){
-    $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }elseif($param3!='all'){
-        $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'appointment_date >='=>$param1,'appointment_date <='=>$param2))->result_array();
-    }
-        }elseif($param1=='' && $param2=='' && $param3!=''){
-        if($param3=='all'){
-        $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc]))->result_array();
-    }elseif($param3!='all'){
-        $result[]=$this->db->order_by('appointment_number','DESC')->get_where('appointments',array('doctor_id'=>$doctor_id[$doc],'status'=>$param3))->result_array();
-    }
-        }
+    }   
 }
 for($i=0;$i<count($result);$i++){
     for($j=0;$j<count($result[$i]);$j++){

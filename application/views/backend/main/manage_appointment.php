@@ -5,9 +5,6 @@
 </style>
 
 <?php
-/*if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
-    $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
-        }else{$this->session->set_userdata('last_page', current_url());}*/
 if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
     $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
         }elseif($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']==''){
@@ -297,8 +294,10 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
     function get_appointment(id) {
        <?php
        if($_GET['sd'] == '' && $_GET['ed'] == ''){
+        $sd=date('Y-m-d', strtotime('-0 days'));
+        $ed=date('Y-m-d', strtotime('+6 days'));
         ?>
-        window.location.href = '<?php echo base_url();?>main/appointment?status_id='+id;
+        window.location.href = '<?php echo base_url();?>main/appointment?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
         <?php
        }elseif($_GET['sd'] != '' && $_GET['ed'] != ''){
         ?>
