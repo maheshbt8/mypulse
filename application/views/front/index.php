@@ -15,7 +15,7 @@ body{
 header{
     background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);
   }
-  .new_top {
+/*  .new_top {
     height: 300px;
 }
   #myInput {
@@ -30,7 +30,7 @@ header{
 }
 .bs-docs-example.table-responsive{
   max-height: 500px;
-}
+}*/
 </style>
 <!--  -->
 </head>
@@ -472,24 +472,24 @@ else
         <div class="col-lg-12">
         <!-- stats -->
           <div class="stats1">
-          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Doctor or Hospital or Branch or Specializations.." title="Type in a name">
-           <div class="bs-docs-example table-responsive">
-  <table class="table table-hover table-bordered table-condensed"  id="myTable">
+<input class="form-control" id="myInput" type="text" placeholder="Search for Doctor or Hospital or Branch or Specializations..">
+  <br><br>
+  <table class="table table-bordered table-striped">
     <thead>
-    <tr class="header">
-    <th style="width:15%;">Doctor</th>
-    <th style="width:15%;">Hospital - Branch</th>
-    <th style="width:20%;">Specializations</th>
-    <th style="width:50%;">Available Status</th>
-  </tr>
-  </thead>
-  <tbody>
-  <?php
-$hospi=$this->db->order_by('name','asc')->get('doctors')->result_array();
+      <tr>
+        <th>Doctor</th>
+        <th>Hospital - Branch</th>
+        <th>Specializations</th>
+        <th>Available Status</th>
+      </tr>
+    </thead>
+    <tbody id="myTable">
+        <?php
+$hospi=$this->db->order_by('name','asc')->get_where('doctors',array('status'=>1,'isDeleted'=>1))->result_array();
 foreach ($hospi as $row) {
   ?>
   <tr>
-    <td><?=$row['name'];?></td>
+    <td><?='Dr. '.$row['name'];?></td>
     <td><?php 
     $branch=$this->db->get_where('branch' , array('branch_id' => $row['branch_id']))->row();
     $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $row['hospital_id']))->row();
@@ -504,9 +504,8 @@ foreach ($hospi as $row) {
     <td><?php $message='';$data=$this->db->where('doctor_id',$row['doctor_id'])->get('availability')->row();if($data!=''){echo $data->message;}?></td>
   </tr>
 <?php }?>
-</tbody>  
-        </table>
-      </div>
+    </tbody>
+  </table>
             
           </div>
           <!-- //stats -->
@@ -762,25 +761,15 @@ foreach ($hospi as $row) {
   </script>
 
  <?php include 'includes_bottom.php'; ?>
- <script>
-function myFunction() {
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-}
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
 </script>
 </body>
 </html>

@@ -10,8 +10,9 @@ span{
 $this->session->set_userdata('last_page', current_url());
 ?>
 <div class="alert bg-info" style="background: #30a5ff" role="alert">Dear User ,<br/>&nbsp;&nbsp;Notifications Will Be Automatically Deleted After 7 Days.</div>
+<button type="button" class="btn btn-info pull-right" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;"><i class="glyphicon glyphicon-refresh icon-refresh"></i>&nbsp;Refresh</button>
 <div class="row">
-  <div class="col-sm-12">
+  <div class="col-sm-12"><br/>
     <div class="list-group-item active">
     <span>Subject</span><span class="pull-right"></span><span class="pull-right">Date & Time</span>
 </div>

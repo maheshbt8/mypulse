@@ -1132,7 +1132,10 @@ if($account_type == 'superadmin'){
   $doc_id=explode(',', $doc);
   if($doc_id!=''){
   for($i=0;$i<count($doc_id);$i++){
-    $doctors[$i]=$this->db->where('doctor_id',$doc_id[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->row_array();
+    $doct=$this->db->where('doctor_id',$doc_id[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'));
+    if($doct->num_rows()>0){
+        $doctors[$i]=$doct->row_array();
+    }
   }
   return $doctors;
 }
@@ -1141,7 +1144,10 @@ if($account_type == 'superadmin'){
   $doc=$this->db->where('receptionist_id',$this->session->userdata('login_user_id'))->get('receptionist')->row()->doctor_id;
   $doc_id=explode(',', $doc);
   for($i=0;$i<count($doc_id);$i++){
-    $doctors[$i]=$this->db->where('doctor_id',$doc_id[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->row_array();
+    $doct=$this->db->where('doctor_id',$doc_id[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'));
+    if($doct->num_rows()>0){
+        $doctors[$i]=$doct->row_array();
+    }
   }
   return $doctors;
 }elseif($account_type == 'users'){
@@ -1150,13 +1156,16 @@ if($account_type == 'superadmin'){
         $doctor_ids=explode(',',$doctor->doctor_ids);
         for($i=0;$i<count($doctor_ids);$i++){
             if($doctor_ids[$i]!=''){
-            $doctors[$i]=$this->db->where('doctor_id',$doctor_ids[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->row_array();
+            $doct=$this->db->where('doctor_id',$doctor_ids[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'));
+        if($doct->num_rows()>0){
+        $doctors[$i]=$doct->row_array();
+        }
             }
         }
         }
         return $doctors;
 }
-    }
+}
     
        function update_doctor_availability_info($doctor_id)
     {

@@ -209,7 +209,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $this->session->set_userdata('otp_sended','');
         }
         $this->session->set_flashdata('success','OTP Send To :'.$data['phone']);
-            $message='Dear '. ucfirst($user_name) . ', Welcome To MyPulse Your OPT Number :' . $this->session->userdata('otp').'. Please use the code within 2 minutes.' ;
+            $message='Dear '. ucfirst($user_name) . ', Welcome To MyPulse. Your OPT Number: ' . $this->session->userdata('otp').'. Please use the code within 2 minutes.' ;
             $receiver_phone =   $data['phone'];
          
         if($this->session->userdata('otp_sended')==''){  

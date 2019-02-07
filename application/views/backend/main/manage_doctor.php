@@ -30,7 +30,9 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th>
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch');?></th>
             <th data-field="department" data-sortable="true"><?php echo get_phrase('department');?></th>
+            <?php if($account_type!='users'){?>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th>
+        <?php }?>
             <th><?php echo get_phrase('options');?></th>
         </tr>
     </thead>
@@ -56,11 +58,12 @@ $this->session->set_userdata('last_page', current_url());
                     <?php $name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;
                         echo $name;?>
                 </td>
+                <?php if($account_type!='users'){?>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
                  }
                  else if(
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
-                
+                <?php }?>
                <td>
             <a href="<?php echo base_url(); ?>main/add_appointment/<?php echo $row['doctor_id'] ?>" title="Book Appointment"><i class="menu-icon glyphicon glyphicon-list-alt"></i></a>&nbsp;
                <?php if($account_type != 'users'){?>

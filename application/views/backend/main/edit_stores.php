@@ -185,12 +185,12 @@ foreach ($single_store_info as $row) {
                         </div>
                     </div>
                  
-            <?php if($account_type=='superadmin'){?>
+            <?php if($account_type=='superadmin' || $account_type=='users'){?>
             <div class="form-group">
                         <label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('hospital');?></label>
                         
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2"  onchange="return get_branch(this.value)">
+                            <select name="hospital" class="form-control select2"  onchange="return get_branch(this.value)" <?php if($account_type=='users'){echo "disabled";}?>>
                               <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
                                

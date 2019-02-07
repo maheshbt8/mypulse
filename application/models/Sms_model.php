@@ -7,7 +7,6 @@ class Sms_model extends CI_Model {
     }
     
 function send_sms($message = '' , $numbers = '') {
-
         // Authorisation details.
   $username = $this->db->get_where('settings', array('type' => 'sms_username'))->row()->description;
   /*"maheshbt8@gmail.com";*/

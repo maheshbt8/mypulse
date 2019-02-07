@@ -134,7 +134,7 @@
         if($account_type!='users'){
         $doctors_details=$this->crud_model->select_doctor_info();
         }elseif($account_type=='users'){
-        $doctors_details=$this->db->get('doctors')->result_array();
+        $doctors_details=$this->db->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->result_array();
         }
         
         foreach ($doctors_details as $row) {

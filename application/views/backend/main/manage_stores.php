@@ -36,7 +36,8 @@ if($account_type=='users'){ ?>
             <th><?php echo get_phrase('owner phone number');?></th>
             <th><?php echo get_phrase('hospital');?></th>
              <th><?php echo get_phrase('branch');?></th>
-            <th><?php echo get_phrase('status');?></th>
+             <?php if($account_type!='users'){?>
+            <th><?php echo get_phrase('status');?></th><?php }?>
             <th><?php echo get_phrase('options');?></th>
         </tr>
     </thead>
@@ -52,12 +53,14 @@ if($account_type=='users'){ ?>
                 <td><?php echo $row['owner_mobile'] ?></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
                 <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
+                <?php if($account_type!='users'){?>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
                  }
                  else if(
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                      
                  </td>
+             <?php }?>
                <td>
                  <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
                     <?php if($row['is_email'] == '2'){?>

@@ -16,6 +16,7 @@ $this->session->set_userdata('last_page', current_url());
 ?>
 <div class="alert bg-info" style="background: #30a5ff" role="alert">Dear User ,<br/>&nbsp;&nbsp;Messages Will Be Automatically Deleted After 30 Days.</div>
 <form action="#" method="post">
+  <button type="button" class="btn btn-info pull-right" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;"><i class="glyphicon glyphicon-refresh icon-refresh"></i>&nbsp;Refresh</button>
 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
 <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/new_message'" class="btn btn-primary pull-right">
         <?php echo get_phrase('new_message'); ?>

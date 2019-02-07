@@ -33,7 +33,8 @@ $this->session->set_userdata('last_page', current_url());
             <th data-field="phone" data-sortable="true"><?php echo get_phrase('owner phone number');?></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th> 
              <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch');?></th>
-            <th><?php echo get_phrase('status');?></th>
+             <?php if($account_type!='users'){?>
+            <th><?php echo get_phrase('status');?></th><?php }?>
             <th><?php echo get_phrase('options');?></th>
         </tr>
     </thead>
@@ -50,11 +51,13 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $row['owner_mobile'] ?></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
                 <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
+                <?php if($account_type!='users'){?>
                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
                  }
                  else if(
                  $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                  </td>
+             <?php }?>
                <td>
 <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
                <?php if($row['is_email'] == '2'){?>

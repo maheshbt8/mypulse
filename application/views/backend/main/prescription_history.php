@@ -243,4 +243,5 @@ if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($or
 
      document.body.innerHTML = originalContents;
 }
+
 </script>
