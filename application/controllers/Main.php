@@ -1940,8 +1940,10 @@ force_download($db_name, $backup);
 
             $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
             $this->db->update('superadmin', $data);
+            if($_FILES['userfile']['tmp_name']!=''){
             unlink('uploads/superadmin_image/'.$this->session->userdata('login_user_id').  '.jpg');
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/superadmin_image/'.$this->session->userdata('login_user_id').'.jpg');
+            }
             $this->session->set_flashdata('message', get_phrase('profile_info_updated_successfuly'));
             redirect($this->session->userdata('last_page'));
         }

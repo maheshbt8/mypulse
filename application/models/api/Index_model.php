@@ -12,6 +12,238 @@ public function user_login($unm = '', $pwd = ''){
 		return false;
 		}
 	}
+    /**********************Header*****************************/
+    function get_messages($id)
+    {
+$account_type   = 'users';
+$account_details='users-user-'.$id;
+    $message_data=$this->db->order_by('message_id','DESC')->get('messages')->result_array();
+    $i=0;$j=0; foreach ($message_data as $row) {
+    $created_by=explode('-',$row['created_by']);
+    $message1=explode(',',$row['group_ids']);
+    $message2=explode(',',$row['user_ids']);
+    $hospi='';
+    for($m1=0;$m1<count($message1);$m1++){
+    if($message1[$m1] == 1){
+    $hospi='hospitaladmins';    
+    }elseif($message1[$m1] == 2){
+    $hospi='medicallabs';
+    }elseif($message1[$m1] == 3){
+    $hospi='medicalstores';
+    }elseif($message1[$m1] == 4){
+    $hospi='doctors';
+    }elseif($message1[$m1] == 5){
+    $hospi='nurse';
+    }elseif($message1[$m1] == 6){
+    $hospi='receptionist';
+    }elseif($message1[$m1] == 7){
+    $hospi='users';
+    }
+    $hospi1='';
+        /*$created_by=explode('-',$row['created_by']);*/
+if($created_by[0] == 'superadmin'){
+  $user_role='Super Admin';
+}elseif($created_by[0] == 'hospitaladmins'){
+  $user_role='Hospital Admin';
+}elseif($created_by[0] == 'doctors'){
+  $user_role='Doctor';
+}elseif($created_by[0] == 'nurse'){
+  $user_role='Nurse';
+}elseif($created_by[0] == 'receptionist'){
+  $user_role='Receptionist';
+}elseif($created_by[0] == 'medicalstores'){
+  $user_role='Pharmacist';
+}elseif($created_by[0] == 'medicallabs'){
+  $user_role='Laboratorist';
+}elseif($created_by[0] == 'users'){
+  $user_role='MyPulse Users';
+}
+$created=$user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;
+
+  for($m2=0;$m2<count($message2);$m2++){
+    if($message2[$m2] == $account_details){
+    $hospi1=$message2[$m2];    
+    }
+  }
+    if($account_type == 'superadmin'){
+    if($hospi1 == $account_details || $hospi==$account_type)
+              {
+            $row['created_by']=$created;
+             $result[]=$row;   
+              }  
+    }elseif($created_by[0] != 'doctors'){
+    if(($hospi1 == $account_details || $hospi==$account_type) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')))
+              {
+                $row['created_by']=$created;
+    $result[]=$row;
+        }
+        }elseif($created_by[0] == 'doctors'){
+        $users=$this->crud_model->select_doctor_info();
+        foreach ($users as $user) {
+    if(($hospi1 == $account_details || $hospi==$account_type) &&  $row['created_by'] == 'doctors-doctor-'.$user['doctor_id'])
+        {
+            $row['created_by']=$created;
+        $result[]=$row;
+        }
+        }
+    }
+    $i++;}
+
+      }
+      if(!empty($result))
+        {
+        return $result;
+        }else{
+        return false;
+        } 
+    }
+function read_message($id,$message_id)
+    {
+$account_details='users-user'.$id;
+   $msg=$this->db->where('message_id',$message_id)->get('messages')->row_array();
+   if($msg['is_read']==''){
+    $data['is_read']=$account_details;
+   }elseif($msg['is_read']!=''){
+    $message_read=explode(',',$msg['is_read']);
+    for($m=0;$m<count($message_read);$m++){
+       if($message_read[$m]==$account_details){
+        $data['is_read']=$msg['is_read'];
+        }else{
+        $data['is_read']=$msg['is_read'].','.$account_details;
+        }
+    }
+    }
+    $yes=$this->db->where('message_id',$message_id)->update('messages',$data);
+    if($yes){
+        $this->db->select('message_id,created_by,title,message,created_at');
+        $message=$this->db->where('message_id',$message_id)->get('messages')->row_array();
+        $created_by=explode('-',$message['created_by']);
+if($created_by[0] == 'superadmin'){
+  $user_role='Super Admin';
+}elseif($created_by[0] == 'hospitaladmins'){
+  $user_role='Hospital Admin';
+}elseif($created_by[0] == 'doctors'){
+  $user_role='Doctor';
+}elseif($created_by[0] == 'nurse'){
+  $user_role='Nurse';
+}elseif($created_by[0] == 'receptionist'){
+  $user_role='Receptionist';
+}elseif($created_by[0] == 'medicalstores'){
+  $user_role='Pharmacist';
+}elseif($created_by[0] == 'medicallabs'){
+  $user_role='Laboratorist';
+}elseif($created_by[0] == 'users'){
+  $user_role='MyPulse Users';
+}
+$message['created_by']=$user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])->get($created_by[0])->row()->name;
+    return $message;
+    }else{
+    return FALSE;
+    }
+    }
+function get_notifications($id){
+$account_details='users-user-'.$id;
+$this->db->select('id,title,text,isRead,created_at');
+$notification_data=$this->db->order_by('id','desc')->get_where('notification',array('user_id'=>$account_details))->result_array();
+    if(!empty($notification_data))
+        {
+            foreach ($notification_data as $row) {
+                if($row['isRead']==1){
+                    $a=TRUE;
+                }elseif($row['isRead']==2){
+                    $a=FALSE;
+                }
+                $row['isRead']=$a;
+                $results[]=$row;
+            }
+        return $results;
+        }else{
+        return false;
+        }
+}
+    function get_notification_count($id){
+$account_details='users-user-'.$id;
+$notification_data=$this->db->order_by('id','desc')->get_where('notification',array('user_id'=>$account_details,'isRead'=>2))->num_rows();
+    return $notification_data;
+    }
+function read_notification($notification_id)
+    {
+        $result=$this->db->where('id',$notification_id)->get('notification')->row_array();
+        if($result['isRead']=='2'){
+        $this->db->where('id',$notification_id)->update('notification',array('isRead'=>'1'));
+        }
+        if(!empty($result))
+        {
+            $this->db->select('id,title,text,created_at');
+        $result=$this->db->where('id',$notification_id)->get('notification')->row_array();
+        return $result;
+        }else{
+        return false;
+        }
+    }
+    public function select_user_info($user_id){
+    $this->db->select('u.user_id,u.unique_id,u.name,u.mname,u.lname,u.description,u.email,u.phone,u.gender,u.dob,u.address,u.country,u.state,u.district,u.city,u.blood_group,u.age,u.height,u.weight,u.blood_pressure,u.sugar_level,u.health_insurance_provider,u.health_insurance_id,u.family_history,u.past_medical_history,c.name as country_name,s.name as state_name,d.name as district_name,ci.name as city_name');
+    $this->db->from('users as u')->join('country as c', 'c.country_id = u.country')->join('state as s', 's.state_id = u.state')->join('district as d', 'd.district_id = u.district')->join('city as ci', 'ci.city_id = u.city');;
+    $this->db->where('user_id', $user_id);
+    $yes=$this->db->get()->row_array();
+    if(!empty($yes))
+    {
+    return $yes;
+        }else{
+        return false;
+        }
+    }
+     function update_user_info($user_id)
+    {
+        $data['name']      = $this->post('fname');
+        $data['mname']      = $this->post('mname');
+        $data['lname']      = $this->post('lname');
+        $data['email']      = $this->post('email');
+        $data['description'] = $this->post('description');
+        $data['country']   = $this->post('country');
+        $data['state']   = $this->post('state');
+        $data['district']   = $this->post('district');
+        $data['city']   = $this->post('city');
+        $data['address']    = $this->post('address');
+        $data['phone']          = $this->post('mobile');
+        $data['gender']            = $this->post('gender');
+        $data['dob']     = date('m/d/Y',strtotime($this->post('dob')));
+        $data['age']            = $this->post('age');
+        $data['blood_group']    = $this->post('blood_group');
+        //$data['aadhar']     = $this->post('aadhar');
+        $data['height']     = $this->post('height');
+        $data['weight']     = $this->post('weight');
+        $data['blood_pressure'] = $this->post('blood_pressure');
+        $data['sugar_level']    = $this->post('sugar_level');
+        $data['health_insurance_provider']  = $this->post('health_insurance_provider');
+        $data['health_insurance_id']    = $this->post('health_insurance_id');
+        $data['family_history']     = $this->post('family_history');
+         $data['past_medical_history']  = $this->post('past_medical_history');
+          $data['status']   = '1';
+        $data['modified_at']=date('Y-m-d H:i:s');
+        $this->db->where('user_id',$user_id);
+        $update=$this->db->update('users',$data);
+        if($update){
+        if($_FILES['userfile']['tmp_name']!=''){
+        unlink('uploads/user_image/'. $user_id.  '.jpg');
+        move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $user_id . '.jpg');
+        }
+        return true;
+        }else{
+            return false;
+        }
+    }
+    public function change_password($user_id, $new_password){         
+    $this->db->where('user_id', $user_id);
+    $yes=$this->db->update($this->session->userdata('users'), array('password' => $new_password));
+    if($yes)
+    {
+    return TRUE;
+        }else{
+        return false;
+        }
+    }
+    /**********************MENU*****************************/
 	public function select_hospitals_info($id = ''){
 	$hospital=$this->db->where('user_id',$id)->get('patient')->row()->hospital_ids;
         if($hospital>0){

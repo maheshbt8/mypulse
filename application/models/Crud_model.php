@@ -497,8 +497,10 @@ $num=100001;
         $data['till_date']    = $this->input->post('till_date');
         $this->db->where('hospital_id',$hospital_id);
         $this->db->update('hospitals',$data);
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/hospitallogs/'. $hospital_id.  '.png');
         move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitallogs/'. $hospital_id.  '.png');
+        }
     }
     
     function delete_hospital_info($hospital_id)
@@ -668,9 +670,10 @@ $pid='MPS'.date('y').'_'.$num;
         $query= $this->db->update('medicalstores',$data);
        if($query)
        {
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/medical_stores/'. $patient_id.  '.jpg');
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_stores/'. $patient_id.  '.jpg');
-           
+        }  
        }
     }
     
@@ -704,9 +707,10 @@ $pid='MPS'.date('y').'_'.$num;
         $query= $this->db->update('medicallabs',$data);
        if($query)
        {
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/medical_labs/'. $patient_id.  '.jpg');
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/medical_labs/'. $patient_id.  '.jpg');
-           
+           }
        }
     }
     function save_hospitaladmins_info()
@@ -788,8 +792,10 @@ $pid='MPHA'.date('y').'_'.$num;
         $query= $this->db->update('hospitaladmins',$data);
        if($query)
        {
+        if($_FILES['userfile']['tmp_name']!=''){
             unlink('uploads/hospitaladmin_image/'. $admin_id.  '.jpg');
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitaladmin_image/'. $admin_id.  '.jpg');
+        }
            
        }
     }
@@ -1301,8 +1307,10 @@ $que=$this->db->insert('availability_slot',$data);
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('doctor_id',$doctor_id);
         $this->db->update('doctors',$data);
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/doctor_image/'. $doctor_id.  '.jpg');
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/doctor_image/" . $doctor_id . '.jpg');
+        }
     }
     
     function delete_doctor_info($doctor_id)
@@ -1884,8 +1892,10 @@ return $return;
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('user_id',$user_id);
         $this->db->update('users',$data);
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/user_image/'. $user_id.  '.jpg');
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $user_id . '.jpg');
+    }
     }
     function user_update_info($user_id)
     {
@@ -2047,8 +2057,10 @@ $pid='MPN'.date('y').'_'.$num;
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('nurse_id',$nurse_id);
         $this->db->update('nurse',$data);
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/nurse_image/'. $nurse_id.  '.jpg');
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/nurse_image/" . $nurse_id . '.jpg');
+        }
     }
     
     function delete_nurse_info($nurse_id)
@@ -2171,8 +2183,10 @@ if($account_type == 'superadmin'){
         $data['city']    = $this->input->post('city');
         $this->db->where('receptionist_id',$receptionist_id);
         $this->db->update('receptionist',$data);
+        if($_FILES['userfile']['tmp_name']!=''){
         unlink('uploads/receptionist_image/'. $receptionist_id.  '.jpg');
         move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/receptionist_image/" . $receptionist_id . '.jpg');
+        }
     }
     function delete_receptionist_info($receptionist_id)
     {

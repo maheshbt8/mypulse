@@ -271,7 +271,7 @@ $pid='MPU'.date('y').'_'.$num;
         $this->session->set_flashdata('error', 'This email id is already registered with us.');
             }
             }else {
-                 $this->session->set_flashdata('error', 'Mobile Number Already Existed' );
+                 $this->session->set_flashdata('error', 'Mobile Number Already registered' );
         }
         }
         $this->load->view('backend/register');

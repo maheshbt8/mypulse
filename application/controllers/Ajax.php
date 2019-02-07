@@ -52,7 +52,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
         $email=$_POST['email'];
         $validation = email_validation($email);
         if($validation == 0){
-        echo '<span style="color:red"> This Email Already Existed </span>';    
+        echo '<span style="color:red"> This Email Already Registered </span>';    
         }
     }
      function get_phone()
@@ -60,7 +60,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
         $phone=$_POST['phone'];
         $validation = mobile_validation($phone);
         if($validation == 0){
-         echo '<span style="color:red"> This Phone Number Already Existed </span>';
+         echo '<span style="color:red"> This Phone Number Already Registered </span>';
         }
     }
     function get_email_reg()

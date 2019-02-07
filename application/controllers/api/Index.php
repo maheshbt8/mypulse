@@ -197,6 +197,155 @@ $pid='MPU'.date('y').'_'.$num;
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    /*********************Header*******************************/
+     public function notifications_get($id=''){
+        $notification = $this->index_model->get_notifications($id);
+        $notification_count = $this->index_model->get_notification_count($id);
+        if($notification){
+            $this->response([
+                    'status' => TRUE,
+                    'notifications'=>$notification,
+                    'unread_notifications'=>$notification_count,
+                    'message' => 'All Notifications and Number of Un-read Notification count.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'unread_notifications'=>'0',
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+    public function notificationRead_get($notification_id){
+        $notification = $this->index_model->read_notification($notification_id);
+        if($notification){
+            $this->response([
+                    'status' => TRUE,
+                    'notification'=>$notification,
+                    'message' => 'Single notification Details.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+    public function messages_get($id){
+        $message = $this->index_model->get_messages($id);
+        //$message_count = $this->index_model->get_message_count($id);
+        if($message){
+        $account_details='users-user-'.$id;
+               $c=0;
+    foreach ($message as $row) {
+      $count=explode(',',$row['is_read']);
+    $s=0;
+    
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }
+        if($s==1){
+            $a=TRUE;
+        }elseif($s==0){
+            $c++;
+            $a=FALSE;
+        }
+        $row['is_read']=$a;
+        $results[]=$row;
+    }
+            $this->response([
+                    'status' => TRUE,
+                    'messages'=>$results,
+                    'unread_messages'=>$c,
+                    'message' => 'All Messages and Number of Un-read Message count.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'unread_messages'=>'0',
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }    
+public function messageRead_get($user_id,$message_id){
+        $message = $this->index_model->read_message($user_id,$message_id);
+        if($message){
+            $this->response([
+                    'status' => TRUE,
+                    'messages'=>$message,
+                    'message' => 'Single Message Details.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+public function userProfile_get($user_id){
+    $result = $this->index_model->select_user_info($user_id);
+    if($result){
+        $this->response([
+        'status' => TRUE,
+        'user'=>$result,
+        'message' => 'User Information.'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+    }else{
+       $this->response([
+        'status' => FALSE,
+        'message' => 'No Data Found.'
+        ], REST_Controller::HTTP_BAD_REQUEST); 
+    }
+}
+public function updateProfile_post($user_id){
+    $result = $this->index_model->select_user_info($user_id);
+    if($result){
+        $this->response([
+        'status' => TRUE,
+        'user'=>$result,
+        'message' => 'User Information.'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+    }else{
+       $this->response([
+        'status' => FALSE,
+        'message' => 'No Data Found.'
+        ], REST_Controller::HTTP_BAD_REQUEST); 
+    }
+}
+public function changePassword_post($user_id){
+    $current_password_input = sha1($this->post('password'));
+    $new_password = sha1($this->post('new_password'));
+    $confirm_new_password = sha1($this->post('confirm_new_password'));
+
+ $current_password_db = $this->db->get_where('users', array('user_id' =>$user_id))->row()->password;
+
+if (($current_password_db == $current_password_input) && ($new_password == $confirm_new_password)) {
+$result = $this->index_model->change_password($user_id,$new_password);
+    if($result){
+        $this->response([
+        'status' => TRUE,
+        'message' => 'Password Update Successfully.'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+    }else{
+       $this->response([
+        'status' => FALSE,
+        'message' => 'Password Update Failed.'
+        ], REST_Controller::HTTP_BAD_REQUEST); 
+    }
+    }else{
+        $this->response([
+        'status' => FALSE,
+        'message' => 'Password Update Failed.'
+        ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+}
     /*********************Hospitals*******************************/
     public function hospitals_get($id=''){
         $hospitals = $this->index_model->select_hospitals_info($id);
@@ -210,7 +359,7 @@ $pid='MPU'.date('y').'_'.$num;
         }else{
             $this->response([
                     'status' => FALSE,
-                    'message' => 'No Data Found.'
+                    'message' => 'No Data Found.',
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }

@@ -13,24 +13,25 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('current_password');?></label>
                                 <div class="col-sm-5">
-                                    <input type="password" class="form-control" name="password" value=""/>
+                                    <input type="password" class="form-control" name="password" required="" value=""/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('new_password');?></label>
                                 <div class="col-sm-5">
-                                    <input type="password" class="form-control" name="new_password" value=""/>
+                                    <input type="password" class="form-control" name="new_password" value="" required=""/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('confirm_new_password');?></label>
                                 <div class="col-sm-5">
-                                    <input type="password" class="form-control" name="confirm_new_password" value=""/>
+                                    <input type="password" class="form-control" name="confirm_new_password" required=""/>
                                 </div>
                             </div>
                             <div class="form-group">
                               <div class="col-sm-offset-3 col-sm-5">
-                                  <button type="submit" class="btn btn-info"><?php echo get_phrase('update_password');?></button>
+                                <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                                  <button type="submit" class="btn btn-primary pull-right"><?php echo get_phrase('update_password');?></button>
                               </div>
 								</div>
                         </form>

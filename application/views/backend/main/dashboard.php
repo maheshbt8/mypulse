@@ -1,6 +1,9 @@
 
 <?php 
 $this->session->set_userdata('last_page', current_url());
+$list=$this->db->get_where('hospitals',array('till_date'=>date('m/d/Y',strtotime('+3 month')),'license_status'=>1))->result_array();
+echo $this->db->last_query();
+print_r($list);
 ?>
 <style>
     .title{

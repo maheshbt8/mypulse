@@ -11,7 +11,7 @@ class Cron_model extends CI_Model {
     function hospital_license(){
         $list=$this->db->get_where('hospitals',array('till_date'=>date('m/d/Y',strtotime('+3 month')),'license_status'=>1))->result_array();
        foreach ($list as $row) {
-            $admin=$this->db->get_where('hospitaladmins',array('hospitals'=>$row['hospital_id']))->row();
+            $admin=$this->db->get_where('hospitaladmins',array('hospital_id'=>$row['hospital_id']))->row();
             $notification['user_id']='hospitaladmins-admin-'.$admin->admin_id;
             $notification['title']='License Expire';
             $notification['text']='MyPulse license for your hospital will expire in 3 months. Please renew your license.';
@@ -19,7 +19,7 @@ class Cron_model extends CI_Model {
        }
        $list1=$this->db->get_where('hospitals',array('till_date'=>date('m/d/Y',strtotime('+2 month')),'license_status'=>1))->result_array();
        foreach ($list1 as $row1) {
-            $admin1=$this->db->get_where('hospitaladmins',array('hospitals'=>$row1['hospital_id']))->row();
+            $admin1=$this->db->get_where('hospitaladmins',array('hospital_id'=>$row1['hospital_id']))->row();
             $notification['user_id']='hospitaladmins-admin-'.$admin1->admin_id;
             $notification['title']='License Expiry';
             $notification['text']='MyPulse license for your hospital will expire in 2 months. Please renew your license.';
@@ -27,7 +27,7 @@ class Cron_model extends CI_Model {
        }
        $list2=$this->db->get_where('hospitals',array('till_date'=>date('m/d/Y',strtotime('+1 month')),'license_status'=>1))->result_array();
        foreach ($list2 as $row2) {
-            $admin2=$this->db->get_where('hospitaladmins',array('hospitals'=>$row2['hospital_id']))->row();
+            $admin2=$this->db->get_where('hospitaladmins',array('hospital_id'=>$row2['hospital_id']))->row();
             $notification['user_id']='hospitaladmins-admin-'.$admin2->admin_id;
             $notification['title']='License Expiry';
             $notification['text']='MyPulse license for your hospital will expire in 1 months. Please renew your license.';
@@ -37,7 +37,7 @@ class Cron_model extends CI_Model {
         if($i!=0){
        $list3=$this->db->get_where('hospitals',array('till_date'=>date('m/d/Y',strtotime('+'.$i.' days')),'license_status'=>1))->result_array();
        foreach ($list3 as $row3) {
-        $admin3=$this->db->get_where('hospitaladmins',array('hospitals'=>$row3['hospital_id']))->row();
+        $admin3=$this->db->get_where('hospitaladmins',array('hospital_id'=>$row3['hospital_id']))->row();
         $notification['user_id']='hospitaladmins-admin-'.$admin3->admin_id;
         $notification['title']='License Expire';
         $notification['text']='MyPulse license for your hospital will expire in '.$i.' months. Please renew your license.';

@@ -168,14 +168,14 @@ foreach ($single_user_info as $row) {
                  
                  
                     <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['status'];?></label>
-
+                        <label for="field-ta" class="col-sm-3 control-label">Status</label>
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""<?php if($account_type != 'superadmin'){echo "disabled";}?>>
                                 <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
                                 <option value="1"  <?php if($row['status']=='1'){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2"  <?php if($row['status']=='2'){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
                             </select>
+                            <?php if($account_type=='users'){ ?><input type="text" hidden="" name="status" value="1"><?php }?>
                             <span ><?php echo form_error('status'); ?></span>
                         </div>
                     </div>
