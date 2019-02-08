@@ -346,6 +346,138 @@ $result = $this->index_model->change_password($user_id,$new_password);
         ], REST_Controller::HTTP_BAD_REQUEST);
     }
 }
+/******************************Basic Requireds***************************/
+public function countrys_get(){
+    $countrys = $this->index_model->get_country();
+        if($countrys){
+            $this->response([
+                    'status' => TRUE,
+                    'countrys'=>$countrys,
+                    'message' => 'Countrys.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+public function states_get($country_id){
+    $states = $this->index_model->get_state($country_id);
+        if($states){
+            $this->response([
+                    'status' => TRUE,
+                    'states'=>$states,
+                    'message' => 'States.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+public function districts_get($state_id){
+    $districts = $this->index_model->get_district($state_id);
+        if($districts){
+            $this->response([
+                    'status' => TRUE,
+                    'districts'=>$districts,
+                    'message' => 'Districts.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+public function cities_get($district_id){
+    $cities = $this->index_model->get_city($district_id);
+        if($cities){
+            $this->response([
+                    'status' => TRUE,
+                    'cities'=>$cities,
+                    'message' => 'Cities.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+    /******************Dashboard**********************************/
+    public function upcomingAppointments_get($user_id){
+        $appointments = $this->index_model->select_upcoming_appointments($user_id);
+        if($appointments){
+            $this->response([
+                    'status' => TRUE,
+                    'upcoming_appointments'=>$appointments,
+                    'message' => 'Upcoming Appointments.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+     public function recommendAppointments_get($user_id){
+        $appointments = $this->index_model->select_recommend_appointments($user_id);
+        if($appointments){
+            $this->response([
+                    'status' => TRUE,
+                    'recommend_appointments'=>$appointments,
+                    'message' => 'Recommend Appointments.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+     public function OutstandingPre_medicines_get($user_id){
+        $prescriptions = $this->index_model->outstanding_prescriptions_medicines($user_id);
+        if($prescriptions){
+            
+            $this->response([
+                    'status' => TRUE,
+                    'outstanding_prescriptions'=>$prescriptions,
+                    'message' => 'OUTSTANDING PRESCRIPTIONS FOR MEDICINES.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+      public function OutstandingPre_tests_get($user_id){
+        $prescriptions = $this->index_model->outstanding_prescriptions_tests($user_id);
+        if($prescriptions){
+           
+            $this->response([
+                    'status' => TRUE,
+                    'outstanding_prescriptions'=>$prescriptions,
+                    'message' => 'OUTSTANDING PRESCRIPTIONS FOR MEDICAL TESTS.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
     /*********************Hospitals*******************************/
     public function hospitals_get($id=''){
         $hospitals = $this->index_model->select_hospitals_info($id);
@@ -681,6 +813,24 @@ $result = $this->index_model->change_password($user_id,$new_password);
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }
+    }
+    /********************Health Records************************/
+    /********************Prescriptions************************/
+    public function prescriptions_get($user_id){
+     $prescriptions = $this->index_model->select_prescriptions_info($user_id);
+        if($prescriptions){
+            $this->response([
+                    'status' => TRUE,
+                    'prescriptions'=>$prescriptions,
+                    'message' => 'Prescriptions.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
     }
 
 }

@@ -12,6 +12,50 @@ public function user_login($unm = '', $pwd = ''){
 		return false;
 		}
 	}
+    /**********************Basic Required*****************************/
+    public function get_country(){
+        $this->db->select('country_id,name as country_name');
+        $country = $this->db->get('country')->result_array();
+        if(!empty($country))
+        {
+        return $country;
+        }else{
+        return false;
+        } 
+    }
+        function get_state($country_id)
+    {
+        $this->db->select('state_id,name as state_name');
+        $state = $this->db->get_where('state' , array('country_id' => $country_id))->result_array();
+        if(!empty($state))
+        {
+        return $state;
+        }else{
+        return false;
+        } 
+    }
+    function get_district($state_id)
+    {
+        $this->db->select('district_id,name as district_name');
+        $district = $this->db->get_where('district' , array('state_id' => $state_id))->result_array();
+        if(!empty($district))
+        {
+        return $district;
+        }else{
+        return false;
+        } 
+    }
+     function get_city($district_id)
+    {
+        $this->db->select('city_id,name as city_name');
+        $city = $this->db->get_where('city' , array('district_id' => $district_id))->result_array();
+        if(!empty($city))
+        {
+        return $city;
+        }else{
+        return false;
+        } 
+    }
     /**********************Header*****************************/
     function get_messages($id)
     {
@@ -72,7 +116,7 @@ $created=$user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])-
              $result[]=$row;   
               }  
     }elseif($created_by[0] != 'doctors'){
-    if(($hospi1 == $account_details || $hospi==$account_type) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')))
+    if(($hospi1 == $account_details || $hospi==$account_type) && (($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')) || $account_type=='users'))
               {
                 $row['created_by']=$created;
     $result[]=$row;
@@ -235,10 +279,67 @@ function read_notification($notification_id)
     }
     public function change_password($user_id, $new_password){         
     $this->db->where('user_id', $user_id);
-    $yes=$this->db->update($this->session->userdata('users'), array('password' => $new_password));
+    $yes=$this->db->update('users', array('password' => $new_password));
     if($yes)
     {
     return TRUE;
+        }else{
+        return false;
+        }
+    }
+    /**********************Dashboard**********************/
+    function select_upcoming_appointments($id){
+$where=array('a.user_id'=>$id,'a.appointment_date >='=>date('Y-m-d'),'a.status'=>'2');
+$this->db->select('a.appointment_id,a.appointment_number,a.doctor_id,a.appointment_date,a.appointment_time_start,a.appointment_time_end,d.name as doctor_name,h.name as hospital_name,b.name as branch_name,dep.name as department_name');
+$this->db->from('appointments as a')->join('doctors as d', 'd.doctor_id = a.doctor_id')->join('hospitals as h', 'h.hospital_id = d.hospital_id')->join('branch as b', 'b.branch_id = d.branch_id')->join('department as dep', 'dep.department_id = d.department_id');
+$results=$this->db->order_by('appointment_number','DESC')->where($where)->get()->result_array();
+if(!empty($results)){
+        return $results; 
+        }else{
+        return false;
+        }
+    }
+function select_recommend_appointments($id){
+$where=array('a.user_id'=>$id,'a.next_appointment!='=>'','a.next_appointment>='=>date('Y-m-d'));
+$this->db->select('a.appointment_id,a.appointment_number,a.doctor_id,a.next_appointment,d.name as doctor_name,h.name as hospital_name,b.name as branch_name,dep.name as department_name');
+$this->db->from('appointments as a')->join('doctors as d', 'd.doctor_id = a.doctor_id')->join('hospitals as h', 'h.hospital_id = d.hospital_id')->join('branch as b', 'b.branch_id = d.branch_id')->join('department as dep', 'dep.department_id = d.department_id');
+$results=$this->db->order_by('appointment_number','DESC')->where($where)->get()->result_array();
+if(!empty($results)){
+        return $results; 
+        }else{
+        return false;
+        }
+    }
+    function outstanding_prescriptions_medicines($id){
+        $this->db->select('prescription_id,prescription_data,created_at');
+$prescription_info=$this->db->order_by('prescription_id','desc')->get_where('prescription',array('user_id'=>$id,'medicin_status'=>2))->result_array();
+ foreach ($prescription_info as $row1) {
+            $prescription_data=explode('|',$this->encryption->decrypt($row1['prescription_data']));
+            $out_pre['prescription_id']=$row1['prescription_id'];
+            if($prescription_data[1]!=''){
+                $out_pre['prescription_title']=$prescription_data[0];
+            }
+            $out_pre['created_at']=$row1['created_at'];
+        }
+if(!empty($out_pre)){
+        return $out_pre; 
+        }else{
+        return false;
+        }
+    }
+      function outstanding_prescriptions_tests($id){
+        $this->db->select('prescription_id,prescription_data,created_at');
+$prescription_info=$this->db->order_by('prescription_id','desc')->get_where('prescription',array('user_id'=>$id,'test_status'=>2))->result_array();
+  foreach ($prescription_info as $row1) {
+            $prescription_data=explode('|',$this->encryption->decrypt($row1['prescription_data']));
+            $out_pre['prescription_id']=$row1['prescription_id'];
+            if($prescription_data[7]!=''){
+                $out_pre['prescription_title']=$prescription_data[0];
+            }
+            $out_pre['created_at']=$row1['created_at'];
+        }
+if(!empty($out_pre)){
+        return $out_pre; 
         }else{
         return false;
         }
@@ -466,14 +567,19 @@ return $this->db->order_by('id','DESC')->where($where)->get()->result_array();
     public function select_appointments_info($param1 = '', $param2 = '',$param3='',$param4=''){
 	 if($param3=='all'){
     $where=array('a.user_id'=>$param4,'a.appointment_date >='=>$param1,'a.appointment_date <='=>$param2);
-$this->db->select('a.appointment_id,a.appointment_number,a.doctor_id,a.appointment_date,d.name as doctor_name,h.name as hospital_name,b.name as branch_name,dep.name as department_name');
+$this->db->select('a.appointment_id,a.appointment_number,a.doctor_id,a.appointment_date,a.appointment_time_start,a.appointment_time_end,d.name as doctor_name,h.name as hospital_name,b.name as branch_name,dep.name as department_name');
 $this->db->from('appointments as a')->join('doctors as d', 'd.doctor_id = a.doctor_id')->join('hospitals as h', 'h.hospital_id = d.hospital_id')->join('branch as b', 'b.branch_id = d.branch_id')->join('department as dep', 'dep.department_id = d.department_id');
-return $this->db->order_by('appointment_number','DESC')->where($where)->get()->result_array();  
+$results=$this->db->order_by('appointment_number','DESC')->where($where)->get()->result_array();  
     }elseif($param3!='all'){
 $where=array('a.user_id'=>$param4,'a.appointment_date >='=>$param1,'a.appointment_date <='=>$param2,'a.status'=>$param3);
 $this->db->select('a.appointment_id,a.appointment_number,a.doctor_id,a.appointment_date,d.name as doctor_name,h.name as hospital_name,b.name as branch_name,dep.name as department_name');
 $this->db->from('appointments as a')->join('doctors as d', 'd.doctor_id = a.doctor_id')->join('hospitals as h', 'h.hospital_id = d.hospital_id')->join('branch as b', 'b.branch_id = d.branch_id')->join('department as dep', 'dep.department_id = d.department_id');
-return $this->db->order_by('appointment_number','DESC')->where($where)->get()->result_array();   
+$results=$this->db->order_by('appointment_number','DESC')->where($where)->get()->result_array();   
+    }
+    if(!empty($results)){
+        return $results;
+    }else{
+        return false;
     }
     }
     public function select_appointment_history_info($id = ''){
@@ -635,6 +741,29 @@ $pid='MPA'.date('y').'_'.$num;
             }
         }else{
             return false;
+        }
+    }
+    /********************Prescriptions************************/
+        function select_prescriptions_info($id){
+        $this->db->select('p.prescription_id,p.prescription_data,p.created_at,p.doctor_id,p.status,d.name as doctor_name,h.name as hospital_name');
+        $this->db->from('prescription as p')->join('doctors as d', 'd.doctor_id = p.doctor_id')->join('hospitals as h', 'h.hospital_id = d.hospital_id');
+$prescription_info=$this->db->order_by('prescription_id','desc')->where('user_id',$id)->get()->result_array();
+ foreach ($prescription_info as $row1) {
+            $prescription_data=explode('|',$this->encryption->decrypt($row1['prescription_data']));
+            if($prescription_data[1]!=''){
+                $row1['prescription_data']=$prescription_data[0];
+            }
+            if($row1['status']==1){
+            $row1['status_type']='Visible';
+            }elseif($row1['status']==2){
+            $row1['status_type']='Hidden';
+            }
+            $pres[]=$row1;
+        }
+if(!empty($pres)){
+        return $pres; 
+        }else{
+        return false;
         }
     }
 }

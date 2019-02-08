@@ -3055,7 +3055,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
              $result[]=$row;   
               }  
     }elseif($created_by[0] != 'doctors'){
-    if(($hospi1 == $account_details || $hospi==$account_type) && ($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')))
+    if(($hospi1 == $account_details || $hospi==$account_type) && (($row['hospital_id'] == 0 || $row['hospital_id'] == $this->session->userdata('hospital_id')) || $account_type=='users'))
               {
     $result[]=$row;
         }
