@@ -233,7 +233,7 @@ $pid='MPU'.date('y').'_'.$num;
             
         }
     }
-    public function notificationRead_get($notification_id){
+    public function Readnotification_get($notification_id){
         $notification = $this->index_model->read_notification($notification_id);
         if($notification){
             $this->response([
@@ -289,7 +289,7 @@ $pid='MPU'.date('y').'_'.$num;
             
         }
     }    
-public function messageRead_get($user_id,$message_id){
+public function Readmessage_get($user_id,$message_id){
         $message = $this->index_model->read_message($user_id,$message_id);
         if($message){
             $this->response([
@@ -305,7 +305,7 @@ public function messageRead_get($user_id,$message_id){
             
         }
     }
-public function userProfile_get($user_id){
+public function UserProfile_get($user_id){
     $result = $this->index_model->select_user_info($user_id);
     if($result){
         $this->response([
@@ -560,7 +560,10 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function hospitalDelete_delete($id,$hospital_id){
+    public function deleteHospital_delete(){
+        $id = $this->delete('user_id');
+        $hospital_id = $this->delete('hospital_id');
+        echo $hospital_id;
         $hospitals = $this->index_model->delete_patient_hospital($id,$hospital_id);
         if($hospitals){
             $this->response([
@@ -610,7 +613,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function doctorDelete_delete($id,$doctor_id){
+    public function deletedoctor_delete($id,$doctor_id){
         $doctor = $this->index_model->delete_patient_doctor($id,$doctor_id);
         if($doctor){
             $this->response([
@@ -659,7 +662,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function medicalstoreDelete_delete($id,$store_id){
+    public function deletemedicalstore_delete($id,$store_id){
         $store = $this->index_model->delete_patient_store($id,$store_id);
         if($store){
             $this->response([
@@ -707,7 +710,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function medicallabDelete_delete($id,$lab_id){
+    public function deletemedicallab_delete($id,$lab_id){
         $lab = $this->index_model->delete_patient_lab($id,$lab_id);
         if($lab){
             $this->response([
@@ -758,9 +761,9 @@ public function Medicallabs_for_Orders_get(){
     }
     /*********************Appointments*******************************/
     public function appointments_get($id=''){
-        $sd=$_GET['sd'];
-        $ed=$_GET['ed'];
-        $status=$_GET['status_id'];
+        $sd=$this->get('sd');
+        $ed=$this->get('ed');
+        $status=$this->get('status_id');
         $appointments = $this->index_model->select_appointments_info($sd,$ed,$status,$id);
         if($appointments){
             $this->response([
@@ -768,6 +771,21 @@ public function Medicallabs_for_Orders_get(){
                     'appointments'=>$appointments,
                     'appointments_count'=>count($appointments),
                     'message' => 'All Appointments Details of Login User.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    public function appointment_get($appointment_id=''){
+        $appointment = $this->index_model->select_appointment_info($appointment_id);
+        if($appointment){
+            $this->response([
+                    'status' => TRUE,
+                    'appointment_details'=>$appointment,
+                    'message' => 'Single Appointment Details.'
                 ], REST_Controller::HTTP_OK);
         }else{
             $this->response([
@@ -788,6 +806,34 @@ public function Medicallabs_for_Orders_get(){
             $this->response([
                     'status' => FALSE,
                     'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    function cancelappointment_post(){
+            $appointment=$this->crud_model->cancel_appointment_info();
+            if($appointment){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Appointment Cancled Successfuly.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Appointment Not Cancled.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    function OrderPrescription_post(){
+            $appointment=$this->crud_model->save_prescription_order();
+            if($appointment){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prescription Ordered Successfuly.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prescription Not Ordered.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
@@ -823,7 +869,7 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-      function appointmentCheck_post()
+      function Checkappointment_post()
     {
         $user= $this->post('user_id');
         $appointment_date=$this->post('appointment_date');
@@ -912,7 +958,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function DeletePrescription_get($prescription_id=''){
+    public function deletePrescription_delete($prescription_id=''){
      $prescriptions = $this->index_model->delete_prescription($prescription_id);
         if($prescriptions){
             $this->response([
@@ -975,5 +1021,97 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-
+    public function deletePrognosis_delete($Prognosis_id=''){
+     $Prognosis = $this->index_model->delete_prognosis($Prognosis_id);
+        if($Prognosis){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prognosis Deleted Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prognosis Not Deleted.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+        public function PrognosisStatus_get($prognosis_id,$status){
+     $Prognosis = $this->index_model->update_prognosis_status($prognosis_id,$status);
+        if($Prognosis){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prognosis Status Updated Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prognosis Not Updated.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+         /********************Health Reports************************/
+    public function HealthReportsByLabs_get($user_id){
+     $reports = $this->index_model->select_medical_reports_by_labs($user_id);
+        if($reports){
+            $this->response([
+                    'status' => TRUE,
+                    'health_reports'=>$reports,
+                    'message' => 'Health Reports.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+    public function HealthReportsByDoctors_get($user_id){
+     $reports = $this->index_model->select_medical_reports_by_doctors($user_id);
+        if($reports){
+            $this->response([
+                    'status' => TRUE,
+                    'health_reports'=>$reports,
+                    'message' => 'Health Reports.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+    public function deleteHealthReport_delete($report_id=''){
+     $report = $this->index_model->delete_medical_reports($report_id);
+        if($report){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Health Report Deleted Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Health Report Not Deleted.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+        public function HealthReportStatus_get($report,$status){
+     $report = $this->index_model->update_medical_reports_status($report,$status);
+        if($report){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Health Report Status Updated Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Health Report Not Updated.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
 }

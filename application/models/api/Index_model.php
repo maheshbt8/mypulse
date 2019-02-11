@@ -3,7 +3,7 @@ class Index_model extends CI_Model {
 
 public function user_login($unm = '', $pwd = ''){
         $where = "(email='".$unm."' OR phone='".$unm."') AND password='".sha1($pwd)."' AND status='1'  AND is_mobile='1' AND isDeleted='1'";
-        $this->db->select('user_id, name,unique_id,email');
+        $this->db->select('user_id,name,unique_id,email');
         $query = $this->db->where($where)->get('users')->row_array();
         if(!empty($query))
         {
@@ -153,7 +153,20 @@ $created=$user_role.' - '.$this->db->where($created_by[1].'_id',$created_by[2])-
     $result[]=$row;
         }
         }elseif($created_by[0] == 'doctors'){
-        $users=$this->crud_model->select_doctor_info();
+             $doctor=$this->db->where('user_id',$id)->get('patient')->row();
+        if($doctor>0){
+        $doctor_ids=explode(',',$doctor->doctor_ids);
+        for($i=0;$i<count($doctor_ids);$i++){
+            if($doctor_ids[$i]!=''){
+            $doct=$this->db->where('doctor_id',$doctor_ids[$i])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'));
+        if($doct->num_rows()>0){
+        $doctors[$i]=$doct->row_array();
+        }
+            }
+        }
+        }
+        $users=$doctors;
+        //$users=$this->crud_model->select_doctor_info();
         foreach ($users as $user) {
     if(($hospi1 == $account_details || $hospi==$account_type) &&  $row['created_by'] == 'doctors-doctor-'.$user['doctor_id'])
         {
@@ -351,9 +364,10 @@ $prescription_info=$this->db->order_by('prescription_id','desc')->get_where('pre
                 $out_pre['prescription_title']=$prescription_data[0];
             }
             $out_pre['created_at']=$row1['created_at'];
+            $data[]=$out_pre;
         }
-if(!empty($out_pre)){
-        return $out_pre; 
+if(!empty($data)){
+        return $data; 
         }else{
         return false;
         }
@@ -368,9 +382,10 @@ $prescription_info=$this->db->order_by('prescription_id','desc')->get_where('pre
                 $out_pre['prescription_title']=$prescription_data[0];
             }
             $out_pre['created_at']=$row1['created_at'];
+            $data[]=$out_pre;
         }
-if(!empty($out_pre)){
-        return $out_pre; 
+if(!empty($data)){
+        return $data; 
         }else{
         return false;
         }
@@ -613,6 +628,17 @@ $results=$this->db->order_by('appointment_number','DESC')->where($where)->get()-
         return false;
     }
     }
+    public function select_appointment_info($appointment_id){
+    $where=array('a.user_id'=>$appointment_id);
+$this->db->select('a.appointment_id,a.appointment_number,a.doctor_id,a.appointment_date,a.appointment_time_start,a.appointment_time_end,d.name as doctor_name,h.name as hospital_name,b.name as branch_name,dep.name as department_name');
+$this->db->from('appointments as a')->join('doctors as d', 'd.doctor_id = a.doctor_id')->join('hospitals as h', 'h.hospital_id = d.hospital_id')->join('branch as b', 'b.branch_id = d.branch_id')->join('department as dep', 'dep.department_id = d.department_id');
+$results=$this->db->order_by('appointment_number','DESC')->where($where)->get()->row_array();  
+    if(!empty($results)){
+        return $results;
+    }else{
+        return false;
+    }
+    }
     public function select_appointment_history_info($id = ''){
 	 $appointment_history=$this->db->where('appointment_id',$id)->get('appointment_history')->result_array();
        	if($appointment_history){
@@ -774,6 +800,197 @@ $pid='MPA'.date('y').'_'.$num;
             return false;
         }
     }
+       function cancel_appointment_info()
+    {
+$account_type='users';
+$user_role='MyPulse Users';
+ $account_details='users-user'.$this->post('user_id');
+        $check=$this->post('appointment_ids');
+        $reason=$this->post('cancel_reason');
+        for($i=0;$i<count($check);$i++){
+    $appointment_data=$this->db->where('appointment_id',$check[$i])->get('appointments')->row();
+    $appointment_date_time=$appointment_data->appointment_date.' '.$appointment_data->appointment_time_start;
+$current_time=date('Y-m-d H:i');
+$appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($appointment_date_time)));
+    if(strtotime($current_time)<strtotime($appointment_date_time_less)){
+    $appointment_number=$appointment_data->appointment_number;
+    $name=$this->db->where('user_id',$this->post('user_id'))->get('users')->row()->name;
+        $this->db->where('appointment_id',$check[$i]);
+        $this->db->where('status',2);
+        $s=$this->db->update('appointments',array('status'=>'3','remarks'=>'Appointment was cancelled by: "'.$user_role.' - '.$name.'" for the reason: " '.$reason.'".'));
+        if($s){
+        $this->db->insert('appointment_history',array('appointment_id'=>$check[$i],'action'=>6,'created_by'=>$account_details,'reason'=>$reason));
+            /**********Notification***********/
+    $appointment_data=$this->db->where('appointment_id',$check[$i])->get('appointments')->row_array();
+        $user_id[]='users-user-'.$appointment_data['user_id'];
+        $user_id[]='doctors-doctor-'.$appointment_data['doctor_id'];
+        $notification['title']=$appointment_number.' Appointment Canceled';
+        $notification['text']='Hi User Your Appointment No '.$appointment_number.' was Canceled for the Reason " '.$reason.' " .';
+    for($u=0;$u<count($user_id);$u++){
+        $notification['user_id']=$user_id[$u];
+        $n=$this->db->insert('notification',$notification);
+        }
+        }
+    }
+    }
+    if($n){
+        return TRUE;
+    }else{
+        return FALSE;
+    }
+    }
+    function save_prescription_order()
+    {
+        $id  = $this->post('order_type');
+        $data['user_id']     = $this->post('user_id');
+        $data['prescription_id']     = $this->post('prescription_id');
+        $data['order_type']     = $id;
+        if($id == 0){
+        $data['quantity']     = implode(',',$this->post('quantity'));
+        $data['store_id']     = $this->post('store');
+        }
+        if($id == 1){
+            $te=$this->post('tests');
+            for($c=0;$c<$_POST['count'];$c++){
+            if($te[$c]!=''){
+                $st[$c]=1;
+            }else{
+                $st[$c]=0;
+            }
+            }
+        $data['tests']     = implode(',',$st);
+        $data['lab_id']     = $this->post('lab');
+        }
+        $data['created_at']=date('Y-m-d H:i:s');
+        $yes=$this->db->insert('prescription_order',$data);
+        if($yes){
+            /*********** Patient **************/
+        $patient_data['user_id']=$this->post('user_id');
+        $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient');
+        if($patient->num_rows()==1){
+            if($id == 0){
+        $hos=$patient->row()->store_ids;
+        $hos_ar=explode(',', $hos);
+        for($ho=0;$ho<count($hos_ar);$ho++){
+            if($hos_ar[$ho] == $data['store_id']){
+                $s1='1';
+            }else{
+                $s1='0';
+            }
+        }
+        if($s1==0){
+    $patient_data['store_ids']=$hos.','.$data['store_id']; 
+        }
+        }
+        if($id == 1){
+        $hos=$patient->row()->lab_ids;
+        $hos_ar=explode(',', $hos);
+        for($ho=0;$ho<count($hos_ar);$ho++){
+            if($hos_ar[$ho] == $data['lab_id']){
+                $s1='1';
+            }else{
+                $s1='0';
+            }
+        }
+        if($s1==0){
+    $patient_data['lab_ids']=$hos.','.$data['lab_id']; 
+        }
+        }
+        $this->db->where('user_id',$this->post('user_id'));
+        $this->db->update('patient',$patient_data);
+        }else{
+        if($id == 0){
+        $patient_data['store_ids']=$this->post('store');
+        }
+        if($id == 1){
+        $patient_data['lab_ids']=$this->post('lab');
+        }
+        $this->db->insert('patient',$patient_data);
+        }
+           if($id == 0){
+        $data1['medicin_status']     = 1;
+        }
+        if($id == 1){
+        $data1['test_status']     = 1;
+        }
+        $this->db->where('prescription_id',$data['prescription_id'])->update('prescription',$data1);
+        }
+
+    }
+    function select_medical_reports_by_labs($user_id)
+    {
+       $health_reports=$this->db->get_where('prescription_order',array('user_id'=>$user_id,'order_type'=>1,'status'=>1))->result_array();
+       $i=1;foreach ($health_reports as $row1){
+if($row1['type_of_order']==0){
+        $rep_data=$this->db->get_where('prescription',array('prescription_id'=>$row1['prescription_id']))->row_array();
+        $rep_exp1=explode('|',$this->encryption->decrypt($rep_data['prescription_data']));
+        $rep_exp_data=explode(',',$rep_exp1[7]);
+    }elseif($row1['type_of_order']==1){
+        $rep_exp2=explode('|',$this->encryption->decrypt($row1['order_data']));
+        $rep_exp_data=explode(',',$rep_exp2[1]);
+    }
+         for($j=0;$j<count($rep_exp_data);$j++) {
+        $report=$this->db->get_where('reports',array('order_id'=>$row1['order_id']))->result_array();
+        $results['title']=$rep_exp_data[$j];
+        $results['created_at']=$report[$j]['created_at'];
+        if($report[$j]['status']==1){
+        $results['status_type']="Visible";
+        }elseif($report[$j]['status']==2){
+        $results['status_type']="Hidden";
+        }
+        $results['status']=$report[$j]['status'];
+        if($report[$j]['extension']!=''){
+        $results['report_id']=$report[$j]['report_id'];}
+        $i++;
+            $allresults[]=$results;
+    }
+    }
+       if(!empty($allresults)){
+        return $allresults;
+       }else{
+        return FALSE;
+       }
+    }
+     function select_medical_reports_by_doctors($user_id)
+    {
+        $report=$this->db->get_where('reports',array('user_id'=>$user_id))->result_array();
+        $i=1;foreach ($report as $row) {  
+           $results['title']=$row['title'];
+           $exp=explode('-',$row['created_by']);
+                if($exp[0]=='doctors'){
+                $doc=$this->db->get_where($exp[0],array($exp[1].'_id'=>$exp[2]))->row();
+    $results['created_by']=$this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name;}elseif($exp[0]=='users'){
+        $results['created_by']='Created By Me';}
+        $results['created_at']=$row['created_at'];
+        if($row['status']==1){
+            $results['status_type']="Visible";
+        }elseif($row['status']==2){
+            $results['status_type']="Hidden";
+        }
+        $results['status']=$row['status'];
+        if($row['extension']!=''){
+            $results['report_id']=$row['report_id'];
+        }
+        $i++;
+        $allresults[]=$results;
+    }
+       if(!empty($allresults)){
+        return $allresults;
+       }else{
+        return FALSE;
+       }
+    }
+    function delete_medical_reports($report_id)
+    {
+        $this->db->where('report_id',$report_id);
+        $this->db->delete('reports');
+    }
+    function update_medical_reports_status($report_id='',$status='')
+    {
+        $data['status']=$status;
+        $this->db->where('report_id',$report_id);
+        $this->db->update('reports',$data); 
+    }
     /*********************Booking Order*************************/
         function book_order(){
     $order_type=$this->post('order_type');
@@ -869,7 +1086,8 @@ if(!empty($pres)){
      function ReadPrescription_info($prescription_id='',$order_type=''){
         $account_type='users';
        if($prescription_id==''){
-$order_info=$this->crud_model->select_order_info_id($order_id);
+$order_info=$this->db->get_where('prescription_order',array('order_id'=>$order_id))->row_array();
+//$this->crud_model->select_order_info_id($order_id);
 if($order_info['type_of_order']==0){
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
 }
@@ -877,7 +1095,8 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
 if($prescription_id!=''){
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
 }
-$doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
+$doctor_info=$this->db->where('doctor_id',$prescription_info['doctor_id'])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->row_array();
+//$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
 if($prescription_info!=''){
 $user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
 }else{
@@ -1033,7 +1252,8 @@ $prognosis[]=$row;
     function select_prognosis_information($prognosis_id='')
     {
 $prognosis_info=$this->db->get_where('prognosis',array('prognosis_id' =>$prognosis_id))->row_array();
-$doctor_info=$this->crud_model->select_doctor_info_id($prognosis_info['doctor_id']);
+$doctor_info=$this->db->where('doctor_id',$prescription_info['doctor_id'])->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->row_array();
+//$this->crud_model->select_doctor_info_id($prognosis_info['doctor_id']);
 $user_info=$this->db->where('user_id',$prognosis_info['user_id'])->get('users')->row_array();
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
 $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['prognosis_data']));
@@ -1056,6 +1276,27 @@ $row['case_history']=$prescription_data[1];
       }else{
         return false;
       }
+    }
+     function delete_prognosis($prognosis_id)
+    {
+        $this->db->where('prognosis_id',$prognosis_id);
+        $deleted=$this->db->delete('prognosis');
+        if($deleted){
+            echo TRUE;
+        }else{
+            echo FALSE;
+        }
+    }
+    function update_prognosis_status($prognosis_id='',$status='')
+    {
+        $data['status']=$status;
+        $this->db->where('prognosis_id',$prognosis_id);
+        $update=$this->db->update('prognosis',$data);
+        if($update){
+            echo TRUE;
+        }else{
+            echo FALSE;
+        }
     }
 }
 ?>

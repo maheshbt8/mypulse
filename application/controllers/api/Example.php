@@ -120,7 +120,8 @@ class Example extends REST_Controller {
     public function users_delete()
     {
         $id = (int) $this->get('id');
-
+        echo $id;
+echo "string";die;
         // Validate the id.
         if ($id <= 0)
         {

@@ -1433,7 +1433,7 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
     {
     if($this->input->post()){
     $this->crud_model->update_prognosis_info($prognosis_id);
-    $this->session->set_flashdata('message', get_phrase('prescription_info_updated_successfuly'));
+    $this->session->set_flashdata('message', get_phrase('prognosis_info_updated_successfuly'));
     redirect($this->session->userdata('last_page1'));
     
     }
@@ -1470,12 +1470,12 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
     {
         if ($param1 == "order") {
             $this->crud_model->save_prescription_order($param2);
-            $this->session->set_flashdata('message', get_phrase('prognosis_ordered_successfuly'));
+            $this->session->set_flashdata('message', get_phrase('prescription_ordered_successfuly'));
             redirect($this->session->userdata('last_page'));
         }   
         if ($param1 == "delete") {
             $this->crud_model->delete_prescription($param2);
-            $this->session->set_flashdata('message', get_phrase('prognosis_info_deleted_successfuly'));
+            $this->session->set_flashdata('message', get_phrase('prescription_info_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
         $account_type=$this->session->userdata('login_type');
