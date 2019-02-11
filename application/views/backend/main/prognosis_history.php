@@ -47,7 +47,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
 <h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $hospital_info['email'];?></h4>          
                 </td>
                 <td align="right" valign="top">
-                    <h4><b>Date : </b><?php echo date('M ,d-Y h:i A',strtotime($prescription_info['created_at']));?></h4>
+                    <h4><b>Date : </b><?php echo date('M ,d-Y h:i A',strtotime($prognosis_info['created_at']));?></h4>
                     
                 </td>
             </tr>

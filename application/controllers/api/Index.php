@@ -198,6 +198,22 @@ $pid='MPU'.date('y').'_'.$num;
         }
     }
     /*********************Header*******************************/
+     public function Languages_get(){
+        $languages = $this->index_model->get_languages();
+        if($languages){
+            $this->response([
+                    'status' => TRUE,
+                    'notifications'=>$languages,
+                    'message' => 'All Languages.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
      public function notifications_get($id=''){
         $notification = $this->index_model->get_notifications($id);
         $notification_count = $this->index_model->get_notification_count($id);
@@ -322,17 +338,17 @@ public function updateProfile_post($user_id){
 public function changePassword_post($user_id){
     $current_password_input = sha1($this->post('password'));
     $new_password = sha1($this->post('new_password'));
-    $confirm_new_password = sha1($this->post('confirm_new_password'));
+    /*$confirm_new_password = sha1($this->post('confirm_new_password'));*/
 
  $current_password_db = $this->db->get_where('users', array('user_id' =>$user_id))->row()->password;
 
-if (($current_password_db == $current_password_input) && ($new_password == $confirm_new_password)) {
+if($current_password_db == $current_password_input) {
 $result = $this->index_model->change_password($user_id,$new_password);
     if($result){
         $this->response([
         'status' => TRUE,
         'message' => 'Password Update Successfully.'
-        ], REST_Controller::HTTP_BAD_REQUEST);
+        ], REST_Controller::HTTP_OK);
     }else{
        $this->response([
         'status' => FALSE,
@@ -347,7 +363,7 @@ $result = $this->index_model->change_password($user_id,$new_password);
     }
 }
 /******************************Basic Requireds***************************/
-public function countrys_get(){
+public function countries_get(){
     $countrys = $this->index_model->get_country();
         if($countrys){
             $this->response([
@@ -411,7 +427,39 @@ public function cities_get($district_id){
             
         }
 }
-    /******************Dashboard**********************************/
+public function MedicalStores_for_Orders_get(){
+    $medicalstores = $this->index_model->get_medicalstores_info();
+        if($medicalstores){
+            $this->response([
+                    'status' => TRUE,
+                    'medicalstores'=>$MedicalStores,
+                    'message' => 'Medical Stores for Orders.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+public function Medicallabs_for_Orders_get(){
+    $medicallabs = $this->index_model->get_medicallabs_info();
+        if($medicallabs){
+            $this->response([
+                    'status' => TRUE,
+                    'medicallabs'=>$Medicallabs,
+                    'message' => 'Medical Labs for Orders.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+    /*************************Dashboard**********************************/
     public function upcomingAppointments_get($user_id){
         $appointments = $this->index_model->select_upcoming_appointments($user_id);
         if($appointments){
@@ -814,6 +862,22 @@ public function cities_get($district_id){
             
         }
     }
+    /*********************Booking Order*************************/
+    public function BookOrder_post(){
+        $hospitals = $this->index_model->book_order();
+        if($hospitals){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Appointment Save Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Appointment Not Save.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
     /********************Health Records************************/
     /********************Prescriptions************************/
     public function prescriptions_get($user_id){
@@ -823,6 +887,85 @@ public function cities_get($district_id){
                     'status' => TRUE,
                     'prescriptions'=>$prescriptions,
                     'message' => 'Prescriptions.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+    public function ReadPrescription_get($prescription_id='',$order_type=''){
+     $prescriptions = $this->index_model->ReadPrescription_info($prescription_id,$order_type);
+        if($prescriptions){
+            $this->response([
+                    'status' => TRUE,
+                    'prescriptions'=>$prescriptions,
+                    'message' => 'Prescriptions.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+    public function DeletePrescription_get($prescription_id=''){
+     $prescriptions = $this->index_model->delete_prescription($prescription_id);
+        if($prescriptions){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prescription Deleted Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prescription Not Deleted.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+        public function PrescriptionStatus_get($prescription_id,$status){
+     $prescriptions = $this->index_model->update_prescription_status($prescription_id,$status);
+        if($prescriptions){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prescription Status Updated Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prescription Not Updated.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+     /********************Prognosis************************/
+    public function Prognosis_get($user_id){
+     $Prognosis = $this->index_model->select_prognosis_info($user_id);
+        if($Prognosis){
+            $this->response([
+                    'status' => TRUE,
+                    'prognosis'=>$Prognosis,
+                    'message' => 'Prognosis.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }   
+    }
+    public function ReadPrognosis_get($prognosis_id=''){
+     $Prognosis = $this->index_model->select_prognosis_information($prognosis_id);
+        if($Prognosis){
+            $this->response([
+                    'status' => TRUE,
+                    'Prognosis'=>$Prognosis,
+                    'message' => 'Prognosis.'
                 ], REST_Controller::HTTP_OK);
         }else{
             $this->response([

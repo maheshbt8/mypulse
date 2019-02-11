@@ -56,7 +56,38 @@ public function user_login($unm = '', $pwd = ''){
         return false;
         } 
     }
+     function get_medicalstores_info()
+    {
+        $this->db->select('store_id,unique_id,name as store_name');
+        $medicalstores = $this->db->get_where('medicalstores' , array('status' =>'1','isDeleted'=>'1'))->result_array();
+        if(!empty($medicalstores))
+        {
+        return $medicalstores;
+        }else{
+        return false;
+        } 
+    }
+      function get_medicallabs_info()
+    {
+        $this->db->select('lab_id,unique_id,name as lab_name');
+        $medicallabs = $this->db->get_where('medicallabs' , array('status' =>'1','isDeleted'=>'1'))->result_array();
+        if(!empty($medicallabs))
+        {
+        return $medicallabs;
+        }else{
+        return false;
+        } 
+    }
     /**********************Header*****************************/
+    function get_languages(){
+        $this->db->select('language_id,name as language_name');
+        $data=$this->db->get('language')->result_array();
+        if(!empty($data)){
+            return $data;
+        }else{
+            return false;
+        }
+    }
     function get_messages($id)
     {
 $account_type   = 'users';
@@ -743,6 +774,75 @@ $pid='MPA'.date('y').'_'.$num;
             return false;
         }
     }
+    /*********************Booking Order*************************/
+        function book_order(){
+    $order_type=$this->post('order_type');
+    $data['user_id']=$this->post('user_id');
+    $data['order_type']=$order_type;
+    $data['type_of_order']=1;
+    if($order_type==0){
+    $data['store_id']=$this->post('store');
+    $data['order_data'] =$this->encryption->encrypt($this->post('title').'|'.implode(',',$this->post('drug')).'|'.implode(',',$this->post('strength')).'|'.implode(',',$this->post('quantity')));
+    }elseif($order_type==1){
+        $data['lab_id']=$this->post('lab');
+        $data['order_data'] =$this->encryption->encrypt($this->post('title').'|'.implode(',',$this->post('test_title')).'|'.implode(',',$this->post('description')));
+    }
+    $data['created_at']=date('Y-m-d H:i:s');
+   $yes=$this->db->insert('prescription_order',$data);
+    if($yes){
+            /*********** Patient **************/
+        $patient_data['user_id']=$data['user_id'];
+        $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient')->row_array();
+if($patient==''){
+if($order_type == 0){
+$patient_data['store_ids']=$this->post('store');
+}
+if($order_type == 1){
+$patient_data['lab_ids']=$this->post('lab');
+}
+$this->db->insert('patient',$patient_data);
+}elseif($patient!=''){
+if($order_type == 0){
+if($patient['store_ids']==''){
+$patient_data['store_ids']=$this->post('store');
+}elseif($patient['store_ids']!=''){
+$hos_ar=explode(',',$patient['store_ids']);
+    for($ho=0;$ho<count($hos_ar);$ho++){
+    if($hos_ar[$ho]==$this->post('store')){
+    $patient_data['store_ids']=$patient['store_ids'];
+    break;
+    }else{
+    $patient_data['store_ids']=$hos_ar[$ho].','.$this->post('store');
+    }
+    }
+}
+}
+if($order_type == 1){
+if($patient['lab_ids']==''){
+$patient_data['lab_ids']=$this->post('lab');
+}elseif($patient['lab_ids']!=''){
+$hos_ar=explode(',',$patient['lab_ids']);
+    for($ho=0;$ho<count($hos_ar);$ho++){
+    if($hos_ar[$ho]==$this->post('lab')){
+    $patient_data['lab_ids']=$patient['lab_ids'];
+    break;
+    }else{
+    $patient_data['lab_ids']=$hos_ar[$ho].','.$this->post('lab');
+    }
+    }
+}
+}
+$this->db->where('user_id',$data['user_id']);
+$updated=$this->db->update('patient',$patient_data);
+}
+    }
+    if($updated){
+        return true;
+    }else{
+        return false;
+    }
+
+    }
     /********************Prescriptions************************/
         function select_prescriptions_info($id){
         $this->db->select('p.prescription_id,p.prescription_data,p.created_at,p.doctor_id,p.status,d.name as doctor_name,h.name as hospital_name');
@@ -765,6 +865,197 @@ if(!empty($pres)){
         }else{
         return false;
         }
+    }
+     function ReadPrescription_info($prescription_id='',$order_type=''){
+        $account_type='users';
+       if($prescription_id==''){
+$order_info=$this->crud_model->select_order_info_id($order_id);
+if($order_info['type_of_order']==0){
+$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
+}
+}
+if($prescription_id!=''){
+$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
+}
+$doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
+if($prescription_info!=''){
+$user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
+}else{
+$user_info=$this->db->where('user_id',$order_info['user_id'])->get('users')->row_array();
+}
+$hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
+$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
+$order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
+if($prescription_data[0]!=''){
+    $row['title']=$prescription_data[0];
+}else{
+    $row['title']=$order_data[0];
+}
+if($prescription_info!=''){
+    $row['hospital_logo']=base_url().'uploads/hospitallogs/'.$doctor_info['hospital_id'].'.png';
+}
+if($prescription_info!=''){
+$row['hospital_name']=$hospital_info['name'];
+$row['hospital_address']=$hospital_info['address'];
+$row['hospital_email']=$hospital_info['email'];
+$row['prescription_date']=date('M ,d-Y h:i A',strtotime($prescription_info['created_at']));
+}
+if($prescription_info!=''){
+$row['doctor_name']='Dr.'.$doctor_info['name'];
+$row['doctor_uniue_id']=$doctor_info['unique_id'];
+$row['doctor_mobile_number']=$doctor_info['phone'];
+$row['doctor_email']=$doctor_info['email'];
+}
+$row['patient_name']=$user_info['name'];
+$row['patient_unique_id']=$user_info['unique_id'];
+$row['patient_mobile_number']=$user_info['phone'];
+$row['patient_email']=$user_info['email'];
+
+if($order_type == 0 || $account_type=='doctors' || $account_type=='nurse' ||($order_type=='' && $account_type=='users')){
+if($prescription_data[1]!='' || $order_data[1]!=''){
+        if($prescription_data[1]!=''){ 
+        $drug=explode(',',$prescription_data[1]);}else{$drug=explode(',',$order_data[1]);}
+        if($prescription_data[1]!=''){
+        $strength=explode(',',$prescription_data[2]);}else{$strength=explode(',',$order_data[2]);}
+        if($prescription_data[1]!=''){
+        $dosage=explode(',',$prescription_data[3]);
+        $duration=explode(',',$prescription_data[4]);
+        }
+        if($prescription_data[1]!=''){
+        if($order_id == ''){
+        $quantity=explode(',',$prescription_data[5]);
+        }elseif($order_id != ''){
+        $quantity=explode(',',$order_info['quantity']); 
+        }
+        }else{
+        $quantity=explode(',',$order_data[3]);
+        }
+        $note=explode(',',$prescription_data[6]);
+for($i1=0;$i1<count($drug);$i1++){
+        $medicen['drug']=$drug[$i1];
+        $medicen['strength']=$strength[$i1];
+        if($prescription_data[1]!=''){
+         $medicen['dosage']=$dosage[$i1];
+         $medicen['duration']=$duration[$i1];
+         }
+        $medicen['quantity']=$quantity[$i1];
+      if($prescription_data[1]!=''){
+       $medicen['note']=$note[$i1];
+      }
+      $medicines[]=$medicen;
+       }
+       $row['medicines']=$medicines;
+  }
+}
+if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($order_type=='' && $account_type=='users')){
+    if($prescription_data[7]!='' || $order_data[1]!=''){
+        if($prescription_data[7]!=''){
+            $test_title=explode(',',$prescription_data[7]);
+        }else{
+        $test_title=explode(',',$order_data[1]);}
+        if($prescription_data[7]!=''){
+            $description=explode(',',$prescription_data[8]);
+        }else{
+        $description=explode(',',$order_data[2]);
+        }    
+        if($account_type == 'medicallabs'){
+        $tests=explode(',',$order_info['tests']); 
+        }
+    for($i1=0;$i1<count($test_title);$i1++){
+            if($account_type == 'medicallabs'){
+        $test_title[$i1];
+        $description[$i1];
+    }elseif($account_type != 'medicallabs'){
+        $test['title']=$test_title[$i1];
+        $test['description']=$description[$i1];
+    }
+    $tests[]=$test; 
+  }
+  $row['medical_tests']=$tests;
+  }
+}
+if($prescription_info!=''){
+    $row['additional_note']=$prescription_data[9];
+            }
+
+if(!empty($row)){
+        return $row; 
+        }else{
+        return false;
+        }
+}
+ function delete_prescription($prescription_id)
+    {
+        $this->db->where('prescription_id',$prescription_id);
+        $deleted=$this->db->delete('prescription');
+        if($deleted){
+            echo TRUE;
+        }else{
+            echo FALSE;
+        }
+    }
+    function update_prescription_status($prescription_id,$status)
+    {
+        $data['status']=$status;
+        $this->db->where('prescription_id',$prescription_id);
+        $update=$this->db->update('prescription',$data);
+        if($update){
+            echo TRUE;
+        }else{
+            echo FALSE;
+        }
+    }
+    /********************Prognosis************************/
+    function select_prognosis_info($user_id)
+    {
+      $data=$this->db->get_where('prognosis', array('user_id' => $user_id))->result_array();
+      foreach ($data as $row1) {
+    $row['prognosis_id']=$row1['prognosis_id'];
+    $row['prognosis_title']=explode('|',$this->encryption->decrypt($row1['prognosis_data']))[0];
+    $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();
+$row['hospital']=$this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name;
+$row['doctor']=$doc->name;
+$row['created_at']=$row1['created_at'];
+$row['status']=$row1['status'];
+if($row1['status']==1){
+            $row['status_type']='Visible';
+            }elseif($row1['status']==2){
+            $row['status_type']='Hidden';
+            }
+$prognosis[]=$row;
+      }
+      if(!empty($prognosis)){
+        return $prognosis;
+      }else{
+        return false;
+      }
+    }
+    function select_prognosis_information($prognosis_id='')
+    {
+$prognosis_info=$this->db->get_where('prognosis',array('prognosis_id' =>$prognosis_id))->row_array();
+$doctor_info=$this->crud_model->select_doctor_info_id($prognosis_info['doctor_id']);
+$user_info=$this->db->where('user_id',$prognosis_info['user_id'])->get('users')->row_array();
+$hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
+$prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['prognosis_data']));
+$row['title']=$prescription_data[0];
+$row['hispital_name']=$hospital_info['name'];
+$row['hispital_address']=$hospital_info['address'];
+$row['hispital_email']=$hospital_info['email'];
+$row['created_at']=$prognosis_info['created_at'];
+$row['doctor_name']=$doctor_info['name'];
+$row['doctor_uniue_id']=$doctor_info['unique_id'];
+$row['doctor_mobile_number']=$doctor_info['phone'];
+$row['doctor_email']=$doctor_info['email'];
+$row['patient_name']=$user_info['name'];
+$row['patient_unique_id']=$user_info['unique_id'];
+$row['patient_mobile_number']=$user_info['phone'];
+$row['patient_email']=$user_info['email'];
+$row['case_history']=$prescription_data[1];
+        if(!empty($row)){
+        return $row;
+      }else{
+        return false;
+      }
     }
 }
 ?>

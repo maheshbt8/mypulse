@@ -84,7 +84,7 @@
                         <label for="field-1" class="col-sm-4 control-label"><?php echo $this->lang->line('labels')['age'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="age" class="form-control" id="age" value="<?=$user_data['age']?>" >
+                            <input type="text" name="age" class="form-control" id="age" value="<?=$user_data['age']?>" readonly >
                         </div>
                     </div>
                     <div class="form-group">
