@@ -281,8 +281,9 @@ function read_notification($notification_id)
         return false;
         }
     }
-     function update_user_info($user_id)
+     function update_user_info()
     {
+        $user_id   = $this->post('user_id');
         $data['name']      = $this->post('fname');
         $data['mname']      = $this->post('mname');
         $data['lname']      = $this->post('lname');
@@ -411,9 +412,10 @@ if(!empty($data)){
 		return false;
 		}
     }
-    public function select_hospital_info($id = ''){
+    public function select_hospital_info($id = '',$limit=null, $start=null){
 $this->db->select('h.hospital_id,h.unique_id,h.name,h.email,h.phone_number,h.address,h.description,h.md_name,h.md_contact_number,c.name as country_name,s.name as state_name,d.name as district_name,ci.name as city_name');
 $this->db->from('hospitals as h')->join('country as c', 'c.country_id = h.country')->join('state as s', 's.state_id = h.state')->join('district as d', 'd.district_id = h.district')->join('city as ci', 'ci.city_id = h.city');
+/*$this->db->limit($limit, $start);*/
 $hospi=$this->db->where('hospital_id',$id)->get()->row_array();
         if($hospi){
 		return $hospi; 
@@ -589,18 +591,27 @@ for($h=0;$h<count($lab_ids);$h++){
 $this->db->where('user_id',$id);
 $yes=$this->db->update('patient',array('lab_ids'=>implode(',',$doc)));
     }
-   public function select_inpatient_info($param1 = '', $param2 = '',$param3='',$param4='')
+      public function select_inpatients_info($param1 = '', $param2 = '',$param3='',$param4='')
     {
     if($param3=='all'){
-    return $this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$param4,'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
+    $data=$this->db->order_by('id','desc')->get_where('inpatient',array('user_id'=>$param4,'created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'created_date <='=>date('Y-m-d 23:59:59',strtotime($param2))))->result_array();
     }elseif($param3!='all'){
     $where=array('i.user_id'=>$param4,'i.created_date >='=>date('Y-m-d 00:00:00',strtotime($param1)),'i.created_date <='=>date('Y-m-d 23:59:59',strtotime($param2)),'i.status'=>$param3);
 $this->db->select('i.id,i.created_date,i.reason,i.status,d.name as doctor_name,h.name as hospital_name,bed.name as bed_name');
 $this->db->from('inpatient as i')->join('doctors as d', 'd.doctor_id = i.doctor_id')->join('hospitals as h', 'h.hospital_id = i.hospital_id')->join('bed as bed', 'bed.bed_id = i.bed_id');
-return $this->db->order_by('id','DESC')->where($where)->get()->result_array();
+    $data=$this->db->order_by('id','DESC')->where($where)->get()->result_array();
 
     }   
-}   
+} 
+   public function select_inpatient_info($param1 = '')
+    {
+    $data=$this->db->get_where('inpatient',array('id'=>$param4))->row_array();
+    if(!empty($data)){
+        return $data;
+    }else{
+        return false;
+    }
+    }   
 
     public function select_inpatient_history_info($id = ''){
 	 $inpatient=$this->db->where('in_patient_id',$id)->get('inpatient_history')->result_array();
@@ -851,7 +862,7 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
         }
         if($id == 1){
             $te=$this->post('tests');
-            for($c=0;$c<$_POST['count'];$c++){
+            for($c=0;$c<$this->post('count');$c++){
             if($te[$c]!=''){
                 $st[$c]=1;
             }else{

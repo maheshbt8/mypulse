@@ -32,24 +32,18 @@ class Index extends REST_Controller {
         $this->load->model('api/index_model');
     }
 
-
 /*Login For Users*/
-    public function login_post() {
-        // Get the post data
+public function login_post() {
         $emailormobile = $this->post('emailormobile');
         $password = $this->post('password');
-            // Check if any user exists with the given credentials
             $user = $this->index_model->user_login($emailormobile,$password);
             if($user){
-                // Set the response and exit
                 $this->response([
                     'status' => TRUE,
                     'message' => 'User login successful.',
                     'data' => $user
                 ], REST_Controller::HTTP_OK);
             }else{
-                // Set the response and exit
-                //BAD_REQUEST (400) being the HTTP response code
                 $this->response([
                     'status' => FALSE,
                     'message' => 'Invalid Login Details.'
@@ -72,9 +66,7 @@ class Index extends REST_Controller {
                     'message' => 'Mobile Number Already Existed.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
-    
     }
-    
   public function checkEmailExist_post(){
         $email = $this->post('email');
         $phone = $this->post('mobilenumber');
@@ -110,19 +102,6 @@ class Index extends REST_Controller {
                     'otp_time'=>date('Y-m-d H:i:s'),
                     'message'=>'OTP Send To :'.$data['phone']
                 ], REST_Controller::HTTP_OK);
-      /*  if($send){
-        $this->response([
-                    'status' => TRUE,
-                    'sent_otp' => $otp,
-                    'otp_time'=>date('Y-m-d H:i:s'),
-                    'message'=>'OTP Send To :'.$data['phone']
-                ], REST_Controller::HTTP_OK);
-        }else{
-        $this->response([
-                    'status' => FALSE,
-                    'message'=>'OTP Not Send'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }*/
     }
     public function verifyOTPNumber_post(){
         $sent_otp = $this->post('sent_otp');
@@ -151,7 +130,6 @@ class Index extends REST_Controller {
         
     }
     public function registration_post() {
-        // Get the post data
         $name = strip_tags($this->post('name'));
         $phone = strip_tags($this->post('mobilenumber'));
         $email = strip_tags($this->post('email'));
@@ -198,7 +176,7 @@ $pid='MPU'.date('y').'_'.$num;
         }
     }
     /*********************Header*******************************/
-     public function Languages_get(){
+     public function languages_get(){
         $languages = $this->index_model->get_languages();
         if($languages){
             $this->response([
@@ -214,9 +192,10 @@ $pid='MPU'.date('y').'_'.$num;
             
         }
     }
-     public function notifications_get($id=''){
-        $notification = $this->index_model->get_notifications($id);
-        $notification_count = $this->index_model->get_notification_count($id);
+     public function notifications_get(){
+        $user_id=$this->get('user_id');
+        $notification = $this->index_model->get_notifications($user_id);
+        $notification_count = $this->index_model->get_notification_count($user_id);
         if($notification){
             $this->response([
                     'status' => TRUE,
@@ -233,7 +212,8 @@ $pid='MPU'.date('y').'_'.$num;
             
         }
     }
-    public function Readnotification_get($notification_id){
+    public function notification_get(){
+        $notification_id=$this->get('notification_id');
         $notification = $this->index_model->read_notification($notification_id);
         if($notification){
             $this->response([
@@ -249,16 +229,15 @@ $pid='MPU'.date('y').'_'.$num;
             
         }
     }
-    public function messages_get($id){
-        $message = $this->index_model->get_messages($id);
-        //$message_count = $this->index_model->get_message_count($id);
+    public function messages_get(){
+        $user_id=$this->get('user_id');
+        $message = $this->index_model->get_messages($user_id);
         if($message){
-        $account_details='users-user-'.$id;
+        $account_details='users-user-'.$user_id;
                $c=0;
     foreach ($message as $row) {
       $count=explode(',',$row['is_read']);
     $s=0;
-    
     for($m2=0;$m2<count($count);$m2++){
         if($account_details == $count[$m2]){
                 $s=1;
@@ -289,7 +268,9 @@ $pid='MPU'.date('y').'_'.$num;
             
         }
     }    
-public function Readmessage_get($user_id,$message_id){
+public function message_get(){
+    $user_id=$this->get('user_id');
+    $message_id=$this->get('message_id');
         $message = $this->index_model->read_message($user_id,$message_id);
         if($message){
             $this->response([
@@ -305,14 +286,15 @@ public function Readmessage_get($user_id,$message_id){
             
         }
     }
-public function UserProfile_get($user_id){
+public function userProfile_get(){
+     $user_id=$this->get('user_id');
     $result = $this->index_model->select_user_info($user_id);
     if($result){
         $this->response([
         'status' => TRUE,
         'user'=>$result,
         'message' => 'User Information.'
-        ], REST_Controller::HTTP_BAD_REQUEST);
+        ], REST_Controller::HTTP_OK);
     }else{
        $this->response([
         'status' => FALSE,
@@ -320,14 +302,14 @@ public function UserProfile_get($user_id){
         ], REST_Controller::HTTP_BAD_REQUEST); 
     }
 }
-public function updateProfile_post($user_id){
-    $result = $this->index_model->select_user_info($user_id);
+public function profile_post(){
+    $result = $this->index_model->update_user_info();
     if($result){
         $this->response([
         'status' => TRUE,
         'user'=>$result,
         'message' => 'User Information.'
-        ], REST_Controller::HTTP_BAD_REQUEST);
+        ], REST_Controller::HTTP_OK);
     }else{
        $this->response([
         'status' => FALSE,
@@ -335,13 +317,13 @@ public function updateProfile_post($user_id){
         ], REST_Controller::HTTP_BAD_REQUEST); 
     }
 }
-public function changePassword_post($user_id){
+public function changePassword_post(){
+    $user_id=$this->post('user_id');
     $current_password_input = sha1($this->post('password'));
     $new_password = sha1($this->post('new_password'));
     /*$confirm_new_password = sha1($this->post('confirm_new_password'));*/
 
- $current_password_db = $this->db->get_where('users', array('user_id' =>$user_id))->row()->password;
-
+$current_password_db = $this->db->get_where('users', array('user_id' =>$user_id))->row()->password;
 if($current_password_db == $current_password_input) {
 $result = $this->index_model->change_password($user_id,$new_password);
     if($result){
@@ -379,7 +361,8 @@ public function countries_get(){
             
         }
 }
-public function states_get($country_id){
+public function states_get(){
+    $country_id=$this->get('country_id');
     $states = $this->index_model->get_state($country_id);
         if($states){
             $this->response([
@@ -395,7 +378,8 @@ public function states_get($country_id){
             
         }
 }
-public function districts_get($state_id){
+public function districts_get(){
+    $state_id=$this->get('state_id');
     $districts = $this->index_model->get_district($state_id);
         if($districts){
             $this->response([
@@ -411,7 +395,8 @@ public function districts_get($state_id){
             
         }
 }
-public function cities_get($district_id){
+public function cities_get(){
+    $district_id=$this->get('district_id');
     $cities = $this->index_model->get_city($district_id);
         if($cities){
             $this->response([
@@ -427,7 +412,7 @@ public function cities_get($district_id){
             
         }
 }
-public function MedicalStores_for_Orders_get(){
+public function MedicalStoresForOrders_get(){
     $medicalstores = $this->index_model->get_medicalstores_info();
         if($medicalstores){
             $this->response([
@@ -443,7 +428,7 @@ public function MedicalStores_for_Orders_get(){
             
         }
 }
-public function Medicallabs_for_Orders_get(){
+public function MedicalLabsForOrders_get(){
     $medicallabs = $this->index_model->get_medicallabs_info();
         if($medicallabs){
             $this->response([
@@ -460,7 +445,8 @@ public function Medicallabs_for_Orders_get(){
         }
 }
     /*************************Dashboard**********************************/
-    public function upcomingAppointments_get($user_id){
+    public function upcomingAppointments_get(){
+        $user_id=$this->post('user_id');
         $appointments = $this->index_model->select_upcoming_appointments($user_id);
         if($appointments){
             $this->response([
@@ -476,7 +462,8 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-     public function recommendAppointments_get($user_id){
+     public function recommendAppointments_get(){
+        $user_id=$this->post('user_id');
         $appointments = $this->index_model->select_recommend_appointments($user_id);
         if($appointments){
             $this->response([
@@ -492,7 +479,8 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-     public function OutstandingPre_medicines_get($user_id){
+     public function OutstandingMedicines_get(){
+        $user_id=$this->post('user_id');
         $prescriptions = $this->index_model->outstanding_prescriptions_medicines($user_id);
         if($prescriptions){
             
@@ -509,7 +497,8 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-      public function OutstandingPre_tests_get($user_id){
+      public function OutstandingTests_get(){
+        $user_id=$this->post('user_id');
         $prescriptions = $this->index_model->outstanding_prescriptions_tests($user_id);
         if($prescriptions){
            
@@ -527,8 +516,9 @@ public function Medicallabs_for_Orders_get(){
         }
     }
     /*********************Hospitals*******************************/
-    public function hospitals_get($id=''){
-        $hospitals = $this->index_model->select_hospitals_info($id);
+    public function hospitals_get(){
+        $user_id=$this->get('user_id');
+        $hospitals = $this->index_model->select_hospitals_info($user_id);
         if($hospitals){
             $this->response([
                     'status' => TRUE,
@@ -544,8 +534,9 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function hospital_get($id=''){
-        $hospitals = $this->index_model->select_hospital_info($id);
+    public function hospital_get(){
+        $hospital_id=$this->get('hospital_id');
+        $hospitals = $this->index_model->select_hospital_info($hospital_id);
         if($hospitals){
             $this->response([
                     'status' => TRUE,
@@ -560,10 +551,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function deleteHospital_delete(){
-        $id = $this->delete('user_id');
-        $hospital_id = $this->delete('hospital_id');
-        echo $hospital_id;
+    public function hospital_delete($id,$hospital_id){
         $hospitals = $this->index_model->delete_patient_hospital($id,$hospital_id);
         if($hospitals){
             $this->response([
@@ -579,8 +567,9 @@ public function Medicallabs_for_Orders_get(){
         }
     }
     /*********************Doctors*******************************/
-    public function doctors_get($id=''){
-        $doctors = $this->index_model->select_doctors_info($id);
+    public function doctors_get(){
+        $user_id=$this->get('user_id');
+        $doctors = $this->index_model->select_doctors_info($user_id);
         if($doctors){
             $this->response([
                     'status' => TRUE,
@@ -597,8 +586,9 @@ public function Medicallabs_for_Orders_get(){
         }
     
     }
-    public function doctor_get($id=''){
-        $doctors = $this->index_model->select_doctor_info($id);
+    public function doctor_get(){
+        $doctor_id=$this->get('doctor_id');
+        $doctors = $this->index_model->select_doctor_info($doctor_id);
         if($doctors){
             $this->response([
                     'status' => TRUE,
@@ -613,7 +603,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function deletedoctor_delete($id,$doctor_id){
+    public function doctor_delete($id,$doctor_id){
         $doctor = $this->index_model->delete_patient_doctor($id,$doctor_id);
         if($doctor){
             $this->response([
@@ -629,8 +619,9 @@ public function Medicallabs_for_Orders_get(){
         }
     }
     /*********************Medical Stores*******************************/
-    public function medicalstores_get($id=''){
-        $stores = $this->index_model->select_stores_info($id);
+    public function medicalstores_get(){
+        $user_id=$this->get('user_id');
+        $stores = $this->index_model->select_stores_info($user_id);
         if($stores){
             $this->response([
                     'status' => TRUE,
@@ -646,8 +637,9 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function medicalstore_get($id=''){
-        $store = $this->index_model->select_store_info($id);
+    public function medicalstore_get(){
+        $store_id=$this->get('store_id');
+        $store = $this->index_model->select_store_info($store_id);
         if($store){
             $this->response([
                     'status' => TRUE,
@@ -662,7 +654,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function deletemedicalstore_delete($id,$store_id){
+    public function medicalstore_delete($id,$store_id){
         $store = $this->index_model->delete_patient_store($id,$store_id);
         if($store){
             $this->response([
@@ -710,7 +702,7 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    public function deletemedicallab_delete($id,$lab_id){
+    public function medicallab_delete($id,$lab_id){
         $lab = $this->index_model->delete_patient_lab($id,$lab_id);
         if($lab){
             $this->response([
@@ -725,46 +717,14 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    /*********************InPatient*******************************/
-    public function inpatient_get($id=''){
-        $sd=$_GET['sd'];
-        $ed=$_GET['ed'];
-        $status=$_GET['status_id'];
-        $inpatient = $this->index_model->select_inpatient_info($sd,$ed,$status,$id);
-        if($inpatient){
-            $this->response([
-                    'status' => TRUE,
-                    'inpatient'=>$inpatient,
-                    'message' => 'All Inpatient Details of Login User.'
-                ], REST_Controller::HTTP_OK);
-        }else{
-            $this->response([
-                    'status' => FALSE,
-                    'message' => 'No Data Found.'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-    }
-    public function inpatient_history_get($id=''){
-        $inpatient_history = $this->index_model->select_inpatient_history_info($id);
-        if($inpatient_history){
-            $this->response([
-                    'status' => TRUE,
-                    'inpatient_history'=>$inpatient_history,
-                    'message' => 'History Inpatient Details of Login User.'
-                ], REST_Controller::HTTP_OK);
-        }else{
-            $this->response([
-                    'status' => FALSE,
-                    'message' => 'No Data Found.'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-    }
+
     /*********************Appointments*******************************/
-    public function appointments_get($id=''){
+    public function appointments_get(){
+        $user_id=$this->get('user_id');
         $sd=$this->get('sd');
         $ed=$this->get('ed');
         $status=$this->get('status_id');
-        $appointments = $this->index_model->select_appointments_info($sd,$ed,$status,$id);
+        $appointments = $this->index_model->select_appointments_info($sd,$ed,$status,$user_id);
         if($appointments){
             $this->response([
                     'status' => TRUE,
@@ -779,7 +739,8 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function appointment_get($appointment_id=''){
+    public function appointment_get(){
+        $appointment_id=$this->get('appointment_id');
         $appointment = $this->index_model->select_appointment_info($appointment_id);
         if($appointment){
             $this->response([
@@ -794,8 +755,9 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function appointment_history_get($id=''){
-        $appointment_history = $this->index_model->select_appointment_history_info($id);
+    public function appointmentHistory_get(){
+        $appointment_id=$this->get('appointment_id');
+        $appointment_history = $this->index_model->select_appointment_history_info($appointment_id);
         if($appointment_history){
             $this->response([
                     'status' => TRUE,
@@ -809,7 +771,7 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    function cancelappointment_post(){
+    function cancelAppointment_post(){
             $appointment=$this->crud_model->cancel_appointment_info();
             if($appointment){
             $this->response([
@@ -823,22 +785,8 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    function OrderPrescription_post(){
-            $appointment=$this->crud_model->save_prescription_order();
-            if($appointment){
-            $this->response([
-                    'status' => TRUE,
-                    'message' => 'Prescription Ordered Successfuly.'
-                ], REST_Controller::HTTP_OK);
-        }else{
-            $this->response([
-                    'status' => FALSE,
-                    'message' => 'Prescription Not Ordered.'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-    }
     /*Booking Appointment*/
-    public function doctors_for_appointment_get(){
+    public function doctorsForAppointment_get(){
         $doctors = $this->index_model->select_doctor_info_appointment();
         if($doctors){
             $this->response([
@@ -853,23 +801,7 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function available_time_slot_post($doctor){
-        $date=$_POST['date'];
-        $appointment_history = $this->index_model->get_dco_available_slots($doctor,$date);
-        if($appointment_history){
-            $this->response([
-                    'status' => TRUE,
-                    'available_time_slot'=>$appointment_history,
-                    'message' => 'Doctor Available Time Slot.'
-                ], REST_Controller::HTTP_OK);
-        }else{
-            $this->response([
-                    'status' => FALSE,
-                    'message' => 'No Slot Available In This Date.'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }
-    }
-      function Checkappointment_post()
+        function CheckAppointment_post()
     {
         $user= $this->post('user_id');
         $appointment_date=$this->post('appointment_date');
@@ -893,6 +825,23 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
     }
     }
+    public function availableTimeSlot_post(){
+        $doctor= $this->post('doctor_id');
+        $date=$this->post('date');
+        $appointment_history = $this->index_model->get_dco_available_slots($doctor,$date);
+        if($appointment_history){
+            $this->response([
+                    'status' => TRUE,
+                    'available_time_slot'=>$appointment_history,
+                    'message' => 'Doctor Available Time Slot.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Slot Available In This Date.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
     public function addAppointment_post(){
         $hospitals = $this->index_model->save_appointment_info();
         if($hospitals){
@@ -908,25 +857,63 @@ public function Medicallabs_for_Orders_get(){
             
         }
     }
-    /*********************Booking Order*************************/
-    public function BookOrder_post(){
-        $hospitals = $this->index_model->book_order();
-        if($hospitals){
+        /*********************InPatient*******************************/
+    public function inpatients_get(){
+        $id=$this->get('user_id');
+        $sd=$this->get('sd');
+        $ed=$this->get('ed');
+        $status=$this->get('status_id');
+        $inpatient = $this->index_model->select_inpatients_info($sd,$ed,$status,$id);
+        if($inpatient){
             $this->response([
                     'status' => TRUE,
-                    'message' => 'Appointment Save Successfully.'
+                    'inpatient'=>$inpatient,
+                    'message' => 'All Inpatient Details of Login User.'
                 ], REST_Controller::HTTP_OK);
         }else{
             $this->response([
                     'status' => FALSE,
-                    'message' => 'Appointment Not Save.'
+                    'message' => 'No Data Found.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
-            
         }
     }
+    public function inpatient_get(){
+        $inpatient_id=$this->get('inpatient_id');
+        $inpatient = $this->index_model->select_inpatient_info($inpatient_id);
+        if($inpatient){
+            $this->response([
+                    'status' => TRUE,
+                    'inpatient'=>$inpatient,
+                    'message' => 'Single Inpatient Details.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    public function inpatientHistory_get(){
+        $inpatient_id=$this->get('inpatient_id');
+        $inpatient_history = $this->index_model->select_inpatient_history_info($inpatient_id);
+        if($inpatient_history){
+            $this->response([
+                    'status' => TRUE,
+                    'inpatient_history'=>$inpatient_history,
+                    'message' => 'History Inpatient Details of Login User.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+   
     /********************Health Records************************/
     /********************Prescriptions************************/
-    public function prescriptions_get($user_id){
+    public function prescriptions_get(){
+    $user_id=$this->get('user_id');
      $prescriptions = $this->index_model->select_prescriptions_info($user_id);
         if($prescriptions){
             $this->response([
@@ -942,7 +929,9 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function ReadPrescription_get($prescription_id='',$order_type=''){
+    public function prescription_get(){
+        $prescription_id=$this->get('prescription_id');
+        $order_type=$this->get('order_type');
      $prescriptions = $this->index_model->ReadPrescription_info($prescription_id,$order_type);
         if($prescriptions){
             $this->response([
@@ -958,7 +947,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function deletePrescription_delete($prescription_id=''){
+    public function prescription_delete($prescription_id=''){
      $prescriptions = $this->index_model->delete_prescription($prescription_id);
         if($prescriptions){
             $this->response([
@@ -973,7 +962,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-        public function PrescriptionStatus_get($prescription_id,$status){
+        public function prescriptionStatus_put($prescription_id,$status){
      $prescriptions = $this->index_model->update_prescription_status($prescription_id,$status);
         if($prescriptions){
             $this->response([
@@ -988,8 +977,23 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
+    function OrderPrescription_post(){
+            $appointment=$this->crud_model->save_prescription_order();
+            if($appointment){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prescription Ordered Successfuly.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prescription Not Ordered.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
      /********************Prognosis************************/
-    public function Prognosis_get($user_id){
+    public function prognoses_get(){
+    $user_id=$this->get('user_id');
      $Prognosis = $this->index_model->select_prognosis_info($user_id);
         if($Prognosis){
             $this->response([
@@ -1005,7 +1009,8 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function ReadPrognosis_get($prognosis_id=''){
+    public function prognosis_get(){
+        $prognosis_id=$this->get('prognosis_id');
      $Prognosis = $this->index_model->select_prognosis_information($prognosis_id);
         if($Prognosis){
             $this->response([
@@ -1021,7 +1026,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function deletePrognosis_delete($Prognosis_id=''){
+    public function prognosis_delete($Prognosis_id=''){
      $Prognosis = $this->index_model->delete_prognosis($Prognosis_id);
         if($Prognosis){
             $this->response([
@@ -1036,7 +1041,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-        public function PrognosisStatus_get($prognosis_id,$status){
+        public function prognosisStatus_put($prognosis_id,$status){
      $Prognosis = $this->index_model->update_prognosis_status($prognosis_id,$status);
         if($Prognosis){
             $this->response([
@@ -1052,7 +1057,8 @@ public function Medicallabs_for_Orders_get(){
         }   
     }
          /********************Health Reports************************/
-    public function HealthReportsByLabs_get($user_id){
+    public function HealthReportsByLabs_get(){
+        $user_id=$this->get('user_id');
      $reports = $this->index_model->select_medical_reports_by_labs($user_id);
         if($reports){
             $this->response([
@@ -1068,7 +1074,8 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function HealthReportsByDoctors_get($user_id){
+    public function HealthReportsByDoctors_get(){
+        $user_id=$this->get('user_id');
      $reports = $this->index_model->select_medical_reports_by_doctors($user_id);
         if($reports){
             $this->response([
@@ -1084,7 +1091,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-    public function deleteHealthReport_delete($report_id=''){
+    public function HealthReport_delete($report_id=''){
      $report = $this->index_model->delete_medical_reports($report_id);
         if($report){
             $this->response([
@@ -1099,7 +1106,7 @@ public function Medicallabs_for_Orders_get(){
             
         }   
     }
-        public function HealthReportStatus_get($report,$status){
+        public function HealthReportStatus_put($report,$status){
      $report = $this->index_model->update_medical_reports_status($report,$status);
         if($report){
             $this->response([
@@ -1113,5 +1120,21 @@ public function Medicallabs_for_Orders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }   
+    }
+     /*********************Booking Order*************************/
+    public function BookOrders_post(){
+        $hospitals = $this->index_model->book_order();
+        if($hospitals){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Appointment Save Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Appointment Not Save.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
     }
 }
