@@ -446,7 +446,7 @@ public function MedicalLabsForOrders_get(){
 }
     /*************************Dashboard**********************************/
     public function upcomingAppointments_get(){
-        $user_id=$this->post('user_id');
+        $user_id=$this->get('user_id');
         $appointments = $this->index_model->select_upcoming_appointments($user_id);
         if($appointments){
             $this->response([
@@ -463,7 +463,7 @@ public function MedicalLabsForOrders_get(){
         }
     }
      public function recommendAppointments_get(){
-        $user_id=$this->post('user_id');
+        $user_id=$this->get('user_id');
         $appointments = $this->index_model->select_recommend_appointments($user_id);
         if($appointments){
             $this->response([
@@ -480,7 +480,7 @@ public function MedicalLabsForOrders_get(){
         }
     }
      public function OutstandingMedicines_get(){
-        $user_id=$this->post('user_id');
+        $user_id=$this->get('user_id');
         $prescriptions = $this->index_model->outstanding_prescriptions_medicines($user_id);
         if($prescriptions){
             
@@ -498,7 +498,7 @@ public function MedicalLabsForOrders_get(){
         }
     }
       public function OutstandingTests_get(){
-        $user_id=$this->post('user_id');
+        $user_id=$this->get('user_id');
         $prescriptions = $this->index_model->outstanding_prescriptions_tests($user_id);
         if($prescriptions){
            
@@ -725,11 +725,12 @@ public function MedicalLabsForOrders_get(){
         $ed=$this->get('ed');
         $status=$this->get('status_id');
         $appointments = $this->index_model->select_appointments_info($sd,$ed,$status,$user_id);
+        $count=$this->db->where('user_id',$user_id)->get('appointments')->num_rows();
         if($appointments){
             $this->response([
                     'status' => TRUE,
                     'appointments'=>$appointments,
-                    'appointments_count'=>count($appointments),
+                    'appointments_count'=>$count,
                     'message' => 'All Appointments Details of Login User.'
                 ], REST_Controller::HTTP_OK);
         }else{

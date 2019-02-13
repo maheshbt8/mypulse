@@ -17,7 +17,6 @@ class Cron_file extends CI_Controller {
         $this->output->set_header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     }
     public function index() {
-
         $this->cron_model->hospital_license();
         $this->cron_model->appointments();
         $this->cron_model->appointments_notifications();
