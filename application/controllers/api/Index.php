@@ -786,6 +786,20 @@ public function MedicalLabsForOrders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
+    function appointment_post(){
+            $appointment=$this->crud_model->update_appointment_info();
+            if($appointment){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Appointment Updated Successfuly.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Appointment Not Updated.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
     /*Booking Appointment*/
     public function doctorsForAppointment_get(){
         $doctors = $this->index_model->select_doctor_info_appointment();
@@ -1134,6 +1148,42 @@ public function MedicalLabsForOrders_get(){
             $this->response([
                     'status' => FALSE,
                     'message' => 'Appointment Not Save.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+      /********************* Orders *************************/
+    public function Orders_get(){
+        $user_id=$this->get('user_id');
+        $order_type=$this->get('order_type');
+        $orders = $this->index_model->select_order_info($user_id,$order_type);
+        if($orders){
+            $this->response([
+                    'status' => TRUE,
+                    'orders'=>$orders,
+                    'message' => 'Orders.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+    public function receipt_get(){
+        $order_id=$this->get('order_id');
+        $receipt = $this->index_model->select_receipt_info($order_id);
+        if($receipt){
+            $this->response([
+                    'status' => TRUE,
+                    'receipt'=>$receipt,
+                    'message' => 'Receipt.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }

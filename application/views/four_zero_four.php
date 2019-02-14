@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
    <meta charset="utf-8">
-   <title>404 Page</title>
+   <title>ERROR 40 - NOT FOUND</title>
  <link href="<?= base_url('assets/backend/')?>css/bootstrap.min.css" rel="stylesheet">
  <script src="<?= base_url('assets/backend/')?>js/jquery-1.11.1.min.js"></script>
 </head>
@@ -11,8 +11,8 @@
  <center>
  <div class="container">
   <div class="jumbotron">
-   		<h1>404</h1>
- <h1>This page isn't available</h1>
+   		<h1>ERROR 404 - NOT FOUND</h1>
+ <h2>This page isn't available</h2>
            <h4><a href="<?php echo base_url(); ?>">Go Back to Home</a></h4>
            <h4><a href="<?php echo base_url('login'); ?>">Go Back to Login</a></h4>
   </div>

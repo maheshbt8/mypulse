@@ -176,6 +176,9 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     function four_zero_four() {
         $this->load->view('four_zero_four');
     }
+    function four_zero_three() {
+        $this->load->view('four_zero_three');
+    }
     function register()
     {
         if($this->input->post()){

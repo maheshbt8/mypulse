@@ -658,6 +658,31 @@ $results=$this->db->order_by('appointment_number','DESC')->where($where)->get()-
 		return false;
 		}
     }
+        function update_appointment_info()
+    {
+        $appointment_id=$this->post('appointment_id');
+    if($this->post('available_slot')!=''){
+    $time=explode('-',$this->post('available_slot'));
+    $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
+    $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
+    $data['appointment_date']= date('Y-m-d',strtotime($this->post('appointment_date')));
+    $yes=$this->db->where('appointment_id',$appointment_id)->update('appointments',$data);
+    if($yes){
+        /*******Appointment History********/
+        $history['appointment_id']=$appointment_id;
+            $history['appointment_date']=$data['appointment_date'];
+            $history['appointment_time_start']=$data['appointment_time_start'];
+            $history['appointment_time_end']=$data['appointment_time_end'];
+            $history['created_by']='users-user'.$this->post('user_id');
+            $data['created_time']=date('Y-m-d H:i:s');
+            $history_ins=$this->db->insert('appointment_history',$history);
+            if($history_ins){
+                $last_id=$this->db->insert_id();
+                $this->db->where('appointment_history_id',$last_id)->update('appointment_history',array('action'=>5));
+            }
+    }
+    }
+    }
     /*Appointment Booking*/
     public function select_doctor_info_appointment(){
         $where=array('d.status'=>'1','d.isDeleted'=>'1');
@@ -1309,5 +1334,169 @@ $row['case_history']=$prescription_data[1];
             echo FALSE;
         }
     }
+    /******************** Orders ************************/
+     function select_order_info($user_id,$order_type)
+    {
+        $order=$this->db->order_by('order_id','DESC')->get_where('prescription_order', array('user_id' => $user_id))->result_array();
+        $i=1;foreach ($order as $row1) {
+            $user_info=$this->db->get_where('users', array('user_id' => $row1['user_id']))->result_array();
+           $prescription_info=$this->db->get_where('prescription', array('prescription_id' => $row1['prescription_id']))->row_array();
+        if($order_type==$row1['order_type'] && $row1['type_of_order']==0){
+           foreach ($user_info as $user1) {
+            $doc=$this->db->where('doctor_id',$prescription_info['doctor_id'])->get('doctors')->row();
+            $hospital_name=$this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name;
+            $data['hospital_name']=$hospital_name;
+            $data['doctor_name']=$doc->name;
+            $data['patient_name']=$user1['name'];
+                if($order_type==0){
+            $data['store_name']=get_phrase($this->db->where('store_id',$row1['store_id'])->get('medicalstores')->row()->name);
+                }elseif($order_type==1){ 
+            $data['lab_name']=get_phrase($this->db->where('lab_id',$row1['lab_id'])->get('medicallabs')->row()->name);
+                }
+                if($row1['status']==1){
+                $data['status_type']="Completed";
+                }elseif($row1['status']==2){
+                $data['status_type']="Pending";
+                }
+                $data['status']=$row1['status'];
+                $data['created_at']=date('d M,Y h:i A',strtotime($row1['created_at']));
+                $data['order_id']=$row1['order_id'];
+                $data['order_type']=$row1['order_type'];
+                if($row1['status']==1){
+                $data['order_status']="Receipt";
+            }elseif($row1['status']==2){
+                $data['order_status']="Receipt Not Upload";
+            }
+            $with_prescription[]=$data;
+        }
+        $i++;
+        $results_data['orders_with_prescription']=$with_prescription;
+    }
+    if($order_type==$row1['order_type'] && $row1['type_of_order']==1){
+           foreach ($user_info as $user1){
+           $data['patient_name']=$user1['name'];
+           if($order_type==0){ 
+            $data['store_id']=$row1['store_id'];
+            $data['store_name']=get_phrase($this->db->where('store_id',$row1['store_id'])->get('medicalstores')->row()->name);
+            }elseif($order_type==1){
+            $data['lab_id']=$row1['lab_id'];
+            $data['lab_name']=get_phrase($this->db->where('lab_id',$row1['lab_id'])->get('medicallabs')->row()->name);
+            }
+            if($row1['status']==1){
+                $data['status_type']="Completed";
+            }elseif($row1['status']==2){
+                $data['status_type']="Pending";
+            }
+            $data['status']=$row1['status'];
+            $data['created_at']=date('d M,Y h:i A',strtotime($row1['created_at']));
+            $data['order_id']=$row1['order_id'];
+            $data['order_type']=$row1['order_type'];
+            if($row1['status']==1){
+                $data['order_status']="Receipt";
+            }elseif($row1['status']==2){
+                $data['order_status']="Receipt Not Upload";
+            }
+        $without_prescription[]=$data;
+        }$i++;
+        $results_data['orders_without_prescription']=$without_prescription;
+    }
+    }
+    if(!empty($results_data)){
+        return $results_data;
+    }else{
+        return false;
+    }
+    }
+    function select_receipt_info($order_id){
+$order_info=$this->db->get_where('prescription_order',array('order_id'=>$order_id))->row_array();
+$report_info=$this->db->get_where('reports', array('order_id' => $order_id))->result_array();
+$prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$order_info['prescription_id']))->row_array();
+if($order_info['order_type']==0){
+$store_info=$this->db->where('store_id',$order_info['store_id'])->get('medicalstores')->row_array();
+}elseif($order_info['order_type']==1){
+$store_info=$this->db->where('lab_id',$order_info['lab_id'])->get('medicallabs')->row_array();
+}
+if($prescription_info!=''){
+$user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
+}else{
+$user_info=$this->db->where('user_id',$order_info['user_id'])->get('users')->row_array();
+}
+$prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
+$order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
+if($prescription_data[0]!=''){
+    $title=$prescription_data[0];
+}else{
+    $title=$order_data[0];
+}
+$data['title']=$title;
+$data['receipt_created_at']=date('M ,d-Y h:i A',strtotime($order_info['receipt_created_at']));
+if($order_info['order_type']==0){
+$data['store_name']=$store_info['name'];
+$data['store_unique_id']=$store_info['unique_id'];
+$data['store_mobile_number']=$store_info['phone'];
+$data['store_email']=$store_info['email'];
+}elseif($order_info['order_type']==1){
+$data['lab_name']=$store_info['name'];
+$data['lab_unique_id']=$store_info['unique_id'];
+$data['lab_mobile_number']=$store_info['phone'];
+$data['lab_email']=$store_info['email'];
+}
+/*$data['patient_name']=$user_info['name'];
+$data['patient_unique_id']=$user_info['unique_id'];
+$data['patient_mobile_number']=$user_info['phone'];
+$data['patient_email']=$user_info['email'];*/
+if($order_info['order_type'] == 0){
+      if($prescription_data[1]!=''){
+        $drug=explode(',',$prescription_data[1]);
+        }else{
+        $drug=explode(',',$order_data[1]);
+        }
+        if($prescription_data[1]!=''){
+        $quantity=explode(',',$order_info['quantity']);
+        }else{
+        $quantity=explode(',',$order_data[3]);
+        }
+        $cost=explode(',',$order_info['cost']);
+        $price=explode(',',$order_info['price']);
+    for($i1=0;$i1<count($drug);$i1++){
+    $data1['drug']=$drug[$i1];
+    $data1['quantity']=$quantity[$i1];
+    $data1['cost']=$cost[$i1];
+    $data1['price']=$price[$i1];
+    $data2[]=$data1;
+    }
+    $data['orders']=$data2;
+    $data['total']=$order_info['total'];
+}
+if($order_info['order_type'] == 1){ 
+    if($prescription_data[7]!=''){
+            $test_title=explode(',',$prescription_data[7]);
+        }else{
+        $test_title=explode(',',$order_data[1]);}
+        if($prescription_data[7]!=''){
+            $description=explode(',',$prescription_data[8]);
+        }else{
+        $description=explode(',',$order_data[2]);
+        }
+        $tests=explode(',',$order_info['tests']);
+        $price=explode(',',$order_info['price']);
+    for($i1=0;$i1<count($test_title);$i1++){
+    $data1['test_title']=$test_title[$i1];
+    $data1['description']=$description[$i1];
+    if($report_info[$i1]['extension']!=''){
+        $data1['report_file']=$report_info[$i1]['report_id'].'.'.$report_info[$i1]['extension'];
+    }
+    $data1['price']=$price[$i1];
+    $data2[]=$data1;
+        }
+    $data['orders']=$data2;
+    $data['total']=$order_info['total'];
+    }
+    if(!empty($data)){
+        return $data;
+    }else{
+        return false;
+    }
+}
 }
 ?>

@@ -3,8 +3,6 @@
 		position: relative;
 	}
 </style>
-
-
 <?php
 $hospital_count=count($hospital_id);
 for($h=0;$h<$hospital_count;$h++){
@@ -51,15 +49,17 @@ $dates[$j]='"'.date('M d-Y',strtotime($currmonth)).'"';
 $data[$j]=$qry;
 $j++;
 }
-$color = dechex(rand(0x0000ff, 0xffff66));
+$color = dechex(rand(0x000000, 0xffff66));
+/*$color_style=str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+$color=$color_style . $color_style . $color_style;*/
 $dataPoints[$h]=$data;
 	$data_points[]= '{
 		label: "'.$row['name'].'",
         fillColor :"rgba(420,220,220,0.5)",
-        strokeColor : "rgba(220,220,220,1)",
+        strokeColor : "#'.$color.'",
         pointColor : "#'.$color.'",
-        pointStrokeColor : "#fff",
-        pointHighlightFill : "#fff",
+        pointStrokeColor : "#'.$color.'",
+        pointHighlightFill : "#'.$color.'",
         pointHighlightStroke : "rgba(48, 164, 255, 1)",
         data : '.json_encode($dataPoints[$h]).'
 	}';
