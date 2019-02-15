@@ -134,6 +134,8 @@ public function login_post() {
         $phone = strip_tags($this->post('mobilenumber'));
         $email = strip_tags($this->post('email'));
         $password = $this->post('password');
+        if(!empty($name)&&!empty($phone)&& !empty($email)&&!empty($password))
+        {
         $validation_phone = mobile_validation($phone);
         $data['name']       = $name;
         $data['email']      = $email;
@@ -166,6 +168,10 @@ $pid='MPU'.date('y').'_'.$num;
         $this->email_model->account_opening_email('users','user', $data['email']);
         $this->response([
                     'status' => TRUE,
+                    'name'   => $name,
+                    'email'  => $email,
+                    'password'=>$password,
+                    'phone' => $phone,
                     'message' => 'Registration Completed Successfully.'
                 ], REST_Controller::HTTP_OK);
         }else{
@@ -174,6 +180,12 @@ $pid='MPU'.date('y').'_'.$num;
                     'message' => 'Registration Not Completed.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
+    }else{
+        $this->response([
+                    'status' => FALSE,
+                    'message' => 'Enter All Fields.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+    }
     }
     /*********************Header*******************************/
      public function languages_get(){
@@ -445,6 +457,43 @@ public function MedicalLabsForOrders_get(){
         }
 }
     /*************************Dashboard**********************************/
+    public function dashboard_get(){
+        $user_id=$this->get('user_id');
+        $hospitals = $this->index_model->select_hospitals_info($user_id);
+        if($hospitals!=''){
+            $hospitals=count($hospitals);
+        }else{
+            $hospitals='0';
+        }
+        $doctors = $this->index_model->select_doctors_info($user_id);
+        if($doctors!=''){
+            $doctors=count($doctors);
+        }else{
+            $doctors='0';
+        }
+        $stores = $this->index_model->select_stores_info($user_id);
+        if($stores!=''){
+            $stores=count($stores);
+        }else{
+            $stores='0';
+        }
+        $labs = $this->index_model->select_labs_info($user_id);
+        if($labs!=''){
+            $labs=count($labs);
+        }else{
+            $labs='0';
+        }
+        $appointments=$this->db->where('user_id',$user_id)->get('appointments')->num_rows();
+            $this->response([
+                    'status' => TRUE,
+                    'hospitals_count'=>$hospitals,
+                    'doctors_count'=>$doctors,
+                    'medicalstores_count'=>$stores,
+                    'medicallabs_count'=>$labs,
+                    'appointments_count'=>$appointments,
+                    'message' => 'All Hospitals, Doctors, Medical Stores, Medical Labs & Appointments count.'
+                ], REST_Controller::HTTP_OK);
+    }
     public function upcomingAppointments_get(){
         $user_id=$this->get('user_id');
         $appointments = $this->index_model->select_upcoming_appointments($user_id);

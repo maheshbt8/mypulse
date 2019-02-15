@@ -18,12 +18,18 @@ $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get(
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 ?>
+<style type="text/css">
+    #print_div{
+        background-color: #fff;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
 <div class="row">
     <div class="col-sm-2 pull-right">
+    <input type="button"class="btn btn-primary" id="cmd" value="generate PDF">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='superadmin' || $account_type=='hospitaladmins'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
 </div>
@@ -244,4 +250,14 @@ if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($or
      document.body.innerHTML = originalContents;
 }
 
+</script>
+<script type="text/javascript">
+    $('#cmd').click(function() {
+  var options = {
+  };
+  var pdf = new jsPDF('p', 'pt', 'a4');
+  pdf.addHTML($("#print_div"), 15, 15, options, function() {
+    pdf.save('pageContent.pdf');
+  });
+});
 </script>

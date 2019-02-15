@@ -467,8 +467,9 @@ if($doctors){
         }
 }
     public function select_doctors_info($id = ''){
-	$doctor=$this->db->where('user_id',$id)->get('patient')->row();
-        if($doctor>0){
+	$doctor=$this->db->where('user_id',$id)->get('patient');
+        if($doctor->num_rows()>0){
+            $doctor=$doctor->row();
         $doctor_ids=explode(',',$doctor->doctor_ids);
         for($i=0;$i<count($doctor_ids);$i++){
             if($doctor_ids[$i]!=''){
@@ -525,10 +526,8 @@ $yes=$this->db->update('patient',array('doctor_ids'=>implode(',',$doc)));
 $this->db->from('medicalstores as sto')->join('hospitals as h', 'h.hospital_id = sto.hospital')->join('branch as b', 'b.branch_id = sto.branch');
         $stores[$i]=$this->db->where('store_id',$store_ids[$i])->get()->row_array();
             }
-        } 
-       	if($stores){
-		return $stores; 
-		}else{
+            return $stores;
+        }else{
 		return false;
 		}
     }

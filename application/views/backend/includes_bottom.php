@@ -16,7 +16,8 @@
 <script src="<?= base_url('assets/backend/')?>js/main-gsap.js"></script>
 <script src="<?= base_url('assets/backend/')?>js/neon-custom.js"></script>
 <script src="<?= base_url('assets/backend/')?>js/resizeable.js"></script>
-
+<script src="<?= base_url('assets/backend/')?>js/jspdf.debug.js"></script>
+<script src="<?= base_url('assets/backend/')?>js/html2canvas.js"></script>
 <!--Select Multimple -->
 <!-- <script src="<?= base_url('assets/backend/')?>js/bootstrap-datepicker.js"></script>
 <script src="<?= base_url('assets/backend/')?>js/jquery-1.11.0.min.js"></script> -->	

@@ -54,7 +54,7 @@ $route['default_controller'] = 'index';
 $route['404_override'] = 'login/four_zero_four';//error/page_missing
 $route['translate_uri_dashes'] = FALSE;
 
-$routep['uploads/user_image/']='login/four_zero_three';
+//$routep['uploads/user_image/']='login/four_zero_three';
 
 $route['Privacy&Policy'] ='login/privacy/1';
 $route['Terms&Coditions'] ='login/privacy/2';

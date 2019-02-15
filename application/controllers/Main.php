@@ -38,6 +38,62 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
         $page_data['page_title'] = get_phrase('dashboard');
         $this->load->view('backend/index', $page_data);
     }
+/*    public function upload()
+{
+    //echo FCPATH . 'uploads/';die;
+    $folder='mahesh1';
+    //$directory = FCPATH . 'uploads/' . $this->input->get('directory');
+$directory = FCPATH . 'uploads/reports/';
+$mypath=FCPATH.'uploads/reports/'.$folder;
+if (is_dir($directory)) {
+    if(!is_dir($mypath)){
+        mkdir($directory . '/' . $folder, 0777);
+   $message = 'The folder ' . $folder . ' was created!';
+    }else{
+        $message = 'The folder ' . $folder . ' was already created!';
+    }
+}else{
+   $message = 'The folder ' . $folder . ' was not created!';
+}
+echo $message;die;*/
+   /* $album = strtolower($album);
+    $upload_config = array('upload_path' => './uploads/' . $album, 'allowed_types' =>
+        'jpg|jpeg|gif|png', 'max_size' => '2000', 'max_width' => '680', 'max_height' =>
+        '435', );
+    $this->load->library('upload', $upload_config);
+
+    // create an album if not already exist in uploads dir
+    // wouldn't make more sence if this part is done if there are no errors and right before the upload ??
+    if (!is_dir('uploads'))
+    {
+        mkdir('./uploads', 0777, true);
+    }
+    
+    $dir_exist = true; // flag for checking the directory exist or not
+    if (!is_dir('uploads/' . $album))
+    {
+        mkdir('./uploads/' . $album, 0777, true);
+        $dir_exist = false; // dir not exist
+    }
+    else{
+
+    }
+    if (!$this->upload->do_upload('imgfile'))
+    {
+        // upload failed
+        //delete dir if not exist before upload
+        if(!$dir_exist)
+          rmdir('./uploads/' . $album);
+
+        return array('error' => $this->upload->display_errors('<span>', '</span>'));
+    } else
+    {
+        // upload success
+        $upload_data = $this->upload->data();
+        return true;
+    }*/
+/*}*/
+
     /*HOSPITAL*/
     
     public function add_hospital() {  
