@@ -309,8 +309,7 @@ $config['cache_query_string'] = FALSE;
 | http://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'Grepthor';
-
+$config['encryption_key'] = '{04M(@[!M@Y#P$U%L^S&E*]H)!11}';//Grepthor
 /*
 |--------------------------------------------------------------------------
 | Session Variables

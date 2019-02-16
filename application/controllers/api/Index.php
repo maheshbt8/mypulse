@@ -168,6 +168,8 @@ $pid='MPU'.date('y').'_'.$num;
         $this->email_model->account_opening_email('users','user', $data['email']);
         $this->response([
                     'status' => TRUE,
+                    'user_id'=>$lid,
+                    'unique_id'=>$pid,
                     'name'   => $name,
                     'email'  => $email,
                     'password'=>$password,

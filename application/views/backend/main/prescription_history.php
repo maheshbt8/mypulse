@@ -28,11 +28,12 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <div class="panel panel-default">   
             <div class="panel-heading">
 <div class="row">
-    <div class="col-sm-2 pull-right">
-    <input type="button"class="btn btn-primary" id="cmd" value="generate PDF">
+    <div class="col-sm-3 pull-right">
+    <input type="button"class="btn btn-info" id="download" value="Download">
+    <!-- <input type="button" onclick="demoFromHTML()" class="btn btn-primary" value="Print1"> -->
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='superadmin' || $account_type=='hospitaladmins'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
-</div>
+    </div>
 </div>
 </div>
 <div class="panel-body">
@@ -252,12 +253,56 @@ if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($or
 
 </script>
 <script type="text/javascript">
-    $('#cmd').click(function() {
+    $('#download').click(function() {
   var options = {
   };
   var pdf = new jsPDF('p', 'pt', 'a4');
   pdf.addHTML($("#print_div"), 15, 15, options, function() {
-    pdf.save('pageContent.pdf');
+    pdf.save('<?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?>.pdf');
   });
 });
 </script>
+<!-- <script type="text/javascript" src="jspdf.debug.js"></script>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script> -->
+<!-- <script type="text/javascript">
+    function demoFromHTML() {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+        // source can be HTML-formatted string, or a reference
+        // to an actual DOM element from which the text will be scraped.
+        source = $('#print_div')[0];
+
+        // we support special element handlers. Register them with jQuery-style 
+        // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+        // There is no support for any other type of selectors 
+        // (class, of compound) at this time.
+        specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '#bypassme': function (element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true
+            }
+        };
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 40,
+            width: 522
+        };
+        // all coords and widths are in jsPDF instance's declared units
+        // 'inches' in this case
+        pdf.fromHTML(
+            source, // HTML string or DOM elem ref.
+            margins.left, // x coord
+            margins.top, { // y coord
+                'width': margins.width, // max width of content on PDF
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                // dispose: object with X, Y of the last line add to the PDF 
+                //          this allow the insertion of new lines after html
+                pdf.save('Test.pdf');
+            }, margins
+        );
+    }
+</script> -->

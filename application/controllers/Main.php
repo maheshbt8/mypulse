@@ -38,9 +38,9 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
         $page_data['page_title'] = get_phrase('dashboard');
         $this->load->view('backend/index', $page_data);
     }
-/*    public function upload()
+    public function upload()
 {
-    //echo FCPATH . 'uploads/';die;
+/*    //echo FCPATH . 'uploads/';die;
     $folder='mahesh1';
     //$directory = FCPATH . 'uploads/' . $this->input->get('directory');
 $directory = FCPATH . 'uploads/reports/';
@@ -92,8 +92,7 @@ echo $message;die;*/
         $upload_data = $this->upload->data();
         return true;
     }*/
-/*}*/
-
+}
     /*HOSPITAL*/
     
     public function add_hospital() {  

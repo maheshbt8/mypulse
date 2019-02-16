@@ -51,7 +51,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
             $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
         }else{
             $sd=date('Y-m-d', strtotime('-0 days'));
-            $ed=date('Y-m-d', strtotime('+6 days'));
+            $ed=date('Y-m-d', strtotime('+29 days'));
             $status='2';
             $appointment_info=$this->crud_model->select_appointment_info_by_date($sd,$ed,$status);}?>
 <form action="<?php echo base_url()?>main/appointment/delete_multiple/" method="post">
@@ -93,7 +93,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                   <div class="form-group">
          <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
          <div class="col-sm-4">
-        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+6 days'));}?>"/>
+        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+29 days'));}?>"/>
         </div>
 
       <span for="field-ta" class="col-sm-2"> <?php echo get_phrase('status'); ?></span> 
@@ -250,7 +250,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
         
     $(document).ready(function(){
         var start = moment();
-        var end = moment().add(6, 'days');
+        var end = moment().add(29, 'days');
         <?php
         if(isset($_GET['sd']) && $_GET['sd'] != ""){
             ?>
@@ -295,7 +295,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
        <?php
        if($_GET['sd'] == '' && $_GET['ed'] == ''){
         $sd=date('Y-m-d', strtotime('-0 days'));
-        $ed=date('Y-m-d', strtotime('+6 days'));
+        $ed=date('Y-m-d', strtotime('+29 days'));
         ?>
         window.location.href = '<?php echo base_url();?>main/appointment?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
         <?php

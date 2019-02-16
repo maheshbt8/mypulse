@@ -16,9 +16,14 @@ $user_info=$this->db->where('user_id',$order_info['user_id'])->get('users')->row
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 ?>
-
+<style type="text/css">
+    #print_div{
+        background-color: #fff;
+    }
+</style>
 <div class="row">
     <div class="col-sm-2 pull-right">
+    <input type="button"class="btn btn-info" id="download" value="Download">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 </div>
@@ -210,4 +215,14 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
      document.body.innerHTML = originalContents;
 }
 
+</script>
+<script type="text/javascript">
+    $('#download').click(function() {
+  var options = {
+  };
+  var pdf = new jsPDF('p', 'pt', 'a4');
+  pdf.addHTML($("#print_div"), 15, 15, options, function() {
+    pdf.save('<?php echo $prescription_data[0];?>.pdf');
+  });
+});
 </script>

@@ -6,14 +6,20 @@ $user_info=$this->db->where('user_id',$prognosis_info['user_id'])->get('users')-
 $hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();
 $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['prognosis_data']));
 ?>
+<style type="text/css">
+    #print_div{
+        background-color: #fff;
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">   
             <div class="panel-heading">
 <div class="row">
-    <div class="col-sm-2 pull-right">
+    <div class="col-sm-3 pull-right">
+    <input type="button"class="btn btn-info" id="download" value="Download">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
-    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='users' || $account_type=='medicalstores' || $account_type=='medicallabs' || $account_type=='superadmin' || $account_type=='hospitaladmins'){echo $this->session->userdata('last_page'); }else{echo $this->session->userdata('last_page1');}?>'">
 </div>
 </div>
 </div>
@@ -119,4 +125,14 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
 
      document.body.innerHTML = originalContents;
 }
+</script>
+<script type="text/javascript">
+    $('#download').click(function() {
+  var options = {
+  };
+  var pdf = new jsPDF('p', 'pt', 'a4');
+  pdf.addHTML($("#print_div"), 15, 15, options, function() {
+    pdf.save('<?php echo $prescription_data[0];?>.pdf');
+  });
+});
 </script>
