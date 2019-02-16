@@ -1,6 +1,5 @@
 <?php 
 $reports=$this->db->where('report_id',$report_id)->get('reports')->row_array();
-
 if($reports['order_type']==0){
 $order_data=$this->db->where('order_id',$reports['order_id'])->get('prescription_order')->row_array();
 if($order_data['type_of_order']==0){
@@ -20,6 +19,7 @@ $presc_data=explode('|',$this->encryption->decrypt($order_data['order_data']))[0
 }elseif($reports['order_type']==1){
 $title=$reports['title'];	
 }
+$unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -30,12 +30,12 @@ $title=$reports['title'];
 <?php if($reports['extension']!='pdf'){?>
     <input type="button" onclick="printDiv('ext_file')" class="btn btn-primary" value="Print">
 <?php }?>
-<a href="<?=base_url('uploads/reports/').$report_id.'.'.$reports['extension']?>" download="<?=$title?>" class="btn btn-success"><?php echo get_phrase('download'); ?></a>
+<a href="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$title.'_'.$unique_id.'_'.$report_id.'.'.$reports['extension']?>" download="<?=$title?>" class="btn btn-success"><?php echo get_phrase('download'); ?></a>
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
 </div>
             </div>
             <div class="panel-body" id="ext_file">
- <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').$report_id.'.'.$reports['extension']?>"></object>
+ <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$title.'_'.$unique_id.'_'.$report_id.'.'.$reports['extension']?>"></object>
        <!-- <embed src="<?=base_url('uploads/reports/').$report_id.'.'.$reports['extension']?>" type="application/pdf"   height="700px" width="500"> -->
             </div>
         </div>

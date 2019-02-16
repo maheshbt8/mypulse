@@ -1563,6 +1563,10 @@ function select_lab_info_by_hospital_id($hospital_id){
 }
 }
     }
+     function select_user_unique_id($id)
+    {
+        return $this->db->get_where('users',array('user_id'=>$id))->row()->unique_id;
+    }
     function select_users_info_table()
     {
 $account_type=$this->session->userdata('login_type');
@@ -2726,6 +2730,10 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
         $s=$this->db->update('prescription_order',$data);
         if($s){
         $this->db->where('order_id',$order_id)->update('prescription_order',array('status'=>1));
+    $prescription_details=$this->db->where('order_id',$order_id)->get('prescription_order')->row();
+    $prescription_data=$this->db->where('prescription_id',$prescription_details->prescription_id)->get('prescription')->row()->prescription_data;
+$pre_data=explode('|',$this->encryption->decrypt($prescription_data));
+$title_data=explode(',',$pre_data[7]);
         for($j=0;$j<count($_FILES["userfile"]["name"]);$j++){
             $report['order_id']=$order_id;
             $report['created_at']=date('Y-m-d H:i:s');
@@ -2733,6 +2741,16 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
             $insert=$this->db->insert('reports',$report);
             if($insert){
             $lid=$this->db->insert_id();
+
+$folder=date('Y');
+$directory = FCPATH . 'uploads/reports/';
+$mypath=FCPATH.'uploads/reports/'.$folder;
+    if(!is_dir($mypath)){
+        mkdir($directory . '/' . $folder, 0777);
+    }
+    $unique_id=$this->crud_model->select_user_unique_id($prescription_details->user_id);
+    move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$title_data[$j].'_'.$unique_id.'_'.$lid.'.'.$report['extension']);
+
             move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/".$lid.".".$report['extension']);
             }
         }
@@ -2788,7 +2806,15 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
             $insert=$this->db->insert('reports',$data);
             if($insert){
             $lid=$this->db->insert_id();
-            move_uploaded_file($_FILES["report"]["tmp_name"][$j], "uploads/reports/". $lid.'.'.$data['extension']);
+    
+$folder=date('Y');
+$directory = FCPATH . 'uploads/reports/';
+$mypath=FCPATH.'uploads/reports/'.$folder;
+    if(!is_dir($mypath)){
+        mkdir($directory . '/' . $folder, 0777);
+    }
+    $unique_id=$this->crud_model->select_user_unique_id($data['user_id']);
+    move_uploaded_file($_FILES["report"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$this->input->post('title')[$j].'_'.$unique_id.'_'.$lid.'.'.$data['extension']);
             }
         }
         }

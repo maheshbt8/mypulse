@@ -182,7 +182,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
-        <td><?php if($report_info[$i1]['extension']!=''){?><a href="<?=base_url('uploads/reports/').$report_info[$i1]['report_id'].'.'.$report_info[$i1]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
+        <td><?php if($report_info[$i1]['extension']!=''){?><a href="<?=base_url('uploads/reports/').date('Y',strtotime($report_info['created_at'])).'/'.$test_title[$i1].'_'.$user_info['unique_id'].'_'.$report_info[$i1]['report_id'].'.'.$report_info[$i1]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
         <td><?= $price[$i1];?></td>
       </tr>
       <?php /*}*/
