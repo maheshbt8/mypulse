@@ -30,13 +30,12 @@ $unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
 <?php if($reports['extension']!='pdf'){?>
     <input type="button" onclick="printDiv('ext_file')" class="btn btn-primary" value="Print">
 <?php }?>
-<a href="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$title.'_'.$unique_id.'_'.$report_id.'.'.$reports['extension']?>" download="<?=$title?>" class="btn btn-success"><?php echo get_phrase('download'); ?></a>
+<a href="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" download="<?='Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" class="btn btn-success"><?php echo get_phrase('download'); ?></a>
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
 </div>
             </div>
             <div class="panel-body" id="ext_file">
- <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$title.'_'.$unique_id.'_'.$report_id.'.'.$reports['extension']?>"></object>
-       <!-- <embed src="<?=base_url('uploads/reports/').$report_id.'.'.$reports['extension']?>" type="application/pdf"   height="700px" width="500"> -->
+ <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>"></object>
             </div>
         </div>
     </div>
@@ -46,11 +45,8 @@ $unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
    function printDiv(divName) {
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
-
      document.body.innerHTML = printContents;
-
      window.print();
-
      document.body.innerHTML = originalContents;
 }
 </script>

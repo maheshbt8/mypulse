@@ -18,6 +18,7 @@
   </div>
 </div>
  </center>
+
  <!-- Right click disable in this site!! -->
 <script type="text/javascript">
 jQuery(document).ready(function(){

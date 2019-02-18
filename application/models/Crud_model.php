@@ -2748,10 +2748,15 @@ $mypath=FCPATH.'uploads/reports/'.$folder;
     if(!is_dir($mypath)){
         mkdir($directory . '/' . $folder, 0777);
     }
-    $unique_id=$this->crud_model->select_user_unique_id($prescription_details->user_id);
-    move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$title_data[$j].'_'.$unique_id.'_'.$lid.'.'.$report['extension']);
 
-            move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/".$lid.".".$report['extension']);
+    $unique_id=$this->crud_model->select_user_unique_id($prescription_details->user_id);
+    $user_path=FCPATH.'uploads/reports/'.$folder.'/'.$unique_id;
+    if(!is_dir($user_path)){
+        mkdir($mypath . '/' . $unique_id, 0777);
+    }
+    move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$unique_id.'/Report'.$lid.'_'.date('YmdHis',strtotime($report['created_at'])).'.'.$report['extension']);
+
+            /*move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/".$lid.".".$report['extension']);*/
             }
         }
         }     
@@ -2814,7 +2819,11 @@ $mypath=FCPATH.'uploads/reports/'.$folder;
         mkdir($directory . '/' . $folder, 0777);
     }
     $unique_id=$this->crud_model->select_user_unique_id($data['user_id']);
-    move_uploaded_file($_FILES["report"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$this->input->post('title')[$j].'_'.$unique_id.'_'.$lid.'.'.$data['extension']);
+     $user_path=FCPATH.'uploads/reports/'.$folder.'/'.$unique_id;
+    if(!is_dir($user_path)){
+        mkdir($mypath . '/' . $unique_id, 0777);
+    }
+    move_uploaded_file($_FILES["report"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$unique_id.'/Report'.$lid.'_'.date('YmdHis',strtotime($data['created_at'])).'.'.$data['extension']);
             }
         }
         }

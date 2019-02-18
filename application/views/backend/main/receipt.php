@@ -222,7 +222,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
   };
   var pdf = new jsPDF('p', 'pt', 'a4');
   pdf.addHTML($("#print_div"), 15, 15, options, function() {
-    pdf.save('<?php echo $prescription_data[0];?>.pdf');
+    pdf.save('<?='Receipt_'.date('YmdHis',strtotime($order_info['receipt_created_at']));?>.pdf');
   });
 });
 </script>

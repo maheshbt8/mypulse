@@ -1,10 +1,5 @@
-
 <?php 
 $this->session->set_userdata('last_page', current_url());
-$prescription_details=$this->db->where('prescription_id',1)->get('prescription')->row()->prescription_data;
-$pre_data=explode('|',$this->encryption->decrypt($prescription_details));
-$my=explode(',',$pre_data[7]);
-print_r($my);
 ?>
 <style>
     .title{

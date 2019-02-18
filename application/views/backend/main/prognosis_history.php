@@ -132,7 +132,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
   };
   var pdf = new jsPDF('p', 'pt', 'a4');
   pdf.addHTML($("#print_div"), 15, 15, options, function() {
-    pdf.save('<?php echo $prescription_data[0];?>.pdf');
+    pdf.save('<?='Prognosis'.$prognosis_info['prognosis_id'].'_'.date('YmdHis',strtotime($prognosis_info['created_at']));?>.pdf');
   });
 });
 </script>
