@@ -1,11 +1,44 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html> 
+<html lang="en">
 <head>
-	<title>403 Forbidden</title>
+   <meta charset="utf-8">
+   <title>ERROR 403 - FORBIDDEN</title>
 </head>
 <body>
-
-<p>Directory access is forbidden.</p>
+ <br/>
+ <center>
+ <div class="container">
+  <div class="jumbotron">
+   		<h1>ERROR 403 - FORBIDDEN</h1>
+  <a type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo1">Why am I seeing this page?</a>
+  <div id="demo1" class="collapse">
+    <p>403 errors usually mean that the server does not have permission to view the requested file or resource.These errors are often caused by IP Deny rules, File protections, or permission problems.</p>
+  </div>
+  </div>
+</div>
+ </center>
+ <!-- Right click disable in this site!! -->
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    //Disable mouse right click
+    $("body").on("contextmenu",function(e){
+        return false;
+    });
+    document.onkeydown = function(e){
+        if (e.ctrlKey &&
+            (e.keyCode === 67 ||
+                e.keyCode === 86 ||
+                e.keyCode === 85 ||
+                e.keyCode === 117)) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+});
+</script>
 
 </body>
 </html>
+
+

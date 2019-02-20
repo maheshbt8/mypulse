@@ -17,12 +17,13 @@ class Cron_file extends CI_Controller {
         $this->output->set_header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     }
     public function index() {
-        $this->cron_model->hospital_license();
+      $this->cron_model->hospital_license();
         $this->cron_model->appointments();
         $this->cron_model->appointments_notifications();
         $this->cron_model->delete_notifications();
         $this->cron_model->delete_messages();
-
+/*        $path='logs/log-'.date('Y-m-d',strtotime('-7 days')).'.php';
+echo APPPATH.'/'.$path;die;*/
         /*Db BackUps*/
 $path='backups/MyPulse-DB'.date('Ymd',strtotime('-7 days')).'.sql';
 $this->load->helper("file"); // load the helper

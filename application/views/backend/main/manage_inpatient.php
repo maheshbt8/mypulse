@@ -44,16 +44,17 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value="" onclick="toggle(this);"></th>
             <!-- <th><?php echo get_phrase('sl_no');?></th> -->
-            <th data-field="patient" data-sortable="true"><?php echo get_phrase('patient');?></th>
+            <?php if($account_type=='users'){ ?>
+            <th data-field="patient" data-sortable="true"><?php echo get_phrase('patient');?></th><?php }?>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th>   
             <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th>
-            <th data-field="date" data-sortable="true"><?php echo get_phrase('created_date');?></th>
+            <th data-field="date" data-sortable="true"><?php echo get_phrase('admitted _date');?></th>
             <th data-field="reason" data-sortable="true"><?php echo get_phrase('reason');?></th> 
             <th data-field="bed" data-sortable="true"><?php echo get_phrase('bed');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status');?></th>
             <?php if($account_type=='users'){ ?>
             <th data-field="Visibility" data-sortable="true"><?php echo get_phrase('Visibility');?></th><?php }?>
-            <th><?php echo get_phrase('action');?></th>
+            <th><?php echo get_phrase('options');?></th>
         </tr>
     </thead>
 
@@ -74,12 +75,12 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
             ?>   
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check" value="<?php echo $row['lab_id'] ?>"></td>
-                
+                 <?php if($account_type=='users'){ ?>
                 <td><?php $user=$this->db->where('user_id',$row['user_id'])->get('users')->row();
-                if($account_type != 'users'){?><a href="<?php echo base_url()?>main/edit_inpatient/<?= $row['id']?>" class="hiper"><?php echo $user->name.' / '.$user->unique_id;?></a><?php }elseif($account_type == 'users'){?><?php echo $user->name.' / '.$user->unique_id;}?></td>
+                if($account_type != 'users'){?><a href="<?php echo base_url()?>main/edit_inpatient/<?= $row['id']?>" class="hiper"><?php echo $user->name.' / '.$user->unique_id;?></a><?php }elseif($account_type == 'users'){?><?php echo $user->name.' / '.$user->unique_id;}?></td><?php }?>
                  <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name;?></a></td>
                 <td><?php echo $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->name;?></td>
-                <td><?php echo date('M d,Y',strtotime($row['created_date']));?></td>
+                <td><?php echo date('M d,Y',strtotime($row['join_date']));?></td>
                 <td><?php echo $row['reason']; ?></td>
                 <td><?php echo $this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row()->name; ?></td>
                  <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td>
