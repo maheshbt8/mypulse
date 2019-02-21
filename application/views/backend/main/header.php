@@ -18,7 +18,6 @@
   overflow-x: auto;
 }
 </style>
-
     <?php
 if($account_type == 'superadmin'){
   $img_type='superadmin_image';
@@ -54,7 +53,7 @@ else
                 <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: -15px;"/>
             </span>
                 </a>
-              <?php if($account_type != 'superadmin' && $account_type != 'users'){?>
+  <?php if($account_type != 'superadmin' && $account_type != 'users'){ ?>
       <span style="margin:5%;font-size: 35px;color: #fff;"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $this->session->userdata('hospital_id');?>.png"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
 <ul class="nav navbar-top-links navbar-right">
 <li class="dropdown language-menu select" id="lang_select">
@@ -161,16 +160,10 @@ function triggerHtmlEvent(element, eventName)
     }
   //window.location.reload();
 }
-
-
 $('ul#lang_scroll_div li a').on('click',function(){
-  
   var lang = $(this).attr('data-value');
   var selected_str = '<img src="<?php echo FRONT_ASSETS ?>images/lang_flag/'+lang+'.png" style="margin-right:15px;width:25px;height:18px;"> '+lang;
-  $('.lang_selected').html(selected_str);
-  
-  /*$('#lang_scroll_div').hide();*/
-  
+  $('.lang_selected').html(selected_str);  
   var language = lang;
   $('#google_translate_element select option').each(function(){
       if($(this).text().indexOf(lang) > -1){ 
@@ -180,14 +173,6 @@ $('ul#lang_scroll_div li a').on('click',function(){
       triggerHtmlEvent(select, 'change');
       var lang_int = $(this).val();
 
-    /*  jQuery.ajax({
-        type: 'POST',
-        url: SITE_URL + 'ajax/switch_lang_google/'+language+'/'+lang_int,
-        data: '',
-        success: function(result) {  
-         $(".translated-ltr").attr("lang",result);
-        }
-      });*/
       }
     });
 });

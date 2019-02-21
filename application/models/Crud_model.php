@@ -2745,18 +2745,19 @@ $title_data=explode(',',$pre_data[7]);
 $folder=date('Y');
 $directory = FCPATH . 'uploads/reports/';
 $mypath=FCPATH.'uploads/reports/'.$folder;
+    $file = file_get_contents(base_url('uploads/index.html'));
     if(!is_dir($mypath)){
         mkdir($directory . '/' . $folder, 0777);
+        move_uploaded_file($file, "uploads/reports/". $folder.'/index.html');
     }
 
     $unique_id=$this->crud_model->select_user_unique_id($prescription_details->user_id);
     $user_path=FCPATH.'uploads/reports/'.$folder.'/'.$unique_id;
     if(!is_dir($user_path)){
         mkdir($mypath . '/' . $unique_id, 0777);
+        move_uploaded_file($file, "uploads/reports/". $folder.'/'.$unique_id.'/index.html');
     }
     move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$unique_id.'/Report'.$lid.'_'.date('YmdHis',strtotime($report['created_at'])).'.'.$report['extension']);
-
-            /*move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/".$lid.".".$report['extension']);*/
             }
         }
         }     
