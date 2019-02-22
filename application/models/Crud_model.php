@@ -1781,6 +1781,16 @@ return $return;
     {
   return $this->db->order_by('id','desc')->where('in_patient_id',$id)->get('inpatient_history')->result_array();
     }
+    function save_inpatient_history(){
+         $in_patient['in_patient_id']=$this->input->post('patient_id');
+         $in_patient['created_date']=date('Y-m-d H:i:s');
+         $in_patient['note']=$this->input->post('note');
+         $this->db->insert('inpatient_history',$in_patient);
+    }
+    function delete_inpatient_history_info($id){
+        $this->db->where('id',$id);
+        $this->db->delete('inpatient_history');
+    }
     function save_inpatient_info()
     {
     $data['user_id']       = $this->input->post('user_id');
@@ -2246,7 +2256,21 @@ if($account_type == 'superadmin'){
     function select_bed_info_by_hospital_id($hospital_id){
        return $this->db->where('hospital_id',$hospital_id)->get('bed')->result_array();
     }
-   
+    function select_single_hospital($hospital_id){
+        return $this->db->where('hospital_id',$hospital_id)->get('hospitals')->row_array();
+    }
+    function select_single_branch($branch_id){
+        return $this->db->where('branch_id',$branch_id)->get('branch')->row_array();
+    }
+    function select_single_department($department_id){
+        return $this->db->where('department_id',$department_id)->get('department')->row_array();
+    }
+    function select_single_ward($ward_id){
+        return $this->db->where('ward_id',$ward_id)->get('ward')->row_array();
+    }
+    function select_single_bed($bed_id){
+        return $this->db->where('bed_id',$bed_id)->get('bed')->row_array();
+    }
     function select_report_info()
     {
         $account_type=$this->session->userdata('login_type');
@@ -2288,7 +2312,6 @@ if($account_type == 'superadmin'){
     }    
     function save_appointment_info()
     {
-        //print_r($_POST);die;
         $time=explode('-',$this->input->post('available_slot'));
         $department=$this->db->where('doctor_id',$this->input->post('doctor_id'))->get('doctors')->row();
         $data['user_id']       = $this->input->post('user_id');

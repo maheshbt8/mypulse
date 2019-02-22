@@ -909,6 +909,7 @@ public function MedicalLabsForOrders_get(){
         }
     }
     public function addAppointment_post(){
+
         $hospitals = $this->index_model->save_appointment_info();
         if($hospitals){
             $this->response([

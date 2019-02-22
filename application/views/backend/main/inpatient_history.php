@@ -2,14 +2,25 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-<button type="button" onclick="window.location.href = '<?php echo $this->session->userdata('last_page');?>'" class="btn btn-orange pull-right">
+<button type="button" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}elseif($account_type=='users'){echo $this->session->userdata('last_page');}?>'" class="btn btn-orange pull-right">
         <?php echo get_phrase('back'); ?>
 </button>
 </div>
 <div class="panel-body">
 
 	<div class="col-sm-8">
-        	<h4><?php echo '<b>Bed</b> : '.$this->db->where('bed_id',$inpatient->bed_id)->get('bed')->row()->name;?></h4>
+        <?php 
+            $bed=$this->crud_model->select_single_bed($inpatient->bed_id);
+            $ward=$this->crud_model->select_single_ward($bed['ward_id']);
+            $department=$this->crud_model->select_single_department($bed['department_id']);
+            $branch=$this->crud_model->select_single_branch($bed['branch_id']);
+            $hospital=$this->crud_model->select_single_hospital($bed['hospital_id']);
+            ?>
+            <h4><?php echo '<b>Hospital</b> : '.$hospital['name'];?></h4>
+            <h4><?php echo '<b>Branch</b> : '.$branch['name'];?></h4>
+            <h4><?php echo '<b>Department</b> : '.$department['name'];?></h4>
+            <h4><?php echo '<b>Ward</b> : '.$ward['name'];?></h4>
+        	<h4><?php echo '<b>Bed</b> : '.$bed['name'];?></h4>
         	<h4><?php if($inpatient->status == 0){$status='Not Admitted';}elseif($inpatient->status == 1){$status='Admitted';}elseif($inpatient->status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
         	<h4><?php echo '<b>Admitted Date & Time</b> : '.$inpatient->join_date;?></h4>
         	<h4><?php echo '<b>Reason</b> : '.$inpatient->reason;?></h4>
@@ -34,7 +45,7 @@
             <tr>
                 <td><?= $i;?></td>
                 <td><?php echo $row['note'];?></td>
-                 <td><?php echo date('M d,Y h:i A',$row['created_date']);?></a></td>
+                 <td><?php echo date('M d,Y h:i A',strtotime($row['created_date']));?></a></td>
             </tr>
         <?php $i++;} ?>
     </tbody>

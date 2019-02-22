@@ -283,31 +283,31 @@ function read_notification($notification_id)
     }
      function update_user_info()
     {
-        $user_id   = $this->post('user_id');
-        $data['name']      = $this->post('fname');
-        $data['mname']      = $this->post('mname');
-        $data['lname']      = $this->post('lname');
-        $data['email']      = $this->post('email');
-        $data['description'] = $this->post('description');
-        $data['country']   = $this->post('country');
-        $data['state']   = $this->post('state');
-        $data['district']   = $this->post('district');
-        $data['city']   = $this->post('city');
-        $data['address']    = $this->post('address');
-        $data['phone']          = $this->post('mobile');
-        $data['gender']            = $this->post('gender');
-        $data['dob']     = date('m/d/Y',strtotime($this->post('dob')));
-        $data['age']            = $this->post('age');
-        $data['blood_group']    = $this->post('blood_group');
-        //$data['aadhar']     = $this->post('aadhar');
-        $data['height']     = $this->post('height');
-        $data['weight']     = $this->post('weight');
-        $data['blood_pressure'] = $this->post('blood_pressure');
-        $data['sugar_level']    = $this->post('sugar_level');
-        $data['health_insurance_provider']  = $this->post('health_insurance_provider');
-        $data['health_insurance_id']    = $this->post('health_insurance_id');
-        $data['family_history']     = $this->post('family_history');
-         $data['past_medical_history']  = $this->post('past_medical_history');
+        $user_id   = $this->input->post('user_id');
+        $data['name']      = $this->input->post('fname');
+        $data['mname']      = $this->input->post('mname');
+        $data['lname']      = $this->input->post('lname');
+        $data['email']      = $this->input->post('email');
+        $data['description'] = $this->input->post('description');
+        $data['country']   = $this->input->post('country');
+        $data['state']   = $this->input->post('state');
+        $data['district']   = $this->input->post('district');
+        $data['city']   = $this->input->post('city');
+        $data['address']    = $this->input->post('address');
+        $data['phone']          = $this->input->post('mobile');
+        $data['gender']            = $this->input->post('gender');
+        $data['dob']     = date('m/d/Y',strtotime($this->input->post('dob')));
+        $data['age']            = $this->input->post('age');
+        $data['blood_group']    = $this->input->post('blood_group');
+        //$data['aadhar']     = $this->input->post('aadhar');
+        $data['height']     = $this->input->post('height');
+        $data['weight']     = $this->input->post('weight');
+        $data['blood_pressure'] = $this->input->post('blood_pressure');
+        $data['sugar_level']    = $this->input->post('sugar_level');
+        $data['health_insurance_provider']  = $this->input->post('health_insurance_provider');
+        $data['health_insurance_id']    = $this->input->post('health_insurance_id');
+        $data['family_history']     = $this->input->post('family_history');
+         $data['past_medical_history']  = $this->input->post('past_medical_history');
           $data['status']   = '1';
         $data['modified_at']=date('Y-m-d H:i:s');
         $this->db->where('user_id',$user_id);
@@ -659,12 +659,12 @@ $results=$this->db->order_by('appointment_number','DESC')->where($where)->get()-
     }
         function update_appointment_info()
     {
-        $appointment_id=$this->post('appointment_id');
-    if($this->post('available_slot')!=''){
-    $time=explode('-',$this->post('available_slot'));
+        $appointment_id=$this->input->post('appointment_id');
+    if($this->input->post('available_slot')!=''){
+    $time=explode('-',$this->input->post('available_slot'));
     $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
     $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
-    $data['appointment_date']= date('Y-m-d',strtotime($this->post('appointment_date')));
+    $data['appointment_date']= date('Y-m-d',strtotime($this->input->post('appointment_date')));
     $yes=$this->db->where('appointment_id',$appointment_id)->update('appointments',$data);
     if($yes){
         /*******Appointment History********/
@@ -672,7 +672,7 @@ $results=$this->db->order_by('appointment_number','DESC')->where($where)->get()-
             $history['appointment_date']=$data['appointment_date'];
             $history['appointment_time_start']=$data['appointment_time_start'];
             $history['appointment_time_end']=$data['appointment_time_end'];
-            $history['created_by']='users-user'.$this->post('user_id');
+            $history['created_by']='users-user'.$this->input->post('user_id');
             $data['created_time']=date('Y-m-d H:i:s');
             $history_ins=$this->db->insert('appointment_history',$history);
             if($history_ins){
@@ -743,21 +743,21 @@ $doctors[]=$row;
     }
     function save_appointment_info()
     {
-        //print_r($_POST);die;
-        $time=explode('-',$this->post('available_slot'));
-        $department=$this->db->where('doctor_id',$this->post('doctor_id'))->get('doctors')->row();
-        $data['user_id']       = $this->post('user_id');
-        $data['doctor_id']       = $this->post('doctor_id');
-        $data['appointment_date']= date('Y-m-d',strtotime($this->post('appointment_date')));
+    //print_r($_POST);die;
+        $time=explode('-',$this->input->post('available_slot'));
+        $department=$this->db->where('doctor_id',$this->input->post('doctor_id'))->get('doctors')->row();
+        $data['user_id']       = $this->input->post('user_id');
+        $data['doctor_id']       = $this->input->post('doctor_id');
+        $data['appointment_date']= date('Y-m-d',strtotime($this->input->post('appointment_date')));
         $data['hospital_id']       = $department->hospital_id;
         $data['department_id']       = $department->department_id;
         $data['appointment_time_start']       = date("H:i", strtotime($time[0]));
         $data['appointment_time_end']       = date("H:i", strtotime($time[1]));
-        $data['reason']       = $this->post('reason');
-        if($this->post('remarks')){
-        $data['remarks']       = $this->post('remarks');
+        $data['reason']       = $this->input->post('reason');
+        if($this->input->post('remarks')){
+        $data['remarks']       = $this->input->post('remarks');
         }
-        $data['created_by']       = 'users-user-'.$this->post('user_id');
+        $data['created_by']       = 'users-user-'.$this->input->post('user_id');
         $data['created_at']=date('Y-m-d H:i:s');
         $data['modified_at']=date('Y-m-d H:i:s');
         $insert=$this->db->insert('appointments',$data);
@@ -765,10 +765,10 @@ $doctors[]=$row;
         {
             $lid=$this->db->insert_id();
         /*********** Patient **************/
-     $patient_data['user_id']=$this->post('user_id');
+     $patient_data['user_id']=$this->input->post('user_id');
     $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient')->row_array();
 if($patient==''){
-$patient_data['doctor_ids']=$this->post('doctor_id');
+$patient_data['doctor_ids']=$this->input->post('doctor_id');
 $patient_data['hospital_ids']=$department->hospital_id;
 $this->db->insert('patient',$patient_data);
 }elseif($patient!=''){
@@ -786,19 +786,19 @@ $hos_ar=explode(',',$patient['hospital_ids']);
     }
 }
 if($patient['doctor_ids']==''){
-$patient_data['doctor_ids']=$this->post('doctor_id');
+$patient_data['doctor_ids']=$this->input->post('doctor_id');
 }elseif($patient['doctor_ids']!=''){
 $doc_ar=explode(',',$patient['doctor_ids']);
     for($ho=0;$ho<count($doc_ar);$ho++){
-    if($doc_ar[$ho]==$this->post('doctor_id')){
+    if($doc_ar[$ho]==$this->input->post('doctor_id')){
     $patient_data['doctor_ids']=$patient['doctor_ids'];
     break;
     }else{
-    $patient_data['doctor_ids']=$patient['doctor_ids'].','.$this->post('doctor_id');
+    $patient_data['doctor_ids']=$patient['doctor_ids'].','.$this->input->post('doctor_id');
     }
     }
 }
-$this->db->where('user_id',$this->post('user_id'));
+$this->db->where('user_id',$this->input->post('user_id'));
 $this->db->update('patient',$patient_data);
 }
         /********Appointment Unique Id Generate*****************/
@@ -839,9 +839,9 @@ $pid='MPA'.date('y').'_'.$num;
     {
 $account_type='users';
 $user_role='MyPulse Users';
- $account_details='users-user'.$this->post('user_id');
-        $check=$this->post('appointment_ids');
-        $reason=$this->post('cancel_reason');
+ $account_details='users-user'.$this->input->post('user_id');
+        $check=$this->input->post('appointment_ids');
+        $reason=$this->input->post('cancel_reason');
         for($i=0;$i<count($check);$i++){
     $appointment_data=$this->db->where('appointment_id',$check[$i])->get('appointments')->row();
     $appointment_date_time=$appointment_data->appointment_date.' '.$appointment_data->appointment_time_start;
@@ -849,7 +849,7 @@ $current_time=date('Y-m-d H:i');
 $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($appointment_date_time)));
     if(strtotime($current_time)<strtotime($appointment_date_time_less)){
     $appointment_number=$appointment_data->appointment_number;
-    $name=$this->db->where('user_id',$this->post('user_id'))->get('users')->row()->name;
+    $name=$this->db->where('user_id',$this->input->post('user_id'))->get('users')->row()->name;
         $this->db->where('appointment_id',$check[$i]);
         $this->db->where('status',2);
         $s=$this->db->update('appointments',array('status'=>'3','remarks'=>'Appointment was cancelled by: "'.$user_role.' - '.$name.'" for the reason: " '.$reason.'".'));
@@ -876,17 +876,17 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
     }
     function save_prescription_order()
     {
-        $id  = $this->post('order_type');
-        $data['user_id']     = $this->post('user_id');
-        $data['prescription_id']     = $this->post('prescription_id');
+        $id  = $this->input->post('order_type');
+        $data['user_id']     = $this->input->post('user_id');
+        $data['prescription_id']     = $this->input->post('prescription_id');
         $data['order_type']     = $id;
         if($id == 0){
-        $data['quantity']     = implode(',',$this->post('quantity'));
-        $data['store_id']     = $this->post('store');
+        $data['quantity']     = implode(',',$this->input->post('quantity'));
+        $data['store_id']     = $this->input->post('store');
         }
         if($id == 1){
-            $te=$this->post('tests');
-            for($c=0;$c<$this->post('count');$c++){
+            $te=$this->input->post('tests');
+            for($c=0;$c<$this->input->post('count');$c++){
             if($te[$c]!=''){
                 $st[$c]=1;
             }else{
@@ -894,13 +894,13 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
             }
             }
         $data['tests']     = implode(',',$st);
-        $data['lab_id']     = $this->post('lab');
+        $data['lab_id']     = $this->input->post('lab');
         }
         $data['created_at']=date('Y-m-d H:i:s');
         $yes=$this->db->insert('prescription_order',$data);
         if($yes){
             /*********** Patient **************/
-        $patient_data['user_id']=$this->post('user_id');
+        $patient_data['user_id']=$this->input->post('user_id');
         $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient');
         if($patient->num_rows()==1){
             if($id == 0){
@@ -931,14 +931,14 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
     $patient_data['lab_ids']=$hos.','.$data['lab_id']; 
         }
         }
-        $this->db->where('user_id',$this->post('user_id'));
+        $this->db->where('user_id',$this->input->post('user_id'));
         $this->db->update('patient',$patient_data);
         }else{
         if($id == 0){
-        $patient_data['store_ids']=$this->post('store');
+        $patient_data['store_ids']=$this->input->post('store');
         }
         if($id == 1){
-        $patient_data['lab_ids']=$this->post('lab');
+        $patient_data['lab_ids']=$this->input->post('lab');
         }
         $this->db->insert('patient',$patient_data);
         }
@@ -1028,16 +1028,16 @@ if($row1['type_of_order']==0){
     }
     /*********************Booking Order*************************/
         function book_order(){
-    $order_type=$this->post('order_type');
-    $data['user_id']=$this->post('user_id');
+    $order_type=$this->input->post('order_type');
+    $data['user_id']=$this->input->post('user_id');
     $data['order_type']=$order_type;
     $data['type_of_order']=1;
     if($order_type==0){
-    $data['store_id']=$this->post('store');
-    $data['order_data'] =$this->encryption->encrypt($this->post('title').'|'.implode(',',$this->post('drug')).'|'.implode(',',$this->post('strength')).'|'.implode(',',$this->post('quantity')));
+    $data['store_id']=$this->input->post('store');
+    $data['order_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('drug')).'|'.implode(',',$this->input->post('strength')).'|'.implode(',',$this->input->post('quantity')));
     }elseif($order_type==1){
-        $data['lab_id']=$this->post('lab');
-        $data['order_data'] =$this->encryption->encrypt($this->post('title').'|'.implode(',',$this->post('test_title')).'|'.implode(',',$this->post('description')));
+        $data['lab_id']=$this->input->post('lab');
+        $data['order_data'] =$this->encryption->encrypt($this->input->post('title').'|'.implode(',',$this->input->post('test_title')).'|'.implode(',',$this->input->post('description')));
     }
     $data['created_at']=date('Y-m-d H:i:s');
    $yes=$this->db->insert('prescription_order',$data);
@@ -1047,39 +1047,39 @@ if($row1['type_of_order']==0){
         $patient=$this->db->where('user_id',$patient_data['user_id'])->get('patient')->row_array();
 if($patient==''){
 if($order_type == 0){
-$patient_data['store_ids']=$this->post('store');
+$patient_data['store_ids']=$this->input->post('store');
 }
 if($order_type == 1){
-$patient_data['lab_ids']=$this->post('lab');
+$patient_data['lab_ids']=$this->input->post('lab');
 }
 $this->db->insert('patient',$patient_data);
 }elseif($patient!=''){
 if($order_type == 0){
 if($patient['store_ids']==''){
-$patient_data['store_ids']=$this->post('store');
+$patient_data['store_ids']=$this->input->post('store');
 }elseif($patient['store_ids']!=''){
 $hos_ar=explode(',',$patient['store_ids']);
     for($ho=0;$ho<count($hos_ar);$ho++){
-    if($hos_ar[$ho]==$this->post('store')){
+    if($hos_ar[$ho]==$this->input->post('store')){
     $patient_data['store_ids']=$patient['store_ids'];
     break;
     }else{
-    $patient_data['store_ids']=$hos_ar[$ho].','.$this->post('store');
+    $patient_data['store_ids']=$hos_ar[$ho].','.$this->input->post('store');
     }
     }
 }
 }
 if($order_type == 1){
 if($patient['lab_ids']==''){
-$patient_data['lab_ids']=$this->post('lab');
+$patient_data['lab_ids']=$this->input->post('lab');
 }elseif($patient['lab_ids']!=''){
 $hos_ar=explode(',',$patient['lab_ids']);
     for($ho=0;$ho<count($hos_ar);$ho++){
-    if($hos_ar[$ho]==$this->post('lab')){
+    if($hos_ar[$ho]==$this->input->post('lab')){
     $patient_data['lab_ids']=$patient['lab_ids'];
     break;
     }else{
-    $patient_data['lab_ids']=$hos_ar[$ho].','.$this->post('lab');
+    $patient_data['lab_ids']=$hos_ar[$ho].','.$this->input->post('lab');
     }
     }
 }

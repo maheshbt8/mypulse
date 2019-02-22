@@ -179,8 +179,12 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     function four_zero_three() {
         $this->load->view('four_zero_three');
     }
-    function register()
+    function register($task='')
     {
+        if($task=='otp_cancel'){
+        $this->session->set_userdata('otp','');
+        $this->session->set_userdata('otp_sended','');
+        }else{
         if($this->input->post()){
         $phone = $this->input->post('phone');
            $validation_phone = mobile_validation($phone);
@@ -201,7 +205,6 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
         $data['password']       = sha1($this->input->post('pass'));
         $data['phone']          = $this->input->post('phone');
         $data['status']   = 1;
-        
         $user_name   =   $data['name'];
         if($this->session->userdata('otp')==''){
         $num="12345678901234567890";
@@ -275,6 +278,7 @@ $pid='MPU'.date('y').'_'.$num;
             }
             }else {
                  $this->session->set_flashdata('error', 'Mobile Number Already registered' );
+        }
         }
         }
         $this->load->view('backend/register');
@@ -442,6 +446,14 @@ if ($this->form_validation->run() == TRUE){
         //$this->load->view('errors/html/error_php');
     }
  /*     * *****LOGOUT FUNCTION ****** */
+    function otp_cancel() {
+        /*$this->session->set_userdata('otp','');
+        $this->session->set_userdata('otp_sended','');*/
+        $this->session->sess_destroy();
+        return true;
+        //redirect(base_url('login/register'),'refresh');
+    }
+
     function logout() {
         $this->session->sess_destroy();
         $this->session->set_flashdata('logout_notification', 'logged_out');

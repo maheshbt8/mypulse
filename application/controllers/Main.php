@@ -1271,12 +1271,22 @@ echo $message;die;*/
         $this->load->view('backend/index', $data);
     }
     function inpatient_history($task = "", $patient_id = "") {
+        if($task=='delete'){
+            $this->crud_model->delete_inpatient_history_info($patient_id);
+            $this->session->set_flashdata('message', get_phrase('inpatient_history_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page1'));
+        }
         $data['inpatient'] = $this->crud_model->select_inpatient_id_info($task);
         $data['inpatient_history'] = $this->crud_model->select_inpatient_history_info($task);
         $name=$this->db->where('user_id',$data['inpatient']->user_id)->get('users')->row_array();
         $data['page_name'] = 'inpatient_history';
         $data['page_title'] = get_phrase('inpatient - ').$name['name'].' ('.$name['unique_id'].')';
         $this->load->view('backend/index', $data);
+    }
+    function add_inpatient_history(){
+        $this->crud_model->save_inpatient_history();
+        $this->session->set_flashdata('message', get_phrase('inpatient_history_added_successfuly'));
+        redirect($this->session->userdata('last_page1'));
     }
     function patient($task = "", $patient_id = "") {
         $data['patient_info'] = $this->crud_model->select_patient_info();

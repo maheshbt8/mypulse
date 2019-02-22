@@ -6,15 +6,46 @@ $this->session->set_userdata('last_page1', current_url());
         z-index: auto;
     }
 </style>
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+button.active:after {
+  content: "\2212";
+}
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+</style>
 <?php $user_info=$this->crud_model->select_inpatient_id_info($patient_id);
 $user_data=$this->db->where('user_id',$user_info->user_id)->get('users')->row_array();
 $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
 ?>
+<input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_inpatient/<?=$patient_id?>" method="post" enctype="multipart/form-data">
     <div class="col-md-3">
 <h4><?php echo '<b>User ID</b> : '.$user_data['unique_id'];?></h4>
@@ -199,17 +230,88 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                             </div>
                     </div>
         </div>
-            </div>            
-            </div>
-            </div>
-        </div> 
-                    <div class="col-sm-3 control-label col-sm-offset-9 ">
+            </div> 
+            <div class="col-sm-3 control-label col-sm-offset-9 ">
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
-                    </div>  
-                   
+                    </div>            
+            </div>
+
+            </div>
+        </div>          
    </form>
-   
+<button class="collapsible" id="in_note">InPatient Notes</button>
+<div class="content">
+<?php 
+$inpatient_history = $this->crud_model->select_inpatient_history_info($patient_id);
+?>
+    <?php if($account_type == 'doctors'){?>
+        <br/>
+       <button type="button" class="btn btn-info btn-sm pull-right" data-toggle="modal" data-target="#myModal">+</button><?php }?>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">InPatient Note</h4>
+        </div>
+        <div class="modal-body">
+         <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_inpatient_history/" method="post" enctype="multipart/form-data">
+                <div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary" data-collapsed="0">
+         <div class="panel-body">
+                <div class="row">
+                <div class="col-sm-12">
+                <div class="form-group">
+            <label for="field-1" class="col-sm-1 control-label">Note</label>
+                <div class="col-sm-11">
+                    <input type="hidden" name="patient_id" value="<?=$patient_id;?>">
+                <textarea name="note" class="form-control" id="note" data-validate="required" data-message-required="Value Required" rows="5"></textarea>
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-10 control-label col-sm-offset-2">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                        <input type="button" class="btn btn-info" value="Cancel" data-dismiss="modal">
+                </div>
+                </div>
+                </div>
+        </div>
     </div>
+</div>
+        </form>
+        </div>
+      </div> 
+    </div>
+  </div>
+<table class="table table-bordered table-striped datatable" id="table-2">
+    <thead>  
+        <tr>
+            <!-- <th><?php echo get_phrase('sl_no');?></th> -->
+            <th><?php echo get_phrase('note');?></th>
+            <th><?php echo get_phrase('date');?></th>
+            <th><?php echo get_phrase('options');?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php $i=1;foreach ($inpatient_history as $row) {
+            ?>   
+            <tr>
+                <!-- <td><?= $i;?></td> -->
+                <td><?php echo $row['note'];?></td>
+                 <td><?php echo date('M d,Y h:i A',strtotime($row['created_date']));?></a></td>
+                 <td><a href="#" onclick="confirm_modal('<?php echo base_url();?>main/inpatient_history/delete/<?php echo $row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
+                 </a>
+             </td>
+            </tr>
+        <?php $i++;} ?>
+    </tbody>
+</table>
+</div>
+</div>
 </div>
  </div>
 </div>
@@ -304,4 +406,20 @@ if($user_info->status == 1){?>
 
     }
 
+</script>
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
 </script>
