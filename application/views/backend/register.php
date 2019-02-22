@@ -17,9 +17,9 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');">
 			<div class="wrap-login100 p-t-190 p-b-30">
-				<form class="login100-form validate-form" action="<?php echo base_url();?>login/register" method="post">
+				<form class="login100-form validate-form" action="<?php echo base_url();?>Register" method="post">
 					<div class="login100-form-avatar">  
-						<img src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR">
+						<img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>" alt="MyPulse">
 					</div>
 
 					<span class="login100-form-title p-t-20 p-b-45">
@@ -109,10 +109,10 @@
 		<?php if($this->session->userdata('otp')!=''){
 					?>
 <div class="container-login100-form-btn p-t-10">
-						<button type="button" class="login100-form-btn"  onclick="window.location.href = '<?=base_url('login/register/otp_cancel');?>'">Cancel</button>
+						<button type="button" class="login100-form-btn"  onclick="window.location.href = '<?=base_url('OTP_Cancel');?>'">Cancel</button>
 					</div><?php }?>
 					<div class="text-center w-full p-t-25 p-b-230">
-<a class="txt1" href="<?php echo base_url();?>login/logout" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account?_login');?></h5>
+<a class="txt1" href="<?php echo base_url();?>Logout" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account?_login');?></h5>
 <i class="fa fa-long-arrow-right"></i>						
 </a>
 <br>

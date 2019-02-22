@@ -36,10 +36,11 @@ if($account_type == 'superadmin'){
 }elseif($account_type == 'users'){
   $img_type='user_image';
 }
-if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
+$image_url=$this->crud_model->get_image_url($img_type,$this->session->userdata('login_user_id'));
+/*if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
       $image_url = base_url() . 'uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg';
 else
-    $image_url = base_url() . 'uploads/user.jpg';
+    $image_url = base_url() . 'uploads/user.jpg';*/
 ?>
     	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
 			<div class="container-fluid">
@@ -50,11 +51,11 @@ else
 						<span class="icon-bar"></span></button>
 					<a class="navbar-brand" href="<?php echo base_url('main'); ?>">
             <span>
-                <img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: -15px;"/>
+                <img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:45px; margin: -15px;"/>
             </span>
                 </a>
   <?php if($account_type != 'superadmin' && $account_type != 'users'){ ?>
-      <span style="margin:5%;font-size: 35px;color: #fff;"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $this->session->userdata('hospital_id');?>.png"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
+      <span style="margin:5%;font-size: 35px;color: #fff;"><img src="data:image/gif;base64,<?=$this->crud_model->get_hospitals_logo_url($this->session->userdata('hospital_id'));?>"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
 <ul class="nav navbar-top-links navbar-right">
 <li class="dropdown language-menu select" id="lang_select">
         <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="width: 100%">
@@ -106,7 +107,7 @@ else
 </ul>
 </li>
 <li class="dropdown">
-<a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;"><img src="<?=$image_url;?>" alt=""><span>
+<a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;"><img src="data:image/gif;base64,<?=$image_url;?>" alt=""><span>
 <?php $ac='';
  if($account_type=='doctors'){
   $ac='Dr.';

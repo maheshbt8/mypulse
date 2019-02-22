@@ -51,7 +51,7 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
             redirect(base_url() . 'login', 'refresh');
         }
         if ($this->session->userdata('login') == 1){
-            redirect(base_url() . 'main/dashboard', 'refresh');
+            redirect(base_url() . 'Dashboard', 'refresh');
         }
     }
     public function dashboard() {
@@ -139,12 +139,12 @@ echo $message;die;*/
             $this->session->set_flashdata('message', get_phrase('hospital_info_saved_successfuly'));
             redirect($this->session->userdata('last_page'));
                 }
-        } 
+        }
         $data['page_name'] = 'add_hospital';
         $data['page_title'] = get_phrase('add_hospital');
         $this->load->view('backend/index', $data);
         }
-         public function edit_hospital($hospital_id) {
+        public function edit_hospital($hospital_id) {
             $account_type=$this->session->userdata('login_type');
         if($this->input->post()){   
         $config = array(
@@ -162,21 +162,22 @@ echo $message;die;*/
         );
         $this->form_validation->set_rules($config);
 
-         if ($this->form_validation->run() == TRUE){ 
-            $this->crud_model->update_hospital_info($hospital_id);
+         if ($this->form_validation->run() == TRUE){
+         $hospital=$this->crud_model->generate_decryption_key($hospital_id); 
+            $this->crud_model->update_hospital_info($hospital);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
-            if($account_type!='hospitaladmins'){
+           /* if($account_type!='hospitaladmins'){
             redirect($this->session->userdata('last_page'));
         }elseif($account_type=='hospitaladmins'){
             redirect('main/get_hospital_history/'.$hospital_id);
-        }
+        }*/
                 }
-         }else{
-           redirect('main/get_hospital_history/'.$hospital_id);
-        }
-         $data['hospital_id'] = $hospital_id;
-        $data['page_name'] = 'edit_hospital';
-        $data['page_title'] = get_phrase('edit_hospital');
+         }/*else{
+           redirect('Hospital/'.$hospital_id);
+        }*/
+        $data['hospital_id'] = $hospital_id;
+        $data['page_name'] = 'hospital_history';
+        $data['page_title'] = get_phrase('Hospital Details');
        
         $this->load->view('backend/index', $data);
         }

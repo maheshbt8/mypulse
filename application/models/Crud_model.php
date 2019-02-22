@@ -212,12 +212,65 @@ function email_verification($data="")
 
     ////////IMAGE URL//////////
     function get_image_url($type = '', $id = '') {
-        if (file_exists('uploads/' . $type . '_image/' . $id . '.jpg'))
+       /* if (file_exists('uploads/' . $type . '_image/' . $id . '.jpg'))
             $image_url = base_url() . 'uploads/' . $type . '_image/' . $id . '.jpg';
         else
             $image_url = base_url() . 'uploads/user.jpg';
 
+        return $image_url;*/
+         if (file_exists('uploads/' . $type . '/' . $id . '.jpg')){
+            $image_url ='uploads/' . $type . '/' . $id . '.jpg';
+        }else{
+            $image_url ='uploads/user.jpg';
+        }
+    $img_binary = fread(fopen($image_url, "r"), filesize($image_url));
+    $image_url = base64_encode($img_binary);
         return $image_url;
+    }
+    function get_mypulse_logo_url($type = '', $id = '') {
+         if (file_exists('assets/logo.png')){
+            $image_url ='assets/logo.png';
+        }
+    $img_binary = fread(fopen($image_url, "r"), filesize($image_url));
+    $image_url = base64_encode($img_binary);
+    return $image_url;
+    }
+    function get_hospitals_logo_url($id) {
+         if (file_exists('uploads/hospitallogos/'.$id.'.png')){
+            $image_url ='uploads/hospitallogos/'.$id.'.png';
+        }
+    $img_binary = fread(fopen($image_url, "r"), filesize($image_url));
+    $image_url = base64_encode($img_binary);
+    return $image_url;
+    }
+
+    function generate_encryption_key($string){
+    $ret=$this->encryption->encrypt($string);
+if ( !empty($string) )
+    {
+        $ret = strtr(
+                $ret,
+                array(
+                    '+' => '.',
+                    '=' => '-',
+                    '/' => '~'
+                )
+            );
+    }
+    return $ret;
+    }
+     function generate_decryption_key($string){
+         $string = strtr(
+            $string,
+            array(
+                '.' => '+',
+                '-' => '=',
+                '~' => '/'
+            )
+    );
+
+    $ret=$this->encryption->decrypt($string);
+    return $ret;
     }
     
     /************GENERAL SETTINGS***********/
@@ -498,8 +551,8 @@ $num=100001;
         $this->db->where('hospital_id',$hospital_id);
         $this->db->update('hospitals',$data);
         if($_FILES['userfile']['tmp_name']!=''){
-        unlink('uploads/hospitallogs/'. $hospital_id.  '.png');
-        move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitallogs/'. $hospital_id.  '.png');
+        unlink('uploads/hospitallogos/'. $hospital_id.  '.png');
+        move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/hospitallogos/'. $hospital_id.  '.png');
         }
     }
     
@@ -2771,14 +2824,16 @@ $mypath=FCPATH.'uploads/reports/'.$folder;
     $file = file_get_contents(base_url('uploads/index.html'));
     if(!is_dir($mypath)){
         mkdir($directory . '/' . $folder, 0777);
-        move_uploaded_file($file, "uploads/reports/". $folder.'/index.html');
+        write_file(FCPATH.'uploads/reports/'. $folder.'/index.html', $file);
+        //move_uploaded_file($file, "uploads/reports/". $folder.'/index.html');
     }
 
     $unique_id=$this->crud_model->select_user_unique_id($prescription_details->user_id);
     $user_path=FCPATH.'uploads/reports/'.$folder.'/'.$unique_id;
     if(!is_dir($user_path)){
         mkdir($mypath . '/' . $unique_id, 0777);
-        move_uploaded_file($file, "uploads/reports/". $folder.'/'.$unique_id.'/index.html');
+        write_file(FCPATH.'uploads/reports/'. $folder.'/'.$unique_id.'/index.html', $file);
+        //move_uploaded_file($file, "uploads/reports/". $folder.'/'.$unique_id.'/index.html');
     }
     move_uploaded_file($_FILES["userfile"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$unique_id.'/Report'.$lid.'_'.date('YmdHis',strtotime($report['created_at'])).'.'.$report['extension']);
             }
@@ -2834,18 +2889,22 @@ $mypath=FCPATH.'uploads/reports/'.$folder;
             $data['extension']=end(explode('.',$_FILES["report"]["name"][$j]));
             $insert=$this->db->insert('reports',$data);
             if($insert){
-            $lid=$this->db->insert_id();
-    
+            $lid=$this->db->insert_id(); 
 $folder=date('Y');
 $directory = FCPATH . 'uploads/reports/';
 $mypath=FCPATH.'uploads/reports/'.$folder;
+ $file = file_get_contents(base_url('uploads/index.html')); 
     if(!is_dir($mypath)){
         mkdir($directory . '/' . $folder, 0777);
+        write_file(FCPATH.'uploads/reports/'. $folder.'/index.html', $file);
+        //move_uploaded_file($file, "uploads/reports/". $folder.'/index.html');
     }
     $unique_id=$this->crud_model->select_user_unique_id($data['user_id']);
      $user_path=FCPATH.'uploads/reports/'.$folder.'/'.$unique_id;
     if(!is_dir($user_path)){
         mkdir($mypath . '/' . $unique_id, 0777);
+        write_file(FCPATH.'uploads/reports/'. $folder.'/'.$unique_id.'/index.html', $file);
+        //move_uploaded_file($file, "uploads/reports/". $folder.'/'.$unique_id.'/index.html');
     }
     move_uploaded_file($_FILES["report"]["tmp_name"][$j], "uploads/reports/". $folder.'/'.$unique_id.'/Report'.$lid.'_'.date('YmdHis',strtotime($data['created_at'])).'.'.$data['extension']);
             }

@@ -26,7 +26,7 @@
 			<div class="wrap-login100 p-t-190 p-b-30"> 
 				<form class="login100-form validate-form" action="<?php echo base_url();?>login/validate_login" method="post">
 					<div class="login100-form-avatar">
-						<img class="img-responsive" src="<?php echo base_url(); ?>assets/logo.png" alt="MyPulse" style="width:100%;">
+						<img class="img-responsive" src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>" alt="MyPulse" style="width:100%;">
 					</div>
 	<span class="login100-form-title p-t-20 p-b-45"></span>
             <?php if($this->session->flashdata('login_error')!=''){?>
@@ -61,9 +61,9 @@
 					</div>
  
 					<div class="text-center w-full p-t-25 p-b-230">
-<a href="<?php echo base_url(); ?>login/forgot_password" class="txt1"><?php echo 'Forgot Your Password';?></a>
+<a href="<?php echo base_url(); ?>Forgot_Password" class="txt1"><?php echo 'Forgot Your Password';?></a>
 						 <br>
-<a class="txt1" href="<?php echo base_url(); ?>login/register" ><h5 style="color:white;">
+<a class="txt1" href="<?php echo base_url(); ?>Register" ><h5 style="color:white;">
 <?php echo "Don't Have Account? Sign Up";?></h5>
 <i class="fa fa-long-arrow-right"></i></a>
 <br/>

@@ -15,13 +15,11 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');">
 			<div class="wrap-login100 p-t-190 p-b-30">
-				<form class="login100-form validate-form" action="<?php echo base_url();?>login/forgot_password/" method="post">
+				<form class="login100-form validate-form" action="<?php echo base_url();?>Forgot_Password/" method="post">
 					<div class="login100-form-avatar">  
-						<img src="<?php echo base_url(); ?>assets/logo.png" alt="AVATAR">
+						<img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>" alt="MyPulse">
 					</div>
-
 					<span class="login100-form-title p-t-20 p-b-45">
-				  
 					</span>
 <?php if($this->session->flashdata('email_success')!=''){?>
 		<div class="alert alert-success alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">

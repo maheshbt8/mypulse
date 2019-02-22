@@ -1,4 +1,5 @@
 <?php 
+$prognosis_id=$this->crud_model->generate_decryption_key($prognosis_id);
 $prognosis_info = $this->db->get_where('prognosis', array('prognosis_id' =>$prognosis_id))->row_array();
 $doctor_info=$this->crud_model->select_doctor_info_id($prognosis_info['doctor_id']);
 
@@ -28,8 +29,8 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
 <div class="row" id="print_div">  
 <div class="col-md-12">
 <div class="my_pulse">  
-    <div class="col-md-12" style="background-color: #40403fe8;">
-    <center style="padding:5px;"><img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
+    <div class="col-md-12" style="background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);">
+    <center style="padding:5px;"><img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:55px; margin: 0px;"/></center>
     </div>
 </div>
     <hr/>
@@ -42,7 +43,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
                 <td align="right"></td>
             </tr>
                 <tr>
-                <td align="left"><img src="<?php echo base_url();?>uploads/hospitallogs/<?= $doctor_info['hospital_id'];?>.png"  style="max-height:45px; margin: 0px;"/></td>
+                <td align="left"><img src="data:image/gif;base64,<?=$this->crud_model->get_hospitals_logo_url($doctor_info['hospital_id']);?>"  style="max-height:45px; margin: 0px;"/></td>
                 <td align="right"></td>
             </tr>
 

@@ -1,11 +1,11 @@
 <?php $account_type=$this->session->userdata('login_type');?>
 <?php
+$hospital_id=$this->crud_model->generate_decryption_key($hospital_id);
  $single_hospital_info = $this->crud_model->select_hospital_info_by_id($hospital_id);
 foreach ($single_hospital_info as $row) :  
 ?>
- 
     <div class="col-md-12">
-        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='hospitaladmins'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab1" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-home"></i></span>
@@ -70,7 +70,7 @@ $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' =>
 foreach ($single_hospital_info as $row) {
 ?>
             <div class="tab-pane box active" id="tab1">
-                <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/edit_hospital/<?php echo $row['hospital_id']; ?>" method="post" enctype="multipart/form-data">
+                <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>Hospital_Edit/<?=$this->crud_model->generate_encryption_key($row['hospital_id']);?>" method="post" enctype="multipart/form-data">
                 <div class="row">
     <div class="col-md-12">
         <label class="control-label">Basic Info</label>
@@ -301,7 +301,7 @@ foreach ($single_hospital_info as $row) {
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url('uploads/hospitallogs/').$row['hospital_id'].'.png'?>" alt="...">
+                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_hospitals_logo_url($row['hospital_id']);?>">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

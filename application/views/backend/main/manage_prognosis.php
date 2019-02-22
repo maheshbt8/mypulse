@@ -27,7 +27,7 @@ $this->session->set_userdata('last_page', current_url());
             ?>
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row1['prognosis_id']; ?>"></td>
-                <td><a href="<?php echo base_url(); ?>main/prognosis_history/<?php echo $row1['prognosis_id'] ?>" class="hiper"><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[0];?></a></td>
+                <td><a href="<?php echo base_url(); ?>Prognosis/<?=$this->crud_model->generate_encryption_key($row1['prognosis_id'])?>" class="hiper"><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[0];?></a></td>
                 <!-- <td><?php echo explode('|',$this->encryption->decrypt($row1['prognosis_data']))[1];?></td> -->
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>

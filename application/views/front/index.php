@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html lang="en">
-
 <head>
 	<title>MyPulse - <?=$page_title;?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -57,7 +56,7 @@ header{
           <div class="col-sm-6 top-left">
             <ul>
               <li><i class="fas fa-phone"></i> <?=$this->db->get_where('settings', array('type' => 'phone'))->row()->description;?></li>
-              <li><a href="<?=base_url('login');?>"><button type="button" class="btn btn-sm btn-info">Log In</button></a></li>
+              <li><a href="<?=base_url('Login');?>"><button type="button" class="btn btn-sm btn-info">Log In</button></a></li>
             </ul>
           </div>
         </div>

@@ -38,7 +38,7 @@ $this->session->set_userdata('last_page', current_url());
             <tr><?php if($account_type == 'superadmin'){?>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['hospital_id'] ?>"></td><?php }?>
                 <td><?php echo $row['unique_id'];?></td>
-                <td><a href="<?php echo base_url();?>main/get_hospital_history/<?php echo $row['hospital_id'];?>" class="hiper"><?php echo $row['name'] ?></a></td>
+                <td><a href="<?php echo base_url();?>Hospital/<?php echo $this->crud_model->generate_encryption_key($row['hospital_id']);?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <?php if($account_type!='users'){?>
                 <td><?php $license_code=$this->db->where('license_id',$row['license'])->get('license')->row()->license_code;
                  if($row['license_status'] == 1){echo "<button type='button' class='btn-success'>".$license_code." - Active</button>";   

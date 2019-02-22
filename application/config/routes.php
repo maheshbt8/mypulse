@@ -58,3 +58,48 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['Privacy&Policy'] ='login/privacy/1';
 $route['Terms&Coditions'] ='login/privacy/2';
+
+/*********Login, LogOut, Registration, OTP Cancel, Forgot Password, Set Password.**************/
+$route['Login'] ='login';
+$route['Register'] ='login/register';
+$route['Logout'] ='login/logout';
+$route['Forgot_Password'] ='login/forgot_password';
+$route['OTP_Cancel'] ='login/register/otp_cancel';
+$route['Set_Password/(:any)'] = 'login/set_password';
+/*********MyPulse Menus.**************/
+$route['Dashboard'] = 'main/dashboard';
+$route['Hospitals'] = 'main/hospital';
+$route['Hospital_Admins'] = 'main/hospital_admins';
+$route['Doctors'] = 'main/doctor';
+$route['Receptionists'] = 'main/receptionist';
+$route['Nurses'] = 'main/nurse';
+$route['Medical_Stores'] = 'main/medical_stores';
+$route['Medical_Labs'] = 'main/medical_labs';
+$route['MyPulse_Users'] = 'main/users';
+$route['Appointments'] = 'main/appointment';
+$route['Out_Patient'] = 'main/patient';
+$route['In-Patient'] = 'main/inpatient';
+$route['Orders'] = 'main/orders';
+$route['Ordered_Medicines'] = 'main/orders/0';
+$route['Ordered_Medical_Tests'] = 'main/orders/1';
+$route['In-Patient_Trend'] = 'main/report/1';
+$route['Appointment_Trend'] = 'main/report/2';
+$route['Settings'] = 'main/settings';
+$route['DB-Backup'] = 'main/db_backup';
+$route['Prescriptions'] = 'main/prescription';
+$route['Prognosis'] = 'main/prognosis';
+$route['Health_Reports'] = 'main/health_reports';
+/*$route['Orders/(:num)'] = 'main/inpatient';
+$route['Trends/(:num)'] = 'main/inpatient';*/
+
+
+/*********MyPulse Functional.**************/
+$route['Hospital/(:any)'] = 'main/get_hospital_history/$1';
+$route['Hospital_Edit/(:any)'] = 'main/edit_hospital/$1';
+$route['Prescription/(:any)'] = 'main/prescription_history/$1';
+$route['prescription_for_medicine/(:any)'] = 'main/prescription_history/$1/0';
+$route['prescription_for_medical_test/(:any)'] = 'main/prescription_history/$1/1';
+$route['Prognosis/(:any)'] = 'main/prognosis_history/$1';
+//$route['Hospital_Edit/(:any)'] = 'main/edit_hospital/$1';
+/*$route['product/(:any)'] = 'catalog/product_lookup';
+$route['product/(:num)'] = 'catalog/product_lookup_by_id/$1';*/
