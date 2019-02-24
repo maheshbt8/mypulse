@@ -1,6 +1,7 @@
 <?php $account_type=$this->session->userdata('login_type');?>
 <?php
-$hospital_id=$this->crud_model->generate_decryption_key($hospital_id);
+/*$hospital_id=$this->crud_model->generate_decryption_key($hospital_id);*/
+if($this->session->userdata('hospital_id')==$hospital_id || $account_type=='superadmin'){
  $single_hospital_info = $this->crud_model->select_hospital_info_by_id($hospital_id);
 foreach ($single_hospital_info as $row) :  
 ?>
@@ -59,7 +60,6 @@ foreach ($single_hospital_info as $row) :
                 </a>
             </li>
         <?php }?> 
-            
         </ul>
 <div class="panel panel-default">
             <div class="panel-body">
@@ -70,7 +70,7 @@ $single_hospital_info = $this->db->get_where('hospitals', array('hospital_id' =>
 foreach ($single_hospital_info as $row) {
 ?>
             <div class="tab-pane box active" id="tab1">
-                <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>Hospital_Edit/<?=$this->crud_model->generate_encryption_key($row['hospital_id']);?>" method="post" enctype="multipart/form-data">
+                <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>Hospital_Edit/<?=$row['hospital_id'];?>" method="post" enctype="multipart/form-data">
                 <div class="row">
     <div class="col-md-12">
         <label class="control-label">Basic Info</label>
@@ -430,3 +430,7 @@ foreach ($single_hospital_info as $row) {
                     } );                  
 
 </script>
+<?php }else{
+    //redirect('404_override');
+    $this->load->view('four_zero_four');
+}?>

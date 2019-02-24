@@ -61,7 +61,7 @@ $this->session->set_userdata('last_page', current_url());
         }
         }
       ?>
-      <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
+      <a href="<?php echo base_url();?>Message/<?php echo $row['message_id'];?>" class="list-group-item">
       <?php if($s==0){ ?><strong> <?php }?>
     <p class="" style=""><span class="span-user pull-left"><?php $created_by=explode('-',$row['created_by']);
 if($created_by[0] == 'superadmin'){
@@ -99,7 +99,7 @@ if($created_by[0] == 'superadmin'){
     <?php $message_data=$this->db->order_by('message_id','desc')->where('created_by',$account_details)->get('messages')->result_array();
     $i=1;foreach ($message_data as $row) { 
         ?>
-    <a href="<?php echo base_url();?>main/read_message/<?php echo $row['message_id'];?>" class="list-group-item">
+    <a href="<?php echo base_url();?>Message/<?php echo $row['message_id'];?>" class="list-group-item">
     <p class="" style=""><span class="span-user pull-left">
         <?php
     $user_to='';

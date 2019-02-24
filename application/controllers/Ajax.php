@@ -607,7 +607,7 @@ if($message_data!=''){
         }
         }
     ?>
-<a href="<?php echo base_url()?>main/read_message/<?= $row['message_id'];?>">
+<a href="<?php echo base_url()?>Message/<?= $row['message_id'];?>">
         <li>
         <div class="dropdown-messages-box">
 <div class="message-body">
@@ -659,7 +659,7 @@ if(count($notification_data) > 0){
 <li>
 
 <div class="dropdown-messages-box">
-<a href="<?php echo base_url()?>main/read_notification/<?= $row['id'];?>">
+<a href="<?php echo base_url()?>Notification/<?= $row['id'];?>">
 <div class="message-body">
 <?php if($row['isRead']==2){ ?><strong> <?php }?><?= $row['title'];?>.
 <br/>

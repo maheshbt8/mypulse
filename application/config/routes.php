@@ -58,7 +58,6 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['Privacy&Policy'] ='login/privacy/1';
 $route['Terms&Coditions'] ='login/privacy/2';
-
 /*********Login, LogOut, Registration, OTP Cancel, Forgot Password, Set Password.**************/
 $route['Login'] ='login';
 $route['Register'] ='login/register';
@@ -89,6 +88,10 @@ $route['DB-Backup'] = 'main/db_backup';
 $route['Prescriptions'] = 'main/prescription';
 $route['Prognosis'] = 'main/prognosis';
 $route['Health_Reports'] = 'main/health_reports';
+$route['Manage_Profile'] = 'main/manage_profile';
+$route['Manage_Password'] = 'main/manage_password';
+$route['Notifications'] = 'main/notification';
+$route['Messages'] = 'main/message';
 /*$route['Orders/(:num)'] = 'main/inpatient';
 $route['Trends/(:num)'] = 'main/inpatient';*/
 
@@ -100,6 +103,8 @@ $route['Prescription/(:any)'] = 'main/prescription_history/$1';
 $route['prescription_for_medicine/(:any)'] = 'main/prescription_history/$1/0';
 $route['prescription_for_medical_test/(:any)'] = 'main/prescription_history/$1/1';
 $route['Prognosis/(:any)'] = 'main/prognosis_history/$1';
+$route['Notification/(:any)'] = 'main/read_notification/$1';
+$route['Message/(:any)'] = 'main/read_message/$1';
 //$route['Hospital_Edit/(:any)'] = 'main/edit_hospital/$1';
 /*$route['product/(:any)'] = 'catalog/product_lookup';
 $route['product/(:num)'] = 'catalog/product_lookup_by_id/$1';*/

@@ -84,7 +84,7 @@ else
 <li>
 <div class="all-button"><!-- <a href="<?php echo base_url()?>main/notification/delete_all">
 <strong>Clear All NotificationsAll Messages</strong></a> -->
-  <a href="<?php echo base_url()?>main/notification">
+  <a href="<?php echo base_url()?>Notifications">
 <strong>View All Notifications</strong></a>
 </div>
 </li>
@@ -101,7 +101,7 @@ else
 </div>
 <li class="divider"></li>
 <li>
-<div class="all-button"><a href="<?php echo base_url()?>main/message">
+<div class="all-button"><a href="<?php echo base_url()?>Messages">
 <em class="fa fa-inbox"></em> <strong>All Messages</strong></a></div>
 </li>
 </ul>
@@ -114,13 +114,13 @@ else
  }
  echo $ac.' '.$this->db->where($this->session->userdata('type_id').'_id',$this->session->userdata('login_user_id'))->get($account_type)->row()->name;?><em class="fa fa-angle-down"></em></span></a>
         <ul class="dropdown-menu">
-          <li><a href="<?php echo base_url()?>main/manage_profile"><em class="fa fa-user"></em><span>Profile</span>
+          <li><a href="<?php echo base_url()?>Manage_Profile"><em class="fa fa-user"></em><span>Profile</span>
             </a></li>
             <li class="divider"></li>
-          <li><a href="<?php echo base_url()?>main/manage_password"><em class="fa fa-lock"></em><span>Change Password</span>
+          <li><a href="<?php echo base_url()?>Manage_Password"><em class="fa fa-lock"></em><span>Change Password</span>
             </a></li>
             <li class="divider"></li>
-          <li><a href="<?php echo base_url(); ?>login/logout">
+          <li><a href="<?php echo base_url(); ?>Logout">
               <em class="fa fa-sign-out"></em>
               <span>Log Out</span>
             </a></li>

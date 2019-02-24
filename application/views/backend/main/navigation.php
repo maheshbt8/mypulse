@@ -1,5 +1,5 @@
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-			<a href="<?=base_url('main/manage_profile')?>"><div class="profile-sidebar">
+			<a href="<?=base_url('Manage_Profile')?>"><div class="profile-sidebar">
 				<div class="profile-userpic">
 					<img src="data:image/gif;base64,<?=$image_url;?>" width="50" class="img-responsive" alt="">
 				</div>
@@ -56,7 +56,7 @@ echo $user_role; ?></span></div>
         </li>
 <?php }elseif($account_type=='hospitaladmins'){?>
         <li class="<?php if ($page_name == 'hospital_history') echo 'active'; ?> ">
-            <a href="<?php echo base_url(); ?>Hospital/<?=$this->crud_model->generate_encryption_key($this->session->userdata('hospital_id'));?>">
+            <a href="<?php echo base_url(); ?>Hospital/<?=$this->session->userdata('hospital_id');?>">
                 <i class="fa  fa-hospital-o ">&nbsp;</i>
                 <span><?php echo get_phrase('hospital_details'); ?></span>
             </a>

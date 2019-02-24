@@ -23,12 +23,13 @@ if($account_type == 'superadmin'){
 }elseif($account_type == 'users'){
   $img_type='user_image';
 }
-if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
+$image_url=$this->crud_model->get_image_url($img_type,$this->session->userdata('login_user_id'));
+/*if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
       $image_url = base_url() . 'uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg';
 else
-    $image_url = base_url() . 'uploads/user.jpg';
+    $image_url = base_url() . 'uploads/user.jpg';*/
 ?>
-            <img src="<?php echo $image_url;?>" class="img-circle" style="width: 60%;">
+            <img src="data:image/gif;base64,<?=$image_url;?>" class="img-circle" style="width: 60%;">
                 <!-- <img src="<?php echo $this->crud_model->get_image_url('superadmin' , $row['superadmin_id']);?>" class="img-circle" style="width: 60%;"> -->
         <br>
         <h3><?php echo $row['name'];?></h3>
@@ -116,7 +117,7 @@ else
                         <div class="col-sm-12">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo $image_url;?>" alt="...">
+                                    <img src="data:image/gif;base64,<?=$image_url;?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

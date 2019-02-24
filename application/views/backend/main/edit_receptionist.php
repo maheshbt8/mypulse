@@ -326,7 +326,7 @@ for($d=0;$d<count($doc);$d++){
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url('uploads/receptionist_image/').$row['receptionist_id'].'.jpg'?>" alt="...">
+                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_image_url('receptionist_image',$row['receptionist_id']);?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

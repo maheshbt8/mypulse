@@ -19,7 +19,7 @@ $this->session->set_userdata('last_page', current_url());
 <div class="list-group">
 <?php $i=1;foreach ($notification_data as $row) { ?>
   <?php if($row['isRead']==2){ ?><strong><?php } ?>
-  <a href="<?php echo base_url(); ?>main/read_notification/<?php echo $row['id'];?>" class="list-group-item"><span><?php echo $row['title'];?></span>
+  <a href="<?php echo base_url(); ?>Notification/<?php echo $row['id'];?>" class="list-group-item"><span><?php echo $row['title'];?></span>
     <span class="pull-right"><!-- <a href="<?=base_url('main/notification/delete/').$row['id'];?>" ><button onclick=""><i class="fa fa-times-circle-o"></i></button></a> --><!-- </span>
     <span class="pull-right"> --><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></span>
     

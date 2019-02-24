@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!-- <!DOCTYPE html> 
 <html lang="en">
 <head>
    <meta charset="utf-8">
@@ -6,7 +6,7 @@
  <link href="<?= base_url('assets/backend/')?>css/bootstrap.min.css" rel="stylesheet">
  <script src="<?= base_url('assets/backend/')?>js/jquery-1.11.1.min.js"></script>
 </head>
-<body>
+<body> -->
  <br/>
  <center>
  <div class="container">
@@ -20,7 +20,7 @@
  </center>
 
  <!-- Right click disable in this site!! -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 jQuery(document).ready(function(){
     //Disable mouse right click
     $("body").on("contextmenu",function(e){
@@ -40,4 +40,4 @@ jQuery(document).ready(function(){
 });
 </script>
 </body>
-</html>
+</html> -->

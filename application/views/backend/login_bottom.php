@@ -8,7 +8,7 @@
     * By Arthur Gareginyan (arthurgareginyan@gmail.com)
     * For full source code, visit https://mycyberuniverse.com
     */
-/*  window.onload = function() {
+  window.onload = function() {
     document.addEventListener("contextmenu", function(e){
       e.preventDefault();
     }, false);
@@ -44,5 +44,5 @@
       e.preventDefault();
       return false;
     }
-  };*/
+  };
 </script>

@@ -181,10 +181,10 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$this->ses
     }
     function register($task='')
     {
-        if($task=='otp_cancel'){
+        /*if($task=='otp_cancel'){
         $this->session->set_userdata('otp','');
         $this->session->set_userdata('otp_sended','');
-        }else{
+        }else{*/
         if($this->input->post()){
         $phone = $this->input->post('phone');
            $validation_phone = mobile_validation($phone);
@@ -280,7 +280,7 @@ $pid='MPU'.date('y').'_'.$num;
                  $this->session->set_flashdata('error', 'Mobile Number Already registered' );
         }
         }
-        }
+        /*}*/
         $this->load->view('backend/register');
     }
     /*function user_register(){

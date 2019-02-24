@@ -13,7 +13,6 @@
 <?php include'login_top.php';?>
 </head>  
 <body>
-	  
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');">
 			<div class="wrap-login100 p-t-190 p-b-30">
@@ -40,28 +39,28 @@
 		<?php
 		if($this->session->userdata('otp')!=''){
 			?>
-			<div class="wrap-input100 validate-input m-b-10" data-validate = "OTP Required">
+			<div class="wrap-input100 validate-input m-b-10" data-validate = "Enter OTP">
 						<input class="input100" type="text" name="otp" placeholder="<?php echo 'OTP';?>*" value="" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
-					</div>
+			</div>
 					<a href="#" onclick="return otp_resend()" style="color:white;margin-left: 70%;">Re - Send OTP</a>
 			<?php
 		}
-		if($this->session->userdata('otp')==''){
+		/*if($this->session->userdata('otp')==''){*/
 		?><!-- <div id="main_data"> -->
 			<!-- <input type="text" name="reg_status" value="2" id="reg_status" hidden="">
 			<input type="text" name="email_status" value="2" id="email_status" hidden=""> -->
-					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter first name">
-						<input class="input100" type="text" name="username" placeholder="Name *" value="<?php echo set_value('username'); ?>" autocomplete="off">
+					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Name">
+						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*" value="<?php echo set_value('username'); ?>" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
-					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter mobile number">
+					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Mobile Number">
 						<input class="input100" type="text" name="phone" placeholder="<?php echo 'Mobile Number';?> *" value="<?php echo set_value('phone'); ?>" onchange="return get_phone(this.value)" autocomplete="off"minlength="10" maxlength="10" id="phone">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
@@ -69,7 +68,7 @@
 						</span>
 					</div>
 					
-						<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Email<?php if($this->session->flashdata('email_error')!=''){echo "Duplicate";}?>">
+						<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Email <?php if($this->session->flashdata('email_error')!=''){echo "Duplicate";}?>">
 						<input class="input100" type="email" name="email" placeholder="Email *" value="<?php echo set_value('email'); ?>" onchange="return get_email(this.value)" autocomplete="off">
 						
 						<span class="focus-input100"></span>
@@ -100,17 +99,13 @@
         </p>
 					</div>
 				<!-- </div> -->
-				<?php } ?>
+				<?php /*}*/ ?>
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn"><?php
 		if($this->session->userdata('otp')!=''){
 			echo "Submit";}else{echo "Sign - Up";}?></button>
 					</div>
-		<?php if($this->session->userdata('otp')!=''){
-					?>
-<div class="container-login100-form-btn p-t-10">
-						<button type="button" class="login100-form-btn"  onclick="window.location.href = '<?=base_url('OTP_Cancel');?>'">Cancel</button>
-					</div><?php }?>
+
 					<div class="text-center w-full p-t-25 p-b-230">
 <a class="txt1" href="<?php echo base_url();?>Logout" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account?_login');?></h5>
 <i class="fa fa-long-arrow-right"></i>						
@@ -164,17 +159,13 @@ function otp_resend() {
 }
 </script>
 <script>
- jQuery("#cancel-button").click(function () {
-           $.ajax({
-            type : "GET",
-            url: '<?php echo base_url();?>login/otp_cancel/' ,
-            success: function(response)
-            {
-            	alert(response);
-            	window.location.reload();
-            } 
-        });
-
+    $(document).ready(function(){
+<?php 
+if($this->session->userdata('otp_sended')=='1'){ ?>
+	$(".main_data").hide();
+<?php 
+}
+?>
     });
 </script>
 </body>

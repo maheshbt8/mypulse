@@ -163,8 +163,8 @@ echo $message;die;*/
         $this->form_validation->set_rules($config);
 
          if ($this->form_validation->run() == TRUE){
-         $hospital=$this->crud_model->generate_decryption_key($hospital_id); 
-            $this->crud_model->update_hospital_info($hospital);
+         /*$hospital_id=$this->crud_model->generate_decryption_key($hospital_id); */
+            $this->crud_model->update_hospital_info($hospital_id);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
            /* if($account_type!='hospitaladmins'){
             redirect($this->session->userdata('last_page'));

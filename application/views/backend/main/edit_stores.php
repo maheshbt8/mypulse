@@ -297,7 +297,7 @@ foreach ($single_store_info as $row) {
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url(); ?>uploads/medical_stores/<?php echo $row['store_id']; ?>.jpg" alt="...">
+                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_image_url('medical_stores',$row['store_id']);?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

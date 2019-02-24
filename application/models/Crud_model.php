@@ -624,20 +624,25 @@ $yes=$this->db->update('patient',array('hospital_ids'=>implode(',',$hospi),'doct
     {
         $check=$_POST['check'];
         for($i=0;$i<count($check);$i++){
-        $this->db->where('hospital_id',$check[$i]);
-        $yes=$this->db->delete('hospitals');
+        $hospital_id=$check[$i];
+        $data['status']    = '2';
+        $data['isDeleted']    = '2';
+        $this->db->where('hospital_id',$hospital_id);
+        $yes=$this->db->update('hospitals',$data);
         if($yes){
         $this->db->where('hospital_id',$hospital_id);
-        $a=$this->db->delete('branch');
+        $a=$this->db->update('branch',$data);
         if($a){
         $this->db->where('hospital_id',$hospital_id);
-        $b=$this->db->delete('department');
+        $b=$this->db->update('department',$data);
         if($b){
         $this->db->where('hospital_id',$hospital_id);
-        $c=$this->db->delete('ward');
+        $c=$this->db->update('ward',$data);
         if($c){
+        $data1['bed_status']    = '2';
+        $data1['isDeleted']    = '2';
         $this->db->where('hospital_id',$hospital_id);
-        $d=$this->db->delete('bed');
+        $d=$this->db->update('bed',$data1);
         }
         }
         }
@@ -965,9 +970,10 @@ function select_store_info_by_hospital_id($hospital_id){
     {
         $check=$_POST['check'];
         for($i=0;$i<count($check);$i++){
-            $this->db->where('branch_id',$check[$i]);
-            $a=$this->db->delete('branch');
-            if($a){
+        $branch_id=$check[$i];
+        $this->db->where('branch_id',$branch_id);
+        $a=$this->db->delete('branch');
+        if($a){
         $this->db->where('branch_id',$branch_id);
         $b=$this->db->delete('department');
         if($b){
@@ -1028,13 +1034,14 @@ function select_store_info_by_hospital_id($hospital_id){
     }
     function delete_multiple_department_info()
     {
-        $data['status']    = '2';
-        $data['isDeleted']    = '2';
         $check=$_POST['check'];
         for($i=0;$i<count($check);$i++){
-            $this->db->where('department_id',$check[$i]);
-            $b=$this->db->update('department',$data);
-            if($b){
+            $department_id=$check[$i];
+          $data['status']    = '2';
+        $data['isDeleted']    = '2';
+        $this->db->where('department_id',$department_id);
+        $b=$this->db->update('department',$data);
+        if($b){
         $this->db->where('department_id',$department_id);
         $c=$this->db->update('ward',$data);
         if($c){
@@ -1091,12 +1098,13 @@ function select_store_info_by_hospital_id($hospital_id){
     }
     function delete_multiple_ward_info()
     {
-        $data['status']    = '2';
-        $data['isDeleted']    = '2';
         $check=$_POST['check'];
         for($i=0;$i<count($check);$i++){
-            $this->db->where('ward_id',$check[$i]);
-        $c=$this->db->update('ward',$date);
+            $ward_id=$check[$i];
+         $data['status']    = '2';
+        $data['isDeleted']    = '2';
+        $this->db->where('ward_id',$ward_id);
+        $c=$this->db->update('ward',$data);
         if($c){
         $data1['bed_status']    = '2';
         $data1['isDeleted']    = '2';

@@ -4,8 +4,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L,QSA] 
 #Replace above line with below for godday server
-#RewriteRule ^(.*)$ index.php?/$1 [L,QSA] 
-
+#RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+ 	
 #ErrorDocument 403 http://localhost/error-403
 
 <IfModule mod_deflate.c>

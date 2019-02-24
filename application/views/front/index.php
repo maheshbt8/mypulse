@@ -66,7 +66,7 @@ header{
       <nav class="navbar navbar-expand-lg navbar-light">
         <h1>
           <a class="navbar-brand text-capitalize" href="">
-            <img src="<?=base_url('assets/logo.png')?>"  style="max-height:60px; margin: -35px;"/>
+            <img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:60px; margin: -35px;"/>
           </a>
         </h1>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -423,15 +423,15 @@ if($customer[0] == 'superadmin'){
   $img_type='medical_labs';
   $account='Medical Lab';
 }
-if (file_exists('uploads/'. $img_type.'/'.$customer[2]. '.jpg'))
+/*if (file_exists('uploads/'. $img_type.'/'.$customer[2]. '.jpg'))
       $image_url = base_url() . 'uploads/' . $img_type.'/' .$customer[2]. '.jpg';
 else
-    $image_url = base_url() . 'uploads/user.jpg';
+    $image_url = base_url() . 'uploads/user.jpg';*/
 ?>
                       <div class="carousel-item <?php if($j==0){echo 'active';}?>">
                         <div class="row thumbnail adjust1">
                            <div class="col-md-3 col-sm-3">
-                              <img class="media-object img-fluid" src="<?=$image_url;?>" alt="" style="height:100px;"/>
+                              <img class="media-object img-fluid" src="data:image/gif;base64,<?=$this->crud_model->get_image_url($img_type,$customer[2]);?>" alt="" style="height:100px;"/>
                              </div>
                              <div class="col-md-9 col-sm-9">
                               <div class="caption testi-text">

@@ -5,6 +5,7 @@
 </style>
 <?php
 $account_type= $this->session->userdata('login_type');
+if($this->session->userdata('login_user_id')==$admin_id || $account_type=='superadmin'){
 $country_info=$this->db->get('country')->result_array();
 $single_admin_info = $this->db->get_where('hospitaladmins', array('admin_id' => $admin_id))->result_array();
 foreach ($single_admin_info as $row) {
@@ -212,7 +213,7 @@ foreach ($single_admin_info as $row) {
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="<?php echo base_url('uploads/hospitaladmin_image/').$row['admin_id'].'.jpg'?>" alt="...">
+                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_image_url('hospitaladmin_image',$row['admin_id']);?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
@@ -438,3 +439,9 @@ foreach ($single_admin_info as $row) {
           });  
     }
    </script>
+   <?php 
+    }else{
+        $this->load->view('four_zero_four');
+    }
+
+   ?>

@@ -1,5 +1,5 @@
 <?php 
-$prognosis_id=$this->crud_model->generate_decryption_key($prognosis_id);
+/*$prognosis_id=$this->crud_model->generate_decryption_key($prognosis_id);*/
 $prognosis_info = $this->db->get_where('prognosis', array('prognosis_id' =>$prognosis_id))->row_array();
 $doctor_info=$this->crud_model->select_doctor_info_id($prognosis_info['doctor_id']);
 

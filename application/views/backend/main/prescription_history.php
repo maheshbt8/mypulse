@@ -6,7 +6,7 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
 }
 }
 if($prescription_id!=''){
-    $prescription_id=$this->crud_model->generate_decryption_key($prescription_id);
+   /* $prescription_id=$this->crud_model->generate_decryption_key($prescription_id);*/
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
 }
 $doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
