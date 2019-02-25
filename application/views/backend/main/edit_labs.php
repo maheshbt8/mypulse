@@ -7,7 +7,7 @@
 $account_type= $this->session->userdata('login_type');
 $single_labs_info = $this->db->get_where('medicallabs', array('lab_id' => $id))->result_array();
 foreach ($single_labs_info as $row) {
-    
+    if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type=='superadmin'){
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -443,6 +443,9 @@ foreach ($single_labs_info as $row) {
 
 </div>
 </div>
+<?php }else{
+    $this->load->view('four_zero_four');
+}?>
 <?php }?>
 
 <script type="text/javascript">

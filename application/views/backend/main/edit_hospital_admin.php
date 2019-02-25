@@ -5,7 +5,7 @@
 </style>
 <?php
 $account_type= $this->session->userdata('login_type');
-if($this->session->userdata('login_user_id')==$admin_id || $account_type=='superadmin'){
+if($this->session->userdata('login_user_id') == $admin_id || $account_type=='superadmin'){
 $country_info=$this->db->get('country')->result_array();
 $single_admin_info = $this->db->get_where('hospitaladmins', array('admin_id' => $admin_id))->result_array();
 foreach ($single_admin_info as $row) {
@@ -113,12 +113,12 @@ foreach ($single_admin_info as $row) {
                             <span ><?php echo form_error('mobile'); ?></span>
                         </div>
                     </div>
-                    <?php if($account_type=='superadmin'){?>
+                   
                   <div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                            <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  <?php if($account_type!='superadmin'){echo "disabled";}?>>
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
@@ -138,7 +138,7 @@ foreach ($single_admin_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('status'); ?></label>
 
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="status" value="">
+                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" id="status" value=""<?php if($account_type!='superadmin'){echo "disabled";}?>>
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1"<?php if($row['status']==1){echo "selected";}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2"<?php if($row['status']==2){echo "selected";}?>><?php echo get_phrase('inactive'); ?></option>
@@ -146,7 +146,7 @@ foreach ($single_admin_info as $row) {
                             <span><?php echo form_error('status'); ?></span>
                         </div>
                     </div>
-                <?php }?>
+                
                 </div>
                     </div>
             </div>

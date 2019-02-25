@@ -1,5 +1,5 @@
 <?php
-$edit_data		=	$this->db->get_where('state' , array('state_id' => $param2) )->result_array();
+$edit_data=$this->db->get_where('state' , array('state_id' => $param2) )->result_array();
 
 ?>
 

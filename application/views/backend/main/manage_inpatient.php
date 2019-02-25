@@ -17,7 +17,7 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
                   <div class="form-group">  
                   <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
          <div class="col-sm-4">
-        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+29 days'));}?>"/>
+        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){if($_GET['sd'] != '0NaN-NaN-NaN' && $_GET['ed'] != '0NaN-NaN-NaN'){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'All';}}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+29 days'));}?>"/>
         </div>   
                         <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('status'); ?></span> 
                         <div class="col-sm-4">
@@ -148,11 +148,11 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
         $sd=date('Y-m-d', strtotime('-0 days'));
         $ed=date('Y-m-d', strtotime('+29 days'));
         ?>
-        window.location.href = '<?php echo base_url();?>main/inpatient?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
+        window.location.href = '<?php echo base_url();?>In-Patient?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
         <?php
        }elseif($_GET['sd'] != '' && $_GET['ed'] != ''){
         ?>
-        window.location.href = '<?php echo base_url();?>main/inpatient?sd=<?=$_GET['sd'];?>&ed=<?=$_GET['ed'];?>&status_id='+id;
+        window.location.href = '<?php echo base_url();?>In-Patient?sd=<?=$_GET['sd'];?>&ed=<?=$_GET['ed'];?>&status_id='+id;
         <?php
        }
        ?>
@@ -179,7 +179,7 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
         }
         ?>
         function cb(start, end) {
-            window.location.href = '<?php echo base_url();?>main/inpatient?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=1";
+            window.location.href = '<?php echo base_url();?>In-Patient?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=1";
         }
         
         $('#reportrange').daterangepicker({
@@ -191,6 +191,7 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
                 "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
             },  
             ranges: {
+                '<?php echo 'All';?>': ['All', 'All'],
                 '<?php echo 'Today';?>': [moment().add(0, 'days'), moment().add(0, 'days')],
                 '<?php echo 'Tomorrow';?>': [moment().add(1, 'days'), moment().add(1, 'days')],
                 '<?php echo 'Upcoming 7 day';?>': [moment(),moment().add(6, 'days')],

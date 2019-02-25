@@ -23,7 +23,8 @@ $this->session->set_userdata('last_page', current_url());
 <table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
     <thead>
         <tr>
-            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
+            <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
+            <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th><?php }?>
             <th data-field="id" data-sortable="true"><?php echo get_phrase('nurse_id');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('nurse_name');?></th> 
              <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th>
@@ -41,7 +42,8 @@ $this->session->set_userdata('last_page', current_url());
         <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){$nurse_info = $this->crud_model->select_nurse_info_table();}
         $i=1;foreach ($nurse_info as $row) { ?>   
             <tr>
-                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>"></td>
+                <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
+                <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['nurse_id'] ?>"></td><?php }?>
                 <td><?php echo $row['unique_id'];?></td>
                  <td><a href="<?php echo base_url(); ?>main/edit_nurse/<?php echo $row['nurse_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td>

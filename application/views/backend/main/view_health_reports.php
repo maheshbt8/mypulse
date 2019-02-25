@@ -30,12 +30,14 @@ $unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
 <?php if($reports['extension']!='pdf'){?>
     <input type="button" onclick="printDiv('ext_file')" class="btn btn-primary" value="Print">
 <?php }?>
-<a href="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" download="<?='Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" class="btn btn-success"><?php echo get_phrase('download'); ?></a>
+<a href="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" download="<?='Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" class="btn btn-success"><?php echo get_phrase('download'); ?>
+</a>
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
 </div>
-            </div>
+</div>
             <div class="panel-body" id="ext_file">
- <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>"></object>
+ <!-- <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>"></object> -->
+ <object width="100%" height="900px;" data="data:<?php if($reports['extension']!='pdf'){echo 'image/'.$reports['extension'];}elseif($reports['extension']=='pdf'){echo 'application/'.$reports['extension'];}?>;base64,<?=$this->crud_model->get_report_url(date('Y',strtotime($reports['created_at'])),$unique_id,'Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])),$reports['extension'])?>"></object>
             </div>
         </div>
     </div>

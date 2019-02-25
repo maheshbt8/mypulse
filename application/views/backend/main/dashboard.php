@@ -34,7 +34,13 @@ $this->session->set_userdata('last_page', current_url());
     /*echo $img_str;die;
     echo base64_decode($img_str);*/
 //  echo '<img src="data:image/gif;base64,'.$img_str.'" />'; //you can display the image on browser screen using image tag, if jpeg or jpg image than use 'image/jpg'
+    /*$image_path = 'uploads/reports/2019/MPU19_100001/Report1_20190222113701.pdf'; //this will be the physical path of your image   
+    $img_binary = fread(fopen($image_path, "r"), filesize($image_path));
+    $img_str = base64_encode($img_binary);*/ // will produce the encoded string
+    /*echo '<object src="data:application/pdf;base64,'.$img_str.'" />';*/
 ?>
+
+<!-- <object width="100%" height="900px;" data="data:application/pdf;base64,<?=$img_str;?>" internalinstanceid="8"></object> -->
 <style>
     .title{
         font-size: 20px;
@@ -436,7 +442,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>prescription_for_medicine/<?=$this->crud_model->generate_encryption_key($row1['prescription_id'])?>" class="hiper">
+                <td><a href="<?php echo base_url(); ?>prescription_for_medicine/<?=$row1['prescription_id'];?>" class="hiper">
                     <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>
@@ -473,7 +479,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>prescription_for_medical_test/<?=$this->crud_model->generate_encryption_key($row1['prescription_id'])?>" class="hiper">
+                <td><a href="<?php echo base_url(); ?>prescription_for_medical_test/<?=$row1['prescription_id'];?>" class="hiper">
                     <?php echo $prescription_data[0];?></a></td>
                 <td><?php echo $row1['created_at'] ?></td>
                 <td>

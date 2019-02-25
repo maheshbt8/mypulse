@@ -22,7 +22,7 @@ $this->session->set_userdata('last_page', current_url());
 <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
     <thead>
         <tr>
-        <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
+        <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
         <?php }?>
             <th data-field="id" data-sortable="true"><?php echo get_phrase('doctor_id');?></th>

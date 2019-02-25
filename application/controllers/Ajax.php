@@ -74,7 +74,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
         if($check_users->num_rows()>0){
         $data=$check_users->row_array(); 
         if($data['phone']!=$phone && $data['reg_status']!='2'){
-         echo '<span style="color:red"> This Email Already Existed </span>';   
+         echo '<span style="color:red"> This Email Already Registered </span>';   
         }
         }
         }
@@ -88,7 +88,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
         if($check_users->num_rows()>0){
         $data=$check_users->row_array(); 
         if($data['reg_status']!='2'){
-         echo '<span style="color:red"> This Phone Number Already Existed </span>';   
+         echo '<span style="color:red"> This Phone Number Already Registered </span>';   
         }
         }
         }

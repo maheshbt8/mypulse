@@ -188,7 +188,7 @@
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prescription_history/<?php echo $row1['prescription_id'] ?>" class="hiper">
+                <td><a href="<?php echo base_url(); ?>Prescription/<?php echo $row1['prescription_id'] ?>" class="hiper">
                     <?php echo explode('|',$this->encryption->decrypt($row1['prescription_data']))[0];?></a></td>
                 <td><?php $doc=$this->db->where('doctor_id',$row1['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                 <td><?php echo $row1['created_at'] ?></td>
@@ -229,7 +229,7 @@
             ?>
             <tr>
                 <td><?php echo $i?></td>
-                <td><a href="<?php echo base_url(); ?>main/prognosis_history/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
+                <td><a href="<?php echo base_url(); ?>Prognosis/<?php echo $row2['prognosis_id'] ?>" class="hiper"><?php echo $prognosis_data[0]; ?></a></td>
             <td><?php $doc=$this->db->where('doctor_id',$row2['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name?></td>
                <!--  <td><?php echo $prognosis_data[1]; ?></td> -->
                 <td><?php echo $row2['created_at'] ?></td>

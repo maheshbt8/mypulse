@@ -7,6 +7,7 @@
 $account_type= $this->session->userdata('login_type'); 
 $single_nurse_info = $this->db->get_where('nurse', array('nurse_id' => $nurse_id))->result_array();
 foreach ($single_nurse_info as $row) {
+if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type=='superadmin'){
 ?>
  
 <div class="row">
@@ -464,6 +465,9 @@ for($d=0;$d<count($doc);$d++){
             <!----CREATION FORM ENDS-->
         </div>
     </div>
+    <?php }else{
+    $this->load->view('four_zero_four');
+}?>
 <?php } ?>
 
 

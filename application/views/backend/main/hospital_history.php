@@ -370,7 +370,10 @@ foreach ($single_hospital_info as $row) {
 
     <?php } ?>
 <?php endforeach; ?>
-
+<?php }else{
+    //redirect('404_override');
+    $this->load->view('four_zero_four');
+}?>
 <script type="text/javascript">
 
     
@@ -430,7 +433,3 @@ foreach ($single_hospital_info as $row) {
                     } );                  
 
 </script>
-<?php }else{
-    //redirect('404_override');
-    $this->load->view('four_zero_four');
-}?>
