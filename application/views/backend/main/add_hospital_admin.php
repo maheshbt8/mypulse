@@ -98,7 +98,7 @@
                             <select name="hospital" class="form-control select2" id="hospital" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('hospital'); ?>">
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
-                                $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
+                                $admins = $this->crud_model->select_all_hospitals();
                                 foreach($admins as $row){?>
                                 <option value="<?php echo $row['hospital_id'] ?>"><?php echo $row['name'] ?></option>
                                 

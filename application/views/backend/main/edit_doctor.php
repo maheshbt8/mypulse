@@ -35,27 +35,20 @@ foreach ($single_doctor_info as $row) {
          <div class="panel panel-default">   
             <div class="panel-body">    
         <div class="tab-content">
-           
         <br>
             <!----TABLE LISTING STARTS-->
             <div class="tab-pane box active" id="list">
-                
                 <div class="row">
     <div class="col-md-12">
-
         <div class="panel panel-primary" data-collapsed="0">
-
-
             <div class="panel-body">
-
-                
                     <div class="row">
                         <div class="col-sm-6">
                         <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="fname" class="form-control" id="fname" value="<?=$row['name']?>" <?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="fname" class="form-control" id="fname" value="<?=$row['name']?>" <?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('fname'); ?></span>
                         </div>
                     </div>
@@ -63,14 +56,14 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('middle_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="mname" class="form-control" id="mname" value="<?=$row['mname']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="mname" class="form-control" id="mname" value="<?=$row['mname']?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('last_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="lname" value="<?=$row['lname']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="lname" class="form-control" id="lname" value="<?=$row['lname']?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('lname'); ?></span>
                         </div>
                     </div>
@@ -78,7 +71,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description" value="<?=$row['description']?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="description" class="form-control" id="description" value="<?=$row['description']?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
@@ -168,7 +161,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" id="hospital" value=""  onchange="return get_branch(this.value)" <?php if($account_type=='users'){echo 'disabled';}?>>
+                            <select name="hospital" class="form-control select2" id="hospital" value=""  onchange="return get_branch(this.value)" <?php if($account_type=='users' || $row['isDeleted']=='2'){echo 'disabled';}?>>
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
@@ -187,7 +180,7 @@ foreach ($single_doctor_info as $row) {
                   <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
-                                <select name="branch" class="form-control select2" id="select_branch" value=""  onchange="return get_department(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins'){echo "disabled";}?>>
+                                <select name="branch" class="form-control select2" id="select_branch" value=""  onchange="return get_department(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_branch'); ?></option>
                                     <?php 
                                 $admins = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
@@ -202,7 +195,7 @@ foreach ($single_doctor_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('department'); ?></label>
                             <div class="col-sm-8">
-                                <select name="department" class="form-control select2" id="select_department" value=""<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins'){echo "disabled";}?>>
+                                <select name="department" class="form-control select2" id="select_department" value=""<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_department'); ?></option>
                                      <?php 
                                 $admins = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
@@ -219,7 +212,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('status'); ?></label>
 
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" id="status" value=""<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins'){echo "disabled";}?>>
+                            <select name="status" class="form-control" id="status" value=""<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo get_phrase('select_status'); ?></option>
                                 <option value="1"  <?php if($row['status']=='1'){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2"  <?php if($row['status']=='2'){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
@@ -265,7 +258,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['gender'];?></label>
 
                         <div class="col-sm-8">
-                            <select name="gender" class="form-control" id="gender" value=""<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <select name="gender" class="form-control" id="gender" value=""<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo get_phrase('select_gender'); ?></option>
                                 <option value="male" <?php if($row['gender']=='male'){echo 'selected';}?>><?php echo get_phrase('male'); ?></option>
                                 <option value="female"  <?php if($row['gender']=='female'){echo 'selected';}?>><?php echo get_phrase('female'); ?></option>
@@ -277,21 +270,21 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('date_of_birth'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off" value="<?php echo $row['dob']; ?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo get_phrase('date_of_birth'); ?>" autocomplete="off" value="<?php echo $row['dob']; ?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group" hidden="">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('aadhar_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="aadhar" class="form-control" id="aadhar" value="<?php echo $row['aadhar']; ?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="aadhar" class="form-control" id="aadhar" value="<?php echo $row['aadhar']; ?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('address'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="address" value="<?php echo $row['address']; ?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="address" class="form-control" id="address" value="<?php echo $row['address']; ?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
@@ -307,7 +300,7 @@ foreach ($single_doctor_info as $row) {
                                     <span class="btn btn-white btn-file">
                                         <span class="fileinput-new"><?php echo get_phrase('select_profile'); ?></span>
                                         <span class="fileinput-exists"><?php echo get_phrase('change'); ?></span>
-                                        <input type="file" name="userfile" id="userfile" accept="image/*"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                                        <input type="file" name="userfile" id="userfile" accept="image/*"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     </span>
                                     <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo get_phrase('remove'); ?></a>
                                 </div>
@@ -323,7 +316,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control select2" id="country" value=""  onchange="return get_state(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <select name="country" class="form-control select2" id="country" value=""  onchange="return get_state(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
                                 <?php 
                                 $country = $this->db->get_where('country')->result_array();
@@ -340,7 +333,7 @@ foreach ($single_doctor_info as $row) {
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
                             <div class="col-sm-8">
-                                <select name="state" class="form-control select2" id="select_state" value=""  onchange="return get_district(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                                <select name="state" class="form-control select2" id="select_state" value=""  onchange="return get_district(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_state'); ?></option>
                                     <?php 
                                 $state = $this->db->get_where('state',array('country_id'=>$row['country']))->result_array();
@@ -356,7 +349,7 @@ foreach ($single_doctor_info as $row) {
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
                             <div class="col-sm-8">
-                                <select name="district" class="form-control select2" id="select_district"  value=""  onchange="return get_city(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                                <select name="district" class="form-control select2" id="select_district"  value=""  onchange="return get_city(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_district'); ?></option>
                                     <?php 
                                 $district = $this->db->get_where('district',array('state_id'=>$row['state']))->result_array();
@@ -370,7 +363,7 @@ foreach ($single_doctor_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
                             <div class="col-sm-8">
-                                <select name="city" class="form-control select2" id="select_city" value="" <?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                                <select name="city" class="form-control select2" id="select_city" value="" <?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_city'); ?></option>
                                     <?php 
                                 $admins = $this->db->get_where('city',array('district_id'=>$row['district']))->result_array();
@@ -403,21 +396,21 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('qualification'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo $row['qualification']; ?>" <?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="qualification" class="form-control" id="qualification" value="<?php echo $row['qualification']; ?>" <?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('experience'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="experience" class="form-control" id="experience" value="<?php echo $row['experience']; ?>" <?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="experience" class="form-control" id="experience" value="<?php echo $row['experience']; ?>" <?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('registration_number'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="registration" class="form-control" id="registration" value="<?php echo $row['registration']; ?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                            <input type="text" name="registration" class="form-control" id="registration" value="<?php echo $row['registration']; ?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                 </div>
@@ -425,7 +418,7 @@ foreach ($single_doctor_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('specializations'); ?></label>
                             <div class="col-sm-8">
-                                <select multiple name="specializations[]" class="form-control  select2" id="select_doctor" value="<?php echo set_value('specializations[]'); ?>"<?php if($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors'){echo "disabled";}?>>
+                                <select multiple name="specializations[]" class="form-control  select2" id="select_doctor" value="<?php echo set_value('specializations[]'); ?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                       <?php 
                                     $admins = $this->db->get('specializations')->result_array();
                                 foreach($admins as $row1){
@@ -447,7 +440,7 @@ foreach ($single_doctor_info as $row) {
                 
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-9">
-                        <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors'){?>
+                        <?php if(($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'doctors')&&$row['isDeleted']=='1'){?>
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">
                     <?php }?>
                         &nbsp;&nbsp;

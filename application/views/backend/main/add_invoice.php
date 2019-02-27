@@ -21,7 +21,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
             <div class="panel-body">
 <div class="my_pulse">  
     <div class="col-md-12" style="background-color: #40403fe8;">
-    <center style="padding:5px;"><img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
+    <center style="padding:5px;"><img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:45px; margin: 0px;"/></center>
     </div>
 </div>
     <hr/>

@@ -63,7 +63,7 @@ public function login_post() {
         }else {
                 $this->response([
                     'status' => FALSE,
-                    'message' => 'Mobile Number Already Existed.'
+                    'message' => 'Mobile Number Already Registered.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
@@ -187,6 +187,90 @@ $pid='MPU'.date('y').'_'.$num;
                     'status' => FALSE,
                     'message' => 'Enter All Fields.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+    }
+    public function UserMobileExist_post(){
+        $phone = $this->post('mobilenumber');
+        $validation_phone = mobile_validation($phone);
+        if($validation_phone==0){
+           $check_users=$this->db->get_where('users',array('phone'=>$phone))->row_array();
+        }
+    if($validation_phone == 0 && $check_users['reg_status']=='1'){
+        $this->response([
+                    'status' => TRUE
+                ], REST_Controller::HTTP_OK);
+        }else {
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'Mobile Number Not Registered.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
+    public function ForgotOTP_post(){
+        $phone = $this->post('mobilenumber');
+        $num="12345678901234567890";
+        $shu=str_shuffle($num);
+        $otp=substr($shu, 14);
+        $data['phone']=$phone;
+        $message='Welcome To MyPulse. Your OPT Number: ' . $otp.'.' ;
+        $this->load->model('sms_model');
+        $send=$this->sms_model->send_sms($message, $data['phone']);
+        $this->response([
+                    'status' => TRUE,
+                    'sent_otp' => $otp,
+                    'otp_time'=>date('Y-m-d H:i:s'),
+                    'message'=>'OTP Send To :'.$data['phone']
+                ], REST_Controller::HTTP_OK);
+    }
+    public function ForgotOTPVerify_post(){
+        $sent_otp = $this->post('sent_otp');
+        $otpnumber = $this->post('otpnumber');
+        $past_time = strtotime($this->post('otp_time'));
+    $current_time = time();
+    $difference = $current_time - $past_time;
+    $difference_minute =  $difference/60;
+    if(intval($difference_minute)<3){
+        if($sent_otp == $otpnumber){
+            $this->response([
+                    'status' => TRUE
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'OTP Not Correct.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }else{
+        $this->response([
+                    'status' => FALSE,
+                    'message' => 'OTP Time Was Experied.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+        
+    }
+    public function ForgotPassword_post(){
+        $phone = strip_tags($this->post('mobilenumber'));
+        $current_password_input = sha1($this->post('password'));
+    $new_password = sha1($this->post('new_password'));
+$current_password_db = $this->db->get_where('users', array('phone' =>$phone))->row();
+if($current_password_db->password == $current_password_input) {
+$result = $this->index_model->change_password($current_password_db->user_id,$new_password);
+    if($result){
+        $this->response([
+        'status' => TRUE,
+        'message' => 'Password Update Successfully.'
+        ], REST_Controller::HTTP_OK);
+    }else{
+       $this->response([
+        'status' => FALSE,
+        'message' => 'Password Update Failed.'
+        ], REST_Controller::HTTP_BAD_REQUEST); 
+    }
+    }else{
+        $this->response([
+        'status' => FALSE,
+        'message' => 'Password Update Failed.'
+        ], REST_Controller::HTTP_BAD_REQUEST);
     }
     }
     /*********************Header*******************************/

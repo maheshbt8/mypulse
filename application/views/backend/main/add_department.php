@@ -14,7 +14,7 @@
                             <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" onchange="return get_branch(this.value)">
                                 <option value=""><?php echo 'Select Hospital';?></option>
                                <?php 
-                               $hospital_info=$this->db->where('status','1')->get('hospitals')->result_array();
+                               $hospital_info=$this->crud_model->select_all_hospitals();
                                foreach ($hospital_info as $row) { ?>
                                     <option value="<?php echo $row['hospital_id']; ?>" <?php if($row['hospital_id'] == $branch['hospital_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>

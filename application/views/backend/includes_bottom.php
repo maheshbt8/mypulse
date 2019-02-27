@@ -1,4 +1,4 @@
-<script src="<?= base_url('assets/backend/')?>js/jquery-1.11.1.min.js"></script>
+<!-- <script src="<?= base_url('assets/backend/')?>js/jquery-1.11.1.min.js"></script> -->
 <script src="<?= base_url('assets/backend/')?>js/bootstrap.min.js"></script>
 <script src="<?= base_url('assets/backend/')?>js/bootstrap-table.min.js"></script>
 <script src="<?= base_url('assets/backend/')?>js/chart.min.js"></script>

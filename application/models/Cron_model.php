@@ -47,6 +47,7 @@ class Cron_model extends CI_Model {
         $this->db->where('till_date',date('m/d/Y'))->update('hospitals',array('license_status'=>2));
       }
        }
+       return TRUE;
     }
     function appointments(){
     $list=$this->db->get_where('appointments',array('appointment_date<'=>date('Y-m-d'),'status'=>2))->result_array();
@@ -54,6 +55,7 @@ class Cron_model extends CI_Model {
     $this->db->where('appointment_id',$row['appointment_id'])->update('appointments',array('status'=>4));
    $this->db->insert('appointment_history',array('appointment_id'=>$row['appointment_id'],'action'=>7,'created_type'=>'System','created_by'=>'MyPulse'));
     }
+    return TRUE;
     }
     function appointments_notifications(){
     $doctors=$this->db->get('doctors')->result_array();
@@ -66,12 +68,43 @@ class Cron_model extends CI_Model {
         $this->db->insert('notification',$notification);
       }
     }
+    return TRUE;
     }
     function delete_notifications(){
 $notification=$this->db->where('created_at<',date('Y-m-d 00:00:00', strtotime('-7 days')))->delete('notification');
+  return TRUE;
     }
     function delete_messages(){
 $notification=$this->db->where('created_at<',date('Y-m-d 00:00:00', strtotime('-29 days')))->delete('messages');
+  return TRUE;
+    }
+    function delete_logs(){
+              /*Log Delete */
+$path='logs/log-'.date('Y-m-d',strtotime('-7 days')).'.php';
+$this->load->helper("file"); // load the helper
+unlink(APPPATH . $path); // delete all files/folders
+        /*Log Delete*/
+        return TRUE;
+    }
+    function db_backup(){
+              /*Db BackUps*/
+$path='backups/MyPulse-DB'.date('Ymd',strtotime('-7 days')).'.sql';
+$this->load->helper("file"); // load the helper
+unlink(FCPATH . $path); // delete all files/folders
+
+$this->load->dbutil();
+$prefs = array(     
+    'format'      => 'sql',             
+    'filename'    => 'my_db_backup.sql'
+    );
+$backup =& $this->dbutil->backup($prefs); 
+$db_name = 'MyPulse-DB'.date('Ymd').'.sql';
+$save = FCPATH.'backups/'.$db_name;
+$this->load->helper('file');
+write_file($save, $backup); 
+$this->load->helper('download');
+force_download($db_name, $backup);
+        /*Db Backups End*/
     }
 }
 

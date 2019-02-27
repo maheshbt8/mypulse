@@ -187,7 +187,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hosp
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo set_value('Appointment Date'); ?>" disabled="true" onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
+<input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php if($_GET['date']!=''){echo date('m/d/Y',strtotime($_GET['date']));}else{echo set_value('Appointment Date');}?>" disabled="true" onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
                             <span style="color:red;" id="appointment_date_error"></span>
                             <span style="color:red;"><?php if($this->session->flashdata('appointment_date_error') != ''){echo $this->session->flashdata('appointment_date_error');}?></span>
                         </div>
@@ -308,9 +308,19 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hosp
         startDate: date
         });
         });
+<?php if($_GET['date']!=''){ ?>
+        $(document).ready(function(){
+            return get_dco_date('<?=date('m/d/Y',strtotime($_GET['date']));?>');
+            });
+        <?php }?>
    function get_dco_date(date_value) {
     var user_id=$('#user_id').val();
     var doctor_id=$('#doctor_id').val();
+<?php 
+if($doctor_id!=''){
+?>
+var doctor_id='<?=$doctor_id;?>';
+<?php }?>
      $.ajax({
             type : "POST",
             url: '<?php echo base_url();?>ajax/get_dco_date/' + doctor_id,

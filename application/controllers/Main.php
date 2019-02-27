@@ -25,27 +25,7 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
                 redirect(base_url('login'), 'refresh');
             }
     }
-    
-/*function encrypt_file($file, $destination, $passphrase) {
-        // Open the file and returns a file pointer resource. 
-    $handle = fopen($file, "rb") or die("Could not open a file."); 
-        // Returns the read string.
-    $contents = fread($handle, filesize($file));
-        // Close the opened file pointer.
-    fclose($handle); 
- 
-    $iv = substr(md5("\x1B\x3C\x58".$passphrase, true), 0, 8);
-    $key = substr(md5("\x2D\xFC\xD8".$passphrase, true) . md5("\x2D\xFC\xD9".$passphrase, true), 0, 24);
-    $opts = array('iv'=>$iv, 'key'=>$key);
-    $fp = fopen($destination, 'wb') or die("Could not open file for writing.");
-        // Add the Mcrypt stream filter with Triple DES
-    stream_filter_append($fp, 'mcrypt.tripledes', STREAM_FILTER_WRITE, $opts); 
-        // Write content in the destination file.
-    fwrite($fp, $contents) or die("Could not write to file."); 
-       // Close the opened file pointer.
-    fclose($fp); 
- 
-}*/
+
     public function index() {
         if ($this->session->userdata('login') != 1){ 
             redirect(base_url() . 'login', 'refresh');
@@ -59,61 +39,7 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
         $page_data['page_title'] = get_phrase('dashboard');
         $this->load->view('backend/index', $page_data);
     }
-    public function upload()
-{
-/*    //echo FCPATH . 'uploads/';die;
-    $folder='mahesh1';
-    //$directory = FCPATH . 'uploads/' . $this->input->get('directory');
-$directory = FCPATH . 'uploads/reports/';
-$mypath=FCPATH.'uploads/reports/'.$folder;
-if (is_dir($directory)) {
-    if(!is_dir($mypath)){
-        mkdir($directory . '/' . $folder, 0777);
-   $message = 'The folder ' . $folder . ' was created!';
-    }else{
-        $message = 'The folder ' . $folder . ' was already created!';
-    }
-}else{
-   $message = 'The folder ' . $folder . ' was not created!';
-}
-echo $message;die;*/
-   /* $album = strtolower($album);
-    $upload_config = array('upload_path' => './uploads/' . $album, 'allowed_types' =>
-        'jpg|jpeg|gif|png', 'max_size' => '2000', 'max_width' => '680', 'max_height' =>
-        '435', );
-    $this->load->library('upload', $upload_config);
 
-    // create an album if not already exist in uploads dir
-    // wouldn't make more sence if this part is done if there are no errors and right before the upload ??
-    if (!is_dir('uploads'))
-    {
-        mkdir('./uploads', 0777, true);
-    }
-    
-    $dir_exist = true; // flag for checking the directory exist or not
-    if (!is_dir('uploads/' . $album))
-    {
-        mkdir('./uploads/' . $album, 0777, true);
-        $dir_exist = false; // dir not exist
-    }
-    else{
-
-    }
-    if (!$this->upload->do_upload('imgfile'))
-    {
-        // upload failed
-        //delete dir if not exist before upload
-        if(!$dir_exist)
-          rmdir('./uploads/' . $album);
-
-        return array('error' => $this->upload->display_errors('<span>', '</span>'));
-    } else
-    {
-        // upload success
-        $upload_data = $this->upload->data();
-        return true;
-    }*/
-}
     /*HOSPITAL*/
     
     public function add_hospital() {  
@@ -166,15 +92,15 @@ echo $message;die;*/
          /*$hospital_id=$this->crud_model->generate_decryption_key($hospital_id); */
             $this->crud_model->update_hospital_info($hospital_id);
             $this->session->set_flashdata('message', get_phrase('hospital_info_updated_successfuly'));
-           /* if($account_type!='hospitaladmins'){
-            redirect($this->session->userdata('last_page'));
+            if($account_type!='hospitaladmins'){
+            redirect('Hospitals/');
         }elseif($account_type=='hospitaladmins'){
-            redirect('main/get_hospital_history/'.$hospital_id);
-        }*/
+            redirect('Hospital/'.$hospital_id);
+        }//redirect($this->session->userdata('last_page'));
                 }
-         }/*else{
+         }else{
            redirect('Hospital/'.$hospital_id);
-        }*/
+        }
         $data['hospital_id'] = $hospital_id;
         $data['page_name'] = 'hospital_history';
         $data['page_title'] = get_phrase('Hospital Details');
@@ -1359,7 +1285,7 @@ echo $message;die;*/
         if ($task == "update_remark") {
         if($this->input->post('remark') !='' || $this->input->post('next_appointment')){
             $this->crud_model->update_appointment_remark($appointment_id);
-            $this->session->set_flashdata('message', get_phrase('remark_updated_successfuly'));
+            $this->session->set_flashdata('message', get_phrase('appointment_updated_successfuly'));
         }
             redirect($this->session->userdata('last_page1'));
         }

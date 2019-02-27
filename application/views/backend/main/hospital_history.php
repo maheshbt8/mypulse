@@ -1,4 +1,5 @@
-<?php $account_type=$this->session->userdata('login_type');?>
+<?php 
+$account_type=$this->session->userdata('login_type');?>
 <?php
 /*$hospital_id=$this->crud_model->generate_decryption_key($hospital_id);*/
 if($this->session->userdata('hospital_id')==$hospital_id || $account_type=='superadmin'){
@@ -6,7 +7,10 @@ if($this->session->userdata('hospital_id')==$hospital_id || $account_type=='supe
 foreach ($single_hospital_info as $row) :  
 ?>
     <div class="col-md-12">
-        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='hospitaladmins'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
+        <!-- <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type=='hospitaladmins'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'"> -->
+        <?php if($account_type!='hospitaladmins'){?>
+        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?=$this->session->userdata('last_page');?>'">
+    <?php }?>
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab1" data-toggle="tab" class="btn btn-default">
                     <span class="visible-xs"><i class="entypo-home"></i></span>

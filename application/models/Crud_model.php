@@ -535,9 +535,7 @@ $num=100001;
     }
     function select_hospital_info_by_id($hospital_id){
         return $this->db->get_where('hospitals', array('hospital_id' => $hospital_id))->result_array();
-    }   
-    
-   
+    }
     function update_hospital_info($hospital_id)
     {
         $data['name'] 		= $this->input->post('name');
@@ -903,9 +901,9 @@ $pid='MPHA'.date('y').'_'.$num;
     {
         return $this->db->get('branch')->result_array();
     }
-    function select_branch_info_by_hospital_id($hospital_id){
+   /* function select_branch_info_by_hospital_id($hospital_id){
        return $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
-    }
+    }*/
 
 function select_store_info_table($hospital_id='')
     {
@@ -2301,13 +2299,22 @@ if($account_type == 'superadmin'){
     {
         $account_type=$this->session->userdata('login_type');
         if($account_type == 'hospitaladmins'){
-        return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('bed')->result_array();
+        return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get_where('bed',array('bed_status'=>'1','isDeleted'=>'1'))->result_array();
         }elseif($account_type == 'nurse'){
-        return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('bed')->result_array();
+return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get_where('bed',array('bed_status'=>'1','isDeleted'=>'1'))->result_array();
         }
     }
+    function select_all_hospitals(){
+       return $this->db->get_where('hospitals',array('status'=>'1','isDeleted'=>'1'))->result_array();
+    }
     function select_bed_info_by_hospital_id($hospital_id){
-       return $this->db->where('hospital_id',$hospital_id)->get('bed')->result_array();
+       return $this->db->where('hospital_id',$hospital_id)->get_where('bed',array('bed_status'=>'1','isDeleted'=>'1'))->result_array();
+    }
+    function select_ward_info_by_department_id($department_id){
+      return $this->db->get_where('ward' , array('department_id' => $department_id,'status'=>'1','isDeleted'=>'1'))->result_array();
+    }
+    function select_branch_info_by_hospital_id($hospital_id){
+       return $this->db->where('hospital_id',$hospital_id)->get_where('branch',array('status'=>'1','isDeleted'=>'1'))->result_array();
     }
     function select_single_hospital($hospital_id){
         return $this->db->where('hospital_id',$hospital_id)->get('hospitals')->row_array();
@@ -2706,6 +2713,7 @@ $appointment_date_time_less=date('Y-m-d H:i', strtotime('-2 hours', strtotime($a
     {
         $data['remarks']     = $this->input->post('remark');
         $data['next_appointment']     = date('Y-m-d',strtotime($this->input->post('next_appointment')));
+        $data['modified_at'] = date('Y-m-d H:i:s');
         $this->db->where('appointment_id',$id)->update('appointments',$data);
     }
     function save_prescription_info()

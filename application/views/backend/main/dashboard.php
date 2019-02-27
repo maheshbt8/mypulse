@@ -407,9 +407,9 @@ $hospital_status=$this->db->get('hospitals')->result_array();
              <?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row();
                         echo $name->name;?>
                 </td> 
-                <td><?php echo date("d M, Y",strtotime($row['next_appointment']));?></td>
+                <td><?=date("d M, Y",strtotime($row['next_appointment']));?></td>
                 <td>
-        <a href="<?php echo base_url(); ?>main/add_appointment" title="Book Appointment"><i class="glyphicon glyphicon-plus"></i>
+        <a href="<?php echo base_url(); ?>main/add_appointment/<?=$row['doctor_id'].'?date='.$row['next_appointment'];?>" title="Book Appointment"><i class="glyphicon glyphicon-plus"></i>
             </a>
                 </td>
             </tr>

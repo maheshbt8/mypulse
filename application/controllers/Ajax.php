@@ -137,7 +137,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     {
         $branch = $this->db->get_where('branch' , array(
             'hospital_id' => $hospital_id
-        ))->result_array();
+        ,'status'=>'1','isDeleted'=>'1'))->result_array();
         echo '<option value=""> Select Branch </option>';
         foreach ($branch as $row) {
             echo '<option value="' . $row['branch_id'] . '">' . $row['name'] . '</option>';
@@ -147,7 +147,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
       function get_department_all($branch_id)
     {
         $department = $this->db->get_where('department' , array(
-            'branch_id' => $branch_id
+            'branch_id' => $branch_id,'status'=>'1','isDeleted'=>'1'
         ))->result_array();
         echo '<option value=""> Select Department </option>';
         echo '<option value="all"> All Department </option>';
@@ -157,9 +157,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     }
     function get_department($branch_id)
     {
-        $department = $this->db->get_where('department' , array(
-            'branch_id' => $branch_id
-        ))->result_array();
+        $department = $this->db->get_where('department' , array('branch_id' => $branch_id,'status'=>'1','isDeleted'=>'1'))->result_array();
         echo '<option value=""> Select Department </option>';
         foreach ($department as $row) {
             echo '<option value="' . $row['department_id'] . '">' . $row['name'] . '</option>';
@@ -167,9 +165,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     }
     function get_ward($department_id)
     {
-        $ward = $this->db->get_where('ward' , array(
-            'department_id' => $department_id
-        ))->result_array();
+        $ward = $this->db->get_where('ward' , array('department_id' => $department_id,'status'=>'1','isDeleted'=>'1'))->result_array();
         echo '<option value=""> Select Ward </option>';
         foreach ($ward as $row) {
             echo '<option value="' . $row['ward_id'] . '">' . $row['name'] . '</option>';
@@ -177,7 +173,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     }
     function get_bed($ward_id)
     {
-        $ward = $this->db->get_where('bed' , array('ward_id'=>$ward_id,'bed_status'=>'1'))->result_array();
+        $ward = $this->db->get_where('bed' , array('ward_id'=>$ward_id,'bed_status'=>'1','isDeleted'=>'1'))->result_array();
         echo '<option value=""> Select Bed </option>';
         foreach ($ward as $row) {
             echo '<option value="' . $row['bed_id'] . '">' . $row['name'] . '</option>';
@@ -208,8 +204,7 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
     }
     function get_department_doctors($department_id='')   
     {
-
-        $users=$this->db->where('department_id',$department_id)->get('doctors')->result_array();
+        $users=$this->db->where('department_id',$department_id)->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->result_array();
         foreach ($users as $row) {
             $spee=explode(',',$row['specializations']);
             $spe='';
@@ -221,9 +216,8 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).' ('.$sp
     }
     function get_hospital_doctors($hospital_id='')   
     {
-
-        $users=$this->db->where('hospital_id',$hospital_id)->get('doctors')->result_array();
-        foreach ($users as $row) {
+$users=$this->db->where('hospital_id',$hospital_id)->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->result_array();
+    foreach ($users as $row) {
             $spee=explode(',',$row['specializations']);
             $spe='';
             for($i=0;$i<count($spee);$i++) {
@@ -234,7 +228,8 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     }
     function get_specializations_doctors($id='')   
     {
-        $users=$this->db->get('doctors')->result_array();
+        /*$users=$this->db->get('doctors')->result_array();*/
+        $users=$this->crud_model->select_doctor_info();
         foreach ($users as $row) {
     $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
   if($license_status==1){
@@ -263,7 +258,7 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
     }
     function get_city_doctors($id='')   
     {
-        $users=$this->db->get('doctors')->result_array();
+        $users=$this->crud_model->select_doctor_info();
         foreach ($users as $row) {
         $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
   if($license_status==1){
@@ -289,12 +284,10 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
 }
 }
     }
-    function get_city_stores($id='')   
-    {
-        
-            
+function get_city_stores($id='')   
+{          
 if($id != 0){
-       $store=$this->db->where('city',$id)->get('medicalstores')->result_array(); 
+       $store=$this->db->where('city',$id)->get_where('medicalstores',array('status'=>'1','isDeleted'=>'1'))->result_array(); 
  }
 if($id == 0){
  $store=$this->db->get('medicalstores')->result_array(); 
@@ -307,7 +300,7 @@ echo '<option value="'.$spe['store_id'].'">'.$spe['unique_id'].' / '.$spe['name'
     function get_city_labs($id='')   
     { 
 if($id != 0){
-       $store=$this->db->where('city',$id)->get('medicallabs')->result_array(); 
+       $store=$this->db->where('city',$id)->get_where('medicallabs',array('status'=>'1','isDeleted'=>'1'))->result_array(); 
  }
 if($id == 0){
  $store=$this->db->get('medicallabs')->result_array(); 

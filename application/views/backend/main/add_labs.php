@@ -123,7 +123,7 @@
                             <select name="hospital" class="form-control select2" id="hospital" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
                                 <option value=""><?php echo $this->lang->line('labels')['select_hospital'];?></option>
                                 <?php 
-                                $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
+                                $admins = $this->crud_model->select_all_hospitals();
                                 foreach($admins as $row){?>
                                 <option value="<?php echo $row['hospital_id'] ?>"><?php echo $row['name'] ?></option>
                                 
@@ -145,7 +145,7 @@
                     <?php }elseif($account_type=='hospitaladmins'){?>
                     <option value=""><?php echo get_phrase('select_branch'); ?></option>
                  <?php 
-                    $hospital_info=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('branch')->result_array();
+                    $hospital_info=$this->crud_model->select_branch_info_by_hospital_id($this->session->userdata('hospital_id'));
                 foreach ($hospital_info as $row1) { ?>
                 <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $branch['branch_id']){echo 'selected';}?>><?php echo $row1['name']; ?></option>
                                 <?php } ?>
