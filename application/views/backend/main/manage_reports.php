@@ -87,6 +87,7 @@ $this->session->set_userdata('last_page', current_url());
             $this->db->where('appointment_date >=', $_GET['sd']);
             $this->db->where('appointment_date <=', $_GET['ed']);
             $this->db->where('hospital_id', $row['hospital_id']);
+            $this->db->where('isDeleted', '1');
             $no=$this->db->get('appointments')->num_rows();
             echo $no;
             }elseif($account_type == 'hospitaladmins'){
@@ -96,6 +97,7 @@ $this->session->set_userdata('last_page', current_url());
             for($i=0;$i<count($no);$i++){
             $this->db->where('appointment_date >=', $_GET['sd']);
             $this->db->where('appointment_date <=', $_GET['ed']);
+            $this->db->where('isDeleted', '1');
             $cou=$cou+$this->db->where('doctor_id',$no[$i]['doctor_id'])->get('appointments')->num_rows();
             }
             echo $cou;
@@ -104,6 +106,7 @@ $this->session->set_userdata('last_page', current_url());
         if($account_type == 'superadmin'){
             $this->db->where('appointment_date >=', date('Y-m-d', strtotime('-29 days')));
             $this->db->where('appointment_date <=', date('Y-m-d'));
+            $this->db->where('isDeleted', '1');
             $no=$this->db->get_where('appointments',array('hospital_id'=>$row['hospital_id']))->num_rows();
             echo $no;
         }elseif($account_type == 'hospitaladmins'){
@@ -111,7 +114,7 @@ $this->session->set_userdata('last_page', current_url());
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($i=0;$i<count($no);$i++){
-                $cou=$cou+$this->db->get_where('appointments',array('doctor_id'=>$no[$i]['doctor_id'],'appointment_date>='=>date('Y-m-d', strtotime('-29 days')),'appointment_date<='=>date('Y-m-d')))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments',array('doctor_id'=>$no[$i]['doctor_id'],'appointment_date>='=>date('Y-m-d', strtotime('-29 days')),'appointment_date<='=>date('Y-m-d'),'isDeleted'=>'1'))->num_rows();
             }
             echo $cou;
         }

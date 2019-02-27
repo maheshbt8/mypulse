@@ -95,7 +95,7 @@
                     <?php }elseif($account_type=='doctors'){
 $ward = $this->crud_model->select_ward_info_by_department_id($this->session->userdata('department_id'));?>
 
-        <option value=""> Select Bed </option>
+        <option value=""> Select Ward </option>
         <?php 
         foreach ($ward as $row) {
         ?>

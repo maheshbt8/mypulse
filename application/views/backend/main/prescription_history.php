@@ -42,7 +42,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 <div class="col-md-12">
 <div class="my_pulse">  
     <div class="col-md-12" style="background:-webkit-linear-gradient(bottom, #005bea, #00c6fb);">
-    <center style="padding:5px;"><img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:55px; margin: 2px;"/></center>
+    <center style="padding:5px;"><img src="<?=base_url('MyPulse-Logo');?>"  style="max-height:55px; margin: 2px;"/></center>
     </div>
 </div>
     <hr/>
@@ -55,7 +55,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
                 <td align="right"></td>
             </tr>
                 <tr>
-                <?php if($prescription_info!=''){?><td align="left"><img src="data:image/gif;base64,<?=$this->crud_model->get_hospitals_logo_url($doctor_info['hospital_id']);?>"  style="max-height:45px; margin: 0px;"/></td><?php }?>
+                <?php if($prescription_info!=''){?><td align="left"><img src="<?=base_url('Hospital-Logo/'.$doctor_info['hospital_id']);?>"  style="max-height:45px; margin: 0px;"/></td><?php }?>
                 <!-- <td align="right"></td> -->
             </tr>
 

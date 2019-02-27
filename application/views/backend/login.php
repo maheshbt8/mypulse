@@ -26,7 +26,7 @@
 			<div class="wrap-login100 p-t-190 p-b-30"> 
 				<form class="login100-form validate-form" action="<?php echo base_url();?>login/validate_login" method="post">
 					<div class="login100-form-avatar">
-						<img class="img-responsive" src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>" alt="MyPulse" style="width:100%;">
+						<img class="img-responsive" src="<?=base_url('MyPulse-Logo');?>" alt="MyPulse" style="width:100%;">
 					</div>
 	<span class="login100-form-title p-t-20 p-b-45"></span>
             <?php if($this->session->flashdata('login_error')!=''){?>

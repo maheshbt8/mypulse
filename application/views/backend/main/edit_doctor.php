@@ -7,7 +7,7 @@
 $account_type= $this->session->userdata('login_type');
 $single_doctor_info = $this->db->get_where('doctors', array('doctor_id' => $doctor_id))->result_array();
 foreach ($single_doctor_info as $row) {
-    if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type=='superadmin'){
+    if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type=='superadmin' || $account_type=='users'){
 ?>
  
 <div class="row">
@@ -48,7 +48,7 @@ foreach ($single_doctor_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('first_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="fname" class="form-control" id="fname" value="<?=$row['name']?>" <?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'||$row['isDeleted']=='2'){echo "disabled";}?>>
+                            <input type="text" name="fname" class="form-control" id="fname" value="<?=$row['name']?>" <?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins' && $account_type != 'doctors')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('fname'); ?></span>
                         </div>
                     </div>
@@ -164,7 +164,7 @@ foreach ($single_doctor_info as $row) {
                             <select name="hospital" class="form-control select2" id="hospital" value=""  onchange="return get_branch(this.value)" <?php if($account_type=='users' || $row['isDeleted']=='2'){echo 'disabled';}?>>
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
                                 <?php 
-                                $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
+                                $admins = $this->crud_model->select_all_hospitals();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['hospital_id'] ?>" <?php if($row1['hospital_id']==$row['hospital_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -183,7 +183,7 @@ foreach ($single_doctor_info as $row) {
                                 <select name="branch" class="form-control select2" id="select_branch" value=""  onchange="return get_department(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_branch'); ?></option>
                                     <?php 
-                                $admins = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
+                                $admins = $this->crud_model->select_branch_info_by_hospital_id($row['hospital_id']);
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['branch_id'] ?>" <?php if($row1['branch_id']==$row['branch_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -198,7 +198,7 @@ foreach ($single_doctor_info as $row) {
                                 <select name="department" class="form-control select2" id="select_department" value=""<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_department'); ?></option>
                                      <?php 
-                                $admins = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
+                                $admins = $this->crud_model->select_department_info_by_branch_id($row['branch_id']);
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['department_id'] ?>" <?php if($row1['department_id']==$row['department_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -293,7 +293,7 @@ foreach ($single_doctor_info as $row) {
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_image_url('doctor_image',$row['doctor_id']);?>" alt="...">
+                    <img src="<?=base_url('Doctor-Image/'.$row['doctor_id']);?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

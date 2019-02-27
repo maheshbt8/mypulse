@@ -183,7 +183,7 @@ if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type
                             <div class="col-sm-8">
                                 <select name="branch" class="form-control select2" id="select_branch"   value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')|| $row['isDeleted']=='2'){echo "disabled";}?>>
                                      <?php 
-                                $admins = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
+                                $admins = $this->crud_model->select_branch_info_by_hospital_id($row['hospital_id']);
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['branch_id'] ?>" <?php if($row1['branch_id']==$row['branch_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
                                 
@@ -197,7 +197,7 @@ if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type
                             <div class="col-sm-8">
                                 <select name="department" class="form-control select2" id="select_department" value="<?php echo set_value('department'); ?>"  onchange="return get_doctor(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')|| $row['isDeleted']=='2'){echo "disabled";}?>>
                                      <?php 
-                                $admins = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
+                                $admins = $this->crud_model->select_department_info_by_branch_id($row['branch_id']);
                                 ?>
                                 <option value="all" <?php if($row['department_id'] == '0'){echo 'selected';}?>><?php echo 'All Departments';?></option>
                                 <?php
@@ -213,14 +213,12 @@ if($this->session->userdata('hospital_id')==$row['hospital_id'] || $account_type
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
                             <div class="col-sm-8">
                                 <select multiple name="doctor[]" class="form-control select2" id="select_doctor" value="<?php echo set_value('doctor[]'); ?>"<?php if(($account_type != 'superadmin' && $account_type != 'hospitaladmins')|| $row['isDeleted']=='2'){echo "disabled";}?>>
-                                    
                                       <?php 
-                                  if($row['department_id'] == '0'){ 
-                                $admins = $this->db->where('branch_id',$row['branch_id'])->get('doctors')->result_array();
+                                if($row['department_id'] == '0'){ 
+                                $admins = $this->crud_model->select_doctors_info_by_branch_id($row['branch_id']);
                                 }else{
-                                    $admins = $this->db->where('department_id',$row['department_id'])->get('doctors')->result_array();
+                                    $admins = $this->crud_model->select_doctors_info_by_department_id($row['department_id']);
                                 }
-
                                 foreach($admins as $row1){
                                     $doc=explode(',',$row['doctor_id']);
                                     
@@ -323,7 +321,7 @@ for($d=0;$d<count($doc);$d++){
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_image_url('nurse_image',$row['nurse_id']);?>" alt="...">
+                    <img src="<?=base_url('Nurse-Image/'.$row['nurse_id']);?>" alt="...">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

@@ -16,4 +16,9 @@ class Index extends CI_Controller {
         $data['page_title'] = 'Home';
         $this->load->view('front/index', $data);
     }
+     public function mypulse_logo(){
+    $im = file_get_contents('assets/logo.png');
+    header('content-type: image/png');
+    echo $im;
+    }
 }

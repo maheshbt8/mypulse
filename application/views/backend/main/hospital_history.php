@@ -2,7 +2,7 @@
 $account_type=$this->session->userdata('login_type');?>
 <?php
 /*$hospital_id=$this->crud_model->generate_decryption_key($hospital_id);*/
-if($this->session->userdata('hospital_id')==$hospital_id || $account_type=='superadmin'){
+if($this->session->userdata('hospital_id')==$hospital_id || $account_type=='superadmin' || $account_type=='users'){
  $single_hospital_info = $this->crud_model->select_hospital_info_by_id($hospital_id);
 foreach ($single_hospital_info as $row) :  
 ?>
@@ -305,7 +305,7 @@ foreach ($single_hospital_info as $row) {
                         <div class="col-sm-5">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="data:image/gif;base64,<?=$this->crud_model->get_hospitals_logo_url($row['hospital_id']);?>">
+                                    <img src="<?=base_url('Hospital-Logo/'.$row['hospital_id']);?>">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

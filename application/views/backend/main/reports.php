@@ -34,13 +34,13 @@ $qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'
 	}
 }elseif($report_id == 2){
 		if($account_type == 'superadmin'){
-$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>$currmonth))->num_rows();
+$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>$currmonth,'isDeleted'=>'1'))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($da=0;$da<count($no);$da++){
-                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>$currmonth))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>$currmonth,'isDeleted'=>'1'))->num_rows();
             }
             $qry=$cou;
 	}

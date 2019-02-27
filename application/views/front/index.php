@@ -66,7 +66,8 @@ header{
       <nav class="navbar navbar-expand-lg navbar-light">
         <h1>
           <a class="navbar-brand text-capitalize" href="">
-            <img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:60px; margin: -35px;"/>
+            <!-- <img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:60px; margin: -35px;"/> -->
+            <img src="<?=base_url('MyPulse-Logo');?>"  style="max-height:60px; margin: -35px;"/>
           </a>
         </h1>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

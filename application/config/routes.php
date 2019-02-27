@@ -118,6 +118,19 @@ $route['prescription_for_medical_test/(:any)'] = 'main/prescription_history/$1/1
 $route['Prognosis/(:any)'] = 'main/prognosis_history/$1';
 $route['Notification/(:any)'] = 'main/read_notification/$1';
 $route['Message/(:any)'] = 'main/read_message/$1';
-//$route['Hospital_Edit/(:any)'] = 'main/edit_hospital/$1';
-/*$route['product/(:any)'] = 'catalog/product_lookup';
-$route['product/(:num)'] = 'catalog/product_lookup_by_id/$1';*/
+
+/*Uploads Folder Data*/
+$route['MyPulse-Logo']='index/mypulse_logo';
+$route['Hospital-Logo/(:any)']='main/hospital_logo_url/$1';
+$route['Super-Admin-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Hospital-Admin-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Doctor-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Nurse-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Receptionist-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Medical-Store-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Medical-lab-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['User-Image/(:any)']='main/image_url/user_image/$1';
+
+
+$route['Report/(.+)'] = 'main/report_url/$1';
+/*$route['user_img']='..uploads/user_image/1.jpg';*/

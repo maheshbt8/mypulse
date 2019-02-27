@@ -37,7 +37,8 @@ $unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
 </div>
             <div class="panel-body" id="ext_file">
  <!-- <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>"></object> -->
- <object width="100%" height="900px;" data="data:<?php if($reports['extension']!='pdf'){echo 'image/'.$reports['extension'];}elseif($reports['extension']=='pdf'){echo 'application/'.$reports['extension'];}?>;base64,<?=$this->crud_model->get_report_url(date('Y',strtotime($reports['created_at'])),$unique_id,'Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])),$reports['extension'])?>"></object>
+ <!-- <object width="100%" height="900px;" data="data:<?php if($reports['extension']!='pdf'){echo 'image/'.$reports['extension'];}elseif($reports['extension']=='pdf'){echo 'application/'.$reports['extension'];}?>;base64,<?=$this->crud_model->get_report_url(date('Y',strtotime($reports['created_at'])),$unique_id,'Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])),$reports['extension'])?>"></object> -->
+ <object width="100%" height="900px;" data="<?=base_url('Report/'.date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'/'.$reports['extension'])?>"></object>
             </div>
         </div>
     </div>

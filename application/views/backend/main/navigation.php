@@ -1,7 +1,8 @@
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
 			<a href="<?=base_url('Manage_Profile')?>"><div class="profile-sidebar">
 				<div class="profile-userpic">
-					<img src="data:image/gif;base64,<?=$image_url;?>" width="50" class="img-responsive" alt="">
+					<!-- <img src="data:image/gif;base64,<?=$image_url;?>" width="50" class="img-responsive" alt=""> -->
+                    <img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" width="50" class="img-responsive" alt="">
 				</div>
 				<div class="profile-usertitle">
                     <div class="profile-usertitle-status"><span><?php

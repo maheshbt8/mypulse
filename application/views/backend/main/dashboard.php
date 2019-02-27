@@ -1,46 +1,6 @@
 <?php 
 $this->session->set_userdata('last_page', current_url());
-//$folder='2021';
-//$directory = FCPATH . 'uploads/reports/';
-//$mypath=FCPATH.'uploads/reports/'.$folder;
-//$file = file_get_contents(base_url('uploads/user.jpg')); 
-/*$data = $this->encryption->encrypt('Some file data');*/
-//$data = $this->encryption->encrypt($file);
-//echo $data;die;
-//3808c93015b6674133ae9d23ff9ee148a702b2e381be39b46c87fd1778f00138459036031dfd2f3aa9a4648a8035b5cb0f23fa488ed630947ec5e443fb5f36edSfaAj0ljTMy+hGBVeNmvSH5RGtu+QD6Z72NDFqEznpU=
-/*    if ( ! write_file(FCPATH.'uploads/enc/2.txt', $data))
-    {
-            echo 'Unable to write the file';
-    }
-    else
-    {
-            echo 'File written!';
-    }*/
-   //$file = file_get_contents(base_url('uploads/enc/2.txt')); 
-    //echo $this->encryption->decrypt($file);
-/*    if(!is_dir($mypath)){
-        mkdir($directory . '/' . $folder, 0777);
-        move_uploaded_file($file, "uploads/reports/". $folder.'/index.html');
-    }
-    $unique_id='mahi';
-     $user_path=FCPATH.'uploads/reports/'.$folder.'/'.$unique_id;
-    if(!is_dir($user_path)){
-        mkdir($mypath . '/' . $unique_id, 0777);
-        move_uploaded_file($file, "uploads/reports/". $folder.'/'.$unique_id.'/index.html');
-    }*/
-    /*$image_path = 'uploads/user.jpg'; //this will be the physical path of your image   
-    $img_binary = fread(fopen($image_path, "r"), filesize($image_path));
-    $img_str = base64_encode($img_binary); // will produce the encoded string*/
-    /*echo $img_str;die;
-    echo base64_decode($img_str);*/
-//  echo '<img src="data:image/gif;base64,'.$img_str.'" />'; //you can display the image on browser screen using image tag, if jpeg or jpg image than use 'image/jpg'
-    /*$image_path = 'uploads/reports/2019/MPU19_100001/Report1_20190222113701.pdf'; //this will be the physical path of your image   
-    $img_binary = fread(fopen($image_path, "r"), filesize($image_path));
-    $img_str = base64_encode($img_binary);*/ // will produce the encoded string
-    /*echo '<object src="data:application/pdf;base64,'.$img_str.'" />';*/
 ?>
-
-<!-- <object width="100%" height="900px;" data="data:application/pdf;base64,<?=$img_str;?>" internalinstanceid="8"></object> -->
 <style>
     .title{
         font-size: 20px;

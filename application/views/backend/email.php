@@ -9,7 +9,7 @@
 						</tr>
 						<tr>
 							<td align="center" width="100%">
-								<a href="<?=base_url();?>" target="_blank" data-saferedirecturl="<?=base_url();?>"><img src="<?=base_url('assets/logo.png')?>" alt="MyPulse" border="0" height="30%" width="50%" style="display:block" class="CToWUd">
+								<a href="<?=base_url();?>" target="_blank" data-saferedirecturl="<?=base_url();?>"><img src="<?=base_url('MyPulse-Logo');?>" alt="MyPulse" border="0" height="30%" width="50%" style="display:block" class="CToWUd">
 								</a>
 							</td>
 						</tr>

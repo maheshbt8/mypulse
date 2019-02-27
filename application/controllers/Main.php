@@ -39,7 +39,39 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
         $page_data['page_title'] = get_phrase('dashboard');
         $this->load->view('backend/index', $page_data);
     }
-
+    public function image_url($type,$id){
+    if (file_exists('uploads/' . $type . '/' . $id . '.jpg')){
+            $image_url ='uploads/' . $type . '/' . $id . '.jpg';
+        }else{
+            $image_url ='uploads/user.jpg';
+        }
+    $im = file_get_contents($image_url);
+    header('content-type: image/png');
+    echo $im;
+    }
+    public function hospital_logo_url($id){
+    if (file_exists('uploads/hospitallogos/'.$id . '.png')){
+            $image_url ='uploads/hospitallogos/'.$id. '.png';
+        }
+    $im = file_get_contents($image_url);
+    header('content-type: image/png');
+    echo $im;
+    }
+    public function report_url($year,$unique_id,$report,$ext){
+if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'.$ext)){
+    $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'.$ext;
+    if($ext!='pdf'){
+        $content='image/'.$ext;
+    }elseif($ext=='pdf'){
+        $content='application/'.$ext;
+    }
+}else{
+    redirect('four_zero_four');
+}
+    $im = file_get_contents($image_url);
+    header('content-type: '.$content);
+    echo $im;
+    }
     /*HOSPITAL*/
     
     public function add_hospital() {  

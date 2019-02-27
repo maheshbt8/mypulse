@@ -17,7 +17,7 @@
 			<div class="wrap-login100 p-t-190 p-b-30">
 				<form class="login100-form validate-form" action="<?php echo base_url();?>Set_Password/<?php echo $task;?>" method="post">
 					<div class="login100-form-avatar">  
-						<img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>" alt="MyPulse">
+						<img src="<?=base_url('MyPulse-Logo');?>" alt="MyPulse">
 					</div>
 
 					<span class="login100-form-title p-t-20 p-b-45">
