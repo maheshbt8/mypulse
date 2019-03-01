@@ -20,6 +20,7 @@ class Login extends CI_Controller {
             redirect(base_url() . 'main', 'refresh');
         $this->load->view('backend/login');
     }
+    
     //Validating login from ajax request
     function validate_login() {
         if($this->input->post()){

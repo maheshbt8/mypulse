@@ -21,4 +21,14 @@ class Index extends CI_Controller {
     header('content-type: image/png');
     echo $im;
     }
+     public function feedback_url($type,$id){
+    if (file_exists('uploads/' . $type . '/' . $id . '.jpg')){
+            $image_url ='uploads/' . $type . '/' . $id . '.jpg';
+        }else{
+            $image_url ='uploads/user.jpg';
+        }
+    $im = file_get_contents($image_url);
+    header('content-type: image/png');
+    echo $im;
+    }
 }

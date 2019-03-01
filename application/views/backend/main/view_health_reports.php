@@ -15,11 +15,12 @@ $title=$prec[$i];
 }elseif($order_data['type_of_order']==1){
 $presc_data=explode('|',$this->encryption->decrypt($order_data['order_data']))[0];
 }
-
+$unique_id=$this->crud_model->select_user_unique_id($order_data['user_id']);
 }elseif($reports['order_type']==1){
+    $unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
 $title=$reports['title'];	
 }
-$unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
+
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -27,25 +28,30 @@ $unique_id=$this->crud_model->select_user_unique_id($reports['user_id']);
             <div class="panel-heading">
             	<?=$title?>
             	<div class="col-sm-3 pull-right">
-<?php if($reports['extension']!='pdf'){?>
+<?php if($reports['extension']!='pdf'){ ?>
     <input type="button" onclick="printDiv('ext_file')" class="btn btn-primary" value="Print">
 <?php }?>
-<a href="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" download="<?='Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>" class="btn btn-success"><?php echo get_phrase('download'); ?>
+<button type="button" onclick="window.location.href='<?=base_url('Report-Download/'.base64_encode(date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/'.$report_id));?>'" class="btn btn-success">Download</button>
 </a>
-    <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
+<input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?php if($account_type!='users'){echo $this->session->userdata('last_page1');}else{echo $this->session->userdata('last_page');} ?>'">
 </div>
 </div>
-            <div class="panel-body" id="ext_file">
- <!-- <object width="100%" height="900px;" data="<?=base_url('uploads/reports/').date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']?>"></object> -->
- <!-- <object width="100%" height="900px;" data="data:<?php if($reports['extension']!='pdf'){echo 'image/'.$reports['extension'];}elseif($reports['extension']=='pdf'){echo 'application/'.$reports['extension'];}?>;base64,<?=$this->crud_model->get_report_url(date('Y',strtotime($reports['created_at'])),$unique_id,'Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])),$reports['extension'])?>"></object> -->
- <object width="100%" height="900px;" data="<?=base_url('Report/'.date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'/'.$reports['extension'])?>"></object>
-            </div>
+
+
+<div class="panel-body" id="ext_file">
+    <?php 
+    if($reports['extension']=='pdf'){ ?>
+    <object width="100%" height="900px;" data="<?=base_url('Report/'.base64_encode(date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/'.$report_id));?>"></object>
+    <?php }else{?>
+ <object width='100%' height='900px;' data='<?=base_url('uploads/reports/'.date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']);?>' draggable='false'></object>
+<?php }?>
+</div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
    function printDiv(divName) {
+    /*var printContents='<object width="100%" height="900px;" data="<?=base_url('uploads/reports/'.date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']);?>"></object>';*/
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
      document.body.innerHTML = printContents;

@@ -2936,7 +2936,10 @@ $mypath=FCPATH.'uploads/reports/'.$folder;
         $this->db->update('reports',$data);
         
     }
-
+function get_single_report_info($report_id)
+    {
+        return $this->db->get_where('reports',array('report_id'=>$report_id,'status'=>'1'))->row_array();   
+    }
     function save_prescription_order($id='')
     {
         $data['user_id']     = $this->input->post('user_id');

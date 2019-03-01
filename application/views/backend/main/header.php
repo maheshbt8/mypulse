@@ -47,11 +47,11 @@ if($account_type == 'superadmin'){
 						<span class="icon-bar"></span></button>
 					<a class="navbar-brand" href="<?php echo base_url('main'); ?>">
             <span>
-                <img src="<?=base_url('MyPulse-Logo');?>"  style="max-height:45px; margin: -15px;"/>
+                <img draggable="false" src="<?=base_url('MyPulse-Logo');?>"  style="max-height:45px; margin: -15px;"/>
             </span>
                 </a>
   <?php if($account_type != 'superadmin' && $account_type != 'users'){ ?>
-      <span style="margin:5%;font-size: 35px;color: #fff;"><img src="<?=base_url('Hospital-Logo/'.$this->session->userdata('hospital_id'));?>"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
+      <span style="margin:5%;font-size: 35px;color: #fff;"><img draggable="false" src="<?=base_url('Hospital-Logo/'.$this->session->userdata('hospital_id'));?>"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
 <ul class="nav navbar-top-links navbar-right">
 <li class="dropdown language-menu select" id="lang_select">
         <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="width: 100%">
@@ -104,7 +104,7 @@ if($account_type == 'superadmin'){
 </li>
 <li class="dropdown">
 <a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;"><!-- <img src="data:image/gif;base64,<?=$image_url;?>" alt=""> -->
-<img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" alt=""><span>
+<img draggable="false" src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" alt=""><span>
 <?php $ac='';
  if($account_type=='doctors'){
   $ac='Dr.';

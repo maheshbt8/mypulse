@@ -5,8 +5,8 @@ $this->session->set_userdata('last_page', current_url());
 <div class="row">
     <div class="col-md-2">
             <center>
-                         <?php
-if($account_type == 'superadmin'){
+<?php
+/*if($account_type == 'superadmin'){
   $img_type='superadmin_image';
 }elseif($account_type == 'hospitaladmins'){
   $img_type='hospitaladmin_image';
@@ -22,15 +22,14 @@ if($account_type == 'superadmin'){
   $img_type='medical_labs';
 }elseif($account_type == 'users'){
   $img_type='user_image';
-}
-$image_url=$this->crud_model->get_image_url($img_type,$this->session->userdata('login_user_id'));
+}*/
+/*$image_url=$this->crud_model->get_image_url($img_type,$this->session->userdata('login_user_id'));*/
 /*if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
       $image_url = base_url() . 'uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg';
 else
     $image_url = base_url() . 'uploads/user.jpg';*/
 ?>
-            <img src="data:image/gif;base64,<?=$image_url;?>" class="img-circle" style="width: 60%;">
-                <!-- <img src="<?php echo $this->crud_model->get_image_url('superadmin' , $row['superadmin_id']);?>" class="img-circle" style="width: 60%;"> -->
+            <img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" class="img-circle" style="width: 60%;" draggable="false">
         <br>
         <h3><?php echo $row['name'];?></h3>
         <h4><?php echo $row['unique_id'];?></h4>
@@ -116,8 +115,8 @@ else
                     <div class="form-group">
                         <div class="col-sm-12">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                                    <img src="data:image/gif;base64,<?=$image_url;?>" alt="...">
+                            <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
+                            <img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" alt="..." >
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>

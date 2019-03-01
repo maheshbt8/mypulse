@@ -102,7 +102,7 @@ setInterval(function(){
     document.addEventListener("contextmenu", function(e){
       e.preventDefault();
     }, false);
-    /*document.addEventListener("keydown", function(e) {
+    document.addEventListener("keydown", function(e) {
     //document.onkeydown = function(e) {
       // "I" key
       if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
@@ -133,7 +133,7 @@ setInterval(function(){
       }
       e.preventDefault();
       return false;
-    }*/
+    }
 
     /*Chart */
     var chart1 = document.getElementById("line-chart").getContext("2d");

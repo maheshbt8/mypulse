@@ -11,10 +11,6 @@ class Main extends CI_Controller {
         
         date_default_timezone_set('Asia/Kolkata');    
         error_reporting(0);  
-
-         /* cache control */
-        /*$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-        $this->output->set_header('Pragma: no-cache');*/
 $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
         $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
         $this->output->set_header('Pragma: no-cache');
@@ -57,9 +53,26 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
     header('content-type: image/png');
     echo $im;
     }
-    public function report_url($year,$unique_id,$report,$ext){
-if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'.$ext)){
-    $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'.$ext;
+public function report_url($information){
+    $account_type = $this->session->userdata('login_type');
+    $data=explode('/',base64_decode($information));
+    $year=$data[0];
+    $unique_id=$data[1];
+    $report=$data[2];
+    $report_info=$this->crud_model->get_single_report_info($report);
+    if($report_info['order_type']=='1'){
+        $user_id=$report_info['user_id'];
+    }elseif($report_info['order_type']=='0'){
+        $user_id=$this->db->get_where('prescription_order',array('order_id',$report_info['order_id']))->row()->user_id;
+    }
+    $inpatient=$this->db->get_where('inpatient',array('user_id'=>$user_id,'status'=>'1'));
+    $appointment=$this->db->get_where('appointments',array('user_id'=>$user_id,'status'=>'2'));
+if(($account_type=='users' && $this->session->userdata('login_user_id')==$user_id) || (($account_type=='doctors' && $report_info['status']=='1') && (($inpatient->num_rows()>0 && $inpatient->row()->doctor_id==$this->session->userdata('login_user_id')) || ($appointment->num_rows()>0 && $appointment->row()->doctor_id==$this->session->userdata('login_user_id'))))){
+    $datetime=date('YmdHis',strtotime($report_info['created_at']));
+    $ext=$report_info['extension'];
+if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext)){
+    
+    $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext;
     if($ext!='pdf'){
         $content='image/'.$ext;
     }elseif($ext=='pdf'){
@@ -68,9 +81,30 @@ if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'
 }else{
     redirect('four_zero_four');
 }
+}else{
+    redirect('four_zero_four');   
+}
     $im = file_get_contents($image_url);
     header('content-type: '.$content);
     echo $im;
+    }
+    public function report_download($information){
+    $account_type = $this->session->userdata('login_type');
+    $data=explode('/',base64_decode($information));
+    $year=$data[0];
+    $unique_id=$data[1];
+    $report=$data[2];
+    $report_info=$this->crud_model->get_single_report_info($report);
+    $datetime=date('YmdHis',strtotime($report_info['created_at']));
+    $ext=$report_info['extension'];
+if(file_exists('uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext)){
+     $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext;
+     $file_name = 'Report'. $report .'_'.$datetime. '.'.$ext;
+$this->load->helper('download');
+$data = file_get_contents($image_url);
+force_download($file_name, $data);
+}
+return TRUE;
     }
     /*HOSPITAL*/
     

@@ -22,9 +22,9 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
     }
 </style>
 <div class="row">
-    <div class="col-sm-2 pull-right">
-    <input type="button"class="btn btn-info" id="download" value="Download">
+    <div class="col-sm-3 pull-right">
     <input type="button" onclick="printDiv('print_div')" class="btn btn-primary" value="Print">
+    <input type="button"class="btn btn-success" id="download" value="Download">
     <input type="button" class="btn btn-info" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
 </div>
 </div>
@@ -35,7 +35,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
             <div class="panel-body">
 <div class="my_pulse">  
     <div class="col-md-12" style="background-color: #40403fe8;">
-    <center style="padding:5px;"><img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
+    <center style="padding:5px;"><img draggable="false" src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
     </div>
 </div>
     <hr/>
@@ -182,7 +182,9 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
-        <td><?php if($report_info[$i1]['extension']!=''){?><a href="<?=base_url('uploads/reports/').date('Y',strtotime($report_info['created_at'])).'/'.$test_title[$i1].'_'.$user_info['unique_id'].'_'.$report_info[$i1]['report_id'].'.'.$report_info[$i1]['extension'];?>" class="hiper" download><i class="fa fa-download"></i></a><?php }?></td>
+        <td><?php if($report_info[$i1]['extension']!=''){?>
+<button type="button" onclick="window.location.href='<?=base_url('Report-Download/'.base64_encode(date('Y',strtotime($report_info[$i1]['created_at'])).'/'.$user_info['unique_id'].'/'.$report_info[$i1]['report_id']));?>'" class="btn btn-success">Download</button><?php }?>
+    </td>
         <td><?= $price[$i1];?></td>
       </tr>
       <?php /*}*/
@@ -214,7 +216,6 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 
      document.body.innerHTML = originalContents;
 }
-
 </script>
 <script type="text/javascript">
     $('#download').click(function() {

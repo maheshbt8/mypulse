@@ -121,6 +121,7 @@ $route['Message/(:any)'] = 'main/read_message/$1';
 
 /*Uploads Folder Data*/
 $route['MyPulse-Logo']='index/mypulse_logo';
+$route['Front/(.+)'] = 'index/feedback_url/$1';
 $route['Hospital-Logo/(:any)']='main/hospital_logo_url/$1';
 $route['Super-Admin-Image/(:any)']='main/image_url/superadmin_image/$1';
 $route['Hospital-Admin-Image/(:any)']='main/image_url/superadmin_image/$1';
@@ -133,4 +134,5 @@ $route['User-Image/(:any)']='main/image_url/user_image/$1';
 
 
 $route['Report/(.+)'] = 'main/report_url/$1';
+$route['Report-Download/(.+)'] = 'main/report_download/$1';
 /*$route['user_img']='..uploads/user_image/1.jpg';*/

@@ -30,7 +30,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
 <div class="col-md-12">
 <div class="my_pulse">  
     <div class="col-md-12" style="background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);">
-    <center style="padding:5px;"><img src="<?=base_url('MyPulse-Logo');?>"  style="max-height:55px; margin: 0px;"/></center>
+    <center style="padding:5px;"><img draggable="false" src="<?=base_url('MyPulse-Logo');?>"  style="max-height:55px; margin: 0px;"/></center>
     </div>
 </div>
     <hr/>
@@ -43,7 +43,7 @@ $prescription_data=explode('|',$this->encryption->decrypt($prognosis_info['progn
                 <td align="right"></td>
             </tr>
                 <tr>
-                <td align="left"><img src="<?=base_url('Hospital-Logo/'.$doctor_info['hospital_id']);?>"  style="max-height:45px; margin: 0px;"/></td>
+                <td align="left"><img draggable="false" src="<?=base_url('Hospital-Logo/'.$doctor_info['hospital_id']);?>"  style="max-height:45px; margin: 0px;"/></td>
                 <td align="right"></td>
             </tr>
 
