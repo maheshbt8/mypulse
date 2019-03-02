@@ -69,8 +69,9 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
                 <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
                <?php if($account_type=='superadmin' || $license_category=='MPHL_19002'){ ?> <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td><?php }?>
                 <td>
+                      <?php if($row['isDeleted']=='1'){ ?>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-           
+           <?php }?>
                 </td>
             </tr>
         <?php $i++;} ?>

@@ -90,7 +90,9 @@ $department=$this->db->where('department_id',$department_id)->get('department')-
                 <td><a href="<?php echo base_url(); ?>main/get_hospital_bed/<?php echo $row['ward_id'] ?>" title="Beds"><i class="glyphicon glyphicon-eye-open"></i></a></td>
                 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
                 <td>
+                     <?php if($row['isDeleted']=='1'){ ?>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/ward/delete/<?php echo $row['ward_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+             <?php }?>
                 </td>
             <?php }?>
             </tr>

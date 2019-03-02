@@ -182,8 +182,9 @@ $account_details=$this->session->userdata('login_type').'-'.$this->session->user
      function get_user_data()   
     {
     $user_value=$_POST['user'];
-        $where = "email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."'";
-        $qry=$this->db->where($where)->get('users');
+        $where = "(email='".$user_value."' OR phone='".$user_value."' OR unique_id='".$user_value."')";
+        /*$qry=$this->db->where($where)->get_where('users',array('status'=>'1','isDeleted'=>'1'));*/
+        $qry=$this->db->where($where)->get_where('users',array('status'=>'1','isDeleted'=>'1'));
         $users=$qry->row_array();
         if($qry->num_rows()>0){
         echo '<input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="Value Required" value="'.$users['name'].' '.$users['lname'].'" onchange="return get_user_data(this.value)">';
@@ -268,9 +269,9 @@ echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$thi
                 if($id == $city)
                 {
             $spe='';
-            for($i=0;$i<count($spee);$i++) {
-             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
-            }
+for($i=0;$i<count($spee);$i++) {
+$spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+}
 echo '<option value="'.$row['unique_id'].'">Dr. '.ucfirst($row['name']).'('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.','.$spe.')</option>';
  } 
 }

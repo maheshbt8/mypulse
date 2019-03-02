@@ -893,7 +893,7 @@ $pid='MPHA'.date('y').'_'.$num;
     }
     function select_branch_info()
     {
-        return $this->db->get('branch')->result_array();
+        return $this->db->get_where('branch',array('status'=>'1','isDeleted'=>'1'))->result_array();
     }
    /* function select_branch_info_by_hospital_id($hospital_id){
        return $this->db->where('hospital_id',$hospital_id)->get('branch')->result_array();
@@ -951,17 +951,21 @@ function select_store_info_by_hospital_id($hospital_id){
     
     function delete_branch_info($branch_id)
     {
+        $data['status']    = '2';
+        $data['isDeleted']    = '2';
         $this->db->where('branch_id',$branch_id);
-        $a=$this->db->delete('branch');
+        $a=$this->db->update('branch',$data);
         if($a){
         $this->db->where('branch_id',$branch_id);
-        $b=$this->db->delete('department');
+        $b=$this->db->update('department',$data);
         if($b){
         $this->db->where('branch_id',$branch_id);
-        $c=$this->db->delete('ward');
+        $c=$this->db->update('ward',$data);
         if($c){
+        $data1['bed_status']    = '2';
+        $data1['isDeleted']    = '2';
         $this->db->where('branch_id',$branch_id);
-        $d=$this->db->delete('bed');
+        $d=$this->db->update('bed',$data1);
         }
         }
         }
@@ -971,17 +975,21 @@ function select_store_info_by_hospital_id($hospital_id){
         $check=$_POST['check'];
         for($i=0;$i<count($check);$i++){
         $branch_id=$check[$i];
+        $data['status']    = '2';
+        $data['isDeleted']    = '2';
         $this->db->where('branch_id',$branch_id);
-        $a=$this->db->delete('branch');
+        $a=$this->db->update('branch',$data);
         if($a){
         $this->db->where('branch_id',$branch_id);
-        $b=$this->db->delete('department');
+        $b=$this->db->update('department',$data);
         if($b){
         $this->db->where('branch_id',$branch_id);
-        $c=$this->db->delete('ward');
+        $c=$this->db->update('ward',$data);
         if($c){
+        $data1['bed_status']    = '2';
+        $data1['isDeleted']    = '2';
         $this->db->where('branch_id',$branch_id);
-        $d=$this->db->delete('bed');
+        $d=$this->db->update('bed',$data1);
         }
         }
         }
@@ -2312,6 +2320,9 @@ return $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->
     }
     function select_branch_info_by_hospital_id($hospital_id){
        return $this->db->where('hospital_id',$hospital_id)->get_where('branch',array('status'=>'1','isDeleted'=>'1'))->result_array();
+    }
+    function select_branch_table_hospital_id($hospital_id){
+       return $this->db->where('hospital_id',$hospital_id)->get_where('branch')->result_array();
     }
     function select_single_hospital($hospital_id){
         return $this->db->where('hospital_id',$hospital_id)->get('hospitals')->row_array();

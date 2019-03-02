@@ -14,10 +14,10 @@ foreach ($single_ward_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('hospital');?></label>
                         
 						<div class="col-sm-8">
-							<select name="hospital" class="form-control select2" onchange="return get_branch(this.value)"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
+							<select name="hospital" class="form-control select2" onchange="return get_branch(this.value)"<?php if(($account_type!='superadmin' && $account_type!='hospitaladmins') || $row['isDeleted']=='2'){ echo "disabled"; }?>>
                              
                               <?php
-                              	$sections = $this->db->get_where('hospitals' , array('status' => 1))->result_array();
+                              	$sections = $this->db->get_where('hospitals' , array('status' => 1,'isDeleted'=>1))->result_array();
                             
                               	foreach($sections as $row2):
                               ?>  
@@ -34,9 +34,9 @@ foreach ($single_ward_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('branch');?></label>
                         
 						<div class="col-sm-8">
-							<select name="branch" class="form-control select2" onchange="return get_department(this.value)" id="branch" <?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
+							<select name="branch" class="form-control select2" onchange="return get_department(this.value)" id="branch" <?php if(($account_type!='superadmin' && $account_type!='hospitaladmins') || $row['isDeleted']=='2'){ echo "disabled"; }?>>
                               <?php
-                              	$sections1 = $this->db->where('hospital_id',$row['hospital_id'])->get('branch')->result_array();
+                              	$sections1 = $this->db->where('hospital_id',$row['hospital_id'])->get_where('branch', array('status' => 1,'isDeleted'=>1))->result_array();
                             
                               	foreach($sections1 as $row3): 
                               ?>  
@@ -50,9 +50,9 @@ foreach ($single_ward_info as $row) {
 						<label for="field-2" class="col-sm-3 control-label "><?php echo ucfirst('department');?></label>
                         
 						<div class="col-sm-8">
-							<select name="department" class="form-control select2" id="department"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
+							<select name="department" class="form-control select2" id="department"<?php if(($account_type!='superadmin' && $account_type!='hospitaladmins') || $row['isDeleted']=='2'){ echo "disabled"; }?>>
                               <?php
-                              	$sections1 = $this->db->where('branch_id',$row['branch_id'])->get('department')->result_array();
+                              	$sections1 = $this->db->where('branch_id',$row['branch_id'])->get_where('department', array('status' => 1,'isDeleted'=>1))->result_array();
                             
                               	foreach($sections1 as $row4): 
                               ?>  
@@ -67,7 +67,7 @@ foreach ($single_ward_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>>
+                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?=$row['name']?>"<?php if(($account_type!='superadmin' && $account_type!='hospitaladmins') || $row['isDeleted']=='2'){ echo "disabled"; }?>>
                         </div>
                        </div>
 
@@ -76,12 +76,12 @@ foreach ($single_ward_info as $row) {
 
                             <div class="col-sm-8">
                                 <textarea name="description" class="form-control"
-                                    id="field-ta"<?php if($account_type!='superadmin' && $account_type!='hospitaladmins'){ echo "disabled"; }?>><?php echo $row['description']; ?></textarea>
+                                    id="field-ta"<?php if(($account_type!='superadmin' && $account_type!='hospitaladmins') || $row['isDeleted']=='2'){ echo "disabled"; }?>><?php echo $row['description']; ?></textarea>
                             </div>
                         </div>
 
                         <div class="col-sm-6 control-label col-sm-offset-6">
-          <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
+          <?php if(($account_type=='superadmin' || $account_type=='hospitaladmins')&& $row['isDeleted']=='1'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                         </div>
                     </form>

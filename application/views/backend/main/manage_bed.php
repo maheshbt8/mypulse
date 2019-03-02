@@ -109,8 +109,8 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
                 <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
                 <td><?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not - Available";} ?></td>
                 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
-                <td>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                <td><?php if($row['isDeleted']=='1'){ ?>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> <?php }?>
                 </td>
             <?php }?>
             </tr>

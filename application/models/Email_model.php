@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -26,7 +25,7 @@ class Email_model extends CI_Model {
 
         $this->do_email($email_msg, $email_sub, $email_to);
     }
-    
+
     function account_reverification_email($account_type = '',$id_type = '', $unique_id = '') {
         $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
         $email = $this->db->get_where($account_type, array('unique_id' => $unique_id))->row()->email;
@@ -79,8 +78,7 @@ class Email_model extends CI_Model {
     function do_email($msg = NULL, $sub = NULL, $to = NULL, $from = NULL) {
         $system_email=$this->db->get_where('settings', array('type' => 'system_email'))->row()->description;
         $email_password=$this->db->get_where('settings', array('type' => 'email_password'))->row()->description;
-         $config = array( //"Array" changed to "array" 1/15/15
- 
+$config = array( //"Array" changed to "array" 1/15/15 
  'protocol' => 'smtp',
  'smtp_host' => 'ssl://smtp.googlemail.com',
  'smtp_port' => 465, //465
@@ -92,7 +90,8 @@ class Email_model extends CI_Model {
  );
 $config['useragent']    = "CodeIgniter";
  //print_r($config);die;
- $this->load->library('email', $config); //$config
+ $this->load->library('email'); //$config
+ $this->email->initialize($config);
  
  $this->email->set_newline("\r\n");
 
@@ -105,14 +104,10 @@ $system_name = $this->db->get_where('settings', array('type' => 'system_name'))-
         $this->email->subject($sub);
         $msg = $msg;
         $this->email->message($msg);
- 
-  $this->email->send();
- 
- /*echo $this->email->print_debugger();*/
- 
+ $this->email->send();
 /* if($this->email->send())
  {
- echo 'Your email was sent';
+  return true;
  }
  else
  {

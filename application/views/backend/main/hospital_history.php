@@ -321,7 +321,7 @@ foreach ($single_hospital_info as $row) {
                     </div>
                 </div>
                     </div>
-  <?php if($account_type=='hospitaladmins'){?>
+  <?php if($account_type=='hospitaladmins'){ ?>
 <input type="hidden" name="license" value="<?php echo $row['license'];?>"/>
 <input type="hidden" name="license_status" value="<?php echo $row['license_status'];?>"/>
 <input type="hidden" name="from_date" value="<?php echo $row['from_date'];?>"/>
@@ -341,7 +341,7 @@ foreach ($single_hospital_info as $row) {
     </form>
 </div>
             <div class="tab-pane" id="tab3">
-                <?php $data['account_type']=$account_type;$data['branch_info']=$this->crud_model->select_branch_info_by_hospital_id($row['hospital_id']);
+                <?php $data['account_type']=$account_type;$data['branch_info']=$this->crud_model->select_branch_table_hospital_id($row['hospital_id']);
                 $this->load->view('backend/main/manage_branch',$data);?>
             </div>
             <div class="tab-pane" id="tab4">

@@ -54,7 +54,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['fname'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="fname" class="form-control" id="fname" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['name']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="fname" class="form-control" id="fname" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['name']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('fname'); ?></span>
                         </div>
                     </div>
@@ -62,7 +62,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['mname'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="mname" class="form-control" id="mname" value="<?=$row['mname']?>"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="mname" class="form-control" id="mname" value="<?=$row['mname']?>"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('mname'); ?></span>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['lname'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="lname"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['lname']?>"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="lname" class="form-control" id="lname"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['lname']?>"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('lname'); ?></span>
                         </div>
                     </div>
@@ -78,7 +78,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['description'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['description']?>"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="description" class="form-control" id="description"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?=$row['description']?>"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                             <span ><?php echo form_error('description'); ?></span>
                         </div>
                     </div>
@@ -170,7 +170,7 @@ foreach ($single_user_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label">Status</label>
                         <div class="col-sm-8">
-                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""<?php if($account_type != 'superadmin'){echo "disabled";}?>>
+                            <select name="status" class="form-control" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""<?php if(($account_type != 'superadmin')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo $this->lang->line('labels')['select_status'];?></option>
                                 <option value="1"  <?php if($row['status']=='1'){echo 'selected';}?>><?php echo get_phrase('active'); ?></option>
                                 <option value="2"  <?php if($row['status']=='2'){echo 'selected';}?>><?php echo get_phrase('inactive'); ?></option>
@@ -211,7 +211,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label">Gender</label>
 
                         <div class="col-sm-8">
-                            <select name="gender" class="form-control" id="gender" value=""<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <select name="gender" class="form-control" id="gender" value=""<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value="">Select Gender</option>
                                  <option value="male" <?php if($row['gender']=='male'){echo 'selected';}?>><?php echo get_phrase('male'); ?></option>
                                 <option value="female"  <?php if($row['gender']=='female'){echo 'selected';}?>><?php echo get_phrase('female'); ?></option>
@@ -223,21 +223,21 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['dob'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" onchange="return calculate_age(this.value)" value="<?=$row['dob']?>" autocomplete="off"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="dob" class="form-control" id="dob" placeholder="<?php echo $this->lang->line('labels')['dob'];?>" onchange="return calculate_age(this.value)" value="<?=$row['dob']?>" autocomplete="off"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group" hidden="">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['aadharNumber'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="aadhar" class="form-control" id="aadhar" value="<?=$row['address']?>"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="aadhar" class="form-control" id="aadhar" value="<?=$row['address']?>"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="address" value="<?=$row['address']?>"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="address" class="form-control" id="address" value="<?=$row['address']?>"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
@@ -253,7 +253,7 @@ foreach ($single_user_info as $row) {
                                     <span class="btn btn-white btn-file">
                                         <span class="fileinput-new"><?php echo $this->lang->line('labels')['select_image'];?></span>
                                         <span class="fileinput-exists"><?php echo $this->lang->line('labels')['change'];?></span>
-                                        <input type="file" name="userfile" accept="image/*" id="userfile" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                                        <input type="file" name="userfile" accept="image/*" id="userfile" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     </span>
                                     <a href="#" class="btn btn-orange fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line('labels')['remove'];?></a>
                                 </div>
@@ -267,7 +267,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control select2" id="country" value=""  onchange="return get_state(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <select name="country" class="form-control select2" id="country" value=""  onchange="return get_state(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('country')->result_array();
@@ -284,7 +284,7 @@ foreach ($single_user_info as $row) {
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
                             <div class="col-sm-8">
-                                <select name="state" class="form-control select2" id="select_state" value=""  onchange="return get_district(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                                <select name="state" class="form-control select2" id="select_state" value=""  onchange="return get_district(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_state'); ?></option>
                                     <?php 
                                 $admins = $this->db->where('country_id',$row['country'])->get_where('state')->result_array();
@@ -300,7 +300,7 @@ foreach ($single_user_info as $row) {
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
                             <div class="col-sm-8">
-                                <select name="district" class="form-control select2" id="select_district"  value=""  onchange="return get_city(this.value)"<?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                                <select name="district" class="form-control select2" id="select_district"  value=""  onchange="return get_city(this.value)"<?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <?php 
                                 $admins = $this->db->where('state_id',$row['state'])->get('district')->result_array();
                                 foreach($admins as $row1){?>
@@ -313,7 +313,7 @@ foreach ($single_user_info as $row) {
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
                             <div class="col-sm-8">
-                                <select name="city" class="form-control select2" id="select_city" value="" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                                <select name="city" class="form-control select2" id="select_city" value="" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo get_phrase('select_city'); ?></option>
                                     <?php 
                                 $admins = $this->db->where('district_id',$row['district'])->get('city')->result_array();
@@ -344,7 +344,7 @@ foreach ($single_user_info as $row) {
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['bloodGroup'];?></label>
 
                         <div class="col-sm-8">
-                            <select name="blood_group" class="form-control select2" id="blood_group" value="" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <select name="blood_group" class="form-control select2" id="blood_group" value="" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value="">Select Blood Group</option>
                                     <option class="notranslate" value="A+"<?php if($row['blood_group']=='A+'){echo 'selected';}?>>A+</option>
                                     <option class="notranslate" value="A-"<?php if($row['blood_group']=='A-'){echo 'selected';}?>>A-</option>
@@ -362,28 +362,28 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['age'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="age" class="form-control" id="age" value="<?=$row['age']?>" readonly <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="age" class="form-control" id="age" value="<?=$row['age']?>" readonly <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['height'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="height" class="form-control" id="height" value="<?=$row['height']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="height" class="form-control" id="height" value="<?=$row['height']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['weight'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="weight" class="form-control" id="weight" value="<?=$row['weight']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="weight" class="form-control" id="weight" value="<?=$row['weight']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['bloodPressure'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="blood_pressure" class="form-control" id="blood_pressure" value="<?=$row['blood_pressure']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="blood_pressure" class="form-control" id="blood_pressure" value="<?=$row['blood_pressure']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                 </div>
@@ -392,35 +392,35 @@ foreach ($single_user_info as $row) {
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['sugarLevel'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="sugar_level" class="form-control" id="sugar_level" value="<?=$row['sugar_level']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="sugar_level" class="form-control" id="sugar_level" value="<?=$row['sugar_level']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['healthInsuranceProvider'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="health_insurance_provider" class="form-control" id="health_insurance_provider" value="<?=$row['health_insurance_provider']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="health_insurance_provider" class="form-control" id="health_insurance_provider" value="<?=$row['health_insurance_provider']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['healthInsuranceId'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="health_insurance_id" class="form-control" id="health_insurance_id" value="<?=$row['health_insurance_id']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="health_insurance_id" class="form-control" id="health_insurance_id" value="<?=$row['health_insurance_id']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['familyHistory'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="family_history" class="form-control" id="family_history" value="<?=$row['family_history']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="family_history" class="form-control" id="family_history" value="<?=$row['family_history']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                    <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['pastMedicalHistory'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="past_medical_history" class="form-control" id="past_medical_history" value="<?=$row['past_medical_history']?>" <?php if($account_type != 'superadmin' && $account_type != 'users'){echo "disabled";}?>>
+                            <input type="text" name="past_medical_history" class="form-control" id="past_medical_history" value="<?=$row['past_medical_history']?>" <?php if(($account_type != 'superadmin' && $account_type != 'users')||$row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                      
@@ -434,7 +434,7 @@ foreach ($single_user_info as $row) {
             </div></div>
                     </div>
                      <div class="col-sm-3 control-label col-sm-offset-9">
-        <?php if($account_type == 'superadmin' || $account_type == 'users'){?>
+        <?php if(($account_type == 'superadmin' || $account_type == 'users')&&$row['isDeleted']=='1'){?>
                         <input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 

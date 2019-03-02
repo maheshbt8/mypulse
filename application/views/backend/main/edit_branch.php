@@ -13,10 +13,10 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Hospital';?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value Required';?>" value="">
+                            <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value Required';?>" value=""<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo 'Select Hospital';?></option>
                                 <?php  
-                                $admins = $this->db->get('hospitals')->result_array();
+                                $admins = $this->db->get_where('hospitals', array('status' => 1,'isDeleted'=>1))->result_array();
                                 foreach($admins as $row1){?>
                                 <option value="<?php echo $row1['hospital_id'] ?>"<?php if($row1['hospital_id']==$row['hospital_id']){echo "selected";}?>><?php echo $row1['name'] ?></option>
                                 
@@ -32,14 +32,14 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Branch';?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value Required';?>" value="<?php echo $row['name']; ?>">
+                            <input type="text" name="name" class="form-control" id="field-1" data-validate="required" data-message-required="<?php echo 'Value Required';?>" value="<?php echo $row['name']; ?>" <?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo 'Email';?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="email" class="form-control" id="field-3"  data-validate="required" data-message-required="<?php echo 'Value Required';?>" value="<?php echo $row['email']; ?>">
+                            <input type="text" name="email" class="form-control" id="field-3"  data-validate="required" data-message-required="<?php echo 'Value Required';?>" value="<?php echo $row['email']; ?>"<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                    
@@ -47,14 +47,14 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['phone_number'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="phone_number" class="form-control" id="field-4"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['phone']; ?>">
+                            <input type="text" name="phone_number" class="form-control" id="field-4"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['phone']; ?>"<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['address'];?>">
+                            <input type="text" name="address" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="<?php echo $row['address'];?>"<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                         </div>
                     </div>
                   
@@ -64,7 +64,7 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control select2" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_state(this.value)">
+                            <select name="country" class="form-control select2" data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_state(this.value)"<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                                 <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
                                 <?php 
                                 $admins = $this->db->get_where('country')->result_array();
@@ -81,7 +81,7 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
                             <div class="col-sm-8">
-                                <select name="state" class="form-control select2" id="select_state"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_district(this.value)">
+                                <select name="state" class="form-control select2" id="select_state"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_district(this.value)"<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo 'Select State';?></option>
                                     <?php 
                                 $admins = $this->db->get_where('state')->result_array();
@@ -97,7 +97,7 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectDistrict'];?></label>
                             <div class="col-sm-8">
-                                <select name="district" class="form-control select2" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)">
+                                <select name="district" class="form-control select2" id="select_district"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  onchange="return get_city(this.value)"<?php if($row['isDeleted']=='2'){echo "disabled";}?>>
                                     <option value=""><?php echo 'select District';?></option>
                                     <?php 
                                 $admins = $this->db->get_where('district')->result_array();
@@ -112,7 +112,7 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCity'];?></label>
                             <div class="col-sm-8">
-                                <select name="city" class="form-control select2" id="select_city"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value=""  >
+                                <select name="city" class="form-control select2" id="select_city"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="" <?php if($row['isDeleted']=='2'){echo "disabled";}?>>
         <option value=""><?php echo 'Select City';?></option>
                                     <?php 
                                 $admins = $this->db->get_where('city')->result_array();
@@ -126,7 +126,7 @@ $row=$this->db->get_where('branch',array('branch_id'=>$branch_id))->row_array();
                 
                     </div>
                     <div class="col-sm-3 control-label col-sm-offset-9">
- <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
+ <?php if(($account_type=='superadmin' || $account_type=='hospitaladmins')&& $row['isDeleted']=='1'){?><input type="submit" class="btn btn-success" value="Update"><?php }?>&nbsp;&nbsp;
                         <input type="button" class="btn btn-info" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div>
                 </form>

@@ -50,7 +50,7 @@
 		                    <div class="col-sm-8">
 		                        <select name="department" class="form-control select2" id="select_department"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_ward(this.value)">
 		                             <?php 
-                               $hospital_info=$this->db->where('branch_id',$ward['branch_id'])->get('department')->result_array();
+                               $hospital_info=$this->crud_model->select_department_info_by_branch_id($ward['branch_id']);
                                foreach ($hospital_info as $row) { ?>
                                     <option value="<?php echo $row['department_id']; ?>" <?php if($row['department_id'] == $ward['department_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>
@@ -63,7 +63,7 @@
 		                    <div class="col-sm-8">
 		                        <select name="ward" class="form-control select2" id="select_ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
                                      <?php 
-                               $hospital_info=$this->db->where('department_id',$ward['department_id'])->get('ward')->result_array();
+                               $hospital_info=$this->crud_model->select_department_info_by_branch_id($ward['department_id']);
                                foreach ($hospital_info as $row) { ?>
                                     <option value="<?php echo $row['ward_id']; ?>" <?php if($row['ward_id'] == $ward['ward_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
                                 <?php } ?>

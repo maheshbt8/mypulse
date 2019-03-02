@@ -124,12 +124,12 @@ $route['MyPulse-Logo']='index/mypulse_logo';
 $route['Front/(.+)'] = 'index/feedback_url/$1';
 $route['Hospital-Logo/(:any)']='main/hospital_logo_url/$1';
 $route['Super-Admin-Image/(:any)']='main/image_url/superadmin_image/$1';
-$route['Hospital-Admin-Image/(:any)']='main/image_url/superadmin_image/$1';
-$route['Doctor-Image/(:any)']='main/image_url/superadmin_image/$1';
-$route['Nurse-Image/(:any)']='main/image_url/superadmin_image/$1';
-$route['Receptionist-Image/(:any)']='main/image_url/superadmin_image/$1';
-$route['Medical-Store-Image/(:any)']='main/image_url/superadmin_image/$1';
-$route['Medical-lab-Image/(:any)']='main/image_url/superadmin_image/$1';
+$route['Hospital-Admin-Image/(:any)']='main/image_url/hospitaladmin_image/$1';
+$route['Doctor-Image/(:any)']='main/image_url/doctor_image/$1';
+$route['Nurse-Image/(:any)']='main/image_url/nurse_image/$1';
+$route['Receptionist-Image/(:any)']='main/image_url/receptionist_image/$1';
+$route['Medical-Store-Image/(:any)']='main/image_url/medical_stores/$1';
+$route['Medical-lab-Image/(:any)']='main/image_url/medical_labs/$1';
 $route['User-Image/(:any)']='main/image_url/user_image/$1';
 
 

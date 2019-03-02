@@ -58,7 +58,9 @@
                 </td>
         <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
                 <td>
+                    <?php if($row['isDeleted']=='1'){ ?>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+        <?php }?>
                 </td>
             <?php }?>
             </tr>
