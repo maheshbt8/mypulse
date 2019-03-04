@@ -31,4 +31,10 @@ class Index extends CI_Controller {
     header('content-type: image/png');
     echo $im;
     }
+    function test(){
+        $this->load->view('front/index1');
+    }
+    function test1(){
+        $this->load->view('front/index2');
+    }
 }
