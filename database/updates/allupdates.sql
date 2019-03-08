@@ -1,2 +1,1 @@
-ALTER TABLE `inpatient` DROP `isDeleted`;
-Alter Table `inpatient` Add `show_status` TINYINT NOT NULL DEFAULT '1'  COMMENT '1=show,2=hide' AFTER `show_status`;
+Alter Table `bed` Add `isDeleted` TINYINT NOT NULL DEFAULT '1'  COMMENT '1=not-deleted,2=deleted' AFTER `bed_status`;
