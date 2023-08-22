@@ -6,6 +6,11 @@ $this->session->set_userdata('last_page1', current_url());
 	<div class="col-md-12">
     	<!--CONTROL TABS END-->
       <div class="panel panel-default">   
+        <div class="panel-heading">
+        <button type="button" onclick="window.location.href = '<?php echo base_url();?>main/add_feedback'" class="btn btn-primary pull-right">
+        <?php echo get_phrase('add_feedback'); ?>
+        </button>
+        </div>
             <div class="panel-body"> 
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
@@ -15,43 +20,25 @@ $this->session->set_userdata('last_page1', current_url());
                             <th><div><?php echo 'Role';?></div></th>
                     		<th><div><?php echo 'Customer';?></div></th>
                     	    <th><div><?php echo 'Feedback';?></div></th>
+                            <th><div><?php echo 'Option';?></div></th>
 						</tr>
 					</thead>
                     <tbody>
-                    	<?php $feedback= $this->db->get('feedback')->result_array();
+                    	<?php $feedback=$this->crud_model->get_feedback_info();
                         foreach($feedback as $row){
-                        $customer=explode('-',$row['customer_id']);
-if($customer[0] == 'superadmin'){
-  $img_type='superadmin_image';
-  $account='Super Admin';
-}elseif($customer[0] == 'hospitaladmins'){
-  $img_type='hospitaladmin_image';
-  $account='Hospital Admin';
-}elseif($customer[0] == 'doctors'){
-  $img_type='doctor_image';
-  $account='Doctor';
-}elseif($customer[0] == 'nurse'){
-  $img_type='nurse_image';
-  $account='Nurse';
-}elseif($customer[0] == 'receptionist'){
-  $img_type='receptionist_image';
-  $account='Receptionist';
-}elseif($customer[0] == 'medicalstores'){
-  $img_type='medical_stores';
-  $account='Medical Store';
-}elseif($customer[0] == 'medicallabs'){
-  $img_type='medical_labs';
-  $account='Medical Lab';
-}
-                            ?>
+                        $customer=explode('_',$row['customer_id']);
+$customer_type=substr($customer[0],0,-2);
+$role=$this->crud_model->get_role($customer_type);
+$account=$role['role'];?>
                         <tr>
                             <td><?=$account;?></td>
 							<td><?php $ac='';
  if($account=='Doctor'){
   $ac='Dr.';
  }
- echo $ac.' '.$this->db->where($customer[1].'_id',$customer[2])->get($customer[0])->row()->name;?></td>
+ echo $ac.' '.$this->db->where('unique_id',$row['customer_id'])->get($role['type'])->row()->name;?></td>
  <td><a href="<?php echo base_url();?>main/edit_feedback/<?php echo $row['id'];?>" class="hiper" ><?=$row['feedback'];?></a></td>
+ <td> <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/feedback/delete/<?=$row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a></td>
                         </tr>
         
                         <?php }?>

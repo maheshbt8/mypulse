@@ -20,8 +20,8 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <div class="panel panel-default">   
             <div class="panel-body">
 <div class="my_pulse">  
-    <div class="col-md-12" style="background-color: #40403fe8;">
-    <center style="padding:5px;"><img src="data:image/gif;base64,<?=$this->crud_model->get_mypulse_logo_url();?>"  style="max-height:45px; margin: 0px;"/></center>
+    <div class="col-md-12" style="background:-webkit-linear-gradient(bottom, #005bea, #00c6fb);">
+    <center style="padding:5px;"><img draggable="false" src="<?=base_url('MyPulse-Logo');?>"  style="max-height:55px; margin: 2px;"/></center>
     </div>
 </div>
     <hr/>
@@ -29,7 +29,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3></td>
+    <td align="left"><h3>Title:- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3><h3>Order ID:- <?=$order_info['unique_id'];?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -110,15 +110,15 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $drug[$i1];?></td>
         <td><?= $quantity[$i1];?></td>
-        <td><input type="type" name="cost[]" id="cost_<?= $i1+1;?>" onchange="return get_cost(<?= $i1+1;?>);">
+        <td><input type="type" name="cost[<?=$i1;?>]" id="cost_<?= $i1+1;?>" onchange="return get_cost(<?= $i1+1;?>);" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
             <input type="hidden" id="quantity_<?= $i1+1;?>" value="<?= $quantity[$i1];?>">
         </td>
-        <td><input type="text" id="price<?=$i1+1;?>" name="price[]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" readonly="" autocomplete="off"/></td>
+        <td><input type="text" id="price<?=$i1+1;?>" name="price[<?=$i1;?>]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" readonly="" autocomplete="off"/></td>
       </tr>
       <?php }?>
     </tbody>
     <thead>
-        <tr> <th colspan="4" scope="col"><label>Total</label> : </th><td><input type="text" name="total" id="total"readonly="" />&nbsp;<input class="btn btn-info"type="button" value="Total"  onclick="totalIt()"  /></td></tr>
+        <tr> <th colspan="4" scope="col"><label>Total</label> : </th><td><input type="text" name="total" id="total"readonly="" data-validate="required" data-message-required="Total Required"/>&nbsp;<input class="btn btn-info"type="button" value="Total"  onclick="totalIt()"  /></td></tr>
     </thead>
   </table>
 </div>
@@ -135,7 +135,6 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <th scope="col">#</th>
         <th scope="col">Title</th>
         <th scope="col">Description</th>
-        <th scope="col">Reports</th>
         <th scope="col" formula="cost*qty"summary="sum">Price</th>
       </tr>
     </thead>
@@ -152,17 +151,13 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
-        <td><div class="col-sm-12">
-        <input type="file" name="userfile[]" id="userfile" value="<?php echo set_value('userfile'); ?>">
-                        </div>
-            </td>
-        <td><input type="text" id="price<?=$i1+1;?>" name="price[]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" autocomplete="off"/></td>
+        <td><input type="text" id="price<?=$i1+1;?>" name="price[<?= $i1;?>]" value=""  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" autocomplete="off"/></td>
       </tr>
       <?php }
         }?>
     </tbody>
     <thead>
-        <tr> <th colspan="4" scope="col"><label class="pull-right">Total : </label>  </th><td><input type="text" readonly="readonly" name="total" id="total" />&nbsp;<input class="btn btn-info"type="button" value="Total" onclick="totalIt()" /></td></tr>
+        <tr> <th colspan="3" scope="col"><label class="pull-right">Total : </label>  </th><td><input type="text" readonly="readonly" name="total" id="total"  data-validate="required" data-message-required="Total Required" />&nbsp;<input class="btn btn-info"type="button" value="Total" onclick="totalIt()" /></td></tr>
     </thead>
   </table>
 </div>
@@ -187,12 +182,11 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
     var total=quantity*cost;
     $('#price'+$i).val(total);
     }
-</script>
-<script>
-    function totalIt() {
-  var count = document.getElementsByName("price[]");
+
+  function totalIt() {
+  var count='<?=$i1?>';
   var total=0;
-  for (var i=1;i<=count.length;i++) { 
+  for (var i=1;i<=count;i++) {
     var price = parseFloat(document.getElementById("price"+i).value);
     total += isNaN(price)?0:price;
   }

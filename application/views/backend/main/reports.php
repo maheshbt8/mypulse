@@ -23,24 +23,24 @@ $date=$dt->format("m/d/Y");
 $currmonth = $dt->format('Y-m-d');
 if($report_id == 1){
 	if($account_type == 'superadmin'){
-$qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'status!='=>0,'created_date>='=>$currmonth.' 00:00:00','created_date<='=>$currmonth.' 23:59:59'))->num_rows();
+$qry=$this->db->get_where('inpatient', array('hospital_id' => $hospital_id[$h],'inpatient_status!='=>0,'created_at>='=>$currmonth.' 00:00:00','created_at<='=>$currmonth.' 23:59:59'))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
         $no=$this->db->get('doctors')->result_array();
             $qry=0;
             for($da=0;$da<count($no);$da++){
-                $qry=$qry+$this->db->get_where('inpatient', array('doctor_id' => $no[$da]['doctor_id'],'status!='=>0,'created_date>='=>$currmonth.' 00:00:00','created_date<='=>$currmonth.' 23:59:59'))->num_rows();
+                $qry=$qry+$this->db->get_where('inpatient', array('doctor_id' => $no[$da]['doctor_id'],'inpatient_status!='=>0,'created_at>='=>$currmonth.' 00:00:00','created_at<='=>$currmonth.' 23:59:59'))->num_rows();
             }
 	}
 }elseif($report_id == 2){
 		if($account_type == 'superadmin'){
-$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>$currmonth,'isDeleted'=>'1'))->num_rows();
+$qry=$this->db->get_where('appointments', array('hospital_id' => $hospital_id[$h],'appointment_date'=>$currmonth,'row_status_cd'=>'1'))->num_rows();
 	}elseif($account_type == 'hospitaladmins'){
 		$this->db->where('branch_id', $hospital_id[$h]);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($da=0;$da<count($no);$da++){
-                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>$currmonth,'isDeleted'=>'1'))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments', array('doctor_id' => $no[$da]['doctor_id'],'appointment_date'=>$currmonth,'row_status_cd'=>'1'))->num_rows();
             }
             $qry=$cou;
 	}

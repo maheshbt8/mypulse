@@ -13,7 +13,7 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
 <div class="col-sm-8">
 <select name="hospital" class="form-control" onchange="return get_branch(this.value)">
-    <?php $hospitals=$this->db->get('hospitals')->result_array();
+    <?php $hospitals=$this->crud_model->select_hospital();
     foreach ($hospitals as $hospital) { ?>
 <option value="<?=$hospital['hospital_id']?>" <?php if($hospital['hospital_id'] == $ward['hospital_id']){echo "selected";}?>><?=ucfirst($hospital['name'])?></option>
 <?php    }?>
@@ -26,13 +26,13 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('branch'); ?></span> 
 <div class="col-sm-8">
 <select name="branch" class="form-control" onchange="return get_departments(this.value)" id="branch">
-    <?php if($ward_id!=''){ $branchs=$this->db->where('hospital_id',$ward['hospital_id'])->get('branch')->result_array();}elseif($ward_id==''){$branchs=$this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('branch')->result_array();}
+    <?php if($ward_id!=''){ $branchs=$this->crud_model->select_branch($ward['hospital_id']);}elseif($ward_id==''){$branchs=$this->crud_model->select_branch($this->session->userdata('hospital_id'));}
     if($ward_id==''){
         ?>
 <option value="">Select Branch</option>
 <?php    }
     foreach ($branchs as $branches) { ?>
-<option value="<?=$branches['branch_id']?>" <?php if($branches['branch_id'] == $ward['branch_id']){echo "selected";}?>><?=ucfirst($branches['name'])?></option>
+<option value="<?=$branches['branch_id']?>" <?php if($branches['branch_id'] == $ward['branch_id']){echo "selected";}?>><?=ucfirst($branches['branch_name'])?></option>
 <?php    }?>
 </select>
 </div>
@@ -43,9 +43,9 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
 <span for="field-ta" class="col-sm-5 control-label"> <?php echo get_phrase('department'); ?></span> 
 <div class="col-sm-7">
 <select name="department" class="form-control" onchange="return get_ward(this.value)" id="department">
-    <?php $departments=$this->db->where('branch_id',$ward['branch_id'])->get('department')->result_array();
+    <?php $departments=$this->crud_model->select_department_info_by_branch_id($ward['branch_id']);
     foreach ($departments as $departments) { ?>
-<option value="<?=$departments['department_id']?>" <?php if($departments['department_id'] == $ward['department_id']){echo "selected";}?>><?=ucfirst($departments['name'])?></option>
+<option value="<?=$departments['department_id']?>" <?php if($departments['department_id'] == $ward['department_id']){echo "selected";}?>><?=ucfirst($departments['dept_name'])?></option>
 <?php    }?>
 </select>
 </div>
@@ -56,9 +56,9 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
 <span for="field-ta" class="col-sm-5 control-label"> <?php echo get_phrase('ward'); ?></span> 
 <div class="col-sm-7">
 <select name="ward" class="form-control" onchange="return get_bed(this.value)" id="ward">
-    <?php $wards=$this->db->where('department_id',$ward['department_id'])->get('ward')->result_array();
+    <?php $wards=$this->crud_model->select_ward_info_by_department_id($ward['department_id']);
     foreach ($wards as $wards) { ?>
-<option value="<?=$wards['ward_id']?>" <?php if($wards['ward_id'] == $ward['ward_id']){echo "selected";}?>><?=ucfirst($wards['name'])?></option>
+<option value="<?=$wards['ward_id']?>" <?php if($wards['ward_id'] == $ward['ward_id']){echo "selected";}?>><?=ucfirst($wards['ward_name'])?></option>
 <?php    }?>
 </select>
 </div>
@@ -102,15 +102,15 @@ $ward=$this->db->where('ward_id',$ward_id)->get('ward')->row_array();
         foreach ($bed_info as $row) { ?>   
             <tr>
 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['bed_id'] ?>"></td>
-<td><a href="<?php echo base_url(); ?>main/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
+<td><a href="<?php echo base_url(); ?>main/edit_bed/<?php echo $row['bed_id'] ?>" class="hiper"><?php echo $row['bed_name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
-                <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->name; ?></td>
-                <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->name; ?></td>
+                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->branch_name; ?></td>
+                <td><?php echo $this->db->where('department_id',$row['department_id'])->get('department')->row()->dept_name; ?></td>
+                <td><?php echo $this->db->where('ward_id',$row['ward_id'])->get('ward')->row()->ward_name; ?></td>
                 <td><?php if($row['bed_status']==1){echo "Available";}elseif($row['bed_status']==2){echo "Not - Available";} ?></td>
                 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
-                <td><?php if($row['isDeleted']=='1'){ ?>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> <?php }?>
+                <td><?php if($row['row_status_cd']!='0'){ ?>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/bed/delete/<?php echo $row['bed_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
                 </td>
             <?php }?>
             </tr>

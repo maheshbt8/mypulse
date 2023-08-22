@@ -31,9 +31,11 @@
                     	<?php $count = 1;foreach($health_insurance_provider as $row):
                         ?>
                         <tr>
-							<td><?php echo $row['name'];?></td>
+							<td><?php echo $row['health_ins_prov_name'];?></td>
 							<td>
+                        <?php if($row['row_status_cd']!=0){?>
                           <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/health_insurance_provider/delete/<?php echo $row['health_insurance_provider_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                      <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
         					</td>
                         </tr>
                         <?php endforeach;?>
@@ -51,7 +53,7 @@
                                 <label class="col-sm-3 control-label"><?php echo get_phrase('health_insurance_provider_name');?></label>
                                 <div class="col-sm-5">
                                     <input type="text" class="form-control" name="name"
-                                        data-validate="required" data-message-required="<?php echo 'Value_required';?>"/>
+                                        data-validate="required" data-message-required="Value Required"/>
                                 </div>
                             </div>
                             

@@ -17,14 +17,14 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
                   <div class="form-group">  
                   <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
          <div class="col-sm-4">
-        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){if($_GET['sd'] != '0NaN-NaN-NaN' && $_GET['ed'] != '0NaN-NaN-NaN'){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'All';}}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+29 days'));}?>"/>
+        <input  class="form-control" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){if($_GET['sd'] != '0NaN-NaN-NaN' && $_GET['ed'] != '0NaN-NaN-NaN'){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'All';}}else{echo date('M d,Y', strtotime('-29 days')).' - '.date('M d,Y', strtotime('-0 days'));}?>"/>
         </div>   
                         <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('status'); ?></span> 
                         <div class="col-sm-4">
                             <select name="hospital" class="form-control" onchange="return get_inpatient(this.value)">
     <!-- <option value="">Select</option> -->
-    <option value="all" <?php if($_GET['status_id']=='all'){echo 'selected';}?>><?php echo get_phrase('All'); ?></option>
-    <option value="1" <?php if($_GET['status_id']=='1'){echo 'selected';}elseif($_GET['status_id']==''){echo 'selected';}?>><?php echo get_phrase('Admitted'); ?></option>
+    <option value="all" <?php if($_GET['status_id']=='all'){echo 'selected';}elseif($account_type!='users'){echo 'selected';}?>><?php echo get_phrase('All'); ?></option>
+    <option value="1" <?php if($_GET['status_id']=='1'){echo 'selected';}elseif($account_type!='users' && $_GET['status_id']==''){echo 'selected';}?>><?php echo get_phrase('Admitted'); ?></option>
     <option value="2" <?php if($_GET['status_id']=='2'){echo 'selected';}?>><?php echo get_phrase('Discharged'); ?></option>
     <option value="0" <?php if($_GET['status_id']=='0'){echo 'selected';}?>><?php echo get_phrase('Recommended'); ?></option>
                             </select>
@@ -48,7 +48,8 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
             <th data-field="patient" data-sortable="true"><?php echo get_phrase('patient');?></th><?php }?>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital-Branch-Department');?></th>   
             <th data-field="doctor" data-sortable="true"><?php echo get_phrase('doctor');?></th>
-            <th data-field="date" data-sortable="true"><?php echo get_phrase('admitted _date');?></th>
+            <!-- <th data-field="date" data-sortable="true"><?php if($_GET['status_id']==1 || $_GET['status_id']==2 || $_GET['status_id']=='all'){echo get_phrase('admitted _date');}elseif($_GET['status_id']==0){echo "Recommended Date";}?></th> -->
+            <th data-field="date" data-sortable="true"><?php if($_GET['status_id']==1 || $_GET['status_id']==2 || $_GET['status_id']=='all' || $_GET['status_id']==''){echo get_phrase('admitted _date');}elseif($_GET['status_id']==0){echo "Recommended Date";}?></th>
             <th data-field="reason" data-sortable="true"><?php echo get_phrase('reason');?></th> 
             <th data-field="bed" data-sortable="true"><?php echo get_phrase('ward-Bed');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status');?></th>
@@ -64,12 +65,17 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
     if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
             $patient_info=$this->crud_model->select_inpatient_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
         }else{
-            $sd=date('Y-m-d', strtotime('-0 days'));
-            $ed=date('Y-m-d', strtotime('+29 days'));
+            $sd=date('Y-m-d', strtotime('-29 days'));
+            $ed=date('Y-m-d', strtotime('-0 days'));
+            if($account_type!='users'){
             $status='1';
+            }else{
+            $status='all';
+            }
             /*$patient_info=$this->crud_model->select_inpatient_info();*/
             $patient_info=$this->crud_model->select_inpatient_info_by_date($sd,$ed,$status);
-        }?>
+        }
+        ?>
 </div>
         <?php $i=1;foreach ($patient_info as $row) { 
             ?>   
@@ -83,22 +89,22 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
                     $doc=$this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row();
                     $branch=$this->db->get_where('branch' , array('branch_id' => $doc->branch_id))->row();
                     $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $doc->hospital_id))->row();
-                    $name = $this->db->get_where('department' , array('department_id' => $doc->department_id ))->row()->name;
-                        echo $hospital->name.' - '.$branch->name.' - '.$name;?>
-                    <!-- <?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name;?> -->
+                    $name = $this->db->get_where('department' , array('department_id' => $doc->department_id ))->row()->dept_name;
+                        echo $hospital->name.' - '.$branch->branch_name.' - '.$name;?>
+                  
                 </td>
                 <td><?php echo $doc->name;?></td>
-                <td><?php echo date('M d,Y',strtotime($row['join_date']));?></td>
+                <td><?php if($_GET['status_id']==1 || $_GET['status_id']==2 || _GET['status_id']=='all' || $_GET['status_id']==''){if($row['join_date']!=''){echo date('M d,Y',strtotime($row['join_date']));}}elseif($_GET['status_id']==0){echo date('M d,Y / h:i A',strtotime($row['created_at']));}?></td>
                 <td><?php echo $row['reason']; ?></td>
                 <td><?php $bed=$this->db->get_where('bed',array('bed_id'=>$row['bed_id']))->row();
                 $ward=$this->db->get_where('ward',array('ward_id'=>$bed->ward_id))->row();
-                echo $ward->name.'-'.$bed->name; ?></td>
-                 <td><?php if($row['status'] == 0){echo "Recommended";}elseif($row['status'] == 1){ echo "Admitted";}elseif($row['status'] == 2){ echo "Discharged";}?></td>
+                echo $ward->ward_name.'-'.$bed->bed_name; ?></td>
+                 <td><?php if($row['inpatient_status'] == 0){echo "Recommended";}elseif($row['inpatient_status'] == 1){ echo "Admitted";}elseif($row['inpatient_status'] == 2){ echo "Discharged";}?></td>
                  <?php if($account_type=='users'){?>
-                <td><?php if($row['show_status']==1){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row['show_status']==2){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td><?php }?> 
+                <td><?php if($row['row_status_cd']==1){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/2"><span style="color: green"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Visible";?></span></a><?php }elseif($row['row_status_cd']==2){?><a href="<?php echo base_url(); ?>main/inpatient/status/<?= $row['id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o" aria-hidden="true"></i>&nbsp;&nbsp;<?php echo "Hidden";?></span></a><?php }?></td><?php }?> 
                <td>
               <a href="<?php echo base_url();?>main/inpatient_history/<?php echo $row['id']?>" title="View History"><i class="menu-icon fa fa-eye"></i></a> &nbsp;&nbsp;
-              <?php if(($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users') && $row['status']==0){?>
+              <?php if(($account_type=='superadmin' || $account_type=='hospitaladmins' || $account_type=='doctors' || $account_type=='users') && $row['inpatient_status']==0){?>
               <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/inpatient/delete/<?php echo $row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?>
                 </td>
             </tr>
@@ -110,6 +116,26 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
 </div>
 </div>
 </form>
+<script type="text/javascript">
+    function get_inpatient(id) {
+        <?php
+       if($_GET['sd'] == '' && $_GET['ed'] == ''){
+        $sd=date('Y-m-d', strtotime('-0 days'));
+        $ed=date('Y-m-d', strtotime('-29 days'));
+        ?>
+        window.location.href = '<?php echo base_url();?>In-Patient?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
+        <?php
+       }elseif($_GET['sd'] != '' && $_GET['ed'] != ''){
+        ?>
+        window.location.href = '<?php echo base_url();?>In-Patient?sd=<?=$_GET['sd'];?>&ed=<?=$_GET['ed'];?>&status_id='+id;
+        <?php
+       }
+       ?>
+    }
+    function past_date_range(start, end) {
+            window.location.href = '<?php echo base_url();?>In-Patient?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=<?php if($_GET['status_id']!=''){echo $_GET['status_id'];}else{echo $status;}?>";
+        }
+</script>
 <script>
     $(document).ready(function(){
         $("#delete1").show();
@@ -140,67 +166,4 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
     }
     });
     });
-</script>
-<script type="text/javascript">
-    function get_inpatient(id) {
-        <?php
-       if($_GET['sd'] == '' && $_GET['ed'] == ''){
-        $sd=date('Y-m-d', strtotime('-0 days'));
-        $ed=date('Y-m-d', strtotime('+29 days'));
-        ?>
-        window.location.href = '<?php echo base_url();?>In-Patient?sd=<?=$sd;?>&ed=<?=$ed;?>&status_id='+id;
-        <?php
-       }elseif($_GET['sd'] != '' && $_GET['ed'] != ''){
-        ?>
-        window.location.href = '<?php echo base_url();?>In-Patient?sd=<?=$_GET['sd'];?>&ed=<?=$_GET['ed'];?>&status_id='+id;
-        <?php
-       }
-       ?>
-    }
-</script>
-<script type="text/javascript">
-        
-    $(document).ready(function(){
-        var start = moment();
-        var end = moment().add(29, 'days');
-        <?php
-        if(isset($_GET['sd']) && $_GET['sd'] != ""){
-            ?>
-            start = moment('<?php echo $_GET['sd'];?>');
-            <?php
-        }
-        ?>
-
-        <?php
-        if(isset($_GET['ed']) && $_GET['ed'] != ""){
-            ?>
-            end = moment('<?php echo $_GET['ed'];?>');
-            <?php
-        }
-        ?>
-        function cb(start, end) {
-            window.location.href = '<?php echo base_url();?>In-Patient?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=1";
-        }
-        
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            locale: { 
-                applyLabel : '<?php echo $this->lang->line('apply');?>',
-                cancelLabel: '<?php echo $this->lang->line('clear');?>',
-                "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
-            },  
-            ranges: {
-                '<?php echo 'All';?>': ['All', 'All'],
-                '<?php echo 'Today';?>': [moment().add(0, 'days'), moment().add(0, 'days')],
-                '<?php echo 'Tomorrow';?>': [moment().add(1, 'days'), moment().add(1, 'days')],
-                '<?php echo 'Upcoming 7 day';?>': [moment(),moment().add(6, 'days')],
-                '<?php echo 'Upcoming 30 day';?>': [moment(),moment().add(29, 'days'),],
-                '<?php echo 'This Month';?>': [moment().startOf('month'), moment().endOf('month')],
-                '<?php echo 'Next Month';?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
-            }
-        },cb);
-
-    });
-
 </script>

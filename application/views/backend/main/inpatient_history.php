@@ -17,11 +17,11 @@
             $hospital=$this->crud_model->select_single_hospital($bed['hospital_id']);
             ?>
             <h4><?php echo '<b>Hospital</b> : '.$hospital['name'];?></h4>
-            <h4><?php echo '<b>Branch</b> : '.$branch['name'];?></h4>
-            <h4><?php echo '<b>Department</b> : '.$department['name'];?></h4>
-            <h4><?php echo '<b>Ward</b> : '.$ward['name'];?></h4>
-        	<h4><?php echo '<b>Bed</b> : '.$bed['name'];?></h4>
-        	<h4><?php if($inpatient->status == 0){$status='Not Admitted';}elseif($inpatient->status == 1){$status='Admitted';}elseif($inpatient->status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
+            <h4><?php echo '<b>Branch</b> : '.$branch['branch_name'];?></h4>
+            <h4><?php echo '<b>Department</b> : '.$department['dept_name'];?></h4>
+            <h4><?php echo '<b>Ward</b> : '.$ward['ward_name'];?></h4>
+        	<h4><?php echo '<b>Bed</b> : '.$bed['bed_name'];?></h4>
+        	<h4><?php if($inpatient->inpatient_status == 0){$status='Not Admitted';}elseif($inpatient->inpatient_status == 1){$status='Admitted';}elseif($inpatient->inpatient_status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
         	<h4><?php echo '<b>Admitted Date & Time</b> : '.$inpatient->join_date;?></h4>
         	<h4><?php echo '<b>Reason</b> : '.$inpatient->reason;?></h4>
         	<h4><?php echo '<b>Discharged Date & Time</b> : '.$inpatient->discharged_date;?></h4>
@@ -45,7 +45,7 @@
             <tr>
                 <td><?= $i;?></td>
                 <td><?php echo $row['note'];?></td>
-                 <td><?php echo date('M d,Y h:i A',strtotime($row['created_date']));?></a></td>
+                 <td><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></a></td>
             </tr>
         <?php $i++;} ?>
     </tbody>

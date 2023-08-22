@@ -23,7 +23,7 @@ $this->session->set_userdata('last_page', current_url());
     <thead>
         <tr><?php if($account_type == 'superadmin'){?>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th><?php }?>
-            <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_id');?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_no.');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
             <?php if($account_type!='users'){?>
             <th data-field="license" data-sortable="true"><?php echo get_phrase('license_status'); ?></th><?php }?>
@@ -41,9 +41,9 @@ $this->session->set_userdata('last_page', current_url());
                 <td><a href="<?php echo base_url();?>Hospital/<?=$row['hospital_id'];?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <?php if($account_type!='users'){?>
                 <td><?php $license_code=$this->db->where('license_id',$row['license'])->get('license')->row()->license_code;
-                 if($row['license_status'] == 1){echo "<button type='button' class='btn-success'>".$license_code." - Active</button>";   
+                 if($row['row_status_cd'] == 1){echo "<button type='button' class='btn-success'>".$license_code." - Active</button>";   
                  }
-                 else if($row['license_status'] == 2){ echo "<button type='button' class='btn-danger'>".$license_code." - Inactive</button>";}?>
+                 else if($row['row_status_cd'] == 2){ echo "<button type='button' class='btn-danger'>".$license_code." - Inactive</button>";}?>
                 </td><?php }?>
                 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                  <td>
@@ -51,9 +51,11 @@ $this->session->set_userdata('last_page', current_url());
                 </td>
                 <?php }?>
                 <td>
-           <?php if($account_type == 'superadmin'){?>
-            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }elseif($account_type == 'users'){?>
-                <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete_hospital/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+           <?php if($account_type == 'superadmin'){
+            if($row['row_status_cd']!=0){
+            ?>
+            <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }else{echo '<span class="error"><b>Deleted</b></span>';}}elseif($account_type == 'users'){if($row['row_status_cd']==2){echo '<span class="error"><b>Inactive</b></span>&nbsp;';}elseif($row['row_status_cd']==1){echo '<span style="color:green;"><b>Active</b></span>&nbsp;';}?>
+                <!-- <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital/delete_hospital/<?php echo $row['hospital_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a> -->
             <?php }?>
                 </td>
             </tr>
@@ -65,6 +67,7 @@ $this->session->set_userdata('last_page', current_url());
 </div>
 </div>
 </form>
+
 
 <script>
     $(document).ready(function(){

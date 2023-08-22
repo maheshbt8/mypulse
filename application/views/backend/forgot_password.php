@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 	<?php
-        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-        $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
+        $system_name = $this->db->get_where('settings', array('setting_type' => 'system_name'))->row()->description;
+        $system_title = $this->db->get_where('settings', array('setting_type' => 'system_title'))->row()->description;
         ?>  
-	<title><?php echo $this->lang->line('labels')['sign_up'];?> | <?php echo $system_title; ?></title>
+	<title><?php echo $system_title; ?> | Forgot Password</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <?php include'login_top.php';?>
@@ -30,7 +30,7 @@
 		<div class="alert alert-danger alert-dismissible" role="alert" style="padding: 0.06rem 1.25rem;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><?php echo $this->session->flashdata('email_error'); ?></div>
 		<?php }?>
-					<div class="wrap-input100 validate-input m-b-10" data-validate = "<?php echo $this->lang->line('validation')['requiredPassword'];?>">
+					<div class="wrap-input100 validate-input m-b-10" data-validate = "Enter email">
 						<input class="input100" type="email" name="email" placeholder="<?php echo "Enter Email ";?>*" value="<?php echo set_value('pass'); ?>" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">

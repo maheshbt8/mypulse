@@ -1,10 +1,4 @@
-<?php 
-if($id == 1){
-    $privacy= $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
-    }elseif($id == 2){
-    $privacy = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
-    }
- ?>
+
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
         

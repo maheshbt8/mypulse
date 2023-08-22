@@ -2,27 +2,12 @@
 			<a href="<?=base_url('Manage_Profile')?>"><div class="profile-sidebar">
 				<div class="profile-userpic">
 					<!-- <img src="data:image/gif;base64,<?=$image_url;?>" width="50" class="img-responsive" alt=""> -->
-                    <img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" width="50" class="img-responsive" alt="">
+                    <img src="<?=base_url().$image_url;?>" width="50" class="img-responsive" alt="">
 				</div>
 				<div class="profile-usertitle">
                     <div class="profile-usertitle-status"><span><?php
-if($account_type == 'superadmin'){
-  $user_role='Super Admin';
-}elseif($account_type == 'hospitaladmins'){
-  $user_role='Hospital Admin';
-}elseif($account_type == 'doctors'){
-  $user_role='Doctor';
-}elseif($account_type == 'nurse'){
-  $user_role='Nurse';
-}elseif($account_type == 'receptionist'){
-  $user_role='Receptionist';
-}elseif($account_type == 'medicalstores'){
-  $user_role='Pharmacist';
-}elseif($account_type == 'medicallabs'){
-  $user_role='Laboratorist';
-}elseif($account_type == 'users'){
-  $user_role='MyPulse User';
-}
+$role_data=$this->crud_model->get_role($account_type);
+$user_role=$role_data['role'];
 echo $user_role; ?></span></div>
 					<div class="profile-usertitle-name">
 					<?php
@@ -152,7 +137,7 @@ echo $user_role; ?></span></div>
         <li class="<?php if ($page_name == 'manage_patient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>Out_Patient">
                 <i class="fa fa-users">&nbsp;</i>
-                <span><?php echo get_phrase('out_Patients'); ?></span>
+                <span><?php echo get_phrase('OutPatients'); ?></span>
             </a>
         </li>
     <?php }?>
@@ -162,7 +147,7 @@ echo $user_role; ?></span></div>
         <li class="<?php if ($page_name == 'manage_inpatient') echo 'active'; ?>">
             <a href="<?php echo base_url(); ?>In-Patient">
                 <i class="menu-icon fa fa-eye">&nbsp;</i>
-                <span><?php if($account_type == 'users'){echo get_phrase('in-Patient_history');}else{echo get_phrase('in-Patients'); }?></span>
+                <span><?php if($account_type == 'users'){echo get_phrase('in-Patient_history');}else{echo get_phrase('inPatients'); }?></span>
             </a>
         </li>
     <?php }?>
@@ -244,7 +229,13 @@ echo $user_role; ?></span></div>
 					</ul>
 		</li>
 		<?php }?>
-        <?php if($account_type=='superadmin'){?>
+        <li class="<?php if ($page_name == 'leave_us_messages') echo 'active'; ?>">
+    <a href="<?php echo base_url(); ?>Leave-Us-Messages">
+    <i class="fa fa-envelope">&nbsp;</i>
+    <span><?php echo get_phrase('Feedbacks'); ?></span>
+    </a>
+    </li>
+        <?php if($account_type=='superadmin'){ ?>
     <li class="<?php if ($page_name == 'settings') echo 'active'; ?>">
     <a href="<?php echo base_url(); ?>Settings">
     <i class="fa fa-wrench">&nbsp;</i>

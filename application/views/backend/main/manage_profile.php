@@ -5,31 +5,7 @@ $this->session->set_userdata('last_page', current_url());
 <div class="row">
     <div class="col-md-2">
             <center>
-<?php
-/*if($account_type == 'superadmin'){
-  $img_type='superadmin_image';
-}elseif($account_type == 'hospitaladmins'){
-  $img_type='hospitaladmin_image';
-}elseif($account_type == 'doctors'){
-  $img_type='doctor_image';
-}elseif($account_type == 'nurse'){
-  $img_type='nurse_image';
-}elseif($account_type == 'receptionist'){
-  $img_type='receptionist_image';
-}elseif($account_type == 'medicalstores'){
-  $img_type='medical_stores';
-}elseif($account_type == 'medicallabs'){
-  $img_type='medical_labs';
-}elseif($account_type == 'users'){
-  $img_type='user_image';
-}*/
-/*$image_url=$this->crud_model->get_image_url($img_type,$this->session->userdata('login_user_id'));*/
-/*if (file_exists('uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg'))
-      $image_url = base_url() . 'uploads/' . $img_type.'/' . $this->session->userdata('login_user_id') . '.jpg';
-else
-    $image_url = base_url() . 'uploads/user.jpg';*/
-?>
-            <img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" class="img-circle" style="width: 60%;" draggable="false">
+           <img src="<?=$image_url;?>" class="img-circle" style="width: 60%;" draggable="false">
         <br>
         <h3><?php echo $row['name'];?></h3>
         <h4><?php echo $row['unique_id'];?></h4>
@@ -116,7 +92,7 @@ else
                         <div class="col-sm-12">
                             <div class="fileinput fileinput-new" data-provides="fileinput">
                             <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;" data-trigger="fileinput">
-                            <img src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" alt="..." >
+                            <img src="<?=base_url($image_url);?>" alt="..." >
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
                                 <div>
@@ -155,8 +131,9 @@ else
                         <div class="col-sm-8">
                             <select name="gender" class="form-control" id="gender" value="">
                                 <option value=""><?php echo get_phrase('select_gender'); ?></option>
-                                <option value="male"<?php if($row['gender']=='male'){echo "selected";}?>><?php echo get_phrase('male'); ?></option>
-                                <option value="female"<?php if($row['gender']=='female'){echo "selected";}?>><?php echo get_phrase('female'); ?></option>
+                                <option value="M"<?php if($row['gender']=='M'){echo "selected";}?>><?php echo get_phrase('male'); ?></option>
+                                <option value="F"<?php if($row['gender']=='F'){echo "selected";}?>><?php echo get_phrase('female'); ?></option>
+                                <option value="T" <?php if($row['gender']=='T'){echo 'selected';}?>>Other / Transgender</option>
                             </select>
                         </div>
                     </div>
@@ -172,7 +149,6 @@ else
 
                         <div class="col-sm-8">
                             <input type="text" name="aadhar" class="form-control" id="aadhar" value="<?=$row['aadhar']?>">
-                            
                         </div>
                     </div>
                     <div class="form-group">
@@ -180,6 +156,11 @@ else
 
                         <div class="col-sm-8">
                             <input type="text" name="address" class="form-control" id="address"value="<?=$row['address']?>">
+                            <span id="location-get-latlng">
+                            <input type="hidden" name="latitude" id="lat" value="<?=$row['latitude']?>">
+                            <input type="hidden" name="longitude" id="lng" value="<?=$row['longitude']?>">
+                        </span>
+                            <input type="button" class="btn btn-info btn-sm" value="Get Current location" onclick="getLocation()" />
                         </div>
                     </div>
                     
@@ -195,7 +176,7 @@ else
                                 <?php 
                                 $admins = $this->db->get_where('country')->result_array();
                                 foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id'] == $row['country_id']){echo 'selected';}?>><?php echo $row1['country_name'] ?></option>
                                 
                                 <?php } ?>
                                
@@ -212,7 +193,7 @@ else
                                     <?php 
                                 $admins = $this->db->get_where('state')->result_array();
                                 foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <option value="<?php echo $row1['state_id'] ?>" <?php if($row1['state_id'] == $row['state_id']){echo 'selected';}?>><?php echo $row1['state_name'] ?></option>
                                 
                                 <?php } ?>
                                 </select>   
@@ -228,7 +209,7 @@ else
                                     <?php 
                                 $admins = $this->db->get_where('district')->result_array();
                                 foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <option value="<?php echo $row1['district_id'] ?>" <?php if($row1['district_id'] == $row['district_id']){echo 'selected';}?>><?php echo $row1['dist_name'] ?></option>
                                 
                                 <?php } ?>
                                 </select>
@@ -243,7 +224,7 @@ else
                                     <?php 
                                 $admins = $this->db->get_where('city')->result_array();
                                 foreach($admins as $row1){?>
-                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
+                                <option value="<?php echo $row1['city_id'] ?>" <?php if($row1['city_id'] == $row['city_id']){echo 'selected';}?>><?php echo $row1['city_name'] ?></option>
                                 <?php } ?>
                                 </select>
                             </div>

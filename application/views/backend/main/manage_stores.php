@@ -31,7 +31,7 @@ if($account_type=='users'){ ?>
         <tr>
              <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th><?php }?>
-            <th><?php echo get_phrase('store_id');?></th>
+            <th><?php echo get_phrase('store_no.');?></th>
             <th><?php echo get_phrase('name');?></th>   
             <th><?php echo get_phrase('owner name');?></th>
             <th><?php echo get_phrase('owner phone number');?></th>
@@ -52,24 +52,24 @@ if($account_type=='users'){ ?>
                 <td><a href="<?php echo base_url();?>main/edit_stores/<?php echo $row['store_id']?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['owner_name'] ?></td>
                 <td><?php echo $row['owner_mobile'] ?></td>
-                <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
-                <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
+                <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->name; ?></td>
+                <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch_id']))->row()->branch_name; ?></td>
                 <?php if($account_type!='users'){?>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
+                <td><?php if($row['row_status_cd'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
                  }
                  else if(
-                 $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                 $row['row_status_cd'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                      
                  </td>
              <?php }?>
                <td>
                  <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-                    <?php if($row['is_email'] == '2'){?>
+                <?php if($row['row_status_cd'] != '0'){?>
+                    <?php if($row['email_verify'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/medicalstores/store/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
-                <?php if($row['isDeleted'] == '1'){?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove">
                 </i></a>
-                <?php }}elseif($account_type == 'users'){?>
+                <?php }else{echo '<span class="error"><b>Deleted</b></span>';}}elseif($account_type == 'users'){?>
             <a href="<?php echo base_url(); ?>main/add_order/0/<?=$row['store_id'];?>" title="Order Medicine"><em class="fa fa-sm fa-medkit color-blue"></em>
             </a>&nbsp;&nbsp;
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_stores/delete_store/<?php echo $row['store_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove">

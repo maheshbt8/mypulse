@@ -107,7 +107,7 @@ input.form-control {
   box-shadow: inset 0px 0px 0px 1px #f9243f; }
 .profile-sidebar{border: 1px solid rgba(255, 255, 255, 0.1);}
 .navbar-custom {
-  background: #292a2d !important;
+  background: -webkit-linear-gradient(bottom, #005bea, #00c6fb) !important;
   height: 60px; }
 ul.nav.menu li{
   border-bottom: 1px solid rgba(21, 20, 20, 0.7);
@@ -379,7 +379,7 @@ a.label:hover, a.label:focus {
   font-size: 17px; }
 
 .panel-primary > .panel-heading {
-  background-color: #30a5ff;
+  background-color: #8b8b8b;
   color: #fff;
   border: none; }
 
@@ -444,7 +444,7 @@ f
   line-height: 38px; }
 
 .panel-default .panel-heading {
-  background: #fff;
+  background: #d3d3d3;
   border-bottom: 1px solid #f0f0f0;
   color: #444444; }
 
@@ -800,7 +800,9 @@ f
   padding: 0;
   display: none;
   box-shadow: none;
-  background: #fff; }
+  /*background: #fff;*/
+  background: -webkit-linear-gradient(bottom, #005bea, #00c6fb);
+   }
 
 .sidebar ul {
   margin: 20px 0px; }
@@ -842,7 +844,7 @@ f
   height: 50px;
   font-size: 15px;
   line-height: 2em;
-  color: #444444; }
+  color: #fff; }
 
 .sidebar ul.nav ul.children {
   width: auto;
@@ -852,8 +854,8 @@ f
 
 .sidebar ul.nav ul.children li a {
   height: 40px;
-  background: #f7f7f7;
-  color: #444444; }
+  background: #003586;
+  color: #fff; }
 
 .sidebar ul.nav li.current a {
   background-color: #30a5ff;
@@ -871,7 +873,7 @@ f
   margin: 0px 0; }
 
 .profile-sidebar {
-  padding: 10px 0;
+  padding: 20px 0;
   border-bottom: 1px solid #f0f0f0; }
   
 #sidebar-collapse{
@@ -897,12 +899,13 @@ f
   margin: 10px 0 0 12px; }
 
 .profile-usertitle-name {
+  color: #fff;
   font-size: 20px;
   margin-bottom: 0px; }
 
 .profile-usertitle-status {
   text-transform: uppercase;
-  color: #AAA;
+  color: #fff;
   font-size: 12px;
   font-weight: 600;
   margin-bottom: 15px; }

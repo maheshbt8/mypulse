@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 	<?php
-        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-        $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
+        $system_name = $this->db->get_where('settings', array('setting_type' => 'system_name'))->row()->description;
+        $system_title = $this->db->get_where('settings', array('setting_type' => 'system_title'))->row()->description;
         ?>  
 	<title><?php echo $this->lang->line('labels')['sign_up'];?> | <?php echo $system_title; ?></title>
 	<meta charset="UTF-8">
@@ -11,11 +11,10 @@
 <?php include'login_top.php';?>
 </head>  
 <body>
-	  
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('<?php echo base_url();?>assets/assets1/images/images.jpg');">
 			<div class="wrap-login100 p-t-190 p-b-30">
-				<form class="login100-form validate-form" action="<?php echo base_url();?>Set_Password/<?php echo $task;?>" method="post">
+				<form class="login100-form validate-form" action="<?php echo base_url();?>login/set_password/<?=$task;?>" method="post">
 					<div class="login100-form-avatar">  
 						<img src="<?=base_url('MyPulse-Logo');?>" alt="MyPulse" draggable="false">
 					</div>

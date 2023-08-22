@@ -50,6 +50,21 @@ public function login_post() {
                 ], REST_Controller::HTTP_BAD_REQUEST);
             }
     }
+    function logout_post(){
+        $user_id = $this->post('user_id');
+        $user = $this->index_model->logout_details($user_id);
+        if($user){
+                $this->response([
+                    'status' => TRUE,
+                    'message' => 'User logout successful.'
+                ], REST_Controller::HTTP_OK);
+            }else{
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'Not Loged Out.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            }
+    }
     public function checkMobileExist_post(){
         $phone = $this->post('mobilenumber');
         $validation_phone = mobile_validation($phone);
@@ -89,11 +104,11 @@ public function login_post() {
     public function sendOTPtoMobile_post(){
         $phone = $this->post('mobilenumber');
         $name = strip_tags($this->post('name'));
-        $num="12345678901234567890";
-        $shu=str_shuffle($num);
-        $otp=substr($shu, 14);
+        $otp=otp_generate();
         $data['phone']=$phone;
-        $message='Dear '. ucfirst($name) . ', Welcome To MyPulse. Your OPT Number: ' . $otp.'. Please use the code within 2 minutes.' ;
+        /*$message='Dear '. ucfirst($name) . ', Welcome To MyPulse. Your OPT Number: ' . $otp.'. Please use the code within 2 minutes.' ;*/
+        $message= 'Thank you for registering with MyPulse. Your
+verification code is ' . $otp.'.';
         $this->load->model('sms_model');
         $send=$this->sms_model->send_sms($message, $data['phone']);
         $this->response([
@@ -139,25 +154,13 @@ public function login_post() {
         $validation_phone = mobile_validation($phone);
         $data['name']       = $name;
         $data['email']      = $email;
-        $data['password']   = sha1($password);
+        $data['password']   = hash ( "sha256",$password);
         $data['phone']      = $phone;
-        $data['status']   = 1;
-        $data['is_mobile']   = 1;
+        $data['mobile_verify']   = 1;
         if($validation_phone==1){
         $insert=$this->db->insert('users',$data);
         $lid=$this->db->insert_id();
-if($lid==1){
-$num=100001;
-}elseif($lid!=1){
-$my=explode('_',$this->db->where('user_id',$lid-1)->get('users')->row()->unique_id);
-$year=substr ($my[0], -2);
-if($year==date('y')){
-$num=$my[1]+1;
-}else{
-$num=100001;
-}
-}
-$pid='MPU'.date('y').'_'.$num;
+$pid=$this->crud_model->generate_unique_id($lid,'users');
         $this->db->where('user_id',$lid)->update('users',array('unique_id'=>$pid));
         }elseif($validation_phone!=1){
         $data['reg_status']   = '1';
@@ -208,11 +211,10 @@ $pid='MPU'.date('y').'_'.$num;
     }
     public function ForgotOTP_post(){
         $phone = $this->post('mobilenumber');
-        $num="12345678901234567890";
-        $shu=str_shuffle($num);
-        $otp=substr($shu, 14);
+        $otp=otp_generate();
         $data['phone']=$phone;
-        $message='Welcome To MyPulse. Your OPT Number: ' . $otp.'.' ;
+        $message= 'Thank you for registering with MyPulse. Your
+verification code is ' . $otp.'.';
         $this->load->model('sms_model');
         $send=$this->sms_model->send_sms($message, $data['phone']);
         $this->response([
@@ -250,10 +252,10 @@ $pid='MPU'.date('y').'_'.$num;
     }
     public function ForgotPassword_post(){
         $phone = strip_tags($this->post('mobilenumber'));
-        $current_password_input = sha1($this->post('password'));
-    $new_password = sha1($this->post('new_password'));
+        $new_password = hash ( "sha256",$this->post('new_password'));
+    $confirm_new_password = hash ( "sha256",$this->post('confirm_new_password'));
 $current_password_db = $this->db->get_where('users', array('phone' =>$phone))->row();
-if($current_password_db->password == $current_password_input) {
+if($new_password == $confirm_new_password) {
 $result = $this->index_model->change_password($current_password_db->user_id,$new_password);
     if($result){
         $this->response([
@@ -269,7 +271,7 @@ $result = $this->index_model->change_password($current_password_db->user_id,$new
     }else{
         $this->response([
         'status' => FALSE,
-        'message' => 'Password Update Failed.'
+        'message' => 'Password Not Matched.'
         ], REST_Controller::HTTP_BAD_REQUEST);
     }
     }
@@ -279,7 +281,7 @@ $result = $this->index_model->change_password($current_password_db->user_id,$new
         if($languages){
             $this->response([
                     'status' => TRUE,
-                    'notifications'=>$languages,
+                    'languages'=>$languages,
                     'message' => 'All Languages.'
                 ], REST_Controller::HTTP_OK);
         }else{
@@ -331,7 +333,7 @@ $result = $this->index_model->change_password($current_password_db->user_id,$new
         $user_id=$this->get('user_id');
         $message = $this->index_model->get_messages($user_id);
         if($message){
-        $account_details='users-user-'.$user_id;
+        $account_details=$this->db->get_where('users',array('user_id'=>$user_id))->row()->unique_id;
                $c=0;
     foreach ($message as $row) {
       $count=explode(',',$row['is_read']);
@@ -400,26 +402,65 @@ public function userProfile_get(){
         ], REST_Controller::HTTP_BAD_REQUEST); 
     }
 }
+ public function image_get(){
+    $user_id=$this->get('user_id');
+    if (file_exists('uploads/user_image/' . $user_id . '.jpg')){
+            $image_url ='uploads/user_image/'. $user_id . '.jpg';
+        }else{
+            $image_url ='uploads/user.jpg';
+        }
+    /*$im = file_get_contents($image_url);
+    header('content-type: image/png');*/
+    echo $image_url;
+    }
+    public function upload_profile_post(){
+        $user_id= $this->post('user_id');
+        if($_FILES['userfile']['tmp_name']!=''){
+        unlink('uploads/user_image/'. $user_id.  '.jpg');
+        $file=move_uploaded_file($_FILES["userfile"]["tmp_name"], "uploads/user_image/" . $user_id . '.jpg');
+        }
+        if($file){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Profile Updated Successfully.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Profile Not Updated.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
 public function profile_post(){
-    $result = $this->index_model->update_user_info();
+    $email = $this->post('email');
+        $validation_email = email_validation($email);
+     if($validation_email==0){
+       $result = $this->index_model->update_user_info();
     if($result){
         $this->response([
         'status' => TRUE,
-        'user'=>$result,
-        'message' => 'User Information.'
+        'message' => 'User Information Updated Successfully.'
         ], REST_Controller::HTTP_OK);
     }else{
        $this->response([
         'status' => FALSE,
-        'message' => 'No Data Found.'
+        'message' => 'User Information Not Updated.'
         ], REST_Controller::HTTP_BAD_REQUEST); 
     }
+        }else {
+                $this->response([
+                    'status' => FALSE,
+                    'message' => 'This email id is already registered with us.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    
 }
 public function changePassword_post(){
     $user_id=$this->post('user_id');
-    $current_password_input = sha1($this->post('password'));
-    $new_password = sha1($this->post('new_password'));
-    /*$confirm_new_password = sha1($this->post('confirm_new_password'));*/
+    $current_password_input = hash ( "sha256",$this->post('password'));
+    $new_password = hash ( "sha256",$this->post('new_password'));
+    /*$confirm_new_password = hash ( "sha256",$this->post('confirm_new_password'));*/
 
 $current_password_db = $this->db->get_where('users', array('user_id' =>$user_id))->row()->password;
 if($current_password_db == $current_password_input) {
@@ -515,7 +556,7 @@ public function MedicalStoresForOrders_get(){
         if($medicalstores){
             $this->response([
                     'status' => TRUE,
-                    'medicalstores'=>$MedicalStores,
+                    'medicalstores'=>$medicalstores,
                     'message' => 'Medical Stores for Orders.'
                 ], REST_Controller::HTTP_OK);
         }else{
@@ -531,8 +572,24 @@ public function MedicalLabsForOrders_get(){
         if($medicallabs){
             $this->response([
                     'status' => TRUE,
-                    'medicallabs'=>$Medicallabs,
+                    'medicallabs'=>$medicallabs,
                     'message' => 'Medical Labs for Orders.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.',
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+}
+public function Specializations_get(){
+    $specializations = $this->index_model->get_specializations_info();
+        if($specializations){
+            $this->response([
+                    'status' => TRUE,
+                    'medicallabs'=>$specializations,
+                    'message' => 'All Specializations.'
                 ], REST_Controller::HTTP_OK);
         }else{
             $this->response([
@@ -549,27 +606,50 @@ public function MedicalLabsForOrders_get(){
         if($hospitals!=''){
             $hospitals=count($hospitals);
         }else{
-            $hospitals='0';
+            $hospitals=0;
         }
         $doctors = $this->index_model->select_doctors_info($user_id);
         if($doctors!=''){
             $doctors=count($doctors);
         }else{
-            $doctors='0';
+            $doctors=0;
         }
         $stores = $this->index_model->select_stores_info($user_id);
         if($stores!=''){
             $stores=count($stores);
         }else{
-            $stores='0';
+            $stores=0;
         }
         $labs = $this->index_model->select_labs_info($user_id);
         if($labs!=''){
             $labs=count($labs);
         }else{
-            $labs='0';
+            $labs=0;
         }
         $appointments=$this->db->where('user_id',$user_id)->get('appointments')->num_rows();
+        $notification_count = $this->index_model->get_notification_count($user_id);
+        $message = $this->index_model->get_messages($user_id);
+        $account_details=$this->db->get_where('users',array('user_id'=>$user_id))->row()->unique_id;
+               $c=0;
+    foreach ($message as $row) {
+      $count=explode(',',$row['is_read']);
+    $s=0;
+    for($m2=0;$m2<count($count);$m2++){
+        if($account_details == $count[$m2]){
+                $s=1;
+                break;
+        }
+        }
+        if($s==1){
+            $a=TRUE;
+        }elseif($s==0){
+            $c++;
+            $a=FALSE;
+        }
+        $row['is_read']=$a;
+        $results[]=$row;
+    } 
+    $message_count=$c;
             $this->response([
                     'status' => TRUE,
                     'hospitals_count'=>$hospitals,
@@ -577,6 +657,8 @@ public function MedicalLabsForOrders_get(){
                     'medicalstores_count'=>$stores,
                     'medicallabs_count'=>$labs,
                     'appointments_count'=>$appointments,
+                    'notifications_count'=>$notification_count,
+                    'messages_count'=>$message_count,
                     'message' => 'All Hospitals, Doctors, Medical Stores, Medical Labs & Appointments count.'
                 ], REST_Controller::HTTP_OK);
     }
@@ -701,6 +783,7 @@ public function MedicalLabsForOrders_get(){
             
         }
     }
+    
     /*********************Doctors*******************************/
     public function doctors_get(){
         $user_id=$this->get('user_id');
@@ -805,8 +888,9 @@ public function MedicalLabsForOrders_get(){
         }
     }
     /*********************Medical Labs*******************************/
-    public function medicallabs_get($id=''){
-        $labs = $this->index_model->select_labs_info($id);
+    public function medicallabs_get(){
+        $user_id=$this->get('user_id');
+        $labs = $this->index_model->select_labs_info($user_id);
         if($labs){
             $this->response([
                     'status' => TRUE,
@@ -821,8 +905,9 @@ public function MedicalLabsForOrders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-    public function medicallab_get($id=''){
-        $lab = $this->index_model->select_lab_info($id);
+    public function medicallab_get(){
+        $lab_id=$this->get('lab_id');
+        $lab = $this->index_model->select_lab_info($lab_id);
         if($lab){
             $this->response([
                     'status' => TRUE,
@@ -871,8 +956,9 @@ public function MedicalLabsForOrders_get(){
         }else{
             $this->response([
                     'status' => FALSE,
+                    'appointments'=>'',
                     'message' => 'No Data Found.'
-                ], REST_Controller::HTTP_BAD_REQUEST);
+                ], REST_Controller::HTTP_OK);
         }
     }
     public function appointment_get(){
@@ -908,7 +994,7 @@ public function MedicalLabsForOrders_get(){
         }
     }
     function cancelAppointment_post(){
-            $appointment=$this->crud_model->cancel_appointment_info();
+            $appointment=$this->index_model->cancel_appointment_info();
             if($appointment){
             $this->response([
                     'status' => TRUE,
@@ -922,7 +1008,7 @@ public function MedicalLabsForOrders_get(){
         }
     }
     function appointment_post(){
-            $appointment=$this->crud_model->update_appointment_info();
+            $appointment=$this->index_model->update_appointment_info();
             if($appointment){
             $this->response([
                     'status' => TRUE,
@@ -937,7 +1023,9 @@ public function MedicalLabsForOrders_get(){
     }
     /*Booking Appointment*/
     public function doctorsForAppointment_get(){
-        $doctors = $this->index_model->select_doctor_info_appointment();
+        $specialization_id=$this->get('specialization_id');
+        $city_id=$this->get('city_id');
+        $doctors = $this->index_model->select_doctor_info_appointment($specialization_id,$city_id);
         if($doctors){
             $this->response([
                     'status' => TRUE,
@@ -951,8 +1039,44 @@ public function MedicalLabsForOrders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
         }
     }
-        function CheckAppointment_post()
+    function AvailabilityTimeSlots_post()
     {
+        $doctor= $this->post('doctor_id');
+        $user= $this->post('user_id');
+        $appointment_date=$this->post('appointment_date');
+        $perday=$this->db->get_where('appointments', array('user_id' => $user,'created_at>='=>date('Y-m-d 00:00:00'),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
+        if($perday<2){
+        $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
+      if($count < 2 ){ 
+        $appointment_history = $this->index_model->get_dco_available_slots($doctor,$appointment_date);
+        if($appointment_history){
+            $this->response([
+                    'status' => TRUE,
+                    'available_time_slot'=>$appointment_history,
+                    'message' => 'Doctor Available Time Slot.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Slot Available In This Date.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }else{
+        $this->response([
+                    'status' => FALSE,
+                    'message' => 'You Can not Book More Than 2 Appointments Per Day.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+}else{
+    $this->response([
+                    'status' => FALSE,
+                    'message' => 'You Can Book a maximum of 2 Appointments Per Day.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+    }
+        function CheckAppointmentConstraint_post()
+    {
+        $doctor= $this->post('doctor_id');
         $user= $this->post('user_id');
         $appointment_date=$this->post('appointment_date');
         $perday=$this->db->get_where('appointments', array('user_id' => $user,'created_at>='=>date('Y-m-d 00:00:00'),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
@@ -993,8 +1117,14 @@ public function MedicalLabsForOrders_get(){
         }
     }
     public function addAppointment_post(){
-
-        $hospitals = $this->index_model->save_appointment_info();
+                $doctor= $this->post('doctor_id');
+        $user= $this->post('user_id');
+        $appointment_date=$this->post('appointment_date');
+        $perday=$this->db->get_where('appointments', array('user_id' => $user,'created_at>='=>date('Y-m-d 00:00:00'),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
+        if($perday<2){
+        $count=$this->db->get_where('appointments', array('user_id' => $user,'appointment_date'=>$appointment_date))->num_rows();
+      if($count < 2 ){ 
+   $hospitals = $this->index_model->save_appointment_info();
         if($hospitals){
             $this->response([
                     'status' => TRUE,
@@ -1007,6 +1137,18 @@ public function MedicalLabsForOrders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }
+    }else{
+        $this->response([
+                    'status' => FALSE,
+                    'message' => 'You Can not Book More Than 2 Appointments Per Day.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+    }
+}else{
+    $this->response([
+                    'status' => FALSE,
+                    'message' => 'You Can Book a maximum of 2 Appointments Per Day.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+    }
     }
         /*********************InPatient*******************************/
     public function inpatients_get(){
@@ -1098,7 +1240,7 @@ public function MedicalLabsForOrders_get(){
             
         }   
     }
-    public function prescription_delete($prescription_id=''){
+    public function prescription_delete($prescription_id){
      $prescriptions = $this->index_model->delete_prescription($prescription_id);
         if($prescriptions){
             $this->response([
@@ -1127,20 +1269,6 @@ public function MedicalLabsForOrders_get(){
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }   
-    }
-    function OrderPrescription_post(){
-            $appointment=$this->crud_model->save_prescription_order();
-            if($appointment){
-            $this->response([
-                    'status' => TRUE,
-                    'message' => 'Prescription Ordered Successfuly.'
-                ], REST_Controller::HTTP_OK);
-        }else{
-            $this->response([
-                    'status' => FALSE,
-                    'message' => 'Prescription Not Ordered.'
-                ], REST_Controller::HTTP_BAD_REQUEST);
-        }
     }
      /********************Prognosis************************/
     public function prognoses_get(){
@@ -1273,17 +1401,31 @@ public function MedicalLabsForOrders_get(){
         }   
     }
      /*********************Booking Order*************************/
+    public function OrderPrescription_post(){
+            $appointment=$this->index_model->save_prescription_order();
+            if($appointment){
+            $this->response([
+                    'status' => TRUE,
+                    'message' => 'Prescription Ordered Successfuly.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'Prescription Not Ordered.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+        }
+    }
     public function BookOrders_post(){
         $hospitals = $this->index_model->book_order();
         if($hospitals){
             $this->response([
                     'status' => TRUE,
-                    'message' => 'Appointment Save Successfully.'
+                    'message' => 'Order Booked Successfully.'
                 ], REST_Controller::HTTP_OK);
         }else{
             $this->response([
                     'status' => FALSE,
-                    'message' => 'Appointment Not Save.'
+                    'message' => 'Order Not Booked.'
                 ], REST_Controller::HTTP_BAD_REQUEST);
             
         }
@@ -1292,12 +1434,29 @@ public function MedicalLabsForOrders_get(){
     public function Orders_get(){
         $user_id=$this->get('user_id');
         $order_type=$this->get('order_type');
-        $orders = $this->index_model->select_order_info($user_id,$order_type);
+        $orders = $this->index_model->select_orders_info($user_id,$order_type);
         if($orders){
             $this->response([
                     'status' => TRUE,
                     'orders'=>$orders,
                     'message' => 'Orders.'
+                ], REST_Controller::HTTP_OK);
+        }else{
+            $this->response([
+                    'status' => FALSE,
+                    'message' => 'No Data Found.'
+                ], REST_Controller::HTTP_BAD_REQUEST);
+            
+        }
+    }
+    public function Order_get(){
+        $order_id=$this->get('order_id');
+        $orders = $this->index_model->select_order_info($order_id);
+        if($orders){
+            $this->response([
+                    'status' => TRUE,
+                    'orders'=>$orders,
+                    'message' => 'Order Details.'
                 ], REST_Controller::HTTP_OK);
         }else{
             $this->response([

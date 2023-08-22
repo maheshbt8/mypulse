@@ -14,12 +14,12 @@
                   <div class="form-group">     
                         <span for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('specialization'); ?></span> 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control" onchange="return get_specializations_doctors(this.value)">
+                            <select name="specializations" class="form-control" onchange="return get_specializations_doctors(this.value)" id="specialization_id">
                                 <option value="0"><?php echo get_phrase('ALL'); ?></option>
                                 <?php 
                                 $admins = $this->db->get_where('specializations')->result_array();
                                 foreach($admins as $row){?>
-                                <option value="<?php echo $row['specializations_id'] ?>"><?php echo $row['name'] ?></option>
+                                <option value="<?php echo $row['specializations_id'] ?>"><?php echo $row['specializations_name'] ?></option>
                                 
                                 <?php } ?>
                             </select>
@@ -31,12 +31,12 @@
                         <span for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('location'); ?></span> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control" value="<?php echo set_value('location'); ?>" onchange="return get_city_doctors(this.value)">
+                            <select name="cities" class="form-control" value="<?php echo set_value('location'); ?>" onchange="return get_city_doctors(this.value)" id="city_id">
                                 <option value="0"><?php echo get_phrase('ALL'); ?></option>
                                 <?php 
-                                $admins = $this->db->get('city')->result_array();
+                                $admins = $this->crud_model->select_city();
                                 foreach($admins as $row){?>
-                                <option value="<?php echo $row['city_id'] ?>"><?php echo $row['name'] ?></option>
+                                <option value="<?php echo $row['city_id'] ?>"><?php echo $row['city_name'] ?></option>
                                 
                                 <?php } ?>
                                
@@ -78,7 +78,7 @@
                         <label for="field-1" class="col-sm-3 control-label">Last Name</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="lname"  data-validate="required" data-message-required="Value Required" value="">
+                            <input type="text" name="lname" class="form-control" id="lname" value="">
                           
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         <label for="field-1" class="col-sm-3 control-label">Email</label>
 
                         <div class="col-sm-8">
-                            <input type="email" name="email" class="form-control" id="email"  data-validate="required" data-message-required="Value Required" value=""  onchange="return get_email(this.value)">
+                            <input type="email" name="email" class="form-control" id="email" value=""  onchange="return get_email(this.value)">
                             <span id="email_error"></span>
                         </div>
                     </div>
@@ -119,11 +119,9 @@
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_appointment/" method="post" enctype="multipart/form-data">
                     <div class="row">
                 <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins' || $account_type == 'users' || $account_type=='nurse' || $account_type=='receptionist'){?>
-                <div class="col-sm-6">
-                
-                                 <div class="form-group">
-                        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
-
+<div class="col-sm-6">
+    <div class="form-group">
+        <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('doctor'); ?></label>
 <div class="col-sm-8">
 <?php if($doctor_id==''){ ?>
 <input type="text" name="doctor" class="form-control"  autocomplete="off" id="doctor" list="doctors" placeholder="e.g. Hospital Name, Doctor Name or Specialisation " data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('doctor'); ?>" onchange="return get_doctor_ava(this.value)"><?php }elseif ($doctor_id!='') { ?>
@@ -134,21 +132,23 @@
         if($account_type!='users'){
         $doctors_details=$this->crud_model->select_doctor_info();
         }elseif($account_type=='users'){
-        $doctors_details=$this->db->get_where('doctors',array('status'=>'1','isDeleted'=>'1'))->result_array();
+        $doctors_details=$this->db->select('name,email,unique_id,specializations,doctor_id,row_status_cd,hospital_id,branch_id,department_id')->get_where('doctors',array('row_status_cd'=>'1'))->result_array();
         }
-        
-        foreach ($doctors_details as $row) {
-$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->license_status;
-  if($license_status==1){ 
+$j=0;        foreach ($doctors_details as $row) {
+$hospital=$this->db->select('hospital_id,name,row_status_cd')->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row();
+$branch=$this->db->select('branch_id,branch_name,row_status_cd,city_id')->where('branch_id',$row['branch_id'])->get('branch')->row();
+$department=$this->db->select('row_status_cd')->where('department_id',$row['department_id'])->get('department')->row();
+if($hospital->row_status_cd==1 && $branch->row_status_cd==1 && $department->row_status_cd==1){
             $spee=explode(',',$row['specializations']);
-            $spe='';
             for($i=0;$i<count($spee);$i++) {
-             $spe=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->name.','.$spe;   
+             $spe1[$j][]=$this->db->where('specializations_id',$spee[$i])->get('specializations')->row()->specializations_name;   
             }
+            $spe=implode(',',$spe1[$j]);
+            $hospital=$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name;
+            $branch=$this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->branch_name;
          ?>
-<option value="<?php echo $row['unique_id'].'/ Dr. '.ucfirst($row['name']);?>"><?php echo '('.$this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name.' / '.$spe.')';?></option>
-<?php }}?>
-
+<option value="<?php echo $row['unique_id'].'/ Dr. '.ucfirst($row['name']);?>"><?php echo '('.$hospital.'/'.$branch.' / '.$spe.')';?></option>
+<?php }$j++;}?>
   </datalist>
                         </div>
                     </div>
@@ -165,7 +165,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hosp
 
                         <div class="col-sm-8" id="user_data">
                             <input type="text" name="user" class="form-control"  autocomplete="off" id="user" list="users" placeholder="e.g. Enter User Email, Mobile Number or User ID" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('user'); ?>" onchange="return get_user_data(this.value)">
-                            
+                            <input type="hidden" id="user_id" value="">
                         </div>
                     </div>
                 
@@ -316,12 +316,35 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$row['hosp
    function get_dco_date(date_value) {
     var user_id=$('#user_id').val();
     var doctor_id=$('#doctor_id').val();
-<?php 
+    if(user_id == ''){
+        jQuery('#appointment_date_error').html('Please Enter User Details First');
+   } else {
+    <?php 
 if($doctor_id!=''){
 ?>
 var doctor_id='<?=$doctor_id;?>';
 <?php }?>
+     /*$.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_dco_date/' + doctor_id,
+            data : {date_val : date_value},
+            success: function(response)
+            {
+                alert(reason);
+               jQuery('#available_slot').html(response);
+               document.getElementById("available_slot").disabled = false;
+               
+            } 
+        });*/
      $.ajax({
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/count_no_appointments/' + user_id,
+            data : {date_val : date_value},
+            success: function(response)
+            {
+                if(response == ''){
+                    jQuery('#appointment_date_error').empty();
+$.ajax({
             type : "POST",
             url: '<?php echo base_url();?>ajax/get_dco_date/' + doctor_id,
             data : {date_val : date_value},
@@ -332,16 +355,13 @@ var doctor_id='<?=$doctor_id;?>';
                
             } 
         });
-     $.ajax({
-            type : "POST",
-            url: '<?php echo base_url();?>ajax/count_no_appointments/' + user_id,
-            data : {date_val : date_value},
-            success: function(response)
-            {
-               jQuery('#appointment_date_error').html(response);
+                }else{
+                jQuery('#appointment_date_error').html(response);
+                }
             } 
         });
-   
+    
+   }
     }  
           
 </script>
@@ -371,8 +391,12 @@ var doctor_id='<?=$doctor_id;?>';
         });
     }
     function get_specializations_doctors(id) {
+        var specialization_id=id;
+        var city_id=$('#city_id').val();
         $.ajax({
-            url: '<?php echo base_url();?>ajax/get_specializations_doctors/' + id ,
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_doctors_SC/' ,
+            data : {specialization : specialization_id,city : city_id},
             success: function(response)
             {
             jQuery('#doctors').html(response);
@@ -380,14 +404,16 @@ var doctor_id='<?=$doctor_id;?>';
         });
     }
     function get_city_doctors(id) {
-    
+        var specialization_id=$('#specialization_id').val();
+        var city_id=id;
         $.ajax({
-            url: '<?php echo base_url();?>ajax/get_city_doctors/' + id ,
+            type : "POST",
+            url: '<?php echo base_url();?>ajax/get_doctors_SC/' ,
+            data : {specialization : specialization_id,city : city_id},
             success: function(response)
             {
             jQuery('#doctors').html(response);
             }
         });
-
     }
 </script>

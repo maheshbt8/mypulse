@@ -28,13 +28,6 @@
                         <div class="col-sm-8">
                             <select name="hospital" class="form-control select2" id="hospital"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
-                                <?php 
-                                $admins = $this->crud_model->select_all_hospitals();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['hospital_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
                             </select>
                             <span ><?php echo form_error('hospital'); ?></span>
                         </div>
@@ -50,7 +43,7 @@
                               <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
-                                <select name="branch" class="form-control select2" id="select_branch"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
+                                <select name="branch" class="form-control select2" id="branch"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
                     <?php if($account_type=='superadmin'){?>
                     <option value=""><?php echo get_phrase('select_branch'); ?></option>
                     <?php }elseif($account_type=='hospitaladmins'){?>
@@ -58,7 +51,7 @@
                  <?php 
                     $hospital_info=$this->crud_model->select_branch_info_by_hospital_id($this->session->userdata('hospital_id'));
                 foreach ($hospital_info as $row1) { ?>
-                <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $branch['branch_id']){echo 'selected';}?>><?php echo $row1['name']; ?></option>
+                <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $branch['branch_id']){echo 'selected';}?>><?php echo $row1['branch_name']; ?></option>
                                 <?php } ?>
                 <?php }?>
                                 </select>
@@ -74,7 +67,7 @@
                                 <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('department'); ?></label>
                             <div class="col-sm-8">
-                                <select name="department" class="form-control select2" id="select_department"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('department'); ?>" onchange="return get_ward(this.value)">
+                                <select name="department" class="form-control select2" id="department"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('department'); ?>" onchange="return get_ward1(this.value)">
                                     <option value=""><?php echo get_phrase('select_department'); ?></option>
 
                                 </select>
@@ -89,7 +82,7 @@
                         <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectWard'];?></label>
                             <div class="col-sm-8">
-                                <select name="ward" class="form-control select2" id="select_ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_bed(this.value)">
+                                <select name="ward" class="form-control select2" id="ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_bed(this.value)">
                     <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
                                     <option value=""><?php echo get_phrase('select_ward'); ?></option>
                     <?php }elseif($account_type=='doctors'){
@@ -99,7 +92,7 @@ $ward = $this->crud_model->select_ward_info_by_department_id($this->session->use
         <?php 
         foreach ($ward as $row) {
         ?>
-        <option value="<?= $row['ward_id'];?>"><?= $row['name'];?></option> <?php } }?>
+        <option value="<?= $row['ward_id'];?>"><?= $row['ward_name'];?></option> <?php } }?>
                                 </select>
                             </div>
                     </div>
@@ -108,7 +101,7 @@ $ward = $this->crud_model->select_ward_info_by_department_id($this->session->use
                         <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Bed';?></label>
                             <div class="col-sm-8">
-                                <select name="bed" class="form-control select2" id="select_bed"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                                <select name="bed" class="form-control select2" id="bed"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
                                     <option value=""><?php echo get_phrase('select_bed'); ?></option>
                                 </select>
                             </div>
@@ -188,57 +181,14 @@ $ward = $this->crud_model->select_ward_info_by_department_id($this->session->use
             } 
         });
     }
-    function get_specializations_doctors(id) {
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_specializations_doctors/' + id ,
-            success: function(response)
-            {
-            jQuery('#doctors').html(response);
-            }
-        });
-    }
-    function get_city_doctors(id) {
-    
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_city_doctors/' + id ,
-            success: function(response)
-            {
-            jQuery('#doctors').html(response);
-            }
-        });
-
-    }
 </script>
 <script type="text/javascript">
-
-    function get_branch(hospital_id) {
-    
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_branch/' + hospital_id ,
-            success: function(response)
-            {
-                jQuery('#select_branch').html(response);
-            }
-        });
-
-    }
-    
-    function get_department(branch_id) {
-
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_department/' + branch_id ,
-            success: function(response)
-            {
-                jQuery('#select_department').html(response);
-            }
-        });
-    }
-        function get_ward(department_id) {
+        function get_ward1(department_id) {
         $.ajax({
             url: '<?php echo base_url();?>ajax/get_ward/' + department_id ,
             success: function(response)
             {
-                jQuery('#select_ward').html(response);
+                jQuery('#ward').html(response);
             }
         });
                 $.ajax({
@@ -250,16 +200,5 @@ $ward = $this->crud_model->select_ward_info_by_department_id($this->session->use
         });
 
     }
-       function get_bed(ward_id) {
-
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_bed/' + ward_id ,
-            success: function(response)
-            {
-               
-                jQuery('#select_bed').html(response);
-            }
-        });
-
-    }
+       
 </script>

@@ -6,6 +6,8 @@ $this->session->set_userdata('last_page', current_url());
         font-size: 20px;
     }
 </style>
+
+  
 	<div class="panel panel-container">
 				<div class="row">
 			<!-- ************** 1 ******************* -->
@@ -76,7 +78,7 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 						<div class="panel panel-red panel-widget border-right">
 							<div class="row no-padding"><em class="fa fa-xl fa-envelope color-red"></em>
 								<div class="large">
-<?php if($account_type != 'medicalstores' && $account_type != 'medicallabs'){echo count($this->crud_model->select_appointment_info());}?></div>
+<?php if($account_type != 'medicalstores' && $account_type != 'medicallabs'){echo $this->crud_model->dashboard_appointment_count();}?></div>
 								<div class="text-muted"><?php if($account_type != 'medicalstores' && $account_type != 'medicallabs'){echo 'Appointments';}?></div>
 							</div>
 						</div>
@@ -86,7 +88,7 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 				</div><!--/.row-->
 			</div>
 
-<?php $account_type=$this->session->userdata('login_type');$user_data=$this->db->where('user_id',1)->get('users')->row_array();?>
+<?php $account_type=$this->session->userdata('login_type');?>
 
 <div class="row">
     <div class="col-lg-12">
@@ -95,7 +97,6 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
             <li class="active">
                 <a href="#h1" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'APPOINTMENTS';?>
-
                 </a>
             </li>
         <?php }?>
@@ -109,7 +110,6 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
             <li class="">
                 <a href="#h2" data-toggle="tab"><i class="entypo-plus-circled"></i>
                     <?php echo 'MEDICINES';?>
-
                 </a>
             </li>
             <li>
@@ -137,7 +137,7 @@ if($account_type=='nurse'){$dt=$this->db->where('nurse_id',$this->session->userd
 <?php if($account_type=='superadmin'){?>
 
 <?php 
-$hospital_status=$this->db->get('hospitals')->result_array();
+$hospital_status=$this->db->select('hospital_id,name,till_date')->get('hospitals')->result_array();
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -162,10 +162,7 @@ $hospital_status=$this->db->get('hospitals')->result_array();
         </div>
     </div>
 </div>
-
-
-
-    <script>
+<script>
   $(document).ready(function() {
 
       var calendar = $('#notice_calendar');
@@ -319,14 +316,14 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                  $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
                  if($account_type=='doctors'){echo $this->db->where('city_id',$name->city)->get('city')->row()->name;}elseif($account_type=='users'){
                     $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
-                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
-                        echo $hospital->name.' - '.$branch->name.' - '.$name;}?></td> <?php }?>
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->dept_name;}
+                        echo $hospital->name.' - '.$branch->branch_name.' - '.$name;}?></td> <?php }?>
                 <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+                <td><?php if($row['appointment_status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
-                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
-                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
-                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
+                 elseif($row['appointment_status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
+                 elseif($row['appointment_status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
+                 elseif($row['appointment_status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
                  ?>
                      
                  </td>
@@ -361,8 +358,8 @@ $hospital_status=$this->db->get('hospitals')->result_array();
                 <td><?=$i;?></td>
                  <td><?php $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
                     $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
-                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
-                        echo $hospital->name.' - '.$branch->name.' - '.$name;?></td>
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->dept_name;}
+                        echo $hospital->name.' - '.$branch->branch_name.' - '.$name;?></td>
                 <td>
              <?php $name = $this->db->get_where('doctors' , array('doctor_id' => $row['doctor_id'] ))->row();
                         echo $name->name;?>
@@ -464,18 +461,18 @@ if($account_type == 'medicallabs'){
     echo get_phrase('OUTSTANDING ORDERS FOR LAB TESTS');
 }?></span>
 <div class="panel-body">
-<table data-toggle="table" data-url="tables/data1.json"  data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
+<table data-toggle="table" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">  
     <thead>
        <tr>
-           <th><?php echo get_phrase('sl_no'); ?></th>
+            <th><?php echo get_phrase('order_no.'); ?></th>
             <th><?php echo get_phrase('hospital / doctor'); ?></th>
             <th><?php echo get_phrase('patient'); ?></th>
             <th><?php echo get_phrase('contact_number'); ?></th>
             <th><?php echo get_phrase('address'); ?></th>
             <th><?php echo get_phrase('Date'); ?></th>
+            <th><?php echo get_phrase('receipt'); ?></th>
             <th><?php echo get_phrase('status'); ?></th>
-            <th><?php echo get_phrase('prescription'); ?></th>
-            <th><?php echo get_phrase('Upload Receipt'); ?></th>
+            <th><?php echo get_phrase('Action'); ?></th>
         </tr>
     </thead>
 
@@ -489,16 +486,111 @@ if($account_type == 'medicallabs'){
             
             ?>
             <tr>
-                <td><?php echo $i;?></td>
+                <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><?=$row1['unique_id'];?></a></td>
                 <td><?php if($row1['type_of_order']=='0'){$doc=$this->db->where('doctor_id',$prescription_info['doctor_id'])->get('doctors')->row();echo $this->db->where('hospital_id',$doc->hospital_id)->get('hospitals')->row()->name.' / '.$doc->name;}elseif($row1['type_of_order']==1){echo "Ordered By User";}?></td>
                 <td><?php echo $user1['name'] ?></td>
                 <td><?php echo $user1['phone'] ?></td>
                 <td><?php echo $user1['address'] ?></td>
                 <td><?php echo date('M d-Y h:i A',strtotime($row1['created_at'])); ?></td>
-                <td><?php if($row1['status']==1){echo "Completed";}elseif($row1['status']==2){echo "Pending";} ?></td>
-                <td><a href="<?php echo base_url(); ?>main/ordered_prescription_history/<?php echo $row1['order_id'].'/'.$row1['order_type'] ?>" class="hiper"><i class="fa fa-file"></i></a></td>
+                <td><?php if($row1['status']!=1 && $row1['status']!=2 && $row1['status']!=4 && $row1['status']!=8){echo '<a href="'.base_url().'main/receipt/'.$row1['order_id'].'" class="hiper"><i class="fa fa-file"></i>&nbsp;Receipt</a>';}else{echo "Receipt Not Uploaded";}?></td>
                 <td>
-  <a href="<?php echo base_url(); ?>main/add_receipt/<?=$row1['order_id'];?>" class="hiper">Upload Receipt</a>
+                    <?php 
+                        if($row1['status']==1){
+                            echo "Pending";
+                        }elseif($row1['status']==2){
+                            echo "Order Received";
+                        }elseif($row1['status']==3){
+                            echo "Waiting for Samples";
+                        }elseif($row1['status']==4){
+                        if($row1['order_type']==0){echo "Being Processed";}elseif($row1['order_type']==1){echo "Tests in Progress";}
+                        }elseif($row1['status']==5){
+                            echo "Out for Delivery";
+                        }elseif($row1['status']==6){
+                            echo "Reports Submitted";
+                        }elseif($row1['status']==7){
+                            if($row1['order_type']==0){
+                            $title_name="Delivered";
+                            }elseif($row1['order_type']==1){
+                            $title_name="Completed";
+                            }
+                            echo $title_name;
+                        }elseif($row1['status']==8){
+                            if($row1['order_type']==0){
+                            $title_name="To Be Delivered";
+                            }elseif($row1['order_type']==1){
+                            $title_name="Being Processed";
+                            }
+                            echo $title_name;
+                        }
+                    ?>
+                </td>
+                <td>
+                <?php if($row1['status']==1){
+                            echo "Pending";
+                        }elseif($row1['status']==2){
+                            if($row1['order_type']==0){
+                                $stat=4;
+                            }elseif($row1['order_type']==1){
+                                $stat=8;
+                            }
+                            if($account_type!='medicallabs' && $account_type != 'medicalstores'){
+                            echo "Order Received";
+                            }else{
+                            echo '<button type="button" class="btn-primary" onclick="window.location.href='."'".base_url('main/orders/order_status/').$row1['order_id'].'/'.$stat."'".'">Confirm Order</button>';
+                            }
+                        }elseif($row1['status']==3){
+                            if($account_type!='medicallabs' && $account_type != 'medicalstores'){
+                            echo "Waiting for Samples";
+                            }else{
+                            echo '<button type="button" class="btn-primary" onclick="window.location.href='."'".base_url('main/orders/order_status/').$row1['order_id'].'/4'."'".'">Samples Received</button>';
+                            }
+                        }elseif($row1['status']==4){
+                            if($account_type!='medicallabs' && $account_type != 'medicalstores'){
+                            if($row1['order_type']==0){echo "Being Processed";}elseif($row1['order_type']==1){echo "Tests in Progress";}
+                            }else{
+                            if($row1['order_type']==0){
+                                echo '<a href="'.base_url()."main/add_receipt/".$row1['order_id'].'" class="hiper">Upload Receipt</a>';
+                            }elseif($row1['order_type']==1){
+                            echo '<a href="'.base_url()."main/add_prescription_reports/".$row1['order_id'].'" class="hiper">Upload Reports</a>';
+                            }
+                            }
+                        }elseif($row1['status']==5){
+                            if($account_type!='medicallabs' && $account_type != 'medicalstores'){
+                            echo "To Be Delivered";
+                            }else{
+                            echo '<button type="button" class="btn-primary" onclick="window.location.href='."'".base_url('main/orders/order_status/').$row1['order_id'].'/7'."'".'">Delivered</button>';
+                            }
+                        }elseif($row1['status']==6){
+                            if($account_type!='medicallabs' && $account_type != 'medicalstores'){
+                            echo "Reports Submitted";
+                            }else{
+                            echo '<button type="button" class="btn-primary" onclick="window.location.href='."'".base_url('main/orders/order_status/').$row1['order_id'].'/7'."'".'">Completed</button>';
+                            }
+                        }elseif($row1['status']==7){
+                            /*if($row1['order_type']==0){
+                            $title_name="Delivered";
+                            }elseif($row1['order_type']==1){
+                            $title_name="Completed";
+                            }
+                            echo $title_name;*/
+                        }elseif($row1['status']==8){
+                            if($account_type!='medicallabs' && $account_type != 'medicalstores'){
+                            if($row1['order_type']==0){
+                            $title_name="Out for Delivery";
+                            }elseif($row1['order_type']==1){
+                            $title_name="Being Processed";
+                            }
+                            echo $title_name;
+                            }else{
+                            if($row1['order_type']==0){
+                            echo '<button type="button" class="btn-primary" onclick="window.location.href='."'".base_url('main/orders/order_status/').$row1['order_id'].'/5'."'".'">Out for Delivery</button>';
+                            }elseif($row1['order_type']==1){
+                            echo '<a href="'.base_url()."main/add_receipt/".$row1['order_id'].'" class="hiper">Upload Receipt</a>';
+                            }
+                            
+                            }
+                        }
+                    ?>
                 </td>
             </tr>
             

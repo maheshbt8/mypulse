@@ -17,52 +17,51 @@
   height: 250px;
   overflow-x: auto;
 }
+.left-menu{
+  float: left;
+}
+ul#myNavbar {
+    overflow: visible !important;
+}
+ul#myNavbar {
+    width: max-content;
+    padding: inherit;
+    margin: inherit;
+}
 </style>
     <?php
-if($account_type == 'superadmin'){
-  $img_type='Super-Admin-Image';
-}elseif($account_type == 'hospitaladmins'){
-  $img_type='Hospital-Admin-Image';
-}elseif($account_type == 'doctors'){
-  $img_type='Doctor-Image';
-}elseif($account_type == 'nurse'){
-  $img_type='Nurse-Image';
-}elseif($account_type == 'receptionist'){
-  $img_type='Receptionist-Image';
-}elseif($account_type == 'medicalstores'){
-  $img_type='Medical-Store-Image';
-}elseif($account_type == 'medicallabs'){
-  $img_type='Medical-lab-Image';
-}elseif($account_type == 'users'){
-  $img_type='User-Image';
-}
-/*$image_url=$this->crud_model->get_image_url($img_type,$this->session->userdata('login_user_id'));*/
+$code=divide_unique_id($this->session->userdata('unique_id'));
+$role=$this->crud_model->get_role($code);
+$image_url=$this->crud_model->get_image_url($role['image_path'],$this->session->userdata('login_user_id'));
 ?>
-    	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span></button>
-					<a class="navbar-brand" href="<?php echo base_url('main'); ?>">
+      <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar"><span class="sr-only">Toggle navigation</span>
+        <em class="fa fa-ellipsis-v" style="color: #fff;font-size: 14px;"></em>                        
+      </button>
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse"><span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span></button>
+          <a class="navbar-brand" href="<?php echo base_url('main'); ?>">
             <span>
-                <img draggable="false" src="<?=base_url('MyPulse-Logo');?>"  style="max-height:45px; margin: -15px;"/>
+      <img draggable="false" src="<?=base_url('assets/logo.png');?>"  style="max-height:60px; margin: -17px;"/>
             </span>
                 </a>
   <?php if($account_type != 'superadmin' && $account_type != 'users'){ ?>
-      <span style="margin:5%;font-size: 35px;color: #fff;"><img draggable="false" src="<?=base_url('Hospital-Logo/'.$this->session->userdata('hospital_id'));?>"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
-<ul class="nav navbar-top-links navbar-right">
+      <span style="margin:2%;font-size: 35px;color: #fff;"><img draggable="false" src="<?=base_url('Hospital-Logo/'.$this->session->userdata('hospital_id'));?>"  style="max-height:45px; margin: -15px;"/>&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $this->db->where('hospital_id',$this->session->userdata('hospital_id'))->get('hospitals')->row()->name; ?></span><?php }?>
+  <ul class="nav  navbar-right left-menu collapse navbar-collapse  navbar-custom" id="myNavbar">
 <li class="dropdown language-menu select" id="lang_select">
         <a aria-expanded="false" aria-haspopup="true" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#" style="width: 100%">
-      <span id="selected" class="notranslate"><?php if($this->session->userdata('website_language_google')!=''){echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->name);}else{echo "English";}?></span><em class="fa fa-angle-down pull-right"></em>
+      <span id="selected" class="notranslate"><?php if($this->session->userdata('website_language_google')!=''){echo ucfirst($this->db->where('language_id',$this->session->userdata('website_language_google'))->get('language')->row()->lang_name);}else{echo "English";}?></span><em class="fa fa-angle-down pull-right"></em>
   </a>
          <ul class="dropdown-menu language" id="lang_scroll_div">
          <?php 
          $lang_array=$this->db->get('language')->result();
     foreach($lang_array as $lng){ ?>
       <li class="notranslate" onclick="return get_lang(this.value)" value="<?php echo ucfirst($lng->language_id);?>">
-        <a href="javascript:void(0);" data-value="<?php echo ucfirst($lng->name);?>"><?php echo ucfirst($lng->name);?>
+        <a href="javascript:void(0);" data-value="<?php echo ucfirst($lng->lang_name);?>"><?php echo ucfirst($lng->lang_name);?>
         </a>
       </li>
     <?php }?>
@@ -78,8 +77,8 @@ if($account_type == 'superadmin'){
 </div>
 <li class="divider"></li>
 <li>
-<div class="all-button"><!-- <a href="<?php echo base_url()?>main/notification/delete_all">
-<strong>Clear All NotificationsAll Messages</strong></a> -->
+<div class="all-button">
+  
   <a href="<?php echo base_url()?>Notifications">
 <strong>View All Notifications</strong></a>
 </div>
@@ -89,11 +88,10 @@ if($account_type == 'superadmin'){
 <li class="dropdown">
     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
 <em class="fa fa-envelope"></em><span id="message_count"></span>
-	</a>
-	   <ul class="dropdown-menu dropdown-messages">
+  </a>
+     <ul class="dropdown-menu dropdown-messages">
   <div class="list-body" id="ajax_message">
-<!-- <div id="m"><?php $message_data=$this->crud_model->select_message();?></div>
- -->
+
 </div>
 <li class="divider"></li>
 <li>
@@ -103,8 +101,8 @@ if($account_type == 'superadmin'){
 </ul>
 </li>
 <li class="dropdown">
-<a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;"><!-- <img src="data:image/gif;base64,<?=$image_url;?>" alt=""> -->
-<img draggable="false" src="<?=base_url($img_type.'/'.$this->session->userdata('login_user_id'));?>" alt=""><span>
+<a class="dropdown-toggle user-profile" data-toggle="dropdown" href="#"  style="width: 100%;">
+<img draggable="false" src="<?=base_url().$image_url;?>" alt=""><span>
 <?php $ac='';
  if($account_type=='doctors'){
   $ac='Dr.';
@@ -124,10 +122,10 @@ if($account_type == 'superadmin'){
           
         </ul>
       </li>
-					</ul>
-				</div>
-			</div><!-- /.container-fluid -->
-		</nav>
+          </ul>
+        </div>
+      </div><!-- /.container-fluid -->
+    </nav>
     
 <?php $website_lang_int_google = $this->session->userdata('website_lang_int_google') != NULL ? trim($this->session->userdata('website_lang_int_google')) : 'en';?>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" type="text/javascript"></script>

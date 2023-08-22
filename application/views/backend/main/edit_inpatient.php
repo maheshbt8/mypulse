@@ -50,8 +50,8 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
     <div class="col-md-3">
 <h4><?php echo '<b>User ID</b> : '.$user_data['unique_id'];?></h4>
 <h4><?php echo '<b>User Name</b> : '.$user_data['name'];?></h4>
-<h4><?php echo '<b>Bed</b> : '.$bed_info->name;?></h4>
-<h4><?php if($user_info->status == 0){$status='Recommended';}elseif($user_info->status == 1){$status='Admitted';}elseif($user_info->status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
+<h4><?php echo '<b>Bed</b> : '.$bed_info->bed_name;?></h4>
+<h4><?php if($user_info->inpatient_status == 0){$status='Recommended';}elseif($user_info->inpatient_status == 1){$status='Admitted';}elseif($user_info->inpatient_status == 2){$status='Discharged';}echo '<b>Status</b> : '.$status;?></h4>
 <h4><?php echo '<b>Admitted Date & Time</b> : '.$user_info->join_date;?></h4>
 <h4><?php echo '<b>Reason</b> : '.$user_info->reason;?></h4>
 <h4><?php echo '<b>Discharged Date & Time</b> : '.$user_info->discharged_date;?></h4>
@@ -77,9 +77,9 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" id="hospital"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
+                            <select name="hospital" class="form-control select2" id="hospital_edit"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('hospital'); ?>"  onchange="return get_branch(this.value)">
                                 <?php 
-                                $admins = $this->db->get_where('hospitals',array('status'=>1))->result_array();
+                                $admins = $this->crud_model->select_all_hospitals();
                                 foreach($admins as $row){?>
                                 <option value="<?php echo $row['hospital_id'] ?>" <?php if($row['hospital_id']==$user_info->hospital_id){echo 'selected';}?>><?php echo $row['name'] ?></option>
                                 
@@ -98,18 +98,18 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                               <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
-                                <select name="branch" class="form-control select2" id="select_branch"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
+                                <select name="branch" class="form-control select2" id="branch"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
             <?php $hospital_info=$this->db->where('hospital_id',$user_info->hospital_id)->get('branch')->result_array();?>
                     <?php if($account_type=='superadmin'){?>
                       <?php 
-                    $hospital_info=$this->db->where('hospital_id',$user_info->hospital_id)->get('branch')->result_array();
+                    $hospital_info=$this->crud_model->select_branch($user_info->hospital_id);
                 foreach ($hospital_info as $row1) { ?>
-                <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $bed_info->branch_id){echo 'selected';}?>><?php echo $row1['name']; ?></option>
+                <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $bed_info->branch_id){echo 'selected';}?>><?php echo $row1['branch_name']; ?></option>
                                 <?php } ?>
                     <?php }elseif($account_type=='hospitaladmins'){?>
                  <?php 
                 foreach ($hospital_info as $row1) { ?>
-                <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $bed_info->branch_id){echo 'selected';}?>><?php echo $row1['name']; ?></option>
+                <option value="<?php echo $row1['branch_id']; ?>" <?php if($row1['branch_id'] == $bed_info->branch_id){echo 'selected';}?>><?php echo $row1['branch_name']; ?></option>
                                 <?php } ?>
                 <?php }?> 
                                 </select>
@@ -123,14 +123,14 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
         <div class="col-sm-6">
             <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                                 <div class="form-group">
-                        <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('department'); ?></label>
+                    <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('department'); ?></label>
                             <div class="col-sm-8">
-                                <select name="department" class="form-control select2" id="select_department"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('department'); ?>" onchange="return get_ward(this.value)">
+                                <select name="department" class="form-control select2" id="department"  data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" value="<?php echo set_value('department'); ?>" onchange="return get_ward1(this.value)">
                                 
               <?php 
-              $dep_info=$this->db->where('branch_id',$bed_info->branch_id)->get('department')->result_array();
+              $dep_info=$this->crud_model->select_department_info_by_branch_id($bed_info->branch_id);
                 foreach ($dep_info as $row1) { ?>
-                <option value="<?php echo $row1['department_id']; ?>" <?php if($row1['department_id'] == $bed_info->department_id){echo 'selected';}?>><?php echo $row1['name']; ?></option>
+                <option value="<?php echo $row1['department_id']; ?>" <?php if($row1['department_id'] == $bed_info->department_id){echo 'selected';}?>><?php echo $row1['dept_name']; ?></option>
                                 <?php } ?>
                                 </select>
                                 <span ><?php echo form_error('department'); ?></span>
@@ -144,28 +144,28 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                         <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Ward';?></label>
                             <div class="col-sm-8">
-                                <select name="ward" class="form-control select2" id="select_ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_bed(this.value)">
-            <?php $ward_info=$this->db->where('department_id',$bed_info->department_id)->get('ward')->result_array();?>
+                                <select name="ward" class="form-control select2" id="ward"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="" onchange="return get_bed(this.value)">
+            <?php $ward_info=$this->crud_model->select_ward_info_by_department_id($bed_info->department_id);?>
                                 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                                     <?php 
                 foreach ($ward_info as $row1) { ?>
-                <option value="<?php echo $row1['ward_id']; ?>" <?php if($row1['ward_id'] == $bed_info->ward_id){echo 'selected';}?>><?php echo $row1['name']; ?></option>
+                <option value="<?php echo $row1['ward_id']; ?>" <?php if($row1['ward_id'] == $bed_info->ward_id){echo 'selected';}?>><?php echo $row1['ward_name']; ?></option>
                                 <?php } ?>
-<?php }elseif($account_type=='doctors' || $account_type=='nurse'){ ?>
+<?php }elseif($account_type=='doctors' || $account_type=='nurse' || $account_type=='receptionist'){ ?>
                         <option value=""> Select Ward </option>
         <?php 
         if($account_type=='doctors'){
-        $ward_info=$this->db->where('department_id',$this->session->userdata('department_id'))->get('ward')->result_array();
+        $ward_info=$this->crud_model->select_ward_info_by_department_id($this->session->userdata('department_id'));
         }elseif($account_type=='nurse'){
             if($this->session->userdata('department_id')==0){
-            $ward_info=$this->db->where('branch_id',$this->session->userdata('branch_id'))->get('ward')->result_array();
+            $ward_info=$this->db->get_where('ward',array('branch_id'=>$this->session->userdata('branch_id'),'row_status_cd'=>1))->result_array();
             }else{
-             $ward_info=$this->db->where('department_id',$this->session->userdata('department_id'))->get('ward')->result_array();   
+             $ward_info=$this->crud_model->select_ward_info_by_department_id($this->session->userdata('department_id'));  
             }
         }
         foreach ($ward_info as $row) {
         ?>
-        <option value="<?= $row['ward_id'];?>" <?php if($row['ward_id'] == $bed_info->ward_id){echo 'selected';}?>><?= $row['name'];?></option> <?php } }?>
+        <option value="<?= $row['ward_id'];?>" <?php if($row['ward_id'] == $bed_info->ward_id){echo 'selected';}?>><?= $row['ward_name'];?></option> <?php } }?>
                                 </select>
                             </div>
                     </div>
@@ -174,11 +174,11 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                         <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Bed';?></label>
                             <div class="col-sm-8">
-                                <select name="bed" class="form-control select2" id="select_bed"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                                <select name="bed" class="form-control select2" id="bed"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
                         <?php
                 $bed_info1=$this->db->where('ward_id',$bed_info->ward_id)->get('bed')->result_array(); 
                 foreach ($bed_info1 as $row1) { ?>
-                <option value="<?php echo $row1['bed_id']; ?>" <?php if($row1['bed_id'] == $bed_info->bed_id){echo 'selected';}?>><?php echo $row1['name']; ?></option>
+                <option value="<?php echo $row1['bed_id']; ?>" <?php if($row1['bed_id'] == $bed_info->bed_id){echo 'selected';}?>><?php echo $row1['bed_name']; ?></option>
                                 <?php } ?>
                                 </select>
                             </div>
@@ -223,19 +223,18 @@ $bed_info=$this->db->where('bed_id',$user_info->bed_id)->get('bed')->row();
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Status';?></label>
                             <div class="col-sm-8">
                                 <select name="status" class="form-control" id="status"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
-                                    <option value="1"<?php if($user_info->status==0){echo 'selected';}?>><?php echo get_phrase('recommended'); ?></option>
-                                    <option value="1"<?php if($user_info->status==1){echo 'selected';}?>><?php echo get_phrase('admitted'); ?></option>
-                                    <option value="2"<?php if($user_info->status==2){echo 'selected';}?>><?php echo get_phrase('discharged'); ?></option>
+                                    <option value="1"<?php if($user_info->inpatient_status==0){echo 'selected';}?>><?php echo get_phrase('recommended'); ?></option>
+                                    <option value="1"<?php if($user_info->inpatient_status==1){echo 'selected';}?>><?php echo get_phrase('admitted'); ?></option>
+                                    <option value="2"<?php if($user_info->inpatient_status==2){echo 'selected';}?>><?php echo get_phrase('discharged'); ?></option>
                                 </select>
                             </div>
                     </div>
         </div>
             </div> 
             <div class="col-sm-3 control-label col-sm-offset-9 ">
-                        <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
-                    </div>            
+            <input type="submit" class="btn btn-success" value="<?php echo get_phrase('submit'); ?>">&nbsp;&nbsp;
+            </div>            
             </div>
-
             </div>
         </div>          
    </form>
@@ -302,7 +301,7 @@ $inpatient_history = $this->crud_model->select_inpatient_history_info($patient_i
             <tr>
                 <!-- <td><?= $i;?></td> -->
                 <td><?php echo $row['note'];?></td>
-                 <td><?php echo date('M d,Y h:i A',strtotime($row['created_date']));?></a></td>
+                 <td><?php echo date('M d,Y h:i A',strtotime($row['created_at']));?></a></td>
                  <td><a href="#" onclick="confirm_modal('<?php echo base_url();?>main/inpatient_history/delete/<?php echo $row['id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
                  </a>
              </td>
@@ -315,8 +314,8 @@ $inpatient_history = $this->crud_model->select_inpatient_history_info($patient_i
 </div>
  </div>
 </div>
-<?php if(($account_type == 'doctors' || $account_type == 'nurse') && $user_info->status==1){
-if($user_info->status == 1){?>
+<?php if(($account_type == 'doctors' || $account_type == 'nurse') && $user_info->inpatient_status==1){
+if($user_info->inpatient_status == 1){?>
 <?php $data['user_id']=$user_info->user_id;$this->load->view('backend/main/user_history',$data);?>
 <?php }}?>
 
@@ -332,52 +331,9 @@ if($user_info->status == 1){?>
             } 
         });
     }
-    function get_specializations_doctors(id) {
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_specializations_doctors/' + id ,
-            success: function(response)
-            {
-            jQuery('#doctors').html(response);
-            }
-        });
-    }
-    function get_city_doctors(id) {
-    
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_city_doctors/' + id ,
-            success: function(response)
-            {
-            jQuery('#doctors').html(response);
-            }
-        });
-
-    }
 </script>
 <script type="text/javascript">
-
-    function get_branch(hospital_id) {
-    
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_branch/' + hospital_id ,
-            success: function(response)
-            {
-                jQuery('#select_branch').html(response);
-            }
-        });
-
-    }
-    
-    function get_department(branch_id) {
-
-        $.ajax({
-            url: '<?php echo base_url();?>ajax/get_department/' + branch_id ,
-            success: function(response)
-            {
-                jQuery('#select_department').html(response);
-            }
-        });
-    }
-        function get_ward(department_id) {
+        function get_ward1(department_id) {
         $.ajax({
             url: '<?php echo base_url();?>ajax/get_ward/' + department_id ,
             success: function(response)

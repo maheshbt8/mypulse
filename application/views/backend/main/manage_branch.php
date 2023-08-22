@@ -9,7 +9,7 @@
                         <span for="field-ta" class="col-sm-2 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
                         <div class="col-sm-6">
 <select name="hospital" class="form-control" onchange="return get_data(this.value)">
-    <?php $hospitals=$this->db->get('hospitals')->result_array();
+    <?php $hospitals=$this->crud_model->select_hospital();
     foreach ($hospitals as $hospital) { ?>
 <option value="<?=$hospital['hospital_id']?>" <?php if($hospital['hospital_id'] == $hospital_id){echo "selected";}?>><?=ucfirst($hospital['name'])?></option>
 <?php    }?>
@@ -50,7 +50,7 @@
         
             <tr>
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['branch_id'] ?>"></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_branch/<?php echo $row['branch_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/edit_branch/<?php echo $row['branch_id'] ?>" class="hiper"><?php echo $row['branch_name'] ?></a></td>
                 <td><?php echo $row['email'] ?></td>
                 <td><?php echo $row['phone'] ?></td>
                 <td>
@@ -58,9 +58,9 @@
                 </td>
         <?php if($account_type == 'superadmin' || $account_type == 'hospitaladmins'){?>
                 <td>
-                    <?php if($row['isDeleted']=='1'){ ?>
+                    <?php if($row['row_status_cd']!='0'){ ?>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/branch/delete/<?php echo $row['branch_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-        <?php }?>
+        <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
                 </td>
             <?php }?>
             </tr>

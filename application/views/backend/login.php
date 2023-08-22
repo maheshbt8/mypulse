@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <?php
-        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-        $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
+        $system_name = $this->db->get_where('settings', array('setting_type' => 'system_name'))->row()->description;
+        $system_title = $this->db->get_where('settings', array('setting_type' => 'system_title'))->row()->description;
         ?>  
 <title><?php echo $system_title; ?> - Login </title>
 	<meta charset="UTF-8">
@@ -67,7 +67,7 @@
 <?php echo "Don't Have Account? Sign Up";?></h5>
 <i class="fa fa-long-arrow-right"></i></a>
 <br/>
-<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a>
+<a href="<?=base_url('login/logout_to_home')?>" class="txt1"><?php echo 'Back To Home';?></a>
 <!-- <p><small><a href="<?=base_url('Privacy&Policy')?>" style="color:#fff;" target="_blank">Privacy Policy</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<?=base_url('Terms&Coditions')?>" style="color:#fff;" target="_blank">Terms and Conditions</a></small>
         </p> -->
 					</div>

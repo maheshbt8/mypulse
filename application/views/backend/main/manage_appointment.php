@@ -4,7 +4,7 @@
     }
 </style>
 
-<?php
+<?php 
 if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
     $this->session->set_userdata('last_page', current_url().'?sd='.$_GET['sd'].'&ed='.$_GET['ed'].'&status_id='.$_GET['status_id']);
         }elseif($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']==''){
@@ -13,39 +13,7 @@ if($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!=''){
     $this->session->set_userdata('last_page', current_url().'?status_id='.$_GET['status_id']);
         }else{$this->session->set_userdata('last_page', current_url());}
 ?>
-<!-- <script>
-$(function() {
-    get_ajax_appointments();
-});
- function get_ajax_appointments()
-{
-    var sd='<?=$_GET['sd']?>';
-    var ed='<?=$_GET['ed']?>';
-    var status='<?=$_GET['status_id']?>';
-var data = "sd="+ sd + '&ed='+ed+'&status_id='+status;
-   $.ajax({
-            type:"GET",
-            cache:false,
-            url: '<?php echo base_url();?>ajax/get_ajax_appointments/',
-            data:data,
-            success: function(response)
-            {
-                jQuery('#data_table').html(response);
-            } 
-        });
 
-}
- //setInterval('Load_external_content1()', 5000);
-</script> -->
-<!-- <script>
-$(function() {
-    get_ajax_appointments();
-});
- function get_ajax_appointments()
-{
-     
-}
-</script> -->
    <?php
 if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']=='') || ($_GET['sd']=='' && $_GET['ed']=='' && $_GET['status_id']!='')){
             $appointment_info=$this->crud_model->select_appointment_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
@@ -93,7 +61,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                   <div class="form-group">
          <span for="field-ta" class="col-sm-2"><?php echo get_phrase('date_range'); ?></span> 
          <div class="col-sm-4">
-        <input  class="form-control" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){if($_GET['sd'] != '0NaN-NaN-NaN' && $_GET['ed'] != '0NaN-NaN-NaN'){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'All';}}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+29 days'));}?>"/>
+        <input  class="form-control" name="report" id="appointment_range" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){if($_GET['sd'] != '0NaN-NaN-NaN' && $_GET['ed'] != '0NaN-NaN-NaN'){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo 'All';}}else{echo date('M d,Y', strtotime('-0 days')).' - '.date('M d,Y', strtotime('+29 days'));}?>"/>
         </div>
 
       <span for="field-ta" class="col-sm-2"> <?php echo get_phrase('status'); ?></span> 
@@ -108,10 +76,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                         </div>
                     </div>
 </div>
-<!-- <div class="col-sm-4 col-xs-12">
 
-
-</div> -->
 </div>
 </div>
 <div class="panel-body">
@@ -145,18 +110,20 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                 </td>
                 <td>
                     <?php 
-                    $branch=$this->db->get_where('branch' , array('branch_id' => $this->db->where('doctor_id',$row['doctor_id'])->get('doctors')->row()->branch_id))->row();
-                    $hospital=$this->db->get_where('hospitals' , array('hospital_id' => $this->db->where('branch_id',$branch->branch_id)->get('branch')->row()->hospital_id))->row();
-                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
-                        echo $hospital->name.' - '.$branch->name.' - '.$name;?>
+                    $doc=$this->db->select('hospital_id,branch_id')->where('doctor_id',$row['doctor_id'])->get('doctors')->row_array();
+                    $branch=$this->db->select('branch_name,branch_id,city_id,latitude,longitude')->get_where('branch' , array('branch_id' => $doc['branch_id']))->row_array();
+                    $hospital=$this->db->select('name,hospital_id')->get_where('hospitals' , array('hospital_id' => $doc['hospital_id']))->row_array();
+                    if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->dept_name;}
+                    ?>
+                    <a href="<?php echo base_url();?>Hospital/<?=$row["hospital_id"]?>" class="hiper"><?=$hospital['name']?></a> - <a href="<?php echo base_url();?>main/edit_branch/<?=$branch['branch_id']?>" class="hiper"><?=$branch['branch_name']?></a> - <a href="<?php echo base_url();?>main/edit_department/<?=$branch['branch_id']?>" class="hiper"><?=$name?></a>
                 </td>
-                 <td><?php echo $this->db->where('city_id',$user->city)->get('city')->row()->name;?></td> 
+                 <td><?php echo $this->db->where('city_id',$branch['city_id'])->get('city')->row()->city_name;?></td> 
                 <td><?php echo date("d M, Y",strtotime($row['appointment_date']));?><br/><?php echo date("h:i A", strtotime($row['appointment_time_start'])).' - '.date("h:i A", strtotime($row['appointment_time_end']));?></td>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+                <td><?php if($row['appointment_status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
-                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
-                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
-                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
+                 elseif($row['appointment_status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
+                 elseif($row['appointment_status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
+                 elseif($row['appointment_status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
                  ?>
                      
                  </td>
@@ -164,7 +131,10 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
                     <?php if($account_type=='superadmin'){?>
                     <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/appointment/delete/<?php echo $row['appointment_id']?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                     <?php }?>
-                    <?php if($row['status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span></a><?php }}elseif($row['status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: brown;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;&nbsp;</span><?php }elseif($row['attended_status']==0){?><span style="color: brown"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;&nbsp;</span><?php }}?>
+                    <?php if($row['appointment_status']==2 && $account_type != 'users'){if($row['attended_status']==1){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/0"><span style="color: green"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;Attended</span></a><?php }elseif($row['attended_status']==0){?><a href="<?php echo base_url(); ?>main/appointment/attended_status/<?= $row['appointment_id'];?>/1"><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;Not Attended</span></a><?php }}elseif($row['appointment_status']!=2 || $account_type == 'users'){if($row['attended_status']==1){?><span style="color: green;"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Attended"></i>&nbsp;Attended</span><?php }elseif($row['attended_status']==0){?><span style="color: red"><i class="fa fa-dot-circle-o fa-lg" aria-hidden="true" title="Not-Attended"></i>&nbsp;Not Attended</span><?php }}?>
+                   <!--  <a href="<?=base_url('main/get_location?').'start_lat='.$user->latitude.'&start_lng='.$user->longitude.'end_lat='.$branch['latitude'].'&end_lng='.$branch['longitude'];?>" target="_blank">
+                        location
+                    </a> -->
                 </td>
             </tr>
         <?php } ?>
@@ -246,51 +216,7 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
       </div>   
     </div>
   </div>  
-  <script type="text/javascript">
-        
-    $(document).ready(function(){
-        var start = moment();
-        var end = moment().add(29, 'days');
-        <?php
-        if(isset($_GET['sd']) && $_GET['sd'] != ""){
-            ?>
-            start = moment('<?php echo $_GET['sd'];?>');
-            <?php
-        }
-        ?>
 
-        <?php
-        if(isset($_GET['ed']) && $_GET['ed'] != ""){
-            ?>
-            end = moment('<?php echo $_GET['ed'];?>');
-            <?php
-        }
-        ?>
-        function cb(start, end) {
-            window.location.href = '<?php echo base_url();?>Appointments?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=2";
-        }
-        $('#reportrange').daterangepicker({
-            startDate: start,
-            endDate: end,
-            locale: { 
-                applyLabel : '<?php echo $this->lang->line('apply');?>',
-                cancelLabel: '<?php echo $this->lang->line('clear');?>',
-                "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
-            },  
-            ranges: {
-                '<?php echo 'All';?>': ['All', 'All'],
-                '<?php echo 'Today';?>': [moment().add(0, 'days'), moment().add(0, 'days')],
-                '<?php echo 'Tomorrow';?>': [moment().add(1, 'days'), moment().add(1, 'days')],
-                '<?php echo 'Upcoming 7 day';?>': [moment(),moment().add(6, 'days')],
-                '<?php echo 'Upcoming 30 day';?>': [moment(),moment().add(29, 'days'),],
-                '<?php echo 'This Month';?>': [moment().startOf('month'), moment().endOf('month')],
-                '<?php echo 'Next Month';?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
-            }
-        },cb);
-
-    });
-
-</script>
 <script type="text/javascript">
     function get_appointment(id) {
        <?php
@@ -307,6 +233,9 @@ if(($_GET['sd']!='' && $_GET['ed']!='' && $_GET['status_id']!='') || ($_GET['sd'
        }
        ?>
     }
+    function feature_date_range(start, end) {
+            window.location.href = '<?php echo base_url();?>Appointments?sd='+start.format('YYYY-MM-DD')+"&ed="+end.format('YYYY-MM-DD')+"&status_id=<?php if($_GET['status_id']!=''){echo $_GET['status_id'];}else{echo $status;}?>";
+        }
 </script>
 
  <script>

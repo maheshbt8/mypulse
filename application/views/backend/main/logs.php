@@ -12,9 +12,10 @@
         </div>
                     </div>
 </div>
-<input type="button" class="btn btn-orange pull-right" value="<?php echo get_phrase('back'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+<input type="button" class="btn btn-orange pull-right" value="<?=get_phrase('back');?>" onclick="window.location.href = '<?=$this->session->userdata('last_page'); ?>'">
+<input type="button" onclick="printDiv('print_div')" class="btn btn-primary pull-right" value="Print">
 </div>
-<div class="panel-body">
+<div class="panel-body" id="print_div">
 <table data-toggle="table" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc" class="table-bordered">
     <thead>  
         <tr>
@@ -22,13 +23,7 @@
         </tr>
     </thead>
     <tbody id="data_table">
-  <div id="refresh_data">
-       <?php
-    if($_GET['sd']!=''){
-        $log_info=$this->crud_model->select_inpatient_info_by_date($_GET['sd'],$_GET['ed'],$_GET['status_id']);
-        }else{$log_info=$log;}?>
-</div>
-        <?php $i=0;foreach ($log_info as $row) { 
+        <?php $i=0;foreach ($log as $row) { 
             if(!empty($row)){
             ?>   
             <tr>
@@ -49,5 +44,17 @@
 <script type="text/javascript">
 function get_report_data(value){
     window.location.href = '<?php echo base_url();?>main/errors_logs?date='+value;
+}
+</script>
+<script type="text/javascript">
+   function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+
+     document.body.innerHTML = printContents;
+
+     window.print();
+
+     document.body.innerHTML = originalContents;
 }
 </script>

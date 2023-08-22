@@ -43,7 +43,7 @@ $title=$reports['title'];
     if($reports['extension']=='pdf'){ ?>
     <object width="100%" height="900px;" data="<?=base_url('Report/'.base64_encode(date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/'.$report_id));?>"></object>
     <?php }else{?>
- <object width='100%' height='900px;' data='<?=base_url('uploads/reports/'.date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']);?>' draggable='false'></object>
+ <object width='100%' height='900px;' data='<?=base_url('Report/'.base64_encode(date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/'.$report_id));?>' draggable='false'></object>
 <?php }?>
 </div>
         </div>
@@ -51,7 +51,6 @@ $title=$reports['title'];
 </div>
 <script type="text/javascript">
    function printDiv(divName) {
-    /*var printContents='<object width="100%" height="900px;" data="<?=base_url('uploads/reports/'.date('Y',strtotime($reports['created_at'])).'/'.$unique_id.'/Report'.$report_id.'_'.date('YmdHis',strtotime($reports['created_at'])).'.'.$reports['extension']);?>"></object>';*/
      var printContents = document.getElementById(divName).innerHTML;
      var originalContents = document.body.innerHTML;
      document.body.innerHTML = printContents;

@@ -11,7 +11,7 @@ $this->session->set_userdata('last_page', current_url());
                   <div class="form-group">
          <span for="field-ta" class="col-sm-2 control-label"><b> <?php echo get_phrase('date_range'); ?></b></span> 
          <div class="col-sm-5">
-        <input  class="form-control notranslate" onclick="return get_report_data(this.value)" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-29 days')).' - '.date('M d,Y');}?>"/>
+        <input  class="form-control notranslate" name="report" id="reportrange" value="<?php if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){echo date('M d,Y',strtotime($_GET['sd'])).' - '.date('M d,Y',strtotime($_GET['ed']));}else{echo date('M d,Y', strtotime('-29 days')).' - '.date('M d,Y');}?>"/>
         </div>
                 </div>
 </div>
@@ -30,7 +30,7 @@ $this->session->set_userdata('last_page', current_url());
         <tr>
          <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
             <?php if($account_type == 'superadmin'){?>
-            <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_id');?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_no.');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_name'); ?></th>
         <?php }elseif($account_type == 'hospitaladmins'){?>
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch_name'); ?></th>
@@ -52,31 +52,31 @@ $this->session->set_userdata('last_page', current_url());
                 <?php if($account_type == 'superadmin'){?>
                 <td><?php echo $row['unique_id'];?></td>
             <?php }?>
-                <td><a href="<?php echo base_url();?>main/get_hospital_history/<?php echo $row['hospital_id'];?>" class="hiper"><?php echo $row['name'];?></a></td>
+                <td><?php if($account_type == 'superadmin'){?><a href="<?php echo base_url();?>main/get_hospital_history/<?php echo $row['hospital_id'];?>" class="hiper"><?php echo $row['name'];?></a><?php }elseif($account_type == 'hospitaladmins'){?><a href="<?php echo base_url();?>main/edit_branch/<?php echo $row['branch_id'];?>" class="hiper"><?php echo $row['branch_name'];?></a><?php }?></td>
                  <td><?php if($report_id==1){
         if((isset($_GET['sd']) && $_GET['sd'] != "") AND (isset($_GET['ed']) && $_GET['ed'] != "")){
             if($account_type == 'superadmin'){
-            $no=$this->db->get_where('inpatient',array('hospital_id'=>$row['hospital_id'],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime($_GET['sd'])),'created_date<='=>date('Y-m-d 23:59:59', strtotime($_GET['ed']))))->num_rows();
+            $no=$this->db->get_where('inpatient',array('hospital_id'=>$row['hospital_id'],'inpatient_status!='=>0,'created_at>='=>date('Y-m-d 00:00:00', strtotime($_GET['sd'])),'created_at<='=>date('Y-m-d 23:59:59', strtotime($_GET['ed']))))->num_rows();
             echo $no;
         }elseif($account_type == 'hospitaladmins'){
             $this->db->where('branch_id', $row['branch_id']);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($i=0;$i<count($no);$i++){
-                $cou=$cou+$this->db->get_where('inpatient',array('doctor_id'=>$no[$i]['doctor_id'],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime($_GET['sd'])),'created_date<='=>date('Y-m-d 23:59:59', strtotime($_GET['ed']))))->num_rows();
+                $cou=$cou+$this->db->get_where('inpatient',array('doctor_id'=>$no[$i]['doctor_id'],'inpatient_status!='=>0,'created_at>='=>date('Y-m-d 00:00:00', strtotime($_GET['sd'])),'created_at<='=>date('Y-m-d 23:59:59', strtotime($_GET['ed']))))->num_rows();
             }
             echo $cou;
         }
         }else{
             if($account_type == 'superadmin'){
-            $no=$this->db->get_where('inpatient',array('hospital_id'=>$row['hospital_id'],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime('-29 days')),'created_date<='=>date('Y-m-d 23:59:59')))->num_rows();
+            $no=$this->db->get_where('inpatient',array('hospital_id'=>$row['hospital_id'],'inpatient_status!='=>0,'created_at>='=>date('Y-m-d 00:00:00', strtotime('-29 days')),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
             echo $no;
             }elseif($account_type == 'hospitaladmins'){
             $this->db->where('branch_id', $row['branch_id']);
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($i=0;$i<count($no);$i++){
-                $cou=$cou+$this->db->get_where('inpatient',array('doctor_id'=>$no[$i]['doctor_id'],'status!='=>0,'created_date>='=>date('Y-m-d 00:00:00', strtotime('-29 days')),'created_date<='=>date('Y-m-d 23:59:59')))->num_rows();
+                $cou=$cou+$this->db->get_where('inpatient',array('doctor_id'=>$no[$i]['doctor_id'],'inpatient_status!='=>0,'created_at>='=>date('Y-m-d 00:00:00', strtotime('-29 days')),'created_at<='=>date('Y-m-d 23:59:59')))->num_rows();
             }
             echo $cou;
         }
@@ -87,7 +87,7 @@ $this->session->set_userdata('last_page', current_url());
             $this->db->where('appointment_date >=', $_GET['sd']);
             $this->db->where('appointment_date <=', $_GET['ed']);
             $this->db->where('hospital_id', $row['hospital_id']);
-            $this->db->where('isDeleted', '1');
+            $this->db->where('row_status_cd', '1');
             $no=$this->db->get('appointments')->num_rows();
             echo $no;
             }elseif($account_type == 'hospitaladmins'){
@@ -97,7 +97,7 @@ $this->session->set_userdata('last_page', current_url());
             for($i=0;$i<count($no);$i++){
             $this->db->where('appointment_date >=', $_GET['sd']);
             $this->db->where('appointment_date <=', $_GET['ed']);
-            $this->db->where('isDeleted', '1');
+            $this->db->where('row_status_cd', '1');
             $cou=$cou+$this->db->where('doctor_id',$no[$i]['doctor_id'])->get('appointments')->num_rows();
             }
             echo $cou;
@@ -106,7 +106,7 @@ $this->session->set_userdata('last_page', current_url());
         if($account_type == 'superadmin'){
             $this->db->where('appointment_date >=', date('Y-m-d', strtotime('-29 days')));
             $this->db->where('appointment_date <=', date('Y-m-d'));
-            $this->db->where('isDeleted', '1');
+            $this->db->where('row_status_cd', '1');
             $no=$this->db->get_where('appointments',array('hospital_id'=>$row['hospital_id']))->num_rows();
             echo $no;
         }elseif($account_type == 'hospitaladmins'){
@@ -114,7 +114,7 @@ $this->session->set_userdata('last_page', current_url());
             $no=$this->db->get('doctors')->result_array();
             $cou=0;
             for($i=0;$i<count($no);$i++){
-                $cou=$cou+$this->db->get_where('appointments',array('doctor_id'=>$no[$i]['doctor_id'],'appointment_date>='=>date('Y-m-d', strtotime('-29 days')),'appointment_date<='=>date('Y-m-d'),'isDeleted'=>'1'))->num_rows();
+                $cou=$cou+$this->db->get_where('appointments',array('doctor_id'=>$no[$i]['doctor_id'],'appointment_date>='=>date('Y-m-d', strtotime('-29 days')),'appointment_date<='=>date('Y-m-d'),'row_status_cd'=>'1'))->num_rows();
             }
             echo $cou;
         }

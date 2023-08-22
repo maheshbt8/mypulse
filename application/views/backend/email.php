@@ -9,7 +9,7 @@
                         </tr>
                         <tr>
                             <td align="center" width="100%">
-                                <a href="<?=base_url();?>" target="_blank" data-saferedirecturl="<?=base_url();?>"><img src="<?=base_url('MyPulse-Logo');?>" alt="MyPulse" border="0" height="30%" width="50%" style="display:block" class="CToWUd" draggable="false">
+                                <a href="<?=base_url();?>" target="_blank"><img src="<?=base_url('assets/logo.png');?>" alt="MyPulse" border="0" height="30%" width="50%" style="display:block" class="CToWUd" draggable="false">
                                 </a>
                             </td>
                         </tr>
@@ -43,7 +43,7 @@
                 </tr>
                 <tr><td colspan="3" height="40"></td></tr>
                 <tr>
-                    <td align="left"><table width="260" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td align="center" height="44" style="border-radius:3px;font-weight:bold;font-family:Helvetica,Arial,sans-serif;background-color:#0088cf"><span style="font-family:Helvetica,Arial,sans-serif;font-weight:bold"><a href="<?=base_url('login/').$url.'?id='.$task;?>" style="font-weight:bold;color:#ffffff;text-decoration:none;font-size:18px;line-height:44px;display:block;width:100%" target="_blank" data-saferedirecturl="<?=base_url();?>"><?=$button;?></a></span></td></tr></tbody></table></td>
+                    <td align="left"><table width="260" border="0" cellpadding="0" cellspacing="0"><tbody><tr><td align="center" height="44" style="border-radius:3px;font-weight:bold;font-family:Helvetica,Arial,sans-serif;background-color:#0088cf"><span style="font-family:Helvetica,Arial,sans-serif;font-weight:bold"><a href="<?=base_url('login/').$url.'?id='.$task;?>" style="font-weight:bold;color:#ffffff;text-decoration:none;font-size:18px;line-height:44px;display:block;width:100%" target="_blank"><?=$button;?></a></span></td></tr></tbody></table></td>
             </tr><tr><td colspan="3"><p style="text-align: justify;font-family:Helvetica,Arial,sans-serif;color:#1f2836;font-size:14px;line-height:20px;font-weight:normal;padding:0;margin:0">
                        <br/>
                         Regards<br/>The MyPulse Team<br/><a href="#">www.jagrumstechnologies.com</a>

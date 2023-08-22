@@ -13,13 +13,9 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Hospital';?></label>
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                            <select name="hospital" id="hospital" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
                                 <option value=""><?php echo 'Select Hospital';?></option>
-                               <?php 
-                               $hospital_info=$this->crud_model->select_all_hospitals();
-                               foreach ($hospital_info as $row) { ?>
-                                    <option value="<?php echo $row['hospital_id']; ?>" <?php if($row['hospital_id'] == $hospital_id){echo 'selected';}?>><?php echo $row['name']; ?></option>
-                                <?php } ?>
+                               
                                 
                             </select>
                         </div>
@@ -52,7 +48,12 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['address'];?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="address" class="form-control" id="field-2"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                            <input type="text" name="address" class="form-control" id="address"  data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="">
+                            <span id="location-get-latlng">
+                            <input type="hidden" name="latitude" id="lat" value="">
+                            <input type="hidden" name="longitude" id="lng" value="">
+                        </span>
+                            <input type="button" class="btn btn-info btn-sm" value="Get Current location" onclick="getLocation()" />
                         </div>
                     </div>
                 
@@ -65,14 +66,14 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectCountry'];?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control select2" value=""  onchange="return get_state(this.value)">
+                            <select name="country" id="country" class="form-control select2" value=""  onchange="return get_state(this.value)"   data-validate="required" data-message-required="<?php echo 'Value_required';?>">
                                 <option value=""><?php echo $this->lang->line('labels')['select_country'];?></option>
-                                <?php 
+                                <!-- <?php 
                                 $admins = $this->db->get_where('country')->result_array();
                                 foreach($admins as $row){?>
                                 <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
                                 
-                                <?php } ?>
+                                <?php } ?> -->
                                
                             </select>
                         </div>
@@ -82,7 +83,7 @@
                        <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectState'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="state" class="form-control select2" id="select_state" value=""  onchange="return get_district(this.value)">
+		                        <select name="state" class="form-control select2" id="state" value=""  onchange="return get_district(this.value)"  data-validate="required" data-message-required="<?php echo 'Value_required';?>">
 		                            <option value=""><?php echo 'Select State';?></option>
 
 			                    </select>   
@@ -93,17 +94,16 @@
 					   <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo 'District';?></label>
 		                    <div class="col-sm-8">
-		                        <select name="district" class="form-control select2" id="select_district" value=""  onchange="return get_city(this.value)">
+		                        <select name="district" class="form-control select2" id="district" value=""  onchange="return get_city(this.value)"  data-validate="required" data-message-required="<?php echo 'Value_required';?>">
 		                            <option value=""><?php echo 'Select District';?></option>
 
 			                    </select>
 			                </div>
 					</div>
-					
 					<div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo 'City';?></label>
 		                    <div class="col-sm-8">
-		                        <select name="city" class="form-control select2" id="select_city" value=""  >
+		                        <select name="city" class="form-control select2" id="city" value=""   data-validate="required" data-message-required="<?php echo 'Value_required';?>">
 		                            <option value=""><?php echo 'Select City';?></option>
 
 			                    </select>

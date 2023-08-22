@@ -18,6 +18,7 @@ $this->session->set_userdata('last_page', current_url());
   <a href="<?php echo base_url(); ?>Health_Insurance_Provider" class="list-group-item"><i class="icon fa fa-user"></i>&nbsp;&nbsp;<?php echo get_phrase('health_insurance_providers');?></a>
   <a href="<?php echo base_url(); ?>Language" class="list-group-item"><i class="icon fa fa-cog"></i>&nbsp;&nbsp;<?php echo get_phrase('languages');?></a>
   <a href="<?php echo base_url(); ?>Privacy-Terms" class="list-group-item"><i class="icon fa fa-lock"></i>&nbsp;&nbsp;<?php echo get_phrase('privacy & terms');?></a>
+  <a href="<?php echo base_url(); ?>Password-Reset" class="list-group-item"><i class="icon fa fa-lock"></i>&nbsp;&nbsp;Password Reset</a>
 <?php }?>
 </div>
   </div>

@@ -20,8 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $ark_root  = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['HTTP_HOST'];
 $ark_root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 $config['base_url'] = $ark_root;
-//$config['base_url'] = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['HTTP_HOST'].'/mypulse/';
-//http://localhost/mypulse/http://'.$_SERVER['HTTP_HOST'].'/mypulse/
+//$config['base_url'] = 'http'.(empty($_SERVER['HTTPS'])?'':'s').'://'.$_SERVER['HTTP_HOST'].'/';
 
 /*
 |--------------------------------------------------------------------------
@@ -360,7 +359,7 @@ $config['encryption_key'] = '{04M(@[!M@Y#P$U%L^S&E*]H)!11}';
 */
 $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
+$config['sess_expiration'] = 1800;
 $config['sess_save_path'] = 'ci_sessions';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;

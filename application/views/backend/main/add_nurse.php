@@ -60,16 +60,14 @@
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('last_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="field-3" value="<?php echo set_value('lname'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
-                              <span ><?php echo form_error('lname'); ?></span>
+                            <input type="text" name="lname" class="form-control" id="field-3" value="<?php echo set_value('lname'); ?>"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"> <?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description" value="<?php echo set_value('description'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>">
-                            <span ><?php echo form_error('description'); ?></span>
+                            <input type="text" name="description" class="form-control" id="description" value="<?php echo set_value('description'); ?>"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -97,15 +95,9 @@
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('hospital'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="hospital" class="form-control select2" value="<?php echo set_value('hospital'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" onchange="return get_branch(this.value)">
+                            <select name="hospital" id="hospital" class="form-control select2" value="<?php echo set_value('hospital'); ?>" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" onchange="return get_branch(this.value)">
                                 <option value=""><?php echo get_phrase('select_hospital'); ?></option>
-                                <?php 
-                                $admins = $this->crud_model->select_all_hospitals();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['hospital_id'] ?>"><?php echo $row['name'] ?></option>
                                 
-                                <?php } ?>
-                               
                             </select>
                             <span ><?php echo form_error('hospital'); ?></span>
                         </div>
@@ -116,7 +108,7 @@
                   <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('branch'); ?></label>
                             <div class="col-sm-8">
-                                <select name="branch" class="form-control select2" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="select_branch"   value="<?php echo set_value('branch'); ?>"  onchange="return get_department(this.value)">
+                                <select name="branch" class="form-control select2" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="branch"   value="<?php echo set_value('branch'); ?>"  onchange="return get_department_all(this.value)">
                                   
                                  <?php if($account_type=='superadmin'){?>
                     <option value=""><?php echo get_phrase('select_branch'); ?></option>
@@ -135,7 +127,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"> <?php echo get_phrase('department'); ?></label>
                             <div class="col-sm-8">
-                                <select name="department" class="form-control select2" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="select_department" value="<?php echo set_value('department'); ?>"  onchange="return get_doctor(this.value)">
+                                <select name="department" class="form-control select2" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" id="department" value="<?php echo set_value('department'); ?>"  onchange="return get_doctor(this.value)">
                                     <option value=""> <?php echo get_phrase('select_department'); ?></option>
 
                                 </select>
@@ -200,9 +192,9 @@
                         <div class="col-sm-8">
                             <select name="gender" class="form-control" id="gender" value="<?php echo set_value('gender'); ?>">
                                 <option value=""><?php echo get_phrase('select_gender'); ?></option>
-                                <option value="male"><?php echo get_phrase('male'); ?></option>
-                                <option value="female"><?php echo get_phrase('female'); ?></option>
-                                <option value="others">Other / Transgender</option>
+                                <option value="M"><?php echo get_phrase('male'); ?></option>
+                                <option value="F"><?php echo get_phrase('female'); ?></option>
+                                <option value="T">Other / Transgender</option>
                             </select>
                         </div>
                     </div>
@@ -225,6 +217,11 @@
 
                         <div class="col-sm-8">
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
+                            <span id="location-get-latlng">
+                            <input type="hidden" name="latitude" id="lat" value="">
+                            <input type="hidden" name="longitude" id="lng" value="">
+                        </span>
+                            <input type="button" class="btn btn-info btn-sm" value="Get Current location" onclick="getLocation()" />
                         </div>
                     </div>
 					<div class="form-group">
@@ -254,15 +251,8 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country'); ?></label> 
 
                         <div class="col-sm-8">
-                            <select name="country" class="form-control select2" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
+                            <select name="country" id="country" class="form-control select2" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
-                                <?php 
-                                $admins = $this->db->get_where('country')->result_array();
-                                foreach($admins as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
-                                
-                                <?php } ?>
-                               
                             </select>
                         </div>
                     </div> 
@@ -271,7 +261,7 @@
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('state'); ?></label>
                             <div class="col-sm-8">
-                                <select name="state" class="form-control select2" id="select_state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
+                                <select name="state" class="form-control select2" id="state" value="<?php echo set_value('state'); ?>"  onchange="return get_district(this.value)">
                                     <option value=""><?php echo get_phrase('select_state'); ?></option>
 
                                 </select>   
@@ -282,7 +272,7 @@
                        <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('district'); ?></label>
                             <div class="col-sm-8">
-                                <select name="district" class="form-control select2" id="select_district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
+                                <select name="district" class="form-control select2" id="district" value="<?php echo set_value('district'); ?>"  onchange="return get_city(this.value)">
                                     <option value=""><?php echo get_phrase('select_district'); ?></option>
 
                                 </select>
@@ -292,7 +282,7 @@
                     <div class="form-group">
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('city'); ?></label>
                             <div class="col-sm-8">
-                                <select name="city" class="form-control select2" id="select_city" value="<?php echo set_value('city'); ?>"  >
+                                <select name="city" class="form-control select2" id="city" value="<?php echo set_value('city'); ?>"  >
                                     <option value=""><?php echo get_phrase('select_city
                                     _first'); ?></option>
 
@@ -360,35 +350,10 @@
 
 
 <script type="text/javascript">
-
-	function get_branch(hospital_id) {
-    
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_branch/' + hospital_id ,
-            success: function(response)
-            {
-                jQuery('#select_branch').html(response);
-            }
-        });
-
-    }
-    
-    function get_department(branch_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_department_all/' + branch_id ,
-            success: function(response)
-            {
-                jQuery('#select_department').html(response);
-            }
-        });
-
-    }
-    
       function get_doctor(department_id) {
        
 if(department_id == 'all'){
-    var branch_id=$('#select_branch').val();
+    var branch_id=$('#branch').val();
     $.ajax({
             url: '<?php echo base_url();?>ajax/get_doctor/all/' + branch_id ,
             success: function(response)
@@ -405,48 +370,6 @@ if(department_id == 'all'){
             }
         });
 }
-    }
-
-</script>
-
-
-<script type="text/javascript">
-
-	
-	function get_state(country_id) {
-    
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
-            success: function(response)
-            {
-                jQuery('#select_state').html(response);
-            }
-        });
-
-    }
-    
-    function get_city(state_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_city/' + state_id ,
-            success: function(response)
-            {
-                jQuery('#select_city').html(response);
-            }
-        });   
-
-    }
-    
-     function get_district(city_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_district/' + city_id ,
-            success: function(response)
-            {
-                jQuery('#select_district').html(response);
-            }
-        });
-
     }
 
 </script>

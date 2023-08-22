@@ -28,7 +28,7 @@
                     <div class="form-group">
 						<label for="field-ta" class="col-sm-3 control-label"><?php echo $this->lang->line('labels')['selectBranch'];?></label>
 		                    <div class="col-sm-8">
-		                        <select name="branch" class="form-control select2" id="select_branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
+		                        <select name="branch" class="form-control select2" id="branch"  data-validate="required" data-message-required="<?php echo $this->lang->line('validation')['value_required'];?>" value="">
 		                            <option value="">Select Branch</option>
                                      <?php 
                                 if($branch['hospital_id']!=''){
@@ -37,7 +37,7 @@
                                         $branch_info=$this->crud_model->select_branch_info_by_hospital_id($this->session->userdata('hospital_id'));
                                       }
                                foreach ($branch_info as $row) { ?>
-                                    <option value="<?php echo $row['branch_id']; ?>" <?php if($row['branch_id'] == $branch['branch_id']){echo 'selected';}?>><?php echo $row['name']; ?></option>
+                                    <option value="<?php echo $row['branch_id']; ?>" <?php if($row['branch_id'] == $branch['branch_id']){echo 'selected';}?>><?php echo $row['branch_name']; ?></option>
                                 <?php } ?>
 			                    </select>
 			                </div>
@@ -72,7 +72,7 @@
 </div>
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
 	function get_branch(hospital_id) {
 
@@ -87,4 +87,4 @@
 
     }
 
-</script>
+</script> -->

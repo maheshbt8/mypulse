@@ -31,10 +31,12 @@
                     <tbody>
                     	<?php $count = 1;foreach($country as $row):?>
                         <tr>
-							<td><?php echo $row['name'];?></td>
+							<td><?php echo $row['lang_name'];?></td>
 							<td>
                             <div class="btn-group">
+                                <?php if($row['row_status_cd']!=0){?>
                                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/Language/delete/<?php echo $row['language_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+                                <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
                             </div>
         					</td>
                         </tr>

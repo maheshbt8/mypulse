@@ -1,17 +1,14 @@
 <?php
-$edit_data		=	$this->db->get_where('country' , array('country_id' => $param2) )->result_array();
-
+$row		=	$this->crud_model->select_country_info_id($param2);
 ?>
-
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
-        <?php foreach($edit_data as $row):?>
         <?php echo form_open(base_url() . 'main/country/update/'.$row['country_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><?php echo 'Country';?></label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
+                        <input type="text" class="form-control" name="name" value="<?php echo $row['country_name'];?>"
                             data-validate="required" data-message-required="<?php echo 'Value Required';?>" required/>
                     </div>
                 </div>
@@ -23,6 +20,5 @@ $edit_data		=	$this->db->get_where('country' , array('country_id' => $param2) )-
               </div>
             </div>
         </form>
-        <?php endforeach;?>
     </div>
 </div>

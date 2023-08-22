@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 	<?php
-        $system_name = $this->db->get_where('settings', array('type' => 'system_name'))->row()->description;
-        $system_title = $this->db->get_where('settings', array('type' => 'system_title'))->row()->description;
+        $system_name = $this->db->get_where('settings', array('setting_type' => 'system_name'))->row()->description;
+        $system_title = $this->db->get_where('settings', array('setting_type' => 'system_title'))->row()->description;
         ?>  
-	<title>Sign Up | <?php echo $system_title; ?></title>
+	<title><?php echo $system_title; ?> | Sign Up</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Create an account or login to MyPulse. Book appointments, Manage prescriptions and health records across the hospitals, Order Medicines and Medical Tests.">
@@ -54,23 +54,30 @@
 			<!-- <input type="text" name="reg_status" value="2" id="reg_status" hidden="">
 			<input type="text" name="email_status" value="2" id="email_status" hidden=""> -->
 					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Name">
-						<input class="input100" type="text" name="username" placeholder="<?php echo $this->lang->line('labels')['name'];?>*" value="<?php echo set_value('username'); ?>" autocomplete="off">
+						<input class="input100" type="text" name="username" placeholder="Name *" value="<?php echo set_value('username'); ?>" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Mobile Number">
-						<input class="input100" type="text" name="phone" placeholder="<?php echo 'Mobile Number';?> *" value="<?php echo set_value('phone'); ?>" onchange="return get_phone(this.value)" autocomplete="off"minlength="10" maxlength="10" id="phone">
+						<input class="input100" type="text" name="phone" placeholder="Mobile Number *" value="<?php echo set_value('phone'); ?>" onchange="return get_phone(this.value)" autocomplete="off"minlength="10" maxlength="10" id="phone">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
 						</span>
 					</div>
 					
-						<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Email <?php if($this->session->flashdata('email_error')!=''){echo "Duplicate";}?>">
+					<!-- <div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Email <?php if($this->session->flashdata('email_error')!=''){echo "Duplicate";}?>">
 						<input class="input100" type="email" name="email" placeholder="Email *" value="<?php echo set_value('email'); ?>" onchange="return get_email(this.value)" autocomplete="off">
 						
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-user"></i>
+						</span>
+					</div> -->
+					<div class="wrap-input100 m-b-10 main_data" >
+						<input class="input100" type="email" name="email" placeholder="Email " value="<?php echo set_value('email'); ?>" onchange="return get_email(this.value)" autocomplete="off">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-user"></i>
@@ -78,7 +85,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-10 main_data" data-validate = "Enter Password">
-						<input class="input100" type="password" name="pass" placeholder="<?php echo 'Password';?> *" value="<?php echo set_value('pass'); ?>"minlength="6" maxlength="10">
+						<input class="input100" type="password" name="pass" placeholder="<?php echo 'Password';?> *" value="<?php echo set_value('pass'); ?>" minlength="6" maxlength="10">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock"></i>
@@ -107,13 +114,11 @@
 					</div>
 
 					<div class="text-center w-full p-t-25 p-b-230">
-<a class="txt1" href="<?php echo base_url();?>Logout" ><h5 style="color:white;"><?php echo get_phrase('already_have_an_account?_login');?></h5>
+<a class="txt1" href="<?php echo base_url();?>Logout" ><h5 style="color:white;">Already Have An Account? Login</h5>
 <i class="fa fa-long-arrow-right"></i>						
 </a>
 <br>
-<a href="<?=base_url()?>" class="txt1"><?php echo 'Back To Home';?></a> 
-<!-- <p><small><a href="<?=base_url('Privacy&Policy')?>" style="color:#fff;" target="_blank">Privacy Policy</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="<?=base_url('Terms&Coditions')?>" style="color:#fff;" target="_blank">Terms and Conditions</a></small>
-        </p> -->
+<a href="<?=base_url('login/logout_to_home')?>" class="txt1"><?php echo 'Back To Home';?></a>
 </div>
 </form>
 </div>

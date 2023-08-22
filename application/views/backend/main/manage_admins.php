@@ -21,7 +21,7 @@ $this->session->set_userdata('last_page', current_url());
     <thead>  
         <tr>   
         <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
-        <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_admin_id');?></th>
+        <th data-field="id" data-sortable="true"><?php echo get_phrase('hospital_admin_no.');?></th>
         <th data-field="name" data-sortable="true"><?php echo get_phrase('hospital_admin_name'); ?></th> 
         <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital'); ?></th>
         <th data-field="status" data-sortable="true"><?php echo get_phrase('status'); ?></th> 
@@ -39,13 +39,14 @@ $this->session->set_userdata('last_page', current_url());
                 <td><a href="<?php echo base_url(); ?>main/edit_hospital_admins/<?php echo $row['admin_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->name; ?></td>
                
-                 <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
-                 }elseif($row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
+                 <td><?php if($row['row_status_cd'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
+                 }elseif($row['row_status_cd'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
                 <td>
+                    <?php if($row['row_status_cd']=='1'){?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/hospital_admins/delete/<?php echo $row['admin_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
                 </a>
-                <?php if($row['is_email'] == '2'){?>
-                <a href="<?php echo base_url(); ?>main/resend_email_verification/hospitaladmins/admin/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
+                <?php if($row['email_verify'] == '2'){?>
+                <a href="<?php echo base_url(); ?>main/resend_email_verification/hospitaladmins/admin/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }}else{echo '<span class="error"><b>Deleted</b></span>';}?>
                 </td>
             </tr>
         <?php $i++;} ?>

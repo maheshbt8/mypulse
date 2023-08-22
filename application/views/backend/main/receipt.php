@@ -8,10 +8,11 @@ $store_info=$this->db->where('store_id',$order_info['store_id'])->get('medicalst
 $store_info=$this->db->where('lab_id',$order_info['lab_id'])->get('medicallabs')->row_array();
 }
 if($prescription_info!=''){
-$user_info=$this->db->where('user_id',$prescription_info['user_id'])->get('users')->row_array();
+$user_id=$prescription_info['user_id'];
 }else{
-$user_info=$this->db->where('user_id',$order_info['user_id'])->get('users')->row_array();
+$user_id=$order_info['user_id'];
 }
+$user_info=$this->db->select('user_id,name,email,phone,unique_id,address')->where('user_id',$user_id)->get('users')->row_array();
 /*$hospital_info=$this->db->where('hospital_id',$doctor_info['hospital_id'])->get('hospitals')->row_array();*/
 $prescription_data=explode('|',$this->encryption->decrypt($prescription_info['prescription_data']));
 $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
@@ -34,8 +35,8 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 <div class="panel panel-default">   
             <div class="panel-body">
 <div class="my_pulse">  
-    <div class="col-md-12" style="background-color: #40403fe8;">
-    <center style="padding:5px;"><img draggable="false" src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
+    <div class="col-md-12" style="background:-webkit-linear-gradient(bottom, #005bea, #00c6fb);">
+    <center style="padding:5px;"><img draggable="false" src="<?=base_url('MyPulse-Logo');?>"  style="max-height:55px; margin: 2px;"/></center>
     </div>
 </div>
     <hr/>
@@ -43,7 +44,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
     <div class="col-md-12">
     <table width="100%" border="0">    
             <tbody><tr>
-    <td align="left"><h3>Title :- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3></td>
+    <td align="left"><h3>Title:- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3><h3>Order ID:- <?=$order_info['unique_id'];?></h3><h3>Receipt ID:- <?=$order_info['receipt_id'];?></h3></td>
             </tr>
         </tbody>
     </table>
@@ -168,26 +169,21 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
         }else{
         $description=explode(',',$order_data[2]);
         }
-       /* $test_title=explode(',',$prescription_data[7]);
-        $description=explode(',',$prescription_data[8]);*/
         $tests=explode(',',$order_info['tests']);
         $price=explode(',',$order_info['price']);
-        
         ?>
         <input type="hidden" name="count" value="<?= count($test_title)?>">
-        <?php for($i1=0;$i1<count($test_title);$i1++){
-            /*if($tests[$i1]==1){*/
-            ?>
+        <?php for($i1=0;$i1<count($test_title);$i1++){ ?>
       <tr>
         <th scope="row"><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>
         <td><?php if($report_info[$i1]['extension']!=''){?>
-<button type="button" onclick="window.location.href='<?=base_url('Report-Download/'.base64_encode(date('Y',strtotime($report_info[$i1]['created_at'])).'/'.$user_info['unique_id'].'/'.$report_info[$i1]['report_id']));?>'" class="btn btn-success">Download</button><?php }?>
+<button type="button" onclick="window.location.href='<?=base_url('Report-Download/'.base64_encode(date('Y',strtotime($report_info[$i1]['created_at'])).'/'.$user_info['unique_id'].'/'.$report_info[$i1]['report_id']));?>'" class="btn btn-success">Download</button><?php }else{echo "Reports Not Uploaded";}?>
     </td>
         <td><?= $price[$i1];?></td>
       </tr>
-      <?php /*}*/
+      <?php
         }?>
     </tbody>
     <thead>

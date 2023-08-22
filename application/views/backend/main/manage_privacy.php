@@ -38,7 +38,7 @@ $this->session->set_userdata('last_page1', current_url());
             </div>
             <div class="panel-body">
             	<?php 
-            	$privacy= $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+            	$privacy= $this->db->get_where('settings', array('setting_type' => 'privacy'))->row()->description;
             	echo $privacy;
             	?>
             </div>
@@ -61,7 +61,7 @@ $this->session->set_userdata('last_page1', current_url());
             </div>
             <div class="panel-body">
             	<?php 
-            	$privacy= $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+            	$privacy= $this->db->get_where('settings', array('setting_type' => 'terms'))->row()->description;
             	echo $privacy;
             	?>
             </div>

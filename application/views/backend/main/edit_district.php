@@ -1,25 +1,20 @@
 <?php
-$edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) )->result_array();
-
+$row=$this->crud_model->select_district_info_id($param2);
 ?>
-
 <div class="tab-pane box active" id="edit" style="padding: 5px">
     <div class="box-content">
-        <?php foreach($edit_data as $row):?>
         <?php echo form_open(base_url() . 'main/district/update/'.$row['district_id'] , array('class' => 'form-horizontal form-groups-bordered validate','target'=>'_top'));?>
             <div class="padded">
                 	<div class="form-group">     
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'Country';?></label> 
 
                         <div class="col-sm-5">
-            <select name="country_id" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value Required';?>" value=""  onchange="return get_state(this.value)">
+            <select name="country_id" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value Required';?>" value=""  onchange="return get_state1(this.value)">
                                 <?php 
-                                $country = $this->db->get('country')->result_array();
+                                $country = $this->crud_model->select_country_info();
                                 foreach($country as $row1){?>
-                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id']==$row['country_id']){echo 'selected';}?>><?php echo $row1['name'] ?></option>
-                                
+                                <option value="<?php echo $row1['country_id'] ?>" <?php if($row1['country_id']==$row['country_id']){echo 'selected';}?>><?php echo $row1['country_name'] ?></option>
                                 <?php } ?>
-                               
                             </select>
                         </div>
                     </div>
@@ -27,12 +22,12 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo 'State';?></label> 
 
                         <div class="col-sm-5">
-                            <select name="state_id" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value Required';?>" id="state"   value="">
+                            <select name="state_id" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value Required';?>" id="state_edit"   value="">
+                                <option value="">Select State</option>
                                 <?php 
-                                $state = $this->db->where('country_id',$row['country_id'])->get('state')->result_array();
+                                $state = $this->crud_model->select_state($row['country_id']);
                                 foreach($state as $row2){?>
-                                <option value="<?php echo $row2['state_id'] ?>" <?php if($row2['state_id']==$row['state_id']){echo 'selected';}?>><?php echo $row2['name'] ?></option>
-                                
+                                <option value="<?php echo $row2['state_id'] ?>" <?php if($row2['state_id']==$row['state_id']){echo 'selected';}?>><?php echo $row2['state_name'] ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -41,7 +36,7 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
                 <div class="form-group">
                     <label class="col-sm-3 control-label"><?php echo 'District';?></label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="name" value="<?php echo $row['name'];?>"
+                        <input type="text" class="form-control" name="name" value="<?php echo $row['dist_name'];?>"
                             data-validate="required" data-message-required="<?php echo ucfirst('Value Required');?>" required/>
                     </div>
                 </div>
@@ -53,22 +48,5 @@ $edit_data		=	$this->db->get_where('district' , array('district_id' => $param2) 
               </div>
             </div>
         </form>
-        <?php endforeach;?>
     </div>
 </div>
-
-<!-----  DATA TABLE EXPORT CONFIGURATIONS ---->                      
-
-<script type="text/javascript">
-	function get_state(country_id) {
-        alert(country_id);
-    	$.ajax({
-            url: '<?php echo base_url();?>ajax/get_state/' + country_id ,
-            success: function(response)
-            {    
-                alert(response);
-                jQuery('#state').html(response);
-            }
-        });
-    }
-</script>

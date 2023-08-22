@@ -6,7 +6,6 @@ $prescription_info = $this->db->get_where('prescription', array('prescription_id
 }
 }
 if($prescription_id!=''){
-   /* $prescription_id=$this->crud_model->generate_decryption_key($prescription_id);*/
 $prescription_info = $this->db->get_where('prescription', array('prescription_id' =>$prescription_id))->row_array();
 }
 $doctor_info=$this->crud_model->select_doctor_info_id($prescription_info['doctor_id']);
@@ -51,7 +50,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
     <table width="100%" border="0">    
             <tbody>
                 <tr>
-                <td align="left"><h3>Title :- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3></td>
+                <td align="left"><h3>Title:- <?php if($prescription_data[0]!=''){echo $prescription_data[0];}else{echo $order_data[0];}?></h3><?php if($prescription_id==''){?><h3>Order ID:- <?=$order_info['unique_id'];?></h3><?php }?></td>
                 <td align="right"></td>
             </tr>
                 <tr>
@@ -66,7 +65,7 @@ $order_data=explode('|',$this->encryption->decrypt($order_info['order_data']));
 <h4><i class="fa fa-envelope m-r-xs"></i>&nbsp;&nbsp;<?php echo $hospital_info['email'];?></h4>          
                 </td><?php }?>
                 <td align="right" valign="top">
-                    <h4><b>Date : </b><?php echo date('M ,d-Y h:i A',strtotime($prescription_info['created_at']));?></h4>
+                    <h4><b>Date : </b><?php if($prescription_id!=''){echo date('M ,d-Y h:i A',strtotime($prescription_info['created_at']));}else{echo date('M ,d-Y h:i A',strtotime($order_info['created_at']));}?></h4>
                     
                 </td>
             </tr>
@@ -185,23 +184,14 @@ if($order_type == 1 || $account_type=='doctors' || $account_type=='nurse' ||($or
         }else{
         $description=explode(',',$order_data[2]);
         }
-        
-        if($account_type == 'medicallabs'){
+        if($order_info != ''){
         $tests=explode(',',$order_info['tests']); 
         }
-        /*print_r($test_title);die;*/
         ?>
         <?php for($i1=0;$i1<count($test_title);$i1++){
-            if($account_type == 'medicallabs'){
-              /*  if($tests[$i1]==1){*/
+            if($tests[$i1]==1 || $order_info =='' || $order_type==1){
             ?>
       <tr>
-        <th><?= $i1+1;?></th>
-        <td><?= $test_title[$i1];?></td>
-        <td><?= $description[$i1];?></td>
-      </tr>
-      <?php /*}*/}elseif($account_type != 'medicallabs'){ ?>
-<tr>
         <th><?= $i1+1;?></th>
         <td><?= $test_title[$i1];?></td>
         <td><?= $description[$i1];?></td>

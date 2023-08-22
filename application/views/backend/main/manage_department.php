@@ -13,7 +13,7 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('Hospital'); ?></span> 
 <div class="col-sm-8">
 <select name="hospital" class="form-control" onchange="return get_branch(this.value)">
-    <?php $hospitals=$this->db->get('hospitals')->result_array();
+    <?php $hospitals=$this->crud_model->select_hospital();
     foreach ($hospitals as $hospital) { ?>
 <option value="<?=$hospital['hospital_id']?>" <?php if($hospital['hospital_id'] == $branch['hospital_id']){echo "selected";}?>><?=ucfirst($hospital['name'])?></option>
 <?php    }?>
@@ -26,9 +26,9 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
 <span for="field-ta" class="col-sm-4 control-label"> <?php echo get_phrase('branch'); ?></span> 
 <div class="col-sm-8">
 <select name="branch" class="form-control" onchange="return get_departments(this.value)" id="branch">
-    <?php $branchs=$this->db->where('hospital_id',$branch['hospital_id'])->get('branch')->result_array();
+    <?php $branchs=$this->crud_model->select_branch($branch['hospital_id']);
     foreach ($branchs as $branches) { ?>
-<option value="<?=$branches['branch_id']?>" <?php if($branches['branch_id'] == $branch_id){echo "selected";}?>><?=ucfirst($branches['name'])?></option>
+<option value="<?=$branches['branch_id']?>" <?php if($branches['branch_id'] == $branch_id){echo "selected";}?>><?=ucfirst($branches['branch_name'])?></option>
 <?php    }?>
 </select>
 </div>
@@ -64,14 +64,14 @@ $branch=$this->db->where('branch_id',$branch_id)->get('branch')->row_array();
         <?php $i=1;foreach ($department_info as $row) { ?>   
             <tr>  
                 <td><input type="checkbox" name="check[]" class="check" id="check_<?php echo $i;?>" value="<?php echo $row['department_id'] ?>"></td>
-                <td><a href="<?php echo base_url(); ?>main/edit_department/<?php echo $row['department_id'] ?>" class="hiper"><?php echo $row['name'] ?></a></td>
+                <td><a href="<?php echo base_url(); ?>main/edit_department/<?php echo $row['department_id'] ?>" class="hiper"><?php echo $row['dept_name'] ?></a></td>
                 <td><?php echo $this->db->where('hospital_id',$row['hospital_id'])->get('hospitals')->row()->name; ?></td>
-                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->name; ?></td>
+                <td><?php echo $this->db->where('branch_id',$row['branch_id'])->get('branch')->row()->branch_name; ?></td>
                <?php if($account_type=='superadmin' || $license_category=='MPHL_19002'){ ?> <td><a href="<?php echo base_url(); ?>main/get_hospital_ward/<?php echo $row['department_id'] ?>" title="Wards"><i class="glyphicon glyphicon-eye-open"></i></a></td><?php }?>
                 <td>
-                      <?php if($row['isDeleted']=='1'){ ?>
+                      <?php if($row['row_status_cd']!='0'){ ?>
             <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/department/delete/<?php echo $row['department_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-           <?php }?>
+           <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
                 </td>
             </tr>
         <?php $i++;} ?>

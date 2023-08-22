@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">   
@@ -38,9 +37,10 @@
                             </div>
                     </div>
                 </div>
-                <label><b>Prescription for Medicines</b></label>
+                
                
                 <div class="col-sm-12">
+                  <label><b>Prescription for Medicines</b></label>
                     <div class="form-group container_p">
                         <table  class="table table-bordered table-striped">
                             <tr class="element"  id="div_0">
@@ -56,9 +56,10 @@
                         </table>
                     </div>
                 </div>
-             <label><b>Prescription for Medical Tests</b></label>
+             
                
                 <div class="col-sm-12">
+                  <label><b>Prescription for Medical Tests</b></label>
                     <div class="form-group container1">
                         <table  class="table table-bordered table-striped">
                             <tr class="element1"  id="div1_0">
@@ -120,7 +121,7 @@ $(document).ready(function(){
    $(".element:last").after("<tr class='element' id='div_"+ nextindex +"'></tr>");
  
    // Adding element to <div>
-   $("#div_" + nextindex).append('<td>'+nextindex+'</td><td><input type="text" name="drug[]"  placeholder="" class="form-control" value="<?php set_value('drug');?>"/></td><td><input type="text" name="strength[]"  placeholder="" class="form-control" value="<?php set_value('strength');?>"/></td><td><input type="text" name="dosage[]"  placeholder="1-0-1" class="form-control" value="<?php set_value('dosage');?>"/></td><td><input type="text" name="duration[]"  placeholder="30 Days" class="form-control" value="<?php set_value('duration');?>"/></td><td><input type="text" name="quantity[]"  placeholder="1" class="form-control" value="<?php set_value('quantity');?>"/></td><td><input type="text" name="note[]"  placeholder="After Food" class="form-control" value="<?php set_value('note');?>"/></td><td><button type="button" id="remove_'+nextindex+'" class="remove" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>');
+   $("#div_" + nextindex).append('<td>'+nextindex+'</td><td><input type="text" name="drug[]"  placeholder="" class="form-control" value="<?php set_value('drug');?>"/></td><td><input type="text" name="strength[]"  placeholder="" class="form-control" value="<?php set_value('strength');?>"/></td><td><input type="text" name="dosage[]"  placeholder="1-0-1" class="form-control" value="<?php set_value('dosage');?>"/></td><td><input type="text" name="duration[]"  placeholder="30 Days" class="form-control" value="<?php set_value('duration');?>"/></td><td><input type="number" min="1" name="quantity[]"  placeholder="1" class="form-control" value="<?php set_value('quantity');?>"/></td><td><input type="text" name="note[]"  placeholder="After Food" class="form-control" value="<?php set_value('note');?>"/></td><td><button type="button" id="remove_'+nextindex+'" class="remove" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>');
    
  
   }

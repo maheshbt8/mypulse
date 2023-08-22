@@ -25,7 +25,7 @@ $this->session->set_userdata('last_page', current_url());
         <tr>
             <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th><?php }?>
-            <th data-field="id" data-sortable="true"><?php echo get_phrase('receptionist_id');?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('receptionist_no.');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('receptionist_name');?></th>
             <th data-field="hospital" data-sortable="true"><?php echo get_phrase('hospital');?></th>
             <th data-field="branch" data-sortable="true"><?php echo get_phrase('branch');?></th>
@@ -50,28 +50,28 @@ $this->session->set_userdata('last_page', current_url());
                         echo $name;?>
                 </td>
                  <td>
-                    <?php $name = $this->db->get_where('branch' , array('branch_id' => $row['branch_id'] ))->row()->name;
+                    <?php $name = $this->db->get_where('branch' , array('branch_id' => $row['branch_id'] ))->row()->branch_name;
                         echo $name;?>
                 </td>
                 <td>
-                    <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->name;}
+                    <?php if($row['department_id'] == 0){$name='All Departments';}else{$name = $this->db->get_where('department' , array('department_id' => $row['department_id'] ))->row()->dept_name;}
                         echo $name;?>
                     
                 </td>
                 <?php if($account_type != 'doctors'){?><td><a href="<?php echo base_url();?>main/view_doctors/receptionist/<?php echo $row['receptionist_id']?>" class="hiper">View Doctors</a></td><?php }?>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
+                <td><?php if($row['row_status_cd'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
                  }
                  else if(
-                 $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                 $row['row_status_cd'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                      
                  </td>
                 <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){?>
                 <td>
-                  <?php if($row['is_email'] == '2'){?>
+                <?php if($row['row_status_cd']!= '0'){?>
+                    <?php if($row['email_verify'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/receptionist/receptionist/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
-                <?php if($row['isDeleted'] == '1'){?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/receptionist/delete/<?php echo $row['receptionist_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                </td><?php }}?>
+                </td><?php }else{echo '<span class="error"><b>Deleted</b></span>';}}?>
             </tr>
         <?php } ?>
     </tbody>

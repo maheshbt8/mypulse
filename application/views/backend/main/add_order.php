@@ -3,8 +3,8 @@
 <div class="panel panel-default">
     <div class="panel-body">
 <div class="my_pulse">  
-    <div class="col-md-12" style="background-color: #40403fe8;">
-    <center style="padding:5px;"><img src="<?php echo base_url();?>assets/logo.png"  style="max-height:45px; margin: 0px;"/></center>
+    <div class="col-md-12" style="background:-webkit-linear-gradient(bottom, #005bea, #00c6fb);">
+    <center style="padding:5px;"><img draggable="false" src="<?=base_url('MyPulse-Logo');?>"  style="max-height:55px; margin: 2px;"/></center>
     </div>
 </div>
 </div>
@@ -33,9 +33,9 @@
 <div class="col-sm-10"> 
 <select name="city" class="form-control select2" id="city"value="" onchange="return get_city_stores(this.value)">
 <option value="0"><?php echo get_phrase('ALL'); ?></option>
-<?php $store=$this->db->get('city')->result(); 
+<?php $store=$this->crud_model->select_city(); 
 foreach ($store as $spe) { ?>     
-<option value="<?php echo $spe->city_id;?>"><?php echo $spe->name; ?></option>
+<option value="<?php echo $spe['city_id'];?>"><?php echo $spe['city_name']; ?></option>
 <?php }?>
 </select>
 </div>
@@ -47,9 +47,9 @@ foreach ($store as $spe) { ?>
 <div class="col-sm-10"> 
 <select name="store" class="form-control select2" id="store" value=""  data-validate="required" data-message-required="<?php echo 'Value Required';?>">
 <option value=""> -- Select Medical Store -- </option>
-<?php $store=$this->db->get('medicalstores')->result(); 
-foreach ($store as $spe) { 
-$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital))->row()->license_status;
+<?php $store=$this->db->get_where('medicalstores',array('row_status_cd'=>1))->result(); 
+foreach ($store as $spe) {
+$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital_id))->row()->row_status_cd;
   if($license_status==1){
   ?>     
 <option value="<?php echo $spe->store_id;?>" <?php if($id!=''){if($id == $spe->store_id){echo "selected";}}?>><?php echo $spe->unique_id.' / '.$spe->name; ?></option>
@@ -59,7 +59,7 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hosp
 </div>
 
 </div>
-<h2 class="col-sm-12"><?php echo get_phrase('Medicine'); ?></h2>
+<h2 class="col-sm-12"><?php echo get_phrase('Medicines'); ?></h2>
 <div class="col-md-12"> 
   <table class="table container_p">
     <thead>
@@ -84,9 +84,9 @@ $license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hosp
 <div class="col-sm-10"> 
 <select name="city" class="form-control select2" id="city"value="" onchange="return get_city_labs(this.value)">
 <option value="0"><?php echo get_phrase('ALL'); ?></option>
-<?php $store=$this->db->get('city')->result(); 
+<?php $store=$this->crud_model->select_city(); 
 foreach ($store as $spe) { ?>     
-<option value="<?php echo $spe->city_id;?>"><?php echo $spe->name; ?></option>
+<option value="<?php echo $spe['city_id'];?>"><?php echo $spe['city_name']; ?></option>
 <?php }?>
 </select>
 </div>
@@ -96,11 +96,11 @@ foreach ($store as $spe) { ?>
 <div class="form-group">
 <label for="field-ta" class="col-sm-2 control-label"><?php echo get_phrase('medical_lab'); ?></label>
 <div class="col-sm-10"> 
-<select name="lab" class="form-control select2" id="lab"value=""  data-validate="required" data-message-required="<?php echo 'Value Required';?>">
+<select name="lab" class="form-control select2" id="lab"value=""  data-validate="required" data-message-required="<?="Value Required";?>">
 <option value=""> -- Select Medical Lab -- </option>
-<?php $store=$this->db->get('medicallabs')->result(); 
+<?php $store=$this->db->get_where('medicallabs',array('row_status_cd'=>1))->result(); 
 foreach ($store as $spe) { 
-$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital))->row()->license_status;
+$license_status=$this->db->get_where('hospitals',array('hospital_id'=>$spe->hospital_id))->row()->row_status_cd;
   if($license_status==1){
   ?>     
 <option value="<?php echo $spe->lab_id;?>" <?php if($id!=''){if($id == $spe->lab_id){echo "selected";}}?>><?php echo $spe->unique_id.' / '.$spe->name; ?></option>
@@ -179,7 +179,7 @@ $(document).ready(function(){
    $(".element:last").after("<tr class='element' id='div_"+ nextindex +"'></tr>");
  
    // Adding element to <div>
-   $("#div_" + nextindex).append('<td>'+nextindex+'</td><td><input type="text" name="drug[]"  placeholder="" class="form-control" value="<?php set_value('drug');?>"/></td><td><input type="text" name="strength[]"  placeholder="" class="form-control" value="<?php set_value('strength');?>"/></td><td><input type="text" name="quantity[]"  placeholder="1" class="form-control" value="<?php set_value('quantity');?>"/></td><td><button type="button" id="remove_'+nextindex+'" class="remove" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>');
+   $("#div_" + nextindex).append('<td>'+nextindex+'</td><td><input type="text" name="drug[]"  placeholder="" class="form-control" value="<?php set_value('drug');?>"/></td><td><input type="text" name="strength[]"  placeholder="" class="form-control" value="<?php set_value('strength');?>"/></td><td><input type="number" min="1" name="quantity[]"  placeholder="1" class="form-control" value="<?php set_value('quantity');?>"/></td><td><button type="button" id="remove_'+nextindex+'" class="remove" onclick="return remove()" ><i class="fa fa-minus"></i></button></td>');
   }
  
  });

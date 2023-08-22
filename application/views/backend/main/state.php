@@ -22,7 +22,6 @@
 	<div class="panel panel-default">   
             <div class="panel-body">
 		<div class="tab-content">
-        
             <!--TABLE LISTING STARTS-->
             <div class="tab-pane box <?php if(!isset($edit_data))echo 'active';?>" id="list">
                 <table cellpadding="0" cellspacing="0" border="0" class="table table-bordered datatable" id="table_export">
@@ -37,11 +36,13 @@
                     	<?php $count = 1;foreach($country as $row):
                         ?>
                         <tr>
-                            <td><?php echo $this->db->where('country_id',$row['country_id'])->get('country')->row()->name;?></td>
-							<td><?php echo $row['name'];?></td>
+                            <td><?php $country=$this->crud_model->select_country_info_id($row['country_id']);echo $country['country_name'];?></td>
+							<td><?php echo $row['state_name'];?></td>
 							<td>
+        <?php if($row['row_status_cd']!=0){?>
     <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_state/<?php echo $row['state_id'];?>');" title="Edit"><i class="fa fa-pencil"></i></a>
      <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/state/delete/<?php echo $row['state_id'];?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+     <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
         					</td>
                         </tr>
         <!-- Modal -->
@@ -60,14 +61,9 @@
                         <label for="field-ta" class="col-sm-3 control-label"><?php echo get_phrase('country_name'); ?></label> 
 
                         <div class="col-sm-5">
-                            <select name="country_id" class="form-control" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  onchange="return get_branch(this.value)">
+                            <select name="country_id" id="country" class="form-control select2" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value=""  onchange="return get_branch(this.value)">
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
-                                <?php 
-                                $country = $this->db->get('country')->result_array();
-                                foreach($country as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
                                 
-                                <?php } ?>
                                
                             </select>
                         </div>

@@ -28,13 +28,15 @@
 						</tr>
 					</thead>
                     <tbody>
-                    	<?php $count = 1;foreach($country as $row):?>
+                    	<?php $count = 1;foreach($specializations as $row):?>
                         <tr>
-							<td><?php echo $row['name'];?></td>
+							<td><?php echo $row['specializations_name'];?></td>
 							<td>
+                            <?php if($row['row_status_cd']!=0){?>
                             <div class="btn-group">
                                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/specialization/delete/<?php echo $row['specializations_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
                             </div>
+                            <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
         					</td>
                         </tr>
                         <?php endforeach;?>

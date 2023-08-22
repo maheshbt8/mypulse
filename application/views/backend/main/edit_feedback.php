@@ -1,5 +1,5 @@
 <?php
-$feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
+$feed_data=$this->db->get_where('feedback',array('id'=>$id))->row_array();
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -17,7 +17,7 @@ $feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
                 $users = $this->db->get('hospitaladmins')->result_array();
                 foreach ($users as $row):
                     ?>
-                    <option value="hospitaladmins-admin-<?php echo $row['admin_id']; ?>" <?php if($feed_data['customer_id']=="hospitaladmins-admin-".$row['admin_id']){echo 'selected';}?>>
+                    <option value="<?=$row['unique_id']; ?>" <?php if($feed_data['customer_id']==$row['unique_id']){echo 'selected';}?>>
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -26,7 +26,7 @@ $feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
                 $users=$this->crud_model->select_doctor_info();
                 foreach ($users as $row):
                     ?>
-                    <option value="doctors-doctor-<?php echo $row['doctor_id']; ?>" <?php if($feed_data['customer_id']=="doctors-doctor-".$row['doctor_id']){echo 'selected';}?>>
+                    <option value="<?=$row['unique_id'];?>" <?php if($feed_data['customer_id']==$row['unique_id']){echo 'selected';}?>>
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -35,7 +35,7 @@ $feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
                 $users=$this->crud_model->select_nurse_info();
                 foreach ($users as $row):
                     ?>
-                    <option value="nurse-nurse-<?php echo $row['nurse_id']; ?>" <?php if($feed_data['customer_id']=="nurse-nurse-".$row['nurse_id']){echo 'selected';}?>>
+                    <option value="<?=$row['unique_id']; ?>" <?php if($feed_data['customer_id']==$row['unique_id']){echo 'selected';}?>>
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -44,7 +44,7 @@ $feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
                 $users=$this->crud_model->select_receptionist_info();
                 foreach ($users as $row):
                     ?>
-                    <option value="receptionist-receptionist-<?php echo $row['receptionist_id']; ?>" <?php if($feed_data['customer_id']=="receptionist-receptionist-".$row['receptionist_id']){echo 'selected';}?>>
+                    <option value="<?=$row['unique_id']; ?>" <?php if($feed_data['customer_id']==$row['unique_id']){echo 'selected';}?>>
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -53,7 +53,7 @@ $feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
                 $users=$this->crud_model->select_store_info();
                 foreach ($users as $row):
                     ?>
-                    <option value="medicalstores-store-<?php echo $row['store_id']; ?>" <?php if($feed_data['customer_id']=="medicalstores-store-".$row['store_id']){echo 'selected';}?>>
+                    <option value="<?=$row['unique_id']; ?>" <?php if($feed_data['customer_id']==$row['unique_id']){echo 'selected';}?>>
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>
@@ -62,7 +62,7 @@ $feed_data=$this->db->get_where('feedback',array('id',$id))->row_array();
                 $users=$this->crud_model->select_lab_info();
                 foreach ($users as $row):
                     ?>
-                    <option value="medicallabs-lab-<?php echo $row['lab_id']; ?>" <?php if($feed_data['customer_id']=="medicallabs-lab-".$row['lab_id']){echo 'selected';}?>>
+                    <option value="<?=$row['unique_id'];?>" <?php if($feed_data['customer_id']==$row['unique_id']){echo 'selected';}?>>
                         <?php echo $row['unique_id'].' - '.$row['name'].' ( '.$row['email'].' )'; ?></option>
                 <?php endforeach; ?>
             </optgroup>            

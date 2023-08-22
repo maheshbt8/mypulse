@@ -35,12 +35,14 @@
                     <tbody>
                     	<?php $count = 1;foreach($country as $row){?>
                         <tr>
-							<td><?php echo $row['name'];?></td>
+							<td><?php echo $row['country_name'];?></td>
 							<td>
+            <?php if($row['row_status_cd']!=0){?>
               <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_country/<?php echo $row['country_id'];?>');">
               <i class="fa fa-pencil"></i></a>
               <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/country/delete/<?php echo $row['country_id'];?>');" id="dellink_2" class="delbtn" data-toggle="modal" data-target=".bs-example-modal-sm" data-id="2" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
         					</td>
+                <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
                         </tr>
         
                         <?php }?>

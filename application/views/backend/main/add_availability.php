@@ -1,9 +1,15 @@
 <?php 
 $doctor=$this->db->where('doctor_id',$doctor_id)->get('doctors')->row();
 $availability=$this->db->where('doctor_id',$doctor_id)->get('availability')->row();
-$availability_slot=$this->db->get_where('availability_slot',array('doctor_id'=>$doctor_id,'status'=>1))->result_array();
+$availability_slot=$this->db->get_where('availability_slot',array('doctor_id'=>$doctor_id,'row_status_cd'=>1))->result_array();
 $this->session->set_userdata('last_page1', current_url());
 ?>
+<?php if($availability->no_appt_handle==0 && $availability->message==''){?>
+<div class="alert alert-danger">
+  <strong>To Add Available Timings You have to add Availability Details First</strong>
+</div>
+<?php }?>
+
 <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('close'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'" style="margin-left: 2px;">
 <div class="row">
     <div class="">
@@ -11,7 +17,7 @@ $this->session->set_userdata('last_page1', current_url());
     <div class="col-md-3">
 			<center>
         <a href="#">
-  				<img src="<?php echo $this->crud_model->get_image_url('doctor' , $doctor->doctor_id);?>" class="img-circle" style="width: 50%;">
+  				<img src="<?=base_url().$this->crud_model->get_image_url('doctor' , $doctor->doctor_id);?>" class="img-circle" style="width: 50%;">
   			</a>
         <br>
         <h3><?php echo 'Dr.'.$doctor->name;?></h3>
@@ -36,8 +42,6 @@ $this->session->set_userdata('last_page1', current_url());
                     <div class="panel-heading ">
                             <div class="custome_col8">
                                 <h3 class="panel-title panel_heading_custome"><?php echo $this->lang->line('availability'); ?></h3>
-                                
-                                
                             </div>
                     </div>
                     <div class="panel-body" id="profileBody">
@@ -74,7 +78,7 @@ $this->session->set_userdata('last_page1', current_url());
                             <i class="fa fa-calendar"></i>
                             <?php echo $this->lang->line('labels')['doctor_availability_schedule'];?>
                              <?php if($account_type != 'users'){?>
-                                <button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>main/doctor_new_availability/<?php echo $doctor->doctor_id;?>'"><?php echo $this->lang->line('buttons')['addNew'];?></button>
+                                <button class="btn btn-primary pull-right" onclick="window.location.href = '<?php echo base_url();?>main/doctor_new_availability/<?php echo $doctor->doctor_id;?>'" <?php if($availability->no_appt_handle==0 && $availability->message==''){echo 'disabled';}?>>Add New</button>
                             <?php }?>
                         </div>
                     </div>

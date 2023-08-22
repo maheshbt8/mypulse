@@ -154,6 +154,86 @@
         });
 }
    </script>
+   <script type="text/javascript">
+    $(document).ready(function(){
+        var start = moment().subtract(29, 'days');
+        var end = moment();
+        <?php
+        if(isset($_GET['sd']) && $_GET['sd'] != ""){
+            ?>
+            start = moment('<?php echo $_GET['sd'];?>');
+            <?php
+        }
+        ?>
+
+        <?php
+        if(isset($_GET['ed']) && $_GET['ed'] != ""){
+            ?>
+            end = moment('<?php echo $_GET['ed'];?>');
+            <?php
+        }
+        ?>
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: { 
+                applyLabel : '<?php echo $this->lang->line('apply');?>',
+                cancelLabel: '<?php echo $this->lang->line('clear');?>',
+                "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+            },  
+            ranges: {
+            '<?php echo 'All';?>': ['All', 'All'],
+            '<?php echo $this->lang->line('today');?>': [moment(), moment()],
+            '<?php echo $this->lang->line('yesterday');?>': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '<?php echo $this->lang->line('last_7_day');?>': [moment().subtract(6, 'days'), moment()],
+            '<?php echo $this->lang->line('last_30_day');?>': [moment().subtract(29, 'days'), moment()],
+            '<?php echo $this->lang->line('this_month');?>': [moment().startOf('month'), moment().endOf('month')],
+            '<?php echo $this->lang->line('last_month');?>': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        },past_date_range);
+
+    });
+</script>
+  <script type="text/javascript">    
+    $(document).ready(function(){
+        var start = moment();
+        var end = moment().add(29, 'days');
+        <?php
+        if(isset($_GET['sd']) && $_GET['sd'] != ""){
+            ?>
+            start = moment('<?php echo $_GET['sd'];?>');
+            <?php
+        }
+        ?>
+
+        <?php
+        if(isset($_GET['ed']) && $_GET['ed'] != ""){
+            ?>
+            end = moment('<?php echo $_GET['ed'];?>');
+            <?php
+        }
+        ?>
+        $('#appointment_range').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: { 
+                applyLabel : '<?php echo $this->lang->line('apply');?>',
+                cancelLabel: '<?php echo $this->lang->line('clear');?>',
+                "customRangeLabel": "<?php echo $this->lang->line('custom');?>",
+            },  
+            ranges: {
+                '<?php echo 'All';?>': ['All', 'All'],
+                '<?php echo 'Today';?>': [moment().add(0, 'days'), moment().add(0, 'days')],
+                '<?php echo 'Tomorrow';?>': [moment().add(1, 'days'), moment().add(1, 'days')],
+                '<?php echo 'Upcoming 7 day';?>': [moment(),moment().add(6, 'days')],
+                '<?php echo 'Upcoming 30 day';?>': [moment(),moment().add(29, 'days'),],
+                '<?php echo 'This Month';?>': [moment().startOf('month'), moment().endOf('month')],
+                '<?php echo 'Next Month';?>': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+            }
+        },feature_date_range);
+
+    });
+</script>
    <div class="modal fade" id="close_all">
         <div class="modal-dialog">
             <div class="modal-content" style="margin-top:100px;">

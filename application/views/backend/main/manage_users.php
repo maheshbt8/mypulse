@@ -21,7 +21,7 @@ $this->session->set_userdata('last_page', current_url());
     <thead>
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
-            <th><?php echo get_phrase('user_id');?></th>
+            <th><?php echo get_phrase('user_no.');?></th>
             <th><?php echo get_phrase('user_name');?></th>
             <th><?php echo get_phrase('email');?></th>
             <th><?php echo get_phrase('status');?></th>
@@ -39,19 +39,16 @@ $this->session->set_userdata('last_page', current_url());
                  <td><?php echo $row['unique_id']?></td>
                 <td><a href="<?php echo base_url();?>main/edit_user/<?php echo $row['user_id']?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['email']?></td>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";   
-                 }
-                 else if(
-                 $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
-                     <?php if($row['reg_status'] == 1){echo "<span class='text-success'>Registered</span>";   
+                <td><?php if($row['row_status_cd'] == 1){echo "<button type='button' class='btn-success'>Active</button>";}else if($row['row_status_cd'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                <?php if($row['reg_status'] == 1){echo "<span class='text-success'>Registered</span>";   
                  }
                  elseif($row['reg_status'] == 2){ echo "<span class='text-danger'>Unregistered</span>";}?>
                  </td> 
-                <td>
-                    <?php if($row['is_email'] == '2'){?>
-                <a href="<?php echo base_url(); ?>main/resend_email_verification/users/user/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?> 
-                <?php if($row['isDeleted'] == '1'){?>
-                <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/users/delete/<?php echo $row['user_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?>
+                <td> 
+                <?php if($row['row_status_cd'] != '0'){?>
+                    <?php if($row['email_verify'] == '2'){?>
+                <a href="<?php echo base_url(); ?>main/resend_email_verification/users/user/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
+                <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/users/delete/<?php echo $row['user_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
                 </td>
             </tr>
         <?php } ?>

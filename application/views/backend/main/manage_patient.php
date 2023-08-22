@@ -12,7 +12,7 @@ $this->session->set_userdata('last_page', current_url());
     <thead>  
         <tr>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th>
-            <th data-field="id" data-sortable="true"><?php echo get_phrase('patient_id');?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('patient_no.');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('name');?></th>   
             <th data-field="email" data-sortable="true"><?php echo get_phrase('email');?></th>
             <th data-field="status" data-sortable="true"><?php echo get_phrase('status');?></th>
@@ -29,7 +29,7 @@ $this->session->set_userdata('last_page', current_url());
                 <td><?php echo $user->unique_id;?></td>
                  <td><a href="<?php echo base_url();?>main/edit_user/<?php echo $user->user_id;?>" class="hiper"><?php echo $user->name;?></a></td>
                 <td><?php echo $user->email;?></td>
-                <td><?php if($user->status == 1){echo "<button type='button' class='btn-success'>Active</button>";}elseif($user->status == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
+                <td><?php if($user->row_status_cd == 1){echo "<button type='button' class='btn-success'>Active</button>";}elseif($user->row_status_cd == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?></td>
             </tr>
         <?php  $j++;}?>
     </tbody>

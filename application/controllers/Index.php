@@ -31,10 +31,44 @@ class Index extends CI_Controller {
     header('content-type: image/png');
     echo $im;
     }
-    function test(){
-        $this->load->view('front/index1');
+   /* function doctors(){
+        $data['page_name'] = 'doctors';
+        $data['page_title'] = 'Doctors';
+        $this->load->view('front/doctors', $data);
+    }*/
+    function about(){
+        $data['page_name'] = 'about';
+        $data['page_title'] = 'About-Us';
+        $this->load->view('front/index', $data);
     }
-    function test1(){
-        $this->load->view('front/index2');
+    function doctors(){
+        $data['page_name'] = 'doctors';
+        $data['page_title'] = 'Doctors';
+        $this->load->view('front/index', $data);
+    }
+    function contact(){
+        $data['page_name'] = 'contact';
+        $data['page_title'] = 'Contact-Us';
+        $this->load->view('front/index', $data);
+    }
+    function comming_soon(){
+        $data['page_name'] = 'comming';
+        $this->load->view('front/index', $data);
+    }
+    function leave_message(){
+        $first_name=trim($this->input->post('first_name'));
+        $last_name=trim($this->input->post('last_name'));
+        $email=trim($this->input->post('email'));
+        $mobile=trim($this->input->post('mobile'));
+        $message=trim($this->input->post('message'));
+        if($first_name && $last_name && $email && $mobile && $message)
+        {
+        $data=array('first_name'=>$first_name,'last_name'=>$last_name,'email'=>$email,'mobile'=>$mobile,'message'=>$message);
+        $data=$this->db->insert('leave_message',$data);
+        echo "1";
+        }else{
+        echo "0";
+        //echo '<div class="alert alert-danger"><p>Please select all required field.</p></div>';
+        }
     }
 }

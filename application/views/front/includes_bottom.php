@@ -2,7 +2,7 @@
     <!-- <script src="<?=base_url('assets/front/')?>js/jquery-2.2.3.min.js"></script> -->
 <!-- js-->
 <!-- Banner Responsiveslides -->
-    <script src="<?=base_url('assets/front/')?>js/responsiveslides.min.js"></script>
+    <!-- <script src="<?=base_url('assets/front/')?>js/responsiveslides.min.js"></script> -->
  
     <script>
         // You can also use "$(window).load(function() {"

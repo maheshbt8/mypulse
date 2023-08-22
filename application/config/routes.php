@@ -64,7 +64,7 @@ $route['Register'] ='login/register';
 $route['Logout'] ='login/logout';
 $route['Forgot_Password'] ='login/forgot_password';
 $route['OTP_Cancel'] ='login/register/otp_cancel';
-$route['Set_Password/(:any)'] = 'login/set_password';
+$route['Set_Password/(:any)'] = 'login/set_password/$1';
 /*********MyPulse Menus.**************/
 $route['Dashboard'] = 'main/dashboard';
 $route['Hospitals'] = 'main/hospital';
@@ -105,6 +105,8 @@ $route['Cities'] = 'main/city';
 $route['Specializations'] = 'main/specialization';
 $route['Logs'] = 'main/errors_logs';
 $route['Feedback'] = 'main/feedback';
+$route['Leave-Us-Messages'] = 'main/leave_us_messages';
+$route['Password-Reset'] = 'main/password_reset_admin';
 /*$route['Orders/(:num)'] = 'main/inpatient';
 $route['Trends/(:num)'] = 'main/inpatient';*/
 
@@ -129,10 +131,16 @@ $route['Doctor-Image/(:any)']='main/image_url/doctor_image/$1';
 $route['Nurse-Image/(:any)']='main/image_url/nurse_image/$1';
 $route['Receptionist-Image/(:any)']='main/image_url/receptionist_image/$1';
 $route['Medical-Store-Image/(:any)']='main/image_url/medical_stores/$1';
-$route['Medical-lab-Image/(:any)']='main/image_url/medical_labs/$1';
+$route['Medical-Lab-Image/(:any)']='main/image_url/medical_labs/$1';
 $route['User-Image/(:any)']='main/image_url/user_image/$1';
 
 
 $route['Report/(.+)'] = 'main/report_url/$1';
 $route['Report-Download/(.+)'] = 'main/report_download/$1';
 /*$route['user_img']='..uploads/user_image/1.jpg';*/
+
+$route['About-Us'] = 'index/about';
+$route['MyPulse-Doctors'] = 'index/doctors';
+$route['Blogs'] = 'index/blogs';
+$route['Contact-Us'] = 'index/contact';
+$route['Comming-Soon'] = 'index/comming_soon';

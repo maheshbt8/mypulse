@@ -2,7 +2,7 @@
 <link href="<?= base_url('assets/backend/')?>css/font-awesome.min.css" rel="stylesheet">
 <link href="<?= base_url('assets/backend/')?>css/styles.css" rel="stylesheet">
 <link href="<?= base_url('assets/backend/')?>css/bootstrap-table.min.css" rel="stylesheet">
-<link rel="stylesheet" href="<?= base_url('assets/backend/')?>css/theme-midnight.min.css">
+<!-- <link rel="stylesheet" href="<?= base_url('assets/backend/')?>css/theme-midnight.min.css"> -->
 <script src="<?= base_url('assets/backend/')?>js/jquery.min.js"></script>
 <!-- <script src="<?= base_url('assets/backend/')?>js/jquery-1.11.1.min.js"></script> -->
 <!-- mypulse main -->

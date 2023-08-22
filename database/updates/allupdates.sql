@@ -1,1 +1,3 @@
-Alter Table `bed` Add `isDeleted` TINYINT NOT NULL DEFAULT '1'  COMMENT '1=not-deleted,2=deleted' AFTER `bed_status`;
+ALTER TABLE `prescription_order` CHANGE `status` `status` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '1=pending,2=received,3=waiting for samples,4=being processed,5=out for delivery,6=reports submitted,7=delivered or completed';
+ALTER TABLE `prescription_order` ADD `unique_id` VARCHAR(100) NOT NULL AFTER `order_id`;
+ALTER TABLE `prescription_order` ADD `receipt_id` VARCHAR(100) NOT NULL AFTER `unique_id`;

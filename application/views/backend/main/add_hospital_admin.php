@@ -24,7 +24,6 @@
             <div class="panel-body">
         <!------CONTROL TABS END------>
          <form role="form" class="form-horizontal form-groups-bordered validate" action="<?php echo base_url(); ?>main/add_hospital_admins/" method="post" enctype="multipart/form-data">
-             
         <div class="tab-content">
            
         <br>
@@ -60,16 +59,16 @@
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('last_name'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="lname" class="form-control" id="lname" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('lname'); ?>">
-                            <span ><?php echo form_error('lname'); ?></span>
+                            <input type="text" name="lname" class="form-control" id="lname" value="<?php echo set_value('lname'); ?>">
+                            
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('description'); ?></label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="description" class="form-control" id="description" data-validate="required" data-message-required="<?php echo 'Value_required';?>" value="<?php echo set_value('description'); ?>">
-                            <span ><?php echo form_error('description'); ?></span>
+                            <input type="text" name="description" class="form-control" id="description" value="<?php echo set_value('description'); ?>">
+                            
                         </div>
                     </div>
                 </div>
@@ -153,9 +152,9 @@
                         <div class="col-sm-8">
                             <select name="gender" class="form-control" id="gender" value="<?php echo set_value('gender'); ?>">
                                 <option value=""><?php echo get_phrase('select_gender'); ?></option>
-                                <option value="male"><?php echo get_phrase('male'); ?></option>
-                                <option value="female"><?php echo get_phrase('female'); ?></option>
-                                <option value="others">Other / Transgender</option>
+                                <option value="M"><?php echo get_phrase('male'); ?></option>
+                                <option value="F"><?php echo get_phrase('female'); ?></option>
+                                <option value="T">Other / Transgender</option>
                             </select>
                         </div>
                     </div>
@@ -178,6 +177,11 @@
 
                         <div class="col-sm-8">
                             <input type="text" name="address" class="form-control" id="address" value="<?php echo set_value('address'); ?>">
+                            <span id="location-get-latlng">
+                            <input type="hidden" name="latitude" id="lat" value="">
+                            <input type="hidden" name="longitude" id="lng" value="">
+                            </span>
+                            <input type="button" class="btn btn-info btn-sm" value="Get Current location" onclick="getLocation()" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -210,12 +214,11 @@
                             <select name="country" class="form-control select2" id="country" value="<?php echo set_value('country'); ?>"  onchange="return get_state(this.value)">
                                 <option value=""><?php echo get_phrase('select_country'); ?></option>
                                 <?php 
-                                $admins = $this->db->get_where('country')->result_array();
+                                $admins = $this->crud_model->select_country();
                                 foreach($admins as $row){?>
-                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['name'] ?></option>
+                                <option value="<?php echo $row['country_id'] ?>"><?php echo $row['country_name'] ?></option>
                                 
                                 <?php } ?>
-                               
                             </select>
                         </div>
                     </div> 

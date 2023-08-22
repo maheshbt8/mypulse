@@ -46,17 +46,16 @@
                     	<?php $count = 1;foreach($license as $row):?>
                         <tr>
                             <td><a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license/<?php echo $row['license_id'];?>');" class="hiper" ><?php echo $row['license_code'];?></a></td>
-							<td><?php echo $row['name'];?></td>
+							<td><?php echo $row['license_name'];?></td>
                             <td><?php echo $row['description'];?></td>
                             <td><?php $license=$this->crud_model->select_license_category_id($row['license_category_id']);?>
                             <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license_category/<?php echo $row['license_category_id'];?>');" class="hiper">
-                            <?php echo $license['license_category_code'].' / '.$license['name'];?></a></td>
+                            <?php echo $license['license_category_code'].' / '.$license['lic_category_name'];?></a></td>
 							<td>
-                            <!-- <a href="#" onclick="showAjaxModal('<?php echo base_url();?>modal/popup/edit_license/<?php echo $row['license_id'];?>');" title="Edit">
-                                            <i class="fa fa-pencil"></i>     
-                                            </a>&nbsp; -->
+                            <?php if($row['row_status_cd']!=0){?>
                              <a href="#" onclick="confirm_modal('<?php echo base_url(); ?>main/license/delete/<?php echo $row['license_id'] ?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i>
                              </a>
+                             <?php }else{echo '<span class="error"><b>Deleted</b></span>';}?>
         					</td>
                         </tr>
                         <?php endforeach;?>
@@ -76,9 +75,9 @@
                                     <select class="form-control select2" name="license_category" data-validate="required" data-message-required="<?php echo 'Value_required';?>">
                 <option value="">-- Select License Category --</option>
                 <?php 
-                $admins = $this->db->get_where('license_category')->result_array();
+                $admins = $this->crud_model->select_license_category();
                 foreach($admins as $row1){?>
-                <option value="<?php echo $row1['license_category_id'] ?>"><?php echo $row1['license_category_code'].' / '.$row1['name'] ?></option>
+                <option value="<?php echo $row1['license_category_id'] ?>"><?php echo $row1['license_category_code'].' / '.$row1['lic_category_name'] ?></option>
                                 
                                 <?php } ?>
                                     </select>

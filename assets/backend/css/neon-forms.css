@@ -1,20 +1,3 @@
-/* ============================================================
- * bootstrapSwitch v1.8 by Larentis Mattia @SpiritualGuru
- * http://www.larentis.eu/
- *
- * Enhanced for radiobuttons by Stein, Peter @BdMdesigN
- * http://www.bdmdesign.org/
- *
- * Project site:
- * http://www.larentis.eu/switch/
- * ============================================================
- * Licensed under the Apache License, Version 2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- * ============================================================ */
-/*.opacity(@opacity) { 
-  opacity: @opacity / 100;
-  filter: ~"alpha(opacity=@{opacity})";
-}*/
 span.verifiedsuccess{
 color: #14E91E;
 }
@@ -1675,12 +1658,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #373e4a;
+  color: #000;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #818da2;
+  color: #000;
 }
 a:focus {
   outline: thin dotted #333;

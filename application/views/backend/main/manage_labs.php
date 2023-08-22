@@ -28,7 +28,7 @@ $this->session->set_userdata('last_page', current_url());
         <tr>
              <?php if($account_type=='superadmin' || $account_type=='hospitaladmins'){ ?>
             <th><input type="checkbox" name="all_check" class="all_check" id="all_check" value=""></th><?php }?>
-            <th data-field="id" data-sortable="true"><?php echo get_phrase('lab_id');?></th>
+            <th data-field="id" data-sortable="true"><?php echo get_phrase('lab_no.');?></th>
             <th data-field="name" data-sortable="true"><?php echo get_phrase('name');?></th>   
             <th data-field="owner" data-sortable="true"><?php echo get_phrase('owner_name');?></th>
             <th data-field="phone" data-sortable="true"><?php echo get_phrase('owner phone number');?></th>
@@ -51,22 +51,23 @@ $this->session->set_userdata('last_page', current_url());
                  <td><a href="<?php echo base_url();?>main/edit_labs/<?php echo $row['lab_id']?>" class="hiper"><?php echo $row['name'] ?></a></td>
                 <td><?php echo $row['owner_name'] ?></td>
                 <td><?php echo $row['owner_mobile'] ?></td>
-                <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital']))->row()->name; ?></td>
-                <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch']))->row()->name; ?></td>
+                <td><?php echo $this->db->get_where('hospitals',array('hospital_id'=>$row['hospital_id']))->row()->name; ?></td>
+                <td><?php echo $this->db->get_where('branch',array('branch_id'=>$row['branch_id']))->row()->branch_name; ?></td>
                 <?php if($account_type!='users'){?>
-                <td><?php if($row['status'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
+                <td><?php if($row['row_status_cd'] == 1){echo "<button type='button' class='btn-success'>Active</button>";  
                  }
                  else if(
-                 $row['status'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
+                 $row['row_status_cd'] == 2){ echo "<button type='button' class='btn-danger'>Inactive</button>";}?>
                  </td>
              <?php }?>
                <td>
 <?php if($account_type == 'superadmin'||$account_type == 'hospitaladmins'){?>
-               <?php if($row['is_email'] == '2'){?>
+                <?php if($row['row_status_cd'] != '0'){?>
+                    <?php if($row['email_verify'] == '2'){?>
                 <a href="<?php echo base_url(); ?>main/resend_email_verification/medicallabs/lab/<?php echo $row['unique_id'] ?>" title="Verification Mail"><i class="glyphicon glyphicon-envelope"></i></a><?php }?>
-                <?php if($row['isDeleted'] == '1'){?>
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_labs/delete/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
-                <?php }}elseif($account_type == 'users'){?>
+                <?php }else{echo '<span class="error"><b>Deleted</b></span>';}}
+                if($account_type == 'users'){?>
                 <a href="<?php echo base_url(); ?>main/add_order/1/<?=$row['lab_id'];?>" title="Order Medical Tests"><em class="fa fa-sm fa-plus-square color-red"></em>
             </a>&nbsp;&nbsp; 
                 <a href="#" onclick="confirm_modal('<?php echo base_url();?>main/medical_labs/delete_lab/<?php echo $row['lab_id']?>');" title="Delete"><i class="glyphicon glyphicon-remove"></i></a><?php }?>

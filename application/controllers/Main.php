@@ -1,14 +1,9 @@
 <?php
-
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 class Main extends CI_Controller {
-
     function __construct() {
         parent::__construct();
-        /*$this->load->database();   
-        $this->load->library('session');*/
-        
         date_default_timezone_set('Asia/Kolkata');    
         error_reporting(0);  
 $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT');
@@ -29,6 +24,28 @@ $this->output->set_header('Last-Modified: ' . gmdate("D, d M Y H:i:s") . ' GMT')
         if ($this->session->userdata('login') == 1){
             redirect(base_url() . 'Dashboard', 'refresh');
         }
+    }
+     function getAddress($latitude,$longitude){
+    if(!empty($latitude) && !empty($longitude)){
+        //Send request and receive json data by address
+        /*$geocodeFromLatLong = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAZ-5bkYW9Wb5k2JLBoaas0HSx7ZBkMwAM&latlng='.trim($latitude).','.trim($longitude).'&sensor=false');*/ 
+        $geocodeFromLatLong = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?latlng='.$latitude.','.$longitude.'&key=AIzaSyAZ-5bkYW9Wb5k2JLBoaas0HSx7ZBkMwAM');
+        //print_r($geocodeFromLatLong);die;
+        $output = json_decode($geocodeFromLatLong);
+        $status = $output->status;
+        //Get address from json data
+        $address = ($status=="OK")?$output->results[1]->formatted_address:'';
+        //Return address of the given latitude and longitudee
+        echo $address;
+        /*if(!empty($address)){
+            return $address;
+        }else{
+            return false;
+        }*/
+    }else{
+        echo "string";
+        //return false;   
+    }
     }
     public function dashboard() {
         $page_data['page_name'] = 'dashboard';
@@ -63,16 +80,16 @@ public function report_url($information){
     if($report_info['order_type']=='1'){
         $user_id=$report_info['user_id'];
     }elseif($report_info['order_type']=='0'){
-        $user_id=$this->db->get_where('prescription_order',array('order_id',$report_info['order_id']))->row()->user_id;
+        $user_id=$this->db->get_where('prescription_order',array('order_id'=>$report_info['order_id']))->row()->user_id;
     }
-    $inpatient=$this->db->get_where('inpatient',array('user_id'=>$user_id,'status'=>'1'));
-    $appointment=$this->db->get_where('appointments',array('user_id'=>$user_id,'status'=>'2'));
-if(($account_type=='users' && $this->session->userdata('login_user_id')==$user_id) || (($account_type=='doctors' && $report_info['status']=='1') && (($inpatient->num_rows()>0 && $inpatient->row()->doctor_id==$this->session->userdata('login_user_id')) || ($appointment->num_rows()>0 && $appointment->row()->doctor_id==$this->session->userdata('login_user_id'))))){
+    $inpatient=$this->db->get_where('inpatient',array('user_id'=>$user_id,'inpatient_status'=>'1'));
+    $appointment=$this->db->get_where('appointments',array('user_id'=>$user_id,'appointment_status'=>'2'));
+if(($account_type=='users' && $this->session->userdata('login_user_id')==$user_id) || (($account_type=='doctors' && $report_info['row_status_cd']=='1') && (($inpatient->num_rows()>0 && $inpatient->row()->doctor_id==$this->session->userdata('login_user_id')) || ($appointment->num_rows()>0 && $appointment->row()->doctor_id==$this->session->userdata('login_user_id'))))){
     $datetime=date('YmdHis',strtotime($report_info['created_at']));
     $ext=$report_info['extension'];
-if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext)){
+if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/'. $report. '.'.$ext)){
     
-    $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext;
+    $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/'. $report. '.'.$ext;
     if($ext!='pdf'){
         $content='image/'.$ext;
     }elseif($ext=='pdf'){
@@ -97,8 +114,8 @@ if (file_exists('uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report
     $report_info=$this->crud_model->get_single_report_info($report);
     $datetime=date('YmdHis',strtotime($report_info['created_at']));
     $ext=$report_info['extension'];
-if(file_exists('uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext)){
-     $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/Report'. $report .'_'.$datetime. '.'.$ext;
+if(file_exists('uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'.$ext)){
+     $image_url ='uploads/reports/' . $year . '/' . $unique_id.'/'. $report . '.'.$ext;
      $file_name = 'Report'. $report .'_'.$datetime. '.'.$ext;
 $this->load->helper('download');
 $data = file_get_contents($image_url);
@@ -122,12 +139,15 @@ return TRUE;
         array('field' => 'city','label' => 'City','rules' => 'required'),
         array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
         array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required'),
-        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        array('field' => 'license','label' => 'License','rules' => 'required'),
+        array('field' => 'license_status','label' => 'License Status','rules' => 'required'),
+        array('field' => 'from_date','label' => 'From Date','rules' => 'required'),
+        array('field' => 'till_date','label' => 'To Date','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
          if ($this->form_validation->run() == TRUE)
                 {
-                        $this->crud_model->save_hospital_info();
+            $this->crud_model->save_hospital_info();
             $this->session->set_flashdata('message', get_phrase('hospital_info_saved_successfuly'));
             redirect($this->session->userdata('last_page'));
                 }
@@ -150,7 +170,10 @@ return TRUE;
         array('field' => 'city','label' => 'City','rules' => 'required'),
         array('field' => 'md_name','label' => 'MD Name','rules' => 'required'),
         array('field' => 'md_phone','label' => 'MD Phone','rules' => 'required'),
-        array('field' => 'status','label' => 'Status','rules' => 'required'),
+        array('field' => 'license','label' => 'License','rules' => 'required'),
+        array('field' => 'license_status','label' => 'License Status','rules' => 'required'),
+        array('field' => 'from_date','label' => 'From Date','rules' => 'required'),
+        array('field' => 'till_date','label' => 'To Date','rules' => 'required'),
         );
         $this->form_validation->set_rules($config);
 
@@ -207,7 +230,7 @@ return TRUE;
     {
         $data['branch_id']=$id;   
         $data['page_name'] = 'edit_branch';
-        $data['page_title'] = get_phrase('edit_branch');
+        $data['page_title'] = get_phrase('branch');
         $this->load->view('backend/index', $data);
         
     }
@@ -424,8 +447,6 @@ return TRUE;
         {
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'phone_number','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -438,7 +459,6 @@ return TRUE;
             if ($validation == 1) {
            $phone_number = $this->input->post('phone_number');
            $phone = mobile_validation($phone_number);
-           
            if($phone == 1){
             $this->crud_model->save_hospitaladmins_info();
             $this->session->set_flashdata('message', get_phrase('hospital_admin_info_added_successfuly'));
@@ -455,7 +475,7 @@ return TRUE;
     }
         $page_data['page_name'] = 'add_hospital_admin';
         $page_data['page_title'] = get_phrase('add_hospital_admins');
-        $page_data['admins'] = $this->db->get_where('hospitals',array('status'=>1))->result_array();
+        $page_data['admins'] = $this->db->get_where('hospitals',array('row_status_cd'=>1))->result_array();
         $this->load->view('backend/index', $page_data);
         
     }
@@ -464,8 +484,6 @@ return TRUE;
         {
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -476,9 +494,8 @@ return TRUE;
            $email = $this->input->post('email');
            $validation = $validation = email_validation_for_edit($email, $id,'hospitaladmins', 'admin');
             if ($validation == 1) {
-           $phone_number = $this->input->post('phone_number');
+           $phone_number = $this->input->post('mobile');
            $phone = $validation = email_validation_for_edit($phone_number, $id, 'hospitaladmins','admin');
-           
            if($phone == 1){
            $this->crud_model->update_hospitaladmins_info($id);
             $this->session->set_flashdata('message', get_phrase('hospita_admin_info_updated_successfuly'));
@@ -514,23 +531,26 @@ return TRUE;
             /*redirect(base_url() . 'main/hospital_admins');*/
             redirect($this->session->userdata('last_page'));
         }
-        $data['admin_info'] = $this->crud_model->select_hospitaladmins_info();
+        $data['admin_info'] = $this->crud_model->select_hospitaladmins_table_info();
         $data['page_name'] = 'manage_admins';
         $data['page_title'] = get_phrase('hospital_admins');
         $this->load->view('backend/index', $data);
     }
         function view_doctors($task = "", $id = "") {
         if ($task == "nurse") {
-            $doctor=$this->db->where('nurse_id',$id)->get('nurse')->row();
+            $doctor=$this->db->select('doctor_id,name')->where('nurse_id',$id)->get('nurse')->row();
         }
         if ($task == "receptionist") {
-            $doctor=$this->db->where('receptionist_id',$id)->get('receptionist')->row();
+            $doctor=$this->db->select('doctor_id,name')->where('receptionist_id',$id)->get('receptionist')->row();
         }
+        if($doctor->doctor_id!=''){
         $doctor_id=explode(',', $doctor->doctor_id);
         for($i=0;$i<count($doctor_id);$i++){
         $doctor_data[]=$this->db->where('doctor_id',$doctor_id[$i])->get('doctors')->row_array();
         }
+        }
         $data['doctor_info'] = $doctor_data;
+        $data['task'] = $task;
         $data['page_name'] = 'manage_doctor';
         $data['page_title'] = get_phrase('Doctors - '.$doctor->name);
         $this->load->view('backend/index', $data);
@@ -540,8 +560,6 @@ return TRUE;
         if($this->input->post()){
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -584,8 +602,6 @@ return TRUE;
         if($this->input->post()){
             $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -597,7 +613,6 @@ return TRUE;
             if ($this->form_validation->run() == TRUE){
            $email = $this->input->post('email');
            $validation = email_validation_for_edit($email, $id, 'doctors','doctor');
-          // echo $validation;die;
             if ($validation == 1) {
            $phone_number = $this->input->post('mobile');
            $phone = mobile_validation_for_edit($phone_number,$id,'doctors','doctor');
@@ -617,10 +632,8 @@ return TRUE;
      
         $data['doctor_id']=$id;
         $data['page_name'] = 'edit_doctor';
-        $data['page_title'] = get_phrase('edit_doctor');
+        $data['page_title'] = 'Doctor - '.$this->db->where('doctor_id',$id)->get('doctors')->row()->name;
         $this->load->view('backend/index', $data);
-        
-        
     }
 
     function doctor($task = "", $doctor_id = "") {
@@ -662,10 +675,8 @@ return TRUE;
     function doctor_new_availability($task = "",$id='')
     {
         if ($task == "new_availability") {
-            
                 $this->crud_model->update_doctor_new_availability_info($id);
                 $this->session->set_flashdata('message', get_phrase('doctor_availability_info_saved_successfuly'));
-            /*redirect(base_url() . 'main/doctor_availability/'.$id);*/
             redirect($this->session->userdata('last_page1'));
         }
         $data['doctor_id']=$task;
@@ -707,8 +718,6 @@ return TRUE;
        if($this->input->post()){
          $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -749,8 +758,6 @@ return TRUE;
         if($this->input->post()){
              $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -805,8 +812,6 @@ return TRUE;
        if($this->input->post()){
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -848,8 +853,6 @@ return TRUE;
         if($this->input->post()){
              $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
         array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
          array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'hospital','label' => 'Hospital','rules' => 'required'),
@@ -980,7 +983,7 @@ return TRUE;
        
         $data['id']=$id;
         $data['page_name'] = 'edit_labs';
-        $data['page_title'] = get_phrase('Edit medical labs');
+        $data['page_title'] = get_phrase('medical lab');
         $this->load->view('backend/index', $data);
         
     }
@@ -1085,7 +1088,7 @@ return TRUE;
        
         $data['id']=$id;
         $data['page_name'] = 'edit_stores';
-        $data['page_title'] = get_phrase('Edit medical store');
+        $data['page_title'] = get_phrase('medical store');
         $this->load->view('backend/index', $data);
         
     }
@@ -1116,9 +1119,6 @@ return TRUE;
         if($this->input->post()){
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
-        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
@@ -1150,9 +1150,6 @@ return TRUE;
         if($this->input->post()){
         $config = array(
         array('field' => 'fname','label' => 'First Name','rules' => 'required'),
-        array('field' => 'lname','label' => 'Last Name','rules' => 'required'),
-        array('field' => 'description','label' => 'Description','rules' => 'required'),
-        array('field' => 'email','label' => 'Email','rules' => 'required|valid_email'),
         array('field' => 'mobile','label' => 'Phone Number','rules' => 'required'),
         array('field' => 'status','label' => 'Status','rules' => 'required'),
         );
@@ -1248,6 +1245,7 @@ return TRUE;
     }
 
     function inpatient($task = "", $patient_id = "",$status='') {
+        $account_type=$this->session->userdata('login_type');
         if ($task == "status") {
             $this->crud_model->update_inpatient_status($patient_id,$status);
             $this->session->set_flashdata('message', get_phrase('inpatient_status_updated_successfuly'));
@@ -1258,9 +1256,13 @@ return TRUE;
             $this->session->set_flashdata('message', get_phrase('inpatient_deleted_successfuly'));
             redirect($this->session->userdata('last_page'));
         }
-        $data['patient_info'] = $this->crud_model->select_inpatient_info();
+        //$data['patient_info'] = $this->crud_model->select_inpatient_info();
         $data['page_name'] = 'manage_inpatient';
+        if($account_type!='users'){
         $data['page_title'] = get_phrase('inpatients');
+        }else{
+        $data['page_title'] = 'InPatient History';
+        }
         $this->load->view('backend/index', $data);
     }
     function inpatient_history($task = "", $patient_id = "") {
@@ -1373,7 +1375,6 @@ return TRUE;
     function appointment_cancel($task =''){
         if ($task == "cancel_multiple") {
         if($_POST['cancel_reason'] != ''){
-
             $d=$this->crud_model->cancel_multiple_appointment_info();
             if($d){
             $this->session->set_flashdata('message', get_phrase('appointment_cancled_successfuly'));echo TRUE;
@@ -1451,9 +1452,15 @@ return TRUE;
         $data['page_title'] = get_phrase('prescription');
         $this->load->view('backend/index', $data);
     }
+    function prescription_re_order($order_id='')
+    {
+        $data['order_id'] = $order_id;
+        $data['page_name'] = 'add_placeorder';
+        $data['page_title'] = get_phrase('prescription');
+        $this->load->view('backend/index', $data);
+    }
     function prescription($param1='',$param2='',$param3='')
     {
-
         if ($param1 == "order") {
             $this->crud_model->save_prescription_order($param2);
             $this->session->set_flashdata('message', get_phrase('order_booked_successfuly'));
@@ -1469,7 +1476,7 @@ return TRUE;
             $this->session->set_flashdata('message', get_phrase('prescription_status_updated_successfuly'));
             redirect($this->session->userdata('last_page'));
         } 
-        $data['prescription']=$this->crud_model->select_prescription_info();
+        $data['prescription']=$this->crud_model->select_prescription_info_user();
         $data['page_name'] = 'manage_prescription';
         $data['page_title'] = get_phrase('prescriptions');
         $this->load->view('backend/index', $data);
@@ -1484,6 +1491,17 @@ return TRUE;
        $data['order_id']=$param1;
         $data['page_name'] = 'add_invoice';
         $data['page_title'] = get_phrase('Receipt');
+        $this->load->view('backend/index', $data);
+    }
+    function add_prescription_reports($param1='',$param2='',$param3=''){
+        if($this->input->post()){
+        $this->crud_model->upload_prescription_reports($param1);
+        $this->session->set_flashdata('message', get_phrase('reports_added_successfuly'));
+        redirect($this->session->userdata('last_page'));
+        }
+       $data['order_id']=$param1;
+        $data['page_name'] = 'add_prescription_reports';
+        $data['page_title'] = get_phrase('Reports');
         $this->load->view('backend/index', $data);
     }
     function receipt($param1='',$param2='',$param3=''){
@@ -1545,7 +1563,7 @@ return TRUE;
         $data['page_title'] = get_phrase('prognosis');
         $this->load->view('backend/index', $data);
     }
-    function orders($param1='',$param2='')
+    function orders($param1='',$param2='',$param3='')
     {
         if ($param1 == "order") {
             $this->crud_model->save_prescription_order($param2);
@@ -1555,6 +1573,11 @@ return TRUE;
         if ($param1 == "delete") {
             $this->crud_model->delete_prescription($param2);
             $this->session->set_flashdata('message', get_phrase('prescription_info_deleted_successfuly'));
+            redirect($this->session->userdata('last_page'));
+        }
+        if($param1 == 'order_status'){
+            $this->crud_model->update_order_status($param2,$param3);
+            $this->session->set_flashdata('message', get_phrase('order_status_updated'));
             redirect($this->session->userdata('last_page'));
         }
         $account_type=$this->session->userdata('login_type');
@@ -1579,12 +1602,25 @@ return TRUE;
         $this->session->set_flashdata('message', get_phrase('ordered_successfuly'));
         redirect($this->session->userdata('last_page'));
         }
-        if($param1==0){$page=get_phrase('order_medicins');}elseif($param1==1){$page=get_phrase('order_medicaltest');}
+        if($param1==0){$page=get_phrase('order_medicines');}elseif($param1==1){$page=get_phrase('order_medicaltest');}
         if($param2!=''){
         $data['id'] = $param2;    
         }
         $data['order_type'] = $param1;
         $data['page_name'] = 'add_order';
+        $data['page_title'] = $page;
+        $this->load->view('backend/index', $data);   
+    }
+    function re_order($param1='',$param2=''){
+        if($this->input->post()){
+        $this->crud_model->book_order($param1);
+        $this->session->set_flashdata('message', get_phrase('ordered_successfuly'));
+        redirect($this->session->userdata('last_page'));
+        }
+        $order_info=$this->crud_model->select_order_info_id($param1);
+        if($order_info['order_type']==0){$page=get_phrase('order_medicines');}elseif($order_info['order_type']==1){$page=get_phrase('order_medicaltest');}
+        $data['order_id'] = $param1;
+        $data['page_name'] = 're_order';
         $data['page_title'] = $page;
         $this->load->view('backend/index', $data);   
     }
@@ -1660,7 +1696,6 @@ return TRUE;
         $this->load->view('backend/index', $data);
     }
     function report_chart1($report_id = "",$hospital_id = "") {
-/*        print_r($_POST);die;*/
         if($report_id==1){
         $data['title']='Patients';
         $this->crud_model->getReport();
@@ -1682,24 +1717,24 @@ return TRUE;
         if($param1 == 1){
             if($this->input->post()){
         $data_list['description'] = $this->input->post('name');
-        $this->db->where('type', 'privacy');
+        $this->db->where('setting_type', 'privacy');
         $this->db->update('settings', $data_list);
         $this->session->set_flashdata('message', get_phrase('data_updated_successfuly'));
         redirect($this->session->userdata('last_page1'));
             }
     $page_data['id']=$param1;
-    $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+    $page_data['privacy'] = $this->db->get_where('settings', array('setting_type' => 'privacy'))->row()->description;
     $page_data['page_title'] = get_phrase('Edit Privacy & Policy');
         }elseif($param1 == 2){
             if($this->input->post()){
         $data_list['description'] = $this->input->post('name');
-        $this->db->where('type', 'terms');
+        $this->db->where('setting_type', 'terms');
         $this->db->update('settings', $data_list);
         $this->session->set_flashdata('message', get_phrase('data_updated_successfuly'));
         redirect($this->session->userdata('last_page1'));
             }
             $page_data['id']=$param1;
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+            $page_data['privacy'] = $this->db->get_where('settings', array('setting_type' => 'terms'))->row()->description;
     $page_data['page_title'] = get_phrase('Edit Terms & Conditions');
         }
         $page_data['page_name'] = 'edit_privacy';
@@ -1708,10 +1743,10 @@ return TRUE;
     }
     function manage_privacy($param1 = '', $param2 = '', $param3 = '') {
         if($param1 == 1){
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+            $page_data['privacy'] = $this->db->get_where('settings', array('setting_type' => 'privacy'))->row()->description;
             
         }elseif($param1 == 2){
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+            $page_data['privacy'] = $this->db->get_where('settings', array('setting_type' => 'terms'))->row()->description;
         }
         $page_data['page_name'] = 'manage_privacy';
         $page_data['page_title'] = get_phrase('Privacy & Policy , Terms & Conditions');
@@ -1730,7 +1765,7 @@ return TRUE;
         }
         $page_data['page_name'] = 'language';
         $page_data['page_title'] = get_phrase('Languages');
-        $page_data['country'] = $this->db->get('language')->result_array();
+        $page_data['country'] = $this->crud_model->select_language_info();
         $this->load->view('backend/index', $page_data);
     }
     /*******************GENERAL SETTINGS*********************/
@@ -1747,12 +1782,11 @@ return TRUE;
         }
         $page_data['page_name'] = 'specializations';
         $page_data['page_title'] = get_phrase('Specializations');
-        $page_data['country'] = $this->db->get('specializations')->result_array();
+        $page_data['specializations'] = $this->crud_model->select_specializations_info();
         $this->load->view('backend/index', $page_data);
     }
     function country($param1 = '', $param2 = '', $param3 = '') {
         if ($param1 == "create") {
-            
             $this->crud_model->save_country_info();
             $this->session->set_flashdata('message', get_phrase('country_info_saved_successfuly'));
             redirect(base_url() . 'main/country');
@@ -1846,16 +1880,14 @@ return TRUE;
         if ($param1 == "create") {
             $this->crud_model->save_license_info();
             $this->session->set_flashdata('message', get_phrase('license_info_saved_successfuly'));
-            redirect(base_url() . 'main/license');
         }
         if ($param1 == "update") {
             $this->crud_model->update_license_info($param2);
             $this->session->set_flashdata('message', get_phrase('license_info_updated_successfuly'));
-            redirect(base_url() . 'main/license');
         }
-        if ($task == "delete") {
+        if ($param1 == "delete") {
             $this->crud_model->delete_license($param2);
-            redirect(base_url() . 'main/license');
+            $this->session->set_flashdata('message', 'License Info Deleted Successfuly');
         }
         $page_data['page_name'] = 'license';
         $page_data['page_title'] = get_phrase('license');
@@ -1863,7 +1895,7 @@ return TRUE;
         $this->load->view('backend/index', $page_data);
     }
       function license_category($param1 = '', $param2 = '', $param3 = '') {
-        if ($param1 == "create") {
+        if ($param1 == "create"){
             $this->crud_model->save_license_category_info();
             $this->session->set_flashdata('message', get_phrase('license_category_info_saved_successfuly'));
             redirect(base_url() . 'main/license');
@@ -1888,13 +1920,13 @@ return TRUE;
             $this->session->set_flashdata('message', get_phrase('health_insurance_provider_info_saved_successfuly'));
             redirect(base_url() . 'main/health_insurance_provider');
         }
-        if ($task == "delete") {
+        if ($param1 == "delete") {
             $this->crud_model->delete_health_insurance_provider($param2);
             redirect(base_url() . 'main/health_insurance_provider');
         }
         $page_data['page_name'] = 'health_insurance_provider';
         $page_data['page_title'] = get_phrase('health_insurance_provider');
-        $page_data['health_insurance_provider'] = $this->db->get('health_insurance_provider')->result_array();
+        $page_data['health_insurance_provider'] = $this->crud_model->select_health__insurance_provider_info();
         $this->load->view('backend/index', $page_data);
     }
     /********************MESSAGE********************/
@@ -1989,10 +2021,10 @@ force_download($db_name, $backup);
     /************Privacy & Policy ,Terms & Conditions****************/
     function privacy($param1 = '', $param2 = '', $param3 = '') {
         if($param1 == 1){
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'privacy'))->row()->description;
+            $page_data['privacy'] = $this->db->get_where('settings', array('setting_type' => 'privacy'))->row()->description;
             $page_data['page_title'] = get_phrase('Privacy & Policy');
         }elseif($param1 == 2){
-            $page_data['privacy'] = $this->db->get_where('settings', array('type' => 'terms'))->row()->description;
+            $page_data['privacy'] = $this->db->get_where('settings', array('setting_type' => 'terms'))->row()->description;
             $page_data['page_title'] = get_phrase('Terms & Conditions');
         }
         $page_data['page_name'] = 'privacy';
@@ -2009,13 +2041,21 @@ force_download($db_name, $backup);
             $data['email'] = $this->input->post('email');
             $data['description'] = $this->input->post('description');
             $data['phone'] = $this->input->post('phone');
-            $data['dob'] = $this->input->post('dob');
+            if($this->input->post('dob')!=''){
+            $data['dob'] = date('Y-m-d',strtotime($this->input->post('dob')));
+            }
             $data['gender'] = $this->input->post('gender');
-            $data['country'] = $this->input->post('country');
-            $data['state'] = $this->input->post('state');
-            $data['district'] = $this->input->post('district');
-            $data['city'] = $this->input->post('city');
+            $data['country_id'] = $this->input->post('country');
+            $data['state_id'] = $this->input->post('state');
+            $data['district_id'] = $this->input->post('district');
+            $data['city_id'] = $this->input->post('city');
             $data['address'] = $this->input->post('address');
+            if($this->input->post('longitude')!=''){
+        $data['longitude']    = $this->input->post('longitude');
+        }
+        if($this->input->post('latitude')!=''){
+        $data['latitude']    = $this->input->post('latitude');
+        }
 
             $this->db->where('superadmin_id', $this->session->userdata('login_user_id'));
             $this->db->update('superadmin', $data);
@@ -2033,23 +2073,24 @@ force_download($db_name, $backup);
     }
     
     function manage_password($param1 = '', $param2 = '', $param3 = '') {
-        if ($param1 == 'change_password') {
-            $current_password_input = sha1($this->input->post('password'));
-            $new_password = sha1($this->input->post('new_password'));
-            $confirm_new_password = sha1($this->input->post('confirm_new_password'));
-
-            $current_password_db = $this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('type_id').'_id' =>
-                        $this->session->userdata('login_user_id')))->row()->password;
-
-            if ($current_password_db == $current_password_input && $new_password == $confirm_new_password) {
-                $this->db->where($this->session->userdata('type_id').'_id', $this->session->userdata('login_user_id'));
-                $this->db->update($this->session->userdata('login_type'), array('password' => $new_password));
-
-                $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
-                redirect(base_url() . 'main/manage_password');
-            } else {
-                $this->session->set_flashdata('message', get_phrase('password_update_failed'));
-                redirect(base_url() . 'main/manage_password');
+        if ($this->input->post()){
+            $current_password_input = hash ( "sha256",$this->input->post('password'));
+            $new_password = hash ( "sha256",$this->input->post('new_password'));
+            $confirm_new_password = hash ( "sha256",$this->input->post('confirm_new_password'));
+            $current_password_db = $this->db->get_where($this->session->userdata('login_type'), array($this->session->userdata('type_id').'_id' =>$this->session->userdata('login_user_id')))->row()->password;
+            if($new_password == $confirm_new_password){
+            if ($current_password_db == $current_password_input) {
+            $this->db->where($this->session->userdata('type_id').'_id', $this->session->userdata('login_user_id'));
+            $this->db->update($this->session->userdata('login_type'), array('password' => $new_password));
+            $this->session->set_flashdata('message', get_phrase('password_info_updated_successfuly'));
+            redirect($this->session->userdata('last_page'));
+            }else{
+                /*$this->session->set_flashdata('message', get_phrase('password_update_failed'));
+                redirect(base_url() . 'main/manage_password');*/
+                $this->session->set_flashdata('old_pass_error','Old Password Not Match');
+            }
+            }else{
+                $this->session->set_flashdata('con_pass_error','New Password and Confirm Password Not Match');
             }
         }
         $page_data['page_name'] = 'manage_password';
@@ -2068,7 +2109,7 @@ force_download($db_name, $backup);
         $otp=$this->session->userdata('otp');
         if($otp_form == $otp){
             $this->db->where($param2.'_id',$_POST['user_id']);
-            $s=$this->db->update($param1, array('is_mobile' =>1));
+            $s=$this->db->update($param1, array('mobile_verify' =>1));
             if($s){
             $this->session->set_flashdata('message', get_phrase('Your Mobile Number Verified Successfully'));
             echo TRUE;
@@ -2080,9 +2121,48 @@ force_download($db_name, $backup);
         echo '<span id="otp_error" style="color:red;">OTP Time Was Experied</span>';
     }
     }
+    function leave_us_messages($task='',$id='',$status=''){
+        if($task=='status'){
+            $data['row_status_cd']=$status;
+            $this->db->where('id',$id);
+            $this->db->update('leave_message',$data);
+            //echo $this->db->last_query();die;
+            redirect($this->session->userdata('last_page'));
+        }
+        $page_data['page_name'] = 'leave_us_messages';
+        $page_data['page_title'] = get_phrase('Feedbacks');
+        $this->load->view('backend/index', $page_data);
+    }
     function settings($param1 = '', $param2 = '', $param3 = '') {
         $page_data['page_name'] = 'settings';
         $page_data['page_title'] = get_phrase('settings');
+        $this->load->view('backend/index', $page_data);
+    }
+    /*Password Reset By Admin Every Persons and Users*/
+    function password_reset_admin($param1='')
+    {
+      if ($this->input->post()){
+            if($this->input->post('person_info')!=''){
+            $person_info = explode('/',$this->input->post('person_info'));
+            $new_password = hash ( "sha256",$this->input->post('new_password'));
+            $confirm_new_password = hash ( "sha256",$this->input->post('confirm_new_password'));
+            if($new_password == $confirm_new_password){
+            $this->db->where($person_info[1].'_id', $person_info[2]);
+            $yes=$this->db->update($person_info[0], array('password' => $new_password));
+            if($yes){
+            $this->session->set_flashdata('message', get_phrase('password_updated_successfuly'));
+            }else{
+            $this->session->set_flashdata('message', get_phrase('password_not_updated'));
+            }
+            }else{
+            $this->session->set_flashdata('con_pass_error','New Password and Confirm Password Not Match');
+            }
+        }else{
+            $this->session->set_flashdata('user_error','No Data Found');
+        }
+        }
+        $page_data['page_name'] = 'reset_password_by_admin';
+        $page_data['page_title'] = 'Reset Password';
         $this->load->view('backend/index', $page_data);
     }
        // SMS settings.
@@ -2105,8 +2185,44 @@ force_download($db_name, $backup);
             $this->session->set_flashdata('message', get_phrase('feedback_updated'));
             redirect(base_url() . 'main/feedback/', 'refresh');
         }
+        if ($param1 == 'add') {
+            $this->crud_model->save_feedback();
+            $this->session->set_flashdata('message', get_phrase('feedback_saved_successfully'));
+            redirect(base_url() . 'main/feedback/', 'refresh');
+        }
+        if ($param1 == 'delete') {
+            $this->crud_model->delete_feedback($param2);
+            $this->session->set_flashdata('message', get_phrase('feedback_deleted_successfully'));
+            redirect(base_url() . 'main/feedback/', 'refresh');
+        }
         $page_data['page_name'] = 'feedback';
         $page_data['page_title'] = get_phrase('feedback');
+        $this->load->view('backend/index', $page_data);
+    }
+    function add_feedback() {
+        $page_data['page_name'] = 'add_feedback';
+        $page_data['page_title'] = get_phrase('feedback');
+        $this->load->view('backend/index', $page_data);
+    }
+   
+    function send_feedback() {
+        if($this->input->post()){
+            $input=$this->input->post();
+            $unique_id=$this->session->userdata('unique_id');
+            /*$code=divide_unique_id($row['unique_id']);
+            $role=$this->crud_model->get_role($code);
+            $u_data=$this->db->get_where($role['type'],array('unique_id',$row['unique_id']))->row_array();*/
+            $data['message']=$input['feedback'];
+            $data['unique_id']=$unique_id;
+            $this->db->insert('leave_message',$data);
+        }
+        $page_data['page_name'] = 'send_feedback';
+        $page_data['page_title'] = get_phrase('send_feedback');
+        $this->load->view('backend/index', $page_data);
+    }
+    function get_location() {
+        $page_data['page_name'] = 'get_location';
+        $page_data['page_title'] = get_phrase('get_location');
         $this->load->view('backend/index', $page_data);
     }
     function edit_feedback($param1 = '') {
@@ -2154,7 +2270,6 @@ force_download($db_name, $backup);
                 $lines = explode("\n", $log); 
                 /*$content = implode("\n", array_slice($lines, 1));*/ 
                 $data['log'] = $lines;
-                /*print_r($data);die;*/
             }
         }
         $data['page_name'] = 'logs';

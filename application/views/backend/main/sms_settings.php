@@ -16,21 +16,21 @@
                 <div class="form-group">
                     <label  class="col-sm-3 control-label"><?php echo get_phrase('sms_username'); ?></label>
                     <div class="col-sm-5">
-                        <input type="text" class="form-control" name="sms_username" value="<?php echo $this->db->get_where('settings', array('type' => 'sms_username'))->row()->description; ?>">
+                        <input type="text" class="form-control" name="sms_username" value="<?php echo $this->db->get_where('settings', array('setting_type' => 'sms_username'))->row()->description; ?>">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label  class="col-sm-3 control-label"><?php echo get_phrase('sms_sender'); ?></label>
                     <div class="col-sm-5">
-                        <input type="password" class="form-control" name="sms_sender" value="<?php echo $this->db->get_where('settings', array('type' => 'sms_sender'))->row()->description; ?>">
+                        <input type="password" class="form-control" name="sms_sender" value="<?php echo $this->db->get_where('settings', array('setting_type' => 'sms_sender'))->row()->description; ?>">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label  class="col-sm-3 control-label"><?php echo get_phrase('sms_hash_key'); ?></label>
                     <div class="col-sm-5">
-<input type="text" class="form-control" name="sms_hash"value="<?php echo $this->db->get_where('settings', array('type' => 'sms_hash'))->row()->description; ?>"/>
+<input type="text" class="form-control" name="sms_hash"value="<?php echo $this->db->get_where('settings', array('setting_type' => 'sms_hash'))->row()->description; ?>"/>
                     </div>
                 </div>
 

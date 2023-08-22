@@ -1,6 +1,4 @@
-<style type="text/css">
-   
-</style>
+
 <?php 
 $this->session->set_userdata('last_page1', current_url());
 ?>
@@ -8,7 +6,7 @@ $this->session->set_userdata('last_page1', current_url());
 $single_appointment_info = $this->db->get_where('appointments', array('appointment_id' => $appointment_id))->result_array();
 foreach ($single_appointment_info as $row) {
     $user_info=$this->db->where('user_id',$row['user_id'])->get('users')->row_array();
-    if($account_type != 'doctors' && $account_type != 'nurse' || $row['status']!='2'){
+    if($account_type != 'doctors' && $account_type != 'nurse' || $row['appointment_status']!='2'){
 ?>
 
         <!------CONTROL TABS END------>
@@ -19,11 +17,11 @@ foreach ($single_appointment_info as $row) {
 <div class="panel-body">
     <h4><?php echo '<b>User ID</b> : '.$user_info['unique_id'];?></h4>
 <h4><?php echo '<b>User Name</b> : '.$user_info['name'];?></h4>
-<h4><?php echo '<b>Status</b> : ';?><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+<h4><?php echo '<b>Status</b> : ';?><?php if($row['appointment_status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
-                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
-                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
-                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
+                 elseif($row['appointment_status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
+                 elseif($row['appointment_status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
+                 elseif($row['appointment_status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";}
                  ?></h4>
                         <div class="col-sm-6">
                         <div class="form-group">
@@ -74,7 +72,7 @@ foreach ($single_appointment_info as $row) {
                      <div class="form-group">
                         <label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Appointment Date'); ?></label>
                         <div class="col-sm-8">
-                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo date('m/d/Y',strtotime($row['appointment_date'])); ?>" <?php if($row['status']!= 2){echo 'disabled';}?> onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
+                            <input type="text" name="appointment_date" class="form-control"  autocomplete="off" placeholder="<?php echo get_phrase('Appointment Date'); ?>" id="appointment_date" value="<?php echo date('m/d/Y',strtotime($row['appointment_date'])); ?>" <?php if($row['appointment_status']!= 2){echo 'disabled';}?> onchange="return get_dco_date(this.value)" data-validate="required" data-message-required="<?php echo get_phrase('Value_required');?>" >
                         </div>
                     </div>
                 </div>
@@ -115,10 +113,10 @@ foreach ($single_appointment_info as $row) {
             </div>
             </div>
             <div class="col-sm-3 control-label col-sm-offset-9">
-                    <?php if($row['status']== 2){?>
+                    <?php if($row['appointment_status']== 2){?>
                         <input type="submit" class="btn btn-success" value="<?php echo get_phrase('update'); ?>">&nbsp;&nbsp;
                     <?php }?>
-                        <input type="button" class="btn btn-info pull-right" value="<?php echo get_phrase('cancel'); ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
+                        <input type="button" class="btn btn-info pull-right" value="<?php if($row['appointment_status']== 2){echo get_phrase('cancel');}else{echo get_phrase('close');} ?>" onclick="window.location.href = '<?= $this->session->userdata('last_page'); ?>'">
                     </div> 
             </div>
             </div>
@@ -146,11 +144,11 @@ foreach ($single_appointment_info as $row) {
 <h4><b>Appointment Date : </b><?php echo date('M ,d-Y',strtotime($row['appointment_date']));?></h4>
 <h4><b>Appointment Slot : </b><?php echo date('h:i A',strtotime($row['appointment_time_start'])) .' - '.date('h:i A',strtotime($row['appointment_time_end'])) ;?></h4>
 <h4><b>Reason : </b><?php echo $row['reason'];?></h4>
-<h4><b>Status : </b><?php if($row['status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
+<h4><b>Status : </b><?php if($row['appointment_status'] == 1){echo "<button type='button' class='btn-danger'>Pending</button>";   
                  }
-                 elseif($row['status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
-                 elseif($row['status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
-                 elseif($row['status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";};?></h4>   
+                 elseif($row['appointment_status'] == 2){ echo "<button type='button' class='btn-success'>Confirmed</button>";}
+                 elseif($row['appointment_status'] == 3){ echo "<button type='button' class='btn-info'>Cancelled</button>";}
+                 elseif($row['appointment_status'] == 4){ echo "<button type='button' class='btn-warning'>Closed</button>";};?></h4>   
     <h4><a href="<?php echo base_url();?>main/appointment_history/<?php echo $row['appointment_id'];?>" class="hiper">View Appointment History</a><br/>
     </h4> 
     <a href="<?=base_url('main/edit_user/').$user_info['user_id'];?>" class="hiper">View User Details</a>
@@ -219,7 +217,7 @@ foreach ($single_appointment_info as $row) {
             success: function(response)
             {
                 jQuery('#doc_ava').html(response);
-                if('<?php echo $row['status'];?>'==2){
+                if('<?php echo $row['appointment_status'];?>'==2){
                 document.getElementById("appointment_date").disabled = false;}
                 
             } 
@@ -234,7 +232,7 @@ foreach ($single_appointment_info as $row) {
             url: '<?php echo base_url();?>ajax/get_doctor_data/' + unique_id ,
             success: function(response)
             {
-                if('<?php echo $row['status'];?>'==2){
+                if('<?php echo $row['appointment_status'];?>'==2){
                 document.getElementById("appointment_date").disabled = false;}
                 
             } 
@@ -302,7 +300,6 @@ foreach ($single_appointment_info as $row) {
 
  <script>
             function confrecommend(form) {
-            /*form.submit();*/
             var id='<?=$single_appointment_info[0]["user_id"]?>';
             $.ajax({
             type: 'post',

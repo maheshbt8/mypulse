@@ -29,30 +29,17 @@ $user_info=$this->db->where('user_id',$user)->get('users')->row_array();
          ?>   
             <tr>
                 <?php
-$hos=explode('-', $row['created_by']);
-if($hos[0] == 'superadmin'){
-  $user_role='Super Admin';
-}elseif($hos[0] == 'hospitaladmins'){
-  $user_role='Hospital Admin';
-}elseif($hos[0] == 'doctors'){
-  $user_role='Doctor';
-}elseif($hos[0] == 'nurse'){
-  $user_role='Nurse';
-}elseif($hos[0] == 'receptionist'){
-  $user_role='Receptionist';
-}elseif($hos[0] == 'medicalstores'){
-  $user_role='Pharmacist';
-}elseif($hos[0] == 'medicallabs'){
-  $user_role='Laboratorist';
-}elseif($hos[0] == 'users'){
-  $user_role='MyPulse Users';
+if($row['created_by']!='MyPulse'){
+$hos=explode('_',$row['created_by']);
+$code=substr($hos[0], 0,-2);
+$role_data=$this->crud_model->get_role($code);
+$user_role=$role_data['role'];
 }
-
                 ?>
-                 <td><?php echo date('d M,Y', strtotime($row['created_time']));?></td>
-                <td><?php echo date('h:i A', strtotime($row['created_time']));?></td>
-                 <td><?php if($row['created_type']!='System'){echo $user_role;}elseif($row['created_type']=='System'){echo 'System';}?></td>
-                <td><?php if($row['created_type']!='System'){echo $this->db->where($hos[1].'_id',$hos[2])->get($hos[0])->row()->name;}elseif($row['created_type']=='System'){echo $row['created_by'];}?></td>
+                 <td><?php echo date('d M,Y', strtotime($row['created_at']));?></td>
+                <td><?php echo date('h:i A', strtotime($row['created_at']));?></td>
+                 <td><?php if($row['created_by']!='MyPulse'){echo $user_role;}else{echo 'System';}?></td>
+                <td><?php if($row['created_by']!='MyPulse'){echo $this->db->where('unique_id',$row['created_by'])->get($role_data['type'])->row()->name;}else{echo $row['created_by'];}?></td>
                 <td><?php 
                 if($row['action'] == 1){echo "Created";}
                 elseif($row['action'] == 2){ echo "Pending";}
@@ -66,7 +53,7 @@ if($hos[0] == 'superadmin'){
                 elseif($row['action'] == 2){ echo "Appointment Was Pending";}
                 elseif($row['action'] == 3){ echo "Appointment Was Confirmed";}
                 elseif($row['action'] == 4){ echo "Appointment Updated for".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:m A', strtotime($row['appointment_time_start'])).' - '.date('h:m A', strtotime($row['appointment_time_end']));}
-                elseif($row['action'] == 5){ echo "Appointment Rescheduled for".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:i A', strtotime($row['appointment_time_start'])).' - '.date('h:i A', strtotime($row['appointment_time_end']));}
+                elseif($row['action'] == 5){ echo "Appointment Rescheduled for ".date('d M,Y', strtotime($row['appointment_date'])).' - '.date('h:i A', strtotime($row['appointment_time_start'])).' - '.date('h:i A', strtotime($row['appointment_time_end']));}
                 elseif($row['action'] == 6){ echo "Appointment Was Cancelled Because Of ".$row['reason'];}
                 elseif($row['action'] == 7){ echo "Appointment Was Closed";}else{
                   echo $row['reason'];
